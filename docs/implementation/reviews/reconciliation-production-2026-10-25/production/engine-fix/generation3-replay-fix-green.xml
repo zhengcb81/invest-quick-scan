@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="6" time="0.912" timestamp="2026-10-25T14:03:51.384884+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_shared_semantic_replay" name="test_original_request_hashes_replay_with_same_trusted_rules[rules0]" time="0.194"><failure message="assert False&#10; +  where False = all_completed()&#10; +    where all_completed = &lt;iqs_company_agent_lab.state.RunnerState object at 0x00000145EABEB4D0&gt;.all_completed">rules = ('[SYNTHETIC ONLY] Copy the exact bound source URL including its query.',)
+
+    @pytest.mark.parametrize("rules", [RULES, ()])
+    def test_original_request_hashes_replay_with_same_trusted_rules(rules):
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        port = composition.ContextPort(task)
+        runner = Runner(task, port, answer_semantic_rules=rules)
+        runner.run()
+        reconstructed = ReplayEngine(task, answer_semantic_rules=rules).replay(runner.journal.events)["state"]
+        assert reconstructed.slots == runner.state.slots
+&gt;       assert reconstructed.all_completed()
+E       assert False
+E        +  where False = all_completed()
+E        +    where all_completed = &lt;iqs_company_agent_lab.state.RunnerState object at 0x00000145EABEB4D0&gt;.all_completed
+
+tests\test_shared_semantic_replay.py:36: AssertionError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_original_request_hashes_replay_with_same_trusted_rules[rules1]" time="0.006"><failure message="assert False&#10; +  where False = all_completed()&#10; +    where all_completed = &lt;iqs_company_agent_lab.state.RunnerState object at 0x00000145EAC36190&gt;.all_completed">rules = ()
+
+    @pytest.mark.parametrize("rules", [RULES, ()])
+    def test_original_request_hashes_replay_with_same_trusted_rules(rules):
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        port = composition.ContextPort(task)
+        runner = Runner(task, port, answer_semantic_rules=rules)
+        runner.run()
+        reconstructed = ReplayEngine(task, answer_semantic_rules=rules).replay(runner.journal.events)["state"]
+        assert reconstructed.slots == runner.state.slots
+&gt;       assert reconstructed.all_completed()
+E       assert False
+E        +  where False = all_completed()
+E        +    where all_completed = &lt;iqs_company_agent_lab.state.RunnerState object at 0x00000145EAC36190&gt;.all_completed
+
+tests\test_shared_semantic_replay.py:36: AssertionError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_omitted_or_changed_rules_cannot_satisfy_original_event_hash[changed0]" time="0.007" /><testcase classname="tests.test_shared_semantic_replay" name="test_omitted_or_changed_rules_cannot_satisfy_original_event_hash[changed1]" time="0.006" /><testcase classname="tests.test_shared_semantic_replay" name="test_typed_pending_resume_export_and_report_reuse_original_hashes_without_new_dispatch" time="0.326"><failure message="assert (False)">tmp_path = WindowsPath('C:/Temp/iqs-g2-unit-2nfhqu9h/pytest/test_typed_pending_resume_expo0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000145EAC36650&gt;
+
+    def test_typed_pending_resume_export_and_report_reuse_original_hashes_without_new_dispatch(tmp_path, monkeypatch):
+        """Composition seams isolate owner admission, never a native positive."""
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        def validator(answer, question_id):
+            assert answer["question_id"] == question_id
+        validator.prompt_rules = RULES
+        monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: validator)
+        class CrashPort(composition.ContextPort):
+            def model_step(self, request):
+                receipt = super().model_step(request)
+                raise SyntheticCrash("before_commit", receipt["runtime_attempt_ref"], receipt)
+        old_port = CrashPort(task)
+        with pytest.raises(engine.SharedEngineInterrupted):
+            engine._execute_with_port(task, composition.SyntheticObservations(old_port), old_port,
+                output=tmp_path / "unused-export", session_dir=tmp_path / "cold", transport_origin="scripted_wire")
+        checkpoint = tmp_path / "cold/checkpoint.json"
+        saved = copy.deepcopy(old_port.receipts[0])
+        saved["session_handle"] = None
+        from iqs_company_agent_lab.receipts import finalize_receipt_digest
+        saved["receipt_sha256"] = finalize_receipt_digest(saved)
+        monkeypatch.setattr(engine, "preflight", lambda *args: {})
+        monkeypatch.setattr(engine, "inspect_native_recovery", lambda *args, **kwargs:
+                            dict(decision="recover_saved_receipt", saved_receipt=saved))
+        fresh_port = composition.ContextPort(task)
+        import iqs_agent_runtime_lab.port
+        monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *args, **kwargs: fresh_port)
+        class Warm(composition.SyntheticObservations):
+            def inspect_attempt(self, ref):
+                return dict(known=True)
+            def attempt_observations(self, **kwargs):
+                rows = super().attempt_observations(**kwargs)
+                for row in rows:
+                    row["replayed"] = True
+                return rows
+        result = engine.resume_shared_engine(task, Warm(old_port), {}, checkpoint, tmp_path / "export",
+            session_dir=tmp_path / "warm", transport_origin="scripted_wire")
+        verified, _ = engine._verified_finalization_export(task, tmp_path / "export", RULES)
+        report = generate_report(tmp_path / "export", tmp_path / "report", answer_semantic_rules=RULES)
+&gt;       assert result["all_slots_completed"] and all(slot["execution_status"] == "completed" for slot in verified["slots"])
+E       assert (False)
+
+tests\test_shared_semantic_replay.py:89: AssertionError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_replay_refuses_invalid_rule_carrier_before_using_events" time="0.001" /></testsuite></testsuites>

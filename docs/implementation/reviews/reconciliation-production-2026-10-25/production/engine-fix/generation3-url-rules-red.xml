@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="3" time="0.536" timestamp="2026-10-25T13:13:42.432336+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_shared_answer_url_rules" name="test_each_new_typed_rule_requires_exact_original_url_and_small_supported_evidence[score]" time="0.126"><failure message="AssertionError: assert ('evidence[].url' in '[SYNTHETIC_URL_RULE] response_kind=score；items=[]，不得输出事实关系行，不得使用status=answered。scored时score为1至10整数；其余状态score=null。解释、反证放summary/counterevidence，数值放metrics并绑定证据；insufficient_evidence/not_applicable/search_unavailable时metrics=[]。')">kind = 'score'
+
+    @pytest.mark.parametrize("kind", ["score", "fact"])
+    def test_each_new_typed_rule_requires_exact_original_url_and_small_supported_evidence(kind):
+        question = dict(id="SYNTHETIC_URL_RULE", response_kind=kind)
+        before = copy.deepcopy(question)
+        rule = question_prompts.typed_semantic_rules(question)
+&gt;       assert "evidence[].url" in rule and "逐字复制" in rule and "query" in rule
+E       AssertionError: assert ('evidence[].url' in '[SYNTHETIC_URL_RULE] response_kind=score；items=[]，不得输出事实关系行，不得使用status=answered。scored时score为1至10整数；其余状态score=null。解释、反证放summary/counterevidence，数值放metrics并绑定证据；insufficient_evidence/not_applicable/search_unavailable时metrics=[]。')
+
+tests\test_shared_answer_url_rules.py:18: AssertionError</failure></testcase><testcase classname="tests.test_shared_answer_url_rules" name="test_each_new_typed_rule_requires_exact_original_url_and_small_supported_evidence[fact]" time="0.001"><failure message="AssertionError: assert ('evidence[].url' in '[SYNTHETIC_URL_RULE] response_kind=fact；score=null，不得使用status=scored；answered必须有符合本题关系和条数限制、逐行绑定证据的items。未知用insufficient_evidence，不能以空事实列表声称已回答。')">kind = 'fact'
+
+    @pytest.mark.parametrize("kind", ["score", "fact"])
+    def test_each_new_typed_rule_requires_exact_original_url_and_small_supported_evidence(kind):
+        question = dict(id="SYNTHETIC_URL_RULE", response_kind=kind)
+        before = copy.deepcopy(question)
+        rule = question_prompts.typed_semantic_rules(question)
+&gt;       assert "evidence[].url" in rule and "逐字复制" in rule and "query" in rule
+E       AssertionError: assert ('evidence[].url' in '[SYNTHETIC_URL_RULE] response_kind=fact；score=null，不得使用status=scored；answered必须有符合本题关系和条数限制、逐行绑定证据的items。未知用insufficient_evidence，不能以空事实列表声称已回答。')
+
+tests\test_shared_answer_url_rules.py:18: AssertionError</failure></testcase><testcase classname="tests.test_shared_answer_url_rules" name="test_historical_renderer_fingerprint_remains_original" time="0.005" /></testsuite></testsuites>

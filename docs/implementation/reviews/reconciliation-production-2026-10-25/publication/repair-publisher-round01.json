@@ -1,0 +1,32 @@
+{
+  "protocol": "iqs.independent-repair-publisher-review/1.0.0",
+  "status": "needs_historical_archive_preservation_fix",
+  "reviewed_at": "2026-10-25T14:26:44.593865+00:00",
+  "reviewer": "/root/fix_bank21",
+  "source_sha256": "18925a674c8fc6cd7aee4490b8fb596ad05559f8e1c82ba6b99427644326f391",
+  "finding": {
+    "id": "PUBREPAIR-01",
+    "priority": "P2",
+    "issue": "The repair mode recopies all130 current source paths into historical destinations, overwriting a previously archived diagnostic after its source evolved.",
+    "actual_old130_comparison": {
+      "unchanged_current_sources": 129,
+      "changed_current_sources": 1,
+      "artifact": "engine-review/generation2-source-diagnostic.json",
+      "archived_sha256": "0a90968306c6ce2d033faa721a5de77fcc81879e78ed088e65524fb987b2972c",
+      "current_source_sha256": "630a2938f390ec166b3bb7807b26f342f03805c86dc053304e5d8bd4e3f79a28"
+    },
+    "fix": "Repair mode must verify and preserve original archived130 bytes/rows, publish updated diagnostic separately as a new revision, and retain legacy --final behavior.",
+    "test": "Changed current historical source must not overwrite archived target; corruption of existing archived bytes must fail closed."
+  },
+  "other_reviewed_checks": {
+    "same_major_actual_pass_open_findings_empty_and_exact_four_raw_hashes_required": true,
+    "explicit_different_source_reused_original_response_only": true,
+    "no_invoice_financial_or_ack_grant": true,
+    "thin_allowlist_has_no_database_or_answer_context_payload": true,
+    "actual_old_new_source_code_copies_bound_exact_six_allowlist": true
+  },
+  "actual_engine_acceptance_reopened": false,
+  "publisher_executed_by_reviewer": false,
+  "reviewer_API_calls": 0,
+  "reviewer_database_writes": 0
+}

@@ -1,0 +1,23 @@
+"""Capture one reviewed recovery-only process; no cold or retry fallback."""
+from datetime import datetime, timezone
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+HERE = Path(__file__).parent
+phase = "generation3-replay-repair"
+for suffix in (".stdout.log", ".stderr.log", "-exit.json"):
+    if (HERE / (phase + suffix)).exists():
+        raise RuntimeError("inspect_existing_attempt_no_blind_retry")
+with (HERE / (phase + ".stdout.log")).open("xb") as out:
+    with (HERE / (phase + ".stderr.log")).open("xb") as err:
+        process = subprocess.run([sys.executable, "-B", "-X", "utf8",
+            str(HERE / "run_replay_repair.py"), "--execute"], stdout=out, stderr=err,
+            cwd=HERE.parents[1])
+record = dict(phase=phase, exit_code=process.returncode,
+    ended_at=datetime.now(timezone.utc).isoformat(), network_forbidden_by_pinned_driver=True,
+    recovery_only=True, new_paid_requests_allowed=0)
+(HERE / (phase + "-exit.json")).write_text(json.dumps(record, indent=2) + "\n", encoding="utf8")
+print(json.dumps(record))
+raise SystemExit(process.returncode)

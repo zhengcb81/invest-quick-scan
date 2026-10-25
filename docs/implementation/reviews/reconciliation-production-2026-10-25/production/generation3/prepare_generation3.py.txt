@@ -1,0 +1,141 @@
+"""New admitted generation after original owner resolution; same cumulative budget.
+
+Only native local authority/preview/delegation/admission APIs, no paid dispatch.
+The original generation1/2 safe responses, snapshots and fees are retained.
+"""
+from datetime import datetime,timedelta,timezone
+import hashlib,json,os,subprocess,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+BASE=ROOT/"runs/r25-live"
+SOURCE=BASE/"typed-generation2"
+DEST=BASE/"typed-generation3"
+QA=ROOT.parent/"StockQAbyLLM";SW=ROOT.parent/"StockWiki"
+sys.path[:0]=[str(QA),str(SW),str(ROOT/"scripts")]
+
+def read(p):
+    from src.utils.quick_scan_result_outbox import strict_json_loads
+    return strict_json_loads(Path(p).read_text(encoding="utf-8-sig"))
+def save(p,x):
+    raw=json.dumps(x,ensure_ascii=False,sort_keys=True,indent=2,allow_nan=False).encode("utf8")
+    if p.exists():
+        if p.read_bytes()!=raw:raise ValueError("existing_generation3_input_differs:"+p.name)
+    else:p.write_bytes(raw)
+def utc():return datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+def main():
+    if DEST.exists():raise ValueError("inspect_existing_generation3_preparation_never_recreate")
+    config=read(SOURCE/"run-config.json")
+    if config.get("isolated") is not True or Path(config["run_root"]).resolve()!=BASE.resolve():
+        raise ValueError("original_isolated_base_required")
+    def owned(value):
+        path=Path(value).absolute()
+        if not path.resolve().is_relative_to(BASE.resolve()):
+            raise ValueError("generation3_path_outside_isolated_base")
+        for node in (path,*path.parents):
+            if node.is_symlink() or node.is_junction():
+                raise ValueError("generation3_linked_path_forbidden")
+            if node.is_file() and node.stat().st_nlink!=1:
+                raise ValueError("generation3_hardlinked_file_forbidden")
+            if node==BASE.absolute():break
+        return path.resolve()
+    old=read(owned(config["deployment"]))
+    for name in ("stockwiki_workspace_root","execution_inputs_root","work_store","budget_policy_file","runs_dir"):
+        owned(old[name])
+    owned(config["bundle"]);owned(DEST);owned(config["budget_policy_file"])
+    if owned(config["budget_policy_file"])!=owned(old["budget_policy_file"]):
+        raise ValueError("original_cumulative_budget_required")
+    fixed_transition=read(BASE/"known-response-repair/owner-policy-transition.json")
+    fixed_file=owned(Path(old["stockwiki_workspace_root"])/"config/quick_scan_refresh.json")
+    fixed_policy=read(fixed_file)
+    if (hashlib.sha256(fixed_file.read_bytes()).hexdigest()!=fixed_transition["after_sha256"]
+        or fixed_policy.get("protocol")!="stockwiki.refresh_owner_policy/1.2.0"
+        or fixed_policy["qa"]["quote_schema_version"]!="1.2.0"
+        or fixed_policy["policy_version"]!=fixed_transition["policy_version"]
+        or hashlib.sha256(Path(config["budget_policy_file"]).read_bytes()).hexdigest()!=fixed_transition["budget_sha256"]):
+        raise ValueError("owner_policy_must_be_fixed_before_control_confirmations")
+    delegation_install_path=owned(Path(old["stockwiki_workspace_root"])/"config/quick_scan_delegation_install.json")
+    apply=read(BASE/"known-response-repair-gen2/retry-apply.stdout.json")
+    decision=apply["decision"]
+    if apply.get("status")!="recorded" or decision["request"]["purpose"]!="retry_unusable_answer" or decision["request"]["target_generation"]!=3:
+        raise ValueError("original_generation3_retry_decision_required")
+    from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
+    view=ReadOnlyWorkView(old["work_store"])
+    work=decision["request"]["work_item_id"]
+    original_decision=view.get_owner_retry_decision(work)
+    if (decision["request"]["work_item_id"]!="WORK_c9374943a7c44990ba69d67fa7346529"
+        or decision["request"]["attempt_id"]!="ATTEMPT_7d199ff1165a4c07b7f20191ad3c3699"
+        or decision["request"]["comparison_controls"] is not None):
+        raise ValueError("exact_generation2_to3_retry_required")
+    if original_decision!=decision:
+        raise ValueError("original_durable_retry_decision_differs_from_stdout")
+    item=view.get_item(work)
+    if item["status"]!="failed" or item["generation"]!=2 or view.get_answer_checkpoint(work) is not None:
+        raise ValueError("resolved_original_unusable_generation2_required")
+    DEST.mkdir();(DEST/"temp").mkdir()
+    env={k:v for k,v in os.environ.items() if k.upper() in {"SYSTEMROOT","WINDIR","PATH","PATHEXT","COMSPEC","USERPROFILE","APPDATA","LOCALAPPDATA","SYSTEMDRIVE"}}
+    env.update(PYTHONPATH=os.pathsep.join((str(QA),str(SW))),PYTHONUTF8="1",PYTHONIOENCODING="utf-8",PYTHONDONTWRITEBYTECODE="1",TEMP=str(DEST/"temp"),TMP=str(DEST/"temp"))
+    def no_net(event,args):
+        if event in {"socket.connect","socket.getaddrinfo","socket.sendto"}:raise RuntimeError("generation3_prepare_network_forbidden")
+    sys.addaudithook(no_net)
+    def call(label,args,cwd=SW):
+        run=subprocess.run([sys.executable,"-B","-X","utf8",*map(str,args)],cwd=cwd,env=env,capture_output=True,timeout=300)
+        (DEST/(label+".stdout.json")).write_bytes(run.stdout);(DEST/(label+".stderr.log")).write_bytes(run.stderr)
+        if run.returncode:raise RuntimeError("native_generation3_preparation_refused:"+label)
+        return read(DEST/(label+".stdout.json"))
+    from stockwiki.paths import WorkspacePaths
+    from stockwiki.quick_scan_refresh_records import RefreshRecordStore
+    from stockwiki.quick_scan_refresh_principal import current_principal
+    from src.utils.quick_scan_result_outbox import canonical_sha256
+    from src.utils.quick_scan_refresh_admission import RefreshAdmissionService
+    owner_root=Path(old["stockwiki_workspace_root"]);paths=WorkspacePaths.from_root(owner_root)
+    prior_bundle=Path(config["bundle"]);inputs=DEST/"inputs";inputs.mkdir()
+    subject=read(prior_bundle/"authority.json")["observation_context"]["questions"]["IQS_05"]["subject_binding"]["subject_ref"]
+    bundle=inputs/("subject_"+canonical_sha256(subject));bundle.mkdir()
+    for n in ("manifest.json","identity.json","questions.json"):(bundle/n).write_bytes((prior_bundle/n).read_bytes())
+    runid="SHARED_PRODUCTION_CATL_20261025_Q05_URL_GEN3"
+    save(DEST/"run.json",dict(run_id=runid,scan_id=runid+"_SCAN",inputset_id=runid+"_INPUT",task_mode="primary",comparison_group_id=None))
+    save(DEST/"versions.json",read(SOURCE/"versions.json"))
+    build=subprocess.run(["git","rev-parse","HEAD"],cwd=ROOT,capture_output=True,text=True,check=True).stdout.strip()
+    save(DEST/"producer.json",dict(component_version="iqs-shared-production-typed-semantic-20261025",build_id=build))
+    call("authority",[ROOT/"scripts/c06_authority.py","--manifest",bundle/"manifest.json","--identity",bundle/"identity.json",
+      "--run",DEST/"run.json","--versions",DEST/"versions.json","--producer",DEST/"producer.json",
+      "--subject-binding",BASE/"subject-binding.json","--listing-bindings",BASE/"listing-bindings.json",
+      "--release-root",old["iqs_release_root"],"--observation-schema-version","1.2.0","--output",bundle/"authority.json"],cwd=ROOT)
+    ownerconfig=read(prior_bundle/"owner-config.json");ownerconfig["runs_dir"]=str(DEST/"owner-transport");save(bundle/"owner-config.json",ownerconfig)
+    save(DEST/"owner-policy-transition.json",fixed_transition)
+    query=read(BASE/"query-capture.json");query.update(request_id=runid+"_QUERY",requested_at=utc());query["payload"]["snapshot_id"]=None;save(DEST/"query-capture.json",query)
+    cap=call("capture",["-m","stockwiki.quick_scan_query_v2_cli","--root",owner_root,"--iqs-code-root",ROOT,"--request",DEST/"query-capture.json"])
+    query["payload"]["snapshot_id"]=cap["result"]["watermark"]["snapshot_id"]
+    request=dict(protocol="iqs.refresh_request/1.2.0",operation="request_refresh",request_id=runid+"_REFRESH",consumer_id="invest-quick-scan",requested_at=utc(),source_query=query,subject_refs=[subject],field_ids=read(BASE/"request.json")["field_ids"],origin_task_id=runid,
+      reason="Explicitly retry the preserved source-invalid generation2 answer after native owner resolution, with typed semantic validation; same cumulative budget",
+      cohort_id=runid,work_decision_refs=[dict(work_item_id=work,decision_id=decision["decision_id"])])
+    save(DEST/"request.json",request)
+    cli=["-m","stockwiki.quick_scan_refresh_owner_cli","--root",owner_root,"--iqs-code-root",ROOT,"--iqs-release-root",old["iqs_release_root"]]
+    preview=call("preview",[*cli,"--request",DEST/"request.json"])
+    if preview.get("status")!="ready":raise ValueError("generation3_preview_not_ready")
+    record=RefreshRecordStore(paths).load(preview["preview_id"])
+    profile=dict(profile_id="iqs-root-controller-20261025-gen3",harness="Codex",principal=current_principal(),source_commit=build,purpose="Explicit native generation3 repair and crash/cache acceptance")
+    save(DEST/"controller-profile.json",profile)
+    install=dict(protocol="stockwiki.refresh_delegation_install/1.0.0",workspace_root=str(owner_root),preview_id=preview["preview_id"],preview_record_sha256=record["record_sha256"],agent=dict(profile_id=profile["profile_id"],profile_sha256=canonical_sha256(profile),harness_ref="Codex root controller"),authorization_reference=config["authorization_reference"],expires_at=(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat().replace("+00:00","Z"))
+    path=owned(delegation_install_path)
+    if path.exists():(DEST/"delegation-install-before.json").write_bytes(path.read_bytes())
+    path.write_bytes(json.dumps(install,ensure_ascii=False,sort_keys=True,indent=2).encode("utf8"))
+    grant=call("delegation-install",[*cli,"--install-delegation"])
+    confirmed=call("delegation-confirm",[*cli,"--confirm-delegated",preview["preview_id"],"--delegation-id",grant["grant_id"],"--idempotency-key",runid+"_ACTION"])
+    deployment={**old,"execution_inputs_root":str(inputs),"runs_dir":str(DEST/"admission-runs")};Path(deployment["runs_dir"]).mkdir();save(DEST/"deployment.json",deployment)
+    admitted=RefreshAdmissionService(DEST/"deployment.json",process_env=env).admit(confirmed["confirmation_id"]);save(DEST/"admission.json",admitted)
+    if admitted.get("status")!="accepted":raise ValueError("generation3_native_admission_refused")
+    registered=admitted["registration"]["items"]
+    if (len(registered)!=1 or registered[0]["question_id"]!="IQS_05"
+        or registered[0]["generation"]!=3 or registered[0]["work_item_id"]==work):
+        raise ValueError("exact_new_generation3_admission_required")
+    from src.config.quick_scan_search_policy import load_search_policy
+    from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+    # Keep original query ID, TTL and five-source scope byte-for-byte; only the
+    # original native cache may decide reuse across generations. No journal copy.
+    (DEST/"search-policy.json").write_bytes((SOURCE/"search-policy.json").read_bytes())
+    if build_shared_external_budget_policy(read(BASE/"model-budget-policy.json"),load_search_policy(DEST/"search-policy.json"))!=read(config["budget_policy_file"]):raise ValueError("generation3_must_keep_original_composite_budget_exact")
+    save(DEST/"run-config.json",{**config,"deployment":str(DEST/"deployment.json"),"bundle":str(bundle),"confirmation_id":confirmed["confirmation_id"],"run_id":runid,"generation":3,"max_model_requests_per_session":1,"native_retry_decision_id":decision["decision_id"],"retry_decision_id":decision["decision_id"],"source_work_item_id":work})
+    save(DEST/"lineage.json",dict(original_work_id=work,source_generation=2,target_generation=3,original_safe_response_retained=True,original_budget_file_sha256=hashlib.sha256(Path(config["budget_policy_file"]).read_bytes()).hexdigest(),API_requests=0,new_budget=False))
+    print(json.dumps(dict(status="generation3_prepared",config=str(DEST/"run-config.json"),API_requests=0,same_ledger=deployment["work_store"],same_budget=config["budget_policy_file"])))
+if __name__=="__main__":main()

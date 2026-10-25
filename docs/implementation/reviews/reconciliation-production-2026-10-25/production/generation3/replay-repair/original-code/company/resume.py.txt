@@ -1,0 +1,150 @@
+"""Resume from a crash checkpoint with a continuation event journal.
+
+Recovery never repeats a completed question: continuation model_step intents
+targeting a completed slot are a protocol violation. A restart is always a new
+session segment; previously recorded costs and failures are preserved. The
+checkpoint embeds the task bundle, so resume needs no external input root.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from types import SimpleNamespace
+from typing import Any
+
+from .checkpoint import load_checkpoint, state_from_checkpoint
+from .errors import ProtocolIllegalError
+from .events import load_events
+from .replay import ReplayEngine
+from .strategy import strategy_for_task
+from .task import task_from_bundle
+
+
+def resume_from_files(checkpoint_path: Path, resume_events_path: Path) -> dict[str, Any]:
+    checkpoint = load_checkpoint(checkpoint_path)
+    task = task_from_bundle(checkpoint["task_bundle"])
+    if checkpoint.get("protocol") in {
+        "iqs.company-agent-lab.checkpoint/1.1.0",
+        "iqs.company-scan-checkpoint/1.0.0",
+    }:
+        _verify_snapshot_against_history(checkpoint_path, checkpoint, task)
+    chain = checkpoint["event_chain"]
+    events = load_events(
+        resume_events_path,
+        expected_seq_start=chain["seq"] + 1,
+        expected_prev_sha256=chain["head_sha256"],
+    )
+    if not events:
+        raise ProtocolIllegalError("continuation journal is empty")
+    first = events[0]
+    if first["event_type"] != "segment":
+        raise ProtocolIllegalError("continuation journal must begin with a restart segment event")
+    if first["data"].get("reason") != "restart_with_new_segment":
+        raise ProtocolIllegalError("continuation segment reason must be restart_with_new_segment")
+
+    state = state_from_checkpoint(task, checkpoint)
+    state.finished_reason = None  # the crash interrupted the run; continue
+    engine = ReplayEngine(task)
+    strategy = strategy_for_task(task)
+    for event in events:
+        if event["event_type"] == "intent" and event["data"]["kind"] == "model_step":
+            targeted = event["data"]["question_ids"]
+            completed = [
+                qid for qid in targeted if state.slot(qid)["execution_status"] == "completed"
+            ]
+            # Recovery never re-answers completed questions: a model_step whose
+            # targets are all completed is the bounded repair path (patch-gated);
+            # mixing completed with open questions would re-answer completed work.
+            if completed and len(completed) != len(targeted):
+                raise ProtocolIllegalError(
+                    f"continuation attempted to re-call completed questions: {completed}"
+                )
+        engine._apply_one(state, event, strategy, verify_intents=True)
+
+    for slot in state.open_slots():
+        if not slot["gap_codes"]:
+            slot["gap_codes"] = ["not_attempted_at_finish"]
+    return {
+        "state": state,
+        "events": events,
+        "checkpoint": checkpoint,
+        "task": task,
+        "resume_events": events,
+    }
+
+
+def _history_journals(checkpoint_path, checkpoint):
+    from .errors import InvalidInputError
+
+    previous, seq = None, 0
+    seen = set()
+    journals = []
+    for name in checkpoint["event_chain"].get("journal_files", []):
+        if (
+            not isinstance(name, str)
+            or Path(name).name != name
+            or name in seen
+            or name in (".", "..")
+        ):
+            raise InvalidInputError("unsafe or duplicate checkpoint journal filename")
+        seen.add(name)
+        path = checkpoint_path.parent / name
+        if path.is_symlink() or path.is_junction():
+            raise InvalidInputError("checkpoint history cannot be a link")
+        events = load_events(path, expected_seq_start=seq, expected_prev_sha256=previous)
+        if not events:
+            raise InvalidInputError("checkpoint history file is empty")
+        seq = events[-1]["seq"] + 1
+        previous = events[-1]["event_sha256"]
+        journals.append(events)
+    if (
+        not journals
+        or seq - 1 != checkpoint["event_chain"]["seq"]
+        or previous != checkpoint["event_chain"]["head_sha256"]
+    ):
+        raise InvalidInputError("checkpoint history does not reach its claimed event head")
+    return journals
+
+
+def _verify_snapshot_against_history(checkpoint_path, checkpoint, task):
+    from .checkpoint import state_snapshot
+
+    events = [e for journal in _history_journals(checkpoint_path, checkpoint) for e in journal]
+    reconstructed = state_snapshot(ReplayEngine(task).replay(events)["state"])
+    # Ephemeral runtime model/session and host control-flow counters are not
+    # evidence; persisted answers, costs, context and task inputs are bound to
+    # the original event history. A self-hash is not authority to rewrite them.
+    keys = (
+        "execution_revision",
+        "slots",
+        "revisions",
+        "attempts",
+        "drafts",
+        "findings",
+        "evidence_used_by",
+        "board",
+        "counters",
+        "seen_attempt_refs",
+        "context_version",
+        "context_indexed_ids",
+        "tool_results",
+        "receipt_accounting",
+    )
+    for key in keys:
+        if reconstructed.get(key) != checkpoint["state"].get(key):
+            raise ProtocolIllegalError(
+                "checkpoint state diverges from original event history: " + key
+            )
+
+
+def journals_for_export(
+    checkpoint_path: Path, checkpoint: dict[str, Any], resume_events: list[dict[str, Any]]
+) -> list[tuple[str, Any]]:
+    base_dir = checkpoint_path.parent
+    journals: list[tuple[str, Any]] = []
+    for index, events in enumerate(_history_journals(checkpoint_path, checkpoint)):
+        journals.append((f"history-{index:04d}.jsonl", SimpleNamespace(events=events)))
+    if not journals:
+        raise ProtocolIllegalError("checkpoint journal files missing next to checkpoint")
+    journals.append(("events.jsonl", SimpleNamespace(events=resume_events)))
+    return journals

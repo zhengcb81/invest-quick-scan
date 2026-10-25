@@ -1,0 +1,74 @@
+"""Freeze explicit same-response/different-source compatibility recovery."""
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).parent
+COLD = ROOT / "runs/r25-live/typed-generation3"
+DEST = COLD / "replay-repair"
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def read(path):
+    return json.loads(Path(path).read_text(encoding="utf8"))
+
+
+def write_new(path, value):
+    with Path(path).open("x", encoding="utf8", newline="\n") as stream:
+        json.dump(value, stream, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)
+        stream.write("\n")
+
+
+bridge = HERE / "run_replay_repair.py"
+spec = importlib.util.spec_from_file_location("_replay_repair_freeze", bridge)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+driver = module.original_driver()
+old_pins = read(COLD / "source-pins.json")
+assert sha(COLD / "source-pins.json") == module.OLD_PINS_SHA
+snapshot_file = COLD / "failed-replay-context-01/integrity.json"
+assert sha(snapshot_file) == module.SNAPSHOT_SHA
+snapshot = read(snapshot_file)
+before = {Path(row["source"]).resolve(): row for row in snapshot["source_files"]}
+changes = []
+for path in sorted(module.changed_source_paths(), key=str):
+    path = path.resolve()
+    row = before[path]
+    artifact = snapshot_file.parent / row["artifact"]
+    assert sha(artifact) == row["sha256"] != sha(path)
+    changes.append(dict(path=str(path), before_sha256=row["sha256"], after_sha256=sha(path),
+                        original_snapshot_path=str(artifact)))
+reporter = HERE / "engine-fix/real_summary_replay_repair.py"
+assert sha(reporter) == "e494fcab1ad7b2f2951c9938698c6703303333528ed43a81a09baa124d48756a"
+DEST.mkdir(exist_ok=True)
+transition_file = DEST / "source-transition.json"
+transition = dict(protocol="iqs.replay-rules-source-repair/1.0.0",
+    observed_at=datetime.now(timezone.utc).isoformat(), original_pin_file_sha256=module.OLD_PINS_SHA,
+    original_task_sha256=read(COLD / "crash-proof.json")["task_sha256"],
+    original_crash_proof_sha256=sha(COLD / "crash-proof.json"),
+    original_legal_safe_validation_sha256=sha(COLD / "safe-validation.json"),
+    typed_rules_source_sha256=module.RULES_SHA,
+    original_source_snapshot_manifest=dict(path=str(snapshot_file), sha256=sha(snapshot_file)),
+    changed_sources=changes, repair_driver=dict(path=str(bridge), sha256=sha(bridge)),
+    same_source_cold_and_warm_claim=False, original_response_reused=True,
+    reason="Reconstruct the original typed-rule prefix through one trusted builder; keep original three hash comparisons.",
+    financial_accuracy_assessed=False)
+write_new(transition_file, transition)
+paths = ({Path(row["path"]).resolve() for row in old_pins}
+         | {path for path in before if path.suffix == ".py"}
+         | {path.resolve() for path in module.changed_source_paths()}
+         | {bridge.resolve(), reporter.resolve(), transition_file.resolve(), snapshot_file.resolve(),
+            Path(__file__).resolve()})
+pins = [dict(path=str(path), sha256=sha(path)) for path in sorted(paths, key=str)]
+write_new(DEST / "repair-source-pins.json", pins)
+module.verify_transition(driver)
+print(json.dumps(dict(status="frozen_verified", changed_sources=len(changes), repair_source_count=len(pins),
+    repair_pins_sha256=sha(DEST / "repair-source-pins.json"),
+    source_transition_sha256=sha(transition_file), repair_driver_sha256=sha(bridge),
+    no_network_or_database_writes=True)))

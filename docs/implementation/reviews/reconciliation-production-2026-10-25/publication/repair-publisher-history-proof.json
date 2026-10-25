@@ -1,0 +1,31 @@
+{
+  "protocol": "iqs.repair-publisher-history-preservation-proof/1.0.0",
+  "author": "/root/review_bank21",
+  "publisher_sha256": "b913ea3b067297a6e7dc6b632101b9dcaba201df9c4357b5b761ed890dc9c591",
+  "original_manifest_sha256": "d003febfd8c4e4626eb45e04452d835de6d97cfa3927f1bd5e4389056ea2afd1",
+  "all130_archived_bytes_and_rows_verified": true,
+  "current_sources_changed_while_archive_retained": [
+    {
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation2-source-diagnostic.json",
+      "archived_sha256": "0a90968306c6ce2d033faa721a5de77fcc81879e78ed088e65524fb987b2972c",
+      "current_sha256": "630a2938f390ec166b3bb7807b26f342f03805c86dc053304e5d8bd4e3f79a28"
+    }
+  ],
+  "root_fix": "repair-only preserves old130 target bytes and original manifest rows; saves original130 manifest; latest diagnostic copied separately with resolved-after-replay-repair suffix",
+  "narrow_tests": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "deselected_prior_core_tests": 12,
+    "seconds": 6.49,
+    "xml": "engine-review/repair-publisher-history.xml",
+    "guard": "engine-review/repair-publisher-history-attestations.json",
+    "cleanup": "engine-review/repair-publisher-history-cleanup.json"
+  },
+  "publisher_or_actual_gate_executed": false,
+  "actual_DB_owner_API_writes": 0,
+  "real_docs_writes": 0,
+  "repair_integrity_metadata": "explicit_replay_source_repair / same_source_cold_and_warm_claim=false; old modes keep unchanged keys",
+  "history_narrow_tested_publisher_sha256": "6beaeebee54263ce4a048ddfc0cc3b7c864084c381e910f12b232c91063dbbc3",
+  "after_history_tests_only_change": "Final integrity metadata explicitly labels repaired-source acceptance and false same_source; AST parsed, copyloop tested code unchanged."
+}

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="9" time="0.479" timestamp="2026-10-25T13:30:29.055585+00:00" hostname="DESKTOP-156V213"><testcase classname="test_generation3_control_boundaries" name="test_escape_refused_before_original_store_or_subprocess[deployment-prepare_work_control_gen3]" time="0.033" /><testcase classname="test_generation3_control_boundaries" name="test_escape_refused_before_original_store_or_subprocess[deployment-run_native_control_gen3]" time="0.032" /><testcase classname="test_generation3_control_boundaries" name="test_escape_refused_before_original_store_or_subprocess[deployment-prepare_generation3]" time="0.019" /><testcase classname="test_generation3_control_boundaries" name="test_escape_refused_before_original_store_or_subprocess[budget-prepare_work_control_gen3]" time="0.027" /><testcase classname="test_generation3_control_boundaries" name="test_escape_refused_before_original_store_or_subprocess[budget-run_native_control_gen3]" time="0.043" /><testcase classname="test_generation3_control_boundaries" name="test_escape_refused_before_original_store_or_subprocess[budget-prepare_generation3]" time="0.031" /><testcase classname="test_generation3_control_boundaries" name="test_existing_destination_is_not_recreated_or_read" time="0.014" /><testcase classname="test_generation3_control_boundaries" name="test_delegation_install_leaf_refused_before_original_controls[hardlink]" time="0.049"><failure message="AssertionError: Unsafe leaf should be rejected before native controls: C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\engine-review\generation3-leaf-red-runtime\pytest\test_delegation_install_leaf_r0\isolated\known-response-repair-gen2\retry-apply.stdout.json">kind = 'hardlink'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000190ECEDC8C0&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/reconcile-production-2026-10-25/engine-review/generation3-leaf-red-runtime/pytest/test_delegation_install_leaf_r0')
+
+    @pytest.mark.parametrize("kind", ["hardlink", "redirected_leaf"])
+    def test_delegation_install_leaf_refused_before_original_controls(kind, monkeypatch, tmp_path):
+        module = load("prepare_generation3")
+        base = tmp_path / "isolated"
+        config_dir = base / "owner/config"
+        config_dir.mkdir(parents=True)
+        foreign = tmp_path / "foreign-config.json"
+        foreign.write_bytes(b"another writer's local configuration")
+        leaf = config_dir / "quick_scan_delegation_install.json"
+        if kind == "hardlink":
+            os.link(foreign, leaf)
+            assert leaf.stat().st_nlink == 2
+        else:
+            original_is_symlink = Path.is_symlink
+            monkeypatch.setattr(Path, "is_symlink", lambda path: path == leaf or original_is_symlink(path))
+        policy_file = config_dir / "quick_scan_refresh.json"
+        policy_file.write_bytes(b"original fixed policy bytes")
+        budget = base / "budget.json"
+        budget.write_bytes(b"original fixed cumulative budget bytes")
+        config = dict(isolated=True, run_root=str(base), deployment=str(base / "deployment.json"),
+                      budget_policy_file=str(budget), bundle=str(base / "bundle"))
+        deployment = {field: str(base / field) for field in (
+            "execution_inputs_root", "work_store", "runs_dir"
+        )}
+        deployment.update(stockwiki_workspace_root=str(config_dir.parent), budget_policy_file=str(budget))
+        transition = dict(after_sha256=hashlib.sha256(policy_file.read_bytes()).hexdigest(),
+                          budget_sha256=hashlib.sha256(budget.read_bytes()).hexdigest(), policy_version="fixed")
+        fixed_policy = dict(protocol="stockwiki.refresh_owner_policy/1.2.0", qa=dict(quote_schema_version="1.2.0"), policy_version="fixed")
+        values = {
+            base / "typed-generation2/run-config.json": config,
+            base / "deployment.json": deployment,
+            base / "known-response-repair/owner-policy-transition.json": transition,
+            policy_file: fixed_policy,
+        }
+    
+        def local_read(path):
+            path = Path(path)
+            if path not in values:
+                raise AssertionError("Unsafe leaf should be rejected before native controls: " + str(path))
+            return values[path]
+    
+        monkeypatch.setattr(module, "BASE", base)
+        monkeypatch.setattr(module, "SOURCE", base / "typed-generation2")
+        monkeypatch.setattr(module, "DEST", base / "typed-generation3")
+        monkeypatch.setattr(module, "read", local_read)
+        dispatched = Mock(side_effect=AssertionError("Native process must never start"))
+        monkeypatch.setattr(module.subprocess, "run", dispatched)
+        with pytest.raises(ValueError, match="hardlinked_file_forbidden" if kind == "hardlink" else "linked_path_forbidden"):
+&gt;           module.main()
+
+..\test_generation3_control_boundaries.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\prepare_generation3.py:54: in main
+    apply=read(BASE/"known-response-repair-gen2/retry-apply.stdout.json")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/reconcile-production-2026-10-25/engine-review/generation3-leaf-red-runtime/pytest/test_delegation_install_leaf_r0/isolated/known-response-repair-gen2/retry-apply.stdout.json')
+
+    def local_read(path):
+        path = Path(path)
+        if path not in values:
+&gt;           raise AssertionError("Unsafe leaf should be rejected before native controls: " + str(path))
+E           AssertionError: Unsafe leaf should be rejected before native controls: C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\engine-review\generation3-leaf-red-runtime\pytest\test_delegation_install_leaf_r0\isolated\known-response-repair-gen2\retry-apply.stdout.json
+
+..\test_generation3_control_boundaries.py:128: AssertionError</failure></testcase><testcase classname="test_generation3_control_boundaries" name="test_delegation_install_leaf_refused_before_original_controls[redirected_leaf]" time="0.046"><failure message="AssertionError: Unsafe leaf should be rejected before native controls: C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\engine-review\generation3-leaf-red-runtime\pytest\test_delegation_install_leaf_r1\isolated\known-response-repair-gen2\retry-apply.stdout.json">kind = 'redirected_leaf'
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000190ECEDC9B0&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/reconcile-production-2026-10-25/engine-review/generation3-leaf-red-runtime/pytest/test_delegation_install_leaf_r1')
+
+    @pytest.mark.parametrize("kind", ["hardlink", "redirected_leaf"])
+    def test_delegation_install_leaf_refused_before_original_controls(kind, monkeypatch, tmp_path):
+        module = load("prepare_generation3")
+        base = tmp_path / "isolated"
+        config_dir = base / "owner/config"
+        config_dir.mkdir(parents=True)
+        foreign = tmp_path / "foreign-config.json"
+        foreign.write_bytes(b"another writer's local configuration")
+        leaf = config_dir / "quick_scan_delegation_install.json"
+        if kind == "hardlink":
+            os.link(foreign, leaf)
+            assert leaf.stat().st_nlink == 2
+        else:
+            original_is_symlink = Path.is_symlink
+            monkeypatch.setattr(Path, "is_symlink", lambda path: path == leaf or original_is_symlink(path))
+        policy_file = config_dir / "quick_scan_refresh.json"
+        policy_file.write_bytes(b"original fixed policy bytes")
+        budget = base / "budget.json"
+        budget.write_bytes(b"original fixed cumulative budget bytes")
+        config = dict(isolated=True, run_root=str(base), deployment=str(base / "deployment.json"),
+                      budget_policy_file=str(budget), bundle=str(base / "bundle"))
+        deployment = {field: str(base / field) for field in (
+            "execution_inputs_root", "work_store", "runs_dir"
+        )}
+        deployment.update(stockwiki_workspace_root=str(config_dir.parent), budget_policy_file=str(budget))
+        transition = dict(after_sha256=hashlib.sha256(policy_file.read_bytes()).hexdigest(),
+                          budget_sha256=hashlib.sha256(budget.read_bytes()).hexdigest(), policy_version="fixed")
+        fixed_policy = dict(protocol="stockwiki.refresh_owner_policy/1.2.0", qa=dict(quote_schema_version="1.2.0"), policy_version="fixed")
+        values = {
+            base / "typed-generation2/run-config.json": config,
+            base / "deployment.json": deployment,
+            base / "known-response-repair/owner-policy-transition.json": transition,
+            policy_file: fixed_policy,
+        }
+    
+        def local_read(path):
+            path = Path(path)
+            if path not in values:
+                raise AssertionError("Unsafe leaf should be rejected before native controls: " + str(path))
+            return values[path]
+    
+        monkeypatch.setattr(module, "BASE", base)
+        monkeypatch.setattr(module, "SOURCE", base / "typed-generation2")
+        monkeypatch.setattr(module, "DEST", base / "typed-generation3")
+        monkeypatch.setattr(module, "read", local_read)
+        dispatched = Mock(side_effect=AssertionError("Native process must never start"))
+        monkeypatch.setattr(module.subprocess, "run", dispatched)
+        with pytest.raises(ValueError, match="hardlinked_file_forbidden" if kind == "hardlink" else "linked_path_forbidden"):
+&gt;           module.main()
+
+..\test_generation3_control_boundaries.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\prepare_generation3.py:54: in main
+    apply=read(BASE/"known-response-repair-gen2/retry-apply.stdout.json")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/reconcile-production-2026-10-25/engine-review/generation3-leaf-red-runtime/pytest/test_delegation_install_leaf_r1/isolated/known-response-repair-gen2/retry-apply.stdout.json')
+
+    def local_read(path):
+        path = Path(path)
+        if path not in values:
+&gt;           raise AssertionError("Unsafe leaf should be rejected before native controls: " + str(path))
+E           AssertionError: Unsafe leaf should be rejected before native controls: C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\engine-review\generation3-leaf-red-runtime\pytest\test_delegation_install_leaf_r1\isolated\known-response-repair-gen2\retry-apply.stdout.json
+
+..\test_generation3_control_boundaries.py:128: AssertionError</failure></testcase></testsuite></testsuites>

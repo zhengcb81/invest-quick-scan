@@ -1,0 +1,1496 @@
+"""Runner: orchestration of strategy intents through the RuntimePort.
+
+Fresh runs and replays share the state appliers below so the journal (the
+only authoritative record) and the rebuilt state can never diverge silently:
+replay re-applies the same effects and re-derives intents for verification.
+"""
+
+from __future__ import annotations
+
+import copy
+import json
+from typing import Any
+
+from .answers import (
+    AnswerRejection,
+    answer_sha256,
+    parse_answers_payload,
+    validate_single_answer,
+)
+from .canonical import sha256_hex, sha256_text
+from .errors import ProtocolIllegalError
+from .events import EventJournal
+from .evidence import FROZEN_PUBLICATION_EXCLUSIVE_DATE, EvidenceBoard
+from .frozenregistration import RESEARCH_PROTOCOL_VERSION
+from .intent import ALLOWED_TOOL_FOR_EXPERIMENT, validate_intent
+from .receipts import validate_model_receipt, validate_search_receipt
+from .runtime import RuntimePort, SyntheticCrash
+from .state import RunnerState
+from .strategy import strategy_for_task
+
+
+class RunCrashed(Exception):
+    """Raised after crash_marker + checkpoint are in place; resume continues."""
+
+    def __init__(self, at: str, checkpoint: dict[str, Any]) -> None:
+        super().__init__(f"run crashed at {at}")
+        self.at = at
+        self.checkpoint = checkpoint
+
+
+def input_manifest_sha256(task_raw: dict[str, Any]) -> str:
+    return sha256_hex(
+        {
+            "task": task_raw,
+            "manifest": "iqs.company-agent-research/1.0.0#input-manifest",
+        }
+    )
+
+
+# --------------------------------------------------------------------------
+# shared state appliers (used by fresh runner and by replay/resume)
+# --------------------------------------------------------------------------
+
+
+def apply_segment(state: RunnerState, data: dict[str, Any]) -> None:
+    state.segments.append(
+        {
+            "segment_id": data["segment_id"],
+            "previous_segment_id": data.get("previous_segment_id"),
+            "reason": data.get("reason"),
+        }
+    )
+    state.current_segment_id = data["segment_id"]
+    state.session_handles = {}
+
+
+def apply_intent(state: RunnerState, data: dict[str, Any]) -> None:
+    state.counters["actions_emitted"] = state.counters.get("actions_emitted", 0) + 1
+    if data["kind"] == "model_step" and data.get("question_ids"):
+        targeted = data["question_ids"]
+        if all(state.slot(qid)["execution_status"] == "completed" for qid in targeted):
+            state.counters["repair_rounds"] = state.counters.get("repair_rounds", 0) + 1
+
+
+def _meter_usage(state, usage, sign):
+    counters = state.counters
+    if usage is None:
+        counters["unknown_usage_requests"] = (
+            counters.get("unknown_usage_requests", 0) + sign
+        )
+    else:
+        for key in (
+            "input_tokens",
+            "output_tokens",
+            "reasoning_tokens",
+            "cache_read_tokens",
+            "cache_write_tokens",
+        ):
+            value = usage.get(key)
+            if isinstance(value, int):
+                counters[key] = counters.get(key, 0) + sign * value
+    billable = None
+    if usage and usage.get("output_tokens") is not None:
+        if (
+            usage.get("reasoning_included_in_output") is True
+            or usage.get("reasoning_tokens") == 0
+        ):
+            billable = usage["output_tokens"]
+        elif (
+            usage.get("reasoning_included_in_output") is False
+            and usage.get("reasoning_tokens") is not None
+        ):
+            billable = usage["output_tokens"] + usage["reasoning_tokens"]
+    if billable is not None:
+        counters["billable_output_tokens"] = (
+            counters.get("billable_output_tokens", 0) + sign * billable
+        )
+    else:
+        counters["unknown_output_total_requests"] = (
+            counters.get("unknown_output_total_requests", 0) + sign
+        )
+
+
+def apply_receipt_counters(state: RunnerState, data: dict[str, Any]) -> bool:
+    """Count each physical attempt ref exactly once. Returns False on dup."""
+    attempt_ref = data.get("attempt_ref")
+    if state.execution_revision >= 2:
+        prior = state.receipt_accounting.get(attempt_ref)
+        if prior is not None:
+            if (
+                prior.get("outcome") == "outcome_unknown"
+                and data.get("outcome") == "response_available"
+            ):
+                _meter_usage(state, prior.get("usage"), -1)
+                _meter_usage(state, data.get("usage"), 1)
+                state.receipt_accounting[attempt_ref] = {
+                    k: data.get(k) for k in ("usage", "outcome")
+                }
+            return False
+        state.receipt_accounting[attempt_ref] = {
+            k: data.get(k) for k in ("usage", "outcome")
+        }
+        if "query_count" not in data:
+            _meter_usage(state, data.get("usage"), 1)
+    if attempt_ref in state.seen_attempt_refs:
+        return False
+    state.seen_attempt_refs.add(attempt_ref)
+    counters = state.counters
+    duration = data.get("duration_ms")
+    if isinstance(duration, int):
+        counters["wall_seconds_logical"] = (
+            counters.get("wall_seconds_logical", 0.0) + duration / 1000.0
+        )
+    usage = data.get("usage")
+    if state.execution_revision >= 2:
+        return True
+    if usage is None:
+        counters["unknown_usage_requests"] = (
+            counters.get("unknown_usage_requests", 0) + 1
+        )
+    else:
+        for key in (
+            "input_tokens",
+            "output_tokens",
+            "reasoning_tokens",
+            "cache_read_tokens",
+            "cache_write_tokens",
+        ):
+            value = usage.get(key)
+            if isinstance(value, int):
+                counters[key] = counters.get(key, 0) + value
+    return True
+
+
+def apply_model_receipt(state: RunnerState, data: dict[str, Any]) -> None:
+    fresh = apply_receipt_counters(state, data)
+    if not fresh:
+        return
+    state.counters["model_http"] += 1
+    if state.task.raw.get("protocol") == "iqs.company-scan-task/1.0.0":
+        for qid in data.get("question_ids", []):
+            state.counters["scan_attempted:" + qid] = 1
+    if data.get("outcome") != "response_available":
+        reason = data.get("reason_code") or "unknown"
+        for qid in data.get("question_ids", []):
+            if data.get("outcome") == "rejected":
+                state.mark_rejected(qid, data["attempt_ref"], reason)
+            else:
+                state.mark_outcome_unknown(qid, data["attempt_ref"], reason)
+    handle = data.get("session_handle")
+    if handle:
+        key = ",".join(sorted(data.get("question_ids", [])))
+        state.session_handles[key] = handle
+        if state.execution_revision >= 2:
+            state.session_handles["company_session"] = handle
+    if data.get("leak_markers_found"):
+        for qid in data.get("question_ids", []):
+            state.mark_invalid(
+                qid, data["attempt_ref"], "reasoning_content_leak_rejected"
+            )
+
+
+def apply_search_receipt(state: RunnerState, data: dict[str, Any]) -> None:
+    fresh = apply_receipt_counters(state, data)
+    if not fresh:
+        return
+    if state.execution_revision >= 2:
+        count = data.get("query_count")
+        if count is not None:
+            state.counters["search_queries"] += count
+        state.counters["search_intents"] = state.counters.get("search_intents", 0) + 1
+    else:
+        state.counters["search_queries"] += data.get("query_count") or 1
+    protocol = data.get("protocol_http_count")
+    if isinstance(protocol, int):
+        state.counters["search_protocol_http"] += protocol
+    records = data.get("evidence_records") or []
+    if records:
+        outcome = state.board.intake(records, state.task.company_ref)
+        recorded = (
+            sorted(data.get("accepted_ids", [])),
+            sorted(r.get("evidence_id") for r in data.get("rejected", [])),
+        )
+        recomputed = (
+            sorted(outcome["accepted"]),
+            sorted(r.get("evidence_id") for r in outcome["rejected"]),
+        )
+        if recorded != recomputed:
+            raise ProtocolIllegalError("evidence intake results diverge from journal")
+
+
+def apply_answer_committed(state: RunnerState, data: dict[str, Any]) -> None:
+    state.commit_answer(
+        data["question_id"],
+        data["answer"],
+        data["attempt_ref"],
+        gap_codes=data.get("gap_codes", []),
+        epoch_sha256=data.get("evidence_epoch_sha256"),
+    )
+    revision = state.slot(data["question_id"])["answer_revision"]
+    if revision != data["revision"]:
+        raise ProtocolIllegalError("answer revision chain mismatch in journal")
+    if data.get("attempt_ref", "").startswith("patch:"):
+        state.counters["patches_accepted"] = (
+            state.counters.get("patches_accepted", 0) + 1
+        )
+
+
+def apply_answer_rejected(state: RunnerState, data: dict[str, Any]) -> None:
+    reason = data.get("reason_code", "invalid")
+    if reason.startswith("patch_") or reason.startswith("unjustified"):
+        state.counters["patches_rejected"] = (
+            state.counters.get("patches_rejected", 0) + 1
+        )
+        state.drafts.clear()  # rejected patch drafts never linger into loops
+    else:
+        state.mark_invalid(data["question_id"], data.get("attempt_ref", "-"), reason)
+
+
+def apply_self_review(state: RunnerState, data: dict[str, Any]) -> None:
+    state.findings = list(data.get("findings", []))
+    state.counters["self_review_rounds"] += 1
+
+
+def apply_recovery_decision(state: RunnerState, data: dict[str, Any]) -> None:
+    decision = data.get("decision")
+    if decision == "unsent_allow_redo":
+        state.reopen_for_evidence_change(
+            data.get("reopened_question_ids", []),
+            data.get("reason", "resend_allowed_by_runtime"),
+        )
+
+
+def apply_evidence_intake_receipt(state: RunnerState, data: dict[str, Any]) -> None:
+    records = data.get("evidence_records") or []
+    if records:
+        outcome = state.board.intake(records, state.task.company_ref)
+        recorded = (
+            sorted(data.get("accepted_ids", [])),
+            sorted(r.get("evidence_id") for r in data.get("rejected", [])),
+        )
+        recomputed = (
+            sorted(outcome["accepted"]),
+            sorted(r.get("evidence_id") for r in outcome["rejected"]),
+        )
+        if recorded != recomputed:
+            raise ProtocolIllegalError("evidence intake results diverge from journal")
+
+
+# --------------------------------------------------------------------------
+# fresh runner
+# --------------------------------------------------------------------------
+
+
+class Runner:
+    def __init__(
+        self,
+        task,
+        port: RuntimePort,
+        journal: EventJournal | None = None,
+        segment_reason: str = "run_start",
+        execution_revision: int = 2,
+        *,
+        answer_semantic_validator=None,
+        answer_semantic_validator_version=1,
+        answer_semantic_rules=(),
+    ) -> None:
+        self._bind_answer_semantics(answer_semantic_validator, answer_semantic_rules, answer_semantic_validator_version)
+        self.task = task
+        self.port = port
+        self.journal = journal or EventJournal(task.raw["run_id"])
+        from .scan_profile import task_validation_context
+
+        context = task_validation_context(task)
+        self.state = RunnerState(
+            task,
+            EvidenceBoard(
+                int(task.limits.get("excerpt_chars_per_source", 2000)),
+                validation_context=context if "profile_sha256" in context else None,
+            ),
+            context["publication_exclusive_date"],
+        )
+        if execution_revision not in (1, 2):
+            raise ProtocolIllegalError("unknown execution revision")
+        self.state.execution_revision = execution_revision
+        self.state.session_handles = {}
+        self.state.current_model_name = task.runtime_profile.get("model")
+        self.strategy = strategy_for_task(task)
+        self.segment_reason = segment_reason
+        self._initial_intake: dict[str, Any] = {}
+
+    def _bind_answer_semantics(self, validator, rules, version=1):
+        """Optional original-contract hook; it grants no owner/financial status."""
+        if validator is not None and not callable(validator):
+            raise ProtocolIllegalError("answer_semantic_validator_must_be_callable")
+        if (not isinstance(rules, (list, tuple)) or len(rules) > 1000
+            or any(not isinstance(rule, str) or not rule or len(rule) > 2000 for rule in rules)):
+            raise ProtocolIllegalError("answer_semantic_rules_invalid")
+        if type(version) is not int or version not in (1, 2) or (version == 2 and validator is None):
+            raise ProtocolIllegalError("answer_semantic_validator_version_invalid")
+        self._answer_semantic_validator_version = version
+        self._answer_semantic_validator = validator
+        self._answer_semantic_rules = tuple(rules)
+
+    # -- helpers ------------------------------------------------------------
+
+    def _emit(self, event_type: str, data: dict[str, Any]) -> dict[str, Any]:
+        event = self.journal.append(
+            event_type, data, segment_id=self.state.current_segment_id
+        )
+        self._apply_event(event)
+        return event
+
+    def _apply_event(self, event: dict[str, Any]) -> None:
+        kind = event["event_type"]
+        data = event["data"]
+        if kind == "segment":
+            apply_segment(self.state, data)
+        elif kind == "intent":
+            apply_intent(self.state, data)
+        elif kind == "receipt_model":
+            apply_model_receipt(self.state, data)
+        elif kind == "receipt_search":
+            apply_search_receipt(self.state, data)
+        elif kind == "answer_committed":
+            apply_answer_committed(self.state, data)
+        elif kind == "answer_rejected":
+            apply_answer_rejected(self.state, data)
+        elif kind == "self_review":
+            apply_self_review(self.state, data)
+        elif kind == "tool_rejected":
+            self.state.counters["tool_rejected"] = (
+                self.state.counters.get("tool_rejected", 0) + 1
+            )
+        elif kind == "draft_recorded":
+            self.state.drafts[data["question_id"]] = data["answer"]
+            self.state.counters["drafts_recorded"] = (
+                self.state.counters.get("drafts_recorded", 0) + 1
+            )
+        elif kind == "context_compacted":
+            self.state.context_version = data["context_version"]
+            self.state.context_indexed_ids = list(data["indexed_traceable_ids"])
+            if self.state.execution_revision == 1:
+                self.state.counters["drafts_recorded"] = (
+                    self.state.counters.get("drafts_recorded", 0) + 1
+                )
+        elif kind == "tool_result":
+            self.state.tool_results.append(dict(data))
+        elif kind == "recovery_decision":
+            apply_recovery_decision(self.state, data)
+        elif kind == "evidence_intake":
+            self._initial_intake = data
+            if data.get("source_attempt_ref") == "task:evidence_epoch_ref":
+                outcome = self.state.board.intake(
+                    self.task.evidence_board_doc.get("records", []),
+                    self.task.company_ref,
+                )
+                recorded = sorted(data.get("accepted_ids", []))
+                if recorded != sorted(outcome["accepted"]):
+                    raise ProtocolIllegalError(
+                        "initial evidence intake diverges from journal"
+                    )
+        elif kind == "evidence_invalidated":
+            self.state.board.invalidate(
+                data["evidence_ids"], data.get("reason_code", "invalidated")
+            )
+            self.state.reopen_for_evidence_change(
+                data.get("reopened_question_ids", []),
+                data.get("reason_code", "evidence_change"),
+            )
+
+    def _maybe_compact_context(self) -> None:
+        """Compact the shared evidence context at an explicit boundary.
+
+        When the active excerpts exceed the frozen context budget, the oldest
+        records leave the in-context view but stay fully traceable (id +
+        excerpt_sha256 + board record). A compaction is a new prompt-prefix
+        version: cache metering never claims hits across the boundary.
+        """
+        cap = self.task.limits.get("evidence_context_chars")
+        if cap is None:
+            return
+        active = self.state.board.active_records()
+        chars = sum(len(r["excerpt"]) for r in active)
+        if self.state.execution_revision >= 2:
+            chars = sum(
+                len(r["excerpt"])
+                for r in active
+                if r["evidence_id"] not in self.state.context_indexed_ids
+            )
+        if chars <= int(cap):
+            return
+        indexed = list(self.state.context_indexed_ids)
+        keep_chars = 0
+        kept: list[str] = []
+        for record in reversed(active):  # newest evidence stays in context
+            if keep_chars + len(record["excerpt"]) <= int(cap):
+                kept.append(record["evidence_id"])
+                keep_chars += len(record["excerpt"])
+        kept_set = set(kept)
+        dropped = [r["evidence_id"] for r in active if r["evidence_id"] not in kept_set]
+        indexed = sorted(set(indexed) | set(dropped))
+        trace = {"indexed": indexed, "kept": sorted(kept_set)}
+        self._emit(
+            "context_compacted",
+            {
+                "context_version": self.state.context_version + 1,
+                "boundary_reason": "evidence_context_chars_exceeded",
+                "chars_before": chars,
+                "chars_after": keep_chars,
+                "kept_in_context_ids": sorted(kept_set),
+                "indexed_traceable_ids": indexed,
+                "trace_index_sha256": sha256_hex(trace),
+            },
+        )
+
+    def _start(self) -> None:
+        previous_epoch = self.state.board.epoch_sha256()
+        board_doc = self.task.evidence_board_doc
+        records = board_doc.get("records", [])
+        outcome = self.state.board.intake(records, self.task.company_ref)
+        from .task import task_bundle
+
+        self._emit(
+            "run_started",
+            {
+                "task_sha256": self.task.task_sha256,
+                "input_manifest_sha256": input_manifest_sha256(self.task.raw),
+                "strategy_id": self.task.raw["strategy_id"],
+                "question_ids": self.task.question_ids,
+                "information_cutoff": self.task.raw["information_cutoff"],
+                "experiment_id": self.task.raw["experiment_id"],
+                "protocol_version": RESEARCH_PROTOCOL_VERSION,
+                **(
+                    {
+                        "execution_revision": 2,
+                        "task_bundle_sha256": sha256_hex(task_bundle(self.task)),
+                    }
+                    if self.state.execution_revision >= 2
+                    else {}
+                ),
+            },
+        )
+        self._emit(
+            "evidence_intake",
+            {
+                "source_attempt_ref": "task:evidence_epoch_ref",
+                "accepted_ids": outcome["accepted"],
+                "rejected": outcome["rejected"],
+                "conflict_same_url": outcome["conflict_same_url"],
+            },
+        )
+        self._emit(
+            "evidence_epoch_moved",
+            {
+                "epoch_sha256": self.state.board.epoch_sha256(),
+                "previous_epoch_sha256": previous_epoch,
+                "delta": {"added_ids": outcome["accepted"], "invalidated_ids": []},
+            },
+        )
+        self._maybe_compact_context()
+        segment_id = f"{self.task.raw['run_id']}#segment-1"
+        self._emit(
+            "segment",
+            {
+                "segment_id": segment_id,
+                "previous_segment_id": None,
+                "reason": self.segment_reason,
+            },
+        )
+
+    # -- action dispatch ----------------------------------------------------
+
+    def run(self) -> dict[str, Any]:
+        self._start()
+        return self._run_loop()
+
+    def _progress_token(self) -> tuple[int, int, int, int]:
+        """Ledger movement counts as progress: commits, new evidence, recorded
+        drafts and patch outcomes (accepted OR rejected-with-reason). Rounds
+        that move nothing increment the no-progress counter."""
+        committed = sum(len(revs) for revs in self.state.revisions.values())
+        evidence = len(self.state.board._records)
+        repair = (
+            (len(self.state.tool_results) if self.state.execution_revision >= 2 else 0)
+            + self.state.counters.get("patches_accepted", 0)
+            + self.state.counters.get("patches_rejected", 0)
+            + self.state.counters.get("drafts_recorded", 0)
+        )
+        return committed, evidence, repair, self.state.counters.get("tool_rejected", 0)
+
+    def _maybe_no_progress(self, before: tuple, after: tuple) -> None:
+        if after != before:
+            self.state.no_progress_rounds = 0
+            return
+        self.state.no_progress_rounds += 1
+        limit = int(self.task.limits.get("no_progress_rounds", 2))
+        if self.state.no_progress_rounds >= limit and not self.state.finished_reason:
+            self.state.finished_reason = "no_progress_exit"
+            self._emit(
+                "no_progress_exit",
+                {
+                    "reason_code": "no_progress_exit",
+                    "unfinished_question_ids": [
+                        s["question_id"] for s in self.state.open_slots()
+                    ],
+                },
+            )
+
+    def _handle_crash(self, crash: SyntheticCrash, intent: dict[str, Any]) -> None:
+        from .checkpoint import build_checkpoint
+
+        if crash.receipt is not None:
+            # after_receipt / before_commit: the receipt is a recorded fact.
+            self._apply_model_receipt_event(intent, crash.receipt)
+        self._emit(
+            "crash_marker",
+            {
+                "at": crash.at,
+                "attempt_ref": crash.attempt_ref,
+                "pending_action_id": intent["action_id"],
+            },
+        )
+        checkpoint = build_checkpoint(
+            self.state,
+            self.journal,
+            pending_intent=intent,
+            pending_receipt=crash.receipt,
+        )
+        raise RunCrashed(crash.at, checkpoint)
+
+    # -- dispatch ------------------------------------------------------------
+
+    def _dispatch(self, intent: dict[str, Any]) -> None:
+        kind = intent["kind"]
+        if kind == "finish":
+            self.state.finished_reason = "strategy_finish"
+            self._emit("finish", {"reason_code": "strategy_finish"})
+            return
+        if kind == "model_step":
+            self._dispatch_model(intent)
+            return
+        if kind == "search":
+            self._dispatch_search(intent)
+            return
+        if kind == "read_evidence":
+            self._dispatch_read_evidence(intent)
+            return
+        if kind == "patch_answers":
+            self._dispatch_patch(intent)
+            return
+        raise ProtocolIllegalError(f"unhandled intent kind {kind}")
+
+    def _budget_check(self, intent: dict[str, Any]) -> bool:
+        limits = self.task.limits
+        counters = self.state.counters
+        if intent["kind"] == "model_step":
+            if self.state.execution_revision >= 2:
+                input_cap = limits.get("session_input_tokens")
+                if input_cap is not None and counters["input_tokens"] >= int(input_cap):
+                    self.state.finished_reason = "budget_exhausted"
+                    self._emit(
+                        "budget_exhausted",
+                        {
+                            "reason_code": "session_input_tokens",
+                            "unfinished_question_ids": [
+                                s["question_id"] for s in self.state.open_slots()
+                            ],
+                        },
+                    )
+                    return False
+            cap = limits.get("max_model_requests_per_session")
+            if cap is not None and counters["model_http"] >= int(cap):
+                self.state.finished_reason = "budget_exhausted"
+                self._emit(
+                    "budget_exhausted",
+                    {
+                        "reason_code": "max_model_requests_per_session",
+                        "unfinished_question_ids": [
+                            s["question_id"] for s in self.state.open_slots()
+                        ],
+                    },
+                )
+                return False
+            out_cap = limits.get("session_output_tokens_including_reasoning")
+            used = (
+                counters.get("billable_output_tokens", 0)
+                if self.state.execution_revision >= 2
+                else counters["output_tokens"] + counters["reasoning_tokens"]
+            )
+            if (
+                self.state.execution_revision >= 2
+                and out_cap is not None
+                and counters.get("unknown_output_total_requests", 0)
+            ):
+                self.state.finished_reason = "usage_total_unknown"
+                self._emit(
+                    "budget_exhausted",
+                    {
+                        "reason_code": "usage_total_unknown",
+                        "unfinished_question_ids": [
+                            s["question_id"] for s in self.state.open_slots()
+                        ],
+                    },
+                )
+                return False
+            if out_cap is not None and used >= int(out_cap):
+                self.state.finished_reason = "budget_exhausted"
+                self._emit(
+                    "budget_exhausted",
+                    {
+                        "reason_code": "session_output_tokens_including_reasoning",
+                        "unfinished_question_ids": [
+                            s["question_id"] for s in self.state.open_slots()
+                        ],
+                    },
+                )
+                return False
+        if intent["kind"] == "search":
+            cap = limits.get("max_search_queries_per_session")
+            if cap is not None and (
+                counters["search_queries"] >= int(cap)
+                or self.state.execution_revision >= 2
+                and counters.get("search_intents", 0) >= int(cap)
+            ):
+                self.state.finished_reason = "budget_exhausted"
+                self._emit(
+                    "budget_exhausted",
+                    {
+                        "reason_code": "max_search_queries_per_session",
+                        "unfinished_question_ids": [
+                            s["question_id"] for s in self.state.open_slots()
+                        ],
+                    },
+                )
+                return False
+        return True
+
+    def _dispatch_model(self, intent: dict[str, Any]) -> None:
+        if not self._budget_check(intent):
+            return
+        from .request_context import build_runtime_request
+
+        request = (
+            build_runtime_request(self.state, intent)
+            if self.state.execution_revision >= 2
+            else intent
+        )
+        if self.state.execution_revision >= 2 and self._answer_semantic_rules:
+            from .request_context import validate_runtime_request
+
+            request["stable_prefix"]["rules"][1:1] = self._answer_semantic_rules
+            request["stable_prefix_sha256"] = sha256_hex(request["stable_prefix"])
+            validate_runtime_request(request)
+        if self.state.execution_revision >= 2:
+            self._emit(
+                "runtime_request",
+                {
+                    "intent": intent,
+                    "protocol": request["protocol"],
+                    "stable_prefix_sha256": request["stable_prefix_sha256"],
+                    "dynamic_context_sha256": request["dynamic_context_sha256"],
+                },
+            )
+        receipt = self.port.model_step(request)
+        self._apply_model_receipt_event(intent, receipt)
+        self._process_response(intent, receipt)
+
+    def _process_response(
+        self, intent: dict[str, Any], receipt: dict[str, Any]
+    ) -> None:
+        if receipt["outcome"] == "response_available":
+            if self.state.execution_revision >= 2:
+                from .canonical import canonical_json
+                from .receipts import REASONING_LEAK_MARKERS
+
+                blob = canonical_json(
+                    [receipt.get("final_content"), receipt.get("tool_calls")]
+                ).lower()
+                if any(marker.lower() in blob for marker in REASONING_LEAK_MARKERS):
+                    return
+            if receipt.get("tool_calls"):
+                self._execute_tool_calls(intent, receipt)
+                return
+            if receipt.get("final_content") is not None:
+                if (
+                    self.state.execution_revision >= 2
+                    and receipt.get("finish_reason") != "stop"
+                ):
+                    for qid in intent["question_ids"]:
+                        self._emit(
+                            "answer_rejected",
+                            {
+                                "question_id": qid,
+                                "attempt_ref": receipt["runtime_attempt_ref"],
+                                "reason_code": "nonterminal_or_truncated_model_output",
+                                "reasons": [
+                                    "a complete model terminal response is required"
+                                ],
+                                "draft_sha256": sha256_hex(
+                                    receipt.get("final_content")
+                                ),
+                            },
+                        )
+                    return
+                self._apply_final_content(intent, receipt)
+
+    def _apply_model_receipt_event(
+        self, intent: dict[str, Any], receipt: dict[str, Any]
+    ) -> None:
+        validate_model_receipt(receipt)
+        actual = receipt.get("actual_model")
+        if (
+            actual
+            and self.state.current_model()
+            and actual != self.state.current_model()
+        ):
+            self._new_segment("model_change", actual)
+        if actual and not self.state.current_model():
+            self.state.current_model_name = actual
+        data = {
+            "attempt_ref": receipt["runtime_attempt_ref"],
+            "action_id": intent["action_id"],
+            "outcome": receipt["outcome"],
+            "reason_code": receipt["reason_code"],
+            "reason_message": receipt["reason_message"],
+            "planned_model": receipt["planned_model"],
+            "actual_model": receipt["actual_model"],
+            "endpoint_profile_id": receipt["endpoint_profile_id"],
+            "started_at_utc": receipt["started_at_utc"],
+            "ended_at_utc": receipt["ended_at_utc"],
+            "duration_ms": receipt["duration_ms"],
+            "usage": receipt["usage"],
+            "finish_reason": receipt["finish_reason"],
+            "session_handle": receipt["session_handle"],
+            "receipt_sha256": receipt["receipt_sha256"],
+            "final_content": receipt["final_content"],
+            "tool_calls": receipt["tool_calls"],
+            "final_content_sha256": sha256_text(receipt["final_content"] or ""),
+            "leak_markers_found": [],
+            "question_ids": intent["question_ids"],
+        }
+        self._emit("receipt_model", data)
+        if receipt["outcome"] == "outcome_unknown":
+            self._resolve_unknown(intent, receipt)
+
+    def _new_segment(self, reason: str, model: str | None = None) -> None:
+        previous = self.state.current_segment_id
+        segment_id = f"{self.task.raw['run_id']}#segment-{len(self.state.segments) + 1}"
+        self._emit(
+            "segment",
+            {
+                "segment_id": segment_id,
+                "previous_segment_id": previous,
+                "reason": reason,
+            },
+        )
+        self.state.current_model_name = model
+
+    def _resolve_unknown(self, intent: dict[str, Any], receipt: dict[str, Any]) -> None:
+        decision = self.port.request_resume(receipt["runtime_attempt_ref"])
+        data = {
+            "attempt_ref": receipt["runtime_attempt_ref"],
+            "decision": decision["decision"],
+            "reason": decision.get("reason", ""),
+            "restored": False,
+        }
+        if decision["decision"] == "unsent_allow_redo":
+            data["reopened_question_ids"] = list(intent["question_ids"])
+        if decision["decision"] == "recover_saved_receipt" and decision.get(
+            "saved_receipt"
+        ):
+            saved = decision["saved_receipt"]
+            validate_model_receipt(saved)
+            data["restored"] = True
+            self._emit("recovery_decision", data)
+            self._apply_model_receipt_event(intent, saved)
+            self._process_response(intent, saved)
+            return
+        self._emit("recovery_decision", data)
+
+    def _execute_tool_calls(
+        self, intent: dict[str, Any], receipt: dict[str, Any]
+    ) -> None:
+        allowed = set(intent["payload"]["allowed_tools"]["tool_names"]) & set(
+            ALLOWED_TOOL_FOR_EXPERIMENT
+        )
+        for call in receipt["tool_calls"] or []:
+            name = call["name"]
+            if name not in allowed:
+                self._emit(
+                    "tool_rejected",
+                    {
+                        "attempt_ref": receipt["runtime_attempt_ref"],
+                        "action_id": intent["action_id"],
+                        "tool_call_id": call["id"],
+                        "tool_name": name,
+                        "reason_code": "unknown_tool_blocked_possible_injection",
+                        "arguments_sha256": sha256_hex(call["arguments"]),
+                    },
+                )
+                continue
+            try:
+                if self.state.execution_revision >= 2:
+                    from .strictjson import loads
+
+                    args = loads(call["arguments"]) if call["arguments"] else {}
+                else:
+                    args = json.loads(call["arguments"]) if call["arguments"] else {}
+                if not isinstance(args, dict):
+                    raise ValueError("args must be object")
+            except ValueError:
+                self._emit(
+                    "tool_rejected",
+                    {
+                        "attempt_ref": receipt["runtime_attempt_ref"],
+                        "action_id": intent["action_id"],
+                        "tool_call_id": call["id"],
+                        "tool_name": name,
+                        "reason_code": "bad_arguments",
+                        "arguments_sha256": sha256_hex(call["arguments"]),
+                    },
+                )
+                continue
+            if self.state.execution_revision >= 2:
+                from .request_context import validate_tool_arguments
+
+                try:
+                    validate_tool_arguments(name, args)
+                except ProtocolIllegalError:
+                    self._emit(
+                        "tool_rejected",
+                        {
+                            "attempt_ref": receipt["runtime_attempt_ref"],
+                            "action_id": intent["action_id"],
+                            "tool_call_id": call["id"],
+                            "tool_name": name,
+                            "reason_code": "bad_arguments",
+                            "arguments_sha256": sha256_hex(call["arguments"]),
+                        },
+                    )
+                    continue
+            self._execute_tool(intent, receipt, call, name, args)
+            if self.state.execution_revision >= 2 and self.state.finished_reason:
+                break
+
+    def _execute_tool(self, intent, receipt, call, name, args) -> None:
+        if name == "finish":
+            self.state.finished_reason = "model_finish"
+            self._emit("finish", {"reason_code": "model_finish"})
+            return
+        if name == "read_evidence":
+            if self.state.execution_revision >= 2:
+                records, missing = [], []
+                remaining = int(self.task.limits.get("evidence_context_chars", 24000))
+                for evidence_id in args.get("evidence_ids", []):
+                    try:
+                        record = self.state.board.get(evidence_id, only_active=True)
+                    except KeyError:
+                        missing.append(evidence_id)
+                        continue
+                    if len(record["excerpt"]) > remaining:
+                        missing.append(evidence_id)
+                        continue
+                    records.append(record)
+                    remaining -= len(record["excerpt"])
+                result = {"evidence": records, "unavailable_or_over_cap": missing}
+                self._emit(
+                    "tool_result",
+                    {
+                        "tool_call_id": call["id"],
+                        "tool_name": name,
+                        "result": result,
+                        "result_sha256": sha256_hex(result),
+                    },
+                )
+                return
+            ids = args.get("evidence_ids")
+            if not isinstance(ids, list) or any(not isinstance(i, str) for i in ids):
+                self._emit(
+                    "tool_rejected",
+                    {
+                        "attempt_ref": receipt["runtime_attempt_ref"],
+                        "action_id": intent["action_id"],
+                        "tool_call_id": call["id"],
+                        "tool_name": name,
+                        "reason_code": "bad_arguments",
+                        "arguments_sha256": sha256_hex(call["arguments"]),
+                    },
+                )
+                return
+            for evidence_id in ids:
+                try:
+                    self.state.board.get(evidence_id, only_active=True)
+                    self.state.evidence_used_by.setdefault(evidence_id, set()).update(
+                        intent["question_ids"]
+                    )
+                except KeyError:
+                    continue
+            return
+        if name == "search":
+            search_intent = {
+                "action_id": f"{intent['action_id']}.{call['id']}",
+                "kind": "search",
+                "expected_state_sha256": intent["expected_state_sha256"],
+                "question_ids": intent["question_ids"],
+                "payload": {
+                    "query": args.get("query", ""),
+                    "scope": args.get("scope", "unspecified"),
+                    "information_cutoff": args.get(
+                        "information_cutoff", self.task.raw["information_cutoff"]
+                    ),
+                    "provider_profile_ref": args.get(
+                        "provider_profile_ref", "synthetic-search-v1"
+                    ),
+                    "max_short_excerpts": args.get("max_short_excerpts", 8),
+                    "max_excerpt_chars": args.get("max_excerpt_chars", 1200),
+                },
+            }
+            try:
+                validate_intent(search_intent)
+            except ProtocolIllegalError:
+                self._emit(
+                    "tool_rejected",
+                    {
+                        "attempt_ref": receipt["runtime_attempt_ref"],
+                        "action_id": intent["action_id"],
+                        "tool_call_id": call["id"],
+                        "tool_name": name,
+                        "reason_code": "bad_arguments",
+                        "arguments_sha256": sha256_hex(call["arguments"]),
+                    },
+                )
+                return
+            self._dispatch_search(search_intent)
+            return
+        if name == "submit_answers":
+            answers = args.get("answers")
+            if not isinstance(answers, list):
+                self._emit(
+                    "tool_rejected",
+                    {
+                        "attempt_ref": receipt["runtime_attempt_ref"],
+                        "action_id": intent["action_id"],
+                        "tool_call_id": call["id"],
+                        "tool_name": name,
+                        "reason_code": "bad_arguments",
+                        "arguments_sha256": sha256_hex(call["arguments"]),
+                    },
+                )
+                return
+            if self.state.execution_revision >= 2:
+                selected = args.get("question_ids", intent["question_ids"])
+                if not selected or not set(selected).issubset(intent["question_ids"]):
+                    self._emit(
+                        "tool_rejected",
+                        {
+                            "attempt_ref": receipt["runtime_attempt_ref"],
+                            "action_id": intent["action_id"],
+                            "tool_call_id": call["id"],
+                            "tool_name": name,
+                            "reason_code": "question_scope_escape",
+                            "arguments_sha256": sha256_hex(args),
+                        },
+                    )
+                    return
+                intent = dict(intent, question_ids=selected)
+            self._apply_answers(intent, answers, receipt["runtime_attempt_ref"])
+            return
+
+    def _apply_final_content(
+        self, intent: dict[str, Any], receipt: dict[str, Any]
+    ) -> None:
+        try:
+            payload = parse_answers_payload(receipt["final_content"])
+        except Exception as exc:  # noqa: BLE001 - invalid content is per-slot invalid
+            try:
+                import json as _json
+
+                _bare, _ = _json.JSONDecoder().raw_decode(
+                    (receipt["final_content"] or "").strip()
+                )
+            except Exception:
+                _bare = None
+            if (
+                isinstance(_bare, dict)
+                and "answers" not in _bare
+                and isinstance(_bare.get("question_id"), str)
+                and _bare.get("question_id") in intent["question_ids"]
+            ):
+                payload = {
+                    "answers": [_bare],
+                    "declared_question_ids": [_bare["question_id"]],
+                }
+            else:
+                for qid in intent["question_ids"]:
+                    self._emit(
+                        "answer_rejected",
+                        {
+                            "question_id": qid,
+                            "attempt_ref": receipt["runtime_attempt_ref"],
+                            "reason_code": "answer_payload_not_strict_json",
+                            "reasons": [str(exc)[:160]],
+                            "draft_sha256": sha256_hex(receipt["final_content"] or ""),
+                        },
+                    )
+                return
+        declared = payload["declared_question_ids"]
+        answers = payload["answers"]
+        self._apply_answers(intent, answers, receipt["runtime_attempt_ref"], declared)
+
+    def _apply_answers(
+        self,
+        intent: dict[str, Any],
+        answers: list[Any],
+        attempt_ref: str,
+        declared: list[str] | None = None,
+    ) -> None:
+        target = list(intent["question_ids"])
+        seen: dict[str, int] = {}
+        unknown = [
+            a.get("question_id")
+            for a in answers
+            if isinstance(a, dict) and a.get("question_id") not in target
+        ]
+        for qid in unknown:
+            self._emit(
+                "answer_rejected",
+                {
+                    "question_id": str(qid),
+                    "attempt_ref": attempt_ref,
+                    "reason_code": "unknown_question_id_not_in_intent",
+                    "reasons": [
+                        "answer declared a question id outside the requested set"
+                    ],
+                    "draft_sha256": sha256_hex({"qid": qid}),
+                },
+            )
+        for answer in answers:
+            if not isinstance(answer, dict):
+                continue
+            qid = answer.get("question_id")
+            if qid not in target:
+                continue
+            seen[qid] = seen.get(qid, 0) + 1
+        duplicates = [qid for qid, count in seen.items() if count > 1]
+        for qid in duplicates:
+            self._emit(
+                "answer_rejected",
+                {
+                    "question_id": qid,
+                    "attempt_ref": attempt_ref,
+                    "reason_code": "duplicate_answer_no_last_value_override",
+                    "reasons": ["same question answered twice in one payload"],
+                    "draft_sha256": sha256_hex({"qid": qid}),
+                },
+            )
+        missing = [qid for qid in target if qid not in seen]
+        for qid in missing:
+            self._emit(
+                "answer_rejected",
+                {
+                    "question_id": qid,
+                    "attempt_ref": attempt_ref,
+                    "reason_code": "missing_answer_for_requested_question",
+                    "reasons": ["requested question not answered in payload"],
+                    "draft_sha256": sha256_hex({"qid": qid}),
+                },
+            )
+        if declared is not None and self.state.execution_revision >= 2:
+            if len(declared) != len(set(declared)) or set(declared) != set(target):
+                for qid in target:
+                    self._emit(
+                        "answer_rejected",
+                        {
+                            "question_id": qid,
+                            "attempt_ref": attempt_ref,
+                            "reason_code": "declared_question_set_mismatch",
+                            "reasons": [
+                                "declaration must equal the requested set without duplicates"
+                            ],
+                            "draft_sha256": sha256_hex(answers),
+                        },
+                    )
+                return
+        if declared is not None:
+            declared_set = set(declared)
+            if declared_set != set(target):
+                # Declaration mismatch is recorded; per-question handling above
+                # already assigned exact statuses (missing/unknown/duplicate).
+                pass
+        repair_mode = all(
+            self.state.slot(qid)["execution_status"] == "completed" for qid in target
+        )
+        for answer in answers:
+            if not isinstance(answer, dict):
+                continue
+            qid = answer.get("question_id")
+            if qid not in target or qid in duplicates or qid in unknown:
+                continue
+            try:
+                if self._answer_semantic_validator is not None:
+                    probe = copy.deepcopy(answer)
+                    try:
+                        if self._answer_semantic_validator_version == 2:
+                            board_copy = copy.deepcopy(self.state.board)
+                            self._answer_semantic_validator(
+                                probe, qid, attempt_ref=attempt_ref, evidence_board=board_copy)
+                            if board_copy.snapshot() != self.state.board.snapshot():
+                                raise ProtocolIllegalError("answer_semantic_validator_mutated_board")
+                        else:
+                            self._answer_semantic_validator(probe, qid)
+                        if probe != answer:
+                            raise ProtocolIllegalError("answer_semantic_validator_mutated_input")
+                    except Exception as exc:
+                        raise AnswerRejection(qid, "answer_semantic_contract_rejected",
+                                              [type(exc).__name__]) from exc
+                validate_single_answer(
+                    answer,
+                    qid,
+                    self.state.board,
+                    self.state.evidence_cutoff_date,
+                    claim_kind_gate=self.state.execution_revision >= 2,
+                )
+                if self.state.execution_revision >= 2:
+                    findings = self.state._binding_findings(qid, answer)
+                    if findings:
+                        raise AnswerRejection(
+                            qid,
+                            findings[0]["finding_code"],
+                            ["evidence binding failed; repair before completion"],
+                        )
+            except AnswerRejection as rejection:
+                self._emit(
+                    "answer_rejected",
+                    {
+                        "question_id": qid,
+                        "attempt_ref": attempt_ref,
+                        "reason_code": rejection.reason_code,
+                        "reasons": rejection.reasons[:5],
+                        "draft_sha256": answer_sha256(answer),
+                    },
+                )
+                continue
+            except Exception as exc:  # noqa: BLE001
+                self._emit(
+                    "answer_rejected",
+                    {
+                        "question_id": qid,
+                        "attempt_ref": attempt_ref,
+                        "reason_code": "answer_schema_violation",
+                        "reasons": [str(exc)[:160]],
+                        "draft_sha256": sha256_hex(answer),
+                    },
+                )
+                continue
+            if repair_mode:
+                self._emit(
+                    "draft_recorded",
+                    {
+                        "question_id": qid,
+                        "attempt_ref": attempt_ref,
+                        "answer": answer,
+                        "answer_sha256": answer_sha256(answer),
+                        "reason_codes": [
+                            f["finding_code"]
+                            for f in self.state.findings
+                            if f["question_id"] == qid
+                        ][:5]
+                        or ["self_review_repair"],
+                    },
+                )
+                continue
+            slot = self.state.slot(qid)
+            if slot["execution_status"] == "completed":
+                self._emit(
+                    "answer_rejected",
+                    {
+                        "question_id": qid,
+                        "attempt_ref": attempt_ref,
+                        "reason_code": "already_completed_no_overwrite",
+                        "reasons": ["completed slot never overwritten"],
+                        "draft_sha256": answer_sha256(answer),
+                    },
+                )
+                continue
+            gap_codes = (
+                ["insufficient_evidence_present"]
+                if answer["status"] == "insufficient_evidence"
+                else []
+            )
+            self._emit(
+                "answer_committed",
+                {
+                    "question_id": qid,
+                    "attempt_ref": attempt_ref,
+                    "revision": slot["answer_revision"] + 1,
+                    "answer": answer,
+                    "answer_sha256": answer_sha256(answer),
+                    "gap_codes": gap_codes,
+                    "evidence_epoch_sha256": self.state.board.epoch_sha256(),
+                },
+            )
+        committed = [
+            qid
+            for qid in target
+            if self.state.slot(qid)["execution_status"] == "completed"
+        ]
+        if committed and not repair_mode:
+            findings = self.state.self_review(committed)
+            self._emit(
+                "self_review",
+                {
+                    "question_ids": committed,
+                    "findings": findings,
+                    "repair_rounds_used": self.state.counters.get("repair_rounds", 0),
+                },
+            )
+
+    def _dispatch_search(self, intent: dict[str, Any]) -> None:
+        if not self._budget_check(intent):
+            return
+        from .request_context import build_search_request
+
+        receipt = self.port.search(
+            build_search_request(self.state, intent)
+            if self.state.execution_revision >= 2
+            else intent
+        )
+        validate_search_receipt(receipt)
+        previous_epoch = self.state.board.epoch_sha256()
+        active_before = {r["evidence_id"] for r in self.state.board.active_records()}
+        records = receipt.get("evidence_records") or []
+        outcome = (
+            self.state.board.intake(records, self.task.company_ref)
+            if records
+            else {"accepted": [], "rejected": [], "conflict_same_url": []}
+        )
+        data = {
+            "attempt_ref": receipt["runtime_attempt_ref"],
+            "action_id": intent["action_id"],
+            "outcome": receipt["outcome"],
+            "reason_code": receipt["reason_code"],
+            "reason_message": receipt["reason_message"],
+            "provider_profile": receipt["provider_profile"],
+            "actual_provider": receipt["actual_provider"],
+            "provider_request_count": receipt["provider_request_count"],
+            "protocol_http_count": receipt["protocol_http_count"],
+            "query_count": receipt["query_count"],
+            "usage_cost": receipt["usage_cost"],
+            "started_at_utc": receipt["started_at_utc"],
+            "ended_at_utc": receipt["ended_at_utc"],
+            "duration_ms": receipt["duration_ms"],
+            "receipt_sha256": receipt["receipt_sha256"],
+            "evidence_records": records,
+            "accepted_ids": outcome["accepted"],
+            "rejected": outcome["rejected"],
+            "conflict_same_url": outcome["conflict_same_url"],
+            "question_ids": intent["question_ids"],
+        }
+        self._emit("receipt_search", data)
+        if self.state.execution_revision >= 2:
+            invalidated = sorted(
+                active_before
+                - {r["evidence_id"] for r in self.state.board.active_records()}
+            )
+            if invalidated:
+                self._emit(
+                    "evidence_invalidated",
+                    {
+                        "evidence_ids": invalidated,
+                        "reason_code": "superseded_by_new_evidence",
+                        "reopened_question_ids": self.state.dependent_questions(
+                            invalidated
+                        ),
+                    },
+                )
+        epoch = self.state.board.epoch_sha256()
+        if epoch != previous_epoch:
+            self._emit(
+                "evidence_epoch_moved",
+                {
+                    "epoch_sha256": epoch,
+                    "previous_epoch_sha256": previous_epoch,
+                    "delta": {"added_ids": outcome["accepted"], "invalidated_ids": []},
+                },
+            )
+        self._maybe_compact_context()
+        if self.state.execution_revision >= 2:
+            result = {
+                "outcome": receipt["outcome"],
+                "accepted_ids": outcome["accepted"],
+                "rejected": outcome["rejected"],
+                "reason_code": receipt["reason_code"],
+            }
+            self._emit(
+                "tool_result",
+                {
+                    "tool_call_id": intent["action_id"],
+                    "tool_name": "search",
+                    "result": result,
+                    "result_sha256": sha256_hex(result),
+                },
+            )
+
+    def _dispatch_read_evidence(self, intent: dict[str, Any]) -> None:
+        ids = intent["payload"]["evidence_ids"]
+        for evidence_id in ids:
+            try:
+                self.state.board.get(evidence_id, only_active=True)
+            except KeyError:
+                continue
+            self.state.evidence_used_by.setdefault(evidence_id, set()).update(
+                intent["question_ids"]
+            )
+
+    def _dispatch_patch(self, intent: dict[str, Any]) -> None:
+        patch = intent["payload"]
+        current_epoch = self.state.board.epoch_sha256()
+        ok, reason, accepted = self.state.validate_patch(
+            patch, intent["question_ids"], current_epoch
+        )
+        if not ok:
+            for qid in intent["question_ids"]:
+                self._emit(
+                    "answer_rejected",
+                    {
+                        "question_id": qid,
+                        "attempt_ref": f"patch:{intent['action_id']}",
+                        "reason_code": reason,
+                        "reasons": [reason],
+                        "draft_sha256": sha256_hex(patch["replacements"]),
+                    },
+                )
+            return
+        for item in accepted:
+            slot = self.state.slot(item["question_id"])
+            self._emit(
+                "answer_committed",
+                {
+                    "question_id": item["question_id"],
+                    "attempt_ref": f"patch:{intent['action_id']}",
+                    "revision": slot["answer_revision"] + 1,
+                    "answer": item["answer"],
+                    "answer_sha256": answer_sha256(item["answer"]),
+                    "gap_codes": slot["gap_codes"],
+                    "evidence_epoch_sha256": current_epoch,
+                },
+            )
+        # Re-run self-review on the patched set so findings reflect the new
+        # answers; self-review never self-grants correctness.
+        patched = [item["question_id"] for item in accepted]
+        findings = self.state.self_review(patched)
+        self._emit(
+            "self_review",
+            {
+                "question_ids": patched,
+                "findings": findings,
+                "repair_rounds_used": self.state.counters.get("repair_rounds", 0),
+            },
+        )
+
+    # -- crash continuation --------------------------------------------------
+
+    @classmethod
+    def continue_from_checkpoint(
+        cls, task, port, checkpoint: dict[str, Any], journal: EventJournal, *,
+        answer_semantic_validator=None, answer_semantic_validator_version=1, answer_semantic_rules=(),
+    ) -> "Runner":
+        from .checkpoint import state_from_checkpoint
+
+        runner = cls.__new__(cls)
+        runner._bind_answer_semantics(answer_semantic_validator, answer_semantic_rules, answer_semantic_validator_version)
+        runner.task = task
+        runner.port = port
+        runner.journal = journal
+        runner.state = state_from_checkpoint(task, checkpoint)
+        runner.strategy = strategy_for_task(task)
+        runner.segment_reason = "restart_with_new_segment"
+        runner._initial_intake = {}
+        runner.state.finished_reason = None
+        return runner
+
+    def run_continued(
+        self,
+        pending_intent: dict[str, Any] | None = None,
+        pending_receipt: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        previous = self.state.current_segment_id
+        segment_id = f"{self.task.raw['run_id']}#segment-{len(self.state.segments) + 1}"
+        self._emit(
+            "segment",
+            {
+                "segment_id": segment_id,
+                "previous_segment_id": previous,
+                "reason": "restart_with_new_segment",
+            },
+        )
+        # Crash recovery is decided by the original runtime receipt: a recorded
+        # receipt is re-applied, never re-sent; a crash before send re-dispatches.
+        if pending_receipt is not None and pending_intent is not None:
+            from .checkpoint import safe_pending_receipt
+
+            pending_receipt = safe_pending_receipt(pending_receipt)
+            self._emit(
+                "recovery_decision",
+                {
+                    "attempt_ref": pending_receipt["runtime_attempt_ref"],
+                    "decision": "recover_saved_receipt",
+                    "reason": "checkpoint holds a recorded receipt; applied without resend",
+                    "restored": True,
+                },
+            )
+            self._apply_model_receipt_event(pending_intent, pending_receipt)
+            self._process_response(pending_intent, pending_receipt)
+        return self._run_loop()
+
+    def _run_loop(self) -> dict[str, Any]:
+        max_actions = 200
+        for _ in range(max_actions):
+            if self.state.finished_reason:
+                break
+            progress_before = self._progress_token()
+            intent = self.strategy.next_action(self.state.public_state())
+            validate_intent(intent)
+            if intent["expected_state_sha256"] != self.state.state_sha256():
+                raise ProtocolIllegalError("strategy produced stale state hash")
+            data = {
+                "action_id": intent["action_id"],
+                "kind": intent["kind"],
+                "question_ids": intent["question_ids"],
+                "expected_state_sha256": intent["expected_state_sha256"],
+                "payload_sha256": sha256_hex(intent["payload"]),
+                "accepted": True,
+                "payload": intent["payload"],
+            }
+            self._emit("intent", data)
+            try:
+                self._dispatch(intent)
+            except SyntheticCrash as crash:
+                self._handle_crash(crash, intent)
+            progress_after = self._progress_token()
+            self._maybe_no_progress(progress_before, progress_after)
+            self._emit(
+                "limits_state",
+                {
+                    "counters": dict(self.state.counters),
+                    "caps": dict(self.task.limits),
+                    "state_hash": self.state.state_sha256(),
+                },
+            )
+        if not self.state.finished_reason:
+            self.state.finished_reason = "action_budget_exhausted"
+            self._emit(
+                "budget_exhausted",
+                {
+                    "reason_code": "action_budget_exhausted",
+                    "unfinished_question_ids": [
+                        s["question_id"] for s in self.state.open_slots()
+                    ],
+                },
+            )
+        for slot in self.state.open_slots():
+            if not slot["gap_codes"]:
+                slot["gap_codes"] = ["not_attempted_at_finish"]
+        return {"state": self.state, "journal": self.journal}

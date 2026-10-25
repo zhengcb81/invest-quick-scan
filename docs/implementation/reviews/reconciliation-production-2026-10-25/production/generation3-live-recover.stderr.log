@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\run_generation3.py", line 432, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\run_generation3.py", line 385, in main
+    result = engine.resume_shared_engine(task, services, runtime, ATTEMPT / "cold-session/checkpoint.json",
+        ATTEMPT / "recovered-export", session_dir=ATTEMPT / "recovered-session", transport_origin="stockqa_live")
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\shared_company_engine.py", line 520, in resume_shared_engine
+    _verify_snapshot_against_history(checkpoint_path, checkpoint, task)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\iqs-company-agent-lab\src\iqs_company_agent_lab\resume.py", line 113, in _verify_snapshot_against_history
+    reconstructed = state_snapshot(ReplayEngine(task).replay(events)["state"])
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\郑曾波\Projects\iqs-company-agent-lab\src\iqs_company_agent_lab\replay.py", line 79, in replay
+    self._apply_one(state, event, strategy, verify_intents=True)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\iqs-company-agent-lab\src\iqs_company_agent_lab\replay.py", line 126, in _apply_one
+    raise ProtocolIllegalError("model-bound runtime context diverges on replay")
+iqs_company_agent_lab.errors.ProtocolIllegalError: model-bound runtime context diverges on replay

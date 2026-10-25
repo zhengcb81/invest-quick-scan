@@ -1,0 +1,53 @@
+"""Invoke fixed original generation2-to-3 control CLIs; never paid providers or custom authority."""
+import importlib.util,json,os,subprocess,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];BASE=ROOT/"runs/r25-live";OUT=BASE/"known-response-repair-gen2"
+QA=ROOT.parent/"StockQAbyLLM";SW=ROOT.parent/"StockWiki"
+sys.path[:0]=[str(QA),str(SW)]
+from src.utils.quick_scan_result_outbox import strict_json_loads
+
+def read(p):return strict_json_loads(Path(p).read_text(encoding="utf-8-sig"))
+def main():
+    if len(sys.argv)!=3 or sys.argv[1] not in {"preview","apply"} or sys.argv[2] not in {"resolution","retry"}:raise ValueError("explicit_fixed_control_operation_required")
+    stage,operation=sys.argv[1:];config=read(BASE/"typed-generation2/run-config.json")
+    if config.get("isolated") is not True or Path(config["run_root"]).resolve()!=BASE.resolve():raise ValueError("original_isolated_base_required")
+    def owned(value):
+        p=Path(value).absolute()
+        if not p.resolve().is_relative_to(BASE.resolve()):raise ValueError("control_outside_isolated_base")
+        for n in (p,*p.parents):
+            if n.is_symlink() or n.is_junction():raise ValueError("control_linked_path")
+            if n==BASE.absolute():break
+        return p.resolve()
+    dep=read(owned(config["deployment"]));owned(OUT);owned(OUT/"temp")
+    for name in ("stockwiki_workspace_root","execution_inputs_root","work_store","budget_policy_file","runs_dir"):
+        owned(dep[name])
+    if owned(config["budget_policy_file"])!=owned(dep["budget_policy_file"]):raise ValueError("original_cumulative_control_budget_required")
+    outer=read(OUT/(operation+"-owner-request.json"))
+    request=outer["decision_request"]
+    if (request["work_item_id"]!="WORK_c9374943a7c44990ba69d67fa7346529"
+        or request["attempt_id"]!="ATTEMPT_7d199ff1165a4c07b7f20191ad3c3699"
+        or (operation=="resolution" and (request["kind"]!="known_response_resolution" or request["reason"]!="answer_validation_rejected"))
+        or (operation=="retry" and (request["kind"]!="retry_decision" or request["purpose"]!="retry_unusable_answer" or request["target_generation"]!=3 or request["comparison_controls"] is not None))):
+        raise ValueError("exact_generation2_control_request_required")
+    env={k:v for k,v in os.environ.items() if k.upper() in {"SYSTEMROOT","WINDIR","PATH","PATHEXT","COMSPEC","USERPROFILE","APPDATA","LOCALAPPDATA","SYSTEMDRIVE"}}
+    temp=OUT/"temp";temp.mkdir(exist_ok=True)
+    env.update(PYTHONPATH=os.pathsep.join((str(QA),str(SW))),PYTHONUTF8="1",PYTHONIOENCODING="utf-8",PYTHONDONTWRITEBYTECODE="1",TEMP=str(temp),TMP=str(temp))
+    if stage=="preview":
+        args=["-m","stockwiki.quick_scan_refresh_owner_cli","--root",dep["stockwiki_workspace_root"],"--iqs-code-root",str(ROOT),"--iqs-release-root",dep["iqs_release_root"],"--work-decision-request",str(OUT/(operation+"-owner-request.json"))];cwd=SW
+    else:
+        from stockwiki.paths import WorkspacePaths
+        from stockwiki.quick_scan_refresh_principal import current_principal
+        from stockwiki.quick_scan_work_decision_owner import WorkDecisionConfirmationStore
+        outer=read(OUT/(operation+"-owner-request.json"));preview=read(OUT/(operation+"-preview.stdout.json"))
+        store=WorkDecisionConfirmationStore(WorkspacePaths.from_root(Path(dep["stockwiki_workspace_root"])))
+        key,_=store.key(current_principal(),outer["consumer_id"],outer["decision_request"]["idempotency_key"])
+        confirmed=store.load(key)
+        if confirmed["preview_id"]!=preview["preview_id"] or confirmed["method"]!="native_owner_terminal":raise ValueError("original_exact_terminal_confirmation_required")
+        args=["-m","src.utils.quick_scan_work_decision_apply_cli","--ledger",dep["work_store"],"--policy",dep["budget_policy_file"],"--owner-code-root",str(SW),"--owner-workspace",dep["stockwiki_workspace_root"],"--iqs-code-root",str(ROOT),"--iqs-release-root",dep["iqs_release_root"],"--consumer-id",outer["consumer_id"],"--confirmation-id",confirmed["confirmation_id"],"--refresh-schema-version","1.2.0"];cwd=QA
+    done=subprocess.run([sys.executable,"-B","-X","utf8",*args],cwd=cwd,env=env,capture_output=True,timeout=300)
+    (OUT/(operation+"-"+stage+".stdout.json")).write_bytes(done.stdout);(OUT/(operation+"-"+stage+".stderr.log")).write_bytes(done.stderr)
+    if done.returncode:raise RuntimeError("original_control_cli_refused:"+stage)
+    result=read(OUT/(operation+"-"+stage+".stdout.json"))
+    if stage=="preview" and result.get("status")!="ready":raise RuntimeError("original_control_preview_not_ready")
+    print(json.dumps(dict(status=result.get("status"),stage=stage,operation=operation,API_requests=0,preview_id=result.get("preview_id"))))
+if __name__=="__main__":main()

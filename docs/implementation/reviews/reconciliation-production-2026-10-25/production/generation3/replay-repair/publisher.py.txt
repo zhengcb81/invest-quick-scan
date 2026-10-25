@@ -1,0 +1,385 @@
+"""Copy an explicit thin evidence allowlist, never databases or answer bodies."""
+from datetime import datetime, timezone
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+
+ROOT = Path(__file__).resolve().parents[2]
+AUDIT = Path(__file__).parent
+BASE = ROOT / "runs/r25-live"
+DEST = ROOT / "docs/implementation/reviews/reconciliation-production-2026-10-25/production"
+selection = {
+    "engine-fix": ["implementation-report.md", "actual-source-observation.json",
+        "actual-finalization-thin-result.json", "cleanup.json", "main-tests-final.xml",
+        "native-unit-tests-final.xml", "native-actual-finalization.xml",
+        "owner-finalization-after-hook.xml", "cleanup-after-hook.json", "pretransport-retry-plan.md"],
+    "engine-review": ["round01.md", "round02.md", "round03.md",
+        "round03-source-verification.json", "ledger-probe-results.json",
+        "pre-live-final.json", "pre-live-final.md", "actual-software-independent-db.json",
+        "failed-cold-pretransport-draft.json", "failed-cold-pretransport-resolved-review.json",
+        "failed-cold-pretransport.md", "unsent-retry-plan-review.json", "unsent-retry-plan-review.md"],
+    "performance-investigation": ["report.md", "metadata.json", "current-doc-audit.md"],
+}
+selection["engine-fix"] += [
+    "subject-readiness-implementation.json", "subject-readiness-implementation.md",
+    "subject-readiness-final-lf-evidence.json", "subject-readiness-final-lf.xml",
+    "generation2-driver-handoff.md", "generation2-summary-handoff.md",
+    "generation2-summary-offline.xml", "generation2-summary-offline-cleanup.json",
+]
+selection["engine-review"] += [
+    "subject-readiness-independent.xml", "subject-readiness-independent-cleanup.json",
+    "prepared-failure-schema-review.json", "prepared-failure-schema-review.md",
+    "native-answer-fix-final.json", "answer-semantic-gate-final.json",
+    "answer-source-gate-v2-final.json", "answer-source-gate-v2-final.md",
+    "singleton-known-outcome-final.json", "actual-owner-control-final.json",
+    "actual-owner-control-final.md", "generation2-pre-live-before-original-preflight.json",
+    "generation2-pre-live-final.json", "generation2-pre-live-final.md",
+]
+selection["performance-investigation"] += [
+    "singleton-implementation.md", "singleton-product-red.xml", "singleton-guarded-final.xml",
+    "singleton-final-proof.json", "singleton-cleanup.json", "singleton-after-hook-ast.json",
+    "singleton-after-hook-guard.json", "singleton-after-hook.xml", "singleton-after-hook-cleanup.json",
+]
+selection["engine-fix/answer-semantic-gate"] = [
+    "implementation-v1.json", "implementation.json", "implementation.md",
+    "red.xml", "green.xml", "green2.xml", "final-lf.xml", "final-sources-v1.json",
+    "final-sources.json", "cleanup-final.json", "company-line-endings.json",
+    "renderer-compatibility.json", "real-readonly-rejection.json",
+    "v2-red.xml", "v2-green.xml", "v2-sources.json", "v2-cleanup.json",
+]
+selection["engine-fix/generation2-controls-fix"] = [
+    "red.xml", "red-cleanup.json", "green.xml", "green-cleanup.json", "evidence-scope.txt",
+]
+sources = [(AUDIT / group / name, DEST / group / name)
+    for group, names in selection.items() for name in names]
+sources += [(AUDIT / n, DEST / n) for n in (
+    "live-wire-regression.xml", "live-wire-environment-error.xml", "live-wire-cleanup.json",
+    "source-commit-binding.json")]
+sources += [(BASE / n, DEST / "live" / n) for n in (
+    "local-not-sent-reconciliation.json", "readonly-source-copy.json", "pricing-observation.json")]
+sources += [(BASE / "failed-pretransport-01" / n, DEST / "failed-pretransport-01" / n)
+    for n in ("source-pins.json", "preflight.json", "cold-started.json", "integrity.json",
+              "live-cold.stderr.log", "live-cold.stdout.log", "live-cold-exit.json")]
+sources += [(BASE / "failed-pretransport-01/run_live.py", DEST / "failed-pretransport-01/driver.py.txt")]
+sources += [(BASE / "retry-1/preflight.json", DEST / "retry-1/preflight.json")]
+sources += [(AUDIT / "preparation-only-evidence/retry-1-preflight-first-frozen.json",
+    DEST / "retry-1/preflight-first-frozen.json"),
+    (AUDIT / "preparation-only-evidence/initial-42-file-integrity.json",
+    DEST / "integrity-first-42files.json")]
+sources += [(BASE / "retry-2" / n, DEST / "retry-2" / n) for n in (
+    "preflight.json", "cold-started.json", "crash-proof.json", "source-pins.json",
+    "model-wire-observation.json", "original-unsent-recovery.json",
+    "recovery-source-transition.json")]
+sources += [(BASE / "typed-generation2/failed-approved-controls-preflight-01" / n,
+    DEST / "generation2/failed-approved-controls-preflight-01" / n) for n in (
+    "source-pins.json", "source-freeze.json", "preflight.stdout.log",
+    "preflight.stderr.log", "preflight-exit.json", "integrity.json")]
+sources += [(AUDIT / name, DEST / name) for name in (
+    "source-commit-binding-v2.json", "original-identity-sources-after-generation2.json")]
+sources += [(AUDIT / "engine-review" / name, DEST / "engine-review" / name) for name in (
+    "approved-controls-diagnostic.json", "approved-controls-diagnostic.md",
+    "generation2-controls-delta-final.json", "generation2-final-freeze-review.json",
+    "generation2-summary-round01.json", "generation2-summary-final.json",
+    "generation2-summary-final.md", "generation2-source-diagnostic.json")]
+sources += [(AUDIT / "engine-fix/generation2-safe-diagnosis.json", DEST / "generation2/safe-diagnosis.json")]
+sources += [(BASE / "typed-generation2/failed-source-url-copy-01" / name,
+    DEST / "generation2/failed-source-url-copy-01" / name) for name in (
+    "source-pins.json", "source-freeze.json", "preflight.json", "cold-started.json",
+    "safe-validation.json", "model-wire-observation.json", "invalid-result.json",
+    "live-cold-exit.json", "integrity.json")]
+HISTORICAL_TARGETS = frozenset(target.absolute() for _, target in sources)
+ORIGINAL_ARCHIVE_MANIFEST_SHA256 = "d003febfd8c4e4626eb45e04452d835de6d97cfa3927f1bd5e4389056ea2afd1"
+
+
+def preserved_archive_rows(expected_targets):
+    """Verify the existing 130 artifacts and retain original rows, not mutable sources."""
+    manifest = DEST / "integrity.json"
+    if manifest.is_symlink() or manifest.is_junction():
+        raise ValueError("historical_archive_manifest_redirected")
+    manifest_raw = manifest.read_bytes()
+    if hashlib.sha256(manifest_raw).hexdigest() != ORIGINAL_ARCHIVE_MANIFEST_SHA256:
+        raise ValueError("original_historical_manifest_bytes_changed")
+    value = json.loads(manifest_raw)
+    if (value.get("protocol") != "iqs.thin-production-evidence/1.0.0"
+        or len(value.get("files", [])) != 130 or len(expected_targets) != 130):
+        raise ValueError("original_130_artifact_manifest_required")
+    retained = {}
+    for row in value["files"]:
+        relative = Path(row["artifact"])
+        if relative.is_absolute() or ".." in relative.parts:
+            raise ValueError("historical_archive_artifact_path_invalid")
+        target = (DEST / relative).absolute()
+        if (target in retained or not target.resolve().is_relative_to(DEST.resolve())
+            or any(node.is_symlink() or node.is_junction() for node in (target, *target.parents))):
+            raise ValueError("historical_archive_artifact_redirected_or_duplicate")
+        raw = target.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != row["sha256"] or len(raw) != row["bytes"]:
+            raise ValueError("historical_archive_bytes_changed")
+        retained[target] = row
+    if set(retained) != set(expected_targets):
+        raise ValueError("historical_archive_target_set_changed")
+    return retained
+
+def repair_final_sources():
+    """Plan a fixed thin allowlist only after this same major actual review passed."""
+    actual_base = BASE / "typed-generation3"
+    repair = actual_base / "replay-repair"
+    files = {"result": repair / "result.json", "summary": repair / "thin-summary.json",
+             "source_transition": repair / "source-transition.json",
+             "repair_source_pins": repair / "repair-source-pins.json"}
+
+    def read(path):
+        path = Path(path).absolute()
+        if not path.resolve().is_relative_to(ROOT.resolve()):
+            raise ValueError("repair_evidence_outside_project")
+        if any(node.is_symlink() or node.is_junction() for node in (path, *path.parents)):
+            raise ValueError("repair_evidence_path_redirected")
+        value = json.loads(path.read_text(encoding="utf8"))
+        def thin(node):
+            if isinstance(node, dict):
+                if {"answer", "answers", "final_content", "reasoning_content", "messages", "prompt",
+                    "context_body", "response_body", "raw_response"} & set(node):
+                    raise ValueError("private_body_in_selected_repair_metadata")
+                for entry in node.values():thin(entry)
+            elif isinstance(node, list):
+                for entry in node:thin(entry)
+        thin(value)
+        return value
+
+    actual, summary, transition = (read(files[key]) for key in ("result", "summary", "source_transition"))
+    read(files["repair_source_pins"])
+    pre_review = read(AUDIT / "engine-review/generation3-replay-repair-pre-execution-final.json")
+    review = read(AUDIT / "engine-review/generation3-replay-repair-actual-final.json")
+    hashes = {key: hashlib.sha256(path.read_bytes()).hexdigest() for key, path in files.items()}
+    if (review.get("status") != "passed" or review.get("open_findings") != []
+        or review.get("accepted_artifact_sha256") != hashes
+        or pre_review.get("status") != "passed_explicit_repaired_source_recovery_pre_execution_actual_result_pending"
+        or pre_review.get("open_findings") != []
+        or actual.get("protocol") != "iqs.shared-production-replay-repair-acceptance/1.0.0"
+        or summary.get("protocol") != "iqs.shared-production-thin-summary/4.0.0"
+        or summary.get("status") != "existing_replay_repair_real_acceptance_summarized"
+        or actual.get("generation") != 3 or summary.get("generation") != 3
+        or actual.get("same_source_cold_and_warm_claim") is not False
+        or summary.get("same_source_cold_and_warm_claim") is not False
+        or actual.get("original_response_reused") is not True
+        or summary.get("original_response_reused") is not True
+        or actual.get("original_source_pins_sha256") != summary.get("original_cold_source_pins_sha256")
+        or actual.get("repair_source_pins_sha256") != hashes["repair_source_pins"]
+        or summary.get("repair_source_pins_sha256") != hashes["repair_source_pins"]
+        or actual.get("source_transition_sha256") != hashes["source_transition"]
+        or summary.get("source_repair", {}).get("source_transition_sha256") != hashes["source_transition"]
+        or actual.get("recovery_network_forbidden") is not True
+        or actual.get("recovery_new_http") != 0 or actual.get("new_model_http_during_finalization") != 0
+        or actual.get("identical_budget_and_request_rows") is not True
+        or actual.get("budget_before") != actual.get("budget_after")
+        or not actual.get("checkpoints") or not summary.get("questions")
+        or actual.get("financial_accuracy_assessed") is not False
+        or summary.get("financial_accuracy_assessed") is not False
+        or actual.get("invoice_cost") is not None or summary.get("invoice_cost") is not None
+        or summary.get("answer_body_or_context_body_included") is not False
+        or summary.get("current_original_ledger_equals_recorded_after") is not True):
+        raise ValueError("explicit_replay_repair_actual_independent_acceptance_required")
+    if (transition.get("same_source_cold_and_warm_claim") is not False
+        or transition.get("original_response_reused") is not True
+        or transition.get("original_pin_file_sha256") != actual["original_source_pins_sha256"]
+        or hashlib.sha256((actual_base / "source-pins.json").read_bytes()).hexdigest() != actual["original_source_pins_sha256"]):
+        raise ValueError("explicit_repair_original_source_binding_required")
+
+    selected = [(path, DEST / "generation3/replay-repair" / path.name) for path in files.values()]
+    selected += [(DEST / "integrity.json", DEST / "integrity-before-replay-repair-130files.json"),
+                 (AUDIT / "engine-review/generation2-source-diagnostic.json",
+                  DEST / "engine-review/generation2-source-diagnostic-resolved-after-replay-repair.json")]
+    selected += [(actual_base / name, DEST / "generation3" / name) for name in (
+        "source-pins.json", "source-freeze.json", "preflight.json", "cold-started.json",
+        "model-wire-observation.json", "safe-validation.json", "crash-proof.json", "lineage.json")]
+    selected += [(actual_base / "failed-replay-context-01/integrity.json",
+                  DEST / "generation3/failed-replay-context-01/integrity.json")]
+    for name in ("generation3-replay-repair-pre-execution-final.json", "generation3-replay-repair-pre-execution-final.md",
+                 "generation3-replay-repair-actual-final.json", "generation3-replay-repair-actual-final.md",
+                 "generation3-replay-runtime-diagnostic.json"):
+        selected.append((AUDIT / "engine-review" / name, DEST / "engine-review" / name))
+    for name in ("generation3-replay-fix-source-transition.json", "generation3-replay-fix-actual-readonly.json",
+                 "generation3-replay-combined63.xml", "generation3-replay-combined63-cleanup.json",
+                 "generation3-replay-fix-red.xml", "generation3-replay-fix-red-cleanup.json",
+                 "generation3-replay-fix-green.xml", "generation3-replay-fix-green-cleanup.json",
+                 "generation3-replay-fix-green2.xml", "generation3-replay-fix-green2-cleanup.json",
+                 "replay-summary-handoff.json", "replay-summary-offline.xml",
+                 "replay-summary-offline-attestations.json", "replay-summary-offline-cleanup.json"):
+        selected.append((AUDIT / "engine-fix" / name, DEST / "engine-fix" / name))
+    for name in ("generation3-replay-repair.stdout.log", "generation3-replay-repair.stderr.log",
+                 "generation3-replay-repair-exit.json"):
+        selected.append((AUDIT / name, DEST / name))
+    for name in ("source-commit-binding-v3.json", "source-commit-binding-v4.json",
+                 "generation3-preflight-locked-exit.json", "generation3-live-cold-exit.json",
+                 "generation3-live-recover-exit.json", "generation3-live-recover.stderr.log"):
+        selected.append((AUDIT / name, DEST / name))
+    for name in ("generation3-integrated-round01.json", "generation3-integrated-final.json",
+                 "generation3-integrated-final.md", "generation3-actual-control-final.json",
+                 "generation3-admission-freeze-final.json", "generation3-control-helpers-source-bindings.json",
+                 "generation3-native-control-readiness.json", "generation3-native-control-readiness.md",
+                 "generation3-control-boundaries-final.xml", "generation3-control-boundaries-final-attestations.json",
+                 "generation3-control-boundaries-cleanup.json", "generation3-leaf-red.xml",
+                 "generation3-leaf-red-attestations.json", "generation3-leaf-red-cleanup.json",
+                 "generation3-leaf-green.xml", "generation3-leaf-green-attestations.json",
+                 "generation3-leaf-green-cleanup.json"):
+        selected.append((AUDIT / "engine-review" / name, DEST / "engine-review" / name))
+    for name in ("generation3-handoff.md", "generation3-authored-sources.json",
+                 "generation3-owner-control-dto-observed.json"):
+        selected.append((AUDIT / "engine-fix" / name, DEST / "engine-fix" / name))
+    for stem in ("generation3-combined57", "generation3-driver-offline", "generation3-summary-offline",
+                 "generation3-summary-real-dto-red", "generation3-summary-real-dto-green",
+                 "generation3-url-actual-request", "generation3-url-rules-red", "generation3-url-rules-green"):
+        for suffix in (".xml", "-cleanup.json"):
+            selected.append((AUDIT / "engine-fix" / (stem + suffix), DEST / "engine-fix" / (stem + suffix)))
+    for operation in ("resolution", "retry"):
+        selected.append((BASE / "known-response-repair-gen2" / (operation + "-terminal-observation.json"),
+                         DEST / "generation3" / (operation + "-terminal-observation.json")))
+    for name in ("prepare_work_control_gen3.py", "run_native_control_gen3.py", "prepare_generation3.py"):
+        selected.append((AUDIT / name, DEST / "generation3" / (name + ".txt")))
+    for path, name in (
+        (AUDIT / "run_generation3.py", "original-cold-driver.py.txt"),
+        (AUDIT / "engine-fix/real_summary_generation3.py", "original-cold-reporter.py.txt"),
+        (AUDIT / "engine-fix/real_summary.py", "original-report-helper.py.txt"),
+        (AUDIT / "run_replay_repair.py", "repair-driver.py.txt"),
+        (AUDIT / "engine-fix/real_summary_replay_repair.py", "repair-reporter.py.txt"),
+        (AUDIT / "freeze_replay_repair.py", "freeze.py.txt"),
+        (AUDIT / "capture_replay_repair.py", "capture.py.txt"),
+        (AUDIT / "finalize_handoff.py", "finalize-handoff.py.txt"),
+        (AUDIT / "bind_repair_commits.py", "bind-repair-commits.py.txt"),
+        (AUDIT / "publish_evidence.py", "publisher.py.txt")):
+        selected.append((path, DEST / "generation3/replay-repair" / name))
+    allowed_changes = {ROOT / "scripts/shared_company_engine.py"}
+    allowed_changes.update(ROOT.parent / "iqs-company-agent-lab/src/iqs_company_agent_lab" / name
+                           for name in ("request_context.py", "runner.py", "replay.py", "resume.py", "reporter.py"))
+    changed = {Path(row["path"]).resolve(): row for row in transition["changed_sources"]}
+    if len(changed) != len(transition["changed_sources"]) or set(changed) != {path.resolve() for path in allowed_changes}:
+        raise ValueError("repair_source_copy_outside_explicit_six_file_allowlist")
+    for path, row in changed.items():
+        old_path = Path(row["original_snapshot_path"])
+        if (not old_path.resolve().is_relative_to((actual_base / "failed-replay-context-01/source-snapshot").resolve())
+            or old_path.suffix != ".py"
+            or hashlib.sha256(old_path.read_bytes()).hexdigest() != row["before_sha256"]
+            or hashlib.sha256(path.read_bytes()).hexdigest() != row["after_sha256"]):
+            raise ValueError("repair_old_new_code_copy_not_bound")
+        label = "main" if path.is_relative_to(ROOT) else "company"
+        selected += [(path, DEST / "generation3/replay-repair/current-code" / label / (path.name + ".txt")),
+                     (old_path, DEST / "generation3/replay-repair/original-code" / label / (path.name + ".txt"))]
+    return selected
+
+
+parser = argparse.ArgumentParser()
+mode = parser.add_mutually_exclusive_group()
+mode.add_argument("--final", action="store_true")
+mode.add_argument("--repair-final", action="store_true",
+                  help="Publish the explicitly repaired generation3 node after its same-major actual review")
+parser.add_argument("--generation", type=int, choices=(2, 3), default=2)
+options = parser.parse_args()
+if options.final:
+    generation = options.generation
+    actual_base = BASE / f"typed-generation{generation}"
+    actual = json.loads((actual_base / "result.json").read_text(encoding="utf8"))
+    summary = json.loads((AUDIT / f"engine-fix/real-summary-generation{generation}.json").read_text(encoding="utf8"))
+    review = json.loads((AUDIT / f"engine-review/generation{generation}-actual-final.json").read_text(encoding="utf8"))
+    if (review.get("status") != "passed" or review.get("open_findings") != []
+        or summary.get("status") != f"existing_generation{generation}_real_acceptance_summarized"
+        or actual.get("generation") != generation
+        or actual.get("source_pins_sha256") != summary.get("source_pins_sha256")
+        or actual.get("recovery_new_http") != 0
+        or actual.get("identical_budget_and_request_rows") is not True
+        or actual.get("financial_accuracy_assessed") is not False):
+        raise ValueError("actual_node_independent_acceptance_required")
+    sources += [(actual_base / name, DEST / f"generation{generation}" / name) for name in (
+        "source-pins.json", "source-freeze.json",
+        "preflight.json", "cold-started.json", "model-wire-observation.json",
+        "safe-validation.json", "crash-proof.json", "result.json", "lineage.json")]
+    if generation == 2:
+        sources += [(actual_base / name, DEST / "generation2" / name) for name in (
+            "source-transition-before-first-send.json", "source-transition-dependency-lock.json",
+            "source-transition-summary-final.json")]
+    sources += [(AUDIT / f"engine-fix/real-summary-generation{generation}.json", DEST / f"generation{generation}/summary.json")]
+    sources += [(AUDIT / name, DEST / name) for name in (
+        f"source-commit-binding-v{generation}.json", f"generation{generation}-preflight-locked-exit.json",
+        f"generation{generation}-live-cold-exit.json", f"generation{generation}-live-recover-exit.json")]
+    for name in ("approved-controls-diagnostic.json", "approved-controls-diagnostic.md",
+        "generation2-controls-delta-final.json", "generation2-final-freeze-review.json",
+        "generation2-summary-round01.json", "generation2-summary-final.json",
+        "generation2-summary-final.md", f"generation{generation}-actual-final.json", f"generation{generation}-actual-final.md"):
+        sources.append((AUDIT / "engine-review" / name, DEST / "engine-review" / name))
+    for name in ("red.xml", "red-cleanup.json", "green.xml", "green-cleanup.json", "evidence-scope.txt"):
+        sources.append((AUDIT / "engine-fix/generation2-controls-fix" / name,
+            DEST / "engine-fix/generation2-controls-fix" / name))
+    for stem in ("generation2-summary-task-red", "generation2-summary-task-green",
+                 "generation2-summary-task-final", "generation2-summary-task-strengthened"):
+        for suffix in (".xml", "-cleanup.json"):
+            sources.append((AUDIT / "engine-fix" / (stem + suffix), DEST / "engine-fix" / (stem + suffix)))
+    sources += [(AUDIT / f"run_generation{generation}.py", DEST / f"generation{generation}/driver.py.txt"),
+        (AUDIT / f"engine-fix/real_summary_generation{generation}.py", DEST / f"generation{generation}/reporter.py.txt"),
+        (AUDIT / "engine-fix/real_summary.py", DEST / f"generation{generation}/reporter-helper.py.txt")]
+    if generation == 3:
+        for name in ("generation3-integrated-round01.json", "generation3-integrated-final.json",
+            "generation3-integrated-final.md", "generation3-control-helpers-source-bindings.json",
+            "generation3-native-control-readiness.json", "generation3-native-control-readiness.md",
+            "generation3-control-boundaries-final.xml", "generation3-control-boundaries-final-attestations.json",
+            "generation3-control-boundaries-cleanup.json", "generation3-leaf-red.xml",
+            "generation3-leaf-red-attestations.json", "generation3-leaf-red-cleanup.json",
+            "generation3-leaf-green.xml", "generation3-leaf-green-attestations.json",
+            "generation3-leaf-green-cleanup.json", "generation3-actual-control-final.json",
+            "generation3-admission-freeze-final.json"):
+            sources.append((AUDIT / "engine-review" / name, DEST / "engine-review" / name))
+        for name in ("generation3-handoff.md", "generation3-authored-sources.json",
+            "generation3-owner-control-dto-observed.json"):
+            sources.append((AUDIT / "engine-fix" / name, DEST / "engine-fix" / name))
+        for stem in ("generation3-combined57", "generation3-driver-offline", "generation3-summary-offline",
+            "generation3-summary-real-dto-red", "generation3-summary-real-dto-green",
+            "generation3-url-actual-request", "generation3-url-rules-red", "generation3-url-rules-green"):
+            for suffix in (".xml", "-cleanup.json"):
+                sources.append((AUDIT / "engine-fix" / (stem + suffix), DEST / "engine-fix" / (stem + suffix)))
+        for operation in ("resolution", "retry"):
+            sources.append((BASE / "known-response-repair-gen2" / (operation + "-terminal-observation.json"),
+                DEST / "generation3" / (operation + "-terminal-observation.json")))
+        for name in ("prepare_work_control_gen3.py", "run_native_control_gen3.py", "prepare_generation3.py"):
+            sources.append((AUDIT / name, DEST / "generation3" / (name + ".txt")))
+
+if options.repair_final:
+    sources += repair_final_sources()
+
+rows = []
+preserved_rows = preserved_archive_rows(HISTORICAL_TARGETS) if options.repair_final else {}
+unique_sources = {}
+for source, target in sources:
+    if target in unique_sources and unique_sources[target] != source:
+        raise ValueError("conflicting_thin_artifact_destination")
+    unique_sources[target] = source
+sources = [(source, target) for target, source in unique_sources.items()]
+for source, target in sources:
+    if target.absolute() in preserved_rows:
+        original_row = preserved_rows[target.absolute()]
+        preserved = target.read_bytes()
+        if (hashlib.sha256(preserved).hexdigest() != original_row["sha256"]
+            or len(preserved) != original_row["bytes"]):
+            raise ValueError("historical_archive_changed_during_publication")
+        rows.append(dict(original_row))
+        continue
+    raw = source.read_bytes()
+    # Presence-only key checks; neither names nor values are printed on failure.
+    for name, value in os.environ.items():
+        if name.endswith("API_KEY") and value and value.encode() in raw:
+            raise ValueError("secret_in_selected_evidence")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, target)
+    digest = hashlib.sha256(raw).hexdigest()
+    assert hashlib.sha256(target.read_bytes()).hexdigest() == digest
+    rows.append(dict(source=os.path.relpath(source, ROOT),
+        artifact=str(target.relative_to(DEST)), sha256=digest, bytes=len(raw)))
+(DEST / "integrity.json").write_text(json.dumps(dict(
+    protocol="iqs.thin-production-evidence/1.0.0", observed_at=datetime.now(timezone.utc).isoformat(),
+    actual_real_answer_and_recovery_passed=options.final or options.repair_final,
+    accepted_generation=3 if options.repair_final else options.generation if options.final else None,
+    financial_accuracy_assessed=False, stockwiki_ack_claimed=False, files=rows,
+    **(dict(acceptance_mode="explicit_replay_source_repair", same_source_cold_and_warm_claim=False)
+       if options.repair_final else {})), ensure_ascii=False,
+    sort_keys=True, indent=2), encoding="utf8")
+print(json.dumps(dict(archived_thin_files=len(rows), databases=0, answer_bodies=0)))

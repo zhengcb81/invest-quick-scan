@@ -1,5 +1,7 @@
 {
-  "actual_real_answer_and_recovery_passed": false,
+  "acceptance_mode": "explicit_replay_source_repair",
+  "accepted_generation": 3,
+  "actual_real_answer_and_recovery_passed": true,
   "files": [
     {
       "artifact": "engine-fix\\implementation-report.md",
@@ -780,10 +782,647 @@
       "bytes": 2132,
       "sha256": "190f23e7ac09ee93e93b908698208a8d9d99916434d5603a50b59ec55ba16690",
       "source": "runs\\r25-live\\typed-generation2\\failed-source-url-copy-01\\integrity.json"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\result.json",
+      "bytes": 6660,
+      "sha256": "63dd2d51da764cabc8e07a1c11e6b4da99666ba617ebc10366b4445899c28042",
+      "source": "runs\\r25-live\\typed-generation3\\replay-repair\\result.json"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\thin-summary.json",
+      "bytes": 20358,
+      "sha256": "80c9ba18d3640af59247d29bd8eed2dcafe2c251449e60f101cf109ca5efc717",
+      "source": "runs\\r25-live\\typed-generation3\\replay-repair\\thin-summary.json"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\source-transition.json",
+      "bytes": 4329,
+      "sha256": "3a9ed15ff02728cf122310e679549ed65599385b95649c534b0aa0278b712f5e",
+      "source": "runs\\r25-live\\typed-generation3\\replay-repair\\source-transition.json"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\repair-source-pins.json",
+      "bytes": 23404,
+      "sha256": "dd3b71d3bda8b5ef7180ed6077f8f669cfb1e4e9fe1d9c14c7f9e3b5ce1cdf51",
+      "source": "runs\\r25-live\\typed-generation3\\replay-repair\\repair-source-pins.json"
+    },
+    {
+      "artifact": "integrity-before-replay-repair-130files.json",
+      "bytes": 37979,
+      "sha256": "d003febfd8c4e4626eb45e04452d835de6d97cfa3927f1bd5e4389056ea2afd1",
+      "source": "docs\\implementation\\reviews\\reconciliation-production-2026-10-25\\production\\integrity.json"
+    },
+    {
+      "artifact": "engine-review\\generation2-source-diagnostic-resolved-after-replay-repair.json",
+      "bytes": 3521,
+      "sha256": "630a2938f390ec166b3bb7807b26f342f03805c86dc053304e5d8bd4e3f79a28",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation2-source-diagnostic.json"
+    },
+    {
+      "artifact": "generation3\\source-pins.json",
+      "bytes": 15284,
+      "sha256": "8a12ef0cebbbcd31baa44f1d75862f73fffdc7c602edb42c4a0fc9af6dc6759d",
+      "source": "runs\\r25-live\\typed-generation3\\source-pins.json"
+    },
+    {
+      "artifact": "generation3\\source-freeze.json",
+      "bytes": 834,
+      "sha256": "2bcbfea053aae391c2ac006d9a06833894171fc5f698d12e471e340345e725d0",
+      "source": "runs\\r25-live\\typed-generation3\\source-freeze.json"
+    },
+    {
+      "artifact": "generation3\\preflight.json",
+      "bytes": 234,
+      "sha256": "c5b1712ed6b2a6abf638b7509d748d44d570b3ca9139936e3da0da26e7d63ab7",
+      "source": "runs\\r25-live\\typed-generation3\\preflight.json"
+    },
+    {
+      "artifact": "generation3\\cold-started.json",
+      "bytes": 1038,
+      "sha256": "e462e6431b2247e1ca94edd0c40a97ddb101355fa51839ea20708616aba78fc8",
+      "source": "runs\\r25-live\\typed-generation3\\cold-started.json"
+    },
+    {
+      "artifact": "generation3\\model-wire-observation.json",
+      "bytes": 203,
+      "sha256": "b298e76d67e821e651793b8db0cd5417e20a3dc8d35a71f037f21a23aa797ebb",
+      "source": "runs\\r25-live\\typed-generation3\\model-wire-observation.json"
+    },
+    {
+      "artifact": "generation3\\safe-validation.json",
+      "bytes": 593,
+      "sha256": "c748cd9e628d4ad9e9538b6a21114b91f8ac0a27ee2f201ad0b7236500b215c8",
+      "source": "runs\\r25-live\\typed-generation3\\safe-validation.json"
+    },
+    {
+      "artifact": "generation3\\crash-proof.json",
+      "bytes": 1203,
+      "sha256": "e6ee6cedc3e1b06f301a739c12a4dcd9f4696464ca32d49a46f98dcf1ffc83f8",
+      "source": "runs\\r25-live\\typed-generation3\\crash-proof.json"
+    },
+    {
+      "artifact": "generation3\\lineage.json",
+      "bytes": 305,
+      "sha256": "56e7cffe5745ab365c20a08425ca9f8a983960dd24ca1d6454c21996d3f0a4af",
+      "source": "runs\\r25-live\\typed-generation3\\lineage.json"
+    },
+    {
+      "artifact": "generation3\\failed-replay-context-01\\integrity.json",
+      "bytes": 17811,
+      "sha256": "716f03355f09a4a8fee0cb99df6f338bfe2e4da347b5d9a6007ff00abd901b12",
+      "source": "runs\\r25-live\\typed-generation3\\failed-replay-context-01\\integrity.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-replay-repair-pre-execution-final.json",
+      "bytes": 6207,
+      "sha256": "b7eabdfd4c2f3d172e097eb71ce38148b8e64c1429c01ef2a5f4994baa698433",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-replay-repair-pre-execution-final.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-replay-repair-pre-execution-final.md",
+      "bytes": 1498,
+      "sha256": "3f26d8c133f772bb292b412662df904ccfc2d08bbad36d8ea79aae4c55c235b9",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-replay-repair-pre-execution-final.md"
+    },
+    {
+      "artifact": "engine-review\\generation3-replay-repair-actual-final.json",
+      "bytes": 3862,
+      "sha256": "415ee5f3aabd41f1a7f714ea8a1ed1ae95502134acf45b5783e210123d2b8755",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-replay-repair-actual-final.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-replay-repair-actual-final.md",
+      "bytes": 1616,
+      "sha256": "15511d75b82c664bb037bcc79419b8e698694a497ad68976b4d603c158f36d7d",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-replay-repair-actual-final.md"
+    },
+    {
+      "artifact": "engine-review\\generation3-replay-runtime-diagnostic.json",
+      "bytes": 1644,
+      "sha256": "0d993fd59149769153d3bad22c81eb91dd3697f348df05d5f8e4f28eaecef631",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-replay-runtime-diagnostic.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-source-transition.json",
+      "bytes": 2019,
+      "sha256": "85981ae5aae9eb997c236bd90614bf48cb14e9b031a0101cf6dc70e10218373e",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-source-transition.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-actual-readonly.json",
+      "bytes": 1629,
+      "sha256": "5fb37f21b42491675b8a26c6cc3881566852b9daa0fd1d903cef907bfb7b69bc",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-actual-readonly.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-combined63.xml",
+      "bytes": 9659,
+      "sha256": "08a278aca948769bb12a456a4bbf7171824379938b2f571b0fabcfe7b32c41c9",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-combined63.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-combined63-cleanup.json",
+      "bytes": 4203,
+      "sha256": "6f2bcb89957522c50f096364e5107a9620319c45aeba4f0a28aa6935be0b0083",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-combined63-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-red.xml",
+      "bytes": 11160,
+      "sha256": "1a159d511ab026c58586dd2bc202499fab0d396d45cc729dc9d288af6a0330b8",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-red.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-red-cleanup.json",
+      "bytes": 783,
+      "sha256": "fb45758b98bf07c79a3c7452a1323904b0a67a4398d9b77f1c9f550369647949",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-red-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-green.xml",
+      "bytes": 6263,
+      "sha256": "8b8afe2148a0e15c112ec5eedbf3be8fdc971dc095d43278ede0b5197dd20c00",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-green.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-green-cleanup.json",
+      "bytes": 785,
+      "sha256": "67c4675504142f32995da5197986859083bb8d29c06425f87fec584f8ba09695",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-green-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-green2.xml",
+      "bytes": 1153,
+      "sha256": "06c7b9b5915ffc803317adf7641327c0998bfb72c2cd8d922828be3444a54c19",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-green2.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-replay-fix-green2-cleanup.json",
+      "bytes": 786,
+      "sha256": "45641b422967e6d1e8a41ce64553023d3f776e5bced1c6ad62813fef1f1e3ff9",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-fix-green2-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\replay-summary-handoff.json",
+      "bytes": 1713,
+      "sha256": "87b84517ead30e869fc3472e9c37ed9b7c37a145b5f631291d03033854063018",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\replay-summary-handoff.json"
+    },
+    {
+      "artifact": "engine-fix\\replay-summary-offline.xml",
+      "bytes": 4596,
+      "sha256": "bd7774815182ab19bfdb0844225a5ebabfcf320e0ffb1e21fe1dda8f2feb0a39",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\replay-summary-offline.xml"
+    },
+    {
+      "artifact": "engine-fix\\replay-summary-offline-attestations.json",
+      "bytes": 192,
+      "sha256": "ac5de4c1dfde6f9cbd85eef04edfda6522e6f8188814717ae47393b1ea831fbb",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\replay-summary-offline-attestations.json"
+    },
+    {
+      "artifact": "engine-fix\\replay-summary-offline-cleanup.json",
+      "bytes": 283,
+      "sha256": "8cc26539d25d16d5ebba1413031aa0935aaafa0e850e1e30ddfe8ca2234bd6c1",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\replay-summary-offline-cleanup.json"
+    },
+    {
+      "artifact": "generation3-replay-repair.stdout.log",
+      "bytes": 679,
+      "sha256": "319fb74ecc90ab14e6bb423c2c759f83458b41d26cc221888ae11166ae18895d",
+      "source": "runs\\reconcile-production-2026-10-25\\generation3-replay-repair.stdout.log"
+    },
+    {
+      "artifact": "generation3-replay-repair.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "runs\\reconcile-production-2026-10-25\\generation3-replay-repair.stderr.log"
+    },
+    {
+      "artifact": "generation3-replay-repair-exit.json",
+      "bytes": 224,
+      "sha256": "f13b8acec11e9aaec78f82445f12a3f43265ffc24f566700b60dbbb4b20979a8",
+      "source": "runs\\reconcile-production-2026-10-25\\generation3-replay-repair-exit.json"
+    },
+    {
+      "artifact": "source-commit-binding-v3.json",
+      "bytes": 5096,
+      "sha256": "aad5857bb57cf2430f66a345cbe3a92a36686685c6c827bc5a9b675814e2aa3d",
+      "source": "runs\\reconcile-production-2026-10-25\\source-commit-binding-v3.json"
+    },
+    {
+      "artifact": "source-commit-binding-v4.json",
+      "bytes": 7656,
+      "sha256": "40d8ff4f13b1a92268037f9105c4f467c707a75bc74f7ebb51d120a9c848fcdf",
+      "source": "runs\\reconcile-production-2026-10-25\\source-commit-binding-v4.json"
+    },
+    {
+      "artifact": "generation3-preflight-locked-exit.json",
+      "bytes": 113,
+      "sha256": "de1247a69a7fa61a0967b4e193f11c8e25c92aadee8124d4808399b32a92193a",
+      "source": "runs\\reconcile-production-2026-10-25\\generation3-preflight-locked-exit.json"
+    },
+    {
+      "artifact": "generation3-live-cold-exit.json",
+      "bytes": 136,
+      "sha256": "21b1c55b0a5b7d369d4c13a0671d92f919712e83188141587eb7ad2cfeb06c28",
+      "source": "runs\\reconcile-production-2026-10-25\\generation3-live-cold-exit.json"
+    },
+    {
+      "artifact": "generation3-live-recover-exit.json",
+      "bytes": 155,
+      "sha256": "dc4badebef2960dc94c42f14eb2e90721cc22af8a167f398777e9d8b1ef45644",
+      "source": "runs\\reconcile-production-2026-10-25\\generation3-live-recover-exit.json"
+    },
+    {
+      "artifact": "generation3-live-recover.stderr.log",
+      "bytes": 1663,
+      "sha256": "6623700cc1542c2bc3a5fa14c0ff2bc6f5591f47278df7556e08ef0973a35123",
+      "source": "runs\\reconcile-production-2026-10-25\\generation3-live-recover.stderr.log"
+    },
+    {
+      "artifact": "engine-review\\generation3-integrated-round01.json",
+      "bytes": 2099,
+      "sha256": "71bf44d846b6d060bd37cd9b5a122602bf4508ae86f00804a9748ade857f891b",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-integrated-round01.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-integrated-final.json",
+      "bytes": 7806,
+      "sha256": "7cb702ffa89d544700d64b34cc84baeb0d662ad41203e55266456241096c61bc",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-integrated-final.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-integrated-final.md",
+      "bytes": 1904,
+      "sha256": "da8f336907cc980d17498a15154badd966f20b918a93cf1acc978f5824c6c3d2",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-integrated-final.md"
+    },
+    {
+      "artifact": "engine-review\\generation3-actual-control-final.json",
+      "bytes": 4299,
+      "sha256": "dfa2436104603ee233a9b62ff56fde985b2e4a8868e61bd9f9723814d6fb51d6",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-actual-control-final.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-admission-freeze-final.json",
+      "bytes": 20210,
+      "sha256": "99a4452057cb4b3f1436605bb262f866ed321ce166d4afeb78e83d041794caa3",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-admission-freeze-final.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-control-helpers-source-bindings.json",
+      "bytes": 3042,
+      "sha256": "863c1b227d718551fd3b3a35b7207030c18730b3b7c2f4b5d10f19723348dd24",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-control-helpers-source-bindings.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-native-control-readiness.json",
+      "bytes": 3252,
+      "sha256": "8115248510dc8e9b9338df2185f3fc44c7a840bb254495ddf52ad6df5fa39943",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-native-control-readiness.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-native-control-readiness.md",
+      "bytes": 7585,
+      "sha256": "30e47ccdc717b5b4b89efd12e9271d8411d30c97ab236a68e55e3dc1a8c0b21e",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-native-control-readiness.md"
+    },
+    {
+      "artifact": "engine-review\\generation3-control-boundaries-final.xml",
+      "bytes": 1398,
+      "sha256": "509050bf883dea05c4e65234b8e081c19a2d32d76ca1658195761a4479cedcfc",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-control-boundaries-final.xml"
+    },
+    {
+      "artifact": "engine-review\\generation3-control-boundaries-final-attestations.json",
+      "bytes": 191,
+      "sha256": "78ca97825cd3382bbe624adf6886251fcf61315157fcf1569ebfb2c634826fc1",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-control-boundaries-final-attestations.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-control-boundaries-cleanup.json",
+      "bytes": 1868,
+      "sha256": "5a88a6b52a29daf59fbfc6a7772120d231ef546f9703203cde4d4192c7acd0d7",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-control-boundaries-cleanup.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-leaf-red.xml",
+      "bytes": 11280,
+      "sha256": "9fcd687b4e3f9ff10cfbf203c162e07a50f7bf82c56ad0c659b82c520f8d42f9",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-leaf-red.xml"
+    },
+    {
+      "artifact": "engine-review\\generation3-leaf-red-attestations.json",
+      "bytes": 191,
+      "sha256": "bb6d99e8600d360cac91b782980f66c35a713bdc0ef9cb909cd66e8d098bbe96",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-leaf-red-attestations.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-leaf-red-cleanup.json",
+      "bytes": 1416,
+      "sha256": "e7198fab3455b54f7cb1eda81f9288b84d857504a96f72b6c7477f06d2528666",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-leaf-red-cleanup.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-leaf-green.xml",
+      "bytes": 1709,
+      "sha256": "429458cdb41c9b9ce174fd48b36fcf0960e83387026148e033bd06ce8cf2aed4",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-leaf-green.xml"
+    },
+    {
+      "artifact": "engine-review\\generation3-leaf-green-attestations.json",
+      "bytes": 192,
+      "sha256": "cd3dee74200bad24654f2f841fc95475d7cf7e8ae96ac5148bca58cc149bf751",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-leaf-green-attestations.json"
+    },
+    {
+      "artifact": "engine-review\\generation3-leaf-green-cleanup.json",
+      "bytes": 1419,
+      "sha256": "1d7f466ec51c207b2b89892750a752c45c4d3632bc25788dc166791deeec005d",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-review\\generation3-leaf-green-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-handoff.md",
+      "bytes": 7811,
+      "sha256": "b9bf13e48043f081b55b7f927904deea77053566c603a6fd323d7e00f7e73ab9",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-handoff.md"
+    },
+    {
+      "artifact": "engine-fix\\generation3-authored-sources.json",
+      "bytes": 796,
+      "sha256": "66eee4b9094612d969e170fe9e07b09eea42425e55fdbfaa6f560849aaaf5a5e",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-authored-sources.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-owner-control-dto-observed.json",
+      "bytes": 1251,
+      "sha256": "4de058299cb13449892e9134df044d92898b130e24f3a7df6cf883a854969ae4",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-owner-control-dto-observed.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-combined57.xml",
+      "bytes": 8757,
+      "sha256": "81847e68b304fde0516956dfb081b0299f9bc1df1ff75ff99a9e8de845c09530",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-combined57.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-combined57-cleanup.json",
+      "bytes": 2178,
+      "sha256": "fd663ad0e8d0341d1c7f376026a876b524f3f25d12363af11cdbd4d7536bfe5c",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-combined57-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-driver-offline.xml",
+      "bytes": 2597,
+      "sha256": "b88b7188b367ff508cfc8b6ba99bacf66057172d325bfce2b4230678129dafbd",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-driver-offline.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-driver-offline-cleanup.json",
+      "bytes": 760,
+      "sha256": "e32f88985cd7c23e61185fefd333a6e72d975b94061845fda18c501be18a8517",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-driver-offline-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-summary-offline.xml",
+      "bytes": 2566,
+      "sha256": "7e0f10b40929d0b74eade10d319b0960ed215e56da513bf2ae1a4cf764e80808",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-summary-offline.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-summary-offline-cleanup.json",
+      "bytes": 762,
+      "sha256": "1e7c5bfa6eed1dce33de77191af85019dbd0e6de56cb2ecdf64492677946895d",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-summary-offline-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-summary-real-dto-red.xml",
+      "bytes": 8922,
+      "sha256": "833430faffb75d405f843fa01fbc49b815a1923932507e8b0837546e5f4a5f2d",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-summary-real-dto-red.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-summary-real-dto-red-cleanup.json",
+      "bytes": 767,
+      "sha256": "a54d24a774815dbd13dc1f6cd86522bbc843cd8c7a06402de714c891a323a7a4",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-summary-real-dto-red-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-summary-real-dto-green.xml",
+      "bytes": 3005,
+      "sha256": "74fca3bee54c7c003f360bf6327a190b758d329fd0e514c71562ad1583b4f3a3",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-summary-real-dto-green.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-summary-real-dto-green-cleanup.json",
+      "bytes": 769,
+      "sha256": "dce701db296a7cc78a6a375ee62f63ed244c39498c69e0691725110c65c21f15",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-summary-real-dto-green-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-url-actual-request.xml",
+      "bytes": 392,
+      "sha256": "382ef917bc9fc67d736646c336b6da270a8ffd20628495590514065023c1080d",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-url-actual-request.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-url-actual-request-cleanup.json",
+      "bytes": 851,
+      "sha256": "775c920f3b58b68ee01d990870da58409809d577aceadfd50c75ff7bd879ac96",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-url-actual-request-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-url-rules-red.xml",
+      "bytes": 3120,
+      "sha256": "ca11897845d502dbd50a8b22f56b178c22e254675f89d1281a689f260c3622a0",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-url-rules-red.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-url-rules-red-cleanup.json",
+      "bytes": 783,
+      "sha256": "f20b3ac7c2581cfc84005491d7c9c2b29db315aba48f330b268237faee7d5853",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-url-rules-red-cleanup.json"
+    },
+    {
+      "artifact": "engine-fix\\generation3-url-rules-green.xml",
+      "bytes": 719,
+      "sha256": "73fbf67364afb16c659d0e3991f877021135cfe665b157d9654e107dbc6f21e4",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-url-rules-green.xml"
+    },
+    {
+      "artifact": "engine-fix\\generation3-url-rules-green-cleanup.json",
+      "bytes": 785,
+      "sha256": "1ab518fc40f96242f7e8a65e8dc0daf2f698a703665b4e094c330e8026c397b1",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-url-rules-green-cleanup.json"
+    },
+    {
+      "artifact": "generation3\\resolution-terminal-observation.json",
+      "bytes": 645,
+      "sha256": "287963a3b1c71f944b6359e142415dc1a501f3ec52538bb10fc5a8be763a9a4c",
+      "source": "runs\\r25-live\\known-response-repair-gen2\\resolution-terminal-observation.json"
+    },
+    {
+      "artifact": "generation3\\retry-terminal-observation.json",
+      "bytes": 645,
+      "sha256": "3a24464915e07d465a54f8f9ae0ee1ffba78b626069c5045f76898ba7d1afa3c",
+      "source": "runs\\r25-live\\known-response-repair-gen2\\retry-terminal-observation.json"
+    },
+    {
+      "artifact": "generation3\\prepare_work_control_gen3.py.txt",
+      "bytes": 8942,
+      "sha256": "fe8cf51b4fe9ccf0ee8285105cf56a56cf6b7ca4d27397b4b2f2a390105780da",
+      "source": "runs\\reconcile-production-2026-10-25\\prepare_work_control_gen3.py"
+    },
+    {
+      "artifact": "generation3\\run_native_control_gen3.py.txt",
+      "bytes": 4788,
+      "sha256": "bb944bf42c649532cd4c932702e3189bfefa974211064cd8b8be9534d15468fe",
+      "source": "runs\\reconcile-production-2026-10-25\\run_native_control_gen3.py"
+    },
+    {
+      "artifact": "generation3\\prepare_generation3.py.txt",
+      "bytes": 12053,
+      "sha256": "288a67fc613387aaf2723456b32bcf6b6127970092e2ab2b2494155754742d96",
+      "source": "runs\\reconcile-production-2026-10-25\\prepare_generation3.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-cold-driver.py.txt",
+      "bytes": 26830,
+      "sha256": "d329414d66e6b56c4f0a20e5be00f46a5326a9370c4949b32a2493c1005a0919",
+      "source": "runs\\reconcile-production-2026-10-25\\run_generation3.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-cold-reporter.py.txt",
+      "bytes": 26051,
+      "sha256": "4f3774811b79da564a23834e0fb497b40b7b7f07e10be5627c0140b025173b1c",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\real_summary_generation3.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-report-helper.py.txt",
+      "bytes": 21546,
+      "sha256": "452c281e3660c0c35bbddee0060d80399923496765b56486c5d0264299216721",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\real_summary.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\repair-driver.py.txt",
+      "bytes": 17013,
+      "sha256": "33f2d0fc5bd7a92c2951d910b6b2009946ef0a9798e8e655da4503d72871af5d",
+      "source": "runs\\reconcile-production-2026-10-25\\run_replay_repair.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\repair-reporter.py.txt",
+      "bytes": 34444,
+      "sha256": "e494fcab1ad7b2f2951c9938698c6703303333528ed43a81a09baa124d48756a",
+      "source": "runs\\reconcile-production-2026-10-25\\engine-fix\\real_summary_replay_repair.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\freeze.py.txt",
+      "bytes": 3591,
+      "sha256": "9bca84908df55b410832a48d1e35d16afbddaa3e56b14f28311fc5a10cba7f8d",
+      "source": "runs\\reconcile-production-2026-10-25\\freeze_replay_repair.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\capture.py.txt",
+      "bytes": 1093,
+      "sha256": "6a4b10abddc738a36deea58850ba5322bcb576ffc65c2a610f5701e29bb6381e",
+      "source": "runs\\reconcile-production-2026-10-25\\capture_replay_repair.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\finalize-handoff.py.txt",
+      "bytes": 13357,
+      "sha256": "a73b40ff780a1505a22b13983155e75b0b95f1442a7658cec042d6c02ae52650",
+      "source": "runs\\reconcile-production-2026-10-25\\finalize_handoff.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\bind-repair-commits.py.txt",
+      "bytes": 2126,
+      "sha256": "f540b6b9e6923c2c9f1cf5359bcc90df3e306ae57f3838a8416ab147d344ce3c",
+      "source": "runs\\reconcile-production-2026-10-25\\bind_repair_commits.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\publisher.py.txt",
+      "bytes": 26961,
+      "sha256": "b913ea3b067297a6e7dc6b632101b9dcaba201df9c4357b5b761ed890dc9c591",
+      "source": "runs\\reconcile-production-2026-10-25\\publish_evidence.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\current-code\\main\\shared_company_engine.py.txt",
+      "bytes": 46940,
+      "sha256": "7b6a1f790e3529e08d89b05a56f5456431965043214a51770c3fe48399d1606e",
+      "source": "scripts\\shared_company_engine.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-code\\main\\shared_company_engine.py.txt",
+      "bytes": 46731,
+      "sha256": "f58312fb86f00e372722ff6fbff45ec5088fa1a7fecc3a3814b1d72add752cc7",
+      "source": "runs\\r25-live\\typed-generation3\\failed-replay-context-01\\source-snapshot\\main\\shared_company_engine.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\current-code\\company\\replay.py.txt",
+      "bytes": 8990,
+      "sha256": "a4246c3122f7544721b15017967d9ed973eeaea5af0fd3770113b8b58e6b6b8c",
+      "source": "..\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\replay.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-code\\company\\replay.py.txt",
+      "bytes": 8670,
+      "sha256": "585f335c9b181c72e43ab8dd7a8687c3bb4f64a148d34f7187d3ab3354e6c395",
+      "source": "runs\\r25-live\\typed-generation3\\failed-replay-context-01\\source-snapshot\\company\\replay.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\current-code\\company\\reporter.py.txt",
+      "bytes": 12160,
+      "sha256": "368fadc8fce524cc2c5f32d47cf4e75a406b667ff38da2c9505ae9f7473b2a26",
+      "source": "..\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\reporter.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-code\\company\\reporter.py.txt",
+      "bytes": 12086,
+      "sha256": "0d0da59c8e3166a532c879f6fc2b73030d340aa36124ef13d7a3fcf96b720826",
+      "source": "runs\\r25-live\\typed-generation3\\failed-replay-context-01\\source-snapshot\\company\\reporter.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\current-code\\company\\request_context.py.txt",
+      "bytes": 8718,
+      "sha256": "74047b389a85615a968e3d4a8bcaab0b2ca18ac6fc3b9101fccb2f3b0181eb7f",
+      "source": "..\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\request_context.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-code\\company\\request_context.py.txt",
+      "bytes": 8212,
+      "sha256": "7a36ecb35d968c20a044d771652ef322d10b259016b09ba6089642f3102c5d8e",
+      "source": "runs\\r25-live\\typed-generation3\\failed-replay-context-01\\source-snapshot\\company\\request_context.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\current-code\\company\\resume.py.txt",
+      "bytes": 6375,
+      "sha256": "209a9cfdf15a91abe8c490b463e89bd06fc0d29ce027f673a87647d5d4c4f4c9",
+      "source": "..\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\resume.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-code\\company\\resume.py.txt",
+      "bytes": 6182,
+      "sha256": "9af1d32c22ca155ce68a167b08cc407882cf497d89cc204110cb14061bd591c0",
+      "source": "runs\\r25-live\\typed-generation3\\failed-replay-context-01\\source-snapshot\\company\\resume.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\current-code\\company\\runner.py.txt",
+      "bytes": 62071,
+      "sha256": "1aa76d0b4310853766371b28f4924d55eeeea30b089c053fa8a2f1c83af51862",
+      "source": "..\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\runner.py"
+    },
+    {
+      "artifact": "generation3\\replay-repair\\original-code\\company\\runner.py.txt",
+      "bytes": 62490,
+      "sha256": "5baaf3cce0ada624e393f0a24267199fb793111f8cdae4977d40bad274dd788b",
+      "source": "runs\\r25-live\\typed-generation3\\failed-replay-context-01\\source-snapshot\\company\\runner.py"
     }
   ],
   "financial_accuracy_assessed": false,
-  "observed_at": "2026-10-25T13:19:37.191693+00:00",
+  "observed_at": "2026-10-25T14:37:26.827357+00:00",
   "protocol": "iqs.thin-production-evidence/1.0.0",
+  "same_source_cold_and_warm_claim": false,
   "stockwiki_ack_claimed": false
 }

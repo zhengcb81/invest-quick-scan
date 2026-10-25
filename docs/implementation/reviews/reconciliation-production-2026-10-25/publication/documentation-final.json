@@ -1,0 +1,167 @@
+{
+  "protocol": "iqs.independent-documentation-final-review/1.0.0",
+  "reviewer": "/root/inspect_production",
+  "author_of_current_documentation": "/root",
+  "observed_at": "2026-10-25T14:41:14.792527+00:00",
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Current R1-R5 documentation aligned with actual singleton replay-repair evidence and immutable thin publication; no new runtime or financial qualification.",
+  "reviewed_documents": [
+    {
+      "path": "task_plan.md",
+      "sha256": "4af50b17919ab908878d6831e8e7cbbb2cfb82a418b10c9f4f46fad551a24828"
+    },
+    {
+      "path": "progress.md",
+      "sha256": "fd476dbf2a52eb7df35a301c506b9b6360e6ed0f1ab9fba27a92e859f0f0ce16"
+    },
+    {
+      "path": "findings.md",
+      "sha256": "9432bbe179e1ef15dd406a20204e2606decc168288fc48c791d474148f51fff1"
+    },
+    {
+      "path": "docs/implementation/handoff-for-new-agent.md",
+      "sha256": "ab34edb2dce7346bfd3c1e0aacb0aadc297c4745e8b00ad13fd21d4e9859bbce"
+    },
+    {
+      "path": "docs/implementation/shared-engine-operations.md",
+      "sha256": "c7cd84f1e0ea304426c9ace4e6a68784c420d27fae21d6380faed8118c1d589f"
+    },
+    {
+      "path": "docs/implementation/shared-engine-status-2026-10-25.md",
+      "sha256": "c1829b440fef5ea424b4854ac4a796f975fbe0581a90281f97afe493caa046fa"
+    },
+    {
+      "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/README.md",
+      "sha256": "c2fd5e043ade272a8ab2e9b917665bf7b1e5d7e28be4d8fc034cb2b5c970a1c5"
+    }
+  ],
+  "production_manifest": {
+    "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/integrity.json",
+    "sha256": "53abd7bae48e4815d161df5fe4921a2f8eee33ae4acd8314a950f4a431a39594",
+    "raw_files_verified": 236,
+    "unique_artifact_paths": true,
+    "old130_rows_and_bytes_unchanged": true,
+    "old130_manifest_sha256": "d003febfd8c4e4626eb45e04452d835de6d97cfa3927f1bd5e4389056ea2afd1",
+    "same_source_cold_and_warm_claim": false
+  },
+  "publication_manifest": {
+    "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/publication/manifest.json",
+    "sha256": "57e319914319366799553c756851b34c907930a9264d665ed2c45a6b25d79cfc",
+    "raw_files_verified": 18,
+    "does_not_rewrite_production236": true,
+    "scope": "Publisher software review/test/raw-Git evidence only; not model, financial, or ACK validation."
+  },
+  "actual_four_artifact_bindings": {
+    "result": {
+      "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/generation3/replay-repair/result.json",
+      "sha256": "63dd2d51da764cabc8e07a1c11e6b4da99666ba617ebc10366b4445899c28042",
+      "matches_actual_local_result": true
+    },
+    "summary": {
+      "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/generation3/replay-repair/thin-summary.json",
+      "sha256": "80c9ba18d3640af59247d29bd8eed2dcafe2c251449e60f101cf109ca5efc717",
+      "matches_actual_local_result": true
+    },
+    "source_transition": {
+      "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/generation3/replay-repair/source-transition.json",
+      "sha256": "3a9ed15ff02728cf122310e679549ed65599385b95649c534b0aa0278b712f5e",
+      "matches_actual_local_result": true
+    },
+    "repair_source_pins": {
+      "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/generation3/replay-repair/repair-source-pins.json",
+      "sha256": "dd3b71d3bda8b5ef7180ed6077f8f669cfb1e4e9fe1d9c14c7f9e3b5ce1cdf51",
+      "matches_actual_local_result": true
+    }
+  },
+  "actual_final_review": {
+    "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/engine-review/generation3-replay-repair-actual-final.json",
+    "sha256": "415ee5f3aabd41f1a7f714ea8a1ed1ae95502134acf45b5783e210123d2b8755",
+    "reviewer": "/root/fix_bank21",
+    "status": "passed",
+    "open_findings": []
+  },
+  "publication_test_evidence_read_not_rerun": [
+    {
+      "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/publication/repair-publisher-final.xml",
+      "sha256": "5b8bfeeb86f5babb0f5b76d68bf75b08104fdc3cb0b1e72c102ed69a2e0d7c0a",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "docs/implementation/reviews/reconciliation-production-2026-10-25/publication/repair-publisher-history.xml",
+      "sha256": "71a5b1a2329acbfd00bfb134664d1244e05d9dea373340cfac0d52ff1a5cedb2",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "verified_current_claims": {
+    "R1_to_R5_current_node_complete": true,
+    "only_CATL_IQS_05_original24_manifest": true,
+    "cutoff": "2026-10-18",
+    "observed_at": "2026-10-25T14:15:41.377934+00:00",
+    "model_http": 1,
+    "search_http": 1,
+    "model_seconds": 60.1106054999982,
+    "recovery_seconds": 128.47919819998788,
+    "recovery_new_http": 0,
+    "same_source_cold_and_warm_claim": false,
+    "original_safe_reused": true,
+    "double_finalization_same_checkpoint": true,
+    "delivery_state": "ready",
+    "stockwiki_ack_received": false,
+    "financial_accuracy_assessed": false,
+    "generation3_public_rate_estimate_micros": 5894,
+    "cumulative_public_rate_estimate_micros": 25023,
+    "invoice_cost": null,
+    "original_six_request_budget_exhausted": true,
+    "historical_invalid_generations_retained": [
+      1,
+      2
+    ],
+    "source_commits_read_from_actual_git_log": {
+      "invest-quick-scan": "733186c",
+      "iqs-company-agent-lab": "803ff51",
+      "StockQAbyLLM": "24fc22f"
+    }
+  },
+  "next_action": "Read-only check of the existing ready delivery against the original StockWiki public import/ACK contract, then prepare isolated ACK integration; do not rerun any existing cold/recovery driver or alter old budget/safe/pins.",
+  "links_checked": [
+    "docs/implementation/shared-engine-operations.md",
+    "docs/implementation/shared-engine-status-2026-10-25.md",
+    "docs/implementation/reviews/reconciliation-production-2026-10-25/production/integrity.json",
+    "docs/implementation/reviews/reconciliation-production-2026-10-25/production/engine-review/generation3-replay-repair-actual-final.json",
+    "docs/implementation/reviews/reconciliation-production-2026-10-25/production/engine-review/generation3-replay-repair-actual-final.md",
+    "docs/implementation/reviews/reconciliation-production-2026-10-25/production/source-commit-binding-v4.json",
+    "docs/implementation/reviews/reconciliation-production-2026-10-25/publication/manifest.json",
+    "docs/implementation/reviews/reconciliation-production-2026-10-25/basic",
+    "runs/r25-live/typed-generation3/replay-repair"
+  ],
+  "initial_documentation_findings_resolved": [
+    "Final evidence publication had not yet run: all referenced final archive files now exist and match hashes.",
+    "Handoff now explicitly names production/integrity.json and sibling publication/manifest.json.",
+    "R2 wording now reflects actual R3/R4 completion; next step is one concrete ready-to-ACK contract check."
+  ],
+  "review_execution": {
+    "API_calls": 0,
+    "database_connections": 0,
+    "database_writes": 0,
+    "tests_rerun": 0,
+    "source_or_PWF_writes": 0,
+    "only_writes": [
+      "publication/documentation-final.json",
+      "publication/documentation-final.md"
+    ]
+  },
+  "limitations": [
+    "This checks documentation/evidence consistency; the separate actual final review validates runtime/native binding.",
+    "One company and one question, not all38 questions, multi-company, full-pool, financial accuracy, or StockWiki ACK.",
+    "Recovery is explicitly after a six-source repair, not same-source cold/warm acceptance.",
+    "Generic report CLI still defaults to empty rules; typed exports require the documented trusted-rules API.",
+    "Post-commit evidence Git blob verification and push are performed by root after this review; no claim here that pending documentation is already committed."
+  ]
+}

@@ -1,3 +1,26 @@
+## 2026-10-25 — 真实singleton生产接线、摘要和禁网恢复已验收
+
+- 最终发布复审另修旧130归档被后续诊断覆盖的风险：旧字节/原清单行保持，补充诊断另存修订版；旧清单单独封存。另实证Windows autocrlf会改变Git中的raw证据字节，已仅在本轮production证据目录设置`* -text`，提交时按完整清单核Git blob，产品源与运行锁不受影响。
+- 真实CATL IQS_05（信息截止10/18，观察10/25）经原公共身份/准入/原SDK调用DeepSeek Search1次、MiMo Pro思考1次，60.1106秒；原语义和exact来源门通过后exit86。
+- 首次暖恢复暴露可信typed规则未传Replay，原守卫正确拒绝。根修共享builder及恢复/封存/报告传播，保留原三hash比较；63项集中回归+29项摘要器测试通过，原真实pending严格只读重建通过。
+- 14:15:41Z在新进程移除keys并禁网，从原safe恢复成功（128.479秒），原schema2检查点CHECKPOINT_0297caf9286140189556a06810663d84，delivery=ready；两次封存同CP，第二次复用IQS_05。新增HTTP0；预算、native安全响应、外部检索、durable context及owner decision完整行hash全等。
+- 新只读thin-summary真实执行通过，读取前后整个原工作库SHA相同，原导出runtime与report逐字段相同。原三代费用和两份无效safe完整保留；累计公开价估算25023micros，本代5894，账单cash仍unknown。没有改响应、清账或放宽引用/语义规则。
+- 原72cold锁不动，修前60制品快照与新112源锁/六源transition明确保留；这是不同源码修复后的兼容恢复，same_source=false。源码正常提交IQS733186c、Company803ff51（无remote），StockQA24fc22f已推送。实际整节点独审由不同agent完成，passed/open_findings=[]，最终四件SHA相互绑定。
+- R1–R5当前节点完成；未宣称StockWiki ACK、38题/整公司/全池、金融准确性或通用typed report CLI均通过。自有测试临时根已清；真实隔离DB/原safe保留供审查，不推远端。
+
+## 2026-10-25 13:50Z — 第三代合法真实safe已取得，正禁网恢复
+
+- 两原rc1控制已实际apply并经独立只读核验；原generation3 admission实际accepted/authenticated/registered，WORK_0fff5c2e56774b9d9e461d1b2b922ff6。固定owner policy1.2和同预算未改。
+- 最终72源锁`8a12ef0c…6759d`全原字节匹配；driver d329414d、reporter 4f377481，源commit IQS f9427f1 / StockQA24fc22f / Company73d342b / StockWiki854b819。原locked预检45.530秒/0HTTP通过。
+- 第三代实际唯一MiMo Pro post：thinking=true、HTTP200、60.1106秒。原IQS语义及原StockQA standard/source v2门均passed，scored、3证据、5原检索URL；原safe保留后13:49:06.621714Z准确exit86，无正式封存调用。
+- 新进程禁网恢复正在执行（移除keys/阻断socket），等待原finalize两次、同CP复用、账本全行SHA不变、原report runtime逐字段一致及原只读摘要。尚未把HTTP或safe通过写成R3/R4完成；不得再执行cold，也不得把前余额19129micros冒称最终费用。
+
+## 2026-10-25 13:34Z — 来源反例归因闭合，新提示已推送，原第三代控制进行中
+
+- 实际context/hash复算证实query完整传给模型，是输出删除参数；原来源守卫保持。提示只改新请求typed规则，历史renderer指纹不变，原54加新3共57项集中通过；已正常commit/push`f9427f1`。PWF/交接/130份薄证据先于它提交推送`c3f3c0d`，没有数据库或回答正文。
+- G3整组独审passed/open_findings=[]。修复两项初轮问题：delegation配置leaf重定向/硬链接边界（9项含真实hardlink负例）；摘要沿原真实DTO字段source_work_item_id回溯gen2→gen1（14项，错key/断链拒绝）。driver12项、原实际payload捕获1项分别通过，均为工程证据，不替代实际G3。
+- 原lease真实13:30:22.486661Z到期后才派生/预览。原终端于13:33:49Z确认gen2来源无效处置，root按已有授权自动输入，非人类手输、不造grant。正原apply，尚未第三代准入或新付费请求。原native cache key含generation，保留原policy/query也不能预称跨代命中；剩原2请求允许1search+1model。
+
 ## 2026-10-25 13:04Z — 新代次真实响应已保留，但仍被原语义/来源门拒绝
 
 - driver公开controls遗漏已修，最终原locked预检51.57秒通过；最终56项锁`6137fafb…9963`绑定driver80ceecfc及薄摘要器b47392f9，独立raw核验全匹配。发送前各失败/中间锁原样保留。
@@ -5158,3 +5181,8 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 最后预检61.18秒/0HTTP，pins f69ee033…；10:48:03比原expiry早2.326秒的领取被guard正确拒绝（单独保留negative记录），到期后原recover_expired/claim成功，epoch2/gen1。DeepSeek实际HTTP200、5条、原费率估算750micros，旧not_sent预算行和unknown回执仍保留。模型只有1条prepared、send_intent/模型budget/安全响应均0。
 
 根因：新观察库经基础migrate后仍user_version2，无quick_scan_subject_dispatch表；主体派发register要求3/4，实际在注册步骤拒绝，外部use proof已保存，尚未到LLM HTTP。软件fixture已初始化更高版本所以此前正例未覆盖真实bootstrap缺项。正在使用原备份升级工具并设计前置能力检查；不把prepared算HTTP或删除原记录，不用新账本重发。
+## 2026-10-25 14:08Z — 真实safe后恢复反例已定位，按明确版本谱系修复
+
+- 13:51:22Z首禁网恢复被原Replay三哈希校验拒绝，0新增HTTP/0检查点；没有绕过守卫或修改safe。纯重构证实冷调用typed规则插入prefix、Replay却未插入，dynamic hash相同，补回原冻结规则后prefix精确相同。
+- 已保存修前60制品，完整清单SHA `716f03355f09a4a8fee0cb99df6f338bfe2e4da347b5d9a6007ff00abd901b12`；原72pins、冷driver/reporter/task/safe均不改。6源修复统一受信rules的构造/恢复/验签，集中63项通过（5.89秒），含完整typed execute→pending→resume及原report，删/改rule仍拒绝；独审正在整节点收口。
+- 新repair driver与只读reporter显式记录cold→修复后源码差异，`same_source_cold_and_warm_claim=false`。接下来仅禁网复用原safe，不重跑cold；累计原账本25023micros为公开价估算，账单unknown，6次计数请求已用完。

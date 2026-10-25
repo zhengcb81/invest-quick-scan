@@ -1,0 +1,34 @@
+{
+  "protocol": "iqs.independent-generation3-integrated-review/1.0.0",
+  "reviewed_at": "2026-10-25T13:26:52.916754+00:00",
+  "status": "two_concrete_findings_with_authors_for_same_round_fix",
+  "reviewer": "/root/fix_bank21",
+  "findings": [
+    {
+      "id": "G3-01",
+      "priority": "P2",
+      "file": "prepare_generation3.py",
+      "source_sha256": "ca6fd4659308745476f175102a8fdd8d8d35828ca02fb8dbdbb4cdb199cfb1e4",
+      "issue": "Existing delegation-install config file leaf was written without owned/no-link validation, despite safe parent config directory",
+      "requirement": "Validate exact leaf before read/write and reject redirected/linked file, with focused boundary negative",
+      "evidence_scope": "Static write-path audit; no foreign target modified"
+    },
+    {
+      "id": "G3-02",
+      "priority": "P1",
+      "file": "engine-fix/real_summary_generation3.py",
+      "source_sha256": "8eefd267ac55474c2fab3fe4b7ddd960ec57b3d427015159197e2ce33473668c",
+      "issue": "Historical lineage uses source_work_id, while actual original gen2 owner_control contains source_work_item_id",
+      "requirement": "Use original exact key and test against real schema shape; do not invent alias fallback",
+      "evidence_scope": "Independent original ReadOnlyWorkView.get_owner_refresh_binding on actual gen2 store; no DB write"
+    }
+  ],
+  "already_reviewed_without_blocker": [
+    "Typed prompt preserves exact URL/query/fragment and unknown publication date, with usual-two guidance explicitly not a hard cap; original renderer unchanged",
+    "Driver keeps original SDK-only single-post observer, public execution controls, v2 pre-crash semantics/source validation, original cumulative budget, no-network recovery and duplicate-finalization checks",
+    "Search policy stays original exact bytes; actual native cache alone decides reuse; reporter distinguishes old receipt HTTP and current cold operation delta conservatively"
+  ],
+  "actual_generation3_execution_accepted": false,
+  "reviewer_api_calls": 0,
+  "reviewer_database_writes": 0
+}

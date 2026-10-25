@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="14" time="0.601" timestamp="2026-10-25T13:27:32.310670+00:00" hostname="DESKTOP-156V213"><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_no_result_is_not_ready_without_dispatch_or_output" time="0.103" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_missing_driver_pin_fails_before_original_module_is_loaded" time="0.001" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_arbitrary_original_exception_text_is_not_published" time="0.003" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_reused_privacy_helper_withholds_url_query_fragment" time="0.001" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_original_task_loader_rejects_altered_bundle_or_run_with_old_self_hash[subject]" time="0.076" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_original_task_loader_rejects_altered_bundle_or_run_with_old_self_hash[question_module]" time="0.003" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_original_task_loader_rejects_altered_bundle_or_run_with_old_self_hash[raw]" time="0.003" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_original_task_loader_rejects_altered_bundle_or_run_with_old_self_hash[run_manifest]" time="0.003" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_original_task_loader_rejects_altered_bundle_or_run_with_old_self_hash[legacy_protocol]" time="0.003" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_historical_receipt_is_not_counted_as_new_search_http_when_reused[10.0-0]" time="0.001" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_historical_receipt_is_not_counted_as_new_search_http_when_reused[30.0-1]" time="0.001" /><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_both_old_generations_and_search_charges_are_preserved_from_original_control_chain[None]" time="0.017"><failure message="_generation3_readonly_summary_helpers.InvalidEvidence: historical_original_source_work_id_missing">issue = None
+
+    @pytest.mark.parametrize("issue", [None, "wrong_key", "broken_chain"])
+    def test_both_old_generations_and_search_charges_are_preserved_from_original_control_chain(issue):
+        from types import SimpleNamespace
+        import copy
+        import json
+        observed = json.loads(PATH.with_name("generation3-owner-control-dto-observed.json").read_text(encoding="utf8"))
+        assert observed["observation_kind"] == "actual_public_dto_projection_not_permission_or_financial_qualification"
+        control = copy.deepcopy(observed["owner_control"])
+        old_work_id = control["source_work_item_id"]
+        if issue == "wrong_key":
+            control["source_work_id"] = control.pop("source_work_item_id")
+        if issue == "broken_chain":
+            control["source_work_item_id"] = "SYNTHETIC_MISSING_WORK"
+        def get_item(work):
+            return dict(generation={"G2": 2, old_work_id: 1}[work], status="failed")
+        def response(attempt):
+            return dict(receipt_sha256=attempt + "_SHA", receipt=dict(requested_model="synthetic",
+                actual_model="synthetic", usage={"synthetic_only": True}))
+        def operation(reference):
+            gen = 2 if "G2" in reference else 1
+            return dict(context={"work_fingerprint": {"generation": gen}},
+                result=dict(receipt_sha256=reference + "_SHA", receipt={"http_request_count": 1},
+                            charge={"actual_cost_micros": gen}))
+        store = SimpleNamespace(get_item=get_item, list_attempts=lambda work: [dict(attempt_id=work, phase="response_available")],
+            get_attempt_response=response, get_answer_checkpoint=lambda work: None,
+            get_external_context_use=lambda attempt: {"proof": {"retrievals": [dict(operation_id=attempt, receipt_sha256=attempt + "_SHA")]}},
+            get_external_search=operation,
+            get_owner_refresh_binding=lambda work: {"binding": {"owner_control": control}})
+        if issue:
+            with pytest.raises((ValueError, reporter.InvalidEvidence, KeyError)):
+                reporter.historical_generations(store, "G2", lambda native: {"synthetic_price": True})
+            return
+&gt;       models, searches, chain = reporter.historical_generations(store, "G2", lambda native: {"synthetic_price": True})
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+runs\reconcile-production-2026-10-25\engine-fix\test_generation3_summary.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runs\reconcile-production-2026-10-25\engine-fix\real_summary_generation3.py:100: in historical_generations
+    require(isinstance(cursor, str) and cursor, "historical_original_source_work_id_missing")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'historical_original_source_work_id_missing'
+
+    def require(condition, reason):
+        if not condition:
+&gt;           raise InvalidEvidence(reason)
+E           _generation3_readonly_summary_helpers.InvalidEvidence: historical_original_source_work_id_missing
+
+runs\reconcile-production-2026-10-25\engine-fix\real_summary.py:35: InvalidEvidence</failure></testcase><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_both_old_generations_and_search_charges_are_preserved_from_original_control_chain[wrong_key]" time="0.001"><failure message="Failed: DID NOT RAISE any of (ValueError, InvalidEvidence, KeyError)">issue = 'wrong_key'
+
+    @pytest.mark.parametrize("issue", [None, "wrong_key", "broken_chain"])
+    def test_both_old_generations_and_search_charges_are_preserved_from_original_control_chain(issue):
+        from types import SimpleNamespace
+        import copy
+        import json
+        observed = json.loads(PATH.with_name("generation3-owner-control-dto-observed.json").read_text(encoding="utf8"))
+        assert observed["observation_kind"] == "actual_public_dto_projection_not_permission_or_financial_qualification"
+        control = copy.deepcopy(observed["owner_control"])
+        old_work_id = control["source_work_item_id"]
+        if issue == "wrong_key":
+            control["source_work_id"] = control.pop("source_work_item_id")
+        if issue == "broken_chain":
+            control["source_work_item_id"] = "SYNTHETIC_MISSING_WORK"
+        def get_item(work):
+            return dict(generation={"G2": 2, old_work_id: 1}[work], status="failed")
+        def response(attempt):
+            return dict(receipt_sha256=attempt + "_SHA", receipt=dict(requested_model="synthetic",
+                actual_model="synthetic", usage={"synthetic_only": True}))
+        def operation(reference):
+            gen = 2 if "G2" in reference else 1
+            return dict(context={"work_fingerprint": {"generation": gen}},
+                result=dict(receipt_sha256=reference + "_SHA", receipt={"http_request_count": 1},
+                            charge={"actual_cost_micros": gen}))
+        store = SimpleNamespace(get_item=get_item, list_attempts=lambda work: [dict(attempt_id=work, phase="response_available")],
+            get_attempt_response=response, get_answer_checkpoint=lambda work: None,
+            get_external_context_use=lambda attempt: {"proof": {"retrievals": [dict(operation_id=attempt, receipt_sha256=attempt + "_SHA")]}},
+            get_external_search=operation,
+            get_owner_refresh_binding=lambda work: {"binding": {"owner_control": control}})
+        if issue:
+&gt;           with pytest.raises((ValueError, reporter.InvalidEvidence, KeyError)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE any of (ValueError, InvalidEvidence, KeyError)
+
+runs\reconcile-production-2026-10-25\engine-fix\test_generation3_summary.py:118: Failed</failure></testcase><testcase classname="runs.reconcile-production-2026-10-25.engine-fix.test_generation3_summary" name="test_both_old_generations_and_search_charges_are_preserved_from_original_control_chain[broken_chain]" time="0.001" /></testsuite></testsuites>

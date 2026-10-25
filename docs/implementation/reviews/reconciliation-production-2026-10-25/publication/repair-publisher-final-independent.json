@@ -1,0 +1,67 @@
+{
+  "protocol": "iqs.independent-repair-publisher-final-review/1.0.0",
+  "reviewer": "/root/fix_bank21",
+  "author": "/root/review_bank21",
+  "observed_at": "2026-10-25T14:37:05.519432+00:00",
+  "status": "passed",
+  "open_findings": [],
+  "publisher_sha256": "b913ea3b067297a6e7dc6b632101b9dcaba201df9c4357b5b761ed890dc9c591",
+  "finding_closed": {
+    "id": "PUBREPAIR-01",
+    "severity": "P2",
+    "problem": "Mutable current diagnostic would have overwritten the original archive row and raw bytes.",
+    "root_fix": "Repair mode first verifies exact original manifest and all 130 target rows/bytes, reuses immutable archived target bytes and rows, archives the original manifest separately, and copies updated diagnosis under a separately named revision."
+  },
+  "readonly_execution": {
+    "definitions_and_static_plan_only": true,
+    "cli_parser_or_copy_loop_executed": false,
+    "original_130_rows_verified": 130,
+    "original_manifest_sha256": "d003febfd8c4e4626eb45e04452d835de6d97cfa3927f1bd5e4389056ea2afd1",
+    "planned_unique_archive_files": 236,
+    "missing_sources": [],
+    "actual_review_four_artifact_raw_hashes_bound": {
+      "result": "63dd2d51da764cabc8e07a1c11e6b4da99666ba617ebc10366b4445899c28042",
+      "summary": "80c9ba18d3640af59247d29bd8eed2dcafe2c251449e60f101cf109ca5efc717",
+      "source_transition": "3a9ed15ff02728cf122310e679549ed65599385b95649c534b0aa0278b712f5e",
+      "repair_source_pins": "dd3b71d3bda8b5ef7180ed6077f8f669cfb1e4e9fe1d9c14c7f9e3b5ce1cdf51"
+    },
+    "publisher_executed": false,
+    "network_or_API_calls": 0,
+    "original_DB_or_owner_mutations": 0
+  },
+  "tests": [
+    {
+      "path": "runs\\reconcile-production-2026-10-25\\engine-review\\repair-publisher-final.xml",
+      "raw_sha256": "5b8bfeeb86f5babb0f5b76d68bf75b08104fdc3cb0b1e72c102ed69a2e0d7c0a",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "runs\\reconcile-production-2026-10-25\\engine-review\\repair-publisher-history.xml",
+      "raw_sha256": "71a5b1a2329acbfd00bfb134664d1244e05d9dea373340cfac0d52ff1a5cedb2",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "test_version_limits": [
+    "12 core tests ran on b6249fef6ce197f33eb1b5cbae9407de8cba8f6e3fee06ff23f67febdd051dfc before allowlist extensions.",
+    "3 history cases ran on 6beaeebee54263ce4a048ddfc0cc3b7c864084c381e910f12b232c91063dbbc3; final b913 only adds explicit repair-mode/false same-source manifest fields; inspected AST/copy-loop code."
+  ],
+  "git_raw_storage": {
+    "scoped_attributes_path": "docs/implementation/reviews/reconciliation-production-2026-10-25/production/.gitattributes",
+    "rule": "* -text",
+    "purpose": "Preserve original manifest raw-byte SHA through Git autocrlf and checkout.",
+    "scope": "Evidence archive only; no product source attributes changed.",
+    "existing_archive_bytes_unchanged": true,
+    "post_commit_git_blob_verification_owner": "/root"
+  },
+  "acceptance_boundary": [
+    "Publisher cleared for root execution of --repair-final; this review did not publish.",
+    "Actual replay repair accepted by separately raw-hash-bound final review; same_source_cold_and_warm_claim remains false.",
+    "No financial accuracy, invoice, StockWiki ACK, large-pool or same-source recovery claim."
+  ]
+}

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="0.700" timestamp="2026-10-25T14:01:52.316622+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_shared_semantic_replay" name="test_original_request_hashes_replay_with_same_trusted_rules[rules0]" time="0.137"><failure message="TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'">rules = ('[SYNTHETIC ONLY] Copy the exact bound source URL including its query.',)
+
+    @pytest.mark.parametrize("rules", [RULES, ()])
+    def test_original_request_hashes_replay_with_same_trusted_rules(rules):
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        port = composition.ContextPort(task)
+        runner = Runner(task, port, answer_semantic_rules=rules)
+        runner.run()
+&gt;       reconstructed = ReplayEngine(task, answer_semantic_rules=rules).replay(runner.journal.events)["state"]
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'
+
+tests\test_shared_semantic_replay.py:34: TypeError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_original_request_hashes_replay_with_same_trusted_rules[rules1]" time="0.005"><failure message="TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'">rules = ()
+
+    @pytest.mark.parametrize("rules", [RULES, ()])
+    def test_original_request_hashes_replay_with_same_trusted_rules(rules):
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        port = composition.ContextPort(task)
+        runner = Runner(task, port, answer_semantic_rules=rules)
+        runner.run()
+&gt;       reconstructed = ReplayEngine(task, answer_semantic_rules=rules).replay(runner.journal.events)["state"]
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'
+
+tests\test_shared_semantic_replay.py:34: TypeError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_omitted_or_changed_rules_cannot_satisfy_original_event_hash[changed0]" time="0.005"><failure message="TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'">changed = ()
+
+    @pytest.mark.parametrize("changed", [(), ("different trusted rule",)])
+    def test_omitted_or_changed_rules_cannot_satisfy_original_event_hash(changed):
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        port = composition.ContextPort(task)
+        runner = Runner(task, port, answer_semantic_rules=RULES)
+        runner.run()
+        with pytest.raises(ProtocolIllegalError, match="runtime context diverges"):
+&gt;           ReplayEngine(task, answer_semantic_rules=changed).replay(runner.journal.events)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'
+
+tests\test_shared_semantic_replay.py:47: TypeError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_omitted_or_changed_rules_cannot_satisfy_original_event_hash[changed1]" time="0.005"><failure message="TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'">changed = ('different trusted rule',)
+
+    @pytest.mark.parametrize("changed", [(), ("different trusted rule",)])
+    def test_omitted_or_changed_rules_cannot_satisfy_original_event_hash(changed):
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        port = composition.ContextPort(task)
+        runner = Runner(task, port, answer_semantic_rules=RULES)
+        runner.run()
+        with pytest.raises(ProtocolIllegalError, match="runtime context diverges"):
+&gt;           ReplayEngine(task, answer_semantic_rules=changed).replay(runner.journal.events)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'
+
+tests\test_shared_semantic_replay.py:47: TypeError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_typed_pending_resume_export_and_report_reuse_original_hashes_without_new_dispatch" time="0.120"><failure message="iqs_company_agent_lab.errors.ProtocolIllegalError: model-bound runtime context diverges on replay">tmp_path = WindowsPath('C:/Temp/iqs-g2-unit-b2_6c1ex/pytest/test_typed_pending_resume_expo0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000299F2B52EA0&gt;
+
+    def test_typed_pending_resume_export_and_report_reuse_original_hashes_without_new_dispatch(tmp_path, monkeypatch):
+        """Composition seams isolate owner admission, never a native positive."""
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        def validator(answer, question_id):
+            assert answer["question_id"] == question_id
+        validator.prompt_rules = RULES
+        monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: validator)
+        class CrashPort(composition.ContextPort):
+            def model_step(self, request):
+                receipt = super().model_step(request)
+                raise SyntheticCrash("before_commit", receipt["runtime_attempt_ref"], receipt)
+        old_port = CrashPort(task)
+        with pytest.raises(engine.SharedEngineInterrupted):
+            engine._execute_with_port(task, composition.SyntheticObservations(old_port), old_port,
+                output=tmp_path / "unused-export", session_dir=tmp_path / "cold", transport_origin="scripted_wire")
+        checkpoint = tmp_path / "cold/checkpoint.json"
+        saved = copy.deepcopy(old_port.receipts[0])
+        saved["session_handle"] = None
+        from iqs_company_agent_lab.receipts import finalize_receipt_digest
+        saved["receipt_sha256"] = finalize_receipt_digest(saved)
+        monkeypatch.setattr(engine, "preflight", lambda *args: {})
+        monkeypatch.setattr(engine, "inspect_native_recovery", lambda *args, **kwargs:
+                            dict(decision="recover_saved_receipt", saved_receipt=saved))
+        fresh_port = composition.ContextPort(task)
+        import iqs_agent_runtime_lab.port
+        monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *args, **kwargs: fresh_port)
+        class Warm(composition.SyntheticObservations):
+            def inspect_attempt(self, ref):
+                return dict(known=True)
+            def attempt_observations(self, **kwargs):
+                rows = super().attempt_observations(**kwargs)
+                for row in rows:
+                    row["replayed"] = True
+                return rows
+&gt;       result = engine.resume_shared_engine(task, Warm(old_port), {}, checkpoint, tmp_path / "export",
+            session_dir=tmp_path / "warm", transport_origin="scripted_wire")
+
+tests\test_shared_semantic_replay.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\shared_company_engine.py:520: in resume_shared_engine
+    _verify_snapshot_against_history(checkpoint_path, checkpoint, task)
+..\iqs-company-agent-lab\src\iqs_company_agent_lab\resume.py:113: in _verify_snapshot_against_history
+    reconstructed = state_snapshot(ReplayEngine(task).replay(events)["state"])
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\iqs-company-agent-lab\src\iqs_company_agent_lab\replay.py:79: in replay
+    self._apply_one(state, event, strategy, verify_intents=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;iqs_company_agent_lab.replay.ReplayEngine object at 0x00000299F2D003E0&gt;
+state = &lt;iqs_company_agent_lab.state.RunnerState object at 0x00000299F29F2690&gt;
+event = {'data': {'dynamic_context_sha256': '7b311d6168c9b33b0120351088eedf645cb198a2d42d73fffb0718a0837dfaa3', 'intent': {'ac...type': 'runtime_request', 'prev_event_sha256': '8799c3112bb40bbdf5d04a02b077de208d0adc82179070184c0bdc7110199c36', ...}
+strategy = &lt;iqs_company_agent_lab.strategy.ModulePackStrategy object at 0x00000299F29F2570&gt;
+verify_intents = True
+
+    def _apply_one(
+        self, state: RunnerState, event: dict[str, Any], strategy, verify_intents: bool
+    ) -&gt; None:
+        kind = event["event_type"]
+        data = event["data"]
+        if kind == "run_started":
+            return
+        if kind == "segment":
+            apply_segment(state, data)
+        elif kind == "intent":
+            if verify_intents:
+                self._verify_intent(state, strategy, event)
+            apply_intent(state, data)
+        elif kind == "receipt_model":
+            apply_model_receipt(state, data)
+        elif kind == "receipt_search":
+            apply_search_receipt(state, data)
+        elif kind == "answer_committed":
+            apply_answer_committed(state, data)
+        elif kind == "answer_rejected":
+            apply_answer_rejected(state, data)
+        elif kind == "self_review":
+            apply_self_review(state, data)
+        elif kind == "draft_recorded":
+            state.drafts[data["question_id"]] = data["answer"]
+            state.counters["drafts_recorded"] = state.counters.get("drafts_recorded", 0) + 1
+        elif kind == "context_compacted":
+            state.context_version = data["context_version"]
+            state.context_indexed_ids = list(data["indexed_traceable_ids"])
+        elif kind == "runtime_request":
+            from .request_context import build_runtime_request
+    
+            request = build_runtime_request(state, data["intent"])
+            for key in ("protocol", "stable_prefix_sha256", "dynamic_context_sha256"):
+                if request[key] != data[key]:
+&gt;                   raise ProtocolIllegalError("model-bound runtime context diverges on replay")
+E                   iqs_company_agent_lab.errors.ProtocolIllegalError: model-bound runtime context diverges on replay
+
+..\iqs-company-agent-lab\src\iqs_company_agent_lab\replay.py:126: ProtocolIllegalError</failure></testcase><testcase classname="tests.test_shared_semantic_replay" name="test_replay_refuses_invalid_rule_carrier_before_using_events" time="0.001"><failure message="TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'">def test_replay_refuses_invalid_rule_carrier_before_using_events():
+        task = fixtures.scan_task(qs=fixtures.questions(1))
+        with pytest.raises(ProtocolIllegalError, match="answer_semantic_rules_invalid"):
+&gt;           ReplayEngine(task, answer_semantic_rules="not a rule list")
+E           TypeError: ReplayEngine.__init__() got an unexpected keyword argument 'answer_semantic_rules'
+
+tests\test_shared_semantic_replay.py:101: TypeError</failure></testcase></testsuite></testsuites>

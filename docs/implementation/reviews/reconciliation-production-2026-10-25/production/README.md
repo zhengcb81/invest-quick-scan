@@ -1,3 +1,21 @@
+# 本轮最终结论（2026-10-25；以下历史阶段记录保留）
+
+真实CATL IQS_05已完成原搜索/思考模型→合法safe→exit86→新进程禁网恢复→原schema2检查点→同CP双封存→只读真实摘要。修复六源Replay规则传播后恢复128.479秒，新增HTTP0，原完整请求/费用/context/owner决策行hash不变；摘要读取前后整个工作库SHA相同。独立实际审passed/open_findings=[]，见engine-review/generation3-replay-repair-actual-final.json/md；四件原结果/摘要/transition/pins的rawSHA均绑定。
+
+原72cold锁及失败记录、修前60制品快照保留；新112锁和六源transition明确same_source_cold_and_warm_claim=false。这是修复后的兼容恢复，不是同源码cold/warm。新一代1search+1model、公开价估算5894micros；三代累计25023micros，账单unknown，旧无效回答和费用保留。delivery=ready，不是StockWiki ACK；不授予金融准确性、全公司38题或全池资格。
+
+源码IQS733186c（已推送）、Company803ff51（本地无remote），StockQA24fc22f已推送；15文件committed blob/filtered与执行字节对齐见source-commit-binding-v4.json。63项集中回归与29项摘要器测试、最终独审均归档；测试分组有重叠，不相加伪称全量新case。当前索引integrity.json，first42清单仅历史。
+
+本归档只含明确薄白名单及源码文本，不含数据库、回答/context/思考正文或密钥。完整原状态保留本地runs/r25-live供审查。下一步以根PWF为准，不再重复cold或改旧预算。
+
+发布前130文件清单另封存为`integrity-before-replay-repair-130files.json`，这130件原字节及原清单行保留；更新后的来源诊断单独存为`engine-review/generation2-source-diagnostic-resolved-after-replay-repair.json`。`.gitattributes`仅在本目录禁用Git换行转换，保证原raw SHA在提交及跨平台检出后仍可复核，未改产品源码的换行策略。
+
+最终生产薄清单含236件；发布器自身的初审/修复/复审、12项核心测试及3项历史保留反例另见同级`../publication/manifest.json`（18件软件发布审计证据）。当前文档复核在`../publication/documentation-final.json/md`，不回改已验收的236件清单。
+
+---
+
+## 以下为13:04Z前阶段说明，不作为当前待办
+
 # 共享引擎生产接线：本轮证据
 
 当前阶段以根PWF为准。本归档同时保存成功软件验证和失败真实首试，不能把二者合并成真实生产验收通过。

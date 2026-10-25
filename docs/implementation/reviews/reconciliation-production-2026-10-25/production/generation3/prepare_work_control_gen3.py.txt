@@ -1,0 +1,150 @@
+"""Prepare exact generation2-to-3 control from original readonly records.
+
+No approval dictionary, paid dispatch, clock override, or ledger mutation.
+The fixed original query CLI may record a fresh bounded permission capture.
+"""
+from contextlib import closing
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import sqlite3
+import subprocess
+import sys
+
+ROOT=Path(__file__).resolve().parents[2]
+BASE=ROOT/"runs/r25-live"
+OUT=BASE/"known-response-repair-gen2"
+QA=ROOT.parent/"StockQAbyLLM"
+SW=ROOT.parent/"StockWiki"
+sys.path[:0]=[str(QA),str(SW),str(ROOT/"scripts")]
+
+
+def read(path):
+    from src.utils.quick_scan_result_outbox import strict_json_loads
+    return strict_json_loads(Path(path).read_text(encoding="utf-8-sig"))
+
+def save(path,value):
+    raw=json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2,allow_nan=False).encode("utf8")
+    if path.exists():
+        if path.read_bytes()!=raw:
+            raise ValueError("existing_work_control_artifact_differs:"+path.name)
+    else:
+        path.write_bytes(raw)
+
+def utc():
+    return datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+
+def main():
+    operation=sys.argv[1] if len(sys.argv)==2 else None
+    if operation not in {"resolution","retry"}:
+        raise ValueError("explicit_work_control_prepare_operation_required")
+    config=read(BASE/"typed-generation2/run-config.json")
+    if Path(config["run_root"]).resolve()!=BASE or config.get("isolated") is not True:
+        raise ValueError("owned_original_isolated_root_required")
+    def owned(value):
+        path=Path(value).absolute()
+        if not path.resolve().is_relative_to(BASE.resolve()):
+            raise ValueError("work_control_path_outside_isolated_base")
+        for node in (path,*path.parents):
+            if node.is_symlink() or node.is_junction():
+                raise ValueError("work_control_linked_path_forbidden")
+            if node==BASE.absolute():break
+        return path.resolve()
+    deployment=read(owned(config["deployment"]))
+    for field in ("stockwiki_workspace_root","execution_inputs_root","work_store","budget_policy_file","runs_dir"):
+        owned(deployment[field])
+    owned(config["bundle"]);owned(OUT);owned(config["budget_policy_file"])
+    if owned(config["budget_policy_file"])!=owned(deployment["budget_policy_file"]):
+        raise ValueError("original_work_control_budget_required")
+    OUT.mkdir(exist_ok=True)
+    owner_root=Path(deployment["stockwiki_workspace_root"])
+    if not owner_root.resolve().is_relative_to(BASE.resolve()):
+        raise ValueError("original_isolated_owner_required")
+    fixed_transition=read(BASE/"known-response-repair/owner-policy-transition.json")
+    policy_path=owned(owner_root/"config/quick_scan_refresh.json")
+    policy=read(policy_path)
+    if (hashlib.sha256(policy_path.read_bytes()).hexdigest()!=fixed_transition["after_sha256"]
+        or policy.get("protocol")!="stockwiki.refresh_owner_policy/1.2.0"
+        or policy["qa"]["quote_schema_version"]!="1.2.0"
+        or hashlib.sha256(Path(config["budget_policy_file"]).read_bytes()).hexdigest()!=fixed_transition["budget_sha256"]):
+        raise ValueError("owner_policy_must_precede_control_confirmations")
+    def no_network(event,args):
+        if event in {"socket.connect","socket.getaddrinfo","socket.sendto"}:
+            raise RuntimeError("control_prepare_network_forbidden")
+    sys.addaudithook(no_network)
+    from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
+    from src.utils.quick_scan_work_decision_inspect import derive_work_decision
+    work="WORK_c9374943a7c44990ba69d67fa7346529"
+    attempt="ATTEMPT_7d199ff1165a4c07b7f20191ad3c3699"
+    view=ReadOnlyWorkView(deployment["work_store"])
+    source=view.get_item(work)
+    attempts=view.list_attempts(work)
+    if (source["generation"]!=2 or source["question_id"]!="IQS_05" or not attempts
+        or attempts[-1]["attempt_id"]!=attempt or attempts[-1]["phase"]!="response_available"):
+        raise ValueError("exact_received_generation2_source_required")
+    response=view.get_attempt_response(attempt)
+    if (not response or response["response_sha256"]!="6055c7df80d3fb61f617459f726a629eaf21d8125cbd6b978eb1e9f7ad41ea66"
+        or response["receipt_sha256"]!="193dbe3198cfe2537b2ba211c9838c074833df0182eb7d684da751147f359d6a"):
+        raise ValueError("exact_original_generation2_response_required")
+    if not response or view.get_answer_checkpoint(work) is not None:
+        raise ValueError("exact_original_unpublished_safe_response_required")
+    if operation=="resolution":
+        artifact=ROOT/"runs/reconcile-production-2026-10-25/engine-fix/generation2-safe-diagnosis.json"
+        validation=read(artifact)
+        if (validation["protocol"]!="iqs.generation2-safe-readonly-diagnosis/1.0.0"
+            or validation["work_item_id"]!=work or validation["native_attempt_id"]!=attempt
+            or validation["response_sha256"]!=response["response_sha256"]
+            or validation["native_receipt_sha256"]!=response["receipt_sha256"]
+            or validation["body_unchanged"] is not True
+            or not isinstance(validation["database_sha256_before"],str)
+            or len(validation["database_sha256_before"])!=64
+            or validation["database_sha256_before"]!=validation["database_sha256_after"]
+            or validation["api_calls"]!=0 or validation["database_writes"]!=0
+            or validation["original_iqs_semantics"]["status"]!="passed"
+            or validation["items_count"]!=0
+            or validation["original_native_source_gate"]["status"]!="rejected"
+            or validation["original_native_source_gate"]["original_static_error"]!="evidence URL/date is not bound to search/cutoff"
+            or validation["actual_context_binding_reconstruction"]["status"]!="passed"
+            or validation["actual_context_binding_reconstruction"]["equals_original_sent_use_proof"] is not True):
+            raise ValueError("actual_bound_generation2_source_rejection_required")
+        intent=dict(kind="known_response_resolution",work_item_id=work,attempt_id=attempt,
+          idempotency_key="CATL_Q05_GEN2_SOURCE_REJECT_20261025",
+          reason="answer_validation_rejected",diagnostic=dict(code="standard_answer_invalid",
+            artifact_ref="generation2-source-invalid-20261025",
+            artifact_sha256=hashlib.sha256(artifact.read_bytes()).hexdigest(),
+            response_sha256=response["receipt"]["response_sha256"]))
+    else:
+        intent=dict(kind="retry_decision",work_item_id=work,
+          idempotency_key="CATL_Q05_GEN3_RETRY_UNUSABLE_20261025",purpose="retry_unusable_answer",
+          retry_after_seconds=0,comparison_controls=None)
+    save(OUT/(operation+"-intent.json"),intent)
+    derived=derive_work_decision(deployment["work_store"],intent,policy=read(config["budget_policy_file"]))
+    save(OUT/(operation+"-derived.json"),derived)
+    env={k:v for k,v in os.environ.items() if k.upper() in {"SYSTEMROOT","WINDIR","PATH","PATHEXT","COMSPEC","USERPROFILE","APPDATA","LOCALAPPDATA","SYSTEMDRIVE"}}
+    temp=OUT/"temp";temp.mkdir(exist_ok=True)
+    env.update(PYTHONPATH=os.pathsep.join((str(QA),str(SW))),PYTHONUTF8="1",PYTHONIOENCODING="utf-8",PYTHONDONTWRITEBYTECODE="1",TEMP=str(temp),TMP=str(temp))
+    query=read(BASE/"query-capture.json")
+    query.update(request_id="CATL_Q05_GEN2_"+operation.upper()+"_PERMISSION_20261025",requested_at=utc())
+    query["payload"]["snapshot_id"]=None
+    input_file=OUT/(operation+"-query.json");save(input_file,query)
+    done=subprocess.run([sys.executable,"-B","-X","utf8","-m","stockwiki.quick_scan_query_v2_cli",
+      "--root",str(owner_root),"--iqs-code-root",str(ROOT),"--request",str(input_file)],cwd=SW,env=env,capture_output=True,timeout=240)
+    (OUT/(operation+"-capture.stdout.json")).write_bytes(done.stdout)
+    (OUT/(operation+"-capture.stderr.log")).write_bytes(done.stderr)
+    if done.returncode:
+        raise ValueError("fresh_original_permission_capture_refused")
+    captured=read(OUT/(operation+"-capture.stdout.json"))
+    query["payload"]["snapshot_id"]=captured["result"]["watermark"]["snapshot_id"]
+    permission=read(BASE/"request.json")
+    permission.update(request_id="CATL_Q05_GEN2_"+operation.upper()+"_PERMISSION_REFRESH_20261025",
+      requested_at=utc(),source_query=query,reason="Authorized root control of the exact saved but source-invalid generation2 response; no paid request")
+    outer=dict(protocol="stockwiki.work_decision_request/1.0.0",consumer_id=config.get("consumer_id","invest-quick-scan"),
+      decision_request=derived["request"],permission_request=permission)
+    save(OUT/(operation+"-owner-request.json"),outer)
+    print(json.dumps(dict(status="prepared_owner_control_request",operation=operation,API_requests=0,ledger_writes=0,
+      request=str(OUT/(operation+"-owner-request.json")))))
+
+if __name__=="__main__":
+    main()

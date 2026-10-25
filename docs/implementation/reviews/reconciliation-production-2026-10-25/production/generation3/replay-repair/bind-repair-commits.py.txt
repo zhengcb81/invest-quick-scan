@@ -1,0 +1,44 @@
+"""Record real committed blobs without modifying index or execution locks."""
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).parent
+
+
+def git(repo, *arguments):
+    return subprocess.check_output(["git", "-C", str(repo), *arguments], stderr=subprocess.PIPE)
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+prior = json.loads((HERE / "source-commit-binding-v3.json").read_text(encoding="utf8"))
+pairs = {(row["repository"], row["path"]) for row in prior["files"]}
+pairs.update(("iqs-company-agent-lab", "src/iqs_company_agent_lab/" + name) for name in
+             ("request_context.py", "runner.py", "replay.py", "resume.py", "reporter.py"))
+pairs.add(("invest-quick-scan", "tests/test_shared_semantic_replay.py"))
+rows = []
+for name, relative in sorted(pairs):
+    repo = ROOT.parent / name
+    commit = git(repo, "rev-parse", "HEAD").decode().strip()
+    blob = git(repo, "show", commit + ":" + relative)
+    filtered = git(repo, "cat-file", "--filters", commit + ":" + relative)
+    current = (repo / relative).read_bytes()
+    assert current in (blob, filtered), (name, relative, "committed_source_not_exact")
+    rows.append(dict(repository=name, path=relative, commit=commit,
+        working_sha256=sha(current), blob_sha256=sha(blob), filtered_sha256=sha(filtered),
+        working_matches_committed=True))
+result = dict(protocol="iqs.source-commit-binding/1.0.0", observed_at=datetime.now(timezone.utc).isoformat(),
+    files=rows, company_remote_absent_not_created=not git(ROOT.parent / "iqs-company-agent-lab", "remote").strip(),
+    different_source_repair=True, original_execution_pin_files_unchanged=True)
+assert result["company_remote_absent_not_created"]
+with (HERE / "source-commit-binding-v4.json").open("x", encoding="utf8") as stream:
+    json.dump(result, stream, ensure_ascii=False, sort_keys=True, indent=2)
+    stream.write("\n")
+print(json.dumps(dict(bound_files=len(rows), committed_blobs_verified=True,
+    commits=sorted({row["commit"] for row in rows}))))

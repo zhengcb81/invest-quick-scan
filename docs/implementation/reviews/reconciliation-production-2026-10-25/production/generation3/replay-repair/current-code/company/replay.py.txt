@@ -1,0 +1,198 @@
+"""Frozen-event replay: rebuild state from the journal, never re-issue traffic.
+
+The journal is the only source of truth for receipts; strategy determinism is
+verified by re-deriving each intent at the same rebuilt state and comparing
+hashes. Result comparison domain excludes host wall time.
+"""
+
+from __future__ import annotations
+
+from types import SimpleNamespace
+from typing import Any
+
+from .canonical import sha256_hex
+from .errors import ProtocolIllegalError
+from .events import EventJournal, load_events
+from .evidence import FROZEN_PUBLICATION_EXCLUSIVE_DATE, EvidenceBoard
+from .runner import (
+    apply_answer_committed,
+    apply_answer_rejected,
+    apply_intent,
+    apply_model_receipt,
+    apply_recovery_decision,
+    apply_search_receipt,
+    apply_segment,
+    apply_self_review,
+    input_manifest_sha256,
+)
+from .state import RunnerState, public_state_sha256
+from .strategy import strategy_for_task
+
+
+class ReplayEngine:
+    def __init__(self, task, *, answer_semantic_rules=()) -> None:
+        from .request_context import normalized_answer_semantic_rules
+        self.task = task
+        self._answer_semantic_rules = normalized_answer_semantic_rules(answer_semantic_rules)
+
+    def _new_state(self) -> RunnerState:
+        from .scan_profile import task_validation_context
+
+        context = task_validation_context(self.task)
+        state = RunnerState(
+            self.task,
+            EvidenceBoard(
+                int(self.task.limits.get("excerpt_chars_per_source", 2000)),
+                validation_context=context if "profile_sha256" in context else None,
+            ),
+            context["publication_exclusive_date"],
+        )
+        state.session_handles = {}
+        state.current_model_name = self.task.runtime_profile.get("model")
+        return state
+
+    def replay(self, events: list[dict[str, Any]]) -> dict[str, Any]:
+        state = self._new_state()
+        strategy = strategy_for_task(self.task)
+        first = events[0] if events else None
+        if first is None or first["event_type"] != "run_started":
+            raise ProtocolIllegalError("journal must start with run_started")
+        if first["run_id"] != self.task.raw["run_id"]:
+            raise ProtocolIllegalError("journal run_id does not match task")
+        started = first["data"]
+        revision = started.get("execution_revision", 1)
+        if revision not in (1, 2):
+            raise ProtocolIllegalError("unknown execution revision")
+        state.execution_revision = revision
+        if revision >= 2:
+            from .task import task_bundle
+
+            if started.get("task_bundle_sha256") != sha256_hex(task_bundle(self.task)):
+                raise ProtocolIllegalError(
+                    "journal embedded task bundle does not match checkpoint inputs"
+                )
+        if started["task_sha256"] != self.task.task_sha256:
+            raise ProtocolIllegalError("journal task hash does not match task")
+        if started["strategy_id"] != self.task.raw["strategy_id"]:
+            raise ProtocolIllegalError("journal strategy does not match task")
+        for event in events:
+            if event["event_type"] == "run_started":
+                continue
+            self._apply_one(state, event, strategy, verify_intents=True)
+        for slot in state.open_slots():
+            if not slot["gap_codes"] and (state.execution_revision == 1 or state.finished_reason):
+                slot["gap_codes"] = ["not_attempted_at_finish"]
+        return {"state": state, "events": events}
+
+    def _apply_events_for_resume(
+        self, state: RunnerState, events: list[dict[str, Any]], strategy
+    ) -> None:
+        for event in events:
+            self._apply_one(state, event, strategy, verify_intents=True)
+
+    def _apply_one(
+        self, state: RunnerState, event: dict[str, Any], strategy, verify_intents: bool
+    ) -> None:
+        kind = event["event_type"]
+        data = event["data"]
+        if kind == "run_started":
+            return
+        if kind == "segment":
+            apply_segment(state, data)
+        elif kind == "intent":
+            if verify_intents:
+                self._verify_intent(state, strategy, event)
+            apply_intent(state, data)
+        elif kind == "receipt_model":
+            apply_model_receipt(state, data)
+        elif kind == "receipt_search":
+            apply_search_receipt(state, data)
+        elif kind == "answer_committed":
+            apply_answer_committed(state, data)
+        elif kind == "answer_rejected":
+            apply_answer_rejected(state, data)
+        elif kind == "self_review":
+            apply_self_review(state, data)
+        elif kind == "draft_recorded":
+            state.drafts[data["question_id"]] = data["answer"]
+            state.counters["drafts_recorded"] = state.counters.get("drafts_recorded", 0) + 1
+        elif kind == "context_compacted":
+            state.context_version = data["context_version"]
+            state.context_indexed_ids = list(data["indexed_traceable_ids"])
+        elif kind == "runtime_request":
+            from .request_context import build_runtime_request
+
+            request = build_runtime_request(state, data["intent"], answer_semantic_rules=self._answer_semantic_rules)
+            for key in ("protocol", "stable_prefix_sha256", "dynamic_context_sha256"):
+                if request[key] != data[key]:
+                    raise ProtocolIllegalError("model-bound runtime context diverges on replay")
+        elif kind == "tool_result":
+            state.tool_results.append(dict(data))
+        elif kind == "recovery_decision":
+            apply_recovery_decision(state, data)
+        elif kind == "evidence_intake":
+            if data.get("source_attempt_ref") == "task:evidence_epoch_ref":
+                outcome = state.board.intake(
+                    self.task.evidence_board_doc.get("records", []), self.task.company_ref
+                )
+                if sorted(data.get("accepted_ids", [])) != sorted(outcome["accepted"]):
+                    raise ProtocolIllegalError("initial evidence intake diverges from journal")
+        elif kind == "evidence_invalidated":
+            state.board.invalidate(data["evidence_ids"], data.get("reason_code", "invalidated"))
+            state.reopen_for_evidence_change(
+                data.get("reopened_question_ids", []), data.get("reason_code", "evidence_change")
+            )
+        elif kind in (
+            "evidence_epoch_moved",
+            "limits_state",
+            "tool_rejected",
+            "crash_marker",
+            "checkpoint_ref",
+            "runtime_declined",
+            "warmup_registered",
+            "no_progress_exit",
+            "budget_exhausted",
+            "finish",
+        ):
+            if kind == "finish":
+                state.finished_reason = data.get("reason_code", "strategy_finish")
+            elif kind == "no_progress_exit":
+                state.finished_reason = data.get("reason_code", "no_progress_exit")
+            elif kind == "budget_exhausted":
+                state.finished_reason = data.get("reason_code", "budget_exhausted")
+            elif kind == "tool_rejected":
+                state.counters["tool_rejected"] = state.counters.get("tool_rejected", 0) + 1
+            return
+        else:
+            raise ProtocolIllegalError(f"unhandled event type in replay: {kind}")
+
+    def _verify_intent(self, state: RunnerState, strategy, event: dict[str, Any]) -> None:
+        data = event["data"]
+        derived = strategy.next_action(state.public_state())
+        problems = []
+        if derived["action_id"] != data["action_id"]:
+            problems.append("action_id")
+        if derived["kind"] != data["kind"]:
+            problems.append("kind")
+        if list(derived["question_ids"]) != list(data["question_ids"]):
+            problems.append("question_ids")
+        if derived["expected_state_sha256"] != data["expected_state_sha256"]:
+            problems.append("expected_state_sha256")
+        if sha256_hex(derived["payload"]) != data["payload_sha256"]:
+            problems.append("payload_sha256")
+        if problems:
+            raise ProtocolIllegalError(
+                f"strategy re-derivation diverges at seq {event['seq']}: {problems}"
+            )
+        if data["expected_state_sha256"] != public_state_sha256(state.public_state()):
+            raise ProtocolIllegalError(f"intent state hash mismatch at seq {event['seq']}")
+
+
+def replay_from_files(task, events_path, *, answer_semantic_rules=()) -> dict[str, Any]:
+    events = load_events(events_path)
+    engine = ReplayEngine(task, answer_semantic_rules=answer_semantic_rules)
+    return engine.replay(events)
+
+
+def events_as_journal(events: list[dict[str, Any]]) -> Any:
+    return SimpleNamespace(events=events)

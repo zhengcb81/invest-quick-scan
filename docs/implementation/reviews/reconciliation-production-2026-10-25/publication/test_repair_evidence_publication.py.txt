@@ -1,0 +1,208 @@
+"""Pure publication-plan fixtures, never run the publisher or real acceptance."""
+import ast
+import hashlib
+import json
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+PUBLISHER = Path(__file__).resolve().parents[1] / "publish_evidence.py"
+
+
+def extracted_namespace():
+    """Load definitions and original 130-path plan without argument parsing/copy."""
+    tree = ast.parse(PUBLISHER.read_text(encoding="utf8"))
+    nodes = []
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "parser" for t in node.targets):
+            break
+        nodes.append(node)
+    namespace = {"__file__": str(PUBLISHER)}
+    exec(compile(ast.Module(body=nodes, type_ignores=[]), str(PUBLISHER), "exec"), namespace)
+    return namespace
+
+
+def write(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, sort_keys=True), encoding="utf8")
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_original_130_path_plan_and_first42_binding_are_preserved():
+    ns = extracted_namespace()
+    assert len(ns["sources"]) == len({target for _, target in ns["sources"]}) == 130
+    first42 = [(source, target) for source, target in ns["sources"] if target.name == "integrity-first-42files.json"]
+    assert len(first42) == 1
+    assert first42[0][0] == ns["AUDIT"] / "preparation-only-evidence/initial-42-file-integrity.json"
+
+
+@pytest.fixture
+def publication(tmp_path):
+    ns = extracted_namespace()
+    root = tmp_path / "main"
+    base = root / "runs/live"
+    audit = root / "runs/audit"
+    dest = root / "docs/thin"
+    actual_base = base / "typed-generation3"
+    repair = actual_base / "replay-repair"
+    ns.update(ROOT=root, BASE=base, AUDIT=audit, DEST=dest)
+    write(actual_base / "source-pins.json", [dict(synthetic_old_pin=True)])
+    old_pin_sha = sha(actual_base / "source-pins.json")
+    code = [root / "scripts/shared_company_engine.py"]
+    code += [root.parent / "iqs-company-agent-lab/src/iqs_company_agent_lab" / name
+             for name in ("request_context.py", "runner.py", "replay.py", "resume.py", "reporter.py")]
+    changes = []
+    for i, path in enumerate(code):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"synthetic new product source")
+        original = actual_base / "failed-replay-context-01/source-snapshot" / (str(i) + ".py")
+        original.parent.mkdir(parents=True, exist_ok=True)
+        original.write_bytes(b"synthetic original product source")
+        changes.append(dict(path=str(path), original_snapshot_path=str(original),
+                            before_sha256=sha(original), after_sha256=sha(path)))
+    transition = dict(same_source_cold_and_warm_claim=False, original_response_reused=True,
+                      original_pin_file_sha256=old_pin_sha, changed_sources=changes)
+    write(repair / "source-transition.json", transition)
+    write(repair / "repair-source-pins.json", [dict(synthetic_current_pin=True)])
+    actual = dict(protocol="iqs.shared-production-replay-repair-acceptance/1.0.0", generation=3,
+        same_source_cold_and_warm_claim=False, original_response_reused=True,
+        original_source_pins_sha256=old_pin_sha, repair_source_pins_sha256=sha(repair / "repair-source-pins.json"),
+        source_transition_sha256=sha(repair / "source-transition.json"), recovery_network_forbidden=True,
+        recovery_new_http=0, new_model_http_during_finalization=0, identical_budget_and_request_rows=True,
+        budget_before={"synthetic": 1}, budget_after={"synthetic": 1}, checkpoints=[{"synthetic": True}],
+        financial_accuracy_assessed=False, invoice_cost=None)
+    summary = dict(protocol="iqs.shared-production-thin-summary/4.0.0", generation=3,
+        status="existing_replay_repair_real_acceptance_summarized", same_source_cold_and_warm_claim=False,
+        original_response_reused=True, original_cold_source_pins_sha256=old_pin_sha,
+        repair_source_pins_sha256=actual["repair_source_pins_sha256"],
+        source_repair=dict(source_transition_sha256=actual["source_transition_sha256"]),
+        questions=[{"synthetic": True}], financial_accuracy_assessed=False, invoice_cost=None,
+        answer_body_or_context_body_included=False, current_original_ledger_equals_recorded_after=True)
+    pre = dict(status="passed_explicit_repaired_source_recovery_pre_execution_actual_result_pending", open_findings=[])
+    review = dict(status="passed", open_findings=[])
+
+    def refresh():
+        write(repair / "result.json", actual)
+        write(repair / "thin-summary.json", summary)
+        review["accepted_artifact_sha256"] = {key: sha(repair / filename) for key, filename in (
+            ("result", "result.json"), ("summary", "thin-summary.json"),
+            ("source_transition", "source-transition.json"), ("repair_source_pins", "repair-source-pins.json"))}
+        write(audit / "engine-review/generation3-replay-repair-pre-execution-final.json", pre)
+        write(audit / "engine-review/generation3-replay-repair-actual-final.json", review)
+    refresh()
+    return dict(ns=ns, actual=actual, summary=summary, transition=transition, review=review,
+                refresh=refresh, repair=repair, dest=dest)
+
+
+def test_explicit_repair_plan_uses_only_thin_json_and_code_copies_without_publishing(publication):
+    p = publication
+    pairs = p["ns"]["repair_final_sources"]()
+    targets = [str(target) for _, target in pairs]
+    assert any(target.endswith("replay-repair\\thin-summary.json") or target.endswith("replay-repair/thin-summary.json") for target in targets)
+    assert not p["dest"].exists()
+    assert not any(source.name in {"research-run.json", "task-bundle.json", "checkpoint.json", "work.sqlite"} for source, _ in pairs)
+    assert all(target.name.endswith(".py.txt") for source, target in pairs if source.suffix == ".py")
+    assert len([target for source, target in pairs if "current-code" in str(target)]) == 6
+    assert len([target for source, target in pairs if "original-code" in str(target)]) == 6
+    names = {source.name for source, _ in pairs}
+    assert {"source-commit-binding-v3.json", "source-commit-binding-v4.json", "generation3-live-recover.stderr.log",
+            "generation3-actual-control-final.json", "generation3-admission-freeze-final.json",
+            "generation3-integrated-final.json", "generation3-leaf-green.xml", "generation3-combined57.xml",
+            "generation3-driver-offline.xml", "generation3-summary-real-dto-green.xml"} <= names
+
+
+@pytest.mark.parametrize("case", ["same_source", "new_http", "changed_budget", "review_pending", "review_hash",
+                                   "body", "pin_body", "financial_claim", "old_summary", "unsafe_source"])
+def test_invalid_or_stale_repair_never_produces_a_publication_plan(publication, case):
+    p = publication
+    if case == "same_source":p["actual"]["same_source_cold_and_warm_claim"] = True
+    elif case == "new_http":p["actual"]["recovery_new_http"] = 1
+    elif case == "changed_budget":p["actual"]["budget_after"] = {"synthetic": 2}
+    elif case == "review_pending":p["review"]["status"] = "pending"
+    elif case == "body":p["summary"]["questions"][0]["answer"] = {"private": "must not export"}
+    elif case == "pin_body":
+        write(p["repair"] / "repair-source-pins.json", [{"answers": [{"private": "must not export"}]}])
+        p["actual"]["repair_source_pins_sha256"] = sha(p["repair"] / "repair-source-pins.json")
+        p["summary"]["repair_source_pins_sha256"] = p["actual"]["repair_source_pins_sha256"]
+    elif case == "financial_claim":p["summary"]["financial_accuracy_assessed"] = True
+    elif case == "old_summary":p["summary"]["protocol"] = "iqs.shared-production-thin-summary/3.0.0"
+    elif case == "unsafe_source":
+        p["transition"]["changed_sources"][0]["path"] = str(p["repair"] / "response-body.py")
+        write(p["repair"] / "source-transition.json", p["transition"])
+        p["actual"]["source_transition_sha256"] = sha(p["repair"] / "source-transition.json")
+        p["summary"]["source_repair"]["source_transition_sha256"] = p["actual"]["source_transition_sha256"]
+    p["refresh"]()
+    if case == "review_hash":
+        p["review"]["accepted_artifact_sha256"]["summary"] = "0" * 64
+        write(p["ns"]["AUDIT"] / "engine-review/generation3-replay-repair-actual-final.json", p["review"])
+    with pytest.raises(ValueError):p["ns"]["repair_final_sources"]()
+    assert not p["dest"].exists()
+
+
+def history_fixture(tmp_path):
+    ns = extracted_namespace()
+    root = tmp_path / "synthetic-project"
+    dest = root / "docs/production"
+    current = root / "runs/current"
+    sources, original_rows = [], []
+    for index in range(130):
+        artifact = "history/evidence-%03d.json" % index
+        source, target = current / ("evidence-%03d.json" % index), dest / artifact
+        write(source, {"original_metadata_index": index})
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(source.read_bytes())
+        original_rows.append(dict(source=str(source.relative_to(root)), artifact=artifact,
+                                  sha256=sha(target), bytes=target.stat().st_size))
+        sources.append((source, target))
+    write(dest / "integrity.json", dict(protocol="iqs.thin-production-evidence/1.0.0", files=original_rows))
+    ns.update(ROOT=root, DEST=dest, sources=sources,
+              HISTORICAL_TARGETS=frozenset(target for _, target in sources),
+              ORIGINAL_ARCHIVE_MANIFEST_SHA256=sha(dest / "integrity.json"),
+              options=SimpleNamespace(repair_final=True, final=False))
+    return ns, sources, original_rows
+
+
+def copy_loop_namespace(namespace):
+    """Run the real bounded copy loop in fixtures, without final manifest output."""
+    tree = ast.parse(PUBLISHER.read_text(encoding="utf8"))
+    start = next(i for i, node in enumerate(tree.body) if isinstance(node, ast.Assign)
+                 and any(isinstance(target, ast.Name) and target.id == "rows" for target in node.targets))
+    end = next(i for i in range(start + 1, len(tree.body)) if isinstance(tree.body[i], ast.Expr)
+               and isinstance(tree.body[i].value, ast.Call) and isinstance(tree.body[i].value.func, ast.Attribute)
+               and tree.body[i].value.func.attr == "write_text")
+    exec(compile(ast.Module(body=tree.body[start:end], type_ignores=[]), str(PUBLISHER), "exec"), namespace)
+
+
+def test_updated_source_is_revision_while_all_original_130_bytes_and_rows_are_preserved(tmp_path):
+    ns, sources, original_rows = history_fixture(tmp_path)
+    changed_source, old_target = sources[0]
+    original_target_bytes = old_target.read_bytes()
+    write(changed_source, dict(resolved_context_root_cause="new thin observation"))
+    revision = ns["DEST"] / "history/evidence-000-resolved-after-replay-repair.json"
+    ns["sources"] = [*sources, (changed_source, revision)]
+    copy_loop_namespace(ns)
+    assert old_target.read_bytes() == original_target_bytes
+    assert ns["rows"][:130] == original_rows
+    assert revision.read_bytes() == changed_source.read_bytes() != original_target_bytes
+    assert len(ns["rows"]) == 131
+
+
+def test_corrupt_old_archive_refuses_before_copying_any_new_revision(tmp_path):
+    ns, sources, _ = history_fixture(tmp_path)
+    sources[3][1].write_bytes(b"corrupted original archive")
+    revision = ns["DEST"] / "new-revision.json"
+    ns["sources"] = [*sources, (sources[0][0], revision)]
+    with pytest.raises(ValueError, match="historical_archive_bytes_changed"):
+        copy_loop_namespace(ns)
+    assert not revision.exists()
+
+
+def test_modified_original_manifest_is_not_silently_treated_as_history(tmp_path):
+    ns, sources, _ = history_fixture(tmp_path)
+    write(ns["DEST"] / "integrity.json", dict(protocol="iqs.thin-production-evidence/1.0.0", files=[]))
+    with pytest.raises(ValueError, match="original_historical_manifest_bytes_changed"):
+        ns["preserved_archive_rows"](ns["HISTORICAL_TARGETS"])

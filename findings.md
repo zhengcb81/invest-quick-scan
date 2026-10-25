@@ -1,3 +1,7 @@
+## 2026-10-25 — 修复后真实恢复证据闭合
+
+同一真实safe在明确不同源码谱系下完成0HTTP禁网恢复、同CP双封存、原账本全行hash不变与只读摘要（库SHA前后相同）。这验证工程接线与恢复，不授予金融准确性或StockWiki ACK；旧失败和费用必须保留。详见当前PWF与最终repair实际独审。
+
 ## 2026-10-25 13:16Z — 来源URL也属于不可随意改写的回答合同
 
 generation2原IQS语义已通过，但4条引用中2条从原检索URL删掉query，原StockQA来源门正确拒绝。原binder重建的context hash、system加NUL加prompt合成hash、原messages text hash分别在正确域与原receipt/intent全匹配；实际context逐字保留5条完整URL，包含这两个被删query的来源。不是context渲染丢参数。`trk`看似追踪参数，`lang/type`可能有内容语义，不能笼统删query放宽匹配，也不能静默给原回答补参数。
@@ -3791,3 +3795,8 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 最后预检61.18秒/0HTTP，pins f69ee033…；10:48:03比原expiry早2.326秒的领取被guard正确拒绝（单独保留negative记录），到期后原recover_expired/claim成功，epoch2/gen1。DeepSeek实际HTTP200、5条、原费率估算750micros，旧not_sent预算行和unknown回执仍保留。模型只有1条prepared、send_intent/模型budget/安全响应均0。
 
 根因：新观察库经基础migrate后仍user_version2，无quick_scan_subject_dispatch表；主体派发register要求3/4，实际在注册步骤拒绝，外部use proof已保存，尚未到LLM HTTP。软件fixture已初始化更高版本所以此前正例未覆盖真实bootstrap缺项。正在使用原备份升级工具并设计前置能力检查；不把prepared算HTTP或删除原记录，不用新账本重发。
+## 2026-10-25 — 带可信题目规则的真实中断恢复必须重建完全相同的请求前缀
+
+原generation3真实safe已合法取得，首次禁网恢复却被原三哈希守卫拒绝。独立纯重构证明：dynamic context完全相同，冷调用插入typed规则后的prefix为`2adb2323…`，旧Replay裸builder为`0c8eca14…`；按原冻结规则重建就精确相同。根修是冷调用与Replay共享同一纯builder，且main恢复/封存/显式报告传入同一可信规则，不能从未受信event自取规则，也不能关闭hash比较。
+
+原72项锁、原safe、task与失败记录保留；修前60制品快照SHA`716f0335…`补足旧未预锁的Replay/Resume/Reporter版本事实。实际需要6源变化时，以明确transition和新112锁记录不同源码恢复，`same_source_cold_and_warm_claim=false`，不把后补锁写成冷执行前已锁。63项集中软件回归、29项只读摘要器测试已过；原真实pending的严格只读重建亦通过，实际双封存和摘要另验。Company公开Python API支持显式rules；默认空规则CLI仍会对typed产物fail closed，未声称通用CLI支持。

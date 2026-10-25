@@ -1,0 +1,36 @@
+{
+  "protocol": "iqs.replay-repair-summary-handoff/1.0.0",
+  "status": "engineering_candidate_awaiting_whole_node_independent_review",
+  "author": "/root/review_bank21",
+  "reporter_file": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\real_summary_replay_repair.py",
+  "reporter_sha256": "e494fcab1ad7b2f2951c9938698c6703303333528ed43a81a09baa124d48756a",
+  "tests_file_sha256": "7d10df7dc3b38b2d59f4cfdb6a82c1d9695a2d25ac1be9bbe169fca7637709e1",
+  "original_reporter_sha256": "4f3774811b79da564a23834e0fb497b40b7b7f07e10be5627c0140b025173b1c",
+  "original_driver_sha256": "d329414d66e6b56c4f0a20e5be00f46a5326a9370c4949b32a2493c1005a0919",
+  "original_pins_sha256": "8a12ef0cebbbcd31baa44f1d75862f73fffdc7c602edb42c4a0fc9af6dc6759d",
+  "inherited_function_AST_equal": {
+    "pinned_driver": true,
+    "validated_task_bundle": true,
+    "historical_generations": true,
+    "retrieval_cold_scope": true
+  },
+  "tests": {
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 15.11,
+    "xml": "replay-summary-offline.xml",
+    "guard": "replay-summary-offline-attestations.json",
+    "cleanup": "replay-summary-offline-cleanup.json"
+  },
+  "same_source_cold_and_warm_claim": false,
+  "main_against_actual_result_executed": false,
+  "actual_API_calls": 0,
+  "actual_DB_owner_mutations": 0,
+  "limitations": [
+    "No real recovery result available at author test time",
+    "Contract positives are synthetic file fixtures, not owner identity or financial qualifications",
+    "Original cached response must be reused; no new send",
+    "Actual result must explicitly set original_response_reused=true"
+  ]
+}

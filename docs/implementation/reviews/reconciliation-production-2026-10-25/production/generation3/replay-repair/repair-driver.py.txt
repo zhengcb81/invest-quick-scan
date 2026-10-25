@@ -1,0 +1,273 @@
+"""Explicit recovery of the original legal safe response after a replay fix.
+
+The cold driver, its 72 pins, response and journal are never rewritten. This
+entry point permits only a reviewed source transition, not a new paid call.
+"""
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[2]
+BASE = ROOT / "runs/r25-live"
+COLD = BASE / "typed-generation3"
+REPAIR = COLD / "replay-repair"
+OLD_PINS_SHA = "8a12ef0cebbbcd31baa44f1d75862f73fffdc7c602edb42c4a0fc9af6dc6759d"
+DRIVER_SHA = "d329414d66e6b56c4f0a20e5be00f46a5326a9370c4949b32a2493c1005a0919"
+RULES_SHA = "92a02aaabda1f1083909b260b7fda27727ff78af2853b3a8e6f76c87d80d3363"
+SNAPSHOT_SHA = "716f03355f09a4a8fee0cb99df6f338bfe2e4da347b5d9a6007ff00abd901b12"
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def original_driver():
+    path = Path(__file__).with_name("run_generation3.py")
+    if sha(path) != DRIVER_SHA:
+        raise ValueError("original_cold_driver_changed")
+    spec = importlib.util.spec_from_file_location("_original_repair_snapshot_utilities", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def changed_source_paths():
+    return {ROOT / "scripts/shared_company_engine.py"} | {
+        ROOT.parent / "iqs-company-agent-lab/src/iqs_company_agent_lab" / name
+        for name in ("runner.py", "request_context.py", "replay.py", "resume.py", "reporter.py")}
+
+
+def verify_transition(driver):
+    read = driver.read
+    transition_file = REPAIR / "source-transition.json"
+    transition = read(transition_file)
+    if (transition.get("protocol") != "iqs.replay-rules-source-repair/1.0.0"
+        or transition.get("same_source_cold_and_warm_claim") is not False
+        or transition.get("original_response_reused") is not True
+        or transition.get("original_pin_file_sha256") != OLD_PINS_SHA
+        or sha(COLD / "source-pins.json") != OLD_PINS_SHA
+        or transition.get("typed_rules_source_sha256") != RULES_SHA
+        or sha(ROOT / "scripts/question_prompts.py") != RULES_SHA):
+        raise ValueError("explicit_original_replay_repair_transition_required")
+    for field, path in (
+        ("original_crash_proof_sha256", COLD / "crash-proof.json"),
+        ("original_legal_safe_validation_sha256", COLD / "safe-validation.json")):
+        if transition.get(field) != sha(path):
+            raise ValueError("original_cold_proof_changed")
+    crash = read(COLD / "crash-proof.json")
+    if transition.get("original_task_sha256") != crash["task_sha256"]:
+        raise ValueError("original_cold_task_changed")
+    for name, expected in {
+        "checkpoint.json": "81ca643377557df8ec609e077cbd88a494824fcd083492b213d6a97188766b93",
+        "pending-history-5.jsonl": "7d7b94c23a7438951c4c89b3cb4c812e6d02c0cb91535235e422acf94f306bde",
+        "events.jsonl": "7d7b94c23a7438951c4c89b3cb4c812e6d02c0cb91535235e422acf94f306bde",
+        "task-bundle.json": "a0dae3d9e67d872da6103e10f8ce06c50e3f380fd337ea5526edc0ebbde1e93a",
+    }.items():
+        if sha(COLD / "cold-session" / name) != expected:
+            raise ValueError("original_cold_checkpoint_or_history_changed")
+    manifest_ref = transition["original_source_snapshot_manifest"]
+    manifest_path = Path(manifest_ref["path"]).resolve()
+    expected_manifest = COLD / "failed-replay-context-01/integrity.json"
+    if (manifest_path != expected_manifest.resolve()
+        or sha(manifest_path) != manifest_ref["sha256"] or manifest_ref["sha256"] != SNAPSHOT_SHA):
+        raise ValueError("original_cold_source_snapshot_changed")
+    snapshot = read(manifest_path)
+    observed = {Path(row["source"]).resolve(): row for row in snapshot["source_files"]}
+    changes = transition["changed_sources"]
+    mapped = {Path(row["path"]).resolve(): row for row in changes}
+    if len(changes) != len(mapped) or set(mapped) != {p.resolve() for p in changed_source_paths()}:
+        raise ValueError("replay_repair_change_scope_not_exact")
+    for path, row in observed.items():
+        original_snapshot = manifest_path.parent / row["artifact"]
+        if sha(original_snapshot) != row["sha256"] or original_snapshot.stat().st_size != row["bytes"]:
+            raise ValueError("original_cold_source_snapshot_artifact_changed")
+        if path.suffix == ".py" and path not in mapped and sha(path) != row["sha256"]:
+            raise ValueError("unapproved_unpinned_cold_source_drift")
+    for path, row in mapped.items():
+        before = observed[path]
+        original_snapshot = manifest_path.parent / before["artifact"]
+        if (Path(row["original_snapshot_path"]).resolve() != original_snapshot.resolve()
+            or row["before_sha256"] != before["sha256"]
+            or sha(original_snapshot) != row["before_sha256"]
+            or sha(path) != row["after_sha256"]):
+            raise ValueError("replay_repair_source_before_after_mismatch")
+    old_pins = read(COLD / "source-pins.json")
+    for row in old_pins:
+        path = Path(row["path"]).resolve()
+        if path in mapped:
+            if row["sha256"] != mapped[path]["before_sha256"]:
+                raise ValueError("original_pin_not_bound_to_repaired_source")
+        elif sha(path) != row["sha256"]:
+            raise ValueError("unapproved_source_drift_outside_replay_repair")
+    pins_file = REPAIR / "repair-source-pins.json"
+    pins = read(pins_file)
+    paths = [Path(row["path"]).resolve() for row in pins]
+    required = ({Path(row["path"]).resolve() for row in old_pins} | set(mapped)
+        | {path for path in observed if path.suffix == ".py"} | {
+        Path(__file__).resolve(), transition_file.resolve(), manifest_path,
+        Path(__file__).with_name("engine-fix") / "real_summary_replay_repair.py"})
+    if len(paths) != len(set(paths)) or not required <= set(paths):
+        raise ValueError("complete_replay_repair_source_lock_required")
+    for row in pins:
+        if sha(row["path"]) != row["sha256"]:
+            raise ValueError("reviewed_replay_repair_source_changed")
+    return transition, sha(pins_file), sha(transition_file)
+
+
+def owned_state_path(value):
+    path = Path(value).absolute()
+    if not path.resolve().is_relative_to(BASE.resolve()) or any(
+        node.is_symlink() or node.is_junction() for node in (path, *path.parents)):
+        raise ValueError("original_isolated_state_path_required")
+    return path.resolve()
+
+
+def main():
+    if sys.argv[1:] != ["--execute"]:
+        raise ValueError("explicit_recovery_only_execution_required")
+    start = time.perf_counter()
+    owned_state_path(REPAIR)
+    driver = original_driver()
+    read, write = driver.read, driver.write
+    transition, repair_pin_sha, transition_sha = verify_transition(driver)
+    for name in tuple(os.environ):
+        if name.upper().endswith("API_KEY"):
+            del os.environ[name]
+    def deny_network(event, args):
+        if event in {"socket.connect", "socket.getaddrinfo", "socket.sendto"}:
+            raise RuntimeError("replay_repair_network_forbidden")
+    sys.addaudithook(deny_network)
+    config = read(COLD / "run-config.json")
+    if config.get("isolated") is not True or Path(config["run_root"]).resolve() != BASE.resolve():
+        raise ValueError("exact_original_isolated_root_required")
+    deployment = read(config["deployment"])
+    for field in ("stockwiki_workspace_root", "execution_inputs_root", "work_store", "budget_policy_file", "runs_dir"):
+        path = Path(deployment[field]).absolute()
+        if not path.resolve().is_relative_to(BASE.resolve()) or any(
+            node.is_symlink() or node.is_junction() for node in (path, *path.parents)):
+            raise ValueError("original_isolated_state_path_required")
+    if Path(deployment["work_store"]).resolve() != (BASE / "work.sqlite").resolve():
+        raise ValueError("original_work_store_required")
+    for name in ("recovered-session", "recovered-export", "recovered-report", "result.json"):
+        owned_state_path(REPAIR / name)
+        if (REPAIR / name).exists():
+            raise ValueError("inspect_existing_repair_state_before_any_retry")
+    from src.providers.llm_client import LLMClient
+    from src.runners.llm_runner import QuickScanWorkLifecycle
+    from src.utils.quick_scan_refresh_execution import prepare_execution
+    from src.utils.quick_scan_owner_research import OwnerResearchServices
+    from src.utils.quick_scan_provider_health import QuickScanProviderHealth
+    from src.config.quick_scan_search_policy import load_search_policy
+    from src.utils.quick_scan_cost_resolver import QuickScanCostResolver
+    from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+    from src.utils.quick_scan_result_outbox import canonical_sha256
+    import shared_company_task as factory
+    import shared_company_engine as engine
+    policy = read(config["budget_policy_file"])
+    model_budget = read(BASE / "model-budget-policy.json")
+    search = load_search_policy(COLD / "search-policy.json", allow_cached_recovery=True)
+    if build_shared_external_budget_policy(model_budget, search) != policy:
+        raise ValueError("original_composite_budget_unchanged_required")
+    owner = prepare_execution(config["deployment"], config["confirmation_id"], input_paths={
+        name: Path(config["bundle"]) / name for name in (
+            "manifest.json", "identity.json", "authority.json", "owner-config.json", "questions.json")},
+        process_env=dict(os.environ))
+    controls = driver.bind_original_execution_controls(owner, config)
+    source_work = owner.service.store.get_item(config["source_work_item_id"])
+    decision = owner.service.store.get_owner_retry_decision(config["source_work_item_id"])
+    if (source_work["generation"] != 2 or source_work["status"] != "failed"
+        or decision["decision_id"] != config["retry_decision_id"]
+        or decision["request"]["target_generation"] != 3):
+        raise ValueError("original_generation3_control_required")
+    route = next(row for row in policy["routes"] if row["id"] == config["route_id"])
+    qid = config["question_ids"][0]
+    work = owner.existing_work(qid)
+    binding = owner.service.store.get_owner_refresh_binding(work["work_item_id"])
+    if (work["generation"] != 3 or not binding
+        or binding["binding"]["owner_control"]["decision_id"] != decision["decision_id"]
+        or binding["binding"]["owner_control"]["target_generation"] != 3):
+        raise ValueError("original_admitted_generation3_binding_required")
+    manifest_sha = owner.native.observation_context["manifest_file_sha256"]
+    if search.execution_plan["question_manifest_sha256"] != manifest_sha:
+        raise ValueError("original_manifest_binding_required")
+    subject = owner.native.observation_context["questions"][qid]["subject_binding"]["subject_ref"]
+    lifecycle = QuickScanWorkLifecycle(owner.service.store, entity_id=subject["entity_id"],
+        run_id=owner.record["inputs"]["run_id"], scan_id=owner.record["inputs"]["scan_id"], identity=owner.bundle["identity"],
+        transport_managed=True, route_id=route["id"], provider_name=route["provider_config_ref"],
+        model_requested=route["model"], budget_policy=policy, budget_route=route,
+        owner_refresh_session=owner, observation_context=owner.native.observation_context,
+        scope_by_question=owner.scope_bindings, c06_authority=owner.bundle["authority"], lease_seconds=1800,
+        generation_by_question={q: owner.existing_work(q)["generation"] for q in config["question_ids"]},
+        external_retrieval=dict(policy=search, model_policy=model_budget, question_manifest_sha256=manifest_sha,
+            health_store=QuickScanProviderHealth(BASE / "search-health.sqlite"),
+            unknown_reset_cooldown_seconds=60, rate_limit_cooldown_seconds=20))
+    limits = dict(max_model_requests_per_session=1, max_search_queries_per_session=0,
+        session_output_tokens_including_reasoning=24000, session_input_tokens=120000,
+        logical_max_output_tokens_including_reasoning_per_request=controls["max_output_tokens"],
+        evidence_context_chars=12000, excerpt_chars_per_source=2000, company_wall_seconds=900)
+    task = factory.create_company_scan_task(lifecycle, experiment_id="shared-production-real-20261025",
+        run_id=config["run_id"], question_ids=config["question_ids"], limits=limits,
+        pack_by="module", max_questions_per_pack=controls["pack_size"])
+    if task.task_sha256 != transition["original_task_sha256"] or canonical_sha256(task.raw) != task.task_sha256:
+        raise ValueError("original_cold_task_required_after_repair")
+    client = LLMClient("CACHE-ONLY-NOT-A-SECRET", route["model"],
+        "https://api.xiaomimimo.com/v1/chat/completions", provider_name="mimo", timeout=180)
+    services = OwnerResearchServices(lifecycle, client, task=task, owner_batch_claim=True,
+        cost_resolver=QuickScanCostResolver(BASE / "rate-cards.json", policy))
+    runtime = dict(protocol="iqs.agent-runtime-lab.session-config/1.0.0", planned_model=route["model"],
+        endpoint_profile_id=route["model"] + "@https://api.xiaomimimo.com/v1/chat/completions",
+        max_output_tokens=controls["max_output_tokens"], session_input_tokens=120000, session_output_tokens=24000,
+        wall_seconds=900, logical_clock=False)
+    from src.providers import llm_research_client as sdk
+    posts = driver.observe_single_model_wire(sdk, "recover", REPAIR / "model-wire-observation.json")
+    before = driver.ledger_counts(services.store)
+    if before != read(COLD / "crash-proof.json")["ledger"]:
+        raise ValueError("original_budget_receipt_or_context_changed_before_repair")
+    result = engine.resume_shared_engine(task, services, runtime, COLD / "cold-session/checkpoint.json",
+        REPAIR / "recovered-export", session_dir=REPAIR / "recovered-session", transport_origin="stockqa_live")
+    sealed = engine.finalize_shared_engine(task, services, REPAIR / "recovered-export")
+    repeated = engine.finalize_shared_engine(task, services, REPAIR / "recovered-export")
+    if (sealed.get("status") != "completed" or repeated.get("status") != "completed"
+        or repeated.get("reused_question_ids") != task.question_ids
+        or any(row.get("delivery_state") not in {"ready", "delivered"}
+               for receipt in (sealed, repeated) for row in receipt["checkpoints"])):
+        raise ValueError("original_reused_checkpoint_and_sealed_delivery_required")
+    from iqs_company_agent_lab.reporter import generate_report
+    rules = engine._production_answer_semantics(task, services).prompt_rules
+    report = generate_report(REPAIR / "recovered-export", REPAIR / "recovered-report",
+                             answer_semantic_rules=rules)
+    after = driver.ledger_counts(services.store)
+    if posts or before != after or not result["all_slots_completed"]:
+        raise ValueError("repair_recovery_sent_or_changed_original_ledger")
+    if report["runtime_observations"] != result["runtime_summary"]:
+        raise ValueError("original_report_runtime_differs_after_repair")
+    checkpoints = []
+    for question in task.question_ids:
+        work_id = services.owner.existing_work(question)["work_item_id"]
+        checkpoint = services.store.get_answer_checkpoint(work_id)
+        checkpoints.append(dict(question_id=question, checkpoint_id=checkpoint["checkpoint_id"],
+            checkpoint_sha256=checkpoint["payload_sha256"]))
+    write(REPAIR / "result.json", dict(protocol="iqs.shared-production-replay-repair-acceptance/1.0.0",
+        generation=3, real_company="宁德时代", actual_live_model=route["model"],
+        actual_search_provider="deepseek_search", source_work_item_id=config["source_work_item_id"],
+        retry_decision_id=decision["decision_id"], original_source_pins_sha256=OLD_PINS_SHA,
+        repair_source_pins_sha256=repair_pin_sha, source_transition_sha256=transition_sha,
+        same_source_cold_and_warm_claim=False, original_response_reused=True,
+        information_cutoff=config["information_cutoff"], observed_at=datetime.now(timezone.utc).isoformat(),
+        original_task_sha256=task.task_sha256, export_directory=str(REPAIR / "recovered-export"),
+        report_directory=str(REPAIR / "recovered-report"), runtime_summary=result["runtime_summary"],
+        owner_finalization=sealed, repeated_finalization=repeated, checkpoints=checkpoints,
+        recovery_new_http=0, recovery_network_forbidden=True, new_model_http_during_finalization=0,
+        budget_before=before, budget_after=after, identical_budget_and_request_rows=before == after,
+        recovery_elapsed_seconds=time.perf_counter() - start, invoice_cost=None, financial_accuracy_assessed=False))
+    print(json.dumps(dict(status="completed_after_explicit_replay_fix", recovery_new_http=0,
+        original_checkpoint_count=len(checkpoints), same_source_cold_and_warm_claim=False)))
+
+
+if __name__ == "__main__":
+    main()

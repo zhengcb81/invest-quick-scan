@@ -1,0 +1,502 @@
+"""Thin read-only report for an explicit, different-source replay repair.
+
+Never dispatch/migrate/reprice usage independently. Missing result is not_ready
+with exit 3 and no output file, rather than a placeholder success.
+"""
+from __future__ import annotations
+
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+from datetime import datetime
+
+ROOT = Path(__file__).resolve().parents[3]
+BASE = ROOT / "runs/r25-live"
+ATTEMPT = BASE / "typed-generation3"
+REPAIR = ATTEMPT / "replay-repair"
+OUTPUT = REPAIR / "thin-summary.json"
+ORIGINAL_PINS_SHA256 = "8a12ef0cebbbcd31baa44f1d75862f73fffdc7c602edb42c4a0fc9af6dc6759d"
+SNAPSHOT_MANIFEST_SHA256 = "716f03355f09a4a8fee0cb99df6f338bfe2e4da347b5d9a6007ff00abd901b12"
+TYPED_RULES_SHA256 = "92a02aaabda1f1083909b260b7fda27727ff78af2853b3a8e6f76c87d80d3363"
+ORIGINAL_REPORTER_SHA256 = "4f3774811b79da564a23834e0fb497b40b7b7f07e10be5627c0140b025173b1c"
+ORIGINAL_COLD_EVIDENCE = {
+    "cold-started.json": "e462e6431b2247e1ca94edd0c40a97ddb101355fa51839ea20708616aba78fc8",
+    "crash-proof.json": "e6ee6cedc3e1b06f301a739c12a4dcd9f4696464ca32d49a46f98dcf1ffc83f8",
+    "safe-validation.json": "c748cd9e628d4ad9e9538b6a21114b91f8ac0a27ee2f201ad0b7236500b215c8",
+    "model-wire-observation.json": "b298e76d67e821e651793b8db0cd5417e20a3dc8d35a71f037f21a23aa797ebb",
+    "cold-session/task-bundle.json": "a0dae3d9e67d872da6103e10f8ce06c50e3f380fd337ea5526edc0ebbde1e93a",
+}
+HELPER_SHA256 = "452c281e3660c0c35bbddee0060d80399923496765b56486c5d0264299216721"
+DRIVER_SHA256 = "d329414d66e6b56c4f0a20e5be00f46a5326a9370c4949b32a2493c1005a0919"
+
+# Reuse the prior reporter's strict owned paths, privacy filters and failures.
+# Loading definitions under this module name never executes its main/build.
+helper_path = Path(__file__).with_name("real_summary.py")
+if hashlib.sha256(helper_path.read_bytes()).hexdigest() != HELPER_SHA256:
+    raise RuntimeError("reviewed_readonly_summary_helpers_changed")
+helper_spec = importlib.util.spec_from_file_location("_generation3_readonly_summary_helpers", helper_path)
+helper = importlib.util.module_from_spec(helper_spec)
+helper_spec.loader.exec_module(helper)
+NotReady, InvalidEvidence = helper.NotReady, helper.InvalidEvidence
+require, digest, owned = helper.require, helper.digest, helper.owned
+public_url, scalar_fields, no_network = helper.public_url, helper.scalar_fields, helper.no_network
+
+
+def pinned_driver(pins):
+    path = ROOT / "runs/reconcile-production-2026-10-25/run_generation3.py"
+    matches = [pin for pin in pins if Path(pin["path"]).resolve() == path.resolve()]
+    require(len(matches) == 1 and matches[0]["sha256"] == DRIVER_SHA256 == digest(path),
+            "generation3_snapshot_driver_not_exactly_pinned")
+    spec = importlib.util.spec_from_file_location("_generation3_exact_summary_snapshot", path)
+    require(spec is not None and spec.loader is not None, "generation3_snapshot_driver_unavailable")
+    driver = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(driver)
+    return driver
+
+
+def validated_task_bundle(bundle, run, expected_sha256):
+    """Use the original scan loader's raw and derived-document hash gates."""
+    from iqs_company_agent_lab.runner import input_manifest_sha256
+    from iqs_company_agent_lab.task import task_from_bundle, task_bundle
+    require(isinstance(bundle, dict) and isinstance(bundle.get("raw"), dict)
+            and bundle["raw"].get("protocol") == "iqs.company-scan-task/1.0.0",
+            "generation3_report_requires_exact_scan_task_protocol")
+    task = task_from_bundle(bundle)
+    require(task.task_sha256 == expected_sha256, "original_cold_task_hash_changed")
+    require(run.get("input_manifest_sha256") == input_manifest_sha256(task.raw)
+            and run.get("company_ref") == task.company_ref
+            and run.get("run_id") == task.raw["run_id"]
+            and run.get("information_cutoff") == task.raw["information_cutoff"],
+            "original_export_task_reference_mismatch")
+    return task_bundle(task)
+
+
+def historical_generations(store, source_work_id, resolver):
+    """Follow immutable original control bindings, preserving both old safes."""
+    cursor, expected_generation, seen = source_work_id, 2, set()
+    models, retrievals, chain = [], {}, []
+    while expected_generation:
+        require(cursor not in seen, "historical_owner_control_cycle")
+        seen.add(cursor)
+        item = store.get_item(cursor)
+        require(item["generation"] == expected_generation and item["status"] == "failed",
+                "original_failed_generation_chain_not_retained")
+        chain.append(dict(work_item_id=cursor, generation=expected_generation, status=item["status"]))
+        for attempt in store.list_attempts(cursor):
+            response = store.get_attempt_response(attempt["attempt_id"])
+            if response is None:
+                continue
+            native = response["receipt"]
+            models.append(dict(generation=expected_generation, work_item_id=cursor,
+                attempt_id=attempt["attempt_id"], receipt_sha256=response["receipt_sha256"],
+                phase=attempt["phase"], requested_model=native["requested_model"], actual_model=native.get("actual_model"),
+                native_usage=native.get("usage"), rate_card_estimate_from_original_resolver=resolver(native),
+                formal_checkpoint_saved=store.get_answer_checkpoint(cursor) is not None))
+            use = store.get_external_context_use(attempt["attempt_id"])
+            require(use and use.get("proof"), "old_successful_search_proof_not_retained")
+            for reference in use["proof"]["retrievals"]:
+                operation = store.get_external_search(reference["operation_id"])
+                require(operation["result"]["receipt_sha256"] == reference["receipt_sha256"], "old_search_receipt_changed")
+                retrievals[reference["operation_id"]] = dict(operation_id=reference["operation_id"],
+                    generation=operation["context"]["work_fingerprint"]["generation"],
+                    http_request_count=operation["result"]["receipt"]["http_request_count"],
+                    charge_from_original_journal=operation["result"]["charge"])
+        if expected_generation > 1:
+            binding = store.get_owner_refresh_binding(cursor)
+            require(binding and isinstance(binding.get("binding", {}).get("owner_control"), dict),
+                    "historical_original_owner_control_missing")
+            cursor = binding["binding"]["owner_control"].get("source_work_item_id")
+            require(isinstance(cursor, str) and cursor, "historical_original_source_work_item_id_missing")
+        expected_generation -= 1
+    require(sorted(row["generation"] for row in models) == [1, 2], "two_original_invalid_model_safes_not_retained")
+    return models, retrievals, chain
+
+
+def retrieval_cold_scope(operation, cold_started_at):
+    """Attribute old receipt HTTP to its original operation, not its reuse."""
+    started = datetime.fromisoformat(cold_started_at).timestamp()
+    created = operation["created_at"]
+    require(type(created) in (int, float), "original_operation_creation_time_missing")
+    count = operation["result"]["receipt"]["http_request_count"]
+    require(type(count) is int and count >= 0, "original_operation_http_count_invalid")
+    new_operation = created >= started
+    return dict(operation_created_before_this_cold=not new_operation,
+                retrieval_origin_generation=operation["context"]["work_fingerprint"]["generation"],
+                original_receipt_http_count=count,
+                new_cold_http_known_subset=count if new_operation else 0)
+
+
+def verified_source_transition(result, cold_pins, config, read, driver):
+    """Verify real before/after files; transition assertions alone prove nothing."""
+    require(result.get("same_source_cold_and_warm_claim") is False
+            and result.get("original_response_reused") is True,
+            "explicit_different_source_repair_required")
+    transition_file = owned(REPAIR / "source-transition.json")
+    pins_file = owned(REPAIR / "repair-source-pins.json")
+    transition = read(transition_file)
+    for name, sha in ORIGINAL_COLD_EVIDENCE.items():
+        require(digest(owned(ATTEMPT / name)) == sha, "original_cold_payload_or_evidence_changed")
+    require(digest(transition_file) == result["source_transition_sha256"], "repair_transition_hash_changed")
+    require(transition.get("protocol") == "iqs.replay-rules-source-repair/1.0.0"
+            and transition.get("same_source_cold_and_warm_claim") is False
+            and transition.get("original_response_reused") is True,
+            "explicit_source_transition_required")
+    require(transition.get("original_pin_file_sha256") == ORIGINAL_PINS_SHA256
+            == result["original_source_pins_sha256"] == digest(ATTEMPT / "source-pins.json")
+            and len(cold_pins) == 72, "original_72_cold_pins_changed")
+    cold = read(ATTEMPT / "cold-started.json")
+    crash = read(ATTEMPT / "crash-proof.json")
+    require(transition.get("original_task_sha256") == crash["task_sha256"]
+            and cold["source_pins_sha256"] == crash["source_pins_sha256"] == ORIGINAL_PINS_SHA256,
+            "original_cold_task_or_pin_reference_changed")
+    require(transition.get("original_crash_proof_sha256") == digest(ATTEMPT / "crash-proof.json")
+            and transition.get("original_legal_safe_validation_sha256") == digest(ATTEMPT / "safe-validation.json"),
+            "original_crash_or_legal_safe_validation_changed")
+    snapshot_ref = transition.get("original_source_snapshot_manifest")
+    require(isinstance(snapshot_ref, dict), "original_snapshot_manifest_missing")
+    snapshot_file = owned(snapshot_ref["path"])
+    require(snapshot_file.resolve() == (ATTEMPT / "failed-replay-context-01/integrity.json").resolve()
+            and digest(snapshot_file) == snapshot_ref["sha256"] == SNAPSHOT_MANIFEST_SHA256,
+            "original_snapshot_manifest_changed")
+    snapshot = read(snapshot_file)
+    require(snapshot.get("protocol") == "iqs.original-replay-context-failure-preservation/1.0.0"
+            and snapshot.get("original_72_pins_retained") is True
+            and snapshot.get("legal_native_response_retained_in_original_store") is True,
+            "original_snapshot_preservation_contract")
+    artifacts, before = {}, {}
+    for row in snapshot["source_files"]:
+        source = Path(row["source"]).resolve()
+        artifact = owned(snapshot_file.parent / row["artifact"])
+        require(artifact.resolve().is_relative_to(snapshot_file.parent.resolve())
+                and source not in artifacts and digest(artifact) == row["sha256"]
+                and artifact.stat().st_size == row["bytes"], "original_snapshot_file_changed_or_duplicate")
+        artifacts[source] = artifact.resolve()
+        before[source] = row["sha256"]
+    require(len(artifacts) == 60, "full_original_60_file_snapshot_required")
+    for row in cold_pins:
+        source = Path(row["path"]).resolve()
+        require(source not in before or before[source] == row["sha256"], "cold_pin_snapshot_disagreement")
+        before[source] = row["sha256"]
+
+    repair_pins = read(pins_file)
+    require(digest(pins_file) == result["repair_source_pins_sha256"], "repair_source_pin_file_changed")
+    current = {}
+    for pin in repair_pins:
+        source = Path(pin["path"]).resolve()
+        require(source not in current and source.is_relative_to(ROOT.parent.resolve())
+                and digest(source) == pin["sha256"], "repair_pin_duplicate_outside_or_current_source_changed")
+        current[source] = pin["sha256"]
+    bridge_ref = transition.get("repair_driver")
+    require(isinstance(bridge_ref, dict), "explicit_repair_driver_missing")
+    bridge_path = Path(bridge_ref["path"]).resolve()
+    reporter_path = Path(__file__).resolve()
+    mandatory = {Path(row["path"]).resolve() for row in cold_pins}
+    mandatory.update(source for source in artifacts if source.suffix == ".py")
+    mandatory.update((bridge_path, reporter_path, transition_file.resolve()))
+    require(mandatory <= set(current) and driver.mandatory_pin_paths(config) <= set(current),
+            "repair_source_pin_coverage_incomplete")
+    require(current[bridge_path] == bridge_ref["sha256"] == digest(bridge_path), "repair_driver_binding_changed")
+    original_reporter = Path(__file__).with_name("real_summary_generation3.py").resolve()
+    require(before.get(original_reporter) == digest(original_reporter) == ORIGINAL_REPORTER_SHA256,
+            "original_reporter_was_overwritten")
+    rules = (ROOT / "scripts/question_prompts.py").resolve()
+    require(transition.get("typed_rules_source_sha256") == before.get(rules) == current.get(rules)
+            == digest(rules) == TYPED_RULES_SHA256, "original_typed_rules_source_changed")
+
+    changed = {}
+    for row in transition["changed_sources"]:
+        source = Path(row["path"]).resolve()
+        require(source not in changed and source in artifacts and source in current
+                and row["before_sha256"] == before[source] != row["after_sha256"] == current[source]
+                and owned(row["original_snapshot_path"]).resolve() == artifacts[source]
+                and digest(artifacts[source]) == row["before_sha256"],
+                "repair_changed_source_not_bound_to_real_old_and_new_bytes")
+        changed[source] = row
+    actual_changed = {source for source, old_sha in before.items() if digest(source) != old_sha}
+    require(actual_changed and actual_changed == set(changed), "repair_transition_omits_or_invents_changed_source")
+    return dict(protocol=transition["protocol"], same_source_cold_and_warm_claim=False,
+        original_response_reused=True, source_transition_sha256=digest(transition_file),
+        original_cold_pin_file_sha256=ORIGINAL_PINS_SHA256, original_cold_pin_count=len(cold_pins),
+        original_source_snapshot_manifest_sha256=digest(snapshot_file), original_snapshot_file_count=len(artifacts),
+        repair_source_pins_sha256=digest(pins_file), repair_source_pin_count=len(repair_pins),
+        original_task_sha256=crash["task_sha256"], typed_rules_source_sha256=TYPED_RULES_SHA256,
+        original_cold_driver_sha256=DRIVER_SHA256, original_cold_reporter_sha256=ORIGINAL_REPORTER_SHA256,
+        original_cold_evidence_sha256=dict(ORIGINAL_COLD_EVIDENCE),
+        repair_driver_sha256=bridge_ref["sha256"], repair_reporter_sha256=digest(reporter_path),
+        changed_sources=[dict(path=str(path), before_sha256=row["before_sha256"], after_sha256=row["after_sha256"])
+                         for path, row in sorted(changed.items(), key=lambda pair: str(pair[0]))])
+
+
+def build_summary():
+    result_file = owned(REPAIR / "result.json")
+    if not result_file.is_file():
+        raise NotReady("generation3_real_acceptance_result_missing")
+    sys.addaudithook(no_network)
+    sys.path[:0] = [str(ROOT.parent / "StockQAbyLLM"), str(ROOT.parent / "iqs-company-agent-lab/src")]
+    from iqs_company_agent_lab.events import scan_for_secret
+    from iqs_company_agent_lab.provenance import read_runtime_summary
+    from iqs_company_agent_lab.strictjson import loads
+    from src.utils.quick_scan_cost_resolver import QuickScanCostResolver
+    from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
+
+    def read(path):
+        path = owned(path)
+        if not path.is_file():
+            raise NotReady("required_existing_generation3_evidence_missing:" + path.name)
+        return loads(path.read_text(encoding="utf8"))
+
+    result = read(result_file)
+    require(result.get("protocol") == "iqs.shared-production-replay-repair-acceptance/1.0.0"
+            and result.get("generation") == 3 and result.get("checkpoints"), "generation3_result_protocol")
+    require(result.get("same_source_cold_and_warm_claim") is False
+            and result.get("original_response_reused") is True, "explicit_different_source_repair_required")
+    require(result.get("recovery_network_forbidden") is True and result.get("recovery_new_http") == 0
+            and result.get("new_model_http_during_finalization") == 0, "recovery_or_finalization_sent_http")
+    require(result.get("financial_accuracy_assessed") is False and result.get("invoice_cost") is None,
+            "unverified_financial_or_invoice_claim")
+    before, after = result["budget_before"], result["budget_after"]
+    require(before == after and result.get("identical_budget_and_request_rows") is True,
+            "recovery_changed_original_ledger_snapshot")
+    hash_keys = ("budget_rows_sha256", "native_response_rows_sha256", "external_operation_rows_sha256",
+                 "durable_context_rows_sha256", "known_response_decision_rows_sha256")
+    require(all(isinstance(before.get(key), str) and len(before[key]) == 64 for key in hash_keys),
+            "original_ledger_or_owner_decision_hash_missing")
+
+    config = read(ATTEMPT / "run-config.json")
+    require(result["source_work_item_id"] == config["source_work_item_id"]
+            and result["retry_decision_id"] == config["retry_decision_id"], "generation3_owner_control_changed")
+    deployment = read(config["deployment"])
+    db_path = owned(deployment["work_store"])
+    require(db_path.resolve() == (BASE / "work.sqlite").resolve() and db_path.is_file(), "original_same_store_required")
+    db_before = digest(db_path)
+    store = ReadOnlyWorkView(db_path)
+    policy = read(config["budget_policy_file"])
+    resolver = QuickScanCostResolver(owned(BASE / "rate-cards.json"), policy)
+    budget = store.get_quick_scan_budget_status(policy["policy_id"])
+    require(budget["spent_micros"] == after["priced_cost_micros"], "shared_budget_cost_mismatch")
+    pins = read(ATTEMPT / "source-pins.json")
+    require(digest(ATTEMPT / "source-pins.json") == result["original_source_pins_sha256"] == ORIGINAL_PINS_SHA256, "result_original_pin_list_changed")
+    driver = pinned_driver(pins)
+    pin_paths = [Path(pin["path"]).resolve() for pin in pins]
+    require(len(pin_paths) == len(set(pin_paths)) and driver.mandatory_pin_paths(config) <= set(pin_paths),
+            "actual_source_pin_coverage_missing_or_duplicate")
+    source_repair = verified_source_transition(result, pins, config, read, driver)
+    current = driver.ledger_counts(store)
+    require(current == after, "current_ledger_or_owner_decision_differs_from_recorded_after")
+    cold = read(ATTEMPT / "cold-started.json")
+    crash = read(ATTEMPT / "crash-proof.json")
+    checked = read(ATTEMPT / "safe-validation.json")
+    require(cold["source_pins_sha256"] == crash["source_pins_sha256"] == result["original_source_pins_sha256"],
+            "cold_crash_result_sources_differ")
+    require(crash["ledger"] == before and crash.get("generation") == 3 and crash.get("model_post_count") == 1,
+            "original_validated_safe_crash_snapshot_missing")
+    require(checked.get("status") == "passed" and checked.get("production_semantic_version") == 2
+            and checked.get("original_iqs_semantics_passed") is True
+            and checked.get("original_stockqa_standard_passed") is True, "safe_not_validated_before_crash")
+    cold_before = cold["before"]
+    require(cold_before["known_response_decision_rows_sha256"] == after["known_response_decision_rows_sha256"],
+            "owner_decision_changed_during_cold_or_recovery")
+
+    export, report_dir = owned(result["export_directory"]), owned(result["report_directory"])
+    require(export.resolve() == (REPAIR / "recovered-export").resolve()
+            and report_dir.resolve() == (REPAIR / "recovered-report").resolve(), "unexpected_generation3_export")
+    run_bytes = owned(export / "research-run.json").read_bytes()
+    run = loads(run_bytes)
+    runtime = read_runtime_summary(export, run, run_bytes)
+    require(runtime is not None and runtime == result["runtime_summary"], "export_runtime_binding")
+    report = read(report_dir / "report.json")
+    require(report.get("runtime_observations") == runtime, "report_runtime_binding")
+    task = read(ATTEMPT / "cold-session/task-bundle.json")
+    task = validated_task_bundle(task, run, crash["task_sha256"])
+    task_rows = {row["question_id"]: row for row in task["questions"]}
+    slots = {row["question_id"]: row for row in run["slots"]}
+    final, repeated = result["owner_finalization"], result["repeated_finalization"]
+    require(final.get("status") == repeated.get("status") == "completed", "delivery_not_sealed")
+    final_rows = {row["question_id"]: row for row in final["checkpoints"]}
+    repeat_rows = {row["question_id"]: row for row in repeated["checkpoints"]}
+    ids = [row["question_id"] for row in result["checkpoints"]]
+    require(len(ids) == len(set(ids)) == 1 and set(ids) == set(final_rows) == set(repeat_rows)
+            == set(task_rows) == set(slots) == set(repeated.get("reused_question_ids", [])), "question_scope_or_reuse_changed")
+    wire = read(ATTEMPT / "model-wire-observation.json")
+    require(wire.get("post_count") == 1 and wire.get("status_code") == 200 and wire.get("thinking_enabled") is True,
+            "one_real_thinking_model_response_missing")
+
+    source_work_id = config["source_work_item_id"]
+    source_work = store.get_item(source_work_id)
+    decision = store.get_owner_retry_decision(source_work_id)
+    require(source_work["generation"] == 2 and source_work["status"] == "failed"
+            and decision and decision["decision_id"] == config["retry_decision_id"]
+            and decision["request"]["purpose"] == "retry_unusable_answer"
+            and decision["request"]["target_generation"] == 3, "original_generation2_failure_and_retry_not_retained")
+    old_models, old_retrievals, historical_chain = historical_generations(store, source_work_id, resolver)
+
+    questions, retrievals, sources = [], {}, {}
+    for expected in result["checkpoints"]:
+        qid = expected["question_id"]
+        row = final_rows[qid]
+        require(row == repeat_rows[qid], "repeat_checkpoint_or_delivery_changed")
+        work_id = row["work_item_id"]
+        cp = store.get_answer_checkpoint(work_id)
+        if cp is None:
+            raise NotReady("original_generation3_checkpoint_missing")
+        require(cp["checkpoint_id"] == expected["checkpoint_id"]
+                and cp["payload_sha256"] == expected["checkpoint_sha256"] == row["checkpoint_sha256"]
+                and cp["checkpoint_schema_version"] == 2, "original_generation3_checkpoint_binding")
+        require(cp["payload"]["work"]["generation"] == 3 and work_id != source_work_id, "checkpoint_not_generation3")
+        binding = store.get_owner_refresh_binding(work_id)
+        require(binding and binding["binding"]["owner_control"]["decision_id"] == decision["decision_id"],
+                "checkpoint_original_owner_decision_binding")
+        provenance = cp["payload"]["provenance"]
+        response, use = store.get_attempt_response(cp["attempt_id"]), store.get_external_context_use(cp["attempt_id"])
+        standard, observation = store.get_standard_answer(work_id), store.get_observation_context(work_id)
+        require(response and use and use.get("proof") and standard and observation, "original_public_evidence_missing")
+        proof = use["proof"]
+        require(provenance.get("search_binding") == "external-context-use-v1_1"
+                and proof == provenance["external_context_use"]
+                and response["receipt_sha256"] == provenance["receipt_sha256"], "original_native_and_use_proof_binding")
+        require(standard["answer"] == slots[qid]["answer"] and slots[qid]["execution_status"] == "completed",
+                "standard_answer_export_differs_or_unfinished")
+        delivery = store.get_result_delivery(work_id)
+        require(delivery and delivery["state"] in {"ready", "delivered"} and delivery["state"] == row["delivery_state"],
+                "original_delivery_not_sealed")
+        body, native = standard["answer"], response["receipt"]
+        allowed_urls = set(proof.get("source_urls", []))
+        require(allowed_urls and all(entry["url"] in allowed_urls for entry in body.get("evidence", [])),
+                "answer_source_not_in_original_context")
+        for reference in proof["retrievals"]:
+            operation = store.get_external_search(reference["operation_id"])
+            receipt = operation["result"]["receipt"]
+            require(operation["result"]["receipt_sha256"] == reference["receipt_sha256"]
+                    and receipt["outcome"] == "response_available" and operation["budget"]["status"] == "settled",
+                    "original_retrieval_not_known_settled_success")
+            cold_scope = retrieval_cold_scope(operation, cold["started_at"])
+            retrievals[reference["operation_id"]] = {**scalar_fields(reference,
+                ("operation_id", "query_id", "route_id", "route_kind", "receipt_sha256", "retrieved_at")),
+                "search_provider_from_original_operation": operation["context"]["route"]["provider"],
+                "http_request_count": receipt["http_request_count"], "http_status_code": receipt["http_status_code"],
+                "charge_from_original_journal": operation["result"]["charge"], **cold_scope}
+            for entry in receipt.get("entries", []):
+                if entry["url"] in allowed_urls:
+                    sources[(entry["url"], entry.get("published_at"))] = {
+                        **public_url(entry["url"]), "published_at_from_original_receipt": entry.get("published_at"),
+                        "retrieved_at": reference["retrieved_at"]}
+        question = task_rows[qid]["question"]
+        questions.append(dict(question_id=qid, module_id=task_rows[qid]["module_id"],
+            module_version=task_rows[qid]["module_version"], rubric_version=question.get("rubric_version"),
+            question_definition_sha256=question.get("definition_sha256"),
+            question_object_sha256=task_rows[qid]["question_object_sha256"],
+            entity_id=cp["payload"]["work"]["entity_id"], subject=task["company_doc"]["subject"]["subject_ref"],
+            generation=3, answer_status=body["status"], answer_sha256=standard["answer_sha256"],
+            checkpoint_id=cp["checkpoint_id"], checkpoint_sha256=cp["payload_sha256"], checkpoint_schema_version=2,
+            delivery_state=delivery["state"], stockwiki_ack_received=delivery["state"] == "delivered",
+            requested_model=native["requested_model"], actual_model=native.get("actual_model"),
+            original_native_response_sha256=response["response_sha256"], original_native_receipt_sha256=response["receipt_sha256"],
+            original_cold_native_answer_sha256=checked["native_answer_sha256"],
+            native_usage_from_original_public_receipt=native.get("usage"),
+            rate_card_estimate_from_original_resolver=resolver(native),
+            observation_context_sha256=observation["context_sha256"],
+            external_context_proof=scalar_fields(proof, ("schema", "state", "proof_sha256", "context_sha256",
+                "question_manifest_sha256", "request_prompt_sha256", "llm_receipt_sha256", "provider", "actual_model", "used_at")),
+            search_policy_sha256=use["intent"]["search_policy_sha256"],
+            cited_source_urls=[public_url(entry["url"]) for entry in body.get("evidence", [])]))
+
+    old = store.get_external_search(helper.OLD_OPERATION)
+    require(old["result"] and old["result"]["receipt"]["outcome"] == "unknown"
+            and old["result"]["receipt"].get("failure_type") == "AttributeError"
+            and old["budget"]["status"] == "settled" and old["budget"]["actual_cost_micros"] == 0
+            and old["budget"]["request_counted"] == old["budget"]["in_flight"] == 0,
+            "original_local_unknown_and_zero_reconciliation_not_retained")
+    reconciliation = read(BASE / "local-not-sent-reconciliation.json")
+    review_path = ROOT / "runs/reconcile-production-2026-10-25/engine-review/failed-cold-pretransport-resolved-review.json"
+    review = json.loads(review_path.read_text(encoding="utf8"))
+    require(review.get("status") == "supported_local_pretransport_failure_and_wrapper_repair_reviewed"
+            and review.get("open_findings") == []
+            and review.get("reconciliation_evidence", {}).get("resolved_outcome_supported") == "confirmed_not_sent"
+            and reconciliation["operation_id"] == helper.OLD_OPERATION
+            and reconciliation["budget_attempt_id"] == old["budget_attempt_id"]
+            and reconciliation["review_sha256"] == digest(review_path)
+            and reconciliation["reconciled_budget"] == old["budget"]
+            and reconciliation["evidence_ref"] == old["budget"]["cost_source_ref"], "old_reconciliation_audit_binding")
+    db_after = digest(db_path)
+    require(db_before == db_after, "original_db_changed_during_readonly_summary")
+    require(after["priced_cost_micros"] >= cold_before["priced_cost_micros"], "cumulative_budget_cost_regressed")
+    new_operation_count = after["external_operation_count"] - cold_before["external_operation_count"]
+    new_referenced_operations = [row for row in retrievals.values() if not row["operation_created_before_this_cold"]]
+    new_search_http_complete = new_operation_count == len(new_referenced_operations)
+    new_search_http_subset = sum(row["new_cold_http_known_subset"] for row in retrievals.values())
+    summary = dict(protocol="iqs.shared-production-thin-summary/4.0.0",
+        status="existing_replay_repair_real_acceptance_summarized", company=result["real_company"],
+        generation=3, source_work_item_id=source_work_id, retry_decision_id=decision["decision_id"],
+        information_cutoff=result["information_cutoff"], observed_at=result["observed_at"],
+        registered_task_sha256=task["task_sha256"], same_source_cold_and_warm_claim=False,
+        original_response_reused=True, source_repair=source_repair,
+        original_cold_source_pins_sha256=result["original_source_pins_sha256"],
+        repair_source_pins_sha256=result["repair_source_pins_sha256"], questions=questions,
+        generation3_observations=dict(new_real_model_http=wire["post_count"],
+            new_real_search_http=new_search_http_subset if new_search_http_complete else None,
+            new_search_http_known_subset=new_search_http_subset,
+            new_search_http_complete=new_search_http_complete,
+            new_external_operation_count_from_original_ledger_delta=new_operation_count,
+            preexisting_retrievals_reused_for_context=sum(row["operation_created_before_this_cold"] for row in retrievals.values()),
+            thinking_enabled_observed=wire["thinking_enabled"], model_http_elapsed_seconds=wire["http_elapsed_seconds"],
+            recovery_elapsed_seconds=result["recovery_elapsed_seconds"], recovery_new_http=result["recovery_new_http"],
+            finalization_new_http=result["new_model_http_during_finalization"], native_usage_complete=runtime["usage_complete"],
+            runtime_cash_cost=runtime["cash_cost"], runtime_cost_complete=runtime["cost_complete"],
+            priced_cost_micros_delta_from_original_ledger=after["priced_cost_micros"] - cold_before["priced_cost_micros"],
+            invoice_cost=None),
+        original_runtime_observation=runtime,
+        generation3_retrievals=list(retrievals.values()), context_sources=list(sources.values()), context_source_count=len(sources),
+        shared_budget_cumulative_from_original_public_store=budget,
+        shared_budget_priced_cost_before_generation3_micros=cold_before["priced_cost_micros"],
+        shared_budget_priced_cost_after_generation3_micros=after["priced_cost_micros"],
+        historical_failed_generation_chain=historical_chain,
+        historical_invalid_model_responses=old_models,
+        historical_successful_retrievals=list(old_retrievals.values()),
+        historical_local_pretransport_failure=dict(operation_id=helper.OLD_OPERATION,
+            original_receipt_outcome="unknown", original_failure_type="AttributeError",
+            original_receipt_sha256=old["result"]["receipt_sha256"], confirmed_not_sent=True,
+            cost_micros_after_original_reconciliation=0, counted_requests_after_original_reconciliation=0,
+            independent_review_sha256=digest(review_path), original_dispatch_retained=old["dispatch"] is not None),
+        priced_cost_is_rate_card_estimate_not_invoice=True, invoice_cost=None,
+        recovery_original_hashes={key: dict(before=before[key], after=after[key], equal=before[key] == after[key]) for key in hash_keys},
+        original_ledger_snapshots_equal=before == after, current_original_ledger_equals_recorded_after=current == after,
+        readonly_summary_db_sha256_before=db_before, readonly_summary_db_sha256_after=db_after,
+        ready_means_sealed_waiting_delivery_not_stockwiki_ack=True, financial_accuracy_assessed=False,
+        answer_body_or_context_body_included=False,
+        evidence_files=dict(result_sha256=digest(result_file), crash_proof_sha256=digest(ATTEMPT / "crash-proof.json"),
+            cold_started_sha256=digest(ATTEMPT / "cold-started.json"),
+            generation3_snapshot_driver_sha256=DRIVER_SHA256, reviewed_helper_sha256=HELPER_SHA256,
+            research_run_sha256=digest(export / "research-run.json"), generated_report_sha256=digest(report_dir / "report.json")))
+    raw = json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2, default=str, allow_nan=False) + "\n"
+    scan_for_secret(raw)
+    return raw
+
+
+def main():
+    try:
+        raw = build_summary()
+    except NotReady as error:
+        print(json.dumps(dict(status="not_ready", reason=str(error), new_http=0)))
+        return 3
+    except InvalidEvidence as error:
+        print(json.dumps(dict(status="blocked", reason=str(error), new_http=0)))
+        return 2
+    except Exception as error:
+        print(json.dumps(dict(status="blocked", reason="original_evidence_validation_failed",
+                              exception_type=type(error).__name__, new_http=0)))
+        return 2
+    pending = OUTPUT.with_name(OUTPUT.name + ".pending")
+    with pending.open("x", encoding="utf8", newline="\n") as stream:
+        stream.write(raw)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(pending, OUTPUT)
+    print(json.dumps(dict(status="existing_replay_repair_real_acceptance_summarized", summary=str(OUTPUT), new_http=0)))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

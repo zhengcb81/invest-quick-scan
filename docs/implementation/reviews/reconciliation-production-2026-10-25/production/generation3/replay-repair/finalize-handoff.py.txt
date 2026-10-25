@@ -1,0 +1,133 @@
+"""Update owned current plans only after real repaired-source acceptance."""
+import hashlib
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+AUDIT = Path(__file__).parent
+EVIDENCE = "docs/implementation/reviews/reconciliation-production-2026-10-25"
+REPAIR = ROOT / "runs/r25-live/typed-generation3/replay-repair"
+
+
+def read(path):
+    return json.loads(path.read_text(encoding="utf8"))
+
+
+def change(path, transform):
+    raw = path.read_bytes()
+    newline = "\r\n" if b"\r\n" in raw else "\n"
+    text = raw.decode("utf8").replace("\r\n", "\n")
+    path.write_bytes(transform(text).replace("\n", newline).encode("utf8"))
+
+
+actual, summary = read(REPAIR / "result.json"), read(REPAIR / "thin-summary.json")
+review = read(AUDIT / "engine-review/generation3-replay-repair-actual-final.json")
+assert review["status"] == "passed" and review["open_findings"] == []
+assert actual["recovery_new_http"] == 0 and actual["budget_before"] == actual["budget_after"]
+assert summary["same_source_cold_and_warm_claim"] is False
+assert summary["status"] == "existing_replay_repair_real_acceptance_summarized"
+assert actual["checkpoints"][0]["checkpoint_id"] == "CHECKPOINT_0297caf9286140189556a06810663d84"
+
+next_step = "本轮R1–R5已完成。下一生产节点是以本次真实singleton为基线，明确规划并实现多题/多公司、过期lease下已知safe的公开恢复路线和StockWiki实际ACK；分别通过适当集成/真实小样本验收后再扩大。当前只有CATL IQS_05、原冻结24题manifest的一题，不能将其当新版38题全覆盖、金融准确性、全股票池或所有report CLI均就绪。原6次请求预算已用完；不再运行cold，不改旧预算/回答/输入锁。"
+
+
+def plan(text):
+    start = text.index("| R3 |")
+    end = text.index("\n### Next Step", start)
+    text = text[:start] + """| R3 | 原公共身份/准入、真实DeepSeek Search+MiMo Pro思考、原语义及exact来源门通过；真实thin-summary已生成且独审通过，旧两代无效safe/费用保留 | **complete** |
+| R4 | 原safe后exit86；修复Replay可信规则遗漏，显式不同源码谱系下禁网恢复成功，双封存复用同CP、ready、0新增HTTP、账本完整行hash相同 | **complete** |
+| R5 | 实际不同agent整节点审passed/open_findings=[]；PWF/交接/实操/状态板及薄证据对齐，源码已正常提交，证据提交与推送按最后发布记录核实 | **complete** |
+""" + text[end:]
+    start = text.index("\n### Next Step")
+    end = text.index("\n### 已核实边界", start)
+    return text[:start] + "\n### Next Step\n\n" + next_step + "\n\n实际结束14:15:41Z；原三代累计公开价估算25023micros（US$0.025023），本代5894micros，现金账单unknown。原72锁`8a12ef0c…`与冷driver保留，新112锁`dd3b71d3…`、transition`3a9ed15f…`，明确`same_source_cold_and_warm_claim=false`。IQS源修`733186c`、Company本地`803ff51`，StockQA维持`24fc22f`。最终独审和thin-summary见本轮证据目录；`ready`不是StockWiki ACK。\n" + text[end:]
+
+
+change(ROOT / "task_plan.md", plan)
+entry = """## 2026-10-25 — 真实singleton生产接线、摘要和禁网恢复已验收
+
+- 真实CATL IQS_05（信息截止10/18，观察10/25）经原公共身份/准入/原SDK调用DeepSeek Search1次、MiMo Pro思考1次，60.1106秒；原语义和exact来源门通过后exit86。
+- 首次暖恢复暴露可信typed规则未传Replay，原守卫正确拒绝。根修共享builder及恢复/封存/报告传播，保留原三hash比较；63项集中回归+29项摘要器测试通过，原真实pending严格只读重建通过。
+- 14:15:41Z在新进程移除keys并禁网，从原safe恢复成功（128.479秒），原schema2检查点CHECKPOINT_0297caf9286140189556a06810663d84，delivery=ready；两次封存同CP，第二次复用IQS_05。新增HTTP0；预算、native安全响应、外部检索、durable context及owner decision完整行hash全等。
+- 新只读thin-summary真实执行通过，读取前后整个原工作库SHA相同，原导出runtime与report逐字段相同。原三代费用和两份无效safe完整保留；累计公开价估算25023micros，本代5894，账单cash仍unknown。没有改响应、清账或放宽引用/语义规则。
+- 原72cold锁不动，修前60制品快照与新112源锁/六源transition明确保留；这是不同源码修复后的兼容恢复，same_source=false。源码正常提交IQS733186c、Company803ff51（无remote），StockQA24fc22f已推送。实际整节点独审由不同agent完成，passed/open_findings=[]，最终四件SHA相互绑定。
+- R1–R5当前节点完成；未宣称StockWiki ACK、38题/整公司/全池、金融准确性或通用typed report CLI均通过。自有测试临时根已清；真实隔离DB/原safe保留供审查，不推远端。\n\n"""
+change(ROOT / "progress.md", lambda text: entry + text)
+change(ROOT / "findings.md", lambda text: "## 2026-10-25 — 修复后真实恢复证据闭合\n\n同一真实safe在明确不同源码谱系下完成0HTTP禁网恢复、同CP双封存、原账本全行hash不变与只读摘要（库SHA前后相同）。这验证工程接线与恢复，不授予金融准确性或StockWiki ACK；旧失败和费用必须保留。详见当前PWF与最终repair实际独审。\n\n" + text)
+
+handoff = f"""# 当前接手入口（2026-10-25；本节优先）
+
+用户已授权跨仓修复、真实小样本、独立agent、提交与推送；不要重复问权限。根task_plan.md顶部R1–R5是本次唯一当前计划。下方10/18暂停owner路线等记录仅属历史。
+
+## 已完成与实际依据
+
+- BASIC-21不一致和六项独审根因已修，主仓200项+3环境重跑、UI134项含6既有skip、独立8反例、六种历史组合字节一致；证据见`{EVIDENCE}/basic/`，不补造旧G5签名。
+- 共享引擎按原StockQA身份/owner/lease/SDK/预算/检索context-use/标准答案检查点接线。真实CATL IQS_05：DeepSeek Search1次、MiMo Pro思考1次（60.1106秒），原评分语义及exact来源门通过后模拟退出86。信息截止2026-10-18、实际观察10-25。
+- 新进程禁网恢复于14:15:41Z成功：0新增模型/搜索HTTP，双封存复用CHECKPOINT_0297caf9286140189556a06810663d84（schema2），delivery=ready；完整原账本各表行hash相同，未重复计费。只读thin-summary实跑通过，前后工作库SHA相同，runtime与原report逐字段一致。独立整节点审passed/open_findings=[]。
+- 首次暖恢复的真实缺陷为Replay漏传原typed规则，已根修六源统一builder/传播；63项集中软件回归、29项摘要器测试及原真实pending只读重放通过。原三hash守卫保留，遗漏/篡改rules仍拒绝。原72cold锁8a12…、冷driver/原safe/失败日志、60修前快照716f…不改；新112锁dd3b…和transition3a9e…明确same_source_cold_and_warm_claim=false。
+- 原三代共6次计数请求，预算7行含一次已证实未发送0成本；累计公开价估算US$0.025023，本代US$0.005894。现金账单unknown；旧两代语义/来源无效safe及全部费用保留，未重置预算。
+- 产品源修：IQS733186c、Company本地803ff51（该仓无remote），StockQA24fc22f已推送。提交后源raw与执行112锁再次核验精确相同；证据/PWF的后续提交以实际git log为准，不把提交消息当运行证明。
+
+## 下一步及不可误用边界
+
+{next_step}
+
+Company Python API的ReplayEngine/resume_from_files/generate_report支持显式answer_semantic_rules；main resume/finalizer自动使用原生产规则。普通report CLI默认空规则仍对typed产物fail closed，使用实操手册中的显式API。不要再次执行任何已有cold或恢复驱动；已完成工作应只读验查，若恢复另一任务先按原公开状态/权限检查。
+
+## 文件与证据
+
+- 实操：`docs/implementation/shared-engine-operations.md`；当前状态图：`docs/implementation/shared-engine-status-2026-10-25.md`。
+- 持久薄证据：`{EVIDENCE}/`，完整清单见integrity.json；最终实际审为engine-review/generation3-replay-repair-actual-final.json/md。
+- 本地真实状态：`runs/r25-live/typed-generation3/replay-repair/`的result.json、thin-summary.json、source-transition.json、repair-source-pins.json；数据库及safe保留本地，不导出回答、context或思考正文。
+- 开工已有其他writer修改`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`及大量历史untracked；不整仓add/清理。自有软件Temp已精确清理，不能清全局Temp。
+
+---
+
+"""
+path = ROOT / "docs/implementation/handoff-for-new-agent.md"
+change(path, lambda text: handoff + text[text.index("# 2026-10-18历史快照"):])
+
+manual = ROOT / "docs/implementation/shared-engine-operations.md"
+change(manual, lambda text: text.replace("禁止网络及子进程发送", "通过audit阻断socket连接、解析与sendto；执行路径不调用子进程传输")
+    .replace("本段记录修复接口与验收方法，尚不宣布本轮修复暖恢复或真实摘要已通过。实际结论由总控在原结果、禁网证据、完整账本比较与独立审查齐备后填写；不得用软件测试替代这次真实 safe 的恢复证据。", "本轮实际修复暖恢复已于2026-10-25 14:15:41Z通过，耗时128.479秒，新增HTTP0；两次封存同schema2检查点，delivery=ready，原完整账本行hash全等。只读摘要实际运行通过且工作库SHA前后相同，独立实际审passed/open_findings=[]。证据见本轮generation3/replay-repair薄归档；same_source_cold_and_warm_claim=false。")
+    .replace("本页不预先宣布 cold/恢复成功；最终实际结果见同目录的本轮说明与根 PWF。", "本轮真实safe→中断→禁网恢复→同CP双封存→只读摘要已通过工程验收，源修IQS733186c/Company803ff51。新调用1search+1model，本代公开价估算5894micros，累计25023micros；现金账单unknown。最终实际证据见本轮薄归档与根PWF。"))
+
+status = """# 共享引擎当前状态（2026-10-25）
+
+本轮工程节点已完成，来自真实CATL单题，不是全公司/全股票池完成。
+
+```mermaid
+flowchart LR
+ A[身份与原准入 已通过] --> B[真实搜索与思考模型 已通过]
+ B --> C[原语义与来源校验 已通过]
+ C --> D[模拟中断与禁网恢复 已通过]
+ D --> E[同检查点双封存与真实摘要 已通过]
+ E --> F[独立实际审 已通过]
+ F --> G[下一步 多题多公司与StockWiki ACK]
+ style F fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
+ style G fill:#fff3cd,stroke:#9a6700,stroke-width:2px
+```
+
+当前只覆盖原24题manifest中的CATL IQS_05，截止10/18、观察10/25。新一代真实搜索1次/模型1次，模型60.1106秒；恢复128.479秒且0新HTTP，重复封存复用同schema2检查点，delivery=ready。只读摘要与原runtime/report一致，工作库SHA前后相同。完整原请求/费用/context账本行hash不变。
+
+首次暖恢复暴露typed规则遗漏，已修并记录明确不同源码谱系：原72锁/60修前制品保留，新112锁，same_source=false。工程定向63项和摘要器29项通过，最终独审passed/open_findings=[]。累计公开价估算US$0.025023，账单unknown。
+
+尚未授予金融准确性、StockWiki ACK、全量38题或全股票池资格。下一步与交接以根PWF和handoff-for-new-agent.md为准。历史10/18状态页不自动更新为当前。
+"""
+(ROOT / "docs/implementation/shared-engine-status-2026-10-25.md").write_text(status, encoding="utf8", newline="\n")
+change(ROOT / EVIDENCE / "production/README.md", lambda text: """# 本轮最终结论（2026-10-25；以下历史阶段记录保留）
+
+真实CATL IQS_05已完成原搜索/思考模型→合法safe→exit86→新进程禁网恢复→原schema2检查点→同CP双封存→只读真实摘要。修复六源Replay规则传播后恢复128.479秒，新增HTTP0，原完整请求/费用/context/owner决策行hash不变；摘要读取前后整个工作库SHA相同。独立实际审passed/open_findings=[]，见engine-review/generation3-replay-repair-actual-final.json/md；四件原结果/摘要/transition/pins的rawSHA均绑定。
+
+原72cold锁及失败记录、修前60制品快照保留；新112锁和六源transition明确same_source_cold_and_warm_claim=false。这是修复后的兼容恢复，不是同源码cold/warm。新一代1search+1model、公开价估算5894micros；三代累计25023micros，账单unknown，旧无效回答和费用保留。delivery=ready，不是StockWiki ACK；不授予金融准确性、全公司38题或全池资格。
+
+源码IQS733186c（已推送）、Company803ff51（本地无remote），StockQA24fc22f已推送；15文件committed blob/filtered与执行字节对齐见source-commit-binding-v4.json。63项集中回归与29项摘要器测试、最终独审均归档；测试分组有重叠，不相加伪称全量新case。当前索引integrity.json，first42清单仅历史。
+
+本归档只含明确薄白名单及源码文本，不含数据库、回答/context/思考正文或密钥。完整原状态保留本地runs/r25-live供审查。下一步以根PWF为准，不再重复cold或改旧预算。
+
+---
+
+## 以下为13:04Z前阶段说明，不作为当前待办
+
+""" + text)
+print("updated current PWF/handoff/manual/status after verified actual acceptance")

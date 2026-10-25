@@ -1,0 +1,104 @@
+{
+  "protocol": "iqs.independent-replay-repair-pre-execution/1.0.0",
+  "status": "passed_explicit_repaired_source_recovery_pre_execution_actual_result_pending",
+  "reviewed_at": "2026-10-25T14:13:02.656041+00:00",
+  "reviewer": "/root/fix_bank21",
+  "production_root_fix_six_sources": {
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\request_context.py": {
+      "before_sha256": "7a36ecb35d968c20a044d771652ef322d10b259016b09ba6089642f3102c5d8e",
+      "after_sha256": "74047b389a85615a968e3d4a8bcaab0b2ca18ac6fc3b9101fccb2f3b0181eb7f",
+      "preserved_line_ending": "'\\r\\n'"
+    },
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\runner.py": {
+      "before_sha256": "5baaf3cce0ada624e393f0a24267199fb793111f8cdae4977d40bad274dd788b",
+      "after_sha256": "1aa76d0b4310853766371b28f4924d55eeeea30b089c053fa8a2f1c83af51862",
+      "preserved_line_ending": "'\\n'"
+    },
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\replay.py": {
+      "before_sha256": "585f335c9b181c72e43ab8dd7a8687c3bb4f64a148d34f7187d3ab3354e6c395",
+      "after_sha256": "a4246c3122f7544721b15017967d9ed973eeaea5af0fd3770113b8b58e6b6b8c",
+      "preserved_line_ending": "'\\r\\n'"
+    },
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\resume.py": {
+      "before_sha256": "9af1d32c22ca155ce68a167b08cc407882cf497d89cc204110cb14061bd591c0",
+      "after_sha256": "209a9cfdf15a91abe8c490b463e89bd06fc0d29ce027f673a87647d5d4c4f4c9",
+      "preserved_line_ending": "'\\r\\n'"
+    },
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\reporter.py": {
+      "before_sha256": "0d0da59c8e3166a532c879f6fc2b73030d340aa36124ef13d7a3fcf96b720826",
+      "after_sha256": "368fadc8fce524cc2c5f32d47cf4e75a406b667ff38da2c9505ae9f7473b2a26",
+      "preserved_line_ending": "'\\r\\n'"
+    },
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_engine.py": {
+      "before_sha256": "f58312fb86f00e372722ff6fbff45ec5088fa1a7fecc3a3814b1d72add752cc7",
+      "after_sha256": "7b6a1f790e3529e08d89b05a56f5456431965043214a51770c3fe48399d1606e",
+      "preserved_line_ending": "'\\r\\n'"
+    }
+  },
+  "root_bridge_sha256": "33f2d0fc5bd7a92c2951d910b6b2009946ef0a9798e8e655da4503d72871af5d",
+  "repair_reporter_sha256": "e494fcab1ad7b2f2951c9938698c6703303333528ed43a81a09baa124d48756a",
+  "original_72_pin_file_sha256": "8a12ef0cebbbcd31baa44f1d75862f73fffdc7c602edb42c4a0fc9af6dc6759d",
+  "original_60_source_snapshot_sha256": "716f03355f09a4a8fee0cb99df6f338bfe2e4da347b5d9a6007ff00abd901b12",
+  "repair_source_pin_count": 112,
+  "repair_source_pins_sha256": "dd3b71d3bda8b5ef7180ed6077f8f669cfb1e4e9fe1d9c14c7f9e3b5ce1cdf51",
+  "source_transition_sha256": "3a9ed15ff02728cf122310e679549ed65599385b95649c534b0aa0278b712f5e",
+  "independent_pure_verify_transition_call_passed": true,
+  "checks": {
+    "same_shared_runtime_request_builder_for_runner_and_replay": true,
+    "trusted_same_frozen_rules_forwarded_resume_finalizer_report": true,
+    "all_original_protocol_stable_dynamic_hash_comparisons_retained": true,
+    "old_empty_rules_API_default_compatible": true,
+    "six_old_actual_snapshot_hashes_and_new_source_hashes_exact": true,
+    "original_unpinned_cold_replay_resume_reporter_supplemented_by_saved_60_source_snapshot_not_claimed_pre_pinned": true,
+    "original72_and_all_unchanged_snapshot_sources_verified_no_undeclared_drift": true,
+    "new112_complete_unique_current_paths_and_exact_six_change_scope": true,
+    "original_cold_checkpoint_pending_history_events_taskbundle_raw_sha_checked_before_native_write": true,
+    "repair_entry_has_no_cold_or_paid_path_removes_keys_and_denies_socket": true,
+    "same_native_safe_task_original_owner_decision_budget_and_full_durable_context_required": true,
+    "original_double_finalize_requires_ready_and_exact_reuse": true,
+    "reporter_exact_source_transition_old_safe_cost_history_current_original_ledger_and_delivery_required": true,
+    "same_source_cold_and_warm_claim_explicitly_false": true
+  },
+  "closed_findings": [
+    {
+      "id": "G3REPLAY-01",
+      "initial_diagnostic": "generation3-replay-runtime-diagnostic.json",
+      "fix": "Share original bounded trusted-rule insertion in build_runtime_request and propagate exact rules through replay/history/explicit reporting; no hash bypass."
+    },
+    {
+      "id": "REPAIR-COLD-RAW",
+      "fix": "Bridge now verifies four original cold checkpoint/history/event/task bytes before native state changes; pre-review lock preserved separately."
+    }
+  ],
+  "author_test_evidence": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-combined63.xml",
+      "sha256": "08a278aca948769bb12a456a4bbf7171824379938b2f571b0fabcfe7b32c41c9",
+      "counts": {
+        "tests": 63,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "independent_rerun": false
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\replay-summary-offline.xml",
+      "sha256": "bd7774815182ab19bfdb0844225a5ebabfcf320e0ffb1e21fe1dda8f2feb0a39",
+      "counts": {
+        "tests": 29,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "independent_rerun": false
+    }
+  ],
+  "test_scope": "63 includes complete typed execute→pending→resume→export verification→report with zero warm calls and wrong-rule rejection. 29 covers repair reporter/source/privacy boundaries. These were inspected, not independently rerun or called actual owner positive.",
+  "cli_limit": "Default generic report CLI has no typed-rules flag; this recovery uses the explicit trusted rules API. No all-CLI support claim.",
+  "reviewer_API_calls": 0,
+  "reviewer_database_writes": 0,
+  "actual_recovery_CP_delivery_summary_success_accepted": false,
+  "financial_accuracy_assessed": false,
+  "open_findings": []
+}

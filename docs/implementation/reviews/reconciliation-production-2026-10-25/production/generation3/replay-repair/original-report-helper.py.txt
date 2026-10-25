@@ -1,0 +1,389 @@
+"""Read an existing real acceptance result; never dispatch, migrate or infer prices.
+
+No result/checkpoint means exit 3 (not_ready) and no summary file is written.
+This is a thin experiment reporter, not an owner, scheduler or financial review.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+from urllib.parse import urlsplit, urlunsplit
+
+
+ROOT = Path(__file__).resolve().parents[3]
+BASE = ROOT / "runs/r25-live"
+ATTEMPT = BASE / "retry-2"
+OUTPUT = Path(__file__).with_name("real-summary.json")
+OLD_OPERATION = "SEARCH_2c4c57fbb9108efc2bbc6407cc4d6482ebd85e6f6a49d839f141d395a0e464cc"
+
+
+class NotReady(Exception):
+    pass
+
+
+class InvalidEvidence(Exception):
+    pass
+
+
+def require(condition, reason):
+    if not condition:
+        raise InvalidEvidence(reason)
+
+
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def owned(path):
+    path = Path(path).absolute()
+    require(path.resolve().is_relative_to(BASE.resolve()), "input_outside_owned_live_root")
+    for entry in (path, *path.parents):
+        require(not entry.is_symlink() and not entry.is_junction(), "linked_live_input")
+        if entry == BASE.absolute():
+            break
+    return path
+
+
+def public_url(value):
+    """Keep a public URL, withholding query/fragment and any user information."""
+    require(isinstance(value, str), "source_url_type")
+    parts = urlsplit(value)
+    require(parts.scheme in {"http", "https"} and parts.hostname, "source_url_shape")
+    require(parts.username is None and parts.password is None, "source_url_credentials")
+    return {
+        "url": urlunsplit((parts.scheme, parts.netloc, parts.path, "", "")),
+        "original_url_sha256": hashlib.sha256(value.encode("utf8")).hexdigest(),
+        "query_or_fragment_withheld": bool(parts.query or parts.fragment),
+    }
+
+
+def scalar_fields(value, keys):
+    require(isinstance(value, dict), "expected_metadata_object")
+    return {key: value[key] for key in keys if key in value}
+
+
+def no_network(event, args):
+    if event in {"socket.connect", "socket.getaddrinfo", "socket.sendto", "subprocess.Popen"}:
+        raise InvalidEvidence("summary_network_or_subprocess_forbidden")
+
+
+def build_summary():
+    result_file = owned(ATTEMPT / "result.json")
+    if not result_file.is_file():
+        raise NotReady("real_acceptance_result_missing")
+
+    # The original read-only store constructor never runs writer migrations.
+    # Import only after readiness, and prohibit even accidental network/CLI use.
+    sys.addaudithook(no_network)
+    sys.path[:0] = [
+        str(ROOT.parent / "StockQAbyLLM"),
+        str(ROOT.parent / "iqs-company-agent-lab/src"),
+    ]
+    from iqs_company_agent_lab.events import scan_for_secret
+    from iqs_company_agent_lab.provenance import read_runtime_summary
+    from iqs_company_agent_lab.strictjson import loads
+    from src.utils.quick_scan_cost_resolver import QuickScanCostResolver
+    from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
+
+    def read(path):
+        path = owned(path)
+        if not path.is_file():
+            raise NotReady("required_existing_evidence_missing:" + path.name)
+        return loads(path.read_text(encoding="utf8"))
+
+    result = read(result_file)
+    require(result.get("protocol") == "iqs.shared-production-acceptance/1.0.0", "result_protocol")
+    require(result.get("checkpoints"), "result_without_original_checkpoints")
+    require(result.get("recovery_network_forbidden") is True, "recovery_network_not_forbidden")
+    require(result.get("recovery_new_http") == 0, "recovery_recorded_new_model_http")
+    require(result.get("new_model_http_during_finalization") == 0, "finalization_recorded_http")
+    require(result.get("financial_accuracy_assessed") is False, "unreviewed_financial_claim")
+    require(result.get("invoice_cost") is None, "invoice_must_remain_unverified")
+    before, after = result["budget_before"], result["budget_after"]
+    require(before == after and result.get("identical_budget_and_request_rows") is True,
+            "recovery_changed_original_ledger_snapshot")
+    comparison_keys = ("budget_rows_sha256", "native_response_rows_sha256",
+                       "external_operation_rows_sha256", "durable_context_rows_sha256")
+    require(all(isinstance(before.get(key), str) and len(before[key]) == 64
+                and before[key] == after.get(key) for key in comparison_keys),
+            "recovery_original_context_response_budget_hashes_not_recorded")
+
+    config = read(BASE / "run-config.json")
+    deployment = read(config["deployment"])
+    db_path = owned(deployment["work_store"])
+    require(db_path.is_file(), "original_store_missing")
+    db_before = digest(db_path)
+    store = ReadOnlyWorkView(db_path)
+    policy = read(config["budget_policy_file"])
+    cost_resolver = QuickScanCostResolver(owned(BASE / "rate-cards.json"), policy)
+    budget = store.get_quick_scan_budget_status(policy["policy_id"])
+    require(budget["spent_micros"] == after["priced_cost_micros"], "ledger_cost_mismatch")
+    # Reuse the reviewed driver's exact snapshot algorithm against the public
+    # read-only view. Cost/count equality alone would miss later zero-fee rows.
+    driver_path = ROOT / "runs/reconcile-production-2026-10-25/run_live.py"
+    pins = read(ATTEMPT / "source-pins.json")
+    driver_pins = [pin for pin in pins if Path(pin["path"]).resolve() == driver_path.resolve()]
+    require(len(driver_pins) == 1 and digest(driver_path) == driver_pins[0]["sha256"],
+            "original_snapshot_driver_not_pinned")
+    spec = importlib.util.spec_from_file_location("_iqs_original_live_summary_snapshot", driver_path)
+    require(spec is not None and spec.loader is not None, "original_snapshot_driver_unavailable")
+    driver = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(driver)  # Only defines functions; never calls main().
+    current = driver.ledger_counts(store)
+    require(current == after, "current_original_ledger_differs_from_acceptance_after")
+
+    transition_path = owned(ATTEMPT / "recovery-source-transition.json")
+    transition = read(transition_path)
+    require(result.get("original_cold_pins_preserved") is True
+            and digest(transition_path) == result.get("recovery_source_transition_sha256")
+            and digest(ATTEMPT / "source-pins.json") == transition.get("original_pins_sha256"),
+            "explicit_source_fix_lineage_missing")
+    require(digest(ATTEMPT / "crash-proof.json") == transition.get("original_crash_proof_sha256")
+            and digest(driver_path) == transition.get("original_cold_driver_sha256"),
+            "original_cold_proof_or_driver_lineage_mismatch")
+    engine_path = ROOT / "scripts/shared_company_engine.py"
+    engine_pins = [pin for pin in pins if Path(pin["path"]).resolve() == engine_path.resolve()]
+    require(len(engine_pins) == 1 and engine_pins[0]["sha256"] == transition.get("engine_before_sha256")
+            and digest(engine_path) == transition.get("engine_after_sha256"),
+            "source_fix_engine_lineage_mismatch")
+    recovery_driver = ROOT / "runs/reconcile-production-2026-10-25/run_recovery_after_fix.py"
+    require(digest(recovery_driver) == transition.get("recovery_driver_sha256"),
+            "source_fix_recovery_driver_changed")
+    for pin in pins:
+        if Path(pin["path"]).resolve() != engine_path.resolve():
+            require(digest(pin["path"]) == pin["sha256"], "unchanged_cold_source_pin_mismatch")
+    require(result.get("export_directory") == "repaired-recovered-export", "unexpected_recovery_export")
+    export = ATTEMPT / result["export_directory"]
+    run_bytes = owned(export / "research-run.json").read_bytes()
+    run = loads(run_bytes)
+    runtime = read_runtime_summary(export, run, run_bytes)
+    require(runtime is not None and runtime == result["runtime_summary"], "export_runtime_binding")
+    report = read(ATTEMPT / "repaired-recovered-report/report.json")
+    require(report.get("runtime_observations") == runtime, "report_runtime_binding")
+    task_bundle = read(ATTEMPT / "cold-session/task-bundle.json")
+    task_rows = {row["question_id"]: row for row in task_bundle["questions"]}
+    slots = {row["question_id"]: row for row in run["slots"]}
+    final = result["owner_finalization"]
+    repeat = result["repeated_finalization"]
+    require(final.get("status") == repeat.get("status") == "completed", "delivery_not_sealed")
+    final_rows = {row["question_id"]: row for row in final["checkpoints"]}
+    repeat_rows = {row["question_id"]: row for row in repeat["checkpoints"]}
+    ids = [row["question_id"] for row in result["checkpoints"]]
+    require(len(ids) == len(set(ids)) and set(ids) == set(final_rows) == set(repeat_rows)
+            == set(slots) == set(task_rows), "question_sets_differ")
+    require(set(repeat.get("reused_question_ids", [])) == set(ids), "repeat_not_exact_reuse")
+
+    model_wire = read(ATTEMPT / "model-wire-observation.json")
+    require(type(model_wire.get("post_count")) is int and model_wire["post_count"] > 0,
+            "real_model_wire_observation_missing")
+    require(model_wire.get("thinking_enabled") is True, "thinking_not_observed")
+    questions, retrievals, source_rows = [], {}, {}
+    for expected in result["checkpoints"]:
+        qid = expected["question_id"]
+        row = final_rows[qid]
+        require(row == repeat_rows[qid], "repeat_checkpoint_or_delivery_changed")
+        work_id = row["work_item_id"]
+        cp = store.get_answer_checkpoint(work_id)
+        if cp is None:
+            raise NotReady("original_checkpoint_missing:" + qid)
+        require(cp["checkpoint_id"] == expected["checkpoint_id"]
+                and cp["payload_sha256"] == expected["checkpoint_sha256"]
+                == row["checkpoint_sha256"], "original_checkpoint_identity_mismatch")
+        require(cp["checkpoint_schema_version"] == 2, "external_context_checkpoint_required")
+        provenance = cp["payload"]["provenance"]
+        require(provenance.get("search_binding") == "external-context-use-v1_1", "search_proof_missing")
+        response = store.get_attempt_response(cp["attempt_id"])
+        context_use = store.get_external_context_use(cp["attempt_id"])
+        standard = store.get_standard_answer(work_id)
+        observation = store.get_observation_context(work_id)
+        require(response and context_use and context_use.get("proof") and standard and observation,
+                "original_public_evidence_missing")
+        proof = context_use["proof"]
+        require(proof == provenance["external_context_use"], "cp_context_proof_differs")
+        require(response["receipt_sha256"] == provenance["receipt_sha256"], "cp_native_receipt_differs")
+        require(standard["answer"] == slots[qid]["answer"], "standard_answer_export_differs")
+        require(slots[qid]["execution_status"] == "completed", "unfinished_export_slot")
+        native = response["receipt"]
+        delivery = store.get_result_delivery(work_id)
+        require(delivery and delivery["state"] in {"ready", "delivered"}
+                and delivery["state"] == row["delivery_state"], "original_delivery_not_sealed")
+        body = standard["answer"]
+        question = task_rows[qid]["question"]
+        subject = task_bundle["company_doc"]["subject"]["subject_ref"]
+        cited = [public_url(entry["url"]) for entry in body.get("evidence", [])]
+        allowed_urls = set(proof.get("source_urls", []))
+        require(all(entry["url"] in allowed_urls for entry in body.get("evidence", [])),
+                "answer_source_not_in_original_context")
+        for reference in proof["retrievals"]:
+            op_id = reference["operation_id"]
+            op = store.get_external_search(op_id)
+            require(op["result"] and op["result"]["receipt_sha256"] == reference["receipt_sha256"],
+                    "retrieval_receipt_binding")
+            receipt = op["result"]["receipt"]
+            require(receipt["outcome"] == "response_available" and op["budget"]["status"] == "settled",
+                    "retrieval_not_known_priced_success")
+            retrievals[op_id] = {
+                **scalar_fields(reference, ("operation_id", "query_id", "route_id", "route_kind",
+                                             "receipt_sha256", "retrieved_at")),
+                "http_request_count": receipt["http_request_count"],
+                "http_status_code": receipt["http_status_code"],
+                "charge_from_original_journal": op["result"]["charge"],
+            }
+            for entry in receipt.get("entries", []):
+                if entry["url"] in allowed_urls:
+                    safe = public_url(entry["url"])
+                    safe["published_at_from_original_receipt"] = entry.get("published_at")
+                    safe["retrieved_at"] = reference["retrieved_at"]
+                    source_rows[(entry["url"], entry.get("published_at"))] = safe
+        questions.append({
+            "question_id": qid,
+            "module_id": task_rows[qid]["module_id"],
+            "module_version": task_rows[qid]["module_version"],
+            "rubric_version": question.get("rubric_version"),
+            "question_definition_sha256": question.get("definition_sha256"),
+            "question_object_sha256": task_rows[qid]["question_object_sha256"],
+            "entity_id": cp["payload"]["work"]["entity_id"],
+            "subject": subject,
+            "generation": cp["payload"]["work"]["generation"],
+            "answer_status": body["status"],
+            "answer_sha256": standard["answer_sha256"],
+            "checkpoint_id": cp["checkpoint_id"],
+            "checkpoint_sha256": cp["payload_sha256"],
+            "checkpoint_schema_version": cp["checkpoint_schema_version"],
+            "delivery_state": delivery["state"],
+            "stockwiki_ack_received": delivery["state"] == "delivered",
+            "model_requested": native["requested_model"],
+            "actual_model": native.get("actual_model"),
+            "native_usage_complete": isinstance(native.get("usage"), dict),
+            "native_usage_from_validated_public_receipt": native.get("usage"),
+            "rate_card_estimate_from_original_resolver": cost_resolver(native),
+            "observation_context_sha256": observation["context_sha256"],
+            "external_context_proof": scalar_fields(proof, (
+                "schema", "state", "proof_sha256", "context_sha256", "question_manifest_sha256",
+                "request_prompt_sha256", "llm_receipt_sha256", "provider", "actual_model", "used_at")),
+            "search_policy_sha256": context_use["intent"]["search_policy_sha256"],
+            "cited_source_urls": cited,
+        })
+
+    old = store.get_external_search(OLD_OPERATION)
+    require(old["result"] and old["result"]["receipt"]["outcome"] == "unknown"
+            and old["result"]["receipt"].get("failure_type") == "AttributeError",
+            "original_local_failure_not_preserved")
+    require(old["budget"]["status"] == "settled" and old["budget"]["actual_cost_micros"] == 0
+            and old["budget"]["request_counted"] == old["budget"]["in_flight"] == 0,
+            "original_local_failure_not_reconciled_zero")
+    # A terminal interpretation needs its original audit, not an inference from
+    # a zero balance. The independent root review resolves the precall cause.
+    review_path = ROOT / "runs/reconcile-production-2026-10-25/engine-review/failed-cold-pretransport-resolved-review.json"
+    require(review_path.is_file(), "local_failure_independent_review_missing")
+    review = loads(review_path.read_text(encoding="utf8"))
+    require(review.get("status") == "supported_local_pretransport_failure_and_wrapper_repair_reviewed"
+            and review.get("open_findings") == []
+            and review.get("reconciliation_evidence", {}).get("resolved_outcome_supported")
+            == "confirmed_not_sent", "local_failure_independent_review_not_supportive")
+    reconciliation = read(BASE / "local-not-sent-reconciliation.json")
+    require(reconciliation.get("protocol") == "iqs.local-pretransport-reconciliation/1.0.0"
+            and reconciliation["operation_id"] == OLD_OPERATION
+            and reconciliation["budget_attempt_id"] == old["budget_attempt_id"]
+            and reconciliation["review_sha256"] == digest(review_path)
+            and reconciliation["reconciled_budget"] == old["budget"]
+            and reconciliation["evidence_ref"] == old["budget"]["cost_source_ref"]
+            and reconciliation["original_unknown_receipt_unchanged"] is True
+            and reconciliation["original_dispatch_unchanged"] is True,
+            "local_failure_reconciliation_does_not_match_original_store_and_review")
+
+    recovery_hashes = {key: {"before": before.get(key), "after": after.get(key),
+                             "recorded": key in before and key in after,
+                             "equal": before[key] == after[key] if key in before and key in after else None}
+                       for key in comparison_keys}
+    db_after = digest(db_path)
+    require(db_before == db_after, "original_db_changed_during_readonly_summary")
+    summary = {
+        "protocol": "iqs.shared-production-thin-summary/1.0.0",
+        "status": "existing_real_acceptance_summarized",
+        "company": result["real_company"],
+        "information_cutoff": result["information_cutoff"],
+        "observed_at": result["observed_at"],
+        "registered_task_sha256": task_bundle["task_sha256"],
+        "model_search_observations": {
+            "new_real_model_http": model_wire["post_count"],
+            "new_real_search_http_from_successful_original_receipts": sum(
+                row["http_request_count"] for row in retrievals.values()),
+            "thinking_enabled_observed": model_wire["thinking_enabled"],
+            "recovery_new_model_http": result["recovery_new_http"],
+            "recovery_network_forbidden": result["recovery_network_forbidden"],
+            "finalization_new_model_http": result["new_model_http_during_finalization"],
+        },
+        "previous_local_pretransport_failure": {
+            "operation_id": OLD_OPERATION,
+            "original_receipt_outcome": old["result"]["receipt"]["outcome"],
+            "failure_type": old["result"]["receipt"]["failure_type"],
+            "reconciled_outcome_from_bound_original_api_audit": "confirmed_not_sent",
+            "original_receipt_sha256": old["result"]["receipt_sha256"],
+            "original_dispatch_row_retained": old["dispatch"] is not None,
+            "reconciliation_source_ref": old["budget"]["cost_source_ref"],
+            "counted_requests_after_original_reconciliation": old["budget"]["request_counted"],
+            "cost_micros_after_original_reconciliation": old["budget"]["actual_cost_micros"],
+            "independent_review_sha256": digest(review_path),
+            "not_a_provider_rejection": True,
+        },
+        "questions": questions,
+        "retrievals": list(retrievals.values()),
+        "context_sources": list(source_rows.values()),
+        "context_source_count": len(source_rows),
+        "budget_from_original_public_store": budget,
+        "priced_cost_is_rate_card_estimate_not_invoice": True,
+        "invoice_cost": None,
+        "recovery_original_hashes": recovery_hashes,
+        "original_ledger_snapshots_equal": before == after,
+        "current_original_ledger_snapshot_equals_recorded_after": current == after,
+        "readonly_summary_db_sha256_before": db_before,
+        "readonly_summary_db_sha256_after": db_after,
+        "ready_means_sealed_waiting_delivery_not_stockwiki_ack": True,
+        "financial_accuracy_assessed": False,
+        "answer_body_or_context_body_included": False,
+        "evidence_files": {"result_sha256": digest(result_file),
+                           "original_snapshot_driver_sha256": digest(driver_path),
+                           "research_run_sha256": digest(export / "research-run.json"),
+                           "generated_report_sha256": digest(ATTEMPT / "repaired-recovered-report/report.json")},
+    }
+    # Validate against the original project's leak scanner before publication.
+    raw = json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2, default=str,
+                     allow_nan=False) + "\n"
+    scan_for_secret(raw)
+    return raw
+
+
+def main():
+    try:
+        raw = build_summary()
+    except NotReady as error:
+        print(json.dumps({"status": "not_ready", "reason": str(error), "new_http": 0}))
+        return 3
+    except InvalidEvidence as error:
+        print(json.dumps({"status": "blocked", "reason": str(error), "new_http": 0}))
+        return 2
+    except Exception as error:
+        # Do not interpolate an arbitrary parser/validator exception: it could
+        # contain a source body. Root can inspect its original input privately.
+        print(json.dumps({"status": "blocked", "reason": "original_evidence_validation_failed",
+                          "exception_type": type(error).__name__, "new_http": 0}))
+        return 2
+    temporary = OUTPUT.with_name(OUTPUT.name + ".pending")
+    with temporary.open("x", encoding="utf8", newline="\n") as stream:
+        stream.write(raw)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, OUTPUT)
+    print(json.dumps({"status": "existing_real_acceptance_summarized", "summary": str(OUTPUT),
+                      "new_http": 0}))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

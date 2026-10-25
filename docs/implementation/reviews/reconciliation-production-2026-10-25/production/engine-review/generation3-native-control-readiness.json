@@ -1,0 +1,57 @@
+{
+  "protocol": "iqs.gen3-control-readiness-readonly/1.0.0",
+  "reviewer": "/root/review_bank21",
+  "observed_at_utc": "2026-10-25T13:10:27.143351+00:00",
+  "actual_work": {
+    "work_item_id": "WORK_c9374943a7c44990ba69d67fa7346529",
+    "question_id": "IQS_05",
+    "generation": 2,
+    "status": "leased",
+    "lease_epoch": 1,
+    "lease_expires_at_utc": "2026-10-25T13:30:22.486661+00:00"
+  },
+  "attempts": [
+    {
+      "attempt_id": "ATTEMPT_7d199ff1165a4c07b7f20191ad3c3699",
+      "ordinal": 1,
+      "phase": "response_available",
+      "lease_epoch": 1,
+      "receipt_sha256": "193dbe3198cfe2537b2ba211c9838c074833df0182eb7d684da751147f359d6a"
+    }
+  ],
+  "latest_response_hashes": {
+    "receipt_sha256": "193dbe3198cfe2537b2ba211c9838c074833df0182eb7d684da751147f359d6a",
+    "response_sha256": "6055c7df80d3fb61f617459f726a629eaf21d8125cbd6b978eb1e9f7ad41ea66"
+  },
+  "counts": {
+    "answer_checkpoint": 0,
+    "quick_scan_result_delivery": 0,
+    "quick_scan_owner_work_decision": 0,
+    "quick_scan_question_pack_member": 0
+  },
+  "registered_binding_protocol": "stockqa.owner_refresh_binding/3.0.0",
+  "prior_owner_control_purpose": "retry_unusable_answer",
+  "budget_totals": {
+    "attempts": 5,
+    "counted": 4,
+    "in_flight": 0,
+    "priced_micros": 19129
+  },
+  "database_sha256_before": "355e93c2d3006bf6c0ea6c4a190c937aaea70de635ab1216eefe18fd9af1b78d",
+  "database_sha256_after": "355e93c2d3006bf6c0ea6c4a190c937aaea70de635ab1216eefe18fd9af1b78d",
+  "database_unchanged_during_read": true,
+  "API_requests": 0,
+  "database_writes": 0,
+  "live_controls_executed": false,
+  "codegraph_lag": "release/known-response symbols not indexed; exact current files read after unsuccessful structural lookup",
+  "conclusion": "Original known-response owner resolution requires real lease expiry. Do not independently call fail_received_without_answer: it closes work without required resolution and blocks current retry_unusable_answer path.",
+  "file_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_store.py": "5c3671b58f75ccf213b9ef5ff10808c97dfbaefd39eae6ea9731ef624a2f5dfd",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_known_outcome_journal.py": "48a6257956defcd57fef2f0da18a68689227b5267002db496a7bb3aaa797801a",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_decision_inspect.py": "589b76549597e522a5db33a347396641f9e19cc2a5ca0c65692e434174e3ce5a",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\prepare_work_control.py": "b480a5682f5631a81e2edcc01768037061394cfc74429f2cc8733b024faae1b3",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\typed-generation2\\invalid-result.json": "456148952b777846b27442612c2178e999b85f3e0c5505168716e198f2de8011",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\typed-generation2\\safe-validation.json": "b82380ed2893697d151e8d02b54fbea7dd0609bf25c8b7bb657c5dbfcb692853",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\budget-policy.json": "3906fdd4f2a534609eb65afbd7e1a57e755bf5e91261352aa1d42b6a60b13f83"
+  }
+}

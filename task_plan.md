@@ -5,14 +5,16 @@
 | 阶段 | 交付与通过标准 | Status |
 |---|---|---|
 | R1 | 校正 handoff、包状态与 manifest；BASIC-21 实际独审6项根因已修、复审passed，兼容6/6，主仓200项+3环境重跑通过，UI134项含6既有skip | **complete** |
-| R2 | 原封存/预算scope、原语义及exact native来源门、严格singleton恢复证明已修并提交；54项共享回归、92项native恢复回归及格式后23项子集通过，产品独审闭合。真实执行协调仍在R3/R4验收 | **complete** |
-| R3 | 原schema2前置能力已修；generation1旧safe语义无效并保留。generation2最终56锁预检通过，实际新搜索与MiMo Pro思考HTTP200/75.337秒，但safe gate拒绝，已保留原safe/invalid export/累计费用19129micros，无正式检查点 | **in_progress** |
-| R4 | 真实运行断点恢复：已完成工作不再发包、费用/usage 不重复累计；上下文或输入改变不得误命中；提供前后请求与摘要证据 | **pending** |
-| R5 | 整轮独立审查与修复闭环；更新 PWF 和接手入口，仅提交明确自有改动并推送既有 origin | **pending** |
+| R2 | 原封存/预算scope、原语义及exact native来源门、严格singleton恢复证明已修并提交；54项共享回归、92项native恢复回归及格式后23项子集通过，产品独审闭合；实际执行协调现已在R3/R4验收通过 | **complete** |
+| R3 | 原公共身份/准入、真实DeepSeek Search+MiMo Pro思考、原语义及exact来源门通过；真实thin-summary已生成且独审通过，旧两代无效safe/费用保留 | **complete** |
+| R4 | 原safe后exit86；修复Replay可信规则遗漏，显式不同源码谱系下禁网恢复成功，双封存复用同CP、ready、0新增HTTP、账本完整行hash相同 | **complete** |
+| R5 | 实际不同agent整节点审passed/open_findings=[]；PWF/交接/实操/状态板及薄证据对齐，源码已正常提交，证据提交与推送按最后发布记录核实 | **complete** |
 
 ### Next Step
 
-generation2最终56pins `6137fafb…9963`预检通过后已实际发送1次新搜索/1次MiMo Pro请求。HTTP200/75.337秒，但safe gate ValueError、Runner也拒绝为invalid，13:02:39Z正常退出0而非预期86；wrapper据此判失败，正式检查点0。下一步只读复现原safe的精确拒因，作者与独立审查者分别归因；不改safe、不删字段、不盲重发、不重置预算。若为适配缺陷，先根修并明确跨版本恢复谱系，再复用原响应；若为回答本身不合法，按原known-response新代次路线处理。原source锁/driver/失败export与累计19129micros保留。R3/R4仍开放。
+本轮R1–R5已完成。下一步先只读核对当前ready封包与StockWiki公共导入/ACK契约，准备隔离ACK集成验收，不能重发模型；随后再扩多题/多公司和过期lease下已知safe的公开恢复路线。当前只有CATL IQS_05、原冻结24题manifest的一题，不能将其当新版38题全覆盖、金融准确性、全股票池或所有report CLI均就绪。原6次请求预算已用完；不再运行cold，不改旧预算/回答/输入锁。
+
+实际结束14:15:41Z；原三代累计公开价估算25023micros（US$0.025023），本代5894micros，现金账单unknown。原72锁`8a12ef0c…`与冷driver保留，新112锁`dd3b71d3…`、transition`3a9ed15f…`，明确`same_source_cold_and_warm_claim=false`。IQS源修`733186c`、Company本地`803ff51`，StockQA维持`24fc22f`。最终独审和thin-summary见本轮证据目录；`ready`不是StockWiki ACK。
 
 ### 已核实边界
 

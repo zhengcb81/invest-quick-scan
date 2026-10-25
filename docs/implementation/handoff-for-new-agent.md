@@ -1,28 +1,29 @@
 # 当前接手入口（2026-10-25；本节优先）
 
-用户当前指令：修正核实出的文档与实际状态差异，补齐真实独审证据，继续共享引擎生产接线、真实摘要和缓存恢复；发现问题直接修复，完成进展提交并推送。既有跨仓、真实小样本、提交/推送授权继续有效，不重复询问。下方10/18暂停旧owner路线的记录保留为历史，已由本次恢复指令覆盖当前执行方向。
+用户已授权跨仓修复、真实小样本、独立agent、提交与推送；不要重复问权限。根task_plan.md顶部R1–R5是本次唯一当前计划。下方10/18暂停owner路线等记录仅属历史。
 
-## 当前状态与下一步
+## 已完成与实际依据
 
-- 唯一当前计划是根 `task_plan.md` 顶部R1–R5；`progress.md`/`findings.md`记实际证据。本轮起点主仓`046df087`；原10/25清收代码相对`e2a99a3`只增加三份PWF文档。原全量1065 passed/4 skipped/761 subtests是历史实测，本轮没有重跑78分钟套件。
-- BASIC-21本轮实际独审的6项根因（另含type critical继承）已修复，**工程验收通过**；主仓200项+3环境重跑、UI134项含6skip、独立反例8/8、历史六组合输出字节一致。初轮失败与最终独审证据在`docs/implementation/reviews/reconciliation-production-2026-10-25/basic/`；G5不伪签。
-- 共享引擎已有原Runner/RuntimeBridgePort/StockQA SDK接线。本轮显式`finalize_shared_engine`及singleton预算scope修复已提交IQS`23a05c8`、StockQA`8af0c86`（已推送），原软件scored正例1 passed/649.21秒、相关29/36项回归通过。历史CATL05/06恢复仍保留其固定context/无正式搜索checkpoint边界，不能代替当前真实验收。
-- 原schema2观察库导致首次模型注册拒绝的问题已修：原备份验证后2→3→4迁移，StockQA前置能力守卫`f88b53e`已推送，59项通过；fresh bootstrap和观测/context完整哈希7项通过。旧unknown、prepared、预算历史保留；没有重置账本或提前接管lease。
-- 最新真实运行`runs/r25-live/retry-2/`：同work/task/generation1，原epoch2到期后原入口领取epoch3；旧prepared变abandoned_unsent。真实DeepSeek搜索已成功并缓存复用，MiMo Pro开启思考后真实HTTP200/112.245秒，只有1次模型post；原safe保存后11:27:33Z按计划exit86。
-- 两轮禁网恢复依次暴露：新增finalizer缺裸单题/原证据ID规范化兼容（已修）；Company只校schema导致score夹带3个fact items误报completed。后者违反原standard_answers规则，StockQA拒绝正确，原检查点/标准答案/交付均0；原safe和12049micros费用保留，恢复没有新HTTP。
-- 原语义回调及v2 exact native来源门已修并提交IQS`1730023`/`854ed55`，Company配套`81b64be`/`73d342b`本地提交（无remote）；54项定向通过。原known-response严格singleton证明已提交推送StockQA`24fc22f`，92项guarded通过，格式后仅23项新增子集重跑通过，不能相加冒称115个独立case。产品独审闭合；实际新代次封存/恢复尚待实测。
-- 旧无效safe已由原resolution真实终端确认并原apply登记failed，原retry_unusable_answer及generation2 admission均已实际完成；原策略1.2在这些控制前固定，不改预算。实际控制记录已独立核验。12:41Z预检拒绝为实验driver遗漏公开assert_execution_controls，原守卫正确；driver80ceecfc已修，9项定向通过。薄摘要器b47392f9使用原loader重算任务并拒legacy，9项通过。最新56pins为`6137fafb…9963`，最终零HTTP预检通过。
-- 最新generation2已实际新搜索1次、新模型1次，思考开启、HTTP200/75.337秒；但safe gate及原Runner均拒绝，13:02:39Z导出invalid，无正式检查点，累计估算19129micros。正只读诊断真实拒因。**不要重新执行cold，也不能执行要求合法crash-proof的recover**；保留原safe/失败export/锁。若是适配缺陷应明确跨修复版本复用原响应，若原回答本身不合法则走原known-response路线，不能删字段或清预算。
-- 原cold的36pins和旧driver、两次恢复失败导出均保留，分别见`retry-2/failed-finalization-01/`和`failed-semantic-gate-01/`；后者从原快照+最小patch重建的执行engine与f5832a9b…SHA精确一致。`recovery-source-transition.json`是第一层匹配修复的真实历史谱系，不是当前可盲重跑的入口。新语义版本必须重新冻结明确来源；根PWF的Next Step为唯一执行位置。
-- `owner_authority_verified=false`是Company摘要观察器固定能力边界；不能据此推断人类没有授权。原work/lease/context proof/checkpoint的实测结果才是接线判据；现金成本unknown不可改零，公开价估算与账单分列。
-- 当前最短闭环：原StockQA真实外部检索/context proof → 单题共享引擎 → 原活动lease封存标准答案 → 原安全响应后中断 → 禁网恢复，核新增HTTP=0、预算不重复、封存一次、摘要逐字段一致。原外部context绑定禁止批量question pack；本轮先singleton，不声称已支持agent自主搜索。
-- 先修已确认的根因，再跑定向单元/跨仓集成与上述真实E2E，在整包节点独审；不对每个helper增门。生产准入、金融准确性和全池完成不能因结构测试通过自动授予。
+- BASIC-21不一致和六项独审根因已修，主仓200项+3环境重跑、UI134项含6既有skip、独立8反例、六种历史组合字节一致；证据见`docs/implementation/reviews/reconciliation-production-2026-10-25/basic/`，不补造旧G5签名。
+- 共享引擎按原StockQA身份/owner/lease/SDK/预算/检索context-use/标准答案检查点接线。真实CATL IQS_05：DeepSeek Search1次、MiMo Pro思考1次（60.1106秒），原评分语义及exact来源门通过后模拟退出86。信息截止2026-10-18、实际观察10-25。
+- 新进程禁网恢复于14:15:41Z成功：0新增模型/搜索HTTP，双封存复用CHECKPOINT_0297caf9286140189556a06810663d84（schema2），delivery=ready；完整原账本各表行hash相同，未重复计费。只读thin-summary实跑通过，前后工作库SHA相同，runtime与原report逐字段一致。独立整节点审passed/open_findings=[]。
+- 首次暖恢复的真实缺陷为Replay漏传原typed规则，已根修六源统一builder/传播；63项集中软件回归、29项摘要器测试及原真实pending只读重放通过。原三hash守卫保留，遗漏/篡改rules仍拒绝。原72cold锁8a12…、冷driver/原safe/失败日志、60修前快照716f…不改；新112锁dd3b…和transition3a9e…明确same_source_cold_and_warm_claim=false。
+- 原三代共6次计数请求，预算7行含一次已证实未发送0成本；累计公开价估算US$0.025023，本代US$0.005894。现金账单unknown；旧两代语义/来源无效safe及全部费用保留，未重置预算。
+- 产品源修：IQS733186c、Company本地803ff51（该仓无remote），StockQA24fc22f已推送。提交后源raw与执行112锁再次核验精确相同；证据/PWF的后续提交以实际git log为准，不把提交消息当运行证明。
 
-## 安全接手与交付
+## 下一步及不可误用边界
 
-只读调查：`runs/reconcile-production-2026-10-25/production-investigation/README.md`。整轮证据在`runs/reconcile-production-2026-10-25/`，真实隔离部署`runs/r25-live/`。重试精确计划在`engine-fix/pretransport-retry-plan.md`，独审在`engine-review/unsent-retry-plan-review.json`；本地结算实际记录为`runs/r25-live/local-not-sent-reconciliation.json`。新实操入口是`docs/implementation/shared-engine-operations.md`。预算从admission起为原composite，检索model_policy另用base；旧`.../live/`只准备0收费，不复用或改已确认输入。自有软件测试Temp已精确清理，真实隔离状态保留供恢复与审查；不推数据库、回答/context全文、密钥或思考正文。
+本轮R1–R5已完成。下一步先只读核对当前ready封包与StockWiki公共导入/ACK契约，准备隔离ACK集成验收，不能重发模型；随后再扩多题/多公司和过期lease下已知safe的公开恢复路线。当前只有CATL IQS_05、原冻结24题manifest的一题，不能将其当新版38题全覆盖、金融准确性、全股票池或所有report CLI均就绪。原6次请求预算已用完；不再运行cold，不改旧预算/回答/输入锁。
 
-开工已有一份tracked修改为`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`，及大量未跟踪历史归档；不归本轮，不整仓add或清理。外仓先核实际HEAD/status并保留其他writer修改。只提交明确自有源码、测试和薄证据；更新本入口、PWF、状态板和manifest的同一当前状态。
+Company Python API的ReplayEngine/resume_from_files/generate_report支持显式answer_semantic_rules；main resume/finalizer自动使用原生产规则。普通report CLI默认空规则仍对typed产物fail closed，使用实操手册中的显式API。不要再次执行任何已有cold或恢复驱动；已完成工作应只读验查，若恢复另一任务先按原公开状态/权限检查。
+
+## 文件与证据
+
+- 实操：`docs/implementation/shared-engine-operations.md`；当前状态图：`docs/implementation/shared-engine-status-2026-10-25.md`。
+- 持久薄证据：`docs/implementation/reviews/reconciliation-production-2026-10-25/production/`，完整清单见该目录integrity.json；最终实际审为该目录engine-review/generation3-replay-repair-actual-final.json/md；BASIC证据在同级basic/。
+- 生产薄清单236件，旧130保留；发布器审查和12+3软件测试另见同级publication/manifest.json，文档终审为publication/documentation-final.json/md；不要混为金融测试或追加到原运行锁。
+- 本地真实状态：`runs/r25-live/typed-generation3/replay-repair/`的result.json、thin-summary.json、source-transition.json、repair-source-pins.json；数据库及safe保留本地，不导出回答、context或思考正文。
+- 开工已有其他writer修改`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`及大量历史untracked；不整仓add/清理。自有软件Temp已精确清理，不能清全局Temp。
 
 ---
 

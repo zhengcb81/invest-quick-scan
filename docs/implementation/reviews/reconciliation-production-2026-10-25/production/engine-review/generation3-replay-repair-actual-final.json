@@ -1,0 +1,72 @@
+{
+  "protocol": "iqs.independent-replay-repair-actual-review/1.0.0",
+  "status": "passed",
+  "reviewed_at": "2026-10-25T14:23:02.382567+00:00",
+  "reviewer": "/root/fix_bank21",
+  "open_findings": [],
+  "accepted_artifact_sha256": {
+    "result": "63dd2d51da764cabc8e07a1c11e6b4da99666ba617ebc10366b4445899c28042",
+    "summary": "80c9ba18d3640af59247d29bd8eed2dcafe2c251449e60f101cf109ca5efc717",
+    "source_transition": "3a9ed15ff02728cf122310e679549ed65599385b95649c534b0aa0278b712f5e",
+    "repair_source_pins": "dd3b71d3bda8b5ef7180ed6077f8f669cfb1e4e9fe1d9c14c7f9e3b5ce1cdf51"
+  },
+  "acceptance_scope": "Real CATL IQS_05 original owner/SDK response sealed after explicit replay source repair; no-network cached recovery and repeated native sealing.",
+  "same_source_cold_and_warm_claim": false,
+  "original_response_reused": true,
+  "old72_and_snapshot60_retained_explicit6_source_transition_verified": true,
+  "current112_source_pins_verified_including_committed_source_bytes": true,
+  "typed_actual_checkpoint_history_and_completed_export_replayed_with_original_strict_hashes": true,
+  "original_native_standard_context_projection_and_source_gates_independently_replayed": true,
+  "questions": [
+    {
+      "question_id": "IQS_05",
+      "work_item_id": "WORK_0fff5c2e56774b9d9e461d1b2b922ff6",
+      "native_attempt_id": "ATTEMPT_ac4a33327f73483ea6a0673754c950e3",
+      "checkpoint_id": "CHECKPOINT_0297caf9286140189556a06810663d84",
+      "checkpoint_sha256": "4b33bf96f6f810445fb3dcfdc0a75a39514351173e58a9603b385aac908e941b",
+      "checkpoint_schema_version": 2,
+      "answer_status": "scored",
+      "formal_score_value_included": false,
+      "evidence_count": 3,
+      "source_url_count": 5,
+      "original_iqs_semantics_passed": true,
+      "original_stockqa_standard_source_cutoff_passed": true,
+      "full_native_answer_matches_after_original_citation_id_normalization_only": true,
+      "native_response_sha256": "400f00db3efc2747f56dbc8515877f8e73979b246a1732c3805336775c804f94",
+      "native_receipt_sha256": "65013cbf892c4f1ced96a8723cfac84ca4f2477f08d5d6fda38a9de8e9eecb6f",
+      "delivery_state": "ready",
+      "stockwiki_ack_received": false
+    }
+  ],
+  "original_double_finalization_exact_checkpoint_reuse": true,
+  "fresh_original_readonly_summary_rebuild_equals_saved_summary": true,
+  "original_full_budget_response_search_context_and_owner_decision_rows_equal_cold_proof_before_after_current": true,
+  "original_db_sha256_before": "bf8c7b17061760a6cdcb01621ff9774140da2b8f108aec85780d513d251bfd0b",
+  "original_db_sha256_after": "bf8c7b17061760a6cdcb01621ff9774140da2b8f108aec85780d513d251bfd0b",
+  "model_http": 1,
+  "search_http": 1,
+  "thinking_enabled": true,
+  "model_http_seconds": 60.1106054999982,
+  "repair_recovery_seconds": 128.47919819998788,
+  "repair_new_http": 0,
+  "generation3_priced_cost_delta_micros": 5894,
+  "cumulative_priced_cost_micros": 25023,
+  "invoice_cost": null,
+  "priced_cost_is_estimate": true,
+  "historical_invalid_generations_retained": [
+    1,
+    2
+  ],
+  "reviewer_network_attempts": 0,
+  "reviewer_database_connections_all_mode_ro": 42,
+  "reviewer_database_writes": 0,
+  "financial_accuracy_assessed": false,
+  "stockwiki_ack_received": false,
+  "limitations": [
+    "One company and one question; source/schema acceptance is not a financial accuracy benchmark.",
+    "This is explicitly recovery after a six-source software repair, not same-version cold/warm acceptance.",
+    "Original cache keys include generation; generation3 really refreshed search, so this is not a controlled prompt-only comparison.",
+    "Ready means locally sealed; original StockWiki delivery ACK is not present.",
+    "The explicit trusted-rules API is supported; the generic default report CLI has no typed-rules flag."
+  ]
+}

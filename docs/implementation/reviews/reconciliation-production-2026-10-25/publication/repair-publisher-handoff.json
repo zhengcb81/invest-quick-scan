@@ -1,0 +1,62 @@
+{
+  "protocol": "iqs.repair-final-publisher-handoff/1.0.0",
+  "author": "/root/review_bank21",
+  "status": "prepared_not_published_awaiting_same_major_actual_review",
+  "publisher_sha256": "b913ea3b067297a6e7dc6b632101b9dcaba201df9c4357b5b761ed890dc9c591",
+  "historical_plan_count": 130,
+  "currently_archived_files": 130,
+  "old130_plan_matches_published_manifest": true,
+  "published_integrity_sha256_at_author_read": "d003febfd8c4e4626eb45e04452d835de6d97cfa3927f1bd5e4389056ea2afd1",
+  "integrity_first42_sha256_at_author_read": "6b4ef9bf88ed0840eb67a7c9d526f1c42a8d109edcff6fceee186e7445e58c55",
+  "publisher_executed": false,
+  "actual_DB_owner_API_writes": 0,
+  "new_mode": "--repair-final",
+  "old_final_mode_semantics_not_changed": true,
+  "same_source_cold_and_warm_claim_for_repair": false,
+  "actual_review_filename": "engine-review/generation3-replay-repair-actual-final.json",
+  "actual_review_hash_contract": "accepted_artifact_sha256 exact result/summary/source_transition/repair_source_pins raw SHA mapping",
+  "source_copy_scope": "Only fixed six .py product sources + exact hash-bound original .py snapshots; .py.txt destinations; no recursive traversal",
+  "private_output_not_selected": [
+    "database",
+    "research-run.json",
+    "task-bundle.json",
+    "checkpoint",
+    "context body",
+    "answer body",
+    "thought body"
+  ],
+  "core_tested_publisher_sha256": "b6249fef6ce197f33eb1b5cbae9407de8cba8f6e3fee06ff23f67febdd051dfc",
+  "core_tested_test_file_sha256": "1bde232c5219b583fa3d352b709b91d4962a4e07a84618de4461e1b6057fd203",
+  "core_tests_before_allowlist_only_extension": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 3.2,
+    "xml": "engine-review/repair-publisher-final.xml",
+    "guard": "engine-review/repair-publisher-final-attestations.json",
+    "cleanup": "engine-review/repair-publisher-final-cleanup.json"
+  },
+  "current_test_file_sha256": "3c36bab0d6b9f73e022635561e4e1823701f558a484476a8f3b4ac530f3cf5d2",
+  "final_allowlist_readonly_check": "engine-review/repair-publisher-final-allowlist-check.json",
+  "allowlist_only_extension_test_policy": "Root requested existence/hash-only verification for expanded allowlist, no new broad suite or review gate.",
+  "additional_allowlist": "v3/v4 commit bindings; original G3 exit/failure; original control/admission/integrated reviews and9/57/12/14 XML+cleanup; code freeze/capture/finalize/bind/publisher as.py.txt; no recursive copies",
+  "only_pending_selected_sources": [
+    "engine-review/generation3-replay-repair-actual-final.json",
+    "engine-review/generation3-replay-repair-actual-final.md"
+  ],
+  "previous_allowlist_publisher_sha256": "18925a674c8fc6cd7aee4490b8fb596ad05559f8e1c82ba6b99427644326f391",
+  "history_preservation_proof": "engine-review/repair-publisher-history-proof.json",
+  "history_fix_narrow_tests": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "deselected_prior_core_tests": 12,
+    "seconds": 6.49,
+    "xml": "engine-review/repair-publisher-history.xml",
+    "guard": "engine-review/repair-publisher-history-attestations.json",
+    "cleanup": "engine-review/repair-publisher-history-cleanup.json"
+  },
+  "repair_integrity_metadata": "explicit_replay_source_repair / same_source_cold_and_warm_claim=false; old modes keep unchanged keys",
+  "history_narrow_tested_publisher_sha256": "6beaeebee54263ce4a048ddfc0cc3b7c864084c381e910f12b232c91063dbbc3",
+  "after_history_tests_only_change": "Final integrity metadata explicitly labels repaired-source acceptance and false same_source; AST parsed, copyloop tested code unchanged."
+}

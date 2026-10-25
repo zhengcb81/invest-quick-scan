@@ -1,0 +1,22 @@
+{
+  "protocol": "iqs.independent-actual-runtime-replay-diagnostic/1.0.0",
+  "status": "confirmed_typed_rule_prefix_reconstruction_missing_in_replay",
+  "reviewed_at": "2026-10-25T13:56:07.412474+00:00",
+  "reviewer": "/root/fix_bank21",
+  "cold_task_sha256": "06040fc5fc854cf969ab48a5d07108c013b64cb4859f569f4565fca281740f78",
+  "cold_checkpoint_file_sha256": "81ca643377557df8ec609e077cbd88a494824fcd083492b213d6a97188766b93",
+  "cold_events_file_sha256": "7d7b94c23a7438951c4c89b3cb4c812e6d02c0cb91535235e422acf94f306bde",
+  "cold_replay_py_sha256": "585f335c9b181c72e43ab8dd7a8687c3bb4f64a148d34f7187d3ab3354e6c395",
+  "original_typed_rule_source_sha256": "92a02aaabda1f1083909b260b7fda27727ff78af2853b3a8e6f76c87d80d3363",
+  "recorded_stable_prefix_sha256": "2adb2323749a324d7afe916393e4214342cfe9fdc6c65663d6aa9c4a71998ac7",
+  "original_base_builder_stable_prefix_sha256": "0c8eca14e57062539728251804517f840126ab630f84abd56e7c916c7dc2b513",
+  "original_base_plus_actual_frozen_typed_rules_sha256": "2adb2323749a324d7afe916393e4214342cfe9fdc6c65663d6aa9c4a71998ac7",
+  "recorded_dynamic_context_sha256": "d2173cf59e86e77103f6badc2e61a78a9b97c09796f1634fa525b4dc0ecca7a1",
+  "dynamic_context_matches_original_state_reconstruction": true,
+  "typed_rules_exactly_explain_entire_stable_prefix_hash_difference": true,
+  "pure_reconstruction_only_no_event_or_answer_change": true,
+  "required_fix": "Shared same prefix builder/trusted-rule propagation through all replay/verification paths; retain exact stored hash comparison.",
+  "reviewer_API_calls": 0,
+  "reviewer_database_writes": 0,
+  "final_actual_success": false
+}

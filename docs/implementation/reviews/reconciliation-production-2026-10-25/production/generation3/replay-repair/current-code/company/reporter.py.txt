@@ -1,0 +1,257 @@
+"""Report generation from a run export directory.
+
+Report validity (exit 0) only means the artifacts are structurally valid and
+partial runs stay partial: it never back-fills answers and never upgrades a
+completed insufficient_evidence slot into a correctness claim.
+"""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+
+from .canonical import sha256_hex
+from .errors import InvalidInputError
+from .schemalib import validate
+from .state import answer_sha256
+
+
+def _verify_named_ref(root, ref, name):
+    if ref.get("path") != name:
+        raise InvalidInputError("export file reference is outside its registered filename")
+    path = root / name
+    if path.is_symlink() or path.is_junction():
+        raise InvalidInputError("export file reference cannot be a link")
+    raw = path.read_bytes()
+    if len(raw) != ref["bytes"] or sha256_hex(raw) != ref["sha256"]:
+        raise InvalidInputError("export file reference byte/hash mismatch")
+    return raw
+
+
+def generate_report(input_dir: Path, output_dir: Path, *, answer_semantic_rules=()) -> dict[str, Any]:
+    run_path = input_dir / "research-run.json"
+    metrics_path = input_dir / "metrics.json"
+    if not run_path.is_file() or not metrics_path.is_file():
+        raise InvalidInputError("run export must contain research-run.json and metrics.json")
+    from .strictjson import loads
+
+    run = loads(run_path.read_bytes())
+    metrics = loads(metrics_path.read_bytes())
+    scan = run.get("protocol") == "iqs.company-scan-run/1.0.0"
+    current = scan or run.get("protocol") == "iqs.company-agent-research/1.1.0"
+    validate("scan-run" if scan else ("research-run-v1.1" if current else "research-run"), run)
+    profile_doc = None
+    if scan:
+        profile_doc = loads(
+            _verify_named_ref(input_dir, run["execution_profile_ref"], "execution-profile.json")
+        )
+        from .runner import input_manifest_sha256
+        from .scan_profile import _date, validate_scan_task
+
+        profile = profile_doc.get("execution_profile")
+        questions_path = input_dir / "questions.json"
+        if questions_path.is_symlink() or questions_path.is_junction():
+            raise InvalidInputError("scan_questions_cannot_be_link")
+        questions = loads(questions_path.read_bytes()).get("questions")
+        raw = profile_doc.get("task_raw")
+        if (
+            not isinstance(raw, dict)
+            or not isinstance(questions, list)
+            or not isinstance(profile, dict)
+            or profile_doc.get("protocol") != "iqs.company-scan-execution/1.0.0"
+            or profile_doc.get("run_id") != run["run_id"]
+            or raw.get("run_id") != run["run_id"]
+            or profile_doc.get("input_manifest_sha256") != run["input_manifest_sha256"]
+            or input_manifest_sha256(raw) != run["input_manifest_sha256"]
+            or sha256_hex(raw) != profile_doc.get("task_sha256")
+            or sha256_hex(questions) != profile_doc.get("questions_sha256")
+            or raw.get("execution_profile") != profile
+            or sha256_hex(profile) != profile_doc.get("execution_profile_sha256")
+            or profile.get("information_cutoff") != run["information_cutoff"]
+            or raw.get("company_ref") != run["company_ref"]
+            or [(q["question_id"], q["question_object_sha256"]) for q in questions]
+            != [(q["question_id"], q["question_object_sha256"]) for q in run["slots"]]
+        ):
+            raise InvalidInputError("scan_execution_profile_binding_mismatch")
+        from .checkpoint import load_checkpoint
+        from .resume import _verify_snapshot_against_history
+        from .task import task_bundle, task_from_bundle
+
+        checkpoint_path = input_dir / "checkpoint.json"
+        if checkpoint_path.is_symlink() or checkpoint_path.is_junction():
+            raise InvalidInputError("scan_checkpoint_cannot_be_link")
+        checkpoint = load_checkpoint(checkpoint_path)
+        if checkpoint.get("protocol") != "iqs.company-scan-checkpoint/1.0.0":
+            raise InvalidInputError("scan_export_checkpoint_version_mismatch")
+        task = task_from_bundle(checkpoint["task_bundle"])
+        validate_scan_task(task)
+        if (
+            task.raw != raw
+            or task.questions != questions
+            or sha256_hex(task_bundle(task)) != profile_doc.get("task_bundle_sha256")
+        ):
+            raise InvalidInputError("scan_export_original_task_bundle_mismatch")
+        _verify_snapshot_against_history(checkpoint_path, checkpoint, task, answer_semantic_rules=answer_semantic_rules)
+        _date(run["information_cutoff"])
+    if current:
+        _verify_named_ref(input_dir, run["metrics_ref"], "metrics.json")
+        _verify_named_ref(input_dir, run["evidence_board_ref"], "evidence-board.json")
+        if not scan and (
+            len(run["slots"]) != 12 or len({s["question_id"] for s in run["slots"]}) != 12
+        ):
+            raise InvalidInputError("run must retain twelve unique question slots")
+
+    # Re-verify every answer against the frozen answer-content schema.
+    from .answers import AnswerRejection, validate_single_answer
+    from .evidence import FROZEN_PUBLICATION_EXCLUSIVE_DATE, EvidenceBoard
+
+    empty_board = (
+        EvidenceBoard.from_snapshot(loads((input_dir / "evidence-board.json").read_bytes()))
+        if current
+        else EvidenceBoard(2000)
+    )
+    if scan:
+        import datetime as dt
+
+        expected_context = {
+            "information_cutoff": run["information_cutoff"],
+            "publication_exclusive_date": (
+                _date(run["information_cutoff"]) + dt.timedelta(days=1)
+            ).isoformat(),
+            "profile_sha256": profile_doc["execution_profile_sha256"],
+            "company_ref_sha256": sha256_hex(run["company_ref"]),
+        }
+        if empty_board.validation_context != expected_context:
+            raise InvalidInputError("scan_export_evidence_context_mismatch")
+    answer_checks = []
+    for slot in run["slots"]:
+        if slot["answer"] is None:
+            answer_checks.append(
+                {"question_id": slot["question_id"], "valid": None, "note": "no answer in slot"}
+            )
+            continue
+        try:
+            validate_single_answer(
+                slot["answer"],
+                slot["question_id"],
+                empty_board,
+                empty_board.publication_exclusive_date,
+                claim_kind_gate=current,
+            )
+            answer_checks.append({"question_id": slot["question_id"], "valid": True})
+        except AnswerRejection as exc:
+            answer_checks.append(
+                {"question_id": slot["question_id"], "valid": False, "reason_code": exc.reason_code}
+            )
+        except Exception as exc:  # noqa: BLE001
+            answer_checks.append(
+                {
+                    "question_id": slot["question_id"],
+                    "valid": False,
+                    "reason_code": f"schema_violation:{str(exc)[:80]}",
+                }
+            )
+
+    if current and any(check.get("valid") is False for check in answer_checks):
+        raise InvalidInputError("export contains an answer that fails schema or citation binding")
+    if current and any(
+        (s["execution_status"] == "completed") != (s["answer"] is not None) for s in run["slots"]
+    ):
+        raise InvalidInputError("slot status and answer presence disagree")
+    slot_status_counts: dict[str, int] = {}
+    for slot in run["slots"]:
+        key = slot["execution_status"]
+        slot_status_counts[key] = slot_status_counts.get(key, 0) + 1
+
+    summary = {
+        "protocol": "iqs.company-agent-lab.report/1.0.0",
+        "run_id": run["run_id"],
+        "strategy_id": run["strategy_id"],
+        "synthetic": True,
+        "qualification_granted": False,
+        "slot_status_counts": slot_status_counts,
+        "slot_denominator": len(run["slots"]),
+        "answer_checks": answer_checks,
+        "metrics_digest": {
+            "physical_model_http": metrics.get("physical_model_http"),
+            "search_query_count_observed": metrics.get("search_query_count_observed"),
+            "token_observability": metrics.get("token_observability"),
+            "cost": metrics.get("cost"),
+            "cache_metering": metrics.get("cache_metering"),
+            "timing": metrics.get("timing"),
+        },
+        "notes": [
+            "exit 0 here only means the artifacts are valid; partial stays partial",
+            "completed insufficient_evidence slots are not correctness proof",
+            "no financial gold; blind review bridge is a different package",
+        ],
+    }
+    if scan:
+        summary["execution_profile"] = profile_doc
+        summary["comparison_scope"] = "company_scan_profile_not_frozen_experiment_comparable"
+    from .pathsafety import ensure_safe_output_dir
+
+    ensure_safe_output_dir(output_dir)
+    from .provenance import read_runtime_summary
+
+    runtime_summary = read_runtime_summary(input_dir, run, run_path.read_bytes())
+    if runtime_summary is not None:
+        summary.pop("synthetic")
+        summary["protocol"] = "iqs.company-agent-lab.report/1.1.0"
+        summary["runtime_origin"] = runtime_summary["runtime_origin"]
+        summary["evidence_origin"] = runtime_summary["evidence_origin"]
+        summary["runtime_observations"] = runtime_summary
+        summary["legacy_engine_metrics_digest"] = summary["metrics_digest"]
+        summary["metrics_digest"] = {
+            key: runtime_summary[key]
+            for key in (
+                "new_model_http",
+                "new_model_http_known_subset",
+                "replayed_native_attempts",
+                "observed_native_physical_requests",
+                "native_observation_complete",
+                "usage_known_native_requests",
+                "usage_unknown_native_requests",
+                "usage_complete",
+                "cached_input_tokens_known_subset",
+                "total_input_tokens_known_subset",
+                "output_tokens_including_reasoning_known_subset",
+                "cash_cost",
+                "cost_complete",
+            )
+        }
+    output_dir.mkdir(parents=True, exist_ok=False)
+    (output_dir / "report.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8"
+    )
+    lines = [
+        f"# 报告 run={run['run_id']} strategy={run['strategy_id']}",
+        "",
+        (
+            f"- 运行时观测：{runtime_summary['runtime_origin']}；证据来源：{runtime_summary['evidence_origin']}；"
+            "owner_authority_verified=false；非金融准确率结果。"
+            if runtime_summary is not None
+            else "- 合成数据：是；qualification_granted=false；非金融准确率结果。"
+        ),
+        f"- 槽位分母：{len(run['slots'])}；状态分布：{slot_status_counts}。",
+        (
+            f"- 本次新模型HTTP：{runtime_summary['new_model_http']}；复用历史请求："
+            f"{runtime_summary['replayed_native_attempts']}；已观测原始物理请求："
+            f"{runtime_summary['observed_native_physical_requests']}。"
+            if runtime_summary is not None
+            else f"- 物理模型HTTP：{metrics.get('physical_model_http')}；"
+            f"搜索查询（观测）：{metrics.get('search_query_count_observed')}。"
+        ),
+        f"- 费用：{metrics.get('cost', {}).get('note', '')}",
+        f"- 缓存：{metrics.get('cache_metering', {}).get('note', '')}",
+        "",
+        "## 逐槽答案校验",
+    ]
+    for check in answer_checks:
+        lines.append(
+            f"- {check['question_id']}: {check.get('valid')} "
+            f"{check.get('reason_code', check.get('note', ''))}"
+        )
+    (output_dir / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return summary

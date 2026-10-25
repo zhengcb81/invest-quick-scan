@@ -1,0 +1,23 @@
+"""Check whether Git's stored bytes preserve original thin evidence hashes."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path(__file__).resolve().parents[2]
+BASE = ROOT / "docs/implementation/reviews/reconciliation-production-2026-10-25/production"
+value = json.loads((BASE / "integrity.json").read_text(encoding="utf8"))
+rows = []
+for row in value["files"]:
+    if Path(row["artifact"]).as_posix() not in ("engine-review/generation2-source-diagnostic.json", "engine-fix/main-tests-final.xml"):
+        continue
+    path = BASE / row["artifact"]
+    blob = subprocess.check_output(["git", "-C", str(ROOT), "show", "HEAD:" + path.relative_to(ROOT).as_posix()])
+    actual = hashlib.sha256(blob).hexdigest()
+    rows.append(dict(artifact=row["artifact"], original_sha256=row["sha256"],
+        working_sha256=hashlib.sha256(path.read_bytes()).hexdigest(), git_blob_sha256=actual,
+        committed_bytes_preserve_original=actual == row["sha256"]))
+result = dict(core_autocrlf=subprocess.check_output(["git", "-C", str(ROOT), "config", "--get", "core.autocrlf"]).decode().strip(),
+              read_only=True, rows=rows)
+Path(__file__).with_name("evidence-git-byte-probe.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf8")
+print(json.dumps(result, indent=2))
