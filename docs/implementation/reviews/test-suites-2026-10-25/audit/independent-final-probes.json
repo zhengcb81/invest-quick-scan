@@ -1,0 +1,153 @@
+{
+  "independent_reviewer": "/root/test_timing_audit",
+  "source_sha256": {
+    "pytest.ini": "c046c832b1d3d0e90560d0ea2c8499bb30fe7fed2ab3fc79d87454d91e693e1e",
+    "scripts/run_tests.py": "0f7db0e19228cd494317143c5ab59781de33f7edc93ab41e26b2c0ab12d3b2fe",
+    "tests/suites.json": "377c8c56bb16989a84488004d409213e07b34dbf506e94ac1e84d021f42bd05b",
+    "tests/test_test_suites.py": "2851d0941f3d8f31f410579d999b8701153da9b2dc1ff5dd4943c1886cc5a4c7",
+    "tests/test_test_runner_cli.py": "154d95efa413e538b108c17c7d7c0816a485db301b7ecafc9975253e03d0f5c8"
+  },
+  "new_full_suite_run": false,
+  "scenarios": [
+    {
+      "scenario": "failed_first_layer",
+      "probe_kind": "real tiny subprocess pytest",
+      "exit_code": 1,
+      "summary": {
+        "profile": "offline",
+        "planned_files": {
+          "fast": [
+            "test_fast.py"
+          ],
+          "integration": [
+            "test_integration.py"
+          ],
+          "e2e": [
+            "test_e2e.py"
+          ]
+        },
+        "results": [
+          {
+            "name": "fast",
+            "files": [
+              "test_fast.py"
+            ],
+            "exit_code": 1,
+            "elapsed_seconds": 7.36,
+            "temporary_root_removed": true,
+            "api_keys_removed": true,
+            "network_denied_in_pytest_process": true,
+            "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\final-independent-sa4d6ab5\\runs\\test-reports\\20261025T150215Z-11a38317\\fast.log",
+            "junit": {
+              "tests": 1,
+              "failures": 1,
+              "errors": 0,
+              "skipped": 0
+            }
+          }
+        ],
+        "suite_manifest_sha256": "c41dc517c0f616d45e9fc071004e6391fa76b51b95f67c825cdf140ca013a6e1",
+        "all_selected_partitions_executed": false,
+        "paid_live_experiments_included": false,
+        "output_directory": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\final-independent-sa4d6ab5\\runs\\test-reports\\20261025T150215Z-11a38317"
+      },
+      "stderr": "",
+      "fixture_root_removed": true
+    },
+    {
+      "scenario": "module_skip_only",
+      "probe_kind": "real tiny subprocess pytest",
+      "exit_code": 5,
+      "summary": {
+        "profile": "offline",
+        "planned_files": {
+          "fast": [
+            "test_fast.py"
+          ],
+          "integration": [
+            "test_integration.py"
+          ],
+          "e2e": [
+            "test_e2e.py"
+          ]
+        },
+        "results": [
+          {
+            "name": "fast",
+            "files": [
+              "test_fast.py"
+            ],
+            "exit_code": 5,
+            "elapsed_seconds": 7.755,
+            "temporary_root_removed": true,
+            "api_keys_removed": true,
+            "network_denied_in_pytest_process": true,
+            "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\final-independent-eq3xnhqk\\runs\\test-reports\\20261025T150222Z-c953c94d\\fast.log",
+            "junit": {
+              "tests": 1,
+              "failures": 0,
+              "errors": 0,
+              "skipped": 1
+            }
+          }
+        ],
+        "suite_manifest_sha256": "c41dc517c0f616d45e9fc071004e6391fa76b51b95f67c825cdf140ca013a6e1",
+        "all_selected_partitions_executed": false,
+        "paid_live_experiments_included": false,
+        "output_directory": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\final-independent-eq3xnhqk\\runs\\test-reports\\20261025T150222Z-c953c94d"
+      },
+      "stderr": "",
+      "fixture_root_removed": true
+    },
+    {
+      "scenario": "runner_error_after_completed_layer",
+      "probe_kind": "mock OS error only",
+      "exit_code": 2,
+      "summary": {
+        "profile": "offline",
+        "planned_files": {
+          "fast": [
+            "test_fast.py"
+          ],
+          "integration": [
+            "test_integration.py"
+          ],
+          "e2e": [
+            "test_e2e.py"
+          ]
+        },
+        "results": [
+          {
+            "name": "fast",
+            "files": [
+              "test_fast.py"
+            ],
+            "exit_code": 0,
+            "junit": {
+              "tests": 1,
+              "failures": 0,
+              "errors": 0,
+              "skipped": 0
+            }
+          },
+          {
+            "name": "integration",
+            "files": [
+              "test_integration.py"
+            ],
+            "exit_code": 2,
+            "status": "runner_error",
+            "reason": "independent simulated child launch failure",
+            "test_counts_unknown": true
+          }
+        ],
+        "suite_manifest_sha256": "c41dc517c0f616d45e9fc071004e6391fa76b51b95f67c825cdf140ca013a6e1",
+        "all_selected_partitions_executed": false,
+        "paid_live_experiments_included": false,
+        "output_directory": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\final-independent-f1jqhw3_\\runs\\test-reports\\20261025T150230Z-4b404f37"
+      },
+      "stderr": "",
+      "fixture_root_removed": true
+    }
+  ]
+}

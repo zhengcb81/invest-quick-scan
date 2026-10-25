@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="9" failures="0" skipped="0" tests="10" time="1.377" timestamp="2026-10-25T14:55:20.177266+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_test_suites" name="test_current_manifest_partitions_every_test_file_exactly_once" time="0.221" /><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[unassigned]" time="0.002"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[unassigned]&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[missing]" time="0.001"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[missing]&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[duplicate]" time="0.001"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[duplicate]&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[traversal]" time="0.002"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[traversal]&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_suites" name="test_duplicate_manifest_keys_are_rejected" time="0.001"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_duplicate_manifest_keys_are_rejected&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_suites" name="test_paid_flags_keys_and_parent_pytest_options_are_not_inherited" time="0.002"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_paid_flags_keys_and_parent_pytest_options_are_not_inherited&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_suites" name="test_all_refuses_missing_native_runtime_before_running_any_tests" time="0.003"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_all_refuses_missing_native_runtime_before_running_any_tests&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_runner_cli" name="test_real_pytest_process_denies_network_removes_key_and_cleans_own_temp" time="0.001"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_real_pytest_process_denies_network_removes_key_and_cleans_own_temp&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase><testcase classname="tests.test_test_runner_cli" name="test_real_pytest_failure_is_reported_as_failure_without_becoming_green" time="0.001"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'&quot;">fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_real_pytest_failure_is_reported_as_failure_without_becoming_green&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Temp/iqs-test-tiers-check-20261025'), mode = 448
+parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Temp\\iqs-test-tiers-check-20261025'
+
+C:\Miniconda\Lib\pathlib\_local.py:722: PermissionError</error></testcase></testsuite></testsuites>

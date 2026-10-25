@@ -1,0 +1,126 @@
+{
+  "new_test_run": false,
+  "note": "JUnit testcase time aggregates default setup/call/teardown, not separate phase or collection profile",
+  "batches": [
+    {
+      "path": "runs\\reconcile-production-2026-10-25\\engine-fix\\native-actual-finalization.xml",
+      "sha256": "b6ee1a7d728d5f92e912b25108b969a9400ce200f1ae4cf264a3ccfaca855514",
+      "suite_seconds": 648.869,
+      "case_total_seconds": 645.111,
+      "cases": 1,
+      "classname_seconds": {
+        "test_company_scan_native_e2e": 645.111
+      },
+      "case_top": [
+        {
+          "name": "test_company_scan_native_e2e::test_explicit_finalization_uses_actual_external_context_and_original_owner_checkpoint[1.2.0]",
+          "seconds": 645.111
+        }
+      ]
+    },
+    {
+      "path": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-replay-combined63.xml",
+      "sha256": "08a278aca948769bb12a456a4bbf7171824379938b2f571b0fabcfe7b32c41c9",
+      "suite_seconds": 5.888,
+      "case_total_seconds": 4.8790000000000004,
+      "cases": 63,
+      "classname_seconds": {
+        "tests.test_shared_company_engine": 3.969999999999999,
+        "tests.test_shared_answer_semantics": 0.5940000000000002,
+        "tests.test_shared_semantic_replay": 0.29200000000000004,
+        "tests.test_shared_company_engine_finalization": 0.01900000000000001,
+        "tests.test_shared_answer_url_rules": 0.004
+      },
+      "case_top": [
+        {
+          "name": "tests.test_shared_company_engine::test_original_intent_cache_hit_skips_every_new_generation",
+          "seconds": 0.861
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_os_process_death_after_response_restores_original_pending_checkpoint",
+          "seconds": 0.723
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[fixed3]",
+          "seconds": 0.612
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[evidence_agent]",
+          "seconds": 0.543
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[free_agent]",
+          "seconds": 0.274
+        }
+      ]
+    },
+    {
+      "path": "runs\\reconcile-production-2026-10-25\\engine-fix\\generation3-combined57.xml",
+      "sha256": "81847e68b304fde0516956dfb081b0299f9bc1df1ff75ff99a9e8de845c09530",
+      "suite_seconds": 7.035,
+      "case_total_seconds": 5.854,
+      "cases": 57,
+      "classname_seconds": {
+        "tests.test_shared_company_engine": 4.853,
+        "tests.test_shared_answer_semantics": 0.9760000000000002,
+        "tests.test_shared_company_engine_finalization": 0.02000000000000001,
+        "tests.test_shared_answer_url_rules": 0.005
+      },
+      "case_top": [
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[fixed3]",
+          "seconds": 0.779
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[evidence_agent]",
+          "seconds": 0.745
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_original_intent_cache_hit_skips_every_new_generation",
+          "seconds": 0.73
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_os_process_death_after_response_restores_original_pending_checkpoint",
+          "seconds": 0.728
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[free_agent]",
+          "seconds": 0.386
+        }
+      ]
+    },
+    {
+      "path": "runs\\reconcile-production-2026-10-25\\engine-fix\\main-tests-final.xml",
+      "sha256": "b098d6448cebd7ddb89ae966a810a9860120e5bf3912b5b410511afff88688bf",
+      "suite_seconds": 33.592,
+      "case_total_seconds": 25.814,
+      "cases": 29,
+      "classname_seconds": {
+        "tests.test_shared_company_engine": 25.779999999999998,
+        "tests.test_shared_company_engine_finalization": 0.034
+      },
+      "case_top": [
+        {
+          "name": "tests.test_shared_company_engine::test_original_intent_cache_hit_skips_every_new_generation",
+          "seconds": 4.871
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_os_process_death_after_response_restores_original_pending_checkpoint",
+          "seconds": 4.756
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[fixed3]",
+          "seconds": 3.251
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_sole_original_runner_durable_export_and_validated_summary[evidence_agent]",
+          "seconds": 3.243
+        },
+        {
+          "name": "tests.test_shared_company_engine::test_resume_original_saved_receipt_uses_fresh_port_zero_new_model_calls[True]",
+          "seconds": 1.678
+        }
+      ]
+    }
+  ]
+}

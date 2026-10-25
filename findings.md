@@ -1,3 +1,9 @@
+## 2026-10-25 — 测试应按边界分组，不能把慢原生链路混为日常反馈
+
+当前实际原97个测试文件，CodeGraph旧索引73不反映24个后来文件。历史pytest缓存含128个runs冻结/候选副本节点，因此新增pytest.ini只收tests。原78分钟全套没有找到分项JUnit，旧“主要routing/module_registry”只能作待测假设；已有实物可证明native单例645.111秒、附近63项回归5.888秒，属于不同范围不可作优化A/B。原生两个模块导入时清空进程环境，不能直接同进程混收或全套开xdist。
+
+采用互斥完整清单：fast、integration、本地e2e、native；offline是前三组合，all含独立native且要求原显式runtime。真实付费探针仍单列，移走慢层不等于减少覆盖或改为skip。默认run_tests.py只跑fast，直接pytest仍全收正式tests；本轮新增两份入口测试后共99文件。首次入口校验1P/9setup error为沙箱拒写C:/Temp，不作产品RED，已改自有临时根重跑并留原XML。
+
 ## 2026-10-25 — 修复后真实恢复证据闭合
 
 同一真实safe在明确不同源码谱系下完成0HTTP禁网恢复、同CP双封存、原账本全行hash不变与只读摘要（库SHA前后相同）。这验证工程接线与恢复，不授予金融准确性或StockWiki ACK；旧失败和费用必须保留。详见当前PWF与最终repair实际独审。

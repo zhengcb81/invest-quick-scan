@@ -1,0 +1,87 @@
+{
+  "protocol": "iqs.test-suites-independent-review/1.0.0",
+  "reviewer": "/root/test_timing_audit",
+  "implementer": "/root",
+  "completed_at_utc": "2026-10-25T15:24:03.976833+00:00",
+  "status": "passed",
+  "open_findings": [],
+  "scope": "One test-dispatch and layering node, source, actual evidence and final documentation; not full/native/live or financial qualification.",
+  "manifest_sha256": "e2068669d494bbadbee36b62c7a9c248a42715b0eb635a95230fa10b395762f2",
+  "verified_archive_artifact_count": 28,
+  "verified_archive_sources_identical": true,
+  "source_sha256": {
+    "pytest.ini": "c046c832b1d3d0e90560d0ea2c8499bb30fe7fed2ab3fc79d87454d91e693e1e",
+    "scripts/run_tests.py": "e882d6b34f1fd5dadabe23bd8f951bbdd6a326bc3e1bc3e14535297957d898ab",
+    "tests/suites.json": "accdb739cf157d1cfa2515382b5c14f86e67fc609a053169b4f9aad48d0adfd8",
+    "tests/test_test_suites.py": "4fb0c1ffb31d5e6e00ed3ecaf5318d403a6ffc1b4db9744fb84b1fa3f557d962",
+    "tests/test_test_runner_cli.py": "154d95efa413e538b108c17c7d7c0816a485db301b7ecafc9975253e03d0f5c8"
+  },
+  "documentation_sha256": {
+    "task_plan.md": "06f0f62c622cf9ceb282059cfdfa9adb1fc2c7b89a666a70196b2cb523b1d069",
+    "progress.md": "cb8fe7df77ceef90758a8bd48b9b149d4b455d9d16c0ec070b2e037723bec8b2",
+    "findings.md": "7b6af5b172b3ac8b204ab1b0fc26e3ef2fe3cb061c04d19f48aaa7ff7309e656",
+    "docs/implementation/handoff-for-new-agent.md": "58d9ac7da5093460ed5f9328b10747c807ab1172dac9e31273b5c56cb8e2080d",
+    "docs/implementation/testing.md": "944ffdbe9862c0ac3eb60e118d03b14f08ca30ed82339facd37ef187305d3775"
+  },
+  "current_test_files": 99,
+  "layers": {
+    "fast": 48,
+    "integration": 48,
+    "e2e": 1,
+    "native": 2
+  },
+  "actual_final_fast": {
+    "passed": 540,
+    "subtests_passed": 372,
+    "junit_tests_including_subtests": 912,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_seconds": 36.08,
+    "wall_seconds": 39.608,
+    "temporary_root_removed": true
+  },
+  "actual_focused_final": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "pytest_seconds": 26.86
+  },
+  "closed_findings": [
+    {
+      "id": "TEST-LAYER-01",
+      "finding": "Direct-call-only initial classification missed full-scope G0 hashing and inherited routing publish setup.",
+      "closure": "Both remain complete in integration; current 99 files covered once; g0_regressions kept fast."
+    },
+    {
+      "id": "TEST-REPORT-01",
+      "finding": "Zero child exit with missing/empty/invalid/conflicting JUnit could become misleading success.",
+      "closure": "Invalid report states reject; original counterexamples and final independent closure probes retained."
+    },
+    {
+      "id": "TEST-FROZEN-01",
+      "finding": "New paragraph changed the legacy locked test-strategy.",
+      "closure": "Exact original bytes restored; independent 127/127 match unchanged lock; new guide is separate."
+    }
+  ],
+  "initial_fast_two_failures_preserved": true,
+  "initial_fast_completed_not_interrupted": true,
+  "g0_guard_not_weakened": true,
+  "review_added_no_new_full_run": true,
+  "paid_calls_in_this_review": 0,
+  "production_database_or_roster_writes": 0,
+  "limitations": [
+    "78-minute original per-test timing not located; no decomposition of that historical run.",
+    "Current fast is changed selection, not same-scope engine speedup.",
+    "Native requires an existing explicit owned runtime; native/full/live not rerun here.",
+    "Socket audit hook covers the pytest process only, not the descendant process tree.",
+    "Earlier focused probes retain their own source versions; final XML closure probes bind current source, and actual 17-case suite covers final changes."
+  ],
+  "latest_manual_full_read_check": {
+    "checked_at_utc": "2026-10-25T15:25:16.498770+00:00",
+    "sha256": "944ffdbe9862c0ac3eb60e118d03b14f08ca30ed82339facd37ef187305d3775",
+    "matches_final_review_documentation_binding": true,
+    "unresolved_findings": [],
+    "new_tests_run": false
+  }
+}

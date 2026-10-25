@@ -1,0 +1,104 @@
+{
+  "reviewer": "/root/test_timing_audit",
+  "run_tests_source_sha256": "e882d6b34f1fd5dadabe23bd8f951bbdd6a326bc3e1bc3e14535297957d898ab",
+  "source_unchanged_during_probes": true,
+  "suite_counts": {
+    "fast": 48,
+    "integration": 48,
+    "e2e": 1,
+    "native": 2
+  },
+  "manifest_sha256": "accdb739cf157d1cfa2515382b5c14f86e67fc609a053169b4f9aad48d0adfd8",
+  "tests_executed": false,
+  "scenarios": [
+    {
+      "case": "empty_container",
+      "probe_kind": "mock transport status with exact synthetic XML only",
+      "expected_exit": 2,
+      "result": {
+        "name": "fast",
+        "files": [
+          "test_fixture.py"
+        ],
+        "exit_code": 2,
+        "elapsed_seconds": 0.008,
+        "temporary_root_removed": true,
+        "api_keys_removed": true,
+        "network_denied_in_pytest_process": true,
+        "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\xml-final-probe-s4arfki0\\reports\\fast.log",
+        "status": "invalid_junit",
+        "test_counts_unknown": true
+      },
+      "fixture_removed": true
+    },
+    {
+      "case": "wrong_root",
+      "probe_kind": "mock transport status with exact synthetic XML only",
+      "expected_exit": 2,
+      "result": {
+        "name": "fast",
+        "files": [
+          "test_fixture.py"
+        ],
+        "exit_code": 2,
+        "elapsed_seconds": 0.004,
+        "temporary_root_removed": true,
+        "api_keys_removed": true,
+        "network_denied_in_pytest_process": true,
+        "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\xml-final-probe-w8ow94jt\\reports\\fast.log",
+        "status": "invalid_junit",
+        "test_counts_unknown": true
+      },
+      "fixture_removed": true
+    },
+    {
+      "case": "failure_despite_zero_exit",
+      "probe_kind": "mock transport status with exact synthetic XML only",
+      "expected_exit": 2,
+      "result": {
+        "name": "fast",
+        "files": [
+          "test_fixture.py"
+        ],
+        "exit_code": 2,
+        "elapsed_seconds": 0.006,
+        "temporary_root_removed": true,
+        "api_keys_removed": true,
+        "network_denied_in_pytest_process": true,
+        "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\xml-final-probe-4tbodwzk\\reports\\fast.log",
+        "junit": {
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        },
+        "status": "junit_exit_mismatch"
+      },
+      "fixture_removed": true
+    },
+    {
+      "case": "legitimate_zero_failure",
+      "probe_kind": "mock transport status with exact synthetic XML only",
+      "expected_exit": 0,
+      "result": {
+        "name": "fast",
+        "files": [
+          "test_fixture.py"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.005,
+        "temporary_root_removed": true,
+        "api_keys_removed": true,
+        "network_denied_in_pytest_process": true,
+        "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\test-suites-2026-10-25\\timing-audit\\xml-final-probe-ze5se4su\\reports\\fast.log",
+        "junit": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "fixture_removed": true
+    }
+  ]
+}

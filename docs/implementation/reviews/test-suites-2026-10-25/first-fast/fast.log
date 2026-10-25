@@ -1,0 +1,85 @@
+........................................................................ [ 13%]
+............................................F...................................................................................... [ 36%]
+........................................F.................... [ 47%]
+........................................................................ [ 60%]
+...................................................................... [ 73%]
+................................................................ [ 85%]
+..................................................................................         [100%]
+================================== FAILURES ===================================
+_____ test_current_scope_can_render_a_complete_self_consistent_candidate ______
+
+    def test_current_scope_can_render_a_complete_self_consistent_candidate():
+>       assert manifest.verify(manifest.render()) == []
+E       AssertionError: assert ['missing fro...new-agent.md'] == []
+E         
+E         Left contains 2 more items, first extra item: 'missing from manifest: docs/implementation/testing.md'
+E         Use -v to get more diff
+
+tests\test_g0_manifest.py:29: AssertionError
+_ ParallelLanePlanTests.test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries _
+
+self = <test_parallel_lane_plan.ParallelLanePlanTests testMethod=test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries>
+
+    def test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries(self):
+        folder = LANE_DIR / "packages" / "2026-10-07-wave2"
+        catalog = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
+        locked = json.loads((folder / "inputs.lock.json").read_text(encoding="utf-8"))
+        tasks = {task["id"]: task for task in self.tasks["tasks"]}
+        self.assertEqual((folder / catalog["task_source"]).resolve(), ROOT / "docs/implementation/tasks.json")
+        self.assertEqual({"QA-C06-02", "SW-REPAIR-02", "EVID-LAB-01"}, {p["id"] for p in catalog["packages"]})
+        scopes, assigned = [], set()
+        for package in catalog["packages"]:
+            scope = PurePosixPath(package["write_scope"].casefold()).as_posix().rstrip("/")
+            for previous in [*scopes, ROOT.as_posix().casefold()]:
+                self.assertFalse(scope == previous or scope.startswith(previous + "/") or previous.startswith(scope + "/"))
+            scopes.append(scope)
+            self.assertFalse(assigned.intersection(package["task_ids"]))
+            assigned.update(package["task_ids"])
+            deps = set()
+            for tid in package["task_ids"]:
+                self.assertEqual(tasks[tid]["owner"], package["lane_id"])
+                deps.update(tasks[tid]["depends_on"])
+            self.assertEqual(deps - set(package["task_ids"]), set(package["depends_on"]))
+            template = json.loads((folder / f"{package['id']}.handoff.template.json").read_text(encoding="utf-8"))
+            Draft202012Validator(self.handoff).validate(template)
+            self.assertEqual(template["snapshot"]["repository"], package["write_scope"])
+            self.assertIsNone(template["snapshot"]["result_commit"])
+            self.assertEqual([], template["scope"]["authorized_paths"])
+            self.assertEqual([], template["verification"]["checks"])
+            self.assertEqual("not_run", template["review"]["status"])
+        snapshots = locked["working_tree_snapshots"]
+        qa_snapshots = [i for i in snapshots if i["source_repository"].endswith("/StockQAbyLLM")]
+        self.assertEqual(9, len(qa_snapshots))
+        self.assertEqual(9, len({i["source_path"] for i in qa_snapshots}))
+        self.assertIn("tests/unit/test_quick_scan_observation_context.py", {i["source_path"] for i in qa_snapshots})
+        for item in [*locked["iqs_inputs"], *snapshots]:
+            payload = (ROOT / item["path"]).read_bytes()
+>           self.assertEqual(len(payload), item["bytes"])
+E           AssertionError: 41025 != 40644
+
+tests\test_parallel_lane_plan.py:125: AssertionError
+============================ slowest 20 durations =============================
+119.13s call     tests/test_g0_manifest.py::test_current_scope_can_render_a_complete_self_consistent_candidate
+18.00s call     tests/test_g0_manifest.py::test_every_g0_read_first_input_is_in_declared_scope_and_manifest
+17.18s call     tests/test_g0_manifest.py::test_missing_or_extra_artifact_breaks_scope_equality
+16.53s call     tests/test_g0_manifest.py::test_manifest_rejects_stale_version_or_tampered_scope_declaration
+13.67s call     tests/test_g0_manifest.py::test_g0_candidate_excludes_downstream_validation_and_review_outputs
+10.26s call     tests/test_g0_manifest.py::test_persistent_test_fixtures_are_in_candidate_scope
+8.77s call     tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_public_external_result_drives_existing_module_routing_and_replays
+8.31s call     tests/test_g0_manifest.py::test_changed_hash_is_detected
+5.78s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_v2_observation_has_separate_schema_and_exact_dispatch_lineage
+3.60s call     tests/test_s06_dependency_closure.py::DependencyDispatchBoundaryTests::test_mod18_a05_unresolved_dependency_or_selected_conflict_writes_no_dispatch_payload
+2.64s call     tests/test_g0_manifest.py::test_mutable_journals_and_postseal_g0_artifacts_are_excluded
+2.34s call     tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_unknown_route_cannot_skip_external_receipt_validation
+2.00s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_late_old_identity_answer_is_historical_not_current_reuse
+1.73s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_schema_valid_but_semantically_invalid_scored_content_needs_owner_receipt
+1.50s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_identity_envelope_rejects_pending_and_mismatched_dispatch_attempt
+1.43s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_unknown_answer_with_numeric_score_is_history_only_not_current_score
+1.31s call     tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_trusted_caller_identity_snapshot_is_checked_before_routing
+1.11s setup    tests/test_vendor_subject_dispatch.py::test_explicit_profile_preregister_and_post_binding_keep_null_distinct
+0.84s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_verified_multi_listing_security_scope_uses_its_own_binding
+0.75s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_current_score_gate_binds_each_persisted_owner_record
+=========================== short test summary info ===========================
+FAILED tests/test_g0_manifest.py::test_current_scope_can_render_a_complete_self_consistent_candidate
+FAILED tests/test_parallel_lane_plan.py::ParallelLanePlanTests::test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries
+2 failed, 550 passed, 376 subtests passed in 252.78s (0:04:12)

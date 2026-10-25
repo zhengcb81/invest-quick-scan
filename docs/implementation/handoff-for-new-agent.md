@@ -1,6 +1,8 @@
 # 当前接手入口（2026-10-25；本节优先）
 
-用户已授权跨仓修复、真实小样本、独立agent、提交与推送；不要重复问权限。根task_plan.md顶部R1–R5是本次唯一当前计划。下方10/18暂停owner路线等记录仅属历史。
+用户已授权跨仓修复、真实小样本、独立agent、提交与推送；不要重复问权限。以根task_plan.md顶部当前阶段为准，R1–R5已通过。下方10/18暂停owner路线等记录仅属历史。
+
+测试执行更新（2026-10-25）：根PWF顶部T1–T3测试分层已完成，当前返回StockWiki ACK。日常`python scripts/run_tests.py`默认fast，实测540P/372子测试、总39.608秒；不要每次改动跑一小时全套。完整99文件仍分48fast/48integration/1e2e/2native，完整离线/native/真实探针在大节点按风险选择；范围/隔离/命令见`docs/implementation/testing.md`。新增测试须登记`tests/suites.json`，不能靠skip隐藏覆盖。入口及原两失败定向17P，旧锁与旧test-strategy原字节保持；统一独审/提交结果按根PWF与git log核。
 
 ## 已完成与实际依据
 

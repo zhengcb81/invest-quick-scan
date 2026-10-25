@@ -1,3 +1,11 @@
+## 2026-10-25 — 测试分层：日常fast实测约40秒（本轮完成）
+
+- 新增pytest.ini将发现限定正式tests，避免历史缓存里的runs冻结副本；新增run_tests.py与唯一suites.json，原97+入口测试2共99文件严格分为48fast/48integration/1e2e/2native。默认fast，offline为前三层，all需原显式native runtime且事前缺失直接拒；native逐文件独进程，未启用全套xdist。
+- 首轮静态分类50fast实跑257.133秒，2F/550P/376子测试；G0整仓哈希占205.82秒，按真实I/O归入integration，S06继承整题库发布夹具同理。进程在尝试停止前已自然结束，没有实际强杀或伪称中止。两失败分别为本轮并发新文档触发G0清单漂移、误改历史锁定test-strategy；文档稳定后G0原case及恢复b1eeb99b…原字节后的wave2原case均定向通过，原锁127项完整不变，不靠移层藏失败。
+- 入口校验最初1P/9setup errors是沙箱拒写C:/Temp；次轮8P/2cleanup errors为系统sandbox Temp权限，原XML保留。改用夹具自己的临时父目录后10P；再补缺失/空/冲突JUnit不能变绿、原两个失败同批复核，最终17P/26.86秒。两个额外沙箱Temp按精确绝对路径清理，未清全局Temp。
+- 最终fast真实运行ID20261025T151408Z-0213a32a：540 passed/372 subtests passed，pytest36.08秒、总39.608秒，0F/0E/0skip，临时根已清。所有API key/live标志剥除，测试进程禁网；hook不自动传播所有CLI后代，未宣称进程树沙箱。原生脚本wire E2E及真实收费探针仍单列，本轮不重跑一小时全套，不把fast说成全套通过。
+- 用户只在大节点做统一审查的偏好保持；新操作说明testing.md及handoff入口已更新。后续回到原StockWiki ACK工作。
+
 ## 2026-10-25 — 真实singleton生产接线、摘要和禁网恢复已验收
 
 - 最终发布复审另修旧130归档被后续诊断覆盖的风险：旧字节/原清单行保持，补充诊断另存修订版；旧清单单独封存。另实证Windows autocrlf会改变Git中的raw证据字节，已仅在本轮production证据目录设置`* -text`，提交时按完整清单核Git blob，产品源与运行锁不受影响。

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="10" time="14.725" timestamp="2026-10-25T14:56:50.701409+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_test_suites" name="test_current_manifest_partitions_every_test_file_exactly_once" time="0.213" /><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[unassigned]" time="0.028" /><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[missing]" time="0.017" /><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[duplicate]" time="0.029" /><testcase classname="tests.test_test_suites" name="test_new_missing_duplicate_or_redirected_tests_cannot_silently_disappear[traversal]" time="0.027" /><testcase classname="tests.test_test_suites" name="test_duplicate_manifest_keys_are_rejected" time="0.031" /><testcase classname="tests.test_test_suites" name="test_paid_flags_keys_and_parent_pytest_options_are_not_inherited" time="0.007" /><testcase classname="tests.test_test_suites" name="test_all_refuses_missing_native_runtime_before_running_any_tests" time="0.024" /><testcase classname="tests.test_test_runner_cli" name="test_real_pytest_process_denies_network_removes_key_and_cleans_own_temp" time="6.215"><failure message="PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-8tz23ekw'">path = 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-8tz23ekw'
+onexc = &lt;function TemporaryDirectory._rmtree.&lt;locals&gt;.onexc at 0x0000021E5C223380&gt;
+
+    def _rmtree_unsafe(path, onexc):
+        def onerror(err):
+            if not isinstance(err, FileNotFoundError):
+                onexc(os.scandir, err.filename, err)
+        results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+        for dirpath, dirnames, filenames in results:
+            for name in dirnames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.rmdir(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.rmdir, fullname, err)
+            for name in filenames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.unlink(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.unlink, fullname, err)
+        try:
+&gt;           os.rmdir(path)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-8tz23ekw'
+
+C:\Miniconda\Lib\shutil.py:631: PermissionError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/test-suites-2026-10-25/iqs-tier-check-j0b2n8_8/pytest/test_real_pytest_process_denie0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021E5C146F90&gt;
+
+    def test_real_pytest_process_denies_network_removes_key_and_cleans_own_temp(tmp_path, monkeypatch):
+        tests = tmp_path / "tests"
+        tests.mkdir()
+        (tests / "test_tiny.py").write_text('''import os, socket
+    from pathlib import Path
+    import pytest
+    def test_isolated():
+        assert "MIMO_API_KEY" not in os.environ
+        assert "STOCKQA_RUN_LIVE_E2E" not in os.environ
+        root = Path(os.environ["TEMP"])
+        assert root.name.startswith("iqs-tests-")
+        (root / "temporary-fixture.txt").write_text("fixture")
+        with pytest.raises(RuntimeError, match="offline_test_network_forbidden"):
+            socket.getaddrinfo("example.invalid", 443)
+    ''', encoding="utf8")
+        output = tmp_path / "reports"
+        output.mkdir()
+        sentinel = tmp_path / "preexisting.txt"
+        sentinel.write_text("keep", encoding="utf8")
+        monkeypatch.setenv("MIMO_API_KEY", "SYNTHETIC_TEST_VALUE")
+        monkeypatch.setenv("STOCKQA_RUN_LIVE_E2E", "1")
+&gt;       result = runner.run_group(tmp_path, "fast", ["test_tiny.py"], output)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_runner_cli.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\run_tests.py:89: in run_group
+    with tempfile.TemporaryDirectory(prefix="iqs-tests-", dir=temp_root) as temporary:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\tempfile.py:951: in __exit__
+    self.cleanup()
+C:\Miniconda\Lib\tempfile.py:955: in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+C:\Miniconda\Lib\tempfile.py:935: in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+C:\Miniconda\Lib\tempfile.py:907: in onexc
+    _resetperms(path)
+C:\Miniconda\Lib\tempfile.py:287: in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+func = &lt;built-in function chmod&gt;
+path = 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-8tz23ekw'
+args = (448,)
+
+    def _dont_follow_symlinks(func, path, *args):
+        # Pass follow_symlinks=False, unless not supported on this platform.
+        if func in _os.supports_follow_symlinks:
+&gt;           func(path, *args, follow_symlinks=False)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-8tz23ekw'
+
+C:\Miniconda\Lib\tempfile.py:276: PermissionError</failure></testcase><testcase classname="tests.test_test_runner_cli" name="test_real_pytest_failure_is_reported_as_failure_without_becoming_green" time="7.344"><failure message="PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-fcr3j_55'">path = 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-fcr3j_55'
+onexc = &lt;function TemporaryDirectory._rmtree.&lt;locals&gt;.onexc at 0x0000021E5C29C4A0&gt;
+
+    def _rmtree_unsafe(path, onexc):
+        def onerror(err):
+            if not isinstance(err, FileNotFoundError):
+                onexc(os.scandir, err.filename, err)
+        results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+        for dirpath, dirnames, filenames in results:
+            for name in dirnames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.rmdir(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.rmdir, fullname, err)
+            for name in filenames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.unlink(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.unlink, fullname, err)
+        try:
+&gt;           os.rmdir(path)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-fcr3j_55'
+
+C:\Miniconda\Lib\shutil.py:631: PermissionError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/test-suites-2026-10-25/iqs-tier-check-j0b2n8_8/pytest/test_real_pytest_failure_is_re0')
+
+    def test_real_pytest_failure_is_reported_as_failure_without_becoming_green(tmp_path):
+        tests = tmp_path / "tests"
+        tests.mkdir()
+        (tests / "test_failure.py").write_text("def test_expected_failure(): assert False\n", encoding="utf8")
+        output = tmp_path / "reports"
+        output.mkdir()
+&gt;       result = runner.run_group(tmp_path, "fast", ["test_failure.py"], output)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_runner_cli.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\run_tests.py:89: in run_group
+    with tempfile.TemporaryDirectory(prefix="iqs-tests-", dir=temp_root) as temporary:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\tempfile.py:951: in __exit__
+    self.cleanup()
+C:\Miniconda\Lib\tempfile.py:955: in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+C:\Miniconda\Lib\tempfile.py:935: in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+C:\Miniconda\Lib\tempfile.py:907: in onexc
+    _resetperms(path)
+C:\Miniconda\Lib\tempfile.py:287: in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+func = &lt;built-in function chmod&gt;
+path = 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-fcr3j_55'
+args = (448,)
+
+    def _dont_follow_symlinks(func, path, *args):
+        # Pass follow_symlinks=False, unless not supported on this platform.
+        if func in _os.supports_follow_symlinks:
+&gt;           func(path, *args, follow_symlinks=False)
+E           PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{814b7e75-b7c1-45f9-8a22-69b86426cc46}\\AC\\Temp\\iqs-tests-fcr3j_55'
+
+C:\Miniconda\Lib\tempfile.py:276: PermissionError</failure></testcase></testsuite></testsuites>
