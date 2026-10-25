@@ -1,3 +1,25 @@
+## 2026-10-25 — 核实后接续：补独审、修正文档时点、恢复生产主线（进行中）
+
+### 已闭合：BASIC-21整包独审与根因修复
+
+- 独立reviewer `/root/review_bank21` 与implementer `/root/fix_bank21` 实际分离。初轮5项与后续type critical继承共6项全部修复；初轮`changes_required`保留，复审`passed/open_findings=[]`，不是补造历史审查。
+- 修复主仓common扩展critical矛盾、删除扩展的minor/major混合规则、整库construct/critical派生，以及type继承核心风险门；UI生产build从实际module/catalog派生期望数，保留重复/漂移/缺失守卫。源题库数据未变。
+- 主仓六文件200 passed/245 subtests；3项Windows深Temp环境失败仅短Temp重跑→3 passed/2 subtests（不合并冒称单次203通过）；UI134 tests，6既有skip；独立反例8/8；真实重构前baseline `d5ce8e7`与当前六组合输出字节SHA一致。明确自有临时根已清理。
+- 持久证据归档：`docs/implementation/reviews/reconciliation-production-2026-10-25/basic/`（审查者、初/复审、源SHA、原日志、兼容比较）；提交后另外绑定实际commit，不回写审查历史。G5未代签，不阻塞用户已授权的工程接线。
+
+### 生产接线的已定位问题（正在修复与验证）
+
+- 新增显式`finalize_shared_engine`复用原StockQA封存；恢复原有效lease由StockQA公开方法承载，主仓不直接伪造私有handle。checkpoint已写而delivery封包失败的中间态可按原答案幂等补封，pending不得显示completed。
+- 真正singleton外部检索E2E复现旧Q09 scope将普通预留标志带进research SDK，模型发送前被拒（0模型HTTP）；现按显式research预算scope修复，普通Q09默认守卫不变。不是删除预算验证。
+- 已准备的旧`.../live/`仅base预算、0收费，不修改其已确认输入或复活work。另建短路径`runs/r25-live/`，从admission起冻结原工具生成的搜索+模型composite预算，external_retrieval保留base模型预算，避免policy快照漂移。
+- 准备阶段发现并修正自身驱动错误：primary scan不能填comparison_group；query2.6需refresh1.1；观察ACK的store_id与workspace绑定，不能把原观察库直接当可移植身份副本。新部署仅复制4个真实身份/路由库，观察库用原migrate新建；原库只读且hash前后不变。沙箱os.link限制通过获授权的隔离离线沙箱外运行解决。
+
+- 用户明确要求实际修正不一致并继续共享引擎生产接线、真实摘要和缓存恢复；已有授权覆盖后续实施、真实小样本与提交推送。
+- PWF resolver 无 selector、无命名计划，继续本根目录三文件；开工 `046df087`，产品树相对 `e2a99a3` 仅 PWF 差异。既有 tracked 改动为 `docs/implementation/parallel-lanes/packages/2026-10-10/README.md`，不归本轮。
+- 已启动实际不同 agent 的 BASIC-21 整包独审；重点为核心集合派生、历史可比性、跨仓一致性，输出限 `runs/reconcile-production-2026-10-25/basic-review/`。旧报告的「G4」文字不能替代本轮独审证据，G5 不代签。
+- 另一独立调查并行查当前共享引擎入口和 work/lease/checkpoint，避免把历史研究路径或固定能力声明误当成人类授权缺失。
+- 05/06 历史恢复证据确认 2/2、0 新 HTTP、1 次历史请求重放；本轮目标扩展为真实搜索/摘要及可验证恢复，而非重复该窄研究样例。
+
 ## 2026-10-25 — 全面清收：BASIC-BANK-EXPANSION-21 验收、vendor 刷新、UI 消费端补齐、open items 从 39 清到 23
 
 本轮起点是所有者三连指令：「继续，不要停」「open 的那些问题都解决了吗？如果没有就把它们都解决掉」

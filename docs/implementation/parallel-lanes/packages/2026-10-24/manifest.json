@@ -90,10 +90,10 @@
         "BASIC-BANK-EXPANSION-21"
       ],
       "depends_on": [],
-      "readiness": "ready_for_dispatch",
-      "workers_dispatched": false,
+      "readiness": "engineering_accepted",
+      "workers_dispatched": true,
       "support_only": false,
-      "note": "所有者 2026-10-24 裁定：去掉「恰好 24 核心题」硬编码，基本题库允许升级与扩张（核心构念集合由 common 数据派生；允许诊断扩展题按 minor 增删；跨仓镜像银行 lab/UI）。设计输入见卡；本批未实施，待主线派发或自行实施。"
+      "note": "2026-10-25 对账：已有三仓实现保留，不再待派发。实际独审发现的6项核心/扩展版本、critical继承、整库校验及UI固定计数根因全部修复，独立复审passed/open_findings=[]；证据 docs/implementation/reviews/reconciliation-production-2026-10-25/basic/final.json。主仓200项+3环境重跑通过，UI134项含6既有skip，兼容六组合字节一致。工程签收不冒充历史G4或所有者G5；不授予金融/生产资格。"
     }
   ]
 }

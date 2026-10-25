@@ -91,7 +91,8 @@ def validate_library():
                 # 诊断扩展题：只做诊断，不进核心固定比较，也不进质量汇总
                 assert q.get('aggregation') == 'diagnostic' and q['construct_id'] is None
                 assert not q.get('replaces')
-            expected_construct = q['id'] if module['kind'] == 'common' else next(iter(q.get('replaces', [])), None)
+            expected_construct = (q['id'] if module['kind'] == 'common' and q['comparison_role'] == 'core'
+                                  else next(iter(q.get('replaces', [])), None))
             assert q['construct_id'] == expected_construct
             assert set(q['anchors']) == {'1', '5', '10'}
             assert len(set(q['anchors'].values())) == 3
@@ -103,7 +104,6 @@ def validate_library():
                 replaced.add(target)
     common_questions = modules['common']['questions']
     assert all(q['priority'] == 1 for q in common_questions if q['comparison_role'] == 'core')
-    assert {q['id'] for q in common_questions if q.get('critical')} == {'IQS_12', 'IQS_13', 'IQS_16'}
     factors = {q['factor'] for q in modules['dupont']['questions']}
     assert factors == {'roe', 'net_margin', 'asset_turnover', 'equity_multiplier',
                        'operating_margin', 'interest_burden', 'tax_burden'}
@@ -413,6 +413,10 @@ def summarize(records, policy='legacy-all-questions', *, core_ids=None):
     """
     if policy not in ('legacy-all-questions', 'core-constructs-v1'):
         raise ValueError('unknown aggregation policy')
+    for record in records:
+        if record.get('critical') and (record.get('comparison_role') == 'diagnostic'
+                                       or record.get('aggregation') == 'diagnostic'):
+            raise ValueError('diagnostic question cannot declare a critical risk gate')
     base_records = records
     if policy == 'core-constructs-v1':
         base_records = [r for r in records if r.get('comparison_role') == 'core']

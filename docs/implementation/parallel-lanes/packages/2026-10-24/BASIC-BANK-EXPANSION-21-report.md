@@ -1,5 +1,7 @@
 # BASIC-BANK-EXPANSION-21 实施报告
 
+> 2026-10-25 实际独审补充：下面是10/24原实施记录。新增扩张整链的6项反例随后真实复现并由主控修复，现独立复审passed/open_findings=[]；初轮失败、复审、源码SHA、原测试日志和历史兼容比对见`../../../reviews/reconciliation-production-2026-10-25/basic/`。原报告列G4门名不代表当时已有持久审查。最新主仓200项+3环境重跑通过，UI134项含6既有skip；不将分次测试合称单次203通过，不代签G5。
+
 - 日期：2026-10-24（晚）
 - 设计输入：[BASIC-BANK-EXPANSION-21.md](BASIC-BANK-EXPANSION-21.md)（G1：本卡即设计输入；所有者原话见其 §0）
 - 性质：跨三仓重构（主仓 `invest-quick-scan` + 银行 lab `iqs-question-bank-lab` + UI lab `iqs-question-bank-ui-lab`）

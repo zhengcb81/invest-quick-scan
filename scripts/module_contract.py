@@ -81,13 +81,17 @@ def _validate(schema: dict, value: object) -> None:
     Draft202012Validator(schema, format_checker=FormatChecker()).validate(value)
 
 
-def validate_module(module: dict, *, core_ids: frozenset[str] | None = None) -> None:
+def validate_module(module: dict, *, core_ids: frozenset[str] | None = None,
+                    critical_core_ids: frozenset[str] | None = None) -> None:
     """Validate one scored module's shape and duplicate IDs.
 
     ``core_ids`` is the released core construct set (see ``core_construct_ids``).
     For the common module it is derived from this module's own data when omitted;
     a type module needs the caller to supply the release's set so a replacement
     cannot target a construct the release does not carry.
+    ``critical_core_ids`` carries the common module's declared critical subset;
+    a type replacement must preserve that risk flag. Registry/release validators
+    derive both sets from the same common module rather than a fixed ID list.
     """
     _validate(MODULE_SCHEMA, module)
     if (module["module_id"] == "common") != (module["kind"] == "common"):
@@ -104,6 +108,9 @@ def validate_module(module: dict, *, core_ids: frozenset[str] | None = None) -> 
             raise ValueError("common module must declare at least one core construct")
     type_replacements: set[str] = set()
     for question in module["questions"]:
+        if question.get("critical") and (question.get("comparison_role") == "diagnostic"
+                                         or question.get("aggregation") == "diagnostic"):
+            raise ValueError("diagnostic question cannot declare a critical risk gate")
         if question["metric_id"] != "score." + question["id"].lower():
             raise ValueError("metric_id must bind the question ID")
         if question.get("supersedes") == question["id"]:
@@ -119,6 +126,9 @@ def validate_module(module: dict, *, core_ids: frozenset[str] | None = None) -> 
                     raise ValueError("type core question must replace one frozen core construct")
                 if replacements[0] in type_replacements:
                     raise ValueError("duplicate core replacement within one company type")
+                if (critical_core_ids is not None and replacements[0] in critical_core_ids
+                        and question.get("critical") is not True):
+                    raise ValueError("type replacement for critical core must preserve critical=true")
                 type_replacements.add(replacements[0])
             elif replacements or question["construct_id"] is not None:
                 raise ValueError("type context question cannot replace a core construct")
@@ -188,10 +198,12 @@ def validate_registry(modules: Mapping[str, dict], contexts: Mapping[str, object
     core_ids = core_construct_ids(modules["common"])
     if not core_ids:
         raise ValueError("common module must declare at least one core construct")
+    critical_core_ids = frozenset(q["id"] for q in modules["common"]["questions"]
+                                  if q["id"] in core_ids and q.get("critical"))
     question_ids: set[str] = set()
     retired_ids = set(historical_retired_ids)
     for module_id, module in modules.items():
-        validate_module(module, core_ids=core_ids)
+        validate_module(module, core_ids=core_ids, critical_core_ids=critical_core_ids)
         if module_id != module["module_id"]:
             raise ValueError("module ID differs from registry key")
         for question in module["questions"]:
@@ -286,24 +298,27 @@ def validate_upgrade(old: dict, new: dict) -> None:
     if len(successors) != len(set(successors)) or not set(successors) <= old_questions.keys():
         raise ValueError("successor mapping must uniquely reference an old question")
     if removed:
-        extension_removal = (
-            old["kind"] == "common"
-            and not (old_core & removed)
-            and all(_is_extension_question(old_questions[qid]) for qid in removed)
-        )
-        if extension_removal:
-            # Removing a diagnostic extension is a bank contraction, not a
-            # comparability break: it needs a tombstone, never a major release.
-            if new_version[0] > old_version[0]:
+        removed_extensions = {
+            qid for qid in removed
+            if old["kind"] == "common" and _is_extension_question(old_questions[qid])
+        }
+        if removed_extensions:
+            # Diagnostic retirement needs at least minor plus its tombstone.
+            # A simultaneous core change may require a major release, but
+            # must not create a successor requirement for diagnostic IDs.
+            if not _at_least_minor(old_version, new_version):
+                raise ValueError("extension removal requires at least a minor release")
+            if new_version[0] > old_version[0] and old_core == new_core:
                 raise ValueError(
                     "extension removal requires only a minor release; a major release "
                     "is reserved for core construct changes"
                 )
-        else:
+        breaking_removals = removed - removed_extensions
+        if breaking_removals:
             if new_version[0] <= old_version[0]:
                 raise ValueError("question removal requires a major release")
             superseded = {q.get("supersedes") for q in new["questions"]}
-            if not removed <= superseded:
+            if not breaking_removals <= superseded:
                 raise ValueError("removed questions require explicit successor mapping")
     added = new_questions.keys() - old_questions.keys()
     if added and new_version[0] == old_version[0] and new_version[1] <= old_version[1]:
@@ -384,8 +399,10 @@ def validate_release(release: dict, artifact_loader: Callable[[str], bytes]) -> 
     core_ids = core_construct_ids(modules["common"])
     if not core_ids:
         raise ValueError("release common module must declare at least one core construct")
+    critical_core_ids = frozenset(q["id"] for q in modules["common"]["questions"]
+                                  if q["id"] in core_ids and q.get("critical"))
     for module in modules.values():
-        validate_module(module, core_ids=core_ids)
+        validate_module(module, core_ids=core_ids, critical_core_ids=critical_core_ids)
     module_retired = {qid for module in modules.values() for qid in module.get("retired_question_ids", [])}
     if not module_retired <= set(release["retired_question_ids"]):
         raise ValueError("release lock omits module retirement tombstones")

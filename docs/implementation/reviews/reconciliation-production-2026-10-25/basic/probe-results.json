@@ -1,0 +1,56 @@
+{
+  "reviewer": "/root/review_bank21",
+  "kind": "independent_review_probe",
+  "production_ready": false,
+  "findings": {
+    "critical_extension_main": {
+      "accepted": true
+    },
+    "critical_extension_summary": {
+      "quality_before": 8.0,
+      "quality_after": null,
+      "critical_issues_after": [
+        {
+          "id": "REVIEW_EXT_01",
+          "kind": "material_concern",
+          "status": "scored",
+          "score": 1
+        }
+      ],
+      "dimensions_unchanged": true
+    },
+    "critical_extension_bank_errors": [
+      "review: common extension must not be critical"
+    ],
+    "valid_extension_validate_library": {
+      "accepted": false,
+      "exception": "AssertionError",
+      "message": ""
+    },
+    "major_core_add_plus_extension_remove": {
+      "accepted": false,
+      "exception": "ValueError",
+      "message": "extension removal requires only a minor release; a major release is reserved for core construct changes"
+    },
+    "patch_extension_remove": {
+      "accepted": true
+    }
+  },
+  "positive_extension_minor": {
+    "accepted": true
+  },
+  "positive_derived_floor": {
+    "original": 24,
+    "core_added": 25,
+    "extension_added": 24
+  },
+  "input_hashes": {
+    "scripts/module_contract.py": "2eecb3099bd8c7920c5c061613d4d837f169a22f768a7ac841b5aeedfd802079",
+    "scripts/question_sets.py": "df10902383f1a7b259cf8553703c97bfaae9a47117954b80f05b886588134147",
+    "scripts/routing.py": "649b3e56af7628dd0d6390559624157091cc655eb6345d8c375e76fab1a7b5a3",
+    "scripts/scoring_rubrics.py": "1851171b01c6bfd3fe5b7dac6086b5a0bb5bb141066b1ca211c7306027a05824",
+    "schemas/quick_scan/scoring-rubric.schema.json": "d809462ea7ac83db1dcd265ee584e1e36a97ec60aed7e6ca4b0551f38c73891f",
+    "tests/test_bank_expansion_21.py": "2f8f0a5087417b35e8734ad15bf35b75a6e64d24c15eb6e1a7dff5c483f17559"
+  },
+  "head": "046df087b4b3503aa4f765a076c469e4cb4de7c7"
+}

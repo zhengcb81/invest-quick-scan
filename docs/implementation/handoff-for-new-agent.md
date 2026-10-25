@@ -1,4 +1,25 @@
-# Handoff 顶部更新（2026-10-18，当前有效）
+# 当前接手入口（2026-10-25；本节优先）
+
+用户当前指令：修正核实出的文档与实际状态差异，补齐真实独审证据，继续共享引擎生产接线、真实摘要和缓存恢复；发现问题直接修复，完成进展提交并推送。既有跨仓、真实小样本、提交/推送授权继续有效，不重复询问。下方10/18暂停旧owner路线的记录保留为历史，已由本次恢复指令覆盖当前执行方向。
+
+## 当前状态与下一步
+
+- 唯一当前计划是根 `task_plan.md` 顶部R1–R5；`progress.md`/`findings.md`记实际证据。本轮起点主仓`046df087`；原10/25清收代码相对`e2a99a3`只增加三份PWF文档。原全量1065 passed/4 skipped/761 subtests是历史实测，本轮没有重跑78分钟套件。
+- BASIC-21本轮实际独审的6项根因（另含type critical继承）已修复，**工程验收通过**；主仓200项+3环境重跑、UI134项含6skip、独立反例8/8、历史六组合输出字节一致。初轮失败与最终独审证据在`docs/implementation/reviews/reconciliation-production-2026-10-25/basic/`；G5不伪签。
+- 共享引擎已有原Runner/RuntimeBridgePort/StockQA SDK接线。历史CATL05/06恢复2/2完成、新模型HTTP=0、重放1历史请求，但固定公共context、无正式搜索checkpoint。本轮新增显式`finalize_shared_engine`复用原封存/恢复公开方法，并修复真实集成发现的singleton预算scope冲突；正在进行真实E2E，尚不能宣称生产闭环通过。
+- `owner_authority_verified=false`是Company摘要观察器固定能力边界；不能据此推断人类没有授权。原work/lease/context proof/checkpoint的实测结果才是接线判据；现金成本unknown不可改零，公开价估算与账单分列。
+- 当前最短闭环：原StockQA真实外部检索/context proof → 单题共享引擎 → 原活动lease封存标准答案 → 原安全响应后中断 → 禁网恢复，核新增HTTP=0、预算不重复、封存一次、摘要逐字段一致。原外部context绑定禁止批量question pack；本轮先singleton，不声称已支持agent自主搜索。
+- 先修已确认的根因，再跑定向单元/跨仓集成与上述真实E2E，在整包节点独审；不对每个helper增门。生产准入、金融准确性和全池完成不能因结构测试通过自动授予。
+
+## 安全接手与交付
+
+只读调查：`runs/reconcile-production-2026-10-25/production-investigation/README.md`。整轮证据在`runs/reconcile-production-2026-10-25/`，真实隔离部署用短路径`runs/r25-live/`。其预算从admission起为原工具生成的composite，检索model_policy另用base。旧`.../live/`仅base预算准备，0收费，不复用或偷改已确认输入。临时测试可用明确自有短系统Temp，结束清理副本；保留审查/请求/费用薄证据，绝不输出密钥或思考正文。
+
+开工已有一份tracked修改为`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`，及大量未跟踪历史归档；不归本轮，不整仓add或清理。外仓先核实际HEAD/status并保留其他writer修改。只提交明确自有源码、测试和薄证据；更新本入口、PWF、状态板和manifest的同一当前状态。
+
+---
+
+# 2026-10-18历史快照（以下不作为当前主线或可执行下一步）
 
 ## 主线
 

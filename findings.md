@@ -1,3 +1,16 @@
+## 2026-10-25 — PWF 与真实状态对账（进行中）
+
+实际独审现已完成并复审通过：诊断扩展与critical不可兼得；删除扩展至少minor，混合真实核心变更允许major；整库而非单module必须承认common诊断扩展；type替代必须继承从common数据派生的critical集合；UI完整build必须随真实题数演进。六项均有能失败的反例及最终源码hash，历史输出六组合逐字节不变。
+
+真实生产集成的两个根因不能由旧单元替身发现：普通问答的own-reservation标志会阻断research SDK singleton；base-only budget与检索时合成budget的policy_version会漂移。正确修法是显式区分预算scope，并在原admission前冻结composite、检索计算仍用base，不在已确认后偷换输入。另观察store的ACK身份是workspace-bound，隔离真实身份副本应新建空观察store，不能复制旧ACK冒充新环境。
+
+1. 根 PWF 已更新至 10/25；`handoff-for-new-agent.md` 顶部仍称 10/18 当前有效，且同文件对三包交付存在不同历史时点声明。应建立唯一当前入口，将旧条目标为历史。
+2. BASIC-21 的代码与实施报告已经落地，状态板列已验收，但 10/24 manifest 仍记未实施/未派发；修正前先确认 manifest 是否为冻结输入，不能破坏原审计 hash。
+3. BASIC-21 卡要求独立 G4 与所有者 G5。旧实施报告只列门名，尚未找到独立审查持久证据；本轮实际补做整包独审，标明当前受审代码和测试，不伪装成历史审查。
+4. CATL 05/06 的恢复是真实但范围有限的成功：`new_model_http=0`、2/2 completed、1 次历史请求重放。费用 unknown 与未做金融准确性审查是明确边界。
+5. `owner_authority_verified=false` 需要核实源码语义。独立调查已指出 Company provenance 实现将其固定 False，属于观察器不能认证权限的能力边界；实际 work/lease/search checkpoint 是否成功需另查。不能根据这个字段推翻用户已给授权。
+6. 10/18 暂停旧 owner 路线应保留为历史事实；用户 10/25 最新明确要求恢复生产接线，当前 Next Step 必须反映这一方向。
+
 ## 2026-10-25 — 内容寻址系统的七个结构性教训（本轮清收得出）
 
 本轮修了 8 个缺陷、关了 16 个 open item，几乎每一个都指向同一类根因：**「id 是内容的函数」这个前提，在实现里被各种捷径破坏了**。逐条记录，因为它们在别处会重演。

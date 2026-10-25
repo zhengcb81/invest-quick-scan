@@ -1,0 +1,53 @@
+................................................. [ 24%]
+.......................................................................F...... [ 62%]
+.......................................F...................F................                                                         [100%]
+================================== FAILURES ===================================
+_ QuestionSetTests.test_s03_archived_metric_manifest_reads_from_immutable_package_without_live_sources _
+tests\test_question_sets.py:614: in test_s03_archived_metric_manifest_reads_from_immutable_package_without_live_sources
+    shutil.copytree(ROOT / 'questions/releases', root / 'questions/releases')
+C:\Miniconda\Lib\shutil.py:593: in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+C:\Miniconda\Lib\shutil.py:547: in _copytree
+    raise Error(errors)
+E   shutil.Error: [('C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\questions\\releases\\artifacts\\professional_services\\3_0_0-e2416b58b021c5dab8215f603ca2a88bb394e121b0e8f57ecf3b8437afa052db.json', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\basic-review\\final-main-k_7h40fu\\iqs-s03-archive-d0d7nfyb\\questions\\releases\\artifacts\\professional_services\\3_0_0-e2416b58b021c5dab8215f603ca2a88bb394e121b0e8f57ecf3b8437afa052db.json', '[WinError 3] 系统找不到指定的路径。')]
+_ RoutingTests.test_mod19_previous_router_policy_requires_explicit_migration __
+tests\test_routing.py:236: in test_mod19_previous_router_policy_requires_explicit_migration
+    with tempfile.TemporaryDirectory(prefix="iqs-s06-router-migration-") as temp_root:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\tempfile.py:951: in __exit__
+    self.cleanup()
+C:\Miniconda\Lib\tempfile.py:955: in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+C:\Miniconda\Lib\tempfile.py:935: in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\shutil.py:621: in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+C:\Miniconda\Lib\shutil.py:617: in _rmtree_unsafe
+    os.rmdir(fullname)
+E   OSError: [WinError 145] 目录不是空的。: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\basic-review\\final-main-k_7h40fu\\iqs-s06-router-migration-0ix7l4w0\\questions\\releases\\artifacts\\acquisitive'
+_ ArchivedRouterCompatibilityTests.test_archived_router_21_snapshot_is_readable_but_cannot_start_or_execute_work _
+tests\test_routing.py:850: in test_archived_router_21_snapshot_is_readable_but_cannot_start_or_execute_work
+    with tempfile.TemporaryDirectory(prefix="iqs-s06-router21-") as temp_root:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\tempfile.py:951: in __exit__
+    self.cleanup()
+C:\Miniconda\Lib\tempfile.py:955: in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+C:\Miniconda\Lib\tempfile.py:935: in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\shutil.py:621: in _rmtree_unsafe
+    onexc(os.rmdir, fullname, err)
+C:\Miniconda\Lib\shutil.py:617: in _rmtree_unsafe
+    os.rmdir(fullname)
+E   OSError: [WinError 145] 目录不是空的。: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\basic-review\\final-main-k_7h40fu\\iqs-s06-router21-anrpez0l\\questions\\releases\\artifacts\\professional_services'
+=========================== short test summary info ===========================
+FAILED tests/test_question_sets.py::QuestionSetTests::test_s03_archived_metric_manifest_reads_from_immutable_package_without_live_sources
+FAILED tests/test_routing.py::RoutingTests::test_mod19_previous_router_policy_requires_explicit_migration
+FAILED tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_router_21_snapshot_is_readable_but_cannot_start_or_execute_work
+3 failed, 200 passed, 245 subtests passed in 1009.64s (0:16:49)

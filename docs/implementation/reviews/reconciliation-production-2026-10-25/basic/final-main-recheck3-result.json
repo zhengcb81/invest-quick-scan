@@ -1,0 +1,30 @@
+{
+  "reviewer": "/root/review_bank21",
+  "command": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_question_sets.py::QuestionSetTests::test_s03_archived_metric_manifest_reads_from_immutable_package_without_live_sources",
+    "tests/test_routing.py::RoutingTests::test_mod19_previous_router_policy_requires_explicit_migration",
+    "tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_router_21_snapshot_is_readable_but_cannot_start_or_execute_work"
+  ],
+  "exit_code": 0,
+  "input_hashes_before": {
+    "scripts/module_contract.py": "d43c2b469f940cbf8453d61c86e34c90e6ffd7873fdbbec78ca0a81cefc36da6",
+    "scripts/question_sets.py": "f515e2771722818ae223676d2a3461886000aaa7830b4bab2d8cbd40105328b7",
+    "tests/test_bank_expansion_21.py": "bedfe8173ad3575f4a1c8ac39a467211cd85f1308b03a6d0bd8a3d08afc1f8e3"
+  },
+  "input_hashes_after": {
+    "scripts/module_contract.py": "d43c2b469f940cbf8453d61c86e34c90e6ffd7873fdbbec78ca0a81cefc36da6",
+    "scripts/question_sets.py": "f515e2771722818ae223676d2a3461886000aaa7830b4bab2d8cbd40105328b7",
+    "tests/test_bank_expansion_21.py": "bedfe8173ad3575f4a1c8ac39a467211cd85f1308b03a6d0bd8a3d08afc1f8e3"
+  },
+  "source_unchanged": true,
+  "isolated_temp_removed": true,
+  "scope": "Only the 3 Windows deep-temp environment failures from the six-file suite; the other 200 passing cases were not repeated."
+}

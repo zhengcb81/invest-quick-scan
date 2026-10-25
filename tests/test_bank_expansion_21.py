@@ -18,8 +18,11 @@ follow the bank size.
 import copy
 import json
 from pathlib import Path
+import shutil
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -91,6 +94,18 @@ class DerivedCoreSetTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "extension"):
             mc.validate_module(module, core_ids=mc.core_construct_ids(module))
 
+    def test_diagnostic_questions_cannot_claim_a_critical_risk_gate(self):
+        """Reject contradictory definitions before selection or aggregation."""
+        _, modules = qs.load_library()
+        common = copy.deepcopy(self.common)
+        common["questions"].append(_extension_question(self.common["questions"][0]))
+        diagnostic = copy.deepcopy(modules["dupont"])
+        for module in (common, diagnostic):
+            with self.subTest(kind=module["kind"]):
+                module["questions"][-1]["critical"] = True
+                with self.assertRaisesRegex(ValueError, "diagnostic.*critical"):
+                    mc.validate_module(module)
+
     def test_common_requires_at_least_one_core_construct(self):
         module = copy.deepcopy(self.common)
         module["questions"] = [_extension_question(self.common["questions"][0])]
@@ -108,6 +123,40 @@ class DerivedCoreSetTests(unittest.TestCase):
         mc.validate_module(bank, core_ids=core)
         with self.assertRaisesRegex(ValueError, "one frozen core construct"):
             mc.validate_module(bank, core_ids=core - {target})
+
+    def test_type_replacements_preserve_critical_flags_from_the_common_module(self):
+        _, modules = qs.load_library()
+        common = modules["common"]
+        critical_ids = frozenset(q["id"] for q in common["questions"]
+                                 if q["comparison_role"] == "core" and q.get("critical"))
+        bank = copy.deepcopy(modules["bank"])
+        risk = next(q for q in bank["questions"] if set(q.get("replaces", [])) & critical_ids)
+        for flag in (False, None):
+            with self.subTest(flag=flag):
+                changed = copy.deepcopy(modules)
+                question = next(q for q in changed["bank"]["questions"] if q["id"] == risk["id"])
+                if flag is None:
+                    question.pop("critical", None)
+                else:
+                    question["critical"] = flag
+                with self.assertRaisesRegex(ValueError, "critical core.*critical"):
+                    mc.validate_registry(changed, {}, legacy_ids=frozenset(changed))
+        mc.validate_module(bank, core_ids=mc.core_construct_ids(common), critical_core_ids=critical_ids)
+
+    def test_type_critical_inheritance_follows_a_new_core_construct(self):
+        _, modules = qs.load_library()
+        grown = copy.deepcopy(modules)
+        question = copy.deepcopy(grown["common"]["questions"][0])
+        question.update(id="IQS_99", metric_id="score.iqs_99", construct_id="IQS_99", critical=True)
+        grown["common"]["questions"].append(question)
+        replacement = copy.deepcopy(grown["bank"]["questions"][0])
+        replacement.update(id="BANK_99", metric_id="score.bank_99", construct_id="IQS_99",
+                           replaces=["IQS_99"], critical=True)
+        grown["bank"]["questions"].append(replacement)
+        mc.validate_registry(grown, {}, legacy_ids=frozenset(grown))
+        replacement["critical"] = False
+        with self.assertRaisesRegex(ValueError, "critical core.*critical"):
+            mc.validate_registry(grown, {}, legacy_ids=frozenset(grown))
 
     def test_validate_library_reports_the_derived_core_count(self):
         report = qs.validate_library()
@@ -149,6 +198,33 @@ class ExpansionUpgradeTests(unittest.TestCase):
         shrunk["questions"] = [q for q in shrunk["questions"] if q["id"] != "DUPONT_EXT_01"]
         with self.assertRaisesRegex(ValueError, "tombstones must accumulate"):
             mc.validate_upgrade(extended, shrunk)
+
+    def test_removing_an_extension_with_only_a_patch_is_rejected(self):
+        extended = self._extended("3.1.0")
+        shrunk = copy.deepcopy(self.common)
+        shrunk.update(version="3.1.1", retired_question_ids=["DUPONT_EXT_01"])
+        with self.assertRaisesRegex(ValueError, "extension removal.*minor"):
+            mc.validate_upgrade(extended, shrunk)
+
+    def test_major_core_expansion_can_also_retire_a_diagnostic_extension(self):
+        extended = self._extended("3.1.0")
+        grown = copy.deepcopy(self.common)
+        grown.update(version="4.0.0", retired_question_ids=["DUPONT_EXT_01"])
+        question = copy.deepcopy(self.common["questions"][0])
+        question.update(id="IQS_99", metric_id="score.iqs_99", construct_id="IQS_99")
+        grown["questions"].append(question)
+        mc.validate_upgrade(extended, grown)
+
+    def test_major_core_successor_does_not_need_a_successor_for_a_retired_diagnostic(self):
+        extended = self._extended("3.1.0")
+        changed = copy.deepcopy(self.common)
+        retired = changed["questions"].pop()
+        successor = copy.deepcopy(retired)
+        successor.update(id="IQS_90", metric_id="score.iqs_90", construct_id="IQS_90",
+                         supersedes=retired["id"])
+        changed["questions"].append(successor)
+        changed.update(version="4.0.0", retired_question_ids=["DUPONT_EXT_01", retired["id"]])
+        mc.validate_upgrade(extended, changed)
 
     def test_removing_an_extension_with_a_major_version_is_still_rejected(self):
         """Removing a diagnostic extension never needs a major release."""
@@ -228,6 +304,118 @@ class FixedComparisonTests(unittest.TestCase):
                                  "score": 10, "critical": False}]
         self.assertEqual(qs.summarize(self.core, "core-constructs-v1"),
                          qs.summarize(extended, "core-constructs-v1"))
+
+    def test_summarize_rejects_diagnostic_critical_metadata_in_both_policies(self):
+        for policy in ("legacy-all-questions", "core-constructs-v1"):
+            for diagnostic_field in ("aggregation", "comparison_role"):
+                with self.subTest(policy=policy, field=diagnostic_field):
+                    row = copy.deepcopy(self.core[0])
+                    row.update(id="DUPONT_EXT_01", construct_id=None,
+                               comparison_role="context", critical=True, score=1)
+                    row[diagnostic_field] = "diagnostic"
+                    with self.assertRaisesRegex(ValueError, "diagnostic.*critical"):
+                        qs.summarize(self.core + [row], policy)
+
+    def test_real_critical_core_and_scored_context_still_block_quality(self):
+        rows = [dict(q, score=8) for q in _load_common()["questions"]]
+        rows = [dict(q, status="scored") for q in rows]
+        self.assertEqual(qs.summarize(rows, "core-constructs-v1")["quality_score"], 8)
+        for status, score in (("scored", 1), ("insufficient_evidence", None)):
+            with self.subTest(kind="core", status=status):
+                changed = copy.deepcopy(rows)
+                risk = next(q for q in changed if q.get("critical"))
+                risk.update(status=status, score=score)
+                result = qs.summarize(changed, "core-constructs-v1")
+                self.assertIsNone(result["quality_score"])
+                self.assertIn(risk["id"], {q["id"] for q in result["critical_issues"]})
+        context = dict(rows[0], id="CRITICAL_CONTEXT", construct_id=None,
+                       comparison_role="context", critical=True, score=1)
+        result = qs.summarize(rows + [context], "core-constructs-v1")
+        self.assertIsNone(result["quality_score"])
+        self.assertIn("CRITICAL_CONTEXT", {q["id"] for q in result["critical_issues"]})
+
+
+class ExpandedLibraryIntegrationTests(unittest.TestCase):
+    """Exercise authoring, publication, composition and historical reads in isolation."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="iqs-bank21-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        shutil.copytree(ROOT / "questions", self.root / "questions",
+                        ignore=shutil.ignore_patterns("releases"))
+        for reference in ("schemas/answer-content.schema.json", "schemas/quick_scan/metric.schema.json",
+                          "schemas/quick_scan/score.schema.json", "schemas/observation.schema.json",
+                          "schemas/quick_scan/module-legacy-baseline.json"):
+            target = self.root / reference
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / reference, target)
+        patcher = mock.patch.object(qs, "ROOT", self.root)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.profile = {**qs.read_json(ROOT / "examples/profile.json"), "entity_id": "BANK21_FIXTURE"}
+
+    def edit_common(self, *, core=False):
+        catalog = qs.read_json(self.root / "questions/catalog.json")
+        entry = next(item for item in catalog["modules"] if item["id"] == "common")
+        module = qs.read_json(self.root / entry["path"])
+        question = _extension_question(module["questions"][0])
+        if core:
+            question.update(id="IQS_99", metric_id="score.iqs_99", construct_id="IQS_99",
+                            comparison_role="core", aggregation="scored", priority=1, critical=True)
+        module["questions"].append(question)
+        module.update(version="4.0.0" if core else "3.1.0", dependencies=[], conflicts=[],
+                      introduced_in="3.1.0", activation={"mode": "automatic",
+                          "required_evidence": ["isolated fixture"], "exclude_when": [],
+                          "minimum_confidence": "medium"})
+        entry["question_count"] = len(module["questions"])
+        catalog["version"] = "3.3.0"
+        qs.write_json(self.root / entry["path"], module)
+        qs.write_json(self.root / "questions/catalog.json", catalog)
+        contexts = qs.read_json(self.root / "questions/scoring-contexts.json")
+        contexts["common"] = {"common": "Isolated authoring fixture; no production data."}
+        qs.write_json(self.root / "questions/scoring-contexts.json", contexts)
+
+    def compose_manifest(self, name, package_id):
+        output = self.root / name
+        qs.compose(self.profile, "full", output, answer_format="screening-1", package_id=package_id)
+        return qs.read_json(output / "manifest.json")
+
+    def test_diagnostic_extension_flows_through_library_publish_compose_and_history(self):
+        baseline = qs.publish_library()
+        before = self.compose_manifest("before", baseline["package_id"])
+        self.edit_common()
+        stats = qs.validate_library()
+        self.assertEqual(stats["core_constructs"], 24)
+        self.assertEqual(stats["common_questions"], 25)
+        extended = qs.publish_library()
+        after = self.compose_manifest("after", extended["package_id"])
+        self.assertIn("DUPONT_EXT_01", {q["id"] for q in after["questions"]})
+        self.assertEqual(before["method_id"], after["method_id"])
+        self.assertEqual(self.compose_manifest("historical", baseline["package_id"]), before)
+        qs.validate_manifest_metric_contract(before)
+        qs.validate_manifest_metric_contract(after)
+        rows_before = [dict(q, status="scored", score=8) for q in before["questions"]]
+        rows_after = [dict(q, status="scored", score=1 if q["id"] == "DUPONT_EXT_01" else 8)
+                      for q in after["questions"]]
+        before_summary = qs.summarize(rows_before, "core-constructs-v1")
+        after_summary = qs.summarize(rows_after, "core-constructs-v1")
+        for field in ("dimensions", "quality_score", "quality_coverage", "critical_issues",
+                      "growth_score", "valuation_score"):
+            self.assertEqual(before_summary[field], after_summary[field])
+        self.assertIn("DUPONT_EXT_01", after_summary["weak_points"])
+
+    def test_library_accepts_major_new_critical_core_from_data(self):
+        qs.publish_library()
+        self.edit_common(core=True)
+        self.assertEqual(qs.validate_library()["core_constructs"], 25)
+        grown = qs.publish_library()
+        manifest = self.compose_manifest("grown", grown["package_id"])
+        rows = [dict(q, status="scored", score=1 if q["id"] == "IQS_99" else 8)
+                for q in manifest["questions"]]
+        summary = qs.summarize(rows, "core-constructs-v1", core_ids=qs._manifest_core_ids(manifest))
+        self.assertIsNone(summary["quality_score"])
+        self.assertIn("IQS_99", {q["id"] for q in summary["critical_issues"]})
 
 
 class RubricDerivationTests(unittest.TestCase):

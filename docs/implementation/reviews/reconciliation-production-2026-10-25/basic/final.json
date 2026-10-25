@@ -1,0 +1,74 @@
+{
+  "schema_version": "iqs-independent-review-local-1",
+  "review_date": "2026-10-25",
+  "package_id": "BASIC-BANK-EXPANSION-21",
+  "reviewer_agent": "/root/review_bank21",
+  "implementer_agent": "/root/fix_bank21",
+  "status": "passed",
+  "open_findings": [],
+  "reviewed_base_commit": "046df087b4b3503aa4f765a076c469e4cb4de7c7",
+  "final_payload_binding": "exact candidate file SHA256; coordinator binds commit after commit",
+  "candidate_source_hashes": {
+    "scripts/module_contract.py": "d43c2b469f940cbf8453d61c86e34c90e6ffd7873fdbbec78ca0a81cefc36da6",
+    "scripts/question_sets.py": "f515e2771722818ae223676d2a3461886000aaa7830b4bab2d8cbd40105328b7",
+    "tests/test_bank_expansion_21.py": "bedfe8173ad3575f4a1c8ac39a467211cd85f1308b03a6d0bd8a3d08afc1f8e3",
+    "UI/scripts/build_data.py": "f322bf94494d0adbb1ad6568dcf46edbd8d1b9ba9fff0d61903adabddcabbaef",
+    "UI/tests/test_bank_expansion_build.py": "7fae354d4509294f86bfe2fc0d19fad890438bf6b8ab24b755ea8a2d1ec0b3cc"
+  },
+  "engineering_result": {
+    "initial_findings": 5,
+    "additional_critical_inheritance_finding": 1,
+    "all_six_closed": true,
+    "independent_counterexample_checks": 8,
+    "main_six_file_suite": {
+      "passed": 200,
+      "subtests_passed": 245,
+      "windows_deep_temp_failures": 3,
+      "duration_seconds": 1009.64
+    },
+    "only_three_environment_cases_recheck": {
+      "passed": 3,
+      "subtests_passed": 2,
+      "duration_seconds": 33.21
+    },
+    "ui_suite": {
+      "tests_run": 134,
+      "skipped_existing": 6,
+      "duration_seconds": 9.936
+    },
+    "compatibility_cases_byte_equal": 6
+  },
+  "cleanup": {
+    "exact_deep_review_temp_removed": true,
+    "short_main_recheck_temp_removed": true,
+    "ui_isolated_copy_removed": true,
+    "source_data_unchanged": true,
+    "default_temp_logged_paths": "read-only metadata only in cleanup-empty-dir-proof.json; no deletion or blanket machine cleanup claim"
+  },
+  "owner_g5_status": "not_signed_by_reviewer",
+  "production_ready": false,
+  "financial_accuracy_assessed": false,
+  "paid_api_calls": 0,
+  "limitations": [
+    "No full 78-minute repository suite rerun.",
+    "Main six-file suite has 200 direct passes plus 3 successful targeted short-temp rechecks; not a single-invocation 203 pass result.",
+    "Candidate source hashes require coordinator commit binding.",
+    "No historical review was fabricated; round01 remains changes_required."
+  ],
+  "artifacts_sha256": {
+    "round-01.md": "2e2b547011d5d6875a93b89d580c9fec7366272f44468609b87d132fd3a74d7f",
+    "round-02.md": "adf4cc0638c2baaccaeda1236088eb0f8caf4d673574286e0015dbdc7f1fe2e6",
+    "invocation-evidence.json": "437bb050e915c19ba08a8f023c9ce692c25eb4826d9e9d5a2eeaa846ea4ead05",
+    "probe-results.json": "46a3f4ee2cbabcae638ad4c8116d8f05d63bcc3e4ea1abb33f6bfa0cd6e62caa",
+    "ui-probe-results.json": "fc4e5868dce50e242dd3bc2330a5ca4e698a7c8f414034ed7832eff3edefa022",
+    "final-probe-results.json": "67ed40b335d880ef7bc965406c06256a13a3b8131c27050a9f537651c1058a10",
+    "final-main-tests.txt": "94f56f976e3c6bcf6d1e0110c717e92b2d497cab85d3fecb8e0bb6db0d43e616",
+    "final-main-recheck3.txt": "34ed24fb5f02d13b3f43d51c98dad77b378db7d95fffd7bdd0383b7586afd090",
+    "final-main-recheck3-result.json": "21d2fd99ca19c83bfcd232eee9716efde26cb4dbc9ffe5e6a2d3ee90fa20bd28",
+    "final-ui-tests.txt": "e96f1cf14772b8f29c05dc1822599c5bbd9d49a4c908c03bef965c714d8d5b1a",
+    "final-ui-result.json": "a8e1b87c471417a4ba1c106b2b72282d80432ce2a7f7bd07c5e9c19e0b226502",
+    "compat-baseline.json": "46fcdf01e030a24c1f982f144b8a9a9c3dd687921ba43c1c650974c41206f340",
+    "compat-final.json": "8b7b32b28ecbb191a08a341dfb3d5504e3ae6aa73b95445377eac5bd46e9ab88",
+    "compat-result.json": "0636c25b93214ded10574e2e0e3fc94033738c9a80c9458de4a1ce1d49b4cc4a"
+  }
+}
