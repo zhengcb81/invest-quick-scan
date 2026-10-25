@@ -20,6 +20,7 @@ spec = importlib.util.spec_from_file_location("finalization_engine", ROOT / "scr
 engine = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(engine)
 from src.utils.quick_scan_owner_research import OwnerResearchServices
+from iqs_company_agent_lab.evidence import EvidenceBoard
 
 
 class MapperOnlyServices(OwnerResearchServices):
@@ -81,7 +82,9 @@ def answer(q):
 def bound(monkeypatch):
     task = SimpleNamespace(question_ids=["IQS_05", "IQS_06"], raw={"run_id": "synthetic-finalize"})
     run = {"run_id": task.raw["run_id"], "slots": [{"question_id": q, "execution_status": "completed", "answer": answer(q), "attempt_refs": ["stockqa:native_" + q]} for q in task.question_ids]}
-    monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: copy.deepcopy(run))
+    monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: (copy.deepcopy(run), EvidenceBoard(2000)))
+    # Glue-only double; the dedicated semantic suite exercises the original rule.
+    monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: lambda body, qid: None)
     return task, MapperOnlyServices(task), run
 
 
@@ -114,7 +117,7 @@ def test_finalizer_preflights_all_slots_before_any_native_save(bound, monkeypatc
         run["slots"][1]["answer"]["summary"] = "changed after native output"
     else:
         run["slots"][1]["execution_status"] = "not_attempted"
-    monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: copy.deepcopy(run))
+    monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: (copy.deepcopy(run), EvidenceBoard(2000)))
     with pytest.raises(engine.SharedEngineRejected):
         engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
     assert services.saves == []
@@ -172,3 +175,54 @@ def test_saved_checkpoints_with_failed_seal_do_not_claim_finalization_complete(b
     assert completed["status"] == "completed" and completed["pending_delivery_question_ids"] == []
     assert completed["reused_question_ids"] == task.question_ids
     assert completed["new_model_http"] == 0 and services.saves == task.question_ids
+
+
+def test_native_bare_single_answer_preserves_all_fields():
+    body = answer("IQS_05")
+    engine._native_final_answer({"final_content": json.dumps(body), "tool_calls": None}, "IQS_05", body)
+
+
+@pytest.mark.parametrize("case", ["wrong_qid", "changed_field", "trailing_json", "duplicate_pack"])
+def test_native_bare_or_pack_rejects_conflicting_originals(case):
+    expected = answer("IQS_05")
+    body = copy.deepcopy(expected)
+    if case == "wrong_qid":
+        body["question_id"] = "IQS_06"
+    elif case == "changed_field":
+        body["summary"] = "different native field"
+    if case == "duplicate_pack":
+        content = json.dumps({"answers": [body, body], "declared_question_ids": ["IQS_05"]})
+    else:
+        content = json.dumps(body) + (" {}" if case == "trailing_json" else "")
+    with pytest.raises(engine.SharedEngineRejected):
+        engine._native_final_answer({"final_content": content, "tool_calls": None}, "IQS_05", expected)
+
+
+def test_native_answer_replays_original_citation_ids_without_mutating_inputs():
+    from iqs_company_agent_lab.answers import check_citation_closure
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+    body = dict(answer("IQS_05"), evidence=[{"id": "model-local-id", "url": "https://example.invalid/original"}],
+                metrics=[{"evidence_ids": ["model-local-id"]}], items=[{"evidence_ids": ["model-local-id"]}])
+    board = EvidenceBoard(2000)
+    board_before = copy.deepcopy(board.snapshot())
+    native_before = copy.deepcopy(body)
+    expected = copy.deepcopy(body)
+    check_citation_closure(expected, board, board.publication_exclusive_date)
+    engine._native_final_answer({"final_content": json.dumps(body), "tool_calls": None}, "IQS_05", expected, evidence_board=board)
+    assert body == native_before and board.snapshot() == board_before
+    for key in ("summary", "score"):
+        changed = copy.deepcopy(expected)
+        changed[key] = "modified" if key == "summary" else 9
+        with pytest.raises(engine.SharedEngineRejected):
+            engine._native_final_answer({"final_content": json.dumps(body), "tool_calls": None}, "IQS_05", changed, evidence_board=board)
+    wrong_id = copy.deepcopy(expected)
+    wrong_id["metrics"][0]["evidence_ids"] = ["foreign-id"]
+    with pytest.raises(engine.SharedEngineRejected):
+        engine._native_final_answer({"final_content": json.dumps(body), "tool_calls": None}, "IQS_05", wrong_id, evidence_board=board)
+
+
+def test_native_answer_rejects_unsupported_external_citation():
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+    body = dict(answer("IQS_05"), evidence=[{"id": "missing", "url": "http://example.invalid/not-https"}])
+    with pytest.raises(engine.SharedEngineRejected):
+        engine._native_final_answer({"final_content": json.dumps(body), "tool_calls": None}, "IQS_05", body, evidence_board=EvidenceBoard(2000))

@@ -106,6 +106,7 @@ def preflight(task, services, session_config):
         # budget history persist. Reusing a prior run's observer would mislabel
         # historical responses as newly sent requests in the new summary.
         raise SharedEngineRejected("fresh_owner_service_observer_required")
+    _production_answer_semantics(task, services)
     if services.client.provider_name != "mimo":
         raise SharedEngineRejected("native_one_shot_question_pack_requires_mimo")
     services.owner.check()
@@ -115,6 +116,56 @@ def preflight(task, services, session_config):
         max_output_tokens=config["max_output_tokens"],
     )
     return config
+
+
+def _frozen_answer_semantics(task, context):
+    """Use original question semantics with resource hashes frozen by StockQA."""
+    import sys
+
+    scripts = Path(__file__).resolve().parent
+    if str(scripts) not in sys.path:
+        sys.path.insert(0, str(scripts))
+    import standard_answers
+    import question_prompts
+
+    if (Path(standard_answers.__file__).resolve() != scripts / "standard_answers.py"
+        or Path(question_prompts.__file__).resolve() != scripts / "question_prompts.py"):
+        raise SharedEngineRejected("original_standard_answer_validator_required")
+    root = scripts.parent
+    schema = standard_answers.library.read_json(root / "schemas/answer-content.schema.json")
+    registry = standard_answers.library.read_json(root / "questions/metric-registry.json")
+    if (not isinstance(context, dict)
+        or context.get("answer_schema_sha256") != standard_answers.digest(schema)
+        or context.get("metric_registry_sha256") != standard_answers.digest(registry)):
+        raise SharedEngineRejected("frozen_answer_semantic_resource_unavailable")
+    questions = {row["question_id"]: copy.deepcopy(row["question"]) for row in task.questions}
+    if (len(questions) != len(task.questions)
+        or set(questions) != set(task.question_ids)
+        or any(question.get("id") != qid for qid, question in questions.items())):
+        raise SharedEngineRejected("original_semantic_question_contract_required")
+    cutoff = task.raw["information_cutoff"]
+
+    def validate_original(answer, question_id):
+        if question_id not in questions or answer.get("question_id") != question_id:
+            raise ValueError("original semantic question mismatch")
+        before = copy.deepcopy(answer)
+        standard_answers.validate_content(answer, questions[question_id], cutoff,
+                                          answer_schema=schema, metric_registry=registry)
+        if answer != before:
+            raise ValueError("original semantic validator changed answer")
+
+    validate_original.prompt_rules = tuple(question_prompts.typed_semantic_rules(q)
+                                            for q in questions.values())
+    return validate_original
+
+
+def _production_answer_semantics(task, services):
+    # Synthetic/old research entry points retain their historical default.
+    # Public production preflight already requires an original owner task.
+    if getattr(task, "company_doc", {}).get("origin") != "owner_public":
+        return None
+    lifecycle = getattr(services, "lifecycle", None)
+    return _frozen_answer_semantics(task, getattr(lifecycle, "_observation_context", None))
 
 
 def _write_atomic(path, payload):
@@ -318,6 +369,7 @@ def _execute_with_port(task, services, port, *, output, session_dir, transport_o
     session_dir = _new_session(session_dir, task)
     journal = _journal(session_dir, task.raw["run_id"])
     runner_ref = []
+    semantic_validator = _production_answer_semantics(task, services)
     runner = Runner(
         task,
         _pending_port(
@@ -325,6 +377,8 @@ def _execute_with_port(task, services, port, *, output, session_dir, transport_o
         ),
         journal=journal,
         execution_revision=2,
+        answer_semantic_validator=semantic_validator,
+        answer_semantic_rules=getattr(semantic_validator, "prompt_rules", ()),
     )
     runner_ref.append(runner)
     try:
@@ -483,6 +537,7 @@ def resume_shared_engine(
     )
     port = create_runtime_port(services, task=task, session_config=config)
     runner_ref = []
+    semantic_validator = _production_answer_semantics(task, services)
     runner = Runner.continue_from_checkpoint(
         task,
         _pending_port(
@@ -490,6 +545,8 @@ def resume_shared_engine(
         ),
         checkpoint,
         journal,
+        answer_semantic_validator=semantic_validator,
+        answer_semantic_rules=getattr(semantic_validator, "prompt_rules", ()),
     )
     runner_ref.append(runner)
     try:
@@ -603,6 +660,7 @@ def _scan_preflight(task, services, session_config):
         raise SharedEngineRejected("original_native_intent_lookup_required")
     if services.attempt_observations(transport_origin="scripted_wire"):
         raise SharedEngineRejected("fresh_owner_service_observer_required")
+    _production_answer_semantics(task, services)
     services.owner.check()
     # Original comparison approval is exact, not a pack-size upper bound.
     for pack in profile["packs"]:
@@ -661,12 +719,14 @@ def _verified_finalization_export(task, export_dir):
     summary = read_runtime_summary(export_dir, run, raw)
     if summary is None or summary["input_manifest_sha256"] != input_manifest_sha256(task.raw):
         raise SharedEngineRejected("finalization_original_runtime_evidence_required")
-    return run
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+
+    return run, EvidenceBoard.from_snapshot(copy.deepcopy(checkpoint["state"]["board"]))
 
 
-def _native_final_answer(saved, question_id, expected_answer):
+def _native_final_answer(saved, question_id, expected_answer, *, evidence_board=None):
     """Match the completed slot to safe original output, never caller text."""
-    from iqs_company_agent_lab.answers import parse_answers_payload
+    from iqs_company_agent_lab.answers import AnswerRejection, check_citation_closure, parse_answers_payload
     from iqs_company_agent_lab.strictjson import loads
 
     payloads = []
@@ -674,7 +734,15 @@ def _native_final_answer(saved, question_id, expected_answer):
         try:
             payloads.append(parse_answers_payload(saved["final_content"]))
         except (ValueError, TypeError, KeyError):
-            pass
+            # Runner supports a bare single-answer carrier. Require an entire
+            # strict JSON value here; raw_decode would permit trailing text.
+            try:
+                bare = loads(saved["final_content"])
+            except (ValueError, TypeError, KeyError):
+                bare = None
+            if (isinstance(bare, dict) and "answers" not in bare
+                and bare.get("question_id") == question_id):
+                payloads.append(dict(answers=[bare]))
     for call in saved.get("tool_calls") or []:
         if call.get("name") == "submit_answers":
             arguments = call.get("arguments")
@@ -688,7 +756,19 @@ def _native_final_answer(saved, question_id, expected_answer):
             for answer in payload["answers"]
             if isinstance(answer, dict) and answer.get("question_id") == question_id
         )
-    if len(matches) != 1 or matches[0] != expected_answer:
+    if len(matches) != 1:
+        raise SharedEngineRejected("finalization_answer_differs_from_original_native_output")
+    original = copy.deepcopy(matches[0])
+    if evidence_board is not None:
+        # Runner validates citations in-place before committing a slot. Replay
+        # its original rule against the byte-verified historical board, never a
+        # caller board, and do not mutate native output/checkpoint/slot objects.
+        board = copy.deepcopy(evidence_board)
+        try:
+            check_citation_closure(original, board, board.publication_exclusive_date)
+        except (AnswerRejection, ValueError, TypeError, KeyError) as error:
+            raise SharedEngineRejected("finalization_original_citation_validation_failed") from error
+    if original != expected_answer:
         raise SharedEngineRejected("finalization_answer_differs_from_original_native_output")
 
 
@@ -711,12 +791,22 @@ def finalize_shared_engine(task, services, export_dir):
     if not isinstance(services, OwnerResearchServices) or services.task is not task:
         raise SharedEngineRejected("original_owner_research_services_required")
     services._assert_registered_inputs()
-    run = _verified_finalization_export(task, export_dir)
+    semantic_validator = _production_answer_semantics(task, services)
+    if semantic_validator is None:
+        raise SharedEngineRejected("original_production_answer_semantics_required")
+    run, evidence_board = _verified_finalization_export(task, export_dir)
     if any(row["execution_status"] != "completed" or row.get("answer") is None for row in run["slots"]):
         raise SharedEngineRejected("finalization_all_original_slots_must_be_completed")
     plan = []
     for slot in run["slots"]:
         qid, body = slot["question_id"], slot["answer"]
+        try:
+            probe = copy.deepcopy(body)
+            semantic_validator(probe, qid)
+            if probe != body:
+                raise ValueError("original semantic validator changed answer")
+        except Exception as error:
+            raise SharedEngineRejected("finalization_standard_answer_contract_requires_repair") from error
         entry = services.owner.entries.get(qid)
         if not isinstance(entry, dict) or entry.get("kind") != "work":
             raise SharedEngineRejected("finalization_original_work_member_required")
@@ -730,7 +820,7 @@ def finalize_shared_engine(task, services, export_dir):
             if not inspected.get("known") or not isinstance(saved, dict):
                 continue
             try:
-                _native_final_answer(saved, qid, body)
+                _native_final_answer(saved, qid, body, evidence_board=evidence_board)
             except SharedEngineRejected:
                 continue
             native = inspected["native_receipt"]

@@ -118,6 +118,21 @@ def standard_prompt(question, profile, contexts=None, resources=None):
                          ensure_ascii=False, separators=(',', ':')))
 
 
+def typed_semantic_rules(question):
+    """Explicit new-request rules; historical renderer fingerprints stay intact."""
+    kind = question.get('response_kind', 'score')
+    if kind == 'score':
+        return (f"[{question['id']}] response_kind=score；items=[]，不得输出事实关系行，"
+                '不得使用status=answered。scored时score为1至10整数；其余状态score=null。'
+                '解释、反证放summary/counterevidence，数值放metrics并绑定证据；'
+                'insufficient_evidence/not_applicable/search_unavailable时metrics=[]。')
+    if kind == 'fact':
+        return (f"[{question['id']}] response_kind=fact；score=null，不得使用status=scored；"
+                'answered必须有符合本题关系和条数限制、逐行绑定证据的items。'
+                '未知用insufficient_evidence，不能以空事实列表声称已回答。')
+    raise ValueError('unknown original question response kind')
+
+
 def render_screening_question(q, profile, contexts=None):
     """Render the explicit StockQA Q01-Q03 screening protocol, separate from legacy strict."""
     prompt = render_question(q, profile, contexts)
