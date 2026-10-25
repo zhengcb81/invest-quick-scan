@@ -1,0 +1,123 @@
+{
+  "reviewer": "/root/review_bank21",
+  "collected_at_utc": "2026-10-25T10:15:01.267757+00:00",
+  "scope": "read source, this-round log/config metadata only; no product execution, DB/API access, process mutations or paid calls",
+  "source_sha256": {
+    "iqs/route_store_handoff.py": "4e6f12aaeca883f85f4260c85d09ccb8d720d936494099e70361c805aa011b62",
+    "iqs/routing.py": "649b3e56af7628dd0d6390559624157091cc655eb6345d8c375e76fab1a7b5a3",
+    "iqs/module_registry.py": "5b5ce8dc3c41f096b282fdc640d7643033b09e068d2f6e116ffd8237af9895cd",
+    "iqs/module_contract.py": "d43c2b469f940cbf8453d61c86e34c90e6ffd7873fdbbec78ca0a81cefc36da6",
+    "iqs/question_manifest.py": "6ae88b4b8b767118c224fac63f7f0005bef89b64301845705feea3c99ae37744",
+    "iqs/question_selection.py": "a6a5fca0418ef19fc07f28b92ae71d752b6d0f291e21f74861610d77ab46bc3c",
+    "iqs/shared_company_task.py": "c4d92e998bff5cfc2f4523789570085eed3fc673c3879a6816c09678c2466452",
+    "iqs/shared_company_engine.py": "2c7f529303779b2f41bbcef589afe38c5581c3ca01c9db5acb24f57913cc4fbf",
+    "qa/quick_scan_refresh_execution.py": "4f5e3bdf141a29d141b56385ae8e9df69a378c2846f758e7a914a3253b2aa677",
+    "qa/quick_scan_refresh_admission.py": "4a38e64d8b185f98f83e2776503863c42a39a4ef26ce68846de7c98f930442b6",
+    "qa/quick_scan_refresh_consent.py": "b45fd64f59c0f30d558b98cd31e60ca070636b53680ed3f3d37ae13be2644a15",
+    "qa/quick_scan_owner_refresh.py": "3453441f8645f7d09d5a582fd59b126642152e8b684cc5510cca1b1519e1425f",
+    "qa/quick_scan_owner_research.py": "f81e87ad1b55e6d4e9e1f02ba5e0413103004e8710a7867c035f67e3bd658161",
+    "sw/quick_scan_refresh_owner_cli.py": "5b33b03a82ac13cdea9d24f8ad18d776dd2e0c9711fbbb2c30dfe4f84b196d15",
+    "sw/quick_scan_route_validation.py": "54882c9650cdbd714944789762d090b1c431005bd2941bb776f7abcff1a37c6e",
+    "sw/quick_scan_routes.py": "09ec99425a8998d2e9bf8d08d94d3fd68c155778deaa55bca638d858a3ff9be5",
+    "sw/quick_scan_refresh_preview.py": "ffbf7c45605fdaac05f17aac272021068eeedc5290b74968be894f68b65dc879",
+    "sw/quick_scan_refresh_delegation.py": "3ae5d27dc414d82ec4adc4c747f9a7a8502317193976e4da68963fc18e460779",
+    "sw/quick_scan_refresh_approval.py": "dcab56426289ab0d24591e28cb615ad395c7ad44c3653f3febcae63bc346e2d8",
+    "sw/quick_scan_subject_refresh.py": "a9c466637aa54ef9dac4cc10025ee7d0c9dfb47ea62ef855a11f7461ab5815d8",
+    "sw/quick_scan_subject_authority.py": "cb96c5a2a1118338539efbdeb72ce065e21523771e3ff65205e83df0471fb644",
+    "sw/quick_scan_module_refresh.py": "29d6b87b0b2fbec4b9a242652d478c27ddeabceb562cb056ac75dde625ecae48"
+  },
+  "observed_preflight": {
+    "elapsed_seconds": 116.17348650004715,
+    "model_http": 0,
+    "question_ids": [
+      "IQS_05"
+    ],
+    "search_http": 0,
+    "source_pins_sha256": "a04461bd157c1922716cf266060eaa4c7190f6ee31f1084554556d8c63c76f94",
+    "status": "passed"
+  },
+  "manifest_metadata": {
+    "manifest_question_count": 24,
+    "manifest_modules": 1,
+    "route_schema": "2.0.0",
+    "route_has_execution_receipt": false,
+    "router_version": "2.3.0"
+  },
+  "software_e2e_log": {
+    "artifact": "runs\\reconcile-production-2026-10-25\\engine-fix\\native-actual-finalization.xml",
+    "artifact_sha256": "b6ee1a7d728d5f92e912b25108b969a9400ce200f1ae4cf264a3ccfaca855514",
+    "suite_seconds": 648.869,
+    "case_seconds": 645.111,
+    "case_name": "test_explicit_finalization_uses_actual_external_context_and_original_owner_checkpoint[1.2.0]",
+    "failures": 0,
+    "errors": 0,
+    "failure_message_prefix": null,
+    "status": "passed",
+    "note": "Active owner overwrote this XML during the read-only investigation. Earlier first read showed 179.598 seconds/80-second install-delegation timeout; this record binds only the latest exact bytes."
+  },
+  "static_count_model": {
+    "is_observed_profile": false,
+    "execution_bundle_route_snapshot_calls": 4,
+    "full_package_loads_per_snapshot_no_receipt": 2,
+    "extra_full_package_loads_per_snapshot_with_receipt": 2,
+    "additional_full_package_load_in_manifest": 1,
+    "execution_bundle_full_package_load_lower_bound": 9,
+    "native_prepare_stockwiki_cli_calls": 4,
+    "delegated_permission_inspection_policy_cli_calls_normal_path": 9,
+    "note": "Counts derived by reading concrete normal-path call chains; actual instrumentation was not run. Optional histories, query batches, checks and concurrent changes can add work."
+  },
+  "observed_preflight_provenance": {
+    "observation_kind": "embedded JSON snapshot captured by this investigation before the original path was overwritten",
+    "original_mutable_path": "runs/r25-live/preflight.json",
+    "original_file_bytes_retained": false,
+    "proof_location": "metadata.json#/observed_preflight",
+    "not_current_path_payload": true
+  },
+  "preflight_observations": [
+    {
+      "label": "first_old_driver_observation",
+      "source_pins_sha256": "a04461bd157c1922716cf266060eaa4c7190f6ee31f1084554556d8c63c76f94",
+      "elapsed_seconds": 116.17348650004715,
+      "evidence_kind": "already_retained_embedded_snapshot",
+      "snapshot": {
+        "elapsed_seconds": 116.17348650004715,
+        "model_http": 0,
+        "question_ids": [
+          "IQS_05"
+        ],
+        "search_http": 0,
+        "source_pins_sha256": "a04461bd157c1922716cf266060eaa4c7190f6ee31f1084554556d8c63c76f94",
+        "status": "passed"
+      },
+      "captured_in_metadata_at": "2026-10-25T10:15:01.267757+00:00"
+    },
+    {
+      "label": "later_final_preflight_of_this_batch",
+      "source_pins_sha256": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+      "elapsed_seconds": 80.9808152000187,
+      "evidence_kind": "archived_exact_file_bytes",
+      "archive_path": "runs/r25-live/failed-pretransport-01/preflight.json",
+      "archive_raw_sha256": "2fc8e4f10191aab024629d64f26b911b7edc513bf03b474e8a6a0c55a846673a",
+      "snapshot": {
+        "elapsed_seconds": 80.9808152000187,
+        "model_http": 0,
+        "question_ids": [
+          "IQS_05"
+        ],
+        "search_http": 0,
+        "source_pins_sha256": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+        "status": "passed"
+      },
+      "observed_at_utc": "2026-10-25T10:28:21.218191+00:00"
+    }
+  ],
+  "preflight_correction": {
+    "updated_at_utc": "2026-10-25T10:28:21.218191+00:00",
+    "current_mutable_path": "runs/r25-live/preflight.json",
+    "current_raw_sha256": "2fc8e4f10191aab024629d64f26b911b7edc513bf03b474e8a6a0c55a846673a",
+    "current_equals_archived_final_bytes": true,
+    "performance_code_implemented": false,
+    "is_controlled_performance_comparison": false,
+    "conclusion": "Two different source pins; do not attribute elapsed reduction to this unimplemented static performance proposal."
+  }
+}

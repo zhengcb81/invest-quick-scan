@@ -1,0 +1,158 @@
+{
+  "protocol": "iqs.failed-cold-independent-review/1.0.0",
+  "reviewer": "/root/fix_bank21",
+  "reviewed_at": "2026-10-25T10:27:19.891934+00:00",
+  "status": "supported_local_pretransport_failure_and_wrapper_repair_reviewed",
+  "open_findings": [],
+  "can_auto_resend_or_reset": false,
+  "checks": {
+    "archived_original_bytes_integrity": true,
+    "old_driver_matches_cold_sourcepin": true,
+    "old_wrapper_post_only_no_dynamic_base": true,
+    "no_model_native_attempt_response_checkpoint": true,
+    "local_attribute_error_with_no_http_status": true,
+    "unknown_reservation_preserved_at_review": true,
+    "no_observed_prepaid_charge_proof_or_terminal": true,
+    "read_only_db_unchanged": true,
+    "repair_rebinds_sdk_module_only": true,
+    "repair_offline_xml_4_passed": true,
+    "cold_started_bound_to_exact_archived_pin_list": true
+  },
+  "original_driver_sha256": "f6607fb2afd6f3e5a4beec0759d7ef3baaf723bf7a152095b711b4e8fa717dbc",
+  "original_source_pins_sha256": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+  "archive_integrity": [
+    {
+      "archived": "runs\\r25-live\\failed-pretransport-01\\source-pins.json",
+      "expected_sha256": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+      "actual_sha256": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+      "passed": true
+    },
+    {
+      "archived": "runs\\r25-live\\failed-pretransport-01\\preflight.json",
+      "expected_sha256": "2fc8e4f10191aab024629d64f26b911b7edc513bf03b474e8a6a0c55a846673a",
+      "actual_sha256": "2fc8e4f10191aab024629d64f26b911b7edc513bf03b474e8a6a0c55a846673a",
+      "passed": true
+    },
+    {
+      "archived": "runs\\r25-live\\failed-pretransport-01\\cold-started.json",
+      "expected_sha256": "772ebd4f3e45a1f256917227b2ac355684c0689318fc11bcbfbc01d0ec769bae",
+      "actual_sha256": "772ebd4f3e45a1f256917227b2ac355684c0689318fc11bcbfbc01d0ec769bae",
+      "passed": true
+    },
+    {
+      "archived": "runs\\r25-live\\failed-pretransport-01\\run_live.py",
+      "expected_sha256": "f6607fb2afd6f3e5a4beec0759d7ef3baaf723bf7a152095b711b4e8fa717dbc",
+      "actual_sha256": "f6607fb2afd6f3e5a4beec0759d7ef3baaf723bf7a152095b711b4e8fa717dbc",
+      "passed": true
+    },
+    {
+      "archived": "runs\\r25-live\\failed-pretransport-01\\live-cold.stderr.log",
+      "expected_sha256": "541c3429bf27c3b8b8c583297cea567aa5a4c343576b48048e6c7f68b326a62a",
+      "actual_sha256": "541c3429bf27c3b8b8c583297cea567aa5a4c343576b48048e6c7f68b326a62a",
+      "passed": true
+    },
+    {
+      "archived": "runs\\r25-live\\failed-pretransport-01\\live-cold.stdout.log",
+      "expected_sha256": "591259895c750aedf02d5af9a05f909eee8bf5d5b63c2cb100c1ee192ce4c1ec",
+      "actual_sha256": "591259895c750aedf02d5af9a05f909eee8bf5d5b63c2cb100c1ee192ce4c1ec",
+      "passed": true
+    },
+    {
+      "archived": "runs\\r25-live\\failed-pretransport-01\\live-cold-exit.json",
+      "expected_sha256": "15dac3efbb2673f75a7490af0a7143b8db5acc4681a0e3dadb238beff38d779f",
+      "actual_sha256": "15dac3efbb2673f75a7490af0a7143b8db5acc4681a0e3dadb238beff38d779f",
+      "passed": true
+    }
+  ],
+  "new_driver_sha256": "52677dc2978dbf13f5b2335ba1d61e8c97c9baf1116c2f0aedc2707bada2f09a",
+  "wrapper_methods_at_failure": [
+    "__init__",
+    "post"
+  ],
+  "native_table_counts": {
+    "attempt": 0,
+    "quick_scan_attempt_response": 0,
+    "quick_scan_research_visible_output": 0,
+    "answer_checkpoint": 0,
+    "quick_scan_budget_attempt": 1,
+    "quick_scan_external_operation": 1,
+    "quick_scan_external_dispatch": 1,
+    "quick_scan_external_result": 1,
+    "quick_scan_quota_proof": 0,
+    "quick_scan_budget_terminal": 0
+  },
+  "search_receipts_at_review": [
+    {
+      "failure_type": "AttributeError",
+      "outcome": "unknown",
+      "durable_http_request_count": 1,
+      "http_status_code": null,
+      "dispatch_to_record_seconds": 0.009896278381347656
+    }
+  ],
+  "budget_rows_at_review": [
+    {
+      "status": "outcome_uncertain",
+      "in_flight": 1,
+      "reserved_cost_micros": 200000,
+      "actual_cost_micros": null,
+      "request_counted": 1
+    }
+  ],
+  "database_sha256_before_after": "6f44ece99ba99b828c5cc0c14e16e66c26b40ffa1185e7fa4e954ab28407bf39",
+  "causal_findings": [
+    "The old driver modified the globally shared HTTP manager, returning ObservedWire instances exposing only post().",
+    "The original external adapter consumes/records the durable dispatch permit and sets http_request_count=1 before resolving session.request(...).",
+    "ObservedWire has no request method or dynamic fallback; method lookup raises AttributeError before the original requests.Session request/post can be invoked.",
+    "The original session factory only creates and mounts a no-retry requests.Session; it does not send provider HTTP during construction.",
+    "The provider conservatively persists an unknown receipt. Its durable count is a preallocated dispatch observation, not proof that native HTTP was invoked.",
+    "The new observer rebinds the model SDK module variable to a facade and leaves the shared search manager/request method unchanged."
+  ],
+  "attribution": {
+    "failed_external_native_transport_invocations": 0,
+    "model_native_attempts": 0,
+    "bounded_zero_wire_attribution_is_causal_inference_not_packet_capture": true,
+    "actual_billed_cost_is_not_rewritten_by_reviewer": true,
+    "original_unknown_receipt_preserved": true,
+    "original_request_counter_preserved": true
+  },
+  "reconciliation_evidence": {
+    "supports_original_public_confirmed_not_sent_outcome": true,
+    "permitted_original_api": "QuickScanWorkStore.reconcile_budget_attempt",
+    "resolved_outcome_supported": "confirmed_not_sent",
+    "actual_cost_supported_for_that_outcome": 0,
+    "must_keep_original_operation_receipt_history": true,
+    "must_not_directly_update_sql_or_delete_reset_ledger": true,
+    "reconciliation_not_executed_by_reviewer": true
+  },
+  "wrapper_regression": {
+    "xml_sha256": "0a588f8961306b4848ab4ce0d87b10acd6349f15e3da0cd9cd74692e30536413",
+    "tests": 4,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 0.746,
+    "test_source_sha256": "fa34d527dbed55ea3e5c879dabe1e91f7abe4f30a5cbf29394d161d883a12ec8",
+    "tests_rerun_by_reviewer": false,
+    "separate_initial_environment_error_preserved": true,
+    "cleanup_record": {
+      "owned_temporary_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\wiretmp_sg9mzux2",
+      "removed": true,
+      "exit_code": 0
+    }
+  },
+  "prior_evidence": {
+    "pre_live_final_remains_historical_static_and_original_software_admission": true,
+    "not_relabelled_as_full_live_wrapper_path_test": true,
+    "draft_retained": "failed-cold-pretransport-draft.json",
+    "draft_note": "Initial diagnostic observed the concurrently repaired current driver and therefore withheld final attribution until archived cold bytes became available."
+  },
+  "read_only_reviewer": true,
+  "reviewer_api_calls": 0,
+  "limitations": [
+    "No packet capture or provider invoice was collected. Zero transport is a bounded inference from exact original source/method lookup and original persisted records.",
+    "This report supports only original public reconciliation of this failed local search adapter call; it grants no new lease, retry permission, automatic resend, new generation or ledger reset."
+  ],
+  "resolution_of": "failed-cold-pretransport-draft.json",
+  "resolution_note": "The initial needs_investigation draft is retained byte-for-byte. The archived cold driver, archived pin list, archived preflight and cold-started pin reference resolve the changed-current-driver mismatch; the repaired current driver is reviewed separately and is not asserted to be the failed run bytes.",
+  "cold_started_source_pin_binding": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b"
+}

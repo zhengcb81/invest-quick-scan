@@ -1,0 +1,280 @@
+{
+  "protocol": "iqs.pre-live-independent-review/1.0.0",
+  "reviewer": "/root/fix_bank21",
+  "reviewed_at": "2026-10-25T10:16:22.377219+00:00",
+  "status": "passed_for_bounded_cold",
+  "can_start_cold": true,
+  "open_findings": [],
+  "scope": {
+    "company": "宁德时代",
+    "question_ids": [
+      "IQS_05"
+    ],
+    "model": "mimo-v2.6-pro",
+    "thinking_enabled_required": true,
+    "search_provider": "deepseek_search",
+    "information_cutoff": "2026-10-18",
+    "production_ready_granted": false,
+    "financial_accuracy_assessed": false,
+    "whole_pool_scan_authorized_by_this_review": false
+  },
+  "checks": {
+    "source_pins_32": true,
+    "source_pins_unique": true,
+    "source_pins_all_actual_sha_match": true,
+    "preflight_same_pins_sha": true,
+    "preflight_passed_zero_http": true,
+    "manifest_raw_file_authority_search_match": true,
+    "manifest_content_canonical_authority_match": true,
+    "identity_file_authority_search_match": true,
+    "cutoff_consistent": true,
+    "singleton_question_consistent": true,
+    "composite_exact_original_projection": true,
+    "base_model_budget_dispatch_routes_preserved": true,
+    "rate_card_reference_valid": true,
+    "all_writable_deployment_paths_isolated": true,
+    "actual_software_e2e_xml_passed": true,
+    "actual_software_native_db_independently_passed": true,
+    "driver_independent_manifest_source": true
+  },
+  "source_pins_sha256": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+  "driver_sha256": "f6607fb2afd6f3e5a4beec0759d7ef3baaf723bf7a152095b711b4e8fa717dbc",
+  "source_pins": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\budget-policy.json",
+      "expected_sha256": "3906fdd4f2a534609eb65afbd7e1a57e755bf5e91261352aa1d42b6a60b13f83",
+      "actual_sha256": "3906fdd4f2a534609eb65afbd7e1a57e755bf5e91261352aa1d42b6a60b13f83",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\deployment.json",
+      "expected_sha256": "3084e5999cada40020f8aa7d209bbb39b61b875900bf75730d59e628854f0478",
+      "actual_sha256": "3084e5999cada40020f8aa7d209bbb39b61b875900bf75730d59e628854f0478",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\inputs\\subject_1a3d169c71015eac51f7666097c19cd30d0369899f30d3437a828be4b9553698\\authority.json",
+      "expected_sha256": "ffb3379835984a21590142d6e6b5d620a83fcd2a139f358e06ac912c7c976e55",
+      "actual_sha256": "ffb3379835984a21590142d6e6b5d620a83fcd2a139f358e06ac912c7c976e55",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\inputs\\subject_1a3d169c71015eac51f7666097c19cd30d0369899f30d3437a828be4b9553698\\identity.json",
+      "expected_sha256": "0f6c9ea119667fed7102b9d677730679d071779df7124471dd0975fc66096da3",
+      "actual_sha256": "0f6c9ea119667fed7102b9d677730679d071779df7124471dd0975fc66096da3",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\inputs\\subject_1a3d169c71015eac51f7666097c19cd30d0369899f30d3437a828be4b9553698\\manifest.json",
+      "expected_sha256": "ccdda12f89a631ecc113d2b5df4071c4e9e0f15570f8fb2ee49482abe591a8a9",
+      "actual_sha256": "ccdda12f89a631ecc113d2b5df4071c4e9e0f15570f8fb2ee49482abe591a8a9",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\inputs\\subject_1a3d169c71015eac51f7666097c19cd30d0369899f30d3437a828be4b9553698\\owner-config.json",
+      "expected_sha256": "d22ff95250daf4e4022453a512d4d5c9a43c94f7058812b13938f6a8aa0d1c81",
+      "actual_sha256": "d22ff95250daf4e4022453a512d4d5c9a43c94f7058812b13938f6a8aa0d1c81",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\inputs\\subject_1a3d169c71015eac51f7666097c19cd30d0369899f30d3437a828be4b9553698\\questions.json",
+      "expected_sha256": "2383d933fd5690f607ae172b6de3ddd8f5fb45f892d3c250e477ce1737dd8931",
+      "actual_sha256": "2383d933fd5690f607ae172b6de3ddd8f5fb45f892d3c250e477ce1737dd8931",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\model-budget-policy.json",
+      "expected_sha256": "38fa35c7f6b6fa515d470fb667d238c9d5cacebbf997a84e0718e2c7cf5785d5",
+      "actual_sha256": "38fa35c7f6b6fa515d470fb667d238c9d5cacebbf997a84e0718e2c7cf5785d5",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\rate-cards.json",
+      "expected_sha256": "86b77f3e73a85b49efc30897705d098d9259c14b0fe56d1aefc0c50ac84de3d2",
+      "actual_sha256": "86b77f3e73a85b49efc30897705d098d9259c14b0fe56d1aefc0c50ac84de3d2",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\run-config.json",
+      "expected_sha256": "348c852231f142abd5319b57b9978ae091552e3e0fd5fb4bfa0c5264df35bfd4",
+      "actual_sha256": "348c852231f142abd5319b57b9978ae091552e3e0fd5fb4bfa0c5264df35bfd4",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\search-policy.json",
+      "expected_sha256": "caebdd2e8c6d21954b81dd158336dde946fac9e74957bbc462af1906fb1c1e4c",
+      "actual_sha256": "caebdd2e8c6d21954b81dd158336dde946fac9e74957bbc462af1906fb1c1e4c",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\run_live.py",
+      "expected_sha256": "f6607fb2afd6f3e5a4beec0759d7ef3baaf723bf7a152095b711b4e8fa717dbc",
+      "actual_sha256": "f6607fb2afd6f3e5a4beec0759d7ef3baaf723bf7a152095b711b4e8fa717dbc",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_engine.py",
+      "expected_sha256": "2c7f529303779b2f41bbcef589afe38c5581c3ca01c9db5acb24f57913cc4fbf",
+      "actual_sha256": "2c7f529303779b2f41bbcef589afe38c5581c3ca01c9db5acb24f57913cc4fbf",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_task.py",
+      "expected_sha256": "c4d92e998bff5cfc2f4523789570085eed3fc673c3879a6816c09678c2466452",
+      "actual_sha256": "c4d92e998bff5cfc2f4523789570085eed3fc673c3879a6816c09678c2466452",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-agent-runtime-lab\\src\\iqs_agent_runtime_lab\\port.py",
+      "expected_sha256": "958dc9fd2c9fc84764b099e2da67fc620332ff7443e68bc89ba49f08f31ceb3f",
+      "actual_sha256": "958dc9fd2c9fc84764b099e2da67fc620332ff7443e68bc89ba49f08f31ceb3f",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-agent-runtime-lab\\src\\iqs_agent_runtime_lab\\receiptmap.py",
+      "expected_sha256": "77d44e3023078f07fa7c790e3930d3aaf3c9e15dcb0e7185c6519e10eca74234",
+      "actual_sha256": "77d44e3023078f07fa7c790e3930d3aaf3c9e15dcb0e7185c6519e10eca74234",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\answers.py",
+      "expected_sha256": "1fe1eb4465291100830a654e4ec04542012a1bc530a29bd021be2e7fbbec42f9",
+      "actual_sha256": "1fe1eb4465291100830a654e4ec04542012a1bc530a29bd021be2e7fbbec42f9",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\checkpoint.py",
+      "expected_sha256": "21c76e925d706247a8d7d5d008472539247dd931303768b720f6adf497bb097e",
+      "actual_sha256": "21c76e925d706247a8d7d5d008472539247dd931303768b720f6adf497bb097e",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\provenance.py",
+      "expected_sha256": "fe2eed7ba1da8a28037ebf560dca1b34ad72c38727a5e47eebfcdd64fe5ffeab",
+      "actual_sha256": "fe2eed7ba1da8a28037ebf560dca1b34ad72c38727a5e47eebfcdd64fe5ffeab",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\runner.py",
+      "expected_sha256": "41a1f0618c4df408572a980b8f88480d660ea4cc409b3966aa5425f926c5eec3",
+      "actual_sha256": "41a1f0618c4df408572a980b8f88480d660ea4cc409b3966aa5425f926c5eec3",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\scan_profile.py",
+      "expected_sha256": "79905f834b2db37849633950573b476d094551883b5da6fc13d92fedda558813",
+      "actual_sha256": "79905f834b2db37849633950573b476d094551883b5da6fc13d92fedda558813",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\config\\quick_scan_search_policy.py",
+      "expected_sha256": "3c6e54a0871a9a86735e4aa89d18669ee96ed8e6cefabe8d510df8be50a4c5f9",
+      "actual_sha256": "3c6e54a0871a9a86735e4aa89d18669ee96ed8e6cefabe8d510df8be50a4c5f9",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\providers\\llm_research_client.py",
+      "expected_sha256": "98dd595f41a822ff8c0e932f865be135972c2a59a0b02e13f8cb808c73ebfa01",
+      "actual_sha256": "98dd595f41a822ff8c0e932f865be135972c2a59a0b02e13f8cb808c73ebfa01",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\runners\\llm_runner.py",
+      "expected_sha256": "b5b9598b89c5eeddce22c515b68d0cd63e2a56711bdda2784a3a024b29a4ea9c",
+      "actual_sha256": "b5b9598b89c5eeddce22c515b68d0cd63e2a56711bdda2784a3a024b29a4ea9c",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_cost_resolver.py",
+      "expected_sha256": "b047762e7d16fc14beb7df36911c17c37c33b5ba685fb3187bf83c4039521033",
+      "actual_sha256": "b047762e7d16fc14beb7df36911c17c37c33b5ba685fb3187bf83c4039521033",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_external_context.py",
+      "expected_sha256": "3a3a8d7b384dfe468abcadc5111de765eb4bf5d906dc0622a099cb576b5112ff",
+      "actual_sha256": "3a3a8d7b384dfe468abcadc5111de765eb4bf5d906dc0622a099cb576b5112ff",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_external_journal.py",
+      "expected_sha256": "1830c1b7c0a5d07b3b2b5cf15977a1707c73f94cd03ea5238203f213f7455b79",
+      "actual_sha256": "1830c1b7c0a5d07b3b2b5cf15977a1707c73f94cd03ea5238203f213f7455b79",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_owner_research.py",
+      "expected_sha256": "f81e87ad1b55e6d4e9e1f02ba5e0413103004e8710a7867c035f67e3bd658161",
+      "actual_sha256": "f81e87ad1b55e6d4e9e1f02ba5e0413103004e8710a7867c035f67e3bd658161",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_refresh_admission.py",
+      "expected_sha256": "4a38e64d8b185f98f83e2776503863c42a39a4ef26ce68846de7c98f930442b6",
+      "actual_sha256": "4a38e64d8b185f98f83e2776503863c42a39a4ef26ce68846de7c98f930442b6",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_refresh_execution.py",
+      "expected_sha256": "4f5e3bdf141a29d141b56385ae8e9df69a378c2846f758e7a914a3253b2aa677",
+      "actual_sha256": "4f5e3bdf141a29d141b56385ae8e9df69a378c2846f758e7a914a3253b2aa677",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_store.py",
+      "expected_sha256": "5c3671b58f75ccf213b9ef5ff10808c97dfbaefd39eae6ea9731ef624a2f5dfd",
+      "actual_sha256": "5c3671b58f75ccf213b9ef5ff10808c97dfbaefd39eae6ea9731ef624a2f5dfd",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_transport.py",
+      "expected_sha256": "7eee1767a706f39f47796121ac7401d92c6c6e25dbe7a2dc814a3844d1089d5c",
+      "actual_sha256": "7eee1767a706f39f47796121ac7401d92c6c6e25dbe7a2dc814a3844d1089d5c",
+      "passed": true
+    }
+  ],
+  "manifest_binding": {
+    "raw_file_sha256": "ccdda12f89a631ecc113d2b5df4071c4e9e0f15570f8fb2ee49482abe591a8a9",
+    "canonical_content_sha256": "921b973d472c42da400d9af31c6ed24ff1632f1fb76c10311e5e66f6c162cbff",
+    "identity_snapshot_file_sha256": "0f6c9ea119667fed7102b9d677730679d071779df7124471dd0975fc66096da3"
+  },
+  "preflight": {
+    "elapsed_seconds": 80.9808152000187,
+    "model_http": 0,
+    "question_ids": [
+      "IQS_05"
+    ],
+    "search_http": 0,
+    "source_pins_sha256": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+    "status": "passed"
+  },
+  "software_e2e": {
+    "xml_sha256": "b6ee1a7d728d5f92e912b25108b969a9400ce200f1ae4cf264a3ccfaca855514",
+    "tests": 1,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "xml_seconds": 648.869,
+    "paid_api_calls": 0,
+    "scripted_model_posts": 1,
+    "scripted_search_requests": 1,
+    "native_db_independent_evidence_sha256": "7dc46d0921153083df193948f753985966a87685fe379f74a65702929d22c685"
+  },
+  "implementation_checks": {
+    "recover_removes_api_credentials_before_original_client_setup": true,
+    "recover_network_audit_forbids_connect_resolve_sendto": true,
+    "recover_requires_original_crash_pins_sha_and_existing_safe_response_proof": true,
+    "recovery_full_budget_response_external_operation_row_hashes_compared": true,
+    "repeated_finalization_requires_actual_ready_or_delivered": true,
+    "no_private_thinking_marker_in_16_software_exports": true
+  },
+  "read_only_reviewer": true,
+  "reviewer_model_search_http": 0,
+  "limitations": [
+    "This is permission to start this bounded cold experiment; no actual paid cold/recovery result is counted as passed yet.",
+    "Software E2E uses a synthetic issuer and scripted provider wire, not real financial correctness.",
+    "Official searched finalization is singleton only; native multi-question packs remain outside this positive.",
+    "Ready delivery means locally sealed, not a StockWiki delivered ACK.",
+    "Native billed invoice cost remains unknown; rate-card projection is not an invoice."
+  ]
+}

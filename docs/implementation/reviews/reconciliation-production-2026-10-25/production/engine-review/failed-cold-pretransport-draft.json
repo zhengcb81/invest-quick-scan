@@ -1,0 +1,81 @@
+{
+  "protocol": "iqs.failed-cold-independent-review/1.0.0",
+  "reviewer": "/root/fix_bank21",
+  "reviewed_at": "2026-10-25T10:24:17.691487+00:00",
+  "status": "needs_investigation",
+  "can_resume_or_resend_from_this_report": false,
+  "checks": {
+    "driver_is_exact_pre_live_reviewed_version": false,
+    "wrapper_has_post_but_no_request": true,
+    "wrapper_no_base_class_dynamic_fallback": true,
+    "native_model_attempts_responses_checkpoints_zero": true,
+    "one_search_attribute_error_unknown_no_http_status": true,
+    "unknown_budget_reservation_preserved": true,
+    "no_native_crash_success_proof": true,
+    "readonly_database_unchanged": true
+  },
+  "driver_sha256": "52677dc2978dbf13f5b2335ba1d61e8c97c9baf1116c2f0aedc2707bada2f09a",
+  "source_pin_sha256_at_cold": "39d92b881a890b99758ae8b7a4fcf7c8069fda1b5225911f461b6b6d26c5c80b",
+  "wrapper_method_names": [
+    "__init__",
+    "post"
+  ],
+  "table_counts": {
+    "attempt": 0,
+    "quick_scan_attempt_response": 0,
+    "quick_scan_research_visible_output": 0,
+    "answer_checkpoint": 0,
+    "quick_scan_budget_attempt": 1,
+    "quick_scan_external_operation": 1,
+    "quick_scan_external_dispatch": 1,
+    "quick_scan_external_result": 1
+  },
+  "search_receipt_observations": [
+    {
+      "failure_type": "AttributeError",
+      "outcome": "unknown",
+      "durable_http_request_count": 1,
+      "http_status_code": null,
+      "elapsed_between_dispatch_and_record_seconds": 0.009896278381347656
+    }
+  ],
+  "budget_rows": [
+    {
+      "status": "outcome_uncertain",
+      "in_flight": 1,
+      "reserved_cost_micros": 200000,
+      "actual_cost_micros": null
+    }
+  ],
+  "checkpoint_counters": {
+    "model_http": 0,
+    "search_protocol_http": 0,
+    "search_queries": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "database_sha256_before_after": "6f44ece99ba99b828c5cc0c14e16e66c26b40ffa1185e7fa4e954ab28407bf39",
+  "causal_chain": [
+    "ObservedWire is an object subclass exposing only __init__ and post.",
+    "The original external provider obtains this global metered session, consumes its durable permit, then attempts session.request(...).",
+    "Python method lookup raises AttributeError before the original native session request/post can be invoked.",
+    "The provider catches that local exception and conservatively persists an unknown receipt with http_request_count=1 set before method lookup.",
+    "Original metered session construction only creates/mounts a requests.Session with paid retries disabled; it does not issue a provider HTTP call."
+  ],
+  "qualification": {
+    "failed_external_native_transport_invocations": 0,
+    "native_model_http_evidence": 0,
+    "zero_transport_attribution_is_bounded_inference_not_a_socket_capture": true,
+    "durable_request_count_is_not_overwritten": true,
+    "actual_billed_cost_remains_unknown_in_original_ledger": true,
+    "reconciliation_must_use_original_owner_api_preserving_history": true,
+    "prior_pre_live_review_is_not_relabelled_a_full_driver_integration_test": true
+  },
+  "read_only": true,
+  "reviewer_api_calls": 0,
+  "limitations": [
+    "This attributes this adapter failure before native HTTP; no whole-process packet capture was made.",
+    "This report does not clear unknown state, release reserved capacity, authorize retry, reset a ledger, or declare invoice cost zero.",
+    "One initial diagnostic SELECT referenced a nonexistent budget outcome column; it was read-only, corrected to actual schema, and changed no database state."
+  ]
+}

@@ -4,9 +4,11 @@
 
 真实生产集成的两个根因不能由旧单元替身发现：普通问答的own-reservation标志会阻断research SDK singleton；base-only budget与检索时合成budget的policy_version会漂移。正确修法是显式区分预算scope，并在原admission前冻结composite、检索计算仍用base，不在已确认后偷换输入。另观察store的ACK身份是workspace-bound，隔离真实身份副本应新建空观察store，不能复制旧ACK冒充新环境。
 
-1. 根 PWF 已更新至 10/25；`handoff-for-new-agent.md` 顶部仍称 10/18 当前有效，且同文件对三包交付存在不同历史时点声明。应建立唯一当前入口，将旧条目标为历史。
-2. BASIC-21 的代码与实施报告已经落地，状态板列已验收，但 10/24 manifest 仍记未实施/未派发；修正前先确认 manifest 是否为冻结输入，不能破坏原审计 hash。
-3. BASIC-21 卡要求独立 G4 与所有者 G5。旧实施报告只列门名，尚未找到独立审查持久证据；本轮实际补做整包独审，标明当前受审代码和测试，不伪装成历史审查。
+### 开工发现及本轮处置（以下前三项已校正）
+
+1. handoff开工时仍称10/18当前有效；已建立唯一10/25当前入口，下方历史快照明确不作为当前Next Step。
+2. 10/24 manifest开工时仍记BASIC-21未实施/未派发；已据真实独审结果改为工程已验收并链接持久证据，不改历史签收/冻结内容。
+3. 旧实施报告未含可追溯独立G4证据；本轮已实际补做并持久归档初/复审、反例、源码/commit绑定。所有者G5未代签，不能据此重复索取已有工程授权。
 4. CATL 05/06 的恢复是真实但范围有限的成功：`new_model_http=0`、2/2 completed、1 次历史请求重放。费用 unknown 与未做金融准确性审查是明确边界。
 5. `owner_authority_verified=false` 需要核实源码语义。独立调查已指出 Company provenance 实现将其固定 False，属于观察器不能认证权限的能力边界；实际 work/lease/search checkpoint 是否成功需另查。不能根据这个字段推翻用户已给授权。
 6. 10/18 暂停旧 owner 路线应保留为历史事实；用户 10/25 最新明确要求恢复生产接线，当前 Next Step 必须反映这一方向。
@@ -3757,3 +3759,10 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 ## 2026-10-18 — 主线配套卡片完成发布审查
 
 选定版本兼容诊断、摘要字段保真、关系跨时点变化三个离线支撑工具；与总控引擎接线及已有工具职责分开。七文件/65条已提交输入对象经独立核验，四个发布发现已修复；每包独占新 Lab，无收费、密钥、生产库或股票池依赖。各卡均要求最终真实不同 agent 整包审查修尽后交接，不增 helper 审批节点。
+
+
+## 2026-10-25 — 实验观测器必须遵守原HTTP边界
+
+原模型SDK和外部搜索模块引用同一个http_client_manager对象。对对象的get_metered_sync_session就地赋值，会同时改变搜索客户端；模型使用post、搜索使用request。首次真实cold的观测wrapper缺request，原provider将本地AttributeError保守记为unknown（0.06秒），模型0attempt。根因修复是重绑定仅模型SDK模块的facade，保留搜索原对象和原request，不给搜索绕开原SDK。4项离线回归覆盖搜索透传、模型计数/保密、关闭思考或恢复时拒发、native异常不伪记成功。
+
+本地代码可证明pretransport失败，不等于可以修改原不可变检索receipt或删unknown。必须使用原公开reconcile带证据记录confirmed_not_sent，再通过原lease与新检索operation规则显式重试；原模型pending没有safe response时不能冒充缓存恢复。真实结果据实待验。

@@ -1,0 +1,63 @@
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 659, in dispatch_context
+    retrieved = retrieve_external_question_context(
+        self._store, handle["work_item_id"], handle["lease"], **runtime
+    )
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\utils\quick_scan_external_context.py", line 733, in retrieve_external_question_context
+    if _eligible_priced_record(operation, policy, store._now()):
+       ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\utils\quick_scan_external_context.py", line 428, in _eligible_priced_record
+    raise ExternalRetrievalBlocked("external_search_unresolved")
+src.utils.quick_scan_external_context.ExternalRetrievalBlocked: external_search_unresolved
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\shared_company_engine.py", line 331, in _execute_with_port
+    runner.run()
+    ~~~~~~~~~~^^
+  File "C:\Users\郑曾波\Projects\iqs-company-agent-lab\src\iqs_company_agent_lab\runner.py", line 487, in run
+    return self._run_loop()
+           ~~~~~~~~~~~~~~^^
+  File "C:\Users\郑曾波\Projects\iqs-company-agent-lab\src\iqs_company_agent_lab\runner.py", line 1426, in _run_loop
+    self._dispatch(intent)
+    ~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\郑曾波\Projects\iqs-company-agent-lab\src\iqs_company_agent_lab\runner.py", line 552, in _dispatch
+    self._dispatch_model(intent)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\郑曾波\Projects\iqs-company-agent-lab\src\iqs_company_agent_lab\runner.py", line 670, in _dispatch_model
+    receipt = self.port.model_step(request)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\shared_company_engine.py", line 227, in model_step
+    result = port.model_step(envelope)
+  File "C:\Users\郑曾波\Projects\iqs-agent-runtime-lab\src\iqs_agent_runtime_lab\port.py", line 359, in model_step
+    with self.services.generation_scope(envelope):
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Miniconda\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\utils\quick_scan_owner_research.py", line 358, in generation_scope
+    self.lifecycle.dispatch_context(handles[0], research_budget_managed=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 687, in dispatch_context
+    raise ProcessingError(message="external_retrieval_blocked:" + reason) from error
+src.core.exceptions.ProcessingError: [ProcessingError] external_retrieval_blocked:external_search_unresolved
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\run_live.py", line 260, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\run_live.py", line 216, in main
+    engine.execute_shared_engine(task, services, runtime, BASE / "unused-cold-export",
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        session_dir=BASE / "cold-session", transport_origin="stockqa_live")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\shared_company_engine.py", line 299, in execute_shared_engine
+    return _execute_with_port(
+        task,
+    ...<4 lines>...
+        transport_origin=transport_origin,
+    )
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\shared_company_engine.py", line 338, in _execute_with_port
+    raise SharedEngineInterrupted(session_dir) from exc
+shared_company_engine.SharedEngineInterrupted: shared engine interrupted; inspect original session before recovery

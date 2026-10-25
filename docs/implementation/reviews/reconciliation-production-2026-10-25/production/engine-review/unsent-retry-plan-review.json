@@ -1,0 +1,74 @@
+{
+  "protocol": "iqs.unsent-retry-plan-independent-review/1.0.0",
+  "reviewer": "/root/fix_bank21",
+  "reviewed_at": "2026-10-25T10:32:10.017856+00:00",
+  "status": "conditionally_supported_original_public_recovery_after_real_lease_expiry",
+  "open_findings": [],
+  "source_hashes": {
+    "store": {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_store.py",
+      "sha256": "5c3671b58f75ccf213b9ef5ff10808c97dfbaefd39eae6ea9731ef624a2f5dfd"
+    },
+    "owner_research": {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_owner_research.py",
+      "sha256": "f81e87ad1b55e6d4e9e1f02ba5e0413103004e8710a7867c035f67e3bd658161"
+    },
+    "external_journal": {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_external_journal.py",
+      "sha256": "1830c1b7c0a5d07b3b2b5cf15977a1707c73f94cd03ea5238203f213f7455b79"
+    },
+    "external_context": {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_external_context.py",
+      "sha256": "3a3a8d7b384dfe468abcadc5111de765eb4bf5d906dc0622a099cb576b5112ff"
+    },
+    "prepaid_quota": {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_prepaid_quota.py",
+      "sha256": "f8cf2f8bd2578922f422fd45cdf39515d4fec952c60b3b172719f7f4a3654d0e"
+    },
+    "task_factory": {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_task.py",
+      "sha256": "c4d92e998bff5cfc2f4523789570085eed3fc673c3879a6816c09678c2466452"
+    },
+    "runner": {
+      "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\runners\\llm_runner.py",
+      "sha256": "b5b9598b89c5eeddce22c515b68d0cd63e2a56711bdda2784a3a024b29a4ea9c"
+    },
+    "author_plan": {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\pretransport-retry-plan.md",
+      "sha256": "37d22618fad966bbcbf93f8efea2685461cfe28727eee6f6953d94027fe44910"
+    }
+  },
+  "original_registered_task_sha256": "a524cb5be41d06afb6ab25d4bd469aa1c8d24574fb0696b12f745823ef227657",
+  "facts": [
+    "Public QuickScanWorkStore AST enumeration has no immediate release/unclaim method for an unexpired active lease.",
+    "cancel_pending rejects leased work; recover_expired returns unchanged status before actual expiry.",
+    "resolve_known_response requires an original known native response, so it is not applicable to zero model attempts.",
+    "restore_finalization_handle requires an original successful response and restores only that original lease; it cannot restore unsent work.",
+    "reconcile_budget_attempt confirmed_not_sent requires cost zero, records an immutable terminal and changes original budget counters in its original transaction; it does not modify the immutable search operation/receipt.",
+    "Original external journal accounted() accepts a settled budget; _assert_no_unknown_scope also requires a non-unknown terminal when no prepaid proof exists.",
+    "External cache key includes the full plan and search-policy SHA. A separately recorded query_id revision changes operation/cache identity without deleting the prior unknown history.",
+    "Composite budget version basis is the model policy snapshot plus external route identity/kind/dispatch/pricing/metering. Query/query_id/search-policy file SHA and lease epoch are absent.",
+    "create_company_scan_task never reads lifecycle external retrieval or search-policy file; native group key includes entity/name/scope/perimeter and excludes lease token/epoch. Unchanged original owner/task inputs and generation therefore permit unchanged registered task SHA."
+  ],
+  "required_runtime_assertions": [
+    "Bind audit cost_source_ref to failed-cold-pretransport-resolved-review.json exact SHA, not invented provider evidence.",
+    "Do not delete or update old immutable search operation/dispatch/result/unknown receipt; retain original budget ledger and policy_id/version.",
+    "Wait for real wall time >= original lease_expires_at; re-read status, generation and model attempts before recover_expired.",
+    "If any native send intent/response/uncertain attempt appears, stop; do not force pending or use this plan.",
+    "After original public recover_expired returns pending, let original engine generation_scope/owner_batch_claim perform the only new claim; do not manually populate private handles.",
+    "Recompute retry composite and assert exact equality to original confirmed budget; assert original registered task SHA and owner inputs unchanged.",
+    "Preserve old source pins/cold session/history; new retry session and immutable retry pin list must separately bind fixed wrapper and query-policy revision.",
+    "No claim of cached model recovery before a new actual model response exists; subsequent cold/recover acceptance must examine original same-ledger rows and no-new-HTTP evidence."
+  ],
+  "not_executed_by_reviewer": [
+    "budget reconciliation",
+    "lease recovery or claim",
+    "driver retry",
+    "API call",
+    "new production seam"
+  ],
+  "limitations": [
+    "This is source-level review of the recorded retry plan, not evidence that runtime retry assertions have passed.",
+    "A query-id change without explicit original confirmed_not_sent reconciliation would remain unresolved and is not approved by this review."
+  ]
+}

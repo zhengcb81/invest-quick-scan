@@ -7,7 +7,9 @@
 - 主仓六文件200 passed/245 subtests；3项Windows深Temp环境失败仅短Temp重跑→3 passed/2 subtests（不合并冒称单次203通过）；UI134 tests，6既有skip；独立反例8/8；真实重构前baseline `d5ce8e7`与当前六组合输出字节SHA一致。明确自有临时根已清理。
 - 持久证据归档：`docs/implementation/reviews/reconciliation-production-2026-10-25/basic/`（审查者、初/复审、源SHA、原日志、兼容比较）；提交后另外绑定实际commit，不回写审查历史。G5未代签，不阻塞用户已授权的工程接线。
 
-### 生产接线的已定位问题（正在修复与验证）
+### 生产接线（源码/软件验证已通过；真实实验当前状态见下）
+
+当前：共享源码已提交23a05c8/8af0c86，实际软件scored正例通过。真实首cold因本地HTTP观察器缺request失败，model0；原账本已依据独审证据经公开API结算confirmed_not_sent，旧unknown原回执完整保留。同账本、同预算的retry-1准备中，等待原lease于10:48:06Z真实到期。真实回答及禁网缓存恢复尚未通过，不把软件正例替代它们。
 
 - 新增显式`finalize_shared_engine`复用原StockQA封存；恢复原有效lease由StockQA公开方法承载，主仓不直接伪造私有handle。checkpoint已写而delivery封包失败的中间态可按原答案幂等补封，pending不得显示completed。
 - 真正singleton外部检索E2E复现旧Q09 scope将普通预留标志带进research SDK，模型发送前被拒（0模型HTTP）；现按显式research预算scope修复，普通Q09默认守卫不变。不是删除预算验证。
@@ -16,8 +18,8 @@
 
 - 用户明确要求实际修正不一致并继续共享引擎生产接线、真实摘要和缓存恢复；已有授权覆盖后续实施、真实小样本与提交推送。
 - PWF resolver 无 selector、无命名计划，继续本根目录三文件；开工 `046df087`，产品树相对 `e2a99a3` 仅 PWF 差异。既有 tracked 改动为 `docs/implementation/parallel-lanes/packages/2026-10-10/README.md`，不归本轮。
-- 已启动实际不同 agent 的 BASIC-21 整包独审；重点为核心集合派生、历史可比性、跨仓一致性，输出限 `runs/reconcile-production-2026-10-25/basic-review/`。旧报告的「G4」文字不能替代本轮独审证据，G5 不代签。
-- 另一独立调查并行查当前共享引擎入口和 work/lease/checkpoint，避免把历史研究路径或固定能力声明误当成人类授权缺失。
+- 开工时启动的不同agent BASIC-21整包独审现已完成并复审通过，源码与证据已提交；G5不代签。
+- 开工并行调查已查清当前共享入口和work/lease/checkpoint；固定能力声明不代表人类授权缺失，实际接口修复与软件正例已完成。
 - 05/06 历史恢复证据确认 2/2、0 新 HTTP、1 次历史请求重放；本轮目标扩展为真实搜索/摘要及可验证恢复，而非重复该窄研究样例。
 
 ## 2026-10-25 — 全面清收：BASIC-BANK-EXPANSION-21 验收、vendor 刷新、UI 消费端补齐、open items 从 39 清到 23
@@ -5100,3 +5102,11 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 05/06包Git raw-byte兼容已实际修复：保留已发布锁6b8d7e88/968fc8a4不改SHA，仅对应两目录属性禁止换行转换、局部声明CR换行合法；autocrlf true/false六项实际检出与index/原件字节一致，6文件771786bytes已清。首轮diff将CR误报空白，局部属性修正后正常diff检查通过，不改全局配置/不跳hooks。详见operating-desk-acceptance-2026-10-16.md及runs/accept-05-2026-10-16/checkout-proof.json。
 
 05包整包闭环续记：第二独立审查实证CATL原A01有12例full validator拒绝但coverage/export仍发布，CSC双cutoff观察期/unknown费用两组仍漏；原修复者统一共享校验后复验，原Lab未写回。Desk167P/1S已冻结待复审。一次followup因4并发槽满未启动，已明确排队消息；Desk/金融一审结束释放后实际续行，未将排队冒报运行。金融reviewer-0已完成36/108匿名槽，重大命题待二审，其余72槽待评，整体结论null。
+
+
+## 2026-10-25 — 原软件正例通过；真实首试暴露实验观测器缺陷
+
+- 共享引擎29项、StockQA36项、原软件scored端到端1项通过（649.21秒）；正常commit hooks仅整理新测试import，该测试14项重跑通过。IQS源码提交23a05c8；StockQA8af0c86已推送原origin/master。
+- 真实r25-live最终预检80.98秒/模型搜索HTTP均0，32pins独审passed_for_bounded_cold。首次cold没有模型attempt或安全响应；搜索账本出现AttributeError/outcome unknown。根因是总控实验run_live.py修改了共享HTTP manager方法，但包装只实现post，原搜索需要request，未到原native transport。不是供应商拒绝，也不能把账本unknown自动清成0。
+- 保留首次driver、pins、预检、cold-started、退出码和stderr的原字节于runs/r25-live/failed-pretransport-01/。修正为仅重绑定模型SDK模块自己的manager facade，不修改搜索共享manager；4项离线反例通过，自有测试临时目录清理。首次4个环境setup error的XML另存，未计passed。
+- 当前正在核原公开budget reconciliation与lease/retry接口；同一账本保留原失败，不另开库重置限额。真实回答/缓存恢复仍未通过，先解决这次明确未发送的本地失败。
