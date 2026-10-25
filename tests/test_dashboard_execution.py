@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT/'scripts'))
 spec = importlib.util.spec_from_file_location("iqs_dashboard_execution_test", ROOT / "scripts/dashboard_execution.py")
 gateway_module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(gateway_module)
@@ -104,6 +105,30 @@ def test_first_policy_setup_is_editable_template_without_saving_or_enabling(depl
     assert result['needs_initial_policy'] is True and result['policy']['configured'] is False
     assert 'sentinel-do-not-return' not in json.dumps(result)
     assert path.read_bytes()==before
+
+
+def test_list_2000_task_references_does_not_run_2000_inspection_processes(tmp_path, monkeypatch):
+    gateway=ExecutionGateway({'state_root':str(tmp_path/'state')})
+    rows=[{'run_id':f'run-{index:032x}','bundle_id':f'b{index}', 'process_state':'process_exited',
+        'launcher_state':'running','started_at':f'{index:04}'} for index in range(2000)]
+    monkeypatch.setattr(gateway,'_records',lambda: [dict(row) for row in rows])
+    def no_inspect(*args,**kwargs):raise AssertionError('Readonly reference listing must not launch owner inspectors')
+    monkeypatch.setattr(gateway,'preview',no_inspect)
+    page=gateway.tasks(inspect_owner=False)
+    assert page['total']==2000 and len(page['tasks'])==50 and page['next_offset']==50
+    selected=gateway.tasks(run_ids=['run-'+f'{0:032x}'],inspect_owner=False)
+    assert len(selected['tasks'])==1 and selected['tasks'][0]['bundle_id']=='b0'
+    assert gateway.active_references()['tasks']==[]
+
+
+def test_stale_control_file_is_not_a_permanent_lock(deployment):
+    config, runtime, _ = deployment
+    state=Path(config['state_root']);state.mkdir()
+    (state/'start.lock').write_text('stale from previous process')
+    gateway=ExecutionGateway(config)
+    result=start(gateway)
+    wait_done(gateway,result['run']['run_id'])
+    assert (runtime/'calls.txt').read_text().splitlines()==['1']
 
 
 def test_unknown_persisted_process_cannot_resume_by_direct_post(deployment):
@@ -279,6 +304,24 @@ def test_bad_original_inspection_is_an_error_not_fabricated_empty_success(deploy
     with pytest.raises(DashboardExecutionError) as raised:
         ExecutionGateway(config).preview({"bundle_id": "test"})
     assert raised.value.code == "owner_transport_unavailable"
+
+
+def test_native_keyed_work_items_and_g2b_envelope_do_not_require_fixture_flat_shape(deployment,monkeypatch,tmp_path):
+    config,_,bundle=deployment
+    identity=Path(bundle['identity_snapshot'])
+    assert identity.is_relative_to(tmp_path)
+    put(identity,{'schema_version':'2.0.0','payload':{'entity_id':'ENT_TEST'}})
+    gateway=ExecutionGateway(config)
+    native={'protocol':'stockqa.refresh_inspection/1.0.0','reservation_created':False,'API_requests':0,
+        'quote':{'budget_available':False},'work_items':{'IQS_05':{'work_item_id':'WORK_original','status':'result_ready'}}}
+    monkeypatch.setattr(gateway,'_call',lambda *args,**kwargs:native)
+    preview=gateway.preview({'bundle_id':'test'})
+    assert preview['readonly_recovery'] is True and preview['inspection'] is native
+    assert preview['inspection']['work_items']=={'IQS_05':{'work_item_id':'WORK_original','status':'result_ready'}}
+    put(identity,{'entity_id':'ENT_FOREIGN','payload':{'entity_id':'ENT_TEST'}})
+    assert 'identity_entity_mismatch' in gateway.preview({'bundle_id':'test'})['missing']
+    with pytest.raises(DashboardExecutionError):
+        ExecutionGateway.inspection_work_items({'work_items':{'IQS_05':{'question_id':'IQS_foreign'}}})
 
 
 def test_corrupt_launch_reference_cannot_turn_into_new_start(deployment):

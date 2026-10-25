@@ -1,0 +1,450 @@
+{
+  "review_schema_version": "1.0.0",
+  "reviewer_task": "/root/review_product_u6",
+  "independent_agent": true,
+  "implementer_tasks": [
+    "/root",
+    "/root/ui_pool_prepare28",
+    "/root/ui_batch_control28"
+  ],
+  "status": "passed",
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "U6-SOURCE-P2-01",
+      "priority": "P2",
+      "problem": "Nullable-anchor snapshot serializer accepted invalid/unknown/expired subject memberships",
+      "resolution": "Original validate_subject now runs before snapshot hashing, preserving original anchor error priority",
+      "evidence": [
+        "snapshot-negative-probe-before-fix.json",
+        "snapshot-negative-probe.json",
+        "stockwiki-native-fixed.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-SOURCE-ORDER-01",
+      "priority": "P1",
+      "problem": "Original permission recheck rejected the same complete item set in a different order",
+      "resolution": "Canonical sort of deep-copied full subject_ref/field_id/question_id items; no deduplication, original records/hashes unchanged",
+      "evidence": [
+        "permission-order-short-invocation.json",
+        "sw-order-format-final-invocation.json",
+        "cross-qa-wire-final-invocation.json"
+      ]
+    },
+    {
+      "id": "U6-ROOT-01",
+      "priority": "P2",
+      "problem": "Cross-session abandon could be overwritten by completed registration callback",
+      "resolution": "Nonblocking shared kernel claim held through callback/final write; no blocking lock inversion; latest state preserved on errors",
+      "evidence": [
+        "root-independent-probes-before-fix.json",
+        "root-independent-probes-after-fix.json",
+        "root-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-ROOT-02",
+      "priority": "P2",
+      "problem": "Concurrent service configuration CAS could lose prepared registrations",
+      "resolution": "Shared kernel CAS guard and append-only registration preserving original execution object/process references",
+      "evidence": [
+        "root-independent-probes-after-fix.json",
+        "root-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-ROOT-03",
+      "priority": "P1",
+      "problem": "Product batch preview/start called native owner inspection 2*N times before dispatch",
+      "resolution": "Public product registration_preview/start uses local frozen registration hashes; original native preflight remains just-in-time before each dispatch",
+      "evidence": [
+        "root-independent-probes-before-fix.json",
+        "root-independent-probes-after-fix.json",
+        "root-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-ROOT-04",
+      "priority": "P1",
+      "problem": "Batch list/get waited on long worker native I/O mutex",
+      "resolution": "Read-only GET/list projects atomically saved metadata without the worker mutation lock",
+      "evidence": [
+        "root-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-ROOT-05",
+      "priority": "P1",
+      "problem": "Metadata-only task list omitted the UI action needed to inspect and resume an original run",
+      "resolution": "Per-run original inspection uses actual run_id and original allowed actions; unknown outcomes are not resent",
+      "evidence": [
+        "ui-final.junit.xml",
+        "root-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-ROOT-06",
+      "priority": "P1",
+      "problem": "Synchronous per-question delivery blocked global UI service operations",
+      "resolution": "Thin asynchronous DeliveryJobs runs native export/receiver/bind/import/exactACK outside the global Service lock; explicit partial/restart recovery",
+      "evidence": [
+        "root-final.junit.xml",
+        "../real-full-delivery/result.json"
+      ]
+    },
+    {
+      "id": "U6-ROOT-07",
+      "priority": "P1",
+      "problem": "Whole-pool batch and delivery references exceeded their own persisted-record reader limits",
+      "resolution": "Thin inspection/outcome summaries, matched 16MiB reader/writer bound, oversize refusal before replacing prior record; tested 5000 scopes",
+      "evidence": [
+        "pool-record-size-probe.json",
+        "root-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-ROOT-08",
+      "priority": "P2",
+      "problem": "A same-session orphaned preparation could remain preparing without recovery actions",
+      "resolution": "No live-thread projection requires original inspection and explicit reconciliation without repeating apply",
+      "evidence": [
+        "root-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-ROOT-09",
+      "priority": "P1",
+      "problem": "Windows absolute-drive URL could escape the UI static root",
+      "resolution": "Strict decoding, drive/UNC/ADS/traversal/reparse/containment guards for GET/HEAD and SPA fallback; allowed app/generated/fixture roots remain accessible",
+      "evidence": [
+        "static-root-negative-probe.json",
+        "static-root-negative-after-fix.json",
+        "static-windows-alias-probe.json",
+        "ui-final.junit.xml"
+      ]
+    },
+    {
+      "id": "U6-PREPARE-TIME-01",
+      "priority": "P2",
+      "problem": "Answer cutoff midnight was incorrectly used as owner scope time, excluding fresh same-day receipts and historical answer cutoffs",
+      "resolution": "Server freezes full UTC owner_snapshot_as_of; G2b/bootstrap preview/recheck/apply reuse it, while information_cutoff remains user-selected. Browser authority times rejected; unapplied legacy candidates require new preview before job submission",
+      "evidence": [
+        "prepare-utc-final-invocation.json",
+        "prepare-utc-final.junit.xml"
+      ]
+    }
+  ],
+  "review_scope": "Whole U6 large node: original StockWiki bootstrap/serializer/inspect/permission projection; StockQA actual single/pack prompt scope; IQS preparation/service/execution/jobs/locks/batches/delivery; product UI and static boundary",
+  "source_files_sha256": {
+    "invest-quick-scan/scripts/dashboard_service.py": "b77e4841157f3d5ee9ceab3f82977dca02691b9161b92c3484e23d5bddd9aa89",
+    "invest-quick-scan/scripts/dashboard_execution.py": "947cda7a1daa3f01e28e8e76bd1ca3626ce69d25ea5a4947730567cdee8fb3ca",
+    "invest-quick-scan/scripts/dashboard_jobs.py": "81c6b13c7a5781703f99194696602026d4c70c0ddb0a82ad4177d10a36aa9960",
+    "invest-quick-scan/scripts/dashboard_locks.py": "1e94f529c5db10423e221691a063c3aaeedf4c9d84bc67e64ba9264b7ca03f45",
+    "invest-quick-scan/scripts/dashboard_batches.py": "705a8e77b46005e307019fc69ca49dde2e4c1ee017e922680abc85f9dd766e47",
+    "invest-quick-scan/scripts/dashboard_delivery.py": "f24008ba6b37a1eb65c3a0b9910ea088a10d291e1abab5c722f077fe257c0c2b",
+    "invest-quick-scan/scripts/dashboard_delivery_jobs.py": "7e19e310ee306f5e46b3a3d8533b607e22e92b9a7be3854bf12f8be7fd29885a",
+    "invest-quick-scan/tests/test_dashboard_http.py": "f903251383a157f17c9f07c44f2a6d6ef15c8c8aa7b92348d1f304deee0ec761",
+    "invest-quick-scan/tests/test_dashboard_owner.py": "ee2376aaa9724cfb98263a0a04249f5720849e73ae259899c52646a215fbe419",
+    "invest-quick-scan/tests/test_dashboard_execution.py": "1e913904c32069e0b4e52d4fbd46b5f1b3c4fae5144ef1fa33527b96dcea1f4b",
+    "invest-quick-scan/tests/test_dashboard_jobs.py": "76025fb9fbc28b572177c827532a64efa6a885b3bbcb1d8ff6b11fcbf5f667b3",
+    "invest-quick-scan/tests/test_dashboard_batches.py": "f2d3302c553bc868254938b43c95071987b2d5847249c9ac0b199021499697df",
+    "invest-quick-scan/tests/test_dashboard_product_prepare_api.py": "16e3546a7c1b709ffa12ce8480327f0c5667ffef7097e5e90a1dda8570b4b7a2",
+    "invest-quick-scan/tests/test_dashboard_delivery.py": "6fb348087804958cb3d4a6eb8255ef69b39b2f5c3269e8d1c92302430eaceea3",
+    "invest-quick-scan/tests/test_dashboard_delivery_jobs.py": "ee4521d3c376865bb8b70311d95cd00d8f87fbad1bbaebffe87fccfed029b77d",
+    "iqs-question-bank-ui-lab/scripts/serve.py": "a7f2cce3ea48e2998b0f99cc454f272e27264d01f986299117a5efed25adeea5",
+    "iqs-question-bank-ui-lab/src/app/ui/product.js": "cec9047f7341f2aa736c7f27265e166c535158866d89d25cde484ad1db37dbf0",
+    "iqs-question-bank-ui-lab/src/app/ui/product_core.js": "85a2d142742c3c8c8ace8b898e5cc486d109d2e2ca720db524f3419316be811e",
+    "iqs-question-bank-ui-lab/tests/test_product_ui.py": "3d962b0a3ae37a570b3c4aa4bc7f8c5f86c0e8622e4707e14b256f43849af0a7",
+    "iqs-question-bank-ui-lab/tests/test_static_boundary.py": "a046d6673674514c70cd77e91e2d82ff09d02e963866cf7a9d18b1804878550e",
+    "StockQAbyLLM/src/providers/base_llm_provider.py": "e05744ab6e4192b44fb951e7043c55040df114849dd2ea61f542b4ea24d44876",
+    "StockQAbyLLM/src/runners/llm_runner.py": "7e42840d1bea607ccc416f2e95b3bb4bcadd9c7cb37c3132718d2785558a097f",
+    "StockQAbyLLM/tests/unit/test_analysis_subject_prompt_scope.py": "2b9ec688dab3773bd9e631834e008867817d6b1af11d9ceec6ecb089dd477d49",
+    "StockWiki/stockwiki/quick_scan_issuer_bootstrap.py": "ef9f1c00af9e27f67de1fa6e06a7c5d05c5eb46c4c57a52401ec73bce4003542",
+    "StockWiki/stockwiki/identity_snapshot.py": "70e32c4c3606a861e497c5a47ade661e7689bf4e578c052b3240c73c04ad82aa",
+    "StockWiki/stockwiki/quick_scan_refresh_owner_cli.py": "a66a1634d36746336a1b6afc7a16c87a0c7a264ba13333c1673006c3c765baa6",
+    "StockWiki/stockwiki/quick_scan_refresh_preview.py": "74e4aecb00355908a7ac44e724e46e40da02daf31521f380e5afd69f499a5b61",
+    "StockWiki/tests/test_quick_scan_issuer_bootstrap.py": "f317019eed9d8724dccc86b0c34eb19e5493f3295a39a8bf2fb39c20229c3eca",
+    "StockWiki/tests/test_identity_snapshot.py": "f602857213ed4112959681d043807eeaac62b3ff4058372d9e06dcd686e71f5c",
+    "StockWiki/tests/test_quick_scan_refresh_inspect_runtime.py": "f674460b84b17f852f07c5c7e0714eb4ae369e4c3b456bc01ba73ef7208d28bd",
+    "StockWiki/tests/test_refresh_permission_item_order.py": "8b46f71e8edf1727d4153b937b8b65ddbc891dfe8f0cddad86cf87ed43722fba",
+    "invest-quick-scan/scripts/dashboard_prepare.py": "67233fef94d2d0943b610844fdd2b2fc372393147235272ac1a411b654a9c51f",
+    "invest-quick-scan/tests/test_dashboard_prepare.py": "196485f04d40edb1f2d3081a9d5ee331267bca9cc73fbacdab60fae0b39e1ec3"
+  },
+  "source_file_count": 33,
+  "unexpected_source_changes_after_final_regressions": [],
+  "repo_heads_read_independently": {
+    "StockQAbyLLM": "7e8bf387c1f8b5b831ec3d9951cab79246d6fd4c",
+    "StockWiki": "7085ddcc4c27b41f1954496909a44a522addb925",
+    "iqs-question-bank-ui-lab": "cc382f3ddeab7de3f3f28bfb220078556a14d676",
+    "invest-quick-scan_baseline_before_U6_commit": "296fe5e04f76208fc0dc440073e9c2a022e8cc85"
+  },
+  "reviewed_root_working_tree_by_sha256": true,
+  "independent_tests": [
+    {
+      "label": "Final frozen root product node",
+      "passed": 154,
+      "skipped": 0,
+      "pytest_seconds": 122.26,
+      "evidence": "root-final-invocation.json",
+      "junit": "root-final.junit.xml"
+    },
+    {
+      "label": "Final UI Node ESM and actual loopback HTTP static boundaries",
+      "passed": 42,
+      "skipped": 1,
+      "skip_reason": "OS symlink creation privilege unavailable; other path/reparse/containment checks executed",
+      "pytest_seconds": 24.69,
+      "evidence": "ui-final-invocation.json",
+      "junit": "ui-final.junit.xml"
+    },
+    {
+      "label": "Final formatted QA actual request scope subset",
+      "passed": 6,
+      "skipped": 0,
+      "pytest_seconds": 0.96,
+      "evidence": "qa-format-final-invocation.json",
+      "junit": "qa-format-final.junit.xml"
+    },
+    {
+      "label": "Final formatted SW original permission ordering/multiset cases",
+      "passed": 7,
+      "skipped": 0,
+      "pytest_seconds": 1.52,
+      "evidence": "sw-order-format-final-invocation.json",
+      "junit": "sw-order-format-final.junit.xml"
+    },
+    {
+      "label": "Original SW-to-QA wire validators; earlier source-only import skips closed",
+      "passed": 10,
+      "skipped": 0,
+      "pytest_seconds": 11.17,
+      "evidence": "cross-qa-wire-final-invocation.json",
+      "junit": "cross-qa-wire-final.junit.xml"
+    },
+    {
+      "label": "Final frozen owner UTC / fresh verified receipt / historical answer cutoff / browser time rejection / legacy stale candidate",
+      "passed": 3,
+      "skipped": 0,
+      "pytest_seconds": 36.71,
+      "evidence": "prepare-utc-final-invocation.json",
+      "junit": "prepare-utc-final.junit.xml"
+    }
+  ],
+  "prior_broader_independent_regressions_not_additive": [
+    {
+      "label": "QA provider/async provider/runner/pack/native execution original subset before formatting",
+      "passed": 130,
+      "pytest_seconds": 99.99,
+      "evidence": "source-test-invocations.json"
+    },
+    {
+      "label": "SW original bootstrap/serializer/inspect after membership validation fix before formatting",
+      "passed": 59,
+      "pytest_seconds": 15.71,
+      "evidence": "source-test-invocations-fixed.json"
+    },
+    {
+      "label": "SW approval/delegation plus permission-order before formatting",
+      "passed": 47,
+      "skipped_at_that_invocation": 10,
+      "pytest_seconds": 21.0,
+      "evidence": "permission-order-short-invocation.json",
+      "skip_closure": "Final cross-qa-wire 10 cases executed with both original repositories on PYTHONPATH"
+    }
+  ],
+  "additional_independent_probes": [
+    "root-independent-probes-after-fix.json",
+    "kernel-process-death.json",
+    "static-root-negative-after-fix.json",
+    "static-windows-alias-probe.json"
+  ],
+  "format_binding": "independent-format-equivalence.json: previous reviewed QA bytes match candidates; final normal black/isort output AST equivalent ignoring only top-level import ordering. Necessary final QA/SW subsets rerun on current bytes.",
+  "implementer_native_and_browser_proofs": [
+    {
+      "path": "runs/dashboard-prepare28-native-stage-report.json",
+      "sha256": "760010dd7f19ac918eaaca3810f389cd9cd53648b4651562c6ff49456e72db1d",
+      "invoked_by": "implementer/main controller, report independently read by reviewer",
+      "report": {
+        "status": "passed",
+        "synthetic_engineering_only": true,
+        "financial_accuracy_proven": false,
+        "fixture_setup_seconds": 2.7653276000055484,
+        "bank_preview_seconds": 11.062934699992184,
+        "apply_seconds": 542.7375065999804,
+        "execution_previews": [
+          {
+            "scope": "entity",
+            "question_count": 33,
+            "can_start": true,
+            "readonly_recovery": false,
+            "preview_seconds": 1.3562337000039406
+          },
+          {
+            "scope": "security",
+            "question_count": 3,
+            "can_start": true,
+            "readonly_recovery": false,
+            "preview_seconds": 1.4046692000119947
+          }
+        ],
+        "API_requests": 0,
+        "work_ledger_unchanged_by_execution_preview": true,
+        "source_sha256": {
+          "scripts\\dashboard_prepare.py": "d8d5d5df031b605cb33c868ea15f40f0fa587e458bae481eaea3b68e859e594f",
+          "tests\\test_dashboard_prepare.py": "e8ffe580532216dae71d8158518c7f02935f1d3cc2b8e00f8dd9be46a1763dd6"
+        }
+      }
+    },
+    {
+      "path": "runs/dashboard-prepare28-bootstrap-stage-report.json",
+      "sha256": "f5b0d9f1a09b9ae628471188bbe473b057b06148173bd63fd0ae18427f995b3d",
+      "invoked_by": "implementer/main controller, report independently read by reviewer",
+      "report": {
+        "status": "passed",
+        "synthetic_engineering_only": true,
+        "financial_accuracy_proven": false,
+        "apply_seconds": 232.37564119999297,
+        "scope_question_counts": [
+          33,
+          3
+        ],
+        "completed_phases": "prepared",
+        "API_requests": 0,
+        "prepare_source_sha256": "9866e1e2314446529d897acb5f6eb462406279cd95cd9e34b8bfe7c9d42254aa"
+      }
+    },
+    {
+      "path": "runs/ui-product-u6-2026-10-25/real-full-delivery/result.json",
+      "sha256": "b7b59ea44d2370c30c389247780a05abebceb16c607965870aa32392e6adb468",
+      "invoked_by": "implementer/main controller, report independently read by reviewer",
+      "report": {
+        "status": "delivered",
+        "items": [
+          {
+            "bundle_id": "outbox-d626e8302b68a9afb12c4820f6def061904bb16f18ef0106",
+            "status": "imported",
+            "package_id": "pkg_542053228473d4fe16ff851c1274ebe8e470b372cfb68f29d70af1e40afdfded",
+            "ack_reconciliation": {
+              "status": "delivered",
+              "items": [
+                {
+                  "work_item_id": "WORK_0fff5c2e56774b9d9e461d1b2b922ff6",
+                  "observation_id": "obs_66cdb504ca84a86de90e66b2dfeb212e9ad38422cc18d57981c980ba033f2072",
+                  "state": "delivered"
+                }
+              ],
+              "API_requests": 0,
+              "network_calls": 0
+            }
+          }
+        ],
+        "API_requests": 0,
+        "exported": 1,
+        "identical_original_package_bytes": true,
+        "frozen_manifest_question_count": 24,
+        "release_file_sha256": "d02fc3c8aeb4c06b32e4c026e9cbf04917a896ade5366fcc2347a9a0012a1133",
+        "ledger_before_sha256": "54c094b61b6fe522a8d5d2deb6fbb7bb1d5e883c9fdba3e2533beabace627172",
+        "ledger_after_sha256": "54c094b61b6fe522a8d5d2deb6fbb7bb1d5e883c9fdba3e2533beabace627172",
+        "financial_accuracy_proven": false,
+        "release_semantics_identical_to_original_import": true
+      }
+    },
+    {
+      "path": "runs/ui-product-u6-2026-10-25/browser-check.json",
+      "sha256": "e070a56c0040e2b671285c300706c299eedb80331ed7d187d22419351c09b1c3",
+      "invoked_by": "implementer/main controller, report independently read by reviewer",
+      "report": {
+        "checked_at": "2026-10-25T18:44:38.184733+00:00",
+        "method": "actual CUA IAB tab 3 loopback UI",
+        "base_url": "http://127.0.0.1:8766/",
+        "checks": {
+          "dashboard": {
+            "companies": 214,
+            "score_modules": 48,
+            "score_questions": 222,
+            "fact_questions": 61,
+            "stockwiki": "connected",
+            "execution": "not configured / unavailable"
+          },
+          "universe": {
+            "public_owner_members_loaded": 214,
+            "active_universe": "UNI_IQS_APPROVED_214_20261025"
+          },
+          "operations": {
+            "company_selector": true,
+            "cutoff_and_mode": true,
+            "original_subject_and_security_selection": true,
+            "asynchronous_preparation_controls": true,
+            "whole_company_group_selection": true,
+            "batch_pause_resume_controls": true,
+            "asynchronous_delivery_controls": true,
+            "empty_execution_registry_honest": true
+          },
+          "bank_preview": {
+            "company": "Microsoft",
+            "basic_questions": 36,
+            "dupont": 7,
+            "porter": 5,
+            "can_apply": false,
+            "missing_deployment_not_bypassed": true
+          },
+          "results": {
+            "unfiltered_total": 214,
+            "search_catl_total": 1,
+            "real_observation_question": "IQS_05",
+            "actual_model": "mimo-v2.6-pro",
+            "score": 7,
+            "observed_at": "2026-10-25T13:48:51.441862Z",
+            "information_cutoff": "2026-10-18",
+            "question_version": "2.0.0",
+            "review_status": "review_pending",
+            "reason_and_source_links_visible": true,
+            "missing_summary_not_replaced_by_average": true
+          }
+        },
+        "screenshot": "dashboard.png",
+        "API_requests": 0,
+        "full_pool_scanned": false,
+        "financial_accuracy_proven": false,
+        "final_service_restarted_on_same_port": true,
+        "screenshots_local_only": [
+          "dashboard.png",
+          "dashboard-stats.png"
+        ],
+        "final_prepare_source_sha256": "67233fef94d2d0943b610844fdd2b2fc372393147235272ac1a411b654a9c51f"
+      }
+    }
+  ],
+  "slow_native_gate_source_binding": {
+    "existing_subject_36_original_native_source_sha256": "d8d5d5df031b605cb33c868ea15f40f0fa587e458bae481eaea3b68e859e594f",
+    "issuer_bootstrap_36_original_native_source_sha256": "9866e1e2314446529d897acb5f6eb462406279cd95cd9e34b8bfe7c9d42254aa",
+    "final_prepare_source_sha256": "67233fef94d2d0943b610844fdd2b2fc372393147235272ac1a411b654a9c51f",
+    "scope": "Slow full36 original route/capture/consent/admit gates ran before final diagnostics/time changes. Do not relabel them as a full36 rerun of final bytes. Final UTC change separately executes original fresh-today bootstrap/apply path and stops honestly before original route write; other final product regressions bind the final source hashes."
+  },
+  "cleanup_evidence": [
+    "source-cleanup.json",
+    "source-supplement-cleanup.json",
+    "final-test-cleanup.json",
+    "cross-qa-wire-cleanup.json",
+    "prepare-utc-cleanup.json"
+  ],
+  "reviewer_owned_runtime_directories_remaining": [],
+  "reviewer_owned_databases_remaining": [],
+  "reviewer_modified_source_or_PWF": false,
+  "reviewer_modified_production_database_or_universe": false,
+  "reviewer_paid_API_requests": 0,
+  "reviewer_external_network_requests": 0,
+  "loopback_HTTP_tests_executed": true,
+  "limitations": [
+    "Engineering acceptance only; no new financial accuracy qualification, production identity golden or full-pool answer coverage granted.",
+    "Synthetic isolated identity fixtures validate real original interfaces, not real-company identity correctness or financial facts.",
+    "Existing real CATL exact outbox replay preserves old24 manifest and original package bytes/work ledger, and is separate from new generic36 preparation; no new LLM request occurred.",
+    "Browser proof shows214 existing universe members,48 score modules/222 score questions/61 fact questions and one actual CATL observation. It does not mean214 companies have all been scanned.",
+    "Current default production prepare/execution configuration is empty/unavailable, honestly shown by UI. Bank preview can_apply=false until valid original deployment configuration and original budget/authority are configured. This review does not authorize silently inventing them.",
+    "Automatic preparation supports owner protocol1.0/1.1 only; more advanced owner policies must not be downgraded or existing budgets reset/enlarged.",
+    "No full36 live-model answer/financial acceptance was run as part of U6; prior slow gates are isolated engineering native admission gates.",
+    "One OS-privilege symlink test remains skipped. Initial deep Windows temporary path teardown errors and one reviewer path-separator assertion were test-harness/environment issues, retained as history; unchanged-source short-root/narrow reruns passed."
+  ],
+  "created_at": "2026-10-25T18:55:26.171134+00:00"
+}

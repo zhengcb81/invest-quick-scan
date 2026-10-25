@@ -104,3 +104,23 @@ def test_original_rejection_is_recorded_without_claiming_delivered(delivery):
     result=gateway.acknowledge_delivery(bundle,rejected)
     assert result['status']=='owner_rejected'
     assert {row['state'] for row in result['items']}=={'rejected'}
+
+
+def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(delivery, tmp_path):
+    import hashlib
+    from scripts.dashboard_delivery import _EXPORT
+    gateway,bundle,receipt=delivery
+    ledger=Path(bundle['work_store'])
+    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'work_ids':list(bundle['work_item_ids'].values())}
+    command=[sys.executable,'-B','-X','utf8','-c',_EXPORT,str(SOURCE),str(ledger)]
+    before=ledger.read_bytes()
+    response=gateway._call(command,SOURCE,tmp_path,input_value=request)
+    assert response['API_requests']==0 and len(response['items'])==2
+    for row in response['items']:
+        assert row['status']=='exportable'
+        assert hashlib.sha256(row['package_json'].encode('utf8')).hexdigest()==row['package_bytes_sha256']
+        assert row['work_item_id']==bundle['work_item_ids'][row['observation_id']]
+    assert ledger.read_bytes()==before
+    with pytest.raises(DashboardExecutionError):
+        gateway._call(command,SOURCE,tmp_path,input_value={**request,'entity_id':'ENT_FOREIGN'})
+    assert ledger.read_bytes()==before

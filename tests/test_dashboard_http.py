@@ -25,7 +25,7 @@ class Owner:
 class Execution:
     def __init__(self, config): self.config = config
     def status(self): return {'available': False, 'blocked_reasons': ['not_configured']}
-    def tasks(self): return {'tasks': [{'process_state': 'running', 'launcher_state': 'draining'}]}
+    def tasks(self, **kwargs): return {'tasks': [{'process_state': 'running', 'launcher_state': 'draining'}]}
 
 
 @pytest.fixture
@@ -127,12 +127,12 @@ def test_original_snapshot_is_bound_to_filters_and_config(product):
 
 def test_finished_process_allows_setup_and_unknown_process_blocks_even_on_first_access(tmp_path):
     class Finished(Execution):
-        def tasks(self): return {'tasks':[{'process_state':'process_exited','launcher_state':'running'}]}
+        def tasks(self, **kwargs): return {'tasks':[{'process_state':'process_exited','launcher_state':'running'}]}
     finished = DashboardService(tmp_path, owner_factory=Owner, execution_factory=Finished)
     body = {'config': finished.config, 'revision_sha256': hashlib.sha256(b'').hexdigest()}
     assert finished.dispatch('PUT','/api/product/setup',body)[0] == 200
     class Unknown(Execution):
-        def tasks(self): return {'tasks':[{'process_state':'needs_original_inspection'}]}
+        def tasks(self, **kwargs): return {'tasks':[{'process_state':'needs_original_inspection'}]}
     unknown = DashboardService(tmp_path, owner_factory=Owner, execution_factory=Unknown)
     assert unknown._execution is None
     body={'config':unknown.config,'revision_sha256':unknown._config_revision}
@@ -149,7 +149,7 @@ def test_import_reconciles_exact_receipt_and_declares_missing_mapping(tmp_path, 
             events.append('import')
             return {'status':'rejected_or_conflict','receipt':{'acks':[{'status':'rejected'}]}}
     class AckExecution(Execution):
-        def tasks(self): return {'tasks':[]}
+        def tasks(self, **kwargs): return {'tasks':[]}
         def bind_delivery_consumer(self, bundle, target, source):
             events.append('bind')
             assert target['store_id']=='independent-owner-store' and source.startswith('dashboard-owner-status:')

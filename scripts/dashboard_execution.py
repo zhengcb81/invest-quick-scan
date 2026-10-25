@@ -19,6 +19,11 @@ from datetime import datetime, timezone
 from contextlib import contextmanager
 import uuid
 
+try:
+    from .dashboard_locks import control_lock, ControlBusyError
+except ImportError:
+    from dashboard_locks import control_lock, ControlBusyError
+
 
 class DashboardExecutionError(ValueError):
     def __init__(self, code, message, status=400, details=None):
@@ -101,6 +106,7 @@ class ExecutionGateway:
             raise DashboardExecutionError("execution_config_invalid", "bundles必须是对象")
         self.state_root = Path(self.config.get("state_root", Path(__file__).resolve().parents[1] / "runs/dashboard-execution"))
         self._lock, self._processes, self._previews = threading.RLock(), {}, {}
+        self._owner_snapshots = {}
 
     def _select(self, payload, *, launching=False):
         if not isinstance(payload, dict) or set(payload) - ({"bundle_id", "entity_id", "preview_id"} if launching else {"bundle_id", "entity_id"}):
@@ -154,7 +160,11 @@ class ExecutionGateway:
                 missing.append("admission_config_invalid")
         if "identity_snapshot" not in missing:
             try:
-                if _read(bundle["identity_snapshot"]).get("entity_id") != bundle.get("entity_id"):
+                identity=_read(bundle['identity_snapshot'])
+                values=[identity.get('entity_id')]
+                if isinstance(identity.get('payload'),dict): values.append(identity['payload'].get('entity_id'))
+                values=[value for value in values if value is not None]
+                if not values or any(value!=bundle.get('entity_id') for value in values):
                     missing.append("identity_entity_mismatch")
             except (OSError, ValueError, TypeError, AttributeError):
                 missing.append("identity_invalid")
@@ -205,7 +215,8 @@ class ExecutionGateway:
         entries = []
         for key, bundle in self.bundles.items():
             _, _, _, missing = self._deployment(bundle)
-            entries.append({"bundle_id": key, "entity_id": bundle.get("entity_id"), "company": bundle.get("company"),
+            grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
+            entries.append({**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"), "company": bundle.get("company"),
                             "status": "needs_configuration" if missing else "configured_not_inspected", "missing": missing})
         return {"protocol": "iqs.dashboard_execution/1.0.0", "available": any(not entry['missing'] for entry in entries),
                 "configured": bool(entries), "bundles": entries, "registered_bundles": entries,
@@ -213,11 +224,33 @@ class ExecutionGateway:
                              "pause": True, "resume": True, "pause_scope": "company_boundary", "automatic_pool_dispatch": False},
                 "task_state_owner": "StockQAbyLLM", "API_requests": 0}
 
+    def bundle_registration(self, bundle_id):
+        """Read immutable local inputs without spawning an owner inspection."""
+        key, bundle = self._select({"bundle_id": bundle_id})
+        grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
+        return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"),
+                "bundle_fingerprint": self._fingerprint(bundle), "API_requests": 0}
+
+    @staticmethod
+    def inspection_work_items(inspection):
+        """Current native DTO is keyed by question ID; retain raw DTO for hashes."""
+        value=inspection.get('work_items')
+        if isinstance(value,dict):
+            if any(not isinstance(key,str) or not key or not isinstance(row,dict)
+                or row.get('question_id',key)!=key for key,row in value.items()):
+                raise DashboardExecutionError('owner_inspection_contract_invalid','原逐题检查映射无效。',409)
+            return [{**row,'question_id':key} for key,row in value.items()]
+        if isinstance(value,list) and all(isinstance(row,dict) for row in value):
+            return value  # Historical transport fixtures; never rewrite native bytes.
+        raise DashboardExecutionError('owner_inspection_contract_invalid','原执行检查缺少逐题映射。',409)
+
     def preview(self, payload):
         key, bundle = self._select(payload)
+        grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
         root, runtime, admission, missing = self._deployment(bundle)
         if missing:
-            return {"bundle_id": key, "entity_id": bundle.get("entity_id"), "status": "blocked", "missing": missing,
+            return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"), "status": "blocked", "missing": missing,
+                    "bundle_fingerprint": self._fingerprint(bundle),
                     "blocked_reasons": missing, "preview_id": None, "can_start": False, "API_requests": 0}
         command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8", "-m",
                    "src.utils.quick_scan_refresh_inspect_cli", "--ledger", admission["work_store"],
@@ -228,12 +261,10 @@ class ExecutionGateway:
         inspection = self._call(command, root, runtime)
         if (inspection.get("protocol") != "stockqa.refresh_inspection/" + bundle.get("inspection_schema_version", "1.0.0")
             or inspection.get("reservation_created") is not False
-            or not isinstance(inspection.get("quote"), dict)
-            or not isinstance(inspection.get("work_items"), list)
-            or any(not isinstance(row, dict) for row in inspection["work_items"])):
+            or not isinstance(inspection.get("quote"), dict)):
             raise DashboardExecutionError("owner_inspection_contract_invalid", "原执行器返回了不匹配的预览结构", 409)
         quote = inspection.get("quote", {})
-        work = inspection.get("work_items", [])
+        work = self.inspection_work_items(inspection)
         unknown = any(row.get("status") in {"uncertain", "leased"} for row in work)
         readonly = bool(work) and all(row.get("status") in {"result_ready", "delivered"} for row in work)
         ready = not unknown and (quote.get("budget_available") is True or readonly)
@@ -242,7 +273,8 @@ class ExecutionGateway:
         while len(self._previews) > 128:
             self._previews.pop(next(iter(self._previews)))
         blocked = [] if ready else ["owner_work_unknown" if unknown else "owner_budget_or_original_work_blocked"]
-        return {"bundle_id": key, "entity_id": bundle["entity_id"], "status": "ready" if ready else "blocked",
+        return {**grouping, "bundle_id": key, "entity_id": bundle["entity_id"], "status": "ready" if ready else "blocked",
+                "bundle_fingerprint": self._previews[preview_id]['bundle_fingerprint'],
                 "preview_id": preview_id, "inspection_sha256": _digest(inspection), "readonly_recovery": readonly,
                 "can_start": ready, "missing": [] if ready else ["owner_budget_or_original_work_blocked"],
                 "blocked_reasons": blocked, "inspection": inspection, "API_requests": 0, "database_writes": 0,
@@ -269,8 +301,24 @@ class ExecutionGateway:
                 raise DashboardExecutionError("process_reference_corrupt", "启动记录损坏；先核对原owner，不能按空任务重新派发", 409) from None
         return values
 
-    def tasks(self):
+    def active_references(self):
+        """Complete local safety check without inspecting every historical work item."""
+        return {'tasks': [row for row in self._records() if row['process_state'] in {
+            'running', 'starting', 'needs_original_inspection'}], 'API_requests': 0}
+
+    def tasks(self, *, bundle_ids=None, run_ids=None, inspect_owner=True, limit=50, offset=0):
+        if (type(limit) is not int or not 1 <= limit <= 2000 or type(offset) is not int or offset < 0
+            or any(value is not None and (not isinstance(value, list) or len(value) > 5000 or
+                any(not isinstance(item, str) for item in value)) for value in (bundle_ids, run_ids))):
+            raise DashboardExecutionError('task_query_invalid', '任务筛选或分页无效')
         values = self._records()
+        if bundle_ids is not None:
+            values = [row for row in values if row['bundle_id'] in bundle_ids]
+        if run_ids is not None:
+            values = [row for row in values if row['run_id'] in run_ids]
+        values.sort(key=lambda row: row.get('started_at', ''), reverse=True)
+        total = len(values)
+        values = values[offset:offset+limit]
         for value in values:
             if value["process_state"] in {"running", "starting"} and value["run_id"] not in self._processes:
                 value.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
@@ -279,7 +327,17 @@ class ExecutionGateway:
             if value.get("launcher_state") != "paused":
                 actions.append("pause")  # Stops future companies, never interrupts an HTTP.
             try:
-                preview = self.preview({"bundle_id": value["bundle_id"]})
+                if inspect_owner:
+                    preview = self.preview({"bundle_id": value["bundle_id"]})
+                    self._owner_snapshots[value['run_id']] = {'preview': preview, 'observed_at': _now()}
+                elif value['run_id'] in self._owner_snapshots:
+                    snapshot = self._owner_snapshots[value['run_id']]
+                    preview = snapshot['preview']
+                    value['inspection_observed_at'] = snapshot['observed_at']
+                    value['inspection_is_cached_projection'] = True
+                else:
+                    value.update(inspection_status='not_requested', allowed_actions=actions)
+                    continue
                 value["owner_preview"] = preview
                 value["inspection_status"] = "available"
                 original_process_unknown = value["process_state"] == "needs_original_inspection"
@@ -292,7 +350,8 @@ class ExecutionGateway:
             except DashboardExecutionError as error:
                 value.update(inspection_status="unavailable", inspection_error=error.code)
             value["allowed_actions"] = actions
-        return {"protocol": "iqs.dashboard_process_references/1.0.0", "tasks": values, "API_requests": 0}
+        return {"protocol": "iqs.dashboard_process_references/1.0.0", "tasks": values, 'total': total,
+                'offset': offset, 'limit': limit, 'next_offset': offset+limit if offset+limit < total else None, "API_requests": 0}
 
     def _command(self, bundle, root, output):
         command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8", str(root / "main_with_llm.py")]
@@ -313,13 +372,7 @@ class ExecutionGateway:
         key, bundle = self._select(payload, launching=True)
         with self._lock:
             self.state_root.mkdir(parents=True, exist_ok=True)
-            lock = self.state_root / "start.lock"
-            try:
-                descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            except FileExistsError:
-                raise DashboardExecutionError("launch_in_progress", "另一启动正在核对；请读取原任务状态", 409) from None
-            os.close(descriptor)
-            try:
+            with self._control_lock('start'):
                 prior = [row for row in self._records() if row["bundle_id"] == key]
                 if prior:
                     record = prior[-1]
@@ -361,8 +414,6 @@ class ExecutionGateway:
                 self._processes[run_id] = process
                 threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
                 return {"status": "started", "run": record, "process_started": True, "paid_dispatch_started": None}
-            finally:
-                lock.unlink(missing_ok=True)
 
     def _finish(self, process, path, record):
         secret_values = [value for key, value in os.environ.items() if re.search(r"KEY|TOKEN|SECRET|PASSWORD", key, re.I) and len(value) >= 8]
@@ -408,7 +459,9 @@ class ExecutionGateway:
                 raise DashboardExecutionError("run_unknown", "没有该启动记录", 404)
             record = records[0]
             if action == "inspect":
-                return {"run": record, "preview": self.preview({"bundle_id": record["bundle_id"]})}
+                preview = self.preview({"bundle_id": record["bundle_id"]})
+                self._owner_snapshots[run_id] = {'preview': preview, 'observed_at': _now()}
+                return {"run": record, "preview": preview}
             path = self.state_root / (run_id + ".json")
             if action == "pause":
                 state = "draining" if record["process_state"] in {"running", "starting"} else "paused"
@@ -456,16 +509,11 @@ class ExecutionGateway:
         if action == "inspect" or not self.state_root.is_dir():
             yield
             return
-        path = self.state_root / "start.lock"
         try:
-            descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        except FileExistsError:
-            raise DashboardExecutionError("launch_in_progress", "另一控制操作正在核对原任务", 409) from None
-        os.close(descriptor)
-        try:
-            yield
-        finally:
-            path.unlink(missing_ok=True)
+            with control_lock(self.state_root / 'start.lock'):
+                yield
+        except ControlBusyError:
+            raise DashboardExecutionError('launch_in_progress', '另一控制操作正在核对原任务', 409) from None
 
     def _settings_path(self):
         path = Path(self.config.get("model_policy_path", ""))
@@ -536,6 +584,13 @@ except Exception:
 '''
         return self._call([str(self.config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8', '-c', helper,
             str(root), str(ledger)], root, ledger.parent, input_value={'receipt': receipt, 'work_item_ids': mapping})
+
+    def export_delivery(self, payload):
+        try:
+            from .dashboard_delivery import export_deliveries
+        except ImportError:
+            from dashboard_delivery import export_deliveries
+        return export_deliveries(self, payload)
 
     def bind_delivery_consumer(self, bundle, target, source_ref):
         """Freeze the receiver from its independent public DTO BEFORE importing."""

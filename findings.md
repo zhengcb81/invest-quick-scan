@@ -1,3 +1,19 @@
+## 2026-10-25 — 信息截止日与主体快照时间必须分开
+
+最后独审发现issuer-only把信息截止日拼成UTC午夜，会误拒当天稍晚验证的原收据，也会把历史答案日期错误当成身份/主体回溯。根修冻结服务器当前完整UTC时刻至candidate；preview/apply/原bootstrap复用同值，信息cutoff只约束答案。旧未执行候选缺字段必须重预览，旧完成幂等不能被新字段破坏。真实today原收据/原bootstrap快链与历史cutoff、浏览器伪时间戳、旧候选反例已独立3P；该类时间口径不能只用昨日receipt fixture证明。
+
+U6独审已闭合；薄引用容量与OS锁、原map/envelope DTO、权限完整multiset排序和静态Windows路径均为实反例驱动修复。测试/运行边界、默认部署缺口与可操作使用入口已进入总README/PWF/交接，不把工程闭环当全股票池/金融准确性完成。
+
+## 2026-10-25 — U6全池操作的真实根因（当前）
+
+原36题首次全链暴露组合性缺口：planner按field_id排序，permissions_only按manifest排序，原权限比较误判scope变化；只在permission_projection排序完整items，不去重、不动原record/hash，原33+3准入已过。G2b身份和原inspect必须按envelope/map真实DTO接线，不能只用flat/list fake证明兼容。旧单题实验不能证明新模块全链。
+
+全池不能逐scope同步原CLI预检再持全站锁：本地编排只冻结字节，原准入在真正派发前核。元数据GET不能等长锁。异步交付同理，父引用只保scope摘要，ACK权威留原库；4000scope旧记录超过8MiB的实反例已根修，5000scope新约6.26MB/16MiB上限可回读。原委托/权限确认确耗时，36题apply实测约543秒，异步只能让UI响应，不能虚称原准备变快。
+
+首次缺AnalysisSubject需原合法scope bootstrap；法律发行人不等于无子公司/已核合并集团，OS principal须原SID/uid，不能信用户名环境。null anchor放行后还须原validate_subject完整引用/区间校验再签SHA。原PRE/store_id仍路径绑定，不能复制库伪造正例。新增214名单只改变成员，不新增/合并/升级身份。
+
+原静态serve的Windows绝对drive路径逃逸是真实文件边界漏洞，loopback/CSRF不能代替静态containment；GET与HEAD、编码/traversal/ADS/link/fallback必须一起守。原SDK hooks要求正常格式化/静态校验，不跳hook，source变化保留AST等价与新SHA。Windows深临时根超过MAX_PATH会误现准备500；短隔离根重跑并清理，不能删全局Temp或把它算模型失败。
+
 ## 2026-10-25 — 产品接线的真实边界
 
 原StockQA main_with_llm已有owner参数，应复用，不新增模型客户端。StockWiki W09公开读能力不能冒充C06；原/api/jobs不是快扫任务。PRE收据绑定原数据库绝对路径派生的store_id，复制工作区并非合法正例。原StockWiki公开API缺少只读全PRE预检，已补在SubjectBoundObservationStore内部复用原验证。实际已导入一条CATL旧manifest IQS_05；原StockQA消费者绑定仍需在接收前由独立ownerDTO建立，不能从ACK反向学习目标。前端须使用run_id、process_state/launcher_state、独立import登记及manual_pin等真实字段；空条件要省略而非[]；翻页要复用原snapshot，不能每页重排。

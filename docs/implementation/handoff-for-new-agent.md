@@ -1,3 +1,21 @@
+# 当前交接：U6工程已收口（2026-10-25；下方分隔线以后仅历史）
+
+用户全部跨仓、独审、提交推送授权持续有效，不重复询问。根README已含六步操作；启动`python scripts/open_dashboard.py`，当前root自有服务session37428/127.0.0.1:8766，旧8765服务不要动。UI源码同级iqs-question-bank-ui-lab；全部题面和214公司可浏览。默认本机prepare={}、模型顺序/新预算未配置，UI如实禁用执行，不代表214公司都已有分数。
+
+U6已交：任意既有唯一实体的动态题库与原主体/证券选择、后台原准入登记；完整公司组批协调、有限跨公司并发、scope边界暂停/显式恢复；逐run先inspect；异步原outbox→冻结release→独立消费者绑定→原导入/exactACK。薄job/批只存过程引用，原任务/预算/配额/缓存仍StockQA，身份/名单/观察/ACK仍StockWiki。GET不派发、不收费，无第二题目队列或模型客户端。
+
+首次scope已修成预览冻结服务器完整UTC，apply同值；信息cutoff独立，今天新收据及历史cutoff组合已过原bootstrap快链。旧已完成候选照常回放，旧未apply缺字段要求重新预览，不偷偷重签。自动准备只支持原owner policy1.0/1.1；1.2+在写原route前明确缺口，不降级。已登记高级原包仍走其原检查/控制。评分自动准备不冒称61道事实题自动采集。
+
+工程证据：最终独审review/final.json passed/open_findings=[]、33源码SHA；root154P、UI42P1OS权限skip、QA6P/SW7P、跨原SDK wire10P0skip、UTC最终独审3P36.71秒。日常fast1013条目145.423秒0失败/skip；各范围有重叠，不能求和。两慢原36题apply约543/232秒分别绑定当时SHA，不是最终字节全套或性能A/B。900/300秒有界等待保partial/unknown，绝不盲重做。深隔离根MAX_PATH首败与旧generic首败保留，不能伪归因或删失败。
+
+真实原CATL旧24题manifest一题复用package/exactACK为delivered、账本SHA54c094…不变、0HTTP；不重发耗尽r25六次cold。214认可既有实体通过原名单API接入UNI_IQS_APPROVED_214_20261025，209verified/5provisional身份摘要不变，无新增/合并/升级。实际浏览器原结果总214、CATL搜1条、原分/模型/时间/版本/证据可查。isolated_research、review_pending和金融缺口保持，工程ready/delivered不是金融资格。
+
+代码：StockQA7e8bf38已推origin/master；StockWiki7085ddc、UIcc382f3本地commit且无remote。IQS本轮commit/push查最终Git日志，不捏造其他远端。只精确stage本轮文件；保留他人10/10 README tracked改动和历史untracked，不stageconfig/真实DB/回答/context/源码副本/CodeGraph。原hooks不跳过。自有测试树已精确清，真实owner资料/旧失败保留。
+
+下一步：新合法原owner部署＋用户模型顺序＋新预算配置，然后UI明确启动少量公司并核全scope/原ACK再扩池。不能给旧r25扩额，不能为了使按钮变绿绕过高级协议或伪造身份。日常命令`python scripts/run_tests.py fast --temp-root C:/Temp`；受影响integration定向，大节点再跑native，别每个小改跑小时级全套。题库/使用/接口见README、company-and-bank-ui.md、dashboard-product-contract.md。薄归档docs/implementation/reviews/ui-product-u6-2026-10-25（integrity.json）；本地原证据runs/ui-product-u6-2026-10-25及dashboard-prepare28-*.xml/json。以下历史“当前/下一步”均不覆盖本节。
+
+---
+
 # 当前接手入口：工作台产品接线（2026-10-25；本节优先）
 
 最新用户指令是把使用方法写根README，继续UI产品化并补缺失功能；本轮保持已有全部跨仓、测试、审查、提交推送授权，不重复询问。根README和dashboard-product-contract.md为当前操作入口，根PWF U阶段为当前执行状态。下方“生产结果尚未接UI”已被本节实际交付取代，历史记录保留。

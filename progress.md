@@ -1,3 +1,24 @@
+## 2026-10-25 — U6工程收口与独审通过（当前）
+
+README六步操作、自动准备、完整公司组批跑、异步交付、原inspect后恢复、配置CAS/OS锁及静态Windows边界已交付。最终独立审查passed/open_findings=[]，最终33文件SHA已绑定；首次主体scope时间已从信息截止日午夜改为服务器完整UTC冻结，preview/apply复用，旧已完成回放、旧未执行需重新预览。最后独审3P36.71秒，未重跑慢全套。
+
+日常fast1013条目（641tests+372subtests）145.423秒，0失败/错误/跳过；最终整节点root154P122.26秒、UI42P/1个OS symlink权限skip、格式后QA6P/SW7P，原跨SW/QA wire缺口10项已双源实跑10P0skip。各范围重叠不相加。慢准入已有主体apply542.738秒、首次issuer-only232.376秒，各绑定当时SHA；最后UTC增量有原收据/原bootstrap快链，不冒称慢例在最终字节整套重跑。
+
+真实CATL新交付wrapper复用原旧24题manifest一题、精确package/release语义/exactACK，原work SHA前后相同、0新HTTP。用户认可214既有实体已进入原名单（209verified/5provisional不变），无身份新增/合并/升级。实际CUA读取214原名单与结果库，搜索CATL1条，原分数7/模型/时间/版本/理由/来源可见；最终服务重启后Microsoft基础36题完整。UI截图本地保留，薄归档不含回答/DB/context/密钥。
+
+StockQA7e8bf38已正常提交推送；StockWiki7085ddc、UIcc382f3本地提交，均无remote。UI serve.py原Git/工作树CRLF保持原字节，识别CRLF的空白检查通过，未改全局配置或跳hook。IQS提交/推送按本轮最终Git发布记录核实；其他writer的10/10 README与历史未跟踪材料不入提交。自有root16处和review/agent测试临时树已精确清理，真实原工作区/包/旧失败保留。
+
+当前部署尚缺prepare、新预算和用户模型顺序；自动准备仅原policy1.0/1.1，1.2+明确阻断，事实题面可查不等于已自动采集。工程完成不授金融准确性或全池评分；下一步在新合法原部署上小批UI扫描，不扩旧r25额度。证据归档docs/implementation/reviews/ui-product-u6-2026-10-25；PWF/使用说明已校正旧“固定包/尚未接线”的当前说法，历史记录保留。
+
+## 2026-10-25 — U6进行中：自动准备与公司层连续执行
+
+- U5已发主仓e42148b/296fe5e并保留本机8766可用台。当前不是全池完成；新U6变更尚未整节点审查，不套用旧40源码通过。
+- 新prepare分线复用原serializer、source-bound路由/C06 capture、原delegation confirm/admit，不从外层JSON造授权；新范围原budget/work ledger由真实部署提供，不扩大已用完r25。首次准备会写原route/capture/准入，已拆只写自有候选的bank preview与明确apply；预计30–120秒，root正加异步准备引用/只读reconcile，不在HTTP超时后自动重复。
+- 真SDK缺口已核：209 verified中多数无AnalysisSubject，5 provisional也不能原route执行。StockWiki新issuer-only正式bootstrap已47原fixture测试及实际209只读正/5拒绝，源三库SHA不变；scope仅法律发行主体选择，不能假称合并范围或用FY2025单例脚本造verified。原nullanchor reader错误已修，不弱化provisional挂牌归属。准备仍每次核原active identity receipt；题包/SDK prompt须显式消费issuer-only边界。
+- 组合实测又发现36基础题中估值题是security scope；不能旧单题IQS05全entity经验套全库。prepare按实际manifest分scope，以同一公司准备ID关联互补原确认/执行包；batch要求expected_scope_bindings动态集合齐备，不能只33题就报公司完成，跨市场/股类明确选择原security。题数不硬编码。
+- 新BatchGateway仅公司层引用/顺序/游标，真实问题/费用/缓存仍StockQA；默认并发1、跨服务器共享容量、pause只安全排空、unknown阻断、不把CLI退出当ready。首42纯fake测试过后，现追加多scope组用例中。批列表不调owner；原Execution任务页也补只读分页/按ID查询，2000历史不逐条启动2000inspect。首次运行误用尚未创建basetemp父目录36setup errors已明确留证，重跑36P/22.03秒。
+- root控制锁改内核释放，修复进程崩溃留下O_EXCL文件永久阻断；新增模块导入入口差异已修（包/文件两模式），关键定向复核进行中。只在U6大节点统一独审，不再逐helper设门。
+
 ## 2026-10-25 17:05Z — U5已发布，U6接续
 
 IQS e42148b已推origin/master；StockWiki7c68af4和UIa598cce均正常本地commit，但实查两仓无origin/remote，不配置猜测目的地，不能声称已推。40独审工作树SHA全部未变；Git36精确raw一致、4个既有CRLF/LF归一化仅换行，显式双哈希归档，不伪称40byte一致。发布证据在dashboard-product-2026-10-25/publication，历史26件清单保留。U5关闭（注册包范围）；U6继续任意实体原包自动准备与公司层连续批跑，已并行只读原API勘察和独占新batch协调/测试，root持有HTTP与UI。当前可用服务8766 session53324，原8765旧只读服务不动。
@@ -5224,3 +5245,8 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 - 13:51:22Z首禁网恢复被原Replay三哈希校验拒绝，0新增HTTP/0检查点；没有绕过守卫或修改safe。纯重构证实冷调用typed规则插入prefix、Replay却未插入，dynamic hash相同，补回原冻结规则后prefix精确相同。
 - 已保存修前60制品，完整清单SHA `716f03355f09a4a8fee0cb99df6f338bfe2e4da347b5d9a6007ff00abd901b12`；原72pins、冷driver/reporter/task/safe均不改。6源修复统一受信rules的构造/恢复/验签，集中63项通过（5.89秒），含完整typed execute→pending→resume及原report，删/改rule仍拒绝；独审正在整节点收口。
 - 新repair driver与只读reporter显式记录cold→修复后源码差异，`same_source_cold_and_warm_claim=false`。接下来仅禁网复用原safe，不重跑cold；累计原账本25023micros为公开价估算，账单unknown，6次计数请求已用完。
+## 2026-10-25 — U6收尾核实（当前）
+
+两条原36题完整准入已绿：复用主体apply542.738秒、首次issuer-only apply232.376秒；分别绑定报告中的源SHA，不作同条件性能A/B。最终独立测试root154P、UI20Node+22真实静态HTTP通过、1个OS symlink权限skip；格式后QA6P/SW7P，31文件测试前后SHA相同。根fast1013条目（641tests+372subtests）145.423秒、0失败/跳过；不再为小增量跑全套。
+
+实际CUA看到原名单214行、生产库总214、CATL搜索1条、原IQS_05分数7/MiMo Pro/时间/旧2.0版本/理由和来源；无结果公司保留未扫描。扫描任务有主体/证券选择、异步准备、完整组批跑和异步交付入口，空原部署如实禁用；截图与薄浏览证据在runs/ui-product-u6-2026-10-25。独审最后补fresh-today收据与冻结scope时间，不以信息cutoff午夜回溯；修复后仅窄范围复核。自有16处root测试/SDK候选临时树已精确清理，真实原工作区/原包/预算与其他writer材料保留。

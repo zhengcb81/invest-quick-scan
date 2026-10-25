@@ -1,6 +1,6 @@
 # 公司快扫工作台：部署与接口
 
-2026-10-25，产品API `1.0.0`，本机部署配置 `1.0.0`。此文为当前实现契约；不取代原StockWiki/StockQA校验。
+2026-10-25，产品API `1.0.0`（新增准备、编排与交付job接口），本机部署配置 `1.0.0`。此文为当前实现契约；不取代原StockWiki/StockQA校验。
 
 ## 运行与边界
 
@@ -43,8 +43,57 @@ import_bundles指向原package、release文件，可登记package_sha256、relea
 
 Host只允许当前端口127.0.0.1/localhost；Origin如存在须为本机同源；写请求需status提供的X-IQS-CSRF。拒绝跨站、重复JSON字段、NaN、超过1MiB或64层JSON。没有开放CORS、外网监听、任意shell或自动收费操作。
 
-## 当前未完成项
+## 自动准备与批量操作
+
+在本机连接JSON中设置`prepare`，路径均指向已由原owner部署好的文件；浏览器不上传任意脚本、身份收据、授权或预算。空`prepare`仍能预览题库，实际登记会列出缺项。示意值必须替换为真实部署引用：
+
+```json
+{
+  "prepare": {
+    "state_root": "runs/dashboard-preparation",
+    "admission_config": "runs/my-owner/deployment.json",
+    "runtime_dir": "../StockQAbyLLM",
+    "spend_authorization": "runs/my-owner/spend-authorization.json",
+    "producer": {"component_version": "实际版本", "build_id": "实际构建标识"},
+    "authorization_reference": "实际用户授权引用",
+    "agent": {
+      "profile_id": "已登记profile",
+      "profile_sha256": "真实profile的64位SHA256",
+      "harness_ref": "实际harness引用"
+    },
+    "pack_size": 1,
+    "thinking": true,
+    "max_output_tokens": 8192,
+    "worker_timeout_seconds": 900,
+    "native_timeout_seconds": 300,
+    "routing_profiles": {}
+  },
+  "batch": {"max_concurrency": 1}
+}
+```
+
+`admission_config`继续指向原StockQA work_store/budget_policy_file和原StockWiki工作区；它们必须已存在。准备器只派生每次准备独有的不可变输入目录，不创建第二预算或覆盖旧manifest。新原范围必须由原部署提供；不能给已耗尽的r25六次请求补额度。**自动准备当前支持原owner policy 1.0/1.1**；1.2及以上在预览中明确返回`native_prepare_owner_dialect_not_supported`，不先写原路由、不降级策略。已登记的高级原包仍走执行器对应的原1.2–1.5检查与控制，此能力不等于自动准备已支持它们。
+
+默认模块包采用已发布router2.5：所有公司基础36题，可信`routing_profiles`按实体登记`verified_facts`/`user_policy`后追加行业、阶段、属性模块。profile标签改名不使输入失效；真实事实或策略变化使旧预览失效。分类未知保留基础，不猜行业；本自动准备路径当前为评分题，61道信息题面和已存信息记录可查，但不能宣称信息题已自动采集。
+
+现有主体由原serializer读取；无主体时可明确选择原`standalone_issuer`初始化。此范围只表示法律发行主体，不能冒称无子公司、完整合并范围或提高原身份状态。原verified/active身份收据、真实证据、OS SID/uid及原权限仍必须通过。预览将服务器当前完整UTC时刻冻结为原身份/主体快照时间，apply复用同值；信息截止日独立约束答案，不把今天新验证的收据回溯到午夜，也不据此声明过去的公司边界。缺少冻结时刻的旧未执行候选须重新预览，已完成结果仍幂等回读。多挂牌显选security_id，原题目scope不混用；当前基础按实际manifest产生33 entity＋3 security两个原包，此数字不写死，全部scope原ready后才算公司完成。
+
+新增API：
+
+- GET `prepare/status`、`prepare/jobs`、`prepare/jobs/{job_id}`；POST `prepare/preview`接受`entity_id/as_of/mode`及可选`scope_selector/subject_key/security_id/profile_id`，返回实际题面、数目、主体/挂牌候选和阻断。预览只写IQS自己的不可变候选。
+- POST `prepare/apply`接受精确`preview_id/preview_token`，快速返回异步job；后台依次走原route snapshot、CAS activate、C06 capture、原delegation确认和StockQA admit。GET保留实际阶段与错误；POST `prepare/jobs/{id}/reconcile|abandon`只按allowed_actions恢复登记或停止等待，不重复确认/准入。unknown与partial不是成功。
+- GET `batches`；POST `batches/preview`只冻结本地输入字节和完整公司scope集合，`owner_inspected=false`，**不是费用或真实派发准入**。POST `batches/start`登记薄编排引用，后台在每scope派发前调用原检查器；已ready复用，未知HTTP不重发。这样2000公司预览/登记不串行启动4000个原检查进程。
+- POST `batches/{id}/pause|resume`；暂停在scope/公司边界排空。重启不自动续跑；已完成范围只核冻结字节，尚未启动的范围延迟到派发时原预检，已有在途/未知引用仍按原恢复规则核实。`company_counts`与`scope_counts`分开，`company_groups.complete`才是整公司所有scope完成。
+- GET `tasks`只读本机过程引用并分页；每个run先点“核原状态”，即POST `tasks/{run_id}/inspect`，再按原allowed_actions恢复。不能用进程退出或缓存投影当派发许可。
+- POST `tasks/deliver`选择bundle_id，或POST `batches/{batch_id}/deliver`选择该批当前原ready范围，均返回异步交付job；GET `delivery/jobs`查看，POST `delivery/jobs/{id}/resume|abandon`明确接续。长时间原CLI在后台，不占全站服务锁。父job只保scope摘要/计数；逐题ACK仍归原StockWiki和StockQA outbox，避免2000×36条明细复制成不可恢复的大文件。
+- 原公开只读交付检查、精确outbox字节导出、冻结release投影、独立接收目标绑定、原导入及exact ACK仍逐步执行。不申请新spend grant、不重新封存或重问已完成答案。历史24题保留24，不能按当前36题改写旧观察。`tasks/export-delivery`可只导出原已封存包引用；不永久把全池每个包登记进另一个配置账本。
+
+批引用读写统一16MiB上限，最大5000scope工程记录实测约6.26MB，可重启读取；交付引用同上限且不存回答或ACK全文。超限写入先拒绝，保留旧文件。配置和job控制使用OS释放的非阻塞锁：并发冲突明确409；崩溃不因遗留PID文件永久锁死。更换目标前检查完整任务、批、准备和交付引用，追加同源包不丢在途进程。
+
+本机Windows建议状态/测试目录使用短路径。题库预览与准备均0模型调用；原完整36题准入工程用例实测bank preview约11秒、已有主体apply约543秒，首次法律发行人主体路径apply约232秒。它们不是同条件性能对照，不能将差异解释为提速。900/300是有界等待，不是成功保证；超时保原阶段、unknown与错误，禁止盲重做。
+
+## 实际数据与尚存边界
 
 界面不是全名单扫描完成的证明。当前214实体、旧12运行/11公司，另有一条原CATL正式入库观察（旧24题manifest，仅IQS_05）。基础当前36题不反向改写旧观察。W09读原语义，不宣称C06 envelope已验收，不用前端均分替代原质量规则。
 
-本版还需继续补“任意唯一实体→组合题库→原公开准入/预算→批量原执行→交付登记”的自动准备与连续全名单路径。当前automatic_pool_dispatch=false；空登记列表不是功能已完成，也不为已耗尽的r25原范围增加预算或重发cold。
+本机已将用户认可的214个既有entity_id接入`UNI_IQS_APPROVED_214_20261025`，通过原名单API维护；实体身份完整摘要前后相同，没有新增/合并/升级身份，原实验名单保留。当前真实部署的自动准备参数和新预算仍需正确配置；空配置的阻断是实际部署状态，不伪称已开始全池扫描。原完整36题准入和工程假数据批协调通过，不等于214家公司已被实际问答，更不授金融准确性。

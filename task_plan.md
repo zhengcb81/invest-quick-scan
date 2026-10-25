@@ -9,11 +9,13 @@
 | U3 | 已登记原包的执行/预览/任务/策略、安全drain与unknown拒绝重发已接；任意公司自动准备与全名单连续派发转U6，不冒称完成 | complete (registered scope) |
 | U4 | 同源HTTP与工作台各页、原三态筛选/快照分页、模型时间版本原记录；固定包/名单/设置按钮接原owner，旧入口兼容 | complete (registered scope) |
 | U5 | 集中集成/原ACK正反/最终独审与CUA已过；40raw复核，Git36字节一致+4仅既有换行；IQS e42148b已推，SW7c68af4/UIa598cce本地提交（无remote） | complete |
-| U6 | 任意唯一实体→动态基础/专属模块→原准入/预算/执行包自动准备；按既有名单持续批跑与交付，沿原owner复用恢复/额度，不另造队列 | in_progress |
+| U6 | 任意唯一实体→动态基础/专属模块→原准入/预算/执行包自动准备；按既有名单持续批跑与交付，沿原owner复用恢复/额度，不另造队列；最后UTC增量独审已过 | complete (engineering) |
 
 ### Next Step
 
-本轮三分线已冻结交回，总控已接管修复并整节点审查。U5已完成并正常提交，主仓已推e42148b；SW/UI无remote只本地提交，不捏造推送。现在继续U6：只读勘察原public capture/admission链路与独立公司层批协调并行，后者只写dashboard_batches.py与其测试；root独占HTTP/前端整合。不能止于固定包演示。当前本机UI8766，使用python scripts/open_dashboard.py。原StockWiki W09查询不能冒充C06；旧refresh基本信息请求不能冒充全部评分执行；原StockQA main_with_llm.py已有owner参数，必须复用，不另造客户端。新UI默认GET安全，POST需同源及CSRF；密钥仅保留环境引用，服务只监听loopback。先打通现有owner数据和固定执行配置，再补缺失操作能力，不把禁用按钮称作功能已完成。
+U1–U6工程交付已完成，最终独立审查passed/open_findings=[]，33文件冻结；真实36题原准入、首次主体、真实旧CATL封存包→导入→exactACK及实际CUA均有证据。当前可浏览214公司与全部题面，按已配置的原包操作；本机prepare仍空、新预算和用户模型顺序尚未配置，因此不能称默认可一键扫全池或已有214家公司评分。
+
+下一步是部署一个新的合法原owner运行范围、填写用户选定的模型顺序及新预算，再从UI明确启动小批公司验证，随后扩池；不重发耗尽的r25 cold。自动准备当前支持原policy1.0/1.1，1.2+清楚阻断，不降级；高级自动准备和事实题自动采集未纳入本轮，不称全部PWF目标已完成。原数据/历史锁不改。详细交接、测试、发布与证据见handoff顶部和reviews/ui-product-u6-2026-10-25。
 
 ## 2026-10-25 — 当前优先：基础必做题贯通与可用UI核验
 

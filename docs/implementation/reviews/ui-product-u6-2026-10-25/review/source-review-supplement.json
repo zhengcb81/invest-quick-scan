@@ -1,0 +1,65 @@
+{
+  "reviewer_task": "/root/review_product_u6",
+  "status": "passed",
+  "scope": "StockWiki permission_projection exact multiset ordering fix and original approval/delegation regression only",
+  "open_findings": [],
+  "source_files_sha256": {
+    "stockwiki/quick_scan_refresh_preview.py": "74e4aecb00355908a7ac44e724e46e40da02daf31521f380e5afd69f499a5b61",
+    "tests/test_refresh_permission_item_order.py": "5e842dd8ffccaf0b0ed9e3794c94d13deda945b528e490cbcc37303ea5a29ecc"
+  },
+  "passed": 47,
+  "skipped": [
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[extra_field]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[claimed_cryptographic_identity]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[foreign_namespace]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[budget_file_drift]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[rehashed_question]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[rehashed_model]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[wrong_method]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[wrong_protocol]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_independent_original_qa_wire_validator_rejects_resealed_binding_faults[wrong_prefix]",
+      "reason": "could not import 'src.utils.quick_scan_delegated_consent': No module named 'src'"
+    },
+    {
+      "name": "test_delegated_refresh_grant_does_not_grant_original_work_control",
+      "reason": "could not import 'src.utils.quick_scan_work_decision_authority': No module named 'src'"
+    }
+  ],
+  "pytest_seconds": 21.0,
+  "invocation": "permission-order-short-invocation.json",
+  "notes": [
+    "All seven added permutation/multiset cases executed. Original opt-in integration skips remain skips.",
+    "Projection sorts deep copies of full subject_ref/field_id/question_id items; preserves duplicates and original record/hash.",
+    "First run assertions passed but seven teardown errors occurred under a 261-character Windows temporary path; retained original JUnit; repeated unchanged source under shorter exclusively owned root passed."
+  ],
+  "cleanup": "source-supplement-cleanup.json",
+  "network_calls": 0,
+  "paid_calls": 0,
+  "financial_accuracy_granted": false,
+  "created_at": "2026-10-25T18:19:50.904498+00:00"
+}

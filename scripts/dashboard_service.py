@@ -13,6 +13,7 @@ import secrets
 import threading
 import time
 from urllib.parse import parse_qs, urlsplit
+from dashboard_locks import control_lock, ControlBusyError
 
 ROOT = Path(__file__).resolve().parents[1]
 SECRET_KEYS = {'api_key', 'apikey', 'api_secret', 'secret', 'password', 'authorization',
@@ -24,9 +25,13 @@ BUNDLE_PATHS = {'questions', 'manifest', 'identity_snapshot', 'c06_authority', '
                 'runtime_dir', 'package', 'release', 'work_store'}
 BUNDLE_KEYS = BUNDLE_PATHS | {'entity_id', 'company', 'provider', 'confirmation_id',
     'inspection_schema_version', 'pack_size', 'thinking', 'max_output_tokens', 'security_scope_id',
-    'package_sha256', 'release_sha256', 'work_item_ids'}
+    'package_sha256', 'release_sha256', 'work_item_ids', 'company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings'}
 CONFIG_KEYS = PATH_KEYS | {'schema_version', 'universe_id', 'execution_bundles', 'import_bundles',
-                          'timeout_seconds', 'workspace_kind', 'workspace_label'}
+                          'timeout_seconds', 'workspace_kind', 'workspace_label', 'prepare', 'batch'}
+PREPARE_KEYS = {'state_root', 'admission_config', 'module_package_id', 'producer',
+    'authorization_reference', 'agent', 'runtime_dir', 'spend_authorization', 'search_policy',
+    'pack_size', 'thinking', 'max_output_tokens', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds'}
+PREPARE_PATHS = {'state_root', 'admission_config', 'runtime_dir', 'spend_authorization', 'search_policy'}
 
 
 class ProductError(Exception):
@@ -69,7 +74,8 @@ def defaults(root):
         'state_root': str(root/'runs/dashboard-runtime'),
         'runtime_dir': str(stockqa) if llm.is_file() else '', 'model_policy_path': str(llm) if llm.is_file() else '',
         'iqs_release_root': str(root/'runs/c16b/iqs-release'), 'universe_id': 'default',
-        'execution_bundles': {}, 'import_bundles': {}, 'timeout_seconds': 60}
+        'execution_bundles': {}, 'import_bundles': {}, 'prepare': {},
+        'batch': {'max_concurrency': 1}, 'timeout_seconds': 60}
 
 
 def validate_config(value, root):
@@ -110,19 +116,40 @@ def validate_config(value, root):
     for key in ('universe_id', 'workspace_kind', 'workspace_label'):
         if not isinstance(result[key], str) or not result[key] or len(result[key]) > 256:
             raise ProductError('invalid_config', f'{key}必须是非空短文本。')
+    options = result['prepare']
+    if not isinstance(options, dict) or set(options)-PREPARE_KEYS:
+        raise ProductError('invalid_prepare_config', '公司准备配置包含未知字段。')
+    result['prepare'] = dict(options)
+    for key,lower,upper in [('worker_timeout_seconds',60,3600),('native_timeout_seconds',30,900)]:
+        if key in options and (type(options[key]) is not int or not lower<=options[key]<=upper):
+            raise ProductError('invalid_prepare_timeout',f'prepare.{key}超出允许范围。')
+    if options.get('native_timeout_seconds',300)>options.get('worker_timeout_seconds',900):
+        raise ProductError('invalid_prepare_timeout','native阶段超时不能大于完整准备超时。')
+    for key in PREPARE_PATHS & options.keys():
+        item = options[key]
+        if not isinstance(item, str) or not item or '\0' in item or '://' in item:
+            raise ProductError('invalid_prepare_path', f'prepare.{key}必须是本机路径。')
+        path = Path(item)
+        result['prepare'][key] = str((Path(root)/path if not path.is_absolute() else path).resolve())
+    batch = result['batch']
+    if (not isinstance(batch, dict) or set(batch)-{'max_concurrency'}
+        or type(batch.get('max_concurrency', 1)) is not int or not 1 <= batch.get('max_concurrency', 1) <= 4):
+        raise ProductError('invalid_batch_config', '公司并发须为1至4；题目预算仍由原账本控制。')
     return result
 
 
 class DashboardService:
-    def __init__(self, root=ROOT, config_path=None, ui_root=None, owner_factory=None, execution_factory=None):
+    def __init__(self, root=ROOT, config_path=None, ui_root=None, owner_factory=None, execution_factory=None, prepare_factory=None):
         self.root = Path(root).resolve()
         self.config_path = Path(config_path or self.root/'config/dashboard.local.json').resolve()
         self.ui_root = Path(ui_root or self.root.parent/'iqs-question-bank-ui-lab').resolve()
         self.csrf_token = secrets.token_urlsafe(32)
         self._lock = threading.RLock()
         self._owner_factory, self._execution_factory = owner_factory, execution_factory
+        self._prepare_factory = prepare_factory
         self._config_revision = None
         self._owner = self._execution = None
+        self._prepare = self._batch = self._jobs = self._delivery = None
         self._snapshots = {}
         self._load()
 
@@ -135,10 +162,146 @@ class DashboardService:
             supplied = json.loads(raw.decode('utf-8-sig')) if raw else {}
         except (ValueError, UnicodeError) as exc:
             raise ProductError('config_invalid_json', '连接配置不是有效UTF-8 JSON。') from exc
-        self.config = validate_config(supplied, self.root)
+        config = validate_config(supplied, self.root)
+        old = getattr(self, 'config', None)
+        additive = old is not None and self._append_only(old, config)
+        if old is not None and not additive:
+            self._assert_inactive()
+            if self._batch is not None:
+                self._batch.close()
+        self.config = config
         self._config_revision = revision
-        self._owner = self._execution = None
+        self._owner = None
+        if additive:
+            if self._execution is not None:
+                self._execution.bundles = self.config['execution_bundles']
+                self._execution.config.update(self.config, bundles=self.config['execution_bundles'])
+        else:
+            self._execution = self._prepare = self._jobs = self._batch = self._delivery = None
         self._snapshots.clear()
+
+    @staticmethod
+    def _append_only(old, new):
+        maps = {'execution_bundles', 'import_bundles'}
+        return ({k:v for k,v in old.items() if k not in maps} == {k:v for k,v in new.items() if k not in maps}
+            and all(all(new[key].get(name) == row for name, row in old[key].items()) for key in maps))
+
+    def _assert_inactive(self):
+        state=Path(self.config['state_root'])
+        if self._jobs is None and any((state/'preparation-jobs').glob('prepjob_*.json')):
+            self._preparation_jobs()
+        if self._delivery is None and any((state/'delivery-jobs').glob('deliveryjob_*.json')):
+            self._delivery_jobs()
+        if self._batch is None and any((state/'batches').glob('batch-*.json')):
+            self._batches()
+        if self._execution is not None:
+            execution = self._execution
+            refs = execution.active_references() if hasattr(execution, 'active_references') else execution.tasks(inspect_owner=False, limit=2000)
+            if any(row.get('process_state') in {'running', 'starting', 'needs_original_inspection'} for row in refs.get('items', refs.get('tasks', []))):
+                raise ProductError('execution_active', '运行期间不切换工作区；请等待当前公司安全结束。', 409)
+        if self._batch is not None:
+            offset = 0
+            while True:
+                page = self._batch.list(limit=100, offset=offset)
+                if any(row.get('state') in {'running','draining','needs_original_inspection'} for row in page['batches']):
+                    raise ProductError('batch_active', '批扫描尚未安全结束；先暂停并核对原任务。', 409)
+                offset += len(page['batches'])
+                if offset >= page['total'] or not page['batches']: break
+        if self._jobs is not None and self._jobs.active():
+            raise ProductError('preparation_active', '准备结果尚未处理；先查看或核对原准备记录。', 409)
+        if self._delivery is not None and self._delivery.active():
+            raise ProductError('delivery_active','交付或恢复尚未处理，先核对原ACK或显式放弃等待。',409)
+
+    def _preparer(self):
+        if self._prepare is None:
+            from dashboard_prepare import PrepareGateway
+            self._prepare = (self._prepare_factory or PrepareGateway)({**self.config, 'iqs_root':str(self.root)})
+        return self._prepare
+
+    def _batches(self):
+        if self._batch is None:
+            from dashboard_batches import BatchGateway
+            self._batch = BatchGateway(self._gateway('execution'), Path(self.config['state_root'])/'batches',
+                max_concurrency=self.config['batch'].get('max_concurrency',1))
+        return self._batch
+
+    def _preparation_jobs(self):
+        if self._jobs is None:
+            from dashboard_jobs import PreparationJobs
+            frozen = {k:v for k,v in self.config.items() if k not in {'execution_bundles','import_bundles'}}
+            self._jobs = PreparationJobs(self._preparer(), Path(self.config['state_root'])/'preparation-jobs',
+                lambda result: self._register_prepared(result, frozen))
+        return self._jobs
+
+    def _delivery_jobs(self):
+        if self._delivery is None:
+            from dashboard_delivery_jobs import DeliveryJobs
+            frozen={k:v for k,v in self.config.items() if k not in {'execution_bundles','import_bundles'}}
+            digest=hashlib.sha256(json.dumps(frozen,sort_keys=True,ensure_ascii=False).encode('utf8')).hexdigest()
+            self._delivery=DeliveryJobs(self._gateway('execution'),Path(self.config['state_root'])/'delivery-jobs',digest,
+                lambda bundle_id:self._deliver_scope(bundle_id),lambda batch_id:self._batches().get(batch_id))
+        return self._delivery
+
+    def _deliver_scope(self, bundle_id):
+        # Capture trusted local references briefly; all slow native I/O runs
+        # OUTSIDE the service lock. Active delivery jobs forbid target switches.
+        with self._lock:
+            config={**self.config,'iqs_root':str(self.root),'bundles':dict(self.config['execution_bundles'])}
+        from dashboard_execution import ExecutionGateway
+        from dashboard_owner import OwnerGateway
+        execution=(self._execution_factory or ExecutionGateway)(config)
+        exported=execution.export_delivery({'bundle_id':bundle_id})
+        outcomes=[]
+        for name,bundle in exported['import_bundles'].items():
+            try:
+                owner=(self._owner_factory or OwnerGateway)({**config,'bundles':{name:bundle}})
+                preview=owner.import_preview({'bundle_id':name})
+                result=self._apply_import(owner,bundle,{'bundle_id':name,'preview_token':preview['preview_token']},execution=execution,workspace=config['workspace_root'])
+                outcomes.append({'bundle_id':name,'status':result.get('status'),
+                    'package_id':result.get('receipt',{}).get('package_id'),
+                    'ack_reconciliation':result.get('ack_reconciliation')})
+            except Exception as exc:
+                outcomes.append({'bundle_id':name,'status':'pending','error_code':getattr(exc,'code','delivery_interrupted')})
+        delivered=bool(outcomes) and exported['status']=='exported' and all(row.get('ack_reconciliation',{}).get('status')=='delivered' for row in outcomes)
+        return {'status':'delivered' if delivered else 'partial' if outcomes else 'pending','items':outcomes,
+            'API_requests':0,'financial_accuracy_proven':False}
+
+    def _register_prepared(self, result, deployment):
+        with self._lock:
+            self._load()
+            if deployment != {k:v for k,v in self.config.items() if k not in {'execution_bundles','import_bundles'}}:
+                raise ProductError('preparation_target_changed', '原准备已保留，但工作区或策略已变化，不能登记到新目标。', 409)
+            rows = result.get('execution_bundles')
+            if result.get('status') != 'prepared' or not isinstance(rows, list) or not rows:
+                raise ProductError('preparation_result_invalid', '原准备没有完整的执行范围集合。', 409)
+            config = {**self.config, 'execution_bundles':dict(self.config['execution_bundles'])}
+            ids = []
+            for row in rows:
+                name, bundle = row['bundle_id'], row['execution_bundle']
+                if name in ids or name in config['execution_bundles'] and config['execution_bundles'][name] != bundle:
+                    raise ProductError('prepared_bundle_conflict', '同ID原执行包已存在且内容不同。', 409)
+                ids.append(name)
+                config['execution_bundles'][name] = bundle
+            config = validate_config(config, self.root)
+            self._save_config(config)
+            return {'bundle_ids':ids, 'question_count_total':result.get('question_count_total'), 'API_requests':0}
+
+    def _save_config(self, config):
+        self.config_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with control_lock(self.config_path.with_name(self.config_path.name+'.lock')):
+                current = self.config_path.read_bytes() if self.config_path.is_file() else b''
+                if hashlib.sha256(current).hexdigest() != self._config_revision:
+                    raise ProductError('stale_setup', '连接配置已变化，请刷新重试；原准备不会重做。', 409)
+                temporary = self.config_path.with_name(self.config_path.name+'.'+secrets.token_hex(8)+'.tmp')
+                try:
+                    temporary.write_text(json.dumps(config, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
+                    os.replace(temporary, self.config_path)
+                finally:
+                    temporary.unlink(missing_ok=True)
+        except ControlBusyError:
+            raise ProductError('setup_busy','另一个服务正在保存连接，刷新后重试；原准备结果保留。',409) from None
+        self._load()
 
     def _gateway(self, kind):
         attr = '_owner' if kind == 'owner' else '_execution'
@@ -158,6 +321,30 @@ class DashboardService:
         gateway = factory(config)
         setattr(self, attr, gateway)
         return gateway
+
+    def _apply_import(self, owner, bundle, body, *, execution=None, workspace=None):
+        execution=execution or self._gateway('execution')
+        mapped = bool(bundle.get('work_store') and bundle.get('work_item_ids'))
+        if mapped:
+            preview=owner.import_preview({'bundle_id':body.get('bundle_id')})
+            if body.get('preview_token') != preview.get('preview_token') or not preview.get('can_apply'):
+                raise ProductError('preview_stale','请重新预览原接收目标再导入。',409)
+            status=owner.status()
+            if not status.get('available') or not status.get('store_id'):
+                raise ProductError('receiver_unavailable','无法核实原StockWiki接收目标。',409)
+            target={'component':'StockWiki','namespace':'quick_scan','store_id':status['store_id']}
+            execution.bind_delivery_consumer(bundle,target,'dashboard-owner-status:'+(workspace or self.config['workspace_root']))
+        result=owner.import_apply(body)
+        if isinstance(result.get('receipt'),dict):
+            if mapped:
+                try:
+                    result['ack_reconciliation']=execution.acknowledge_delivery(bundle,result['receipt'])
+                except Exception as exc:
+                    result['ack_reconciliation']={'status':'pending','error_code':getattr(exc,'code','ack_reconciliation_failed'),
+                        'notice':'StockWiki已产生回执；原StockQA未确认，重试会复用原回执。'}
+            else:
+                result['ack_reconciliation']={'status':'not_configured','notice':'没有原StockQA账本映射，不能宣称执行器delivered。'}
+        return result
 
     def _safe_status(self, kind):
         try:
@@ -183,19 +370,13 @@ class DashboardService:
         if body['revision_sha256'] != hashlib.sha256(current).hexdigest():
             raise ProductError('stale_setup', '连接配置已变化，请刷新后再保存。', 409)
         config = validate_config(body['config'], self.root)
-        running = self._gateway('execution').tasks()
+        execution = self._gateway('execution')
+        running = execution.active_references() if hasattr(execution, 'active_references') else execution.tasks(inspect_owner=False, limit=2000)
         if any(item.get('process_state') in {'running', 'starting', 'needs_original_inspection'}
                for item in running.get('items', running.get('tasks', []))):
             raise ProductError('execution_active', '运行期间不切换工作区；请等待当前公司安全结束。', 409)
-        self.config_path.parent.mkdir(parents=True, exist_ok=True)
-        temporary = self.config_path.with_name(self.config_path.name+'.'+secrets.token_hex(8)+'.tmp')
-        try:
-            temporary.write_text(json.dumps(config, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
-            os.replace(temporary, self.config_path)
-        finally:
-            if temporary.exists():
-                temporary.unlink()
-        self._load()
+        self._assert_inactive()
+        self._save_config(config)
         return self._setup()
 
     def dispatch(self, method, target, body=None):
@@ -222,6 +403,21 @@ class DashboardService:
         if not isinstance(body, dict):
             raise ProductError('invalid_body', '请求内容必须是JSON对象。')
         if method == 'GET':
+            if path == 'delivery/jobs':
+                return self._delivery_jobs().list()
+            if path == 'prepare/status':
+                return self._preparer().status()
+            if path == 'prepare/jobs':
+                return self._preparation_jobs().list()
+            match = re.fullmatch(r'prepare/jobs/(prepjob_[a-f0-9]{32})', path)
+            if match:
+                return self._preparation_jobs().get(match[1])
+            if path == 'batches':
+                try:
+                    return self._batches().list(limit=int(query.get('limit',50)), offset=int(query.get('offset',0)))
+                except ValueError as exc:
+                    if hasattr(exc, 'code'): raise
+                    raise ProductError('invalid_query','批任务分页无效。') from None
             if path == 'status':
                 owner, execution = self._safe_status('owner'), self._safe_status('execution')
                 owner['registered_import_bundles'] = [{'bundle_id': name, 'entity_id': item.get('entity_id')}
@@ -235,7 +431,11 @@ class DashboardService:
             if path == 'settings':
                 return self._gateway('execution').settings()
             if path == 'tasks':
-                return self._gateway('execution').tasks()
+                try:
+                    limit, offset = int(query.get('limit', 50)), int(query.get('offset', 0))
+                except ValueError:
+                    raise ProductError('invalid_query', '任务分页无效。')
+                return self._gateway('execution').tasks(inspect_owner=False, limit=limit, offset=offset)
             if path == 'doctor':
                 owner, execution = self._safe_status('owner'), self._safe_status('execution')
                 checks = [{'id': 'StockWiki', 'status': 'available' if owner.get('available') else 'blocked',
@@ -308,35 +508,41 @@ class DashboardService:
                 _reject_credentials(body)
                 return self._gateway('execution').save_settings(body)
         elif method == 'POST':
+            if path == 'tasks/deliver':
+                return self._delivery_jobs().submit(body)
+            match=re.fullmatch(r'batches/([A-Za-z0-9_.-]{1,128})/deliver',path)
+            if match:
+                if body: raise ProductError('invalid_body','选择原公司批即可。')
+                return self._delivery_jobs().submit({'batch_id':match[1]})
+            match=re.fullmatch(r'delivery/jobs/(deliveryjob_[a-f0-9]{32})/(resume|abandon)',path)
+            if match:
+                if body: raise ProductError('invalid_body','交付恢复无需额外参数。')
+                return self._delivery_jobs().control(*match.groups())
+            if path == 'tasks/export-delivery':
+                exported=self._gateway('execution').export_delivery(body)
+                return exported
+            if path == 'prepare/preview':
+                return self._preparer().bank_preview(body)
+            if path == 'prepare/apply':
+                return self._preparation_jobs().submit(body)
+            match = re.fullmatch(r'prepare/jobs/(prepjob_[a-f0-9]{32})/(reconcile|abandon)', path)
+            if match:
+                if body: raise ProductError('invalid_body','恢复准备无需额外参数。')
+                return getattr(self._preparation_jobs(),match[2])(match[1])
+            if path == 'batches/preview':
+                return self._batches().registration_preview(body)
+            if path == 'batches/start':
+                return self._batches().start(body)
+            match = re.fullmatch(r'batches/([A-Za-z0-9_.-]{1,128})/(pause|resume)', path)
+            if match:
+                if body: raise ProductError('invalid_body','批任务控制无需额外参数。')
+                return self._batches().control(*match.groups())
             if path in {'universe/preview', 'universe/apply', 'import/preview', 'import/apply'}:
                 action = path.replace('/', '_')
                 if path == 'import/apply':
                     bundle = self.config['import_bundles'].get(body.get('bundle_id'), {})
-                    if bundle.get('work_store') and bundle.get('work_item_ids'):
-                        # Receiver identity comes from the independent original owner,
-                        # never from an incoming ACK or generated model answer.
-                        preview = self._gateway('owner').import_preview({'bundle_id': body.get('bundle_id')})
-                        if body.get('preview_token') != preview.get('preview_token') or not preview.get('can_apply'):
-                            raise ProductError('preview_stale', '请重新预览原接收目标再导入。', 409)
-                        status = self._gateway('owner').status()
-                        if not status.get('available') or not status.get('store_id'):
-                            raise ProductError('receiver_unavailable', '无法核实原StockWiki接收目标。', 409)
-                        target = {'component': 'StockWiki', 'namespace': 'quick_scan', 'store_id': status['store_id']}
-                        source = 'dashboard-owner-status:' + self.config['workspace_root']
-                        self._gateway('execution').bind_delivery_consumer(bundle, target, source)
-                result = getattr(self._gateway('owner'), action)(body)
-                if path == 'import/apply' and isinstance(result.get('receipt'), dict):
-                    bundle = self.config['import_bundles'].get(body.get('bundle_id'), {})
-                    if bundle.get('work_store') and bundle.get('work_item_ids'):
-                        try:
-                            result['ack_reconciliation'] = self._gateway('execution').acknowledge_delivery(bundle, result['receipt'])
-                        except Exception as exc:
-                            result['ack_reconciliation'] = {'status': 'pending', 'error_code': getattr(exc, 'code', 'ack_reconciliation_failed'),
-                                'notice': 'StockWiki已产生回执；原StockQA未确认，重试导入会复用原回执。'}
-                    else:
-                        result['ack_reconciliation'] = {'status': 'not_configured',
-                            'notice': 'StockWiki已入库；此包未登记原StockQA账本引用，不能称作执行器已交付。'}
-                return result
+                    return self._apply_import(self._gateway('owner'),bundle,body)
+                return getattr(self._gateway('owner'), action)(body)
             if path in {'tasks/preview', 'tasks/start'}:
                 return getattr(self._gateway('execution'), path.split('/')[1])(body)
             match = re.fullmatch(r'tasks/([A-Za-z0-9_.-]{1,128})/(inspect|pause|resume)', path)
