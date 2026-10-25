@@ -120,16 +120,23 @@ def standard_prompt(question, profile, contexts=None, resources=None):
 
 def typed_semantic_rules(question):
     """Explicit new-request rules; historical renderer fingerprints stay intact."""
+    citation_rule = (
+        ' evidence[].url必须从本次实际检索上下文sources[].url逐字复制，完整保留query和fragment；'
+        '包括lang/type/trk等参数，不得删除、改写、补全或生成更干净的URL。'
+        'published_at按真实来源日期填写，未知留null，不得猜测。'
+        '提交前逐一核对URL与提供值完全相等；通常2个直接支持本题结论的已绑定来源即可，'
+        '这不是硬性数量上限，不得为凑数增加引用；证据不足则明确不足，不补造引用。'
+    )
     kind = question.get('response_kind', 'score')
     if kind == 'score':
         return (f"[{question['id']}] response_kind=score；items=[]，不得输出事实关系行，"
                 '不得使用status=answered。scored时score为1至10整数；其余状态score=null。'
                 '解释、反证放summary/counterevidence，数值放metrics并绑定证据；'
-                'insufficient_evidence/not_applicable/search_unavailable时metrics=[]。')
+                'insufficient_evidence/not_applicable/search_unavailable时metrics=[]。' + citation_rule)
     if kind == 'fact':
         return (f"[{question['id']}] response_kind=fact；score=null，不得使用status=scored；"
                 'answered必须有符合本题关系和条数限制、逐行绑定证据的items。'
-                '未知用insufficient_evidence，不能以空事实列表声称已回答。')
+                '未知用insufficient_evidence，不能以空事实列表声称已回答。' + citation_rule)
     raise ValueError('unknown original question response kind')
 
 
