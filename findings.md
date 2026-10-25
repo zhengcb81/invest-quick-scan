@@ -3834,3 +3834,8 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 原generation3真实safe已合法取得，首次禁网恢复却被原三哈希守卫拒绝。独立纯重构证明：dynamic context完全相同，冷调用插入typed规则后的prefix为`2adb2323…`，旧Replay裸builder为`0c8eca14…`；按原冻结规则重建就精确相同。根修是冷调用与Replay共享同一纯builder，且main恢复/封存/显式报告传入同一可信规则，不能从未受信event自取规则，也不能关闭hash比较。
 
 原72项锁、原safe、task与失败记录保留；修前60制品快照SHA`716f0335…`补足旧未预锁的Replay/Resume/Reporter版本事实。实际需要6源变化时，以明确transition和新112锁记录不同源码恢复，`same_source_cold_and_warm_claim=false`，不把后补锁写成冷执行前已锁。63项集中软件回归、29项只读摘要器测试已过；原真实pending的严格只读重建亦通过，实际双封存和摘要另验。Company公开Python API支持显式rules；默认空规则CLI仍会对typed产物fail closed，未声称通用CLI支持。
+## 2026-10-25 — UI体验审查的首轮实证
+
+工程接线与测试通过不能代替用户可用性审查。总控已只读核对两个具体问题：前端data_notes.js顶部虽已说明产品服务/静态快照边界，后面的“当前接线与缺口”仍写生产owner尚未接入，读取/写入段又说运行全程只读；须统一各段范围，不能把静态构建本身只读误报成故障。product.js的设置textarea设置rows=14/18，但全局app.css统一input/select/textarea height=36px，实际多行编辑高度被压缩。另有移动媒体规则位于同等特异性的基础grid规则之前，响应式覆盖次序需在设计意见中明确标注；是否实际宽屏/窄屏测过以agent截图和DOM记录为准，不用CSS推断冒称实测。
+
+本轮用户仅要求两个独立审查与专业意见，尚不实施整改。两报告已独立完成，用户旅程13类页面/10项、视觉1280×720/12项，部分重叠；总控已汇总10组优先事项，区分误导内容、任务阻力、视觉建议与部署缺口，不把配置为空当成模型/原owner故障。UI已有组件focus-visible不代表普通article/tr onclick可用键盘进入；抽屉role=dialog也不能替代初始/循环/返回焦点。正式三态筛选实测0通过/1不通过/213待核实应保持；静态与正式覆盖和唯一历史重复展示需要更清楚。报告与原始证据位于reviews/ui-experience-2026-10-25，未借审查执行真实收费或变更原业务。
