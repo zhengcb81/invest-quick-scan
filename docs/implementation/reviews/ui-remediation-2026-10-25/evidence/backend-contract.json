@@ -1,0 +1,36 @@
+{
+  "owner_projection": {
+    "universe_members": [
+      "canonical_name",
+      "identity_state",
+      "identity_revision",
+      "securities",
+      "identity_display_available"
+    ],
+    "join": "original get_entity(member.entity_id), never by name",
+    "coverage_library_summary": [
+      "available",
+      "total_entities",
+      "observed_entities",
+      "missing_entities",
+      "observation_count",
+      "scored_field_entries",
+      "answered_field_entries"
+    ],
+    "undefined_historical_kind_counts": [
+      "score_observations",
+      "fact_observations"
+    ],
+    "meaning": "records and W09 field entries; no full-company completion or financial eligibility inference"
+  },
+  "settings_metadata": [
+    "provider_config_refs",
+    "provider_choices(provider_config_ref,model,enabled)"
+  ],
+  "provider_secrets_returned": false,
+  "TDD_red_failures": 4,
+  "affected_backend_passed": 40,
+  "affected_backend_seconds": 93.87,
+  "business_writes": 0,
+  "paid_API_requests": 0
+}

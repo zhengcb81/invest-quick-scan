@@ -1,0 +1,48 @@
+{
+  "status": "passed_with_explicit_scope",
+  "browser": "CUA IAB hidden own tabs",
+  "desktop": {
+    "width": 1280,
+    "height": 720,
+    "picker_height_css_px": 147.99879455566406,
+    "screener_document_width_css_px": 1265,
+    "screener_selector_width_css_px": 1167.4759521484375
+  },
+  "responsive": {
+    "method": "fixed same-origin iframes loading real SPA",
+    "frame_width_css_px": [
+      374.9939880371094,
+      767.9988403320312
+    ],
+    "pages": [
+      "dashboard",
+      "operations",
+      "settings",
+      "companies"
+    ],
+    "child_scroll_width_measured": false,
+    "physical_phone_or_outer_resize": false
+  },
+  "checks": {
+    "original_summary_observed": 1,
+    "original_summary_missing": 213,
+    "same_name_entities_separate": true,
+    "detail_return_snapshot_preserved": true,
+    "single_history_answer_cards": 1,
+    "data_notes_original_status_not_static_claim": true,
+    "isolated_original_policy_save": true,
+    "stale_revision_no_overwrite": true
+  },
+  "paid_requests": 0,
+  "production_config_writes": 0,
+  "final_actual_ui_checks": {
+    "policy_inflight_disabled_controls": 47,
+    "connection_inflight_disabled_controls": 21,
+    "cleared_new_optional_search_path_absent_after_original_save": true,
+    "CAS_conflict_help_and_explicit_reread_button": true,
+    "concurrent_document_changes_preserved": true
+  },
+  "source_scope_note": "Real UI saves/CAS/locks on forms 9bf3a90d; final c03742d only narrows root blank-field semantics, independently tested against original contract. Dashboard/layout unchanged.",
+  "final_root_blank_field_semantics_review": "independent-clear-root-path passed",
+  "cleanup_evidence": "cleanup-verification.json"
+}

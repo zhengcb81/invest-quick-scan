@@ -1,0 +1,38 @@
+[
+  {
+    "scenario": "independent-terminal-flow",
+    "returncode": 0,
+    "stdout": "{\"scenario\":\"independent-terminal-flow\",\"passed\":true,\"calls\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "independent-safe-boundaries",
+    "returncode": 0,
+    "stdout": "{\"scenario\":\"independent-safe-boundaries\",\"passed\":true,\"calls\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "independent-settings-inflight",
+    "returncode": 0,
+    "stdout": "{\"scenario\":\"independent-settings-inflight\",\"passed\":true,\"calls\":[{\"endpoint\":\"status\",\"method\":\"GET\"},{\"endpoint\":\"setup\",\"method\":\"GET\"},{\"endpoint\":\"settings\",\"method\":\"GET\"}]}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "independent-clear-new-field",
+    "returncode": 0,
+    "stdout": "{\"scenario\":\"independent-clear-new-field\",\"passed\":true,\"calls\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "independent-full-return-context",
+    "returncode": 0,
+    "stdout": "{\"scenario\":\"independent-full-return-context\",\"passed\":true,\"calls\":[{\"endpoint\":\"status\",\"method\":\"GET\"},{\"endpoint\":\"coverage\",\"method\":\"GET\"},{\"endpoint\":\"results\",\"method\":\"GET\"}]}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "independent-clear-root-path",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Clearing an explicit root path must not remove its key and silently reconnect default original workspace\n    at file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/[eval1]:128:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.11.0\n"
+  }
+]

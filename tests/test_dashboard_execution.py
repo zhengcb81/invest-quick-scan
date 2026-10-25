@@ -107,6 +107,26 @@ def test_first_policy_setup_is_editable_template_without_saving_or_enabling(depl
     assert path.read_bytes()==before
 
 
+def test_settings_lists_only_original_provider_names_models_and_enabled_flags(deployment):
+    config, runtime, _ = deployment
+    path = runtime / 'llm_apis.json'
+    put(path, {'providers': {
+        'route_a': {'model': 'actual-model-a', 'enabled': True, 'api_key': 'provider-secret-sentinel', 'base_url': 'https://not-returned.invalid/'},
+        'route_b': {'enabled': False, 'api_key_env': 'PRIVATE_ENV_REFERENCE'},
+    }, 'quick_scan_model_policy': {'models': ['existing-choice']}})
+    before = path.read_bytes()
+    result = ExecutionGateway(config).settings()
+    assert result['provider_config_refs'] == ['route_a', 'route_b']
+    assert result['provider_choices'] == [
+        {'provider_config_ref': 'route_a', 'model': 'actual-model-a', 'enabled': True},
+        {'provider_config_ref': 'route_b', 'model': '', 'enabled': False},
+    ]
+    encoded = json.dumps(result)
+    assert all(value not in encoded for value in ('provider-secret-sentinel', 'not-returned.invalid', 'PRIVATE_ENV_REFERENCE'))
+    assert result['policy'] == {'models': ['existing-choice']} and result['API_requests'] == 0
+    assert path.read_bytes() == before and not (runtime / 'calls.txt').exists()
+
+
 def test_list_2000_task_references_does_not_run_2000_inspection_processes(tmp_path, monkeypatch):
     gateway=ExecutionGateway({'state_root':str(tmp_path/'state')})
     rows=[{'run_id':f'run-{index:032x}','bundle_id':f'b{index}', 'process_state':'process_exited',

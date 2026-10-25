@@ -13,7 +13,7 @@ import sys
 
 import pytest
 
-from scripts.dashboard_owner import DashboardOwnerError, OwnerGateway, _env, _original_error
+from scripts.dashboard_owner import DashboardOwnerError, OwnerGateway, _env, _original_error, _member_display, _library_summary
 
 ROOT = Path(__file__).resolve().parents[1]
 STOCKWIKI = ROOT.parent / "StockWiki"
@@ -110,6 +110,75 @@ def test_unknown_entity_or_universe_is_named_not_empty(owner):
     with pytest.raises(DashboardOwnerError) as error:
         gateway.universe_list("MISSING")
     assert error.value.code == "universe_not_found"
+
+
+def test_member_list_projects_original_identity_name_and_security_without_writes(owner):
+    gateway, workspace, _ = owner
+    command = {"action": "add", "entity_id": ENTITY, "reason": "explicit isolated member"}
+    preview = gateway.universe_preview(command)
+    gateway.universe_apply({**command, "preview_token": preview["preview_token"]})
+    original = gateway.entity(ENTITY)
+    before = _tree(workspace)
+    member = gateway.universe_list()["members"][0]
+    assert member["canonical_name"] == original["entity"]["canonical_name"]
+    assert member["identity_state"] == original["entity"]["identity_state"]
+    assert member["securities"] == original["securities"]
+    assert member["identity_display_available"] is True
+    assert member["entity_id"] == ENTITY and member["version"] == 1
+    assert _tree(workspace) == before
+
+
+def test_library_coverage_counts_original_records_not_completed_scans_or_financial_quality(owner):
+    gateway, workspace, _ = owner
+    before = _tree(workspace)
+    result = gateway.coverage()
+    summary = result["library_summary"]
+    original = gateway.delivery_status()
+    assert summary["available"] is True and summary["scope"] == "owner_library"
+    assert summary["total_entities"] == result["total_entities"] == 2
+    assert summary["observed_entities"] == original["distinct_companies"]
+    assert summary["observation_count"] == original["observations"]
+    assert summary["missing_entities"] == summary["total_entities"] - summary["observed_entities"]
+    assert summary["scored_field_entries"] == sum(row["scored"] for row in result["by_field"].values())
+    assert summary["financial_accuracy_proven"] is False
+    assert summary["score_observations"] is None and summary["fact_observations"] is None
+    assert result["network_calls"] == result["llm_calls"] == 0
+    assert _tree(workspace) == before
+
+
+def test_uninitialized_observation_store_keeps_coverage_unknown_and_does_not_create_it(owner):
+    gateway, workspace, _ = owner
+    database = workspace / "data/quick_scan/scan_observations.sqlite"
+    assert database.is_relative_to(workspace) and database.is_file()
+    database.unlink()
+    before = _tree(workspace)
+    result = gateway.coverage()
+    summary = result["library_summary"]
+    assert summary["available"] is False and summary["total_entities"] == 2
+    assert all(summary[name] is None for name in ("observed_entities", "missing_entities", "observation_count", "scored_field_entries"))
+    assert summary["reason"] == "owner_observation_database_missing"
+    assert _tree(workspace) == before and not database.exists()
+
+
+def test_member_display_never_uses_same_name_to_attach_a_different_entity():
+    member = {"entity_id": ENTITY, "membership_status": "active", "version": 1}
+    missing = _member_display(member, None)
+    assert missing["canonical_name"] is None and missing["identity_display_available"] is False
+    assert missing["entity_id"] == ENTITY and member == {"entity_id": ENTITY, "membership_status": "active", "version": 1}
+    with pytest.raises(DashboardOwnerError) as error:
+        _member_display(member, {"entity_id": SECOND, "canonical_name": "Same displayed name"})
+    assert error.value.code == "identity_display_mismatch"
+
+
+@pytest.mark.parametrize("runtime", [
+    {"distinct_companies": 3, "observations": 3},
+    {"distinct_companies": True, "observations": 1},
+    {"distinct_companies": 1, "observations": 0},
+])
+def test_inconsistent_original_coverage_is_rejected_instead_of_clamped_or_green(runtime):
+    with pytest.raises(DashboardOwnerError) as error:
+        _library_summary({"total_entities": 2, "by_field": {}}, runtime)
+    assert error.value.code == "coverage_projection_invalid"
 
 
 def test_name_preview_never_activates_and_id_required_for_apply(owner):

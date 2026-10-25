@@ -90,7 +90,19 @@ try:
             if policy is not None:
                 LLMConfig._validate_quick_scan_policy(policy)
         revision = hashlib.sha256(path.read_bytes()).hexdigest()
+        providers = document.get("providers")
+        choices = []
+        if isinstance(providers, dict):
+            for name, value in sorted(providers.items()):
+                if not isinstance(name, str) or not name or len(name) > 200 or not isinstance(value, dict):
+                    continue
+                model = value.get("model", "")
+                choices.append({"provider_config_ref": name,
+                    "model": model if isinstance(model, str) and len(model) <= 200 else "",
+                    "enabled": value.get("enabled") is True})
     print(json.dumps({"policy": policy, "revision_sha256": revision,
+        "provider_config_refs": [row["provider_config_ref"] for row in choices],
+        "provider_choices": choices, "provider_metadata_available": isinstance(providers, dict),
         "effective": "next_run", "API_requests": 0}, ensure_ascii=False, allow_nan=False))
 except Exception as error:
     print(json.dumps({"error_code": "settings_changed" if str(error) == "settings_changed" else "owner_policy_rejected"}))

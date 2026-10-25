@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.101" timestamp="2026-10-25T20:01:20.614812+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_product_ui.ProductUITests" name="test_clearing_added_and_existing_optional_paths_deletes_only_known_key" time="1.338"><failure message="AssertionError: 1 != 0 : node:internal/modules/run_main:107&#10;    triggerUncaughtException(&#10;    ^&#10;&#10;AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:&#10;&#10;false !== true&#10;&#10;    at file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/iqs-question-bank-ui-lab/[eval1]:255:367&#10;    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {&#10;  generatedMessage: true,&#10;  code: 'ERR_ASSERTION',&#10;  actual: false,&#10;  expected: true,&#10;  operator: 'strictEqual',&#10;  diff: 'simple'&#10;}&#10;&#10;Node.js v24.11.0">self = &lt;tests.test_product_ui.ProductUITests testMethod=test_clearing_added_and_existing_optional_paths_deletes_only_known_key&gt;
+
+&gt;   def test_clearing_added_and_existing_optional_paths_deletes_only_known_key(self): self.run_node('remediation-clear')
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_product_ui.py:309: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_product_ui.py:300: in run_node
+    self.assertEqual(result.returncode, 0, result.stderr)
+E   AssertionError: 1 != 0 : node:internal/modules/run_main:107
+E       triggerUncaughtException(
+E       ^
+E   
+E   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+E   
+E   false !== true
+E   
+E       at file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/iqs-question-bank-ui-lab/[eval1]:255:367
+E       at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+E     generatedMessage: true,
+E     code: 'ERR_ASSERTION',
+E     actual: false,
+E     expected: true,
+E     operator: 'strictEqual',
+E     diff: 'simple'
+E   }
+E   
+E   Node.js v24.11.0</failure></testcase></testsuite></testsuites>

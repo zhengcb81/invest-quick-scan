@@ -229,6 +229,53 @@ def _bundle(config, bundle_id):
     return data
 
 
+def _member_display(member, registered):
+    """Add human labels by the exact original ID; never resolve identity by name."""
+    result = copy.deepcopy(member)
+    if registered is None:
+        return {**result, "canonical_name": None, "identity_state": None, "securities": [],
+                "identity_display_available": False, "identity_display_gap": "entity_not_found"}
+    if registered.get("entity_id") != member.get("entity_id"):
+        raise DashboardOwnerError("identity_display_mismatch", "Original identity did not match the member ID", 503)
+    name = registered.get("canonical_name")
+    return {**result, "canonical_name": name if isinstance(name, str) and name.strip() else None,
+            "identity_state": registered.get("identity_state"),
+            "identity_revision": registered.get("identity_revision"),
+            "securities": copy.deepcopy(registered.get("securities", [])),
+            "identity_display_available": isinstance(name, str) and bool(name.strip()),
+            "identity_display_source": "StockWiki.get_entity"}
+
+
+def _library_summary(coverage, runtime=None):
+    """Counts from original public projections, never full-scan/quality claims."""
+    total = coverage.get("total_entities")
+    if type(total) is not int or total < 0:
+        raise DashboardOwnerError("coverage_projection_invalid", "Original library count is not available", 503)
+    summary = {"scope": "owner_library", "total_entities": total,
+               "available": runtime is not None, "observed_entities": None, "missing_entities": None,
+               "observation_count": None, "scored_field_entries": None, "answered_field_entries": None,
+               "score_observations": None, "fact_observations": None,
+               "financial_accuracy_proven": False, "full_company_completion_known": False,
+               "meaning": "Stored records and current W09 field entries, not completed company scans or qualified answers"}
+    if runtime is None:
+        return {**summary, "reason": "owner_observation_database_missing"}
+    observed, count = runtime.get("distinct_companies"), runtime.get("observations")
+    if (type(observed) is not int or type(count) is not int or not 0 <= observed <= total
+            or count < observed):
+        raise DashboardOwnerError("coverage_projection_invalid", "Original coverage counts are inconsistent", 503)
+    fields = coverage.get("by_field", {})
+    if not isinstance(fields, dict) or any(not isinstance(row, dict) for row in fields.values()):
+        raise DashboardOwnerError("coverage_projection_invalid", "Original field coverage is invalid", 503)
+    for row in fields.values():
+        if any(type(row.get(key)) is not int or row[key] < 0 for key in ("scored", "answered")):
+            raise DashboardOwnerError("coverage_projection_invalid", "Original field counts are invalid", 503)
+    summary.update(observed_entities=observed, missing_entities=total-observed, observation_count=count,
+                   scored_field_entries=sum(row["scored"] for row in fields.values()),
+                   answered_field_entries=sum(row["answered"] for row in fields.values()),
+                   source="StockWiki.coverage + StockWiki.project_runtime_status")
+    return summary
+
+
 def _owner_worker(config, operation, payload):
     # Trusted deployment path, isolated interpreter: never contaminate server sys.path.
     sys.path.insert(0, config["stockwiki_root"])
@@ -285,7 +332,12 @@ def _owner_worker(config, operation, payload):
         result.update(rows=rows, offset=offset, limit=size, next_offset=offset + size if offset + size < result["total"] else None)
         return result
     if operation == "coverage":
-        return build_quick_scan_coverage(paths)
+        result = build_quick_scan_coverage(paths)
+        runtime = None
+        if observations.database_path.is_file():
+            from stockwiki.quick_scan_delivery import project_runtime_status
+            runtime = project_runtime_status(observations)
+        return {**result, "library_summary": _library_summary(result, runtime)}
     if operation == "entity":
         return build_quick_scan_entity(paths, payload["entity_id"])
     if operation in {"history", "facts"}:
@@ -305,7 +357,8 @@ def _owner_worker(config, operation, payload):
     if operation == "universe_list":
         selected = universe_id(payload.get("universe_id", "default"))
         data = universe(selected)
-        members = identity.list_members(selected)
+        members = [_member_display(row, identity.get_entity(row["entity_id"]))
+                   for row in identity.list_members(selected)]
         return {"protocol": PROTOCOL, "universe": data, "members": members, "member_count": len(members),
                 "network_calls": 0, "llm_calls": 0}
     if operation in {"universe_preview", "universe_apply"}:

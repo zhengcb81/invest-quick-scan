@@ -1,0 +1,49 @@
+{
+  "status": "implementation_complete_pending_central_independent_review",
+  "fixed_findings": [
+    "UX-01",
+    "UX-09",
+    "UX-06 (static screener question meaning)"
+  ],
+  "files": {
+    "src/app/ui/data_notes.js": "c20ebd87356846347452bde38077c665b1d6ae64bbfb11e887bed8b49594c83f",
+    "src/app/ui/screener.js": "100bfa7c7d885f7ed9635b671b0fc4ef5ebeca81a9d2eebc39be3808d8f5dd7d",
+    "tests/test_ui_content_remediation.py": "f57aae23adc8451c1456cd5fbe94e149fdd8ee67c60b424a34252d2c316294c0"
+  },
+  "unchanged_algorithm": "src/app/ui/screener_core.js and adapters/screener.py untouched; original core decisions are rendered, not recomputed",
+  "behavior": [
+    "Original owner/execution state comes from product.status, with explicit GET-only refresh and truthful disconnect state",
+    "Generated data counters and unknown timestamps are explicitly static; do not imply production coverage",
+    "Engineering source hashes/old alias map/synthetic examples collapsed but retained",
+    "Only selected score/status/coverage conditions appear in main draft screening rows; original module diagnostics remain collapsed",
+    "Condition satisfaction count separated from all applicable scored question count; missing/insufficient evidence stays unknown",
+    "All scoring-question candidates sourced dynamically from current actual bank, including DuPont/Porter; current title is only a reference for unbound drafts"
+  ],
+  "tdd": {
+    "initial_new_tests": 5,
+    "initial_failures": 5,
+    "post_fix_new_tests": 8,
+    "existing_core_tests": 19,
+    "total": 27,
+    "failures": 0,
+    "errors": 0,
+    "elapsed_seconds": 10.11,
+    "evidence": "tests.junit.xml",
+    "command": "C:/Miniconda/python.exe -m pytest tests/test_ui_content_remediation.py tests/test_screener.py -q --tb=short -p no:cacheprovider --junitxml=<IQS>/runs/ui-remediation-2026-10-25/content/tests.junit.xml"
+  },
+  "checks": {
+    "diff_check": "passed; final files normalized to LF after semantic tests (line-ending-only change)",
+    "api_mutations": 0,
+    "model_search_calls": 0,
+    "business_state_writes": 0,
+    "temp_databases": 0,
+    "temp_filing_downloads": 0,
+    "new_temp_directory": null
+  },
+  "limits": [
+    "Browser acceptance and independent final review belong to central integrated UI node",
+    "No live paid scan, production write path or financial accuracy qualification granted",
+    "Pre-existing AND/OR and three-state admission semantics preserved, not redesigned",
+    "No generated snapshot generation timestamp exists in current source; explicitly shown as unrecorded"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "scope": "frontend product remediation; no owner writes or paid API calls",
+  "files": {
+    "src/app/ui/product.js": "0c53087c658d4cd5f7742acc9885506cb3bb2717be2b7dc12735280471101608",
+    "src/app/ui/product_core.js": "ff0259695c57bd65c96970f41851c4f654a70deed0772410f09695e04cfc9d03",
+    "src/app/ui/product_components.js": "c7406d6ab2fbc4fdc08ee6ff5381b164902e4018956c5e2990f46bfd32547e4f",
+    "src/app/ui/product_forms.js": "c03742d42b92c8cc4bf988769f1dbf4f2c5b2f1ee59628423d827bd0ea549a62",
+    "tests/test_product_ui.py": "3957298ffb2879af2cee90ad564062c243332cce23bf96999b470c0e5eb3de57"
+  },
+  "test_command": "C:/Miniconda/python.exe -m pytest tests/test_product_ui.py -q -p no:cacheprovider --junitxml=<IQS>/runs/ui-remediation-2026-10-25/product/tests.xml",
+  "tests": {
+    "tests": 30.0,
+    "failures": 0.0,
+    "errors": 0.0,
+    "skipped": 0.0,
+    "time": 8.103
+  },
+  "independent_remediation": {
+    "red_evidence": "review-red.xml",
+    "red_counterexamples": 4,
+    "fixed": [
+      "actual_delivery_completed_dto_including_stale_launcher_running",
+      "optional_path_clear_deletes_only_edited_key",
+      "both_settings_surfaces_lock_and_keep_unsaved_snapshot_changes",
+      "settings_changed_stale_setup_owner_policy_rejected_actionable_text",
+      "root_path_universe_label_blank_stays_explicit_no_default_reactivation"
+    ],
+    "additional_red_evidence": "root-path-red.xml"
+  }
+}

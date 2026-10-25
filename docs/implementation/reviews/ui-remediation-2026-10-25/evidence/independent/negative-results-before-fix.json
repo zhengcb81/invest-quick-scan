@@ -1,0 +1,26 @@
+[
+  {
+    "scenario": "independent-terminal-flow",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Original delivery-job completed must recommend delivered-results review, not another paid scan\n\n2 !== 3\n\n    at file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/[eval1]:81:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 2,\n  expected: 3,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.11.0\n"
+  },
+  {
+    "scenario": "independent-safe-boundaries",
+    "returncode": 0,
+    "stdout": "{\"scenario\":\"independent-safe-boundaries\",\"passed\":true,\"calls\":[]}\n",
+    "stderr": ""
+  },
+  {
+    "scenario": "independent-settings-inflight",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: An edit made while save is in flight must not be falsely labelled saved\n    at file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/[eval1]:104:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.11.0\n"
+  },
+  {
+    "scenario": "independent-clear-new-field",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Clearing a newly added optional path must clear the outgoing draft, not retain a hidden old value\n    at file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/[eval1]:112:50\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.11.0\n"
+  }
+]

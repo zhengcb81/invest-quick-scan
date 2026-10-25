@@ -1,3 +1,19 @@
+## 2026-10-25 — UI整改根因与终审结论
+
+原成员DTO无名称，必须按精确原entity_id联结get_entity；原runtime与coverage只证明有记录，不能当整家公司扫完。原交付终态completed必须指向结果，不能因登记仍在而重复开扫。表单要在途锁及提交snapshot，optional prepare清空删键，根路径清空保留显式空串让原validator决定，避免defaults偷偷复连。原失败已转固定独立反例，IR-01–05最终闭合。CSS独立解决textarea、size5列表、长题义flex收缩及字段堆叠，非全局隐藏overflow。整节点独审无开放发现，工程结论不授金融资格。
+
+## 2026-10-25 — M节点独审真实反例
+
+原delivery job成功用completed，不能仅识别delivered；原select全局36px压缩size5列表；长题义选项令草稿select宽1313px超过1280视口；连接新增路径输入后清空须删除原可选键并保留未知相邻项；保存pending期间不能用旧提交成功覆盖新draft的dirty提示。后端身份与覆盖8项独立负例通过。临时原policy校验要求configured=true及正预算，false模板/0预算拒绝是原契约，不改validator或生产预算以变绿。
+
+## 2026-10-25 — 集中整改的接口与真实性边界
+
+名单目前是原member DTO，没有展示名称；应按同一entity_id调用原身份公共读接口补canonical_name/identity_state/listings，不按名字猜身份或改原成员。正式覆盖继续复用StockWiki公开coverage/profiles，区分记录数/公司数/缺失/待审，拿不到显示未知。普通字段表单只能编辑原合法策略/引用并保持CAS和未知字段；不能创建第二预算、自动启用收费或在UI造原spend/authority对象。
+
+原PWF顶部并非最近审查节，单靠文件存在不足以确认当前入口；已显式前置本轮计划。两个独立报告的UX01–10/VD01–12是本轮闭合依据，重叠发现按根因修复，终审仍是一整个产品节点。
+
+---
+
 ## 2026-10-25 — 信息截止日与主体快照时间必须分开
 
 最后独审发现issuer-only把信息截止日拼成UTC午夜，会误拒当天稍晚验证的原收据，也会把历史答案日期错误当成身份/主体回溯。根修冻结服务器当前完整UTC时刻至candidate；preview/apply/原bootstrap复用同值，信息cutoff只约束答案。旧未执行候选缺字段必须重预览，旧完成幂等不能被新字段破坏。真实today原收据/原bootstrap快链与历史cutoff、浏览器伪时间戳、旧候选反例已独立3P；该类时间口径不能只用昨日receipt fixture证明。

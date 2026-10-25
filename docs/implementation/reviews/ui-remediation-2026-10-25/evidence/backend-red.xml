@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="15.088" timestamp="2026-10-25T19:33:59.389064+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_dashboard_owner" name="test_member_list_projects_original_identity_name_and_security_without_writes" time="6.213"><failure message="KeyError: 'canonical_name'">owner = (&lt;scripts.dashboard_owner.OwnerGateway object at 0x0000016FAD64E7B0&gt;, WindowsPath('C:/Users/郑曾波/Projects/invest-quick-.../owner'), WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/u7red/test_member_list_projects_orig0/registered'))
+
+    def test_member_list_projects_original_identity_name_and_security_without_writes(owner):
+        gateway, workspace, _ = owner
+        command = {"action": "add", "entity_id": ENTITY, "reason": "explicit isolated member"}
+        preview = gateway.universe_preview(command)
+        gateway.universe_apply({**command, "preview_token": preview["preview_token"]})
+        original = gateway.entity(ENTITY)
+        before = _tree(workspace)
+        member = gateway.universe_list()["members"][0]
+&gt;       assert member["canonical_name"] == original["entity"]["canonical_name"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'canonical_name'
+
+tests\test_dashboard_owner.py:123: KeyError</failure></testcase><testcase classname="tests.test_dashboard_owner" name="test_library_coverage_counts_original_records_not_completed_scans_or_financial_quality" time="3.174"><failure message="KeyError: 'library_summary'">owner = (&lt;scripts.dashboard_owner.OwnerGateway object at 0x0000016FAD51A850&gt;, WindowsPath('C:/Users/郑曾波/Projects/invest-quick-.../owner'), WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/u7red/test_library_coverage_counts_o0/registered'))
+
+    def test_library_coverage_counts_original_records_not_completed_scans_or_financial_quality(owner):
+        gateway, workspace, _ = owner
+        before = _tree(workspace)
+        result = gateway.coverage()
+&gt;       summary = result["library_summary"]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'library_summary'
+
+tests\test_dashboard_owner.py:135: KeyError</failure></testcase><testcase classname="tests.test_dashboard_owner" name="test_uninitialized_observation_store_keeps_coverage_unknown_and_does_not_create_it" time="3.273"><failure message="KeyError: 'library_summary'">owner = (&lt;scripts.dashboard_owner.OwnerGateway object at 0x0000016FAD51B4D0&gt;, WindowsPath('C:/Users/郑曾波/Projects/invest-quick-.../owner'), WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/u7red/test_uninitialized_observation0/registered'))
+
+    def test_uninitialized_observation_store_keeps_coverage_unknown_and_does_not_create_it(owner):
+        gateway, workspace, _ = owner
+        database = workspace / "data/quick_scan/scan_observations.sqlite"
+        assert database.is_relative_to(workspace) and database.is_file()
+        database.unlink()
+        before = _tree(workspace)
+        result = gateway.coverage()
+&gt;       summary = result["library_summary"]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'library_summary'
+
+tests\test_dashboard_owner.py:156: KeyError</failure></testcase><testcase classname="tests.test_dashboard_execution" name="test_settings_lists_only_original_provider_names_models_and_enabled_flags" time="0.481"><failure message="KeyError: 'provider_config_refs'">deployment = ({'stockqa_root': 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\u7red\\test_settings_lists_only_origi0\\source',...e'), {'entity_id': 'ENT_TEST', 'company': 'Test Corporation', 'provider': 'test', 'confirmation_id': 'confirm-1', ...})
+
+    def test_settings_lists_only_original_provider_names_models_and_enabled_flags(deployment):
+        config, runtime, _ = deployment
+        path = runtime / 'llm_apis.json'
+        put(path, {'providers': {
+            'route_a': {'model': 'actual-model-a', 'enabled': True, 'api_key': 'provider-secret-sentinel', 'base_url': 'https://not-returned.invalid/'},
+            'route_b': {'enabled': False, 'api_key_env': 'PRIVATE_ENV_REFERENCE'},
+        }, 'quick_scan_model_policy': {'models': ['existing-choice']}})
+        before = path.read_bytes()
+        result = ExecutionGateway(config).settings()
+&gt;       assert result['provider_config_refs'] == ['route_a', 'route_b']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'provider_config_refs'
+
+tests\test_dashboard_execution.py:119: KeyError</failure></testcase></testsuite></testsuites>
