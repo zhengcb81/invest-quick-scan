@@ -10,7 +10,7 @@ U6已交：任意既有唯一实体的动态题库与原主体/证券选择、�
 
 真实原CATL旧24题manifest一题复用package/exactACK为delivered、账本SHA54c094…不变、0HTTP；不重发耗尽r25六次cold。214认可既有实体通过原名单API接入UNI_IQS_APPROVED_214_20261025，209verified/5provisional身份摘要不变，无新增/合并/升级。实际浏览器原结果总214、CATL搜1条、原分/模型/时间/版本/证据可查。isolated_research、review_pending和金融缺口保持，工程ready/delivered不是金融资格。
 
-代码：StockQA7e8bf38已推origin/master；StockWiki7085ddc、UIcc382f3本地commit且无remote。IQS本轮commit/push查最终Git日志，不捏造其他远端。只精确stage本轮文件；保留他人10/10 README tracked改动和历史untracked，不stageconfig/真实DB/回答/context/源码副本/CodeGraph。原hooks不跳过。自有测试树已精确清，真实owner资料/旧失败保留。
+代码：StockQA7e8bf38已推origin/master；StockWiki7085ddc、UIcc382f3本地commit且无remote。IQS产品54bd11f已推既有origin/master、远端ref实查相同；后续发布文档提交看Git日志，不捏造其他远端。只精确stage本轮文件；保留他人10/10 README tracked改动和历史untracked，不stageconfig/真实DB/回答/context/源码副本/CodeGraph。原hooks不跳过。自有测试树已精确清，真实owner资料/旧失败保留。
 
 下一步：新合法原owner部署＋用户模型顺序＋新预算配置，然后UI明确启动少量公司并核全scope/原ACK再扩池。不能给旧r25扩额，不能为了使按钮变绿绕过高级协议或伪造身份。日常命令`python scripts/run_tests.py fast --temp-root C:/Temp`；受影响integration定向，大节点再跑native，别每个小改跑小时级全套。题库/使用/接口见README、company-and-bank-ui.md、dashboard-product-contract.md。薄归档docs/implementation/reviews/ui-product-u6-2026-10-25（integrity.json）；本地原证据runs/ui-product-u6-2026-10-25及dashboard-prepare28-*.xml/json。以下历史“当前/下一步”均不覆盖本节。
 

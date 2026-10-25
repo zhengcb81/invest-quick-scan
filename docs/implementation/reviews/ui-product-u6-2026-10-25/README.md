@@ -36,4 +36,4 @@
 
 本轮0收费模型/搜索/下载；不扩旧r25六次请求预算。测试自有临时目录已精确清理，原隔离研究库、原包、旧失败和其他writer材料保留。薄归档不含回答正文、上下文、思考、数据库、密钥、本机配置或源码副本。
 
-StockQA `7e8bf38`已正常提交并推既有origin/master；StockWiki `7085ddc`、UI `cc382f3`正常本地提交，无remote，不虚称推送。IQS本轮提交与远端发布以最终PWF和Git日志为准。
+StockQA `7e8bf38`已正常提交并推既有origin/master；StockWiki `7085ddc`、UI `cc382f3`正常本地提交，无remote，不虚称推送。IQS产品提交`54bd11f`已推既有origin/master，远端ref实查相同；后续发布文档提交见Git日志。

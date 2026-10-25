@@ -6,7 +6,7 @@ README六步操作、自动准备、完整公司组批跑、异步交付、原in
 
 真实CATL新交付wrapper复用原旧24题manifest一题、精确package/release语义/exactACK，原work SHA前后相同、0新HTTP。用户认可214既有实体已进入原名单（209verified/5provisional不变），无身份新增/合并/升级。实际CUA读取214原名单与结果库，搜索CATL1条，原分数7/模型/时间/版本/理由/来源可见；最终服务重启后Microsoft基础36题完整。UI截图本地保留，薄归档不含回答/DB/context/密钥。
 
-StockQA7e8bf38已正常提交推送；StockWiki7085ddc、UIcc382f3本地提交，均无remote。UI serve.py原Git/工作树CRLF保持原字节，识别CRLF的空白检查通过，未改全局配置或跳hook。IQS提交/推送按本轮最终Git发布记录核实；其他writer的10/10 README与历史未跟踪材料不入提交。自有root16处和review/agent测试临时树已精确清理，真实原工作区/包/旧失败保留。
+StockQA7e8bf38已正常提交推送；StockWiki7085ddc、UIcc382f3本地提交，均无remote。UI serve.py原Git/工作树CRLF保持原字节，识别CRLF的空白检查通过，未改全局配置或跳hook。IQS产品提交54bd11f已推既有origin/master，远端refs实查相同；其他writer的10/10 README与历史未跟踪材料不入提交。自有root16处和review/agent测试临时树已精确清理，真实原工作区/包/旧失败保留。
 
 当前部署尚缺prepare、新预算和用户模型顺序；自动准备仅原policy1.0/1.1，1.2+明确阻断，事实题面可查不等于已自动采集。工程完成不授金融准确性或全池评分；下一步在新合法原部署上小批UI扫描，不扩旧r25额度。证据归档docs/implementation/reviews/ui-product-u6-2026-10-25；PWF/使用说明已校正旧“固定包/尚未接线”的当前说法，历史记录保留。
 
