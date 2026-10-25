@@ -1,0 +1,29 @@
+........................................................................ [ 13%]
+................................................................................................................................................................................................ [ 48%]
+...................................................................... [ 61%]
+.................................................................... [ 73%]
+........................................................................ [ 87%]
+.................. [ 90%]
+....................................................                     [100%]
+============================ slowest 20 durations =============================
+10.37s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_v2_observation_has_separate_schema_and_exact_dispatch_lineage
+6.92s call     tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_public_external_result_drives_existing_module_routing_and_replays
+4.47s call     tests/test_task_receipt_retirement.py::TaskReceiptRetirementTests::test_historical_receipts_reviews_and_archived_sources_keep_their_hashes
+3.94s call     tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_unknown_route_cannot_skip_external_receipt_validation
+2.66s call     tests/test_parallel_lane_plan.py::ParallelLanePlanTests::test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries
+2.56s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_late_old_identity_answer_is_historical_not_current_reuse
+2.15s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_unknown_answer_with_numeric_score_is_history_only_not_current_score
+2.08s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_schema_valid_but_semantically_invalid_scored_content_needs_owner_receipt
+1.87s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_identity_envelope_rejects_pending_and_mismatched_dispatch_attempt
+1.26s setup    tests/test_vendor_subject_dispatch.py::test_explicit_profile_preregister_and_post_binding_keep_null_distinct
+1.25s call     tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_trusted_caller_identity_snapshot_is_checked_before_routing
+1.13s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_verified_multi_listing_security_scope_uses_its_own_binding
+0.93s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_current_score_gate_rejects_self_claimed_or_corrupt_observation
+0.93s call     tests/test_identity_bound_work_observation.py::IdentityBoundWorkObservationTests::test_current_score_gate_binds_each_persisted_owner_record
+0.65s setup    tests/test_accuracy_assessment.py::AssessmentTests::test_decimal_rounding_boundary_not_expanded
+0.46s call     tests/test_deployment_contract.py::DeploymentContractTests::test_deploy_04_same_version_different_loaded_hash_blocks
+0.44s call     tests/test_identity_contract.py::IdentityContractTests::test_uni_04_universe_manifest_capacity_expansion_and_logical_removal
+0.38s setup    tests/test_company_agent_contrast_launcher.py::test_registration_hash_then_task_scope_refused
+0.36s call     tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+0.35s setup    tests/test_company_agent_contrast_launcher.py::test_full_grid_and_task_identity
+544 passed, 372 subtests passed in 77.57s (0:01:17)

@@ -162,7 +162,7 @@ class RoutingTests(RoutingFixture):
         _, modules, _, _ = registry.load_package(self.package_id, root=self.root)
         self.assertEqual((self.policy["schema_version"], self.policy["router_version"],
                           self.policy["request_protocol"]),
-                         ("1.3.0", "2.4.0", "stockqa-route-confidence-3"))
+                         ("1.3.0", "2.5.0", "stockqa-route-confidence-3"))
         routing.validate_policy(self.policy, modules)
         archived22 = copy.deepcopy(self.policy)
         archived22.update(schema_version="1.2.0", router_version="2.2.0",
@@ -217,6 +217,61 @@ class RoutingTests(RoutingFixture):
         self.assertEqual(sum(1 for q in chosen if q["module_id"] in ("dupont", "porter")), 12)
         self.assertEqual(len([q for q in chosen if q["comparison_role"] == "core"]),
                          len(mc.core_construct_ids(modules["common"])))
+
+    def test_unclassified_route_keeps_all_basic_diagnostics_mandatory(self):
+        decision = self.route([])
+        _, modules, _, _ = registry.load_package(self.package_id, root=self.root)
+        diagnostic_ids = {q["id"] for mid in ("dupont", "porter") for q in modules[mid]["questions"]}
+        dispatch = decision["dispatch_plan"]
+        self.assertEqual(set(dispatch["eligible_module_ids"]), {"common", "dupont", "porter"})
+        self.assertTrue(diagnostic_ids <= set(dispatch["mandatory_question_ids"]))
+        self.assertEqual(dispatch["minimum_questions"], len(mc.core_construct_ids(modules["common"]))
+                         + len(diagnostic_ids))
+        for mode in ("quick", "full"):
+            with self.subTest(mode=mode):
+                chosen, _, _ = selection.select_questions_for_route(
+                    routing.profile_from_route(decision), mode, modules,
+                    dispatch["eligible_module_ids"], dispatch["mandatory_question_ids"])
+                kept, deferred = selection.apply_question_budget(chosen, dispatch["minimum_questions"],
+                                                                  dispatch["mandatory_question_ids"])
+                self.assertTrue(diagnostic_ids <= {q["id"] for q in kept})
+                self.assertFalse(deferred)
+
+    def test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route(self):
+        for mid in ("dupont", "porter"):
+            override = {"module_id": mid, "decision": "rejected", "actor": "fixture",
+                        "reason": "not meaningful: must return N/A instead", "valid_until": "2026-09-21T00:00:00Z"}
+            with self.subTest(module_id=mid), self.assertRaisesRegex(ValueError, "cannot remove basic"):
+                self.route(user_policy={"manual_overrides": [override]})
+
+    def test_new_policy_cannot_drop_a_basic_diagnostic_question(self):
+        _, modules, _, _ = registry.load_package(self.package_id, root=self.root)
+        for mid in ("dupont", "porter"):
+            invalid = copy.deepcopy(self.policy)
+            next(rule for rule in invalid["rules"] if rule["module_id"] == mid)["mandatory_question_ids"] = []
+            with self.subTest(module_id=mid), self.assertRaisesRegex(ValueError, "mandatory basic"):
+                routing.validate_policy(invalid, modules)
+
+    def test_historical_24_route_dispatch_semantics_are_preserved_for_reads(self):
+        historical_root = self.root / 'historical'
+        shutil.copytree(self.root / 'questions', historical_root / 'questions',
+                        ignore=shutil.ignore_patterns('releases'))
+        shutil.copytree(self.root / 'schemas', historical_root / 'schemas')
+        policy = copy.deepcopy(self.policy)
+        policy['router_version'] = '2.4.0'
+        for rule in policy['rules']:
+            if rule['predicate'] == 'default_diagnostic':
+                rule['mandatory_question_ids'] = []
+        qs.write_json(historical_root / 'questions/routing-policy.v2.json', policy)
+        package = routing.publish_routing_package(root=historical_root,
+            renderer_version=qs.RENDERER_VERSION, renderer_rules_sha256=qs.renderer_rules_sha256())
+        decision = routing.resolve_route_decision({**self.identity, 'verified_facts': []},
+            package_id=package['package_id'], root=historical_root, now_utc=self.now)
+        before = mc.canonical_bytes(decision)
+        self.assertEqual(decision['dispatch_plan']['eligible_module_ids'], ['common'])
+        self.assertEqual(decision['dispatch_plan']['mandatory_question_ids'], [])
+        routing.validate_route_snapshot(decision, root=historical_root)
+        self.assertEqual(mc.canonical_bytes(decision), before)
 
     def test_mod19_v23_execution_receipt_requires_hash_of_parsed_native_answer(self):
         native = self.native_response(self.normal())
@@ -399,7 +454,7 @@ class RoutingTests(RoutingFixture):
         alien = copy.deepcopy(candidate)
         alien["candidates"][1]["sources"][0]["url"] = "https://not-in-search-receipt.invalid/hallucinated"
         uncertain = self.route([], candidate=alien, execution_receipt=self.receipt())
-        self.assertEqual(uncertain["dispatch_plan"]["eligible_module_ids"], ["common"])
+        self.assertEqual(uncertain["dispatch_plan"]["eligible_module_ids"], ["common", "dupont", "porter"])
         self.assertEqual(uncertain["dispatch_plan"]["status"], "ready_common_and_risk")
         self.assertIn("unbound_search_source:semiconductors", uncertain["dispatch_plan"]["coverage_gaps"])
         self.assertNotIn("semiconductors", self.selected(uncertain))
@@ -407,12 +462,12 @@ class RoutingTests(RoutingFixture):
         no_call_sources = copy.deepcopy(self.receipt())
         no_call_sources["web_search_calls"][0]["source_urls"] = []
         result = self.route([], candidate=candidate, execution_receipt=no_call_sources)
-        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common"])
+        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common", "dupont", "porter"])
 
         wrong_call = copy.deepcopy(self.receipt())
         wrong_call["search_receipt_id"] = "other-call"
         result = self.route([], candidate=candidate, execution_receipt=wrong_call)
-        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common"])
+        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common", "dupont", "porter"])
 
         mixed = copy.deepcopy(self.receipt())
         mixed["web_search_calls"][0]["source_urls"].remove("https://example.invalid/semiconductors")
@@ -420,7 +475,7 @@ class RoutingTests(RoutingFixture):
                                           "action_type": "search",
                                           "source_urls": ["https://example.invalid/semiconductors"]})
         result = self.route([], candidate=candidate, execution_receipt=mixed)
-        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common"])
+        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common", "dupont", "porter"])
 
         missing_calls = copy.deepcopy(self.receipt())
         del missing_calls["web_search_calls"]
@@ -444,7 +499,10 @@ class RoutingTests(RoutingFixture):
         self.assertEqual(self.item(result, "distressed")["basis"], "deterministic")
         self.assertIn("distressed", self.selected(result))
         self.assertIn("recovery", self.selected(result))
-        self.assertEqual(len(result["dispatch_plan"]["mandatory_question_ids"]), 6)
+        mandatory = {qid for rule in self.policy['rules']
+                     if rule['module_id'] in {'dupont', 'porter', 'distressed', 'recovery'}
+                     for qid in rule['mandatory_question_ids']}
+        self.assertEqual(set(result["dispatch_plan"]["mandatory_question_ids"]), mandatory)
         self.assertNotIn("unbound_search_source:distressed",
                          result["dispatch_plan"]["coverage_gaps"])
         routing.validate_route_snapshot(result, root=self.root)
@@ -456,7 +514,10 @@ class RoutingTests(RoutingFixture):
         self.assertEqual(self.selected(result), {"common", "operating", "semiconductors", "mature", "cyclical", "recovery"})
         self.assertEqual(result["profile_context"]["stage"], "mature")
         self.assertEqual(result["profile_context"]["cycle_position"], "trough")
-        self.assertEqual(result["dispatch_plan"]["mandatory_question_ids"], [f"RECOVERY_{i:02}" for i in range(1, 5)])
+        mandatory = {qid for rule in self.policy['rules']
+                     if rule['module_id'] in {'dupont', 'porter', 'recovery'}
+                     for qid in rule['mandatory_question_ids']}
+        self.assertEqual(set(result["dispatch_plan"]["mandatory_question_ids"]), mandatory)
         changed = copy.deepcopy(facts); changed[-1]["rationale"] += " Revised disclosed backlog."
         self.assertNotEqual(result["decision_id"], self.route(changed)["decision_id"])
         price = self.fact("cyclical", evidence_type="price_decline", cycle_position="trough")
@@ -472,7 +533,10 @@ class RoutingTests(RoutingFixture):
         core = len(mc.core_construct_ids(modules["common"]))
         mandatory = result["dispatch_plan"]["mandatory_question_ids"]
         self.assertEqual(result["dispatch_plan"]["minimum_questions"], core + len(mandatory))
-        self.assertEqual(len(mandatory), 6)
+        required_ids = {qid for rule in self.policy["rules"]
+                        if rule["module_id"] in {"distressed", "recovery", "dupont", "porter"}
+                        for qid in rule["mandatory_question_ids"]}
+        self.assertEqual(set(mandatory), required_ids)
         with self.assertRaisesRegex(ValueError, "budget below mandatory"):
             routing.enforce_route_budget(result, core + len(mandatory) - 1)
         self.assertEqual(routing.enforce_route_budget(result, core + len(mandatory)),
@@ -510,7 +574,7 @@ class RoutingTests(RoutingFixture):
         facts.append(self.fact("industrial", business_id="equipment", materiality={"revenue_share": .7}))
         result = self.route(facts)
         self.assertEqual(result["dispatch_plan"]["status"], "ready_common_and_risk")
-        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common"])
+        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common", "dupont", "porter"])
         self.assertNotIn("holding", self.selected(result))
         self.assertEqual(self.item(result, "industrial")["decision"], "uncertain")
         self.assertEqual(self.item(result, "semiconductors")["decision"], "uncertain")
@@ -554,7 +618,7 @@ class RoutingTests(RoutingFixture):
         result = self.route(facts)
         self.assertIsNone(result["profile_context"]["company_type"])
         self.assertEqual(result["dispatch_plan"]["status"], "ready_common_and_risk")
-        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common"])
+        self.assertEqual(result["dispatch_plan"]["eligible_module_ids"], ["common", "dupont", "porter"])
         override = {"module_id": "operating", "decision": "selected", "actor": "fixture-user",
                     "reason": "Resolved company type", "valid_until": "2026-09-21T00:00:00Z"}
         resolved = self.route(facts, user_policy={"manual_overrides": [override]})
@@ -775,11 +839,12 @@ class RoutingTests(RoutingFixture):
         catalog["version"] = "3.3.0"
         catalog_path.write_text(json.dumps(catalog), encoding="utf8")
         policy = copy.deepcopy(self.policy)
-        policy["router_version"] = "2.5.0"
+        major, minor, _ = map(int, self.policy['router_version'].split('.'))
+        policy["router_version"] = f'{major}.{minor + 1}.0'
         policy["rules"].append({"module_id": "fixture_lens", "axis": "lens", "predicate": "user_lens",
             "minimum_confidence": "medium", "evidence_tags": ["user_request"], "excluded_tags": [], "mandatory_question_ids": []})
         policy["rules"].sort(key=lambda r: r["module_id"])
-        kwargs = {"root": self.root, "renderer_version": qs.RENDERER_VERSION, "router_version": "2.5.0",
+        kwargs = {"root": self.root, "renderer_version": qs.RENDERER_VERSION, "router_version": policy['router_version'],
                   "renderer_rules_sha256": qs.renderer_rules_sha256(), "routing_policy": policy, "activate": False}
         with self.assertRaisesRegex(ValueError, "weakens declared module activation"):
             registry.publish(**kwargs)
@@ -834,12 +899,16 @@ class ArchivedRouterCompatibilityTests(unittest.TestCase):
             # entry points still refuse this router once the patch exits.
             with patch.object(routing, "validate_route_for_execution",
                               side_effect=lambda value, **_: routing.validate_route_snapshot(
-                                  value, root=ROOT)):
+                                  value, root=ROOT)), \
+                    patch.object(qs.library, 'ALWAYS_APPLICABLE_DIAGNOSTICS', ()), \
+                    patch.object(qs, 'validate_manifest_metric_contract', return_value={}):
                 exported = qs.compose_from_route(
                     decision, output, now_utc="2026-09-20T12:01:00Z",
                     expected_route_decision_id=decision["decision_id"])
             self.assertEqual(exported["question_count"], 28)
             manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
+            # The historical producer predates this new-dispatch policy flag.
+            manifest.pop('selection_policy')
             qs.validate_manifest_metric_contract(manifest)
             altered = copy.deepcopy(manifest)
             altered["routing_execution"]["expected_decision_id"] = "route_" + "0" * 64

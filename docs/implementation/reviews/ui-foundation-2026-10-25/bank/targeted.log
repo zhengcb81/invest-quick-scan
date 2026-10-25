@@ -1,0 +1,255 @@
+.........................F.....F......F.F...............F                                    [100%]
+================================== FAILURES ===================================
+_ RoutingTests.test_new_lens_requires_registered_policy_and_explicit_nontransferable_authorization _
+
+self = <test_routing.RoutingTests testMethod=test_new_lens_requires_registered_policy_and_explicit_nontransferable_authorization>
+
+    def test_new_lens_requires_registered_policy_and_explicit_nontransferable_authorization(self):
+        module = json.loads((self.root / "questions/industries/semiconductors.json").read_text(encoding="utf8"))
+        question = copy.deepcopy(module["questions"][0])
+        question.update(id="FIXTURE_LENS_01", metric_id="score.fixture_lens_01", construct_id=None,
+                        comparison_role="context", priority=1)
+        module.update(module_id="fixture_lens", version="1.0.0", kind="lenses", name="Fixture lens",
+                      applies_when="Explicit user lens", questions=[question], dependencies=[], conflicts=[],
+                      introduced_in="1.0.0", activation={"mode": "manual", "required_evidence": ["User request"],
+                      "exclude_when": [], "minimum_confidence": "high"})
+        path = self.root / "questions/lenses/fixture_lens.json"
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps(module), encoding="utf8")
+        catalog_path = self.root / "questions/catalog.json"
+        catalog = json.loads(catalog_path.read_text(encoding="utf8"))
+        catalog["modules"].append({"id": "fixture_lens", "kind": "lenses", "name": "Fixture lens",
+                                   "path": "questions/lenses/fixture_lens.json", "question_count": 1,
+                                   "applies_when": "Explicit user lens"})
+        catalog["version"] = "3.3.0"
+        catalog_path.write_text(json.dumps(catalog), encoding="utf8")
+        policy = copy.deepcopy(self.policy)
+        policy["router_version"] = "2.5.0"
+        policy["rules"].append({"module_id": "fixture_lens", "axis": "lens", "predicate": "user_lens",
+            "minimum_confidence": "medium", "evidence_tags": ["user_request"], "excluded_tags": [], "mandatory_question_ids": []})
+        policy["rules"].sort(key=lambda r: r["module_id"])
+        kwargs = {"root": self.root, "renderer_version": qs.RENDERER_VERSION, "router_version": "2.5.0",
+                  "renderer_rules_sha256": qs.renderer_rules_sha256(), "routing_policy": policy, "activate": False}
+        with self.assertRaisesRegex(ValueError, "weakens declared module activation"):
+            registry.publish(**kwargs)
+        next(r for r in policy["rules"] if r["module_id"] == "fixture_lens")["minimum_confidence"] = "high"
+        contexts_path = self.root / "questions/scoring-contexts.json"
+        contexts = json.loads(contexts_path.read_text(encoding="utf8"))
+        contexts["lenses"] = {"fixture_lens": "Fixture evidence and user research perspective"}
+        contexts_path.write_text(json.dumps(contexts), encoding="utf8")
+>       self.package_id = registry.publish(**kwargs)["package_id"]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_routing.py:849: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/֣����/Projects/invest-quick-scan/runs/_b26_tmp/iqs-s06-8dyvwv3r')
+renderer_version = '1.0.0', router_version = '2.5.0'
+renderer_rules_sha256 = '6b221598394f5c23a5f724c0b9bac895bcb44eee87c9189285eb605a6ebf21fe'
+routing_policy = {'classification_confidence_gate': {'below_threshold': 'mark_llm_candidates_uncertain', 'minimum_score': 7}, 'material...re': 0.1, ...}, 'partial_dispatch': 'common_and_mandatory_risk', 'request_protocol': 'stockqa-route-confidence-3', ...}
+activate = False
+
+    def publish(*, root: Path = ROOT, renderer_version: str, router_version: str,
+                renderer_rules_sha256: str, routing_policy: dict | None = None,
+                activate: bool = True) -> dict:
+        """Publish an immutable release; optionally advance its atomic pointer."""
+        if type(activate) is not bool:
+            raise ValueError("activate must be boolean")
+        root = Path(root)
+        catalog, modules, raw_modules = source_catalog(root)
+        contexts = _read_json(root / "questions" / "scoring-contexts.json")
+        previous = _historical_packages(root)
+        baseline_hashes = _legacy_baseline_hashes(root)
+        if not previous and set(modules) != set(baseline_hashes):
+            raise ValueError("first release must freeze the known 48-module baseline")
+        if not re.fullmatch(r"[a-f0-9]{64}", renderer_rules_sha256):
+            raise ValueError("invalid renderer rules digest")
+        contract._version(renderer_version)
+        contract._version(router_version)
+        policy_artifact = None
+        if routing_policy is not None:
+            from routing import validate_policy
+            validate_policy(routing_policy, modules)
+            if router_version != routing_policy["router_version"]:
+                raise ValueError("routing policy version differs from requested router")
+            policy_raw = contract.canonical_bytes(routing_policy) + b"\n"
+            policy_sha = hashlib.sha256(policy_raw).hexdigest()
+            policy_ref = f"questions/releases/routing/router_{router_version.replace('.', '_')}-{policy_sha}.json"
+            policy_artifact = (policy_ref, policy_raw, policy_sha)
+        elif contract._version(router_version) >= (2, 0, 0):
+            raise ValueError("router v2 requires a frozen routing policy")
+        retired = set()
+        history_questions: dict[str, tuple[str, str]] = {}
+        versions_by_module: dict[str, dict[tuple[int, int, int], dict]] = {}
+        for past_package, past_modules, past_release, _ in previous:
+            if (policy_artifact and past_release["schema_version"] == "2.0.0"
+                    and past_release["routing_policy_sha256"] != policy_artifact[2]
+                    and contract._version(router_version) <= contract._version(past_release["router_version"])):
+>               raise ValueError("routing policy changed without router version increase")
+E               ValueError: routing policy changed without router version increase
+
+scripts\module_registry.py:381: ValueError
+_ RoutingTests.test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery __
+
+self = <test_routing.RoutingTests testMethod=test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery>
+
+    def test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery(self):
+        facts = self.normal("mature") + [self.fact("cyclical", cycle_position="trough")]
+        result = self.route(facts)
+        self.assertEqual(self.selected(result), {"common", "operating", "semiconductors", "mature", "cyclical", "recovery"})
+        self.assertEqual(result["profile_context"]["stage"], "mature")
+        self.assertEqual(result["profile_context"]["cycle_position"], "trough")
+>       self.assertEqual(result["dispatch_plan"]["mandatory_question_ids"], [f"RECOVERY_{i:02}" for i in range(1, 5)])
+E       AssertionError: Lists differ: ['DUPONT_01', 'DUPONT_02', 'DUPONT_03', 'DU[168 chars]_04'] != ['RECOVERY_01', 'RECOVERY_02', 'RECOVERY_03', 'RECOVERY_04']
+E       
+E       First differing element 0:
+E       'DUPONT_01'
+E       'RECOVERY_01'
+E       
+E       First list contains 12 additional elements.
+E       First extra element 4:
+E       'DUPONT_05'
+E       
+E       + ['RECOVERY_01', 'RECOVERY_02', 'RECOVERY_03', 'RECOVERY_04']
+E       - ['DUPONT_01',
+E       -  'DUPONT_02',
+E       -  'DUPONT_03',
+E       -  'DUPONT_04',
+E       -  'DUPONT_05',
+E       -  'DUPONT_06',
+E       -  'DUPONT_07',
+E       -  'PORTER_01',
+E       -  'PORTER_02',
+E       -  'PORTER_03',
+E       -  'PORTER_04',
+E       -  'PORTER_05',
+E       -  'RECOVERY_01',
+E       -  'RECOVERY_02',
+E       -  'RECOVERY_03',
+E       -  'RECOVERY_04']
+
+tests\test_routing.py:514: AssertionError
+_ RoutingTests.test_unbound_model_candidate_cannot_override_verified_risk_fact _
+
+self = <test_routing.RoutingTests testMethod=test_unbound_model_candidate_cannot_override_verified_risk_fact>
+
+    def test_unbound_model_candidate_cannot_override_verified_risk_fact(self):
+        verified = self.fact("distressed", evidence_type="covenant_breach")
+        candidate_fact = copy.deepcopy(verified)
+        candidate_fact["sources"][0]["url"] = "https://unbound.invalid/distressed"
+        candidate = {"schema_version": "2.0.0", "question_id": "ROUTE_02",
+                     "candidates": [candidate_fact]}
+        result = self.route([verified], candidate=candidate,
+                            execution_receipt=self.receipt())
+        self.assertEqual(self.item(result, "distressed")["basis"], "deterministic")
+        self.assertIn("distressed", self.selected(result))
+        self.assertIn("recovery", self.selected(result))
+>       self.assertEqual(len(result["dispatch_plan"]["mandatory_question_ids"]), 6)
+E       AssertionError: 18 != 6
+
+tests\test_routing.py:502: AssertionError
+_ ArchivedRouterCompatibilityTests.test_archived_router_20_manifest_remains_readable _
+
+self = <test_routing.ArchivedRouterCompatibilityTests testMethod=test_archived_router_20_manifest_remains_readable>
+
+    def test_archived_router_20_manifest_remains_readable(self):
+        decision = json.loads((ROOT / "tests/fixtures/s06_router_20_search_route.json")
+                              .read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory(prefix="iqs-s06-old-manifest-") as temp_root:
+            output = Path(temp_root) / "archived-run"
+            # Recreate the archived producer solely inside TEMP; current new-run
+            # entry points still refuse this router once the patch exits.
+            with patch.object(routing, "validate_route_for_execution",
+                              side_effect=lambda value, **_: routing.validate_route_snapshot(
+                                  value, root=ROOT)):
+>               exported = qs.compose_from_route(
+                    decision, output, now_utc="2026-09-20T12:01:00Z",
+                    expected_route_decision_id=decision["decision_id"])
+
+tests\test_routing.py:896: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\question_sets.py:344: in compose_from_route
+    return compose(route_engine.profile_from_route(route_decision),
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profile = {'entity_id': 'E_ARCHIVE', 'company': 'Fictional archival semiconductor', 'ticker': 'ARCH', 'exchange': 'SSE', ...}
+mode = 'quick'
+output_dir = WindowsPath('C:/Users/֣����/Projects/invest-quick-scan/runs/_b26_tmp/iqs-s06-old-manifest-99i355u0/archived-run')
+answer_format = 'screening-1'
+package_id = 'pkg_5c7facbfd9b772130e3fb5150d2c4d390083e72570b28c82cc4ab67151fd881f'
+route_decision = {'schema_version': '2.0.0', 'module_package_id': 'pkg_5c7facbfd9b772130e3fb5150d2c4d390083e72570b28c82cc4ab67151fd881f...release_id': 'modrel_e12314434ad50692ed0a8a16ee2834e528cf47a9ebb6a7e9a692e71e3cf42741', 'router_version': '2.0.0', ...}
+max_questions = None, now_utc = '2026-09-20T12:01:00Z'
+expected_route_decision_id = 'route_19ec36e7bfa4ca3c6cd077a4d06d16087ed9e1156b825f6f003b7058bd3c6203'
+
+    def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=None,
+                route_decision=None, max_questions=None, now_utc=None, expected_route_decision_id=None):
+        profile = json.loads(json.dumps(profile, ensure_ascii=False))
+        if profile.get('diagnostic_exclusions'):
+            raise ValueError('new scans cannot exclude basic diagnostics; retain each question and return '
+                             'not_applicable with a reason and an appropriate replacement metric when needed')
+        for key in ('industry_modules', 'overlays', 'diagnostic_modules',
+                    'diagnostic_exclusions', 'investment_lenses', 'common_extension_modules'):
+            if isinstance(profile.get(key), list):
+                profile[key] = sorted(profile[key])
+        if answer_format not in ('legacy', 'standard-1', 'screening-1'):
+            raise ValueError('unknown answer format')
+        if answer_format == 'screening-1' and not (
+                isinstance(profile.get('entity_id'), str) and profile['entity_id'].strip()):
+            raise ValueError('screening requires a verified stable profile entity_id')
+        if package_id is None:
+            package, modules, release, contexts = module_registry.load_current(root=ROOT)
+        else:
+            package, modules, release, contexts = module_registry.load_package(package_id, root=ROOT)
+        if package['renderer_rules_sha256'] != renderer_rules_sha256():
+            raise ValueError('historical renderer implementation unavailable for prompt verification')
+        if answer_format == 'standard-1' and not module_registry.observation_ingest_ready(package):
+            raise ValueError('module package cannot issue standard observations; historical read only')
+        route_v2 = route_decision is not None and route_decision.get('schema_version') == '2.0.0'
+        if route_v2:
+            import routing as route_engine
+    
+            if not isinstance(now_utc, str) or not isinstance(expected_route_decision_id, str):
+                raise ValueError('route v2 composition requires current execution time and independent decision identity')
+            if route_decision.get('module_package_id') != package['package_id']:
+                raise ValueError('route package differs from composed package')
+            if profile != route_engine.profile_from_route(route_decision):
+                raise ValueError('profile differs from frozen routing context')
+            route_engine.validate_route_for_execution(
+                route_decision, root=ROOT, now_utc=now_utc,
+                expected_decision_id=expected_route_decision_id)
+        chosen, selected, replacements = _published_selection(
+            profile, mode, modules, release, route_decision, contexts, package)
+        required_diagnostics = {q['id'] for module_id in library.ALWAYS_APPLICABLE_DIAGNOSTICS
+                                for q in modules[module_id]['questions']}
+        if not required_diagnostics <= {q['id'] for q in chosen}:
+>           raise ValueError('new scan requires all basic diagnostics; refresh the frozen route with router 2.5 '
+                             'and retain non-meaningful questions as explicit not_applicable')
+E           ValueError: new scan requires all basic diagnostics; refresh the frozen route with router 2.5 and retain non-meaningful questions as explicit not_applicable
+
+scripts\question_sets.py:241: ValueError
+_ RouteCompositionTests.test_s06_uncertain_primary_axis_does_not_borrow_confidence_from_known_industry _
+
+self = <test_question_sets.RouteCompositionTests testMethod=test_s06_uncertain_primary_axis_does_not_borrow_confidence_from_known_industry>
+
+    def test_s06_uncertain_primary_axis_does_not_borrow_confidence_from_known_industry(self):
+        facts = self.normal(); facts[0]['confidence'] = 'low'
+        decision = self.route(facts)
+        self.assertIn('semiconductors', self.selected(decision), 'preserve sourced classification evidence')
+>       self.assertEqual(decision['dispatch_plan']['eligible_module_ids'], ['common'])
+E       AssertionError: Lists differ: ['common', 'dupont', 'porter'] != ['common']
+E       
+E       First list contains 2 additional elements.
+E       First extra element 1:
+E       'dupont'
+E       
+E       - ['common', 'dupont', 'porter']
+E       + ['common']
+
+tests\test_question_sets.py:1703: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_routing.py::RoutingTests::test_new_lens_requires_registered_policy_and_explicit_nontransferable_authorization
+FAILED tests/test_routing.py::RoutingTests::test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery
+FAILED tests/test_routing.py::RoutingTests::test_unbound_model_candidate_cannot_override_verified_risk_fact
+FAILED tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_router_20_manifest_remains_readable
+FAILED tests/test_question_sets.py::RouteCompositionTests::test_s06_uncertain_primary_axis_does_not_borrow_confidence_from_known_industry
+5 failed, 52 passed, 52 subtests passed in 455.66s (0:07:35)

@@ -18,10 +18,11 @@ import module_contract as mc
 import module_registry as registry
 
 ROOT = Path(__file__).resolve().parents[1]
-ROUTER_VERSION = "2.4.0"
-"""2.4.0：新增 ``default_diagnostic`` 谓词——适用条件为“对所有公司必做”的诊断模块
-（当前为 dupont / porter，RULE-SCOPE-DECISION-19 + R2 所有者裁定）在路由判定中**恒被选中**，
-使路由驱动组装与 profile 驱动组装一样默认包含它们（R-02/F8 关闭）。"""
+ROUTER_VERSION = "2.5.0"
+"""2.5.0 makes default diagnostics mandatory at dispatch and budget boundaries,
+including unresolved classifications. Historical 2.4 decisions retain their
+original read semantics; new incomplete dispatches require a refreshed route.
+"""
 AXES = {"common": "common", "types": "type", "industries": "industry", "stages": "lifecycle",
         "overlays": "attribute", "diagnostics": "diagnostic", "lenses": "lens",
         "common_extensions": "common_extension"}
@@ -242,6 +243,10 @@ def validate_policy(policy, modules):
             raise ValueError("routing evidence and exclusion conflict")
         if not set(rule["mandatory_question_ids"]) <= {q["id"] for q in module["questions"]}:
             raise ValueError("mandatory question is outside its module")
+        if (tuple(map(int, policy["router_version"].split("."))) >= (2, 5, 0)
+                and rule["predicate"] == "default_diagnostic"
+                and set(rule["mandatory_question_ids"]) != {q["id"] for q in module["questions"]}):
+            raise ValueError("policy cannot drop mandatory basic diagnostic questions")
     by_id = {r["module_id"]: r for r in rules}
     for module_id, ids in {"distressed": {"DISTRESSED_01", "DISTRESSED_02"},
                            "recovery": {f"RECOVERY_{i:02}" for i in range(1, 5)}}.items():
@@ -630,6 +635,10 @@ def resolve_route_decision(route_input, *, package_id, route_response=None, exec
         mid = override["module_id"]; seen_overrides.add(mid)
         if mid == "common" and override["decision"] != "selected":
             raise ValueError("manual override cannot remove common")
+        if (tuple(map(int, policy["router_version"].split("."))) >= (2, 5, 0)
+                and rules[mid]["predicate"] == "default_diagnostic"
+                and override["decision"] != "selected"):
+            raise ValueError("manual override cannot remove basic diagnostics; return explicit not_applicable instead")
         if mid == "distressed" and decisions[mid]["decision"] == "selected" and override["decision"] == "rejected":
             raise ValueError("manual override cannot suppress evidenced distress coverage")
         decision(mid, override["decision"], "manual", "high", "user_override", override["reason"], override={k: override[k] for k in ("actor", "reason", "valid_until")})
@@ -707,7 +716,7 @@ def resolve_route_decision(route_input, *, package_id, route_response=None, exec
         elif scope_compatible is not True:
             dispatch_status = "requires_segments"
             gaps.append("business_scope_unconfirmed")
-    mandatory = sorted({qid for mid in selected for qid in rules[mid]["mandatory_question_ids"]})
+    mandatory = _mandatory_questions(selected, rules, modules, policy)
     eligible = sorted(selected) if not module_selection_issues else []
     segment_requests = sorted({f.get("business_id", mid) for mid, (f, _) in facts.items()
                                if rules[mid]["axis"] == "industry"}) if dispatch_status == "requires_segments" else []
@@ -768,6 +777,14 @@ def minimum_question_count(modules, mandatory_question_ids=()) -> int:
     if not core:
         raise ValueError("common module must declare at least one core construct")
     return len(core) + len(mandatory_question_ids)
+
+
+def _mandatory_questions(selected, rules, modules, policy):
+    mandatory = {qid for mid in selected for qid in rules[mid]['mandatory_question_ids']}
+    if mc._version(policy['router_version']) >= (2, 5, 0):
+        mandatory.update(q['id'] for q in modules['common']['questions']
+                         if q.get('comparison_role') != 'core')
+    return sorted(mandatory)
 
 
 def _minimum_questions_for_route(decision, modules):
@@ -850,13 +867,17 @@ def validate_route_snapshot(decision, *, root=ROOT):
             and "recovery" not in selected):
         raise ValueError("route removed mandatory triggered recovery review")
     by_id = {item["module_id"]: item for item in decision["module_decisions"]}
+    if tuple(map(int, policy["router_version"].split("."))) >= (2, 5, 0):
+        for mid, rule in rules.items():
+            if rule["predicate"] == "default_diagnostic" and by_id[mid]["decision"] != "selected":
+                raise ValueError("route cannot remove basic diagnostics")
     if "cyclical" in selected and profile["cycle_position"] != by_id["cyclical"].get("evidence_context", {}).get("cycle_position", "unknown"):
         raise ValueError("cycle position differs from frozen routing evidence")
     if (profile["diagnostic_rationale"] != {mid: by_id[mid]["rationale"] for mid in expected["diagnostic_modules"]}
             or profile["lens_rationale"] != {mid: by_id[mid]["rationale"] for mid in expected["investment_lenses"]}
             or profile["recovery_rationale"] != (by_id["recovery"]["rationale"] if "recovery" in selected else "")):
         raise ValueError("frozen profile rationale contradicts module decisions")
-    mandatory = sorted({qid for mid in selected for qid in rules[mid]["mandatory_question_ids"]})
+    mandatory = _mandatory_questions(selected, rules, modules, policy)
     if (decision["dispatch_plan"]["mandatory_question_ids"] != mandatory
             or decision["dispatch_plan"]["minimum_questions"] != minimum_question_count(modules, mandatory)):
         raise ValueError("route mandatory risk coverage differs from frozen policy")

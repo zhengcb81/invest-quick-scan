@@ -43,11 +43,19 @@ def main() -> int:
         shutil.copyfile(answers_path, target / "answers.json")
         if (directory / "index.html").is_file():
             shutil.copyfile(directory / "index.html", target / "index.html")
-    catalog_path = Path(__file__).resolve().parents[1] / "docs/implementation/questions-24.json"
-    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
-    dimension_of = {q["id"]: q["dimension"] for q in catalog["questions"]}
+    from thin_scan import default_basic_questions
+    import question_sets
+    basic = default_basic_questions()
+    _, modules = question_sets.load_library()
+    aggregate_ids = {q['id'] for q in basic if q.get('aggregation') != 'diagnostic'}
+    dimension_of = {q['id']: q['dimension'] for module in modules.values() for q in module['questions']}
+
+    def core_answer(answer):
+        if answer.get('comparison_role') == 'diagnostic' or answer.get('aggregation') == 'diagnostic':
+            return False
+        return answer.get('core', answer['question_id'] in aggregate_ids)
     dimension_order = []
-    for q in catalog["questions"]:
+    for q in basic:
         if q["dimension"] not in dimension_order:
             dimension_order.append(q["dimension"])
     questions = {}
@@ -71,7 +79,8 @@ def main() -> int:
     for company in companies:
         answers = company["doc"]["answers"]
         scored = [a for a in answers if a["status"] == "scored"]
-        average = sum(a["score"] for a in scored) / len(scored) if scored else None
+        aggregate_scored = [a for a in scored if core_answer(a)]
+        average = sum(a["score"] for a in aggregate_scored) / len(aggregate_scored) if aggregate_scored else None
         cost = company["doc"]["meta"]["cost_micros"] / 1_000_000
         summary.append(
             "<tr><td>{}</td><td>{}/{}</td><td>{}</td><td>{}</td><td><a href='{}/index.html'>页面</a></td></tr>".format(
@@ -83,7 +92,8 @@ def main() -> int:
         cells = []
         for company in companies:
             values = [a["score"] for a in company["doc"]["answers"]
-                      if a["status"] == "scored" and dimension_of.get(a["question_id"]) == dimension]
+                      if a["status"] == "scored" and core_answer(a)
+                      and dimension_of.get(a["question_id"]) == dimension]
             cells.append("-" if not values else f"{sum(values)/len(values):.1f}")
         dimension_rows.append(f"<tr><td>{html.escape(dimension)}</td>{''.join('<td>'+c+'</td>' for c in cells)}</tr>")
     dimension_table = ("<table><tr><th>维度</th>" + "".join(f"<th>{html.escape(c['name'])}</th>" for c in companies)
@@ -94,8 +104,8 @@ table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;
 .q{color:#6b7280;font-size:12px}.s{color:#0f766e;font-weight:600}.i{color:#b45309}.warn{background:#fffbeb;border:1px solid #fde68a;padding:10px 12px;border-radius:8px}</style>
 <h1>薄草稿对比</h1>
 <p class="warn">草稿，非正式入账；分数只用于先看方向，不构成投资建议。</p>
-<h2>公司汇总</h2><table><tr><th>公司</th><th>已评分</th><th>平均分（已评分）</th><th>搜索成本</th><th>详情</th></tr>__SUMMARY__</table>
-<h2>维度均分（仅有分数的题）</h2>__DIMENSIONS__
+<h2>公司汇总</h2><table><tr><th>公司</th><th>已评分</th><th>核心题草稿均分</th><th>搜索成本</th><th>详情</th></tr>__SUMMARY__</table>
+<h2>核心维度均分（不含专题与诊断题）</h2>__DIMENSIONS__
 <h2>逐题</h2><table><tr><th>问题</th>__HEADER__</tr>__ROWS__</table>
 </body></html>"""
     page = (page.replace("__SUMMARY__", "".join(summary))

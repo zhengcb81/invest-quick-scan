@@ -1,0 +1,107 @@
+{
+  "task": "mandatory-basic-coverage-audit-and-fix",
+  "source_files": {
+    "SKILL.md": "87857c5639847d4feedb666b310d0c354e7cc55287bbb470eed5e6e4f1c09051",
+    "questions/routing-policy.v2.json": "e412736654f854a79e376cbe03021c6b3d5ad6821640f277cb9aaaa1daaa4909",
+    "scripts/compose_company_bank.py": "c5f852fe893b7c87a231c7be8a1f703fb9c8a893c83d3dbecb9783ed2d3b1f65",
+    "scripts/question_manifest.py": "15cb20d7a65f0def0e5a14b9bf0e033e0eec3a9f8be44a8bdd1bcca276ff42e6",
+    "scripts/question_selection.py": "dd42beebe16e192fd3d2c5d1d3c5343f80c972853ca4c7c766ce686a60f55218",
+    "scripts/question_sets.py": "6a211f5c5cef1ce3b4b1851c638e60be7f270de01c87192e4b29f93e5d1e33f1",
+    "scripts/routing.py": "0b52d89ea9f06488ecadf5b657398e26f6f6543f881d0a5df6769121358ef75a",
+    "tests/test_bank_expansion_21.py": "64c0608944c319eba67197917845814180761ef1ec0b64569b8a13f0a06fbada",
+    "tests/test_question_sets.py": "b16ab4c5f6f29ff5bca8ed20aa484b1d7f08bd69dd5a8f3a99b27d0b8fc107d7",
+    "tests/test_routing.py": "30060573147256c63ae9b3948951b49a620a678a939cf8f0c60c239b3812bc1f",
+    "basic_questions.json": "0cfd9991359e9795509c4f06741ecf6eed8234e390b688d16c4038bfab24e8b9",
+    "questions/releases/locks/modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df.json": "90914f8fd0f06d5e18e5ce9d5250cec944d3274a084ae4f783572fe54866fac8",
+    "questions/releases/packages/pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a.json": "6732663acedc74a9c173704981bd1012dafd9c4440214e533528c425745864f0",
+    "questions/releases/routing/router_2_5_0-a13a6a6bd9b66f92ff536e3f63782abbc6621b9e33606e70375a89fb433992b0.json": "a13a6a6bd9b66f92ff536e3f63782abbc6621b9e33606e70375a89fb433992b0"
+  },
+  "publication": {
+    "exit_code": 0,
+    "stdout": "{\n  \"package_id\": \"pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a\",\n  \"release_id\": \"modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df\",\n  \"modules\": 48,\n  \"questions\": 222\n}\n",
+    "stderr": "",
+    "existing_files": 70,
+    "new_files": [
+      "questions\\releases\\locks\\modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df.json",
+      "questions\\releases\\packages\\pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a.json",
+      "questions\\releases\\routing\\router_2_5_0-a13a6a6bd9b66f92ff536e3f63782abbc6621b9e33606e70375a89fb433992b0.json"
+    ],
+    "changed_existing": [],
+    "current_pointer_unchanged": true
+  },
+  "tests": {
+    "first_real_targeted": {
+      "passed": 52,
+      "subtests_passed": 52,
+      "failed": 5,
+      "seconds": 455.66,
+      "artifact": "targeted.xml"
+    },
+    "exact_five_failures_and_added_controls_recheck": {
+      "passed": 15,
+      "subtests_passed": 20,
+      "failed": 0,
+      "seconds": 57.92,
+      "artifact": "recheck.xml",
+      "every_original_failed_node_included": true
+    },
+    "initial_red": {
+      "environment_errors": true,
+      "artifact": "red.xml"
+    },
+    "sandbox_hardlink_retry": {
+      "pure_controls_passed": 5,
+      "subtests_passed": 16,
+      "environment_failures": 3,
+      "artifact": "green.xml"
+    }
+  },
+  "historical_38": {
+    "status": "passed",
+    "path": "runs\\thin-bank-catl-full-2026-10-22\\composed\\manifest.json",
+    "question_count": 38,
+    "legacy_policy": null,
+    "original_sha256": "03099756e42ba35c8ae400ecf6796ac05e46c4517af0d038da1e15ccb03d31f5",
+    "after_sha256": "03099756e42ba35c8ae400ecf6796ac05e46c4517af0d038da1e15ccb03d31f5"
+  },
+  "historical_budget": [
+    {
+      "path": "runs\\company-agent-owner-2026-10-15-01\\native-read-3\\manifest.json",
+      "max_questions": 30,
+      "count": 30,
+      "status": "passed",
+      "error": null,
+      "sha256": "a2194c9dcb252d9b431e75bfbb89cc069502ef7d27846bff8d1562e4c5e3f637",
+      "unchanged": true
+    },
+    {
+      "path": "runs\\existing-list-onboarding-2026-10-18\\route-compose-000026-copy\\manifest.json",
+      "max_questions": 24,
+      "count": 24,
+      "status": "passed",
+      "error": null,
+      "sha256": "5708cd329b51fe67a2bc7a4b2c505f00f1bd79e1db9b9aa12e60947dac3c477a",
+      "unchanged": true
+    },
+    {
+      "path": "runs\\existing-list-onboarding-2026-10-18\\route-compose-000026-real\\manifest.json",
+      "max_questions": 24,
+      "count": 24,
+      "status": "passed",
+      "error": null,
+      "sha256": "5708cd329b51fe67a2bc7a4b2c505f00f1bd79e1db9b9aa12e60947dac3c477a",
+      "unchanged": true
+    }
+  ],
+  "paid_api_calls": 0,
+  "external_repository_writes": 0,
+  "full_suite_run": false,
+  "thin_files_owned_by_root": true,
+  "notes": [
+    "The first 5 failures were 4 obsolete test expectations and a historical-producer recreation fixture that needed the old producer policy, not a suppressed new-run guard. All 5 exact nodes passed in the recheck.",
+    "The new basic export is 36 from source: common 24 + DuPont 7 + Porter 5; company type replacements preserve the 24 scoring slots; extra industry/stage/context questions vary.",
+    "Original questions/common.json, main_questions.json, released archives, input locks and real company scan bytes were not edited.",
+    "The 10/22 real 38-question manifest originally failed current default-selection validation; repaired reader passes it with identical original raw SHA.",
+    "All new scans carry an explicit selection policy; absent-policy historical reads derive optional/mandatory defaults from frozen module versions."
+  ]
+}

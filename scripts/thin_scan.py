@@ -53,6 +53,14 @@ BANK_MAX_TOKENS = 12000
 FLAT_MAX_TOKENS = 2000
 
 
+def default_basic_questions():
+    """Read current mandatory coverage; legacy flat files remain explicit inputs."""
+    import question_sets
+    _, modules = question_sets.load_library()
+    return [{**question, "core": question.get("comparison_role") == "core"}
+            for question in question_sets.basic_questions(modules)]
+
+
 def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict]:
     """POST JSON and never raise on transport failure.
 
@@ -252,10 +260,12 @@ def build_prompt(question: dict, company: str, sources: list[dict], as_of: str, 
         f"公司：{company}\n问题：{qtext}\n{extra}信息截止：{as_of}\n\n"
         f"检索结果：\n{source_text}\n\n"
         "只输出一个 JSON 对象，不要 markdown，不要解释。格式：\n"
-        '{"status":"scored" 或 "insufficient_evidence","score":1-10 的整数或 null,'
+        '{"status":"scored" 或 "insufficient_evidence" 或 "not_applicable","score":1-10 的整数或 null,'
         '"summary":"不超过120字的结论","evidence":["只填上面出现过的 URL"]}\n'
         "规则：status=scored 时 score 必须是 1-10 的整数且 evidence 至少 1 条；"
         "status=insufficient_evidence 时 score 为 null。"
+        "仅当有来源证明问题的经济口径不适用（如金融公司的普通企业周转率）时，"
+        "可返回not_applicable，score为null，summary说明原因且evidence至少1条；缺数据仍为insufficient_evidence。"
     )
     return prompt, "brief", False
 
@@ -346,6 +356,10 @@ def clean_answer(raw: dict, sources: list[dict]) -> tuple[dict, list[str]]:
         elif not evidence_urls:
             status, score = "insufficient_evidence", None
             problems.append("no_evidence_urls")
+    elif status == "not_applicable":
+        if not evidence_urls or not summary:
+            status = "insufficient_evidence"
+            problems.append("not_applicable_without_basis")
     elif status != "insufficient_evidence":
         status, score = "insufficient_evidence", None
         problems.append("status_invalid")
@@ -364,7 +378,7 @@ def render(company: str, answers: list[dict], meta: dict, out: Path) -> None:
         rows.append(
             "<tr><td>{}<br><span class='q'>{}</span></td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
                 html.escape(a["question_id"]), html.escape(a["question"]),
-                html.escape("已评分" if a["status"] == "scored" else "证据不足"),
+                html.escape({"scored": "已评分", "not_applicable": "不适用"}.get(a["status"], "证据不足")),
                 html.escape(str(a["score"])) if a["score"] is not None else "-",
                 html.escape(a["summary"]), ev or "-",
             )
@@ -405,7 +419,8 @@ table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--company", required=True)
-    parser.add_argument("--questions", type=Path, default=ROOT / "docs/implementation/questions-24.json")
+    parser.add_argument("--questions", type=Path,
+                        help="显式兼容清单；不传则动态读取通用核心+杜邦+五力基础必做题")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--max-searches-per-question", type=int, default=1)
     parser.add_argument("--limit", type=int, default=None,
@@ -423,10 +438,13 @@ def main() -> int:
         questions = bank["questions"]
         as_of = args.as_of or bank["identity"].get("as_of") or "2026-10-18"
     else:
-        catalog = json.loads(args.questions.read_text(encoding="utf-8-sig"))
-        questions = catalog["questions"]
-        for q in questions:
-            q["core"] = True
+        if args.questions is None:
+            questions = default_basic_questions()
+        else:
+            catalog = json.loads(args.questions.read_text(encoding="utf-8-sig"))
+            questions = catalog["questions"]
+            for q in questions:
+                q["core"] = q.get("comparison_role", "core") == "core"
         as_of = args.as_of or "2026-10-18"
     if args.limit is not None:
         questions = questions[: args.limit]
@@ -440,6 +458,8 @@ def main() -> int:
                   "score": None, "summary": "", "evidence": [], "searches": 0, "problems": [],
                   "module_id": q.get("module_id"), "construct_id": q.get("construct_id"),
                   "core": bool(q.get("core", True)),
+                  "comparison_role": q.get("comparison_role"),
+                  "aggregation": q.get("aggregation"),
                   "prompt_sha256": q.get("prompt_sha256"),
                   "semantic_sha256": q.get("semantic_sha256"),
                   "definition_sha256": q.get("definition_sha256")}
@@ -513,6 +533,8 @@ def main() -> int:
                     record["summary"] = "模型调用失败，保留证据不足。"
                 else:
                     calls += 1
+                    record["model"] = provider.get("model")
+                    record["provider_id"] = provider.get("id")
                     cleaned, problems = clean_answer(raw, sources)
                     record.update(cleaned)
                     record["problems"].extend(problems)

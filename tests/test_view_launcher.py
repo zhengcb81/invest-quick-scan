@@ -12,6 +12,41 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 SCRIPT=ROOT/'scripts/view_quick_scan.py'
+DASHBOARD=ROOT/'scripts/open_dashboard.py'
+
+
+def test_company_dashboard_missing_source_is_actionable(tmp_path):
+    done = subprocess.run([sys.executable, '-B', str(DASHBOARD), '--ui-root', str(tmp_path/'missing')],
+                          cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
+    assert done.returncode == 2 and '--ui-root' in done.stderr and 'Traceback' not in done.stderr
+
+
+@pytest.mark.parametrize('no_refresh', [False, True])
+def test_company_dashboard_reuses_existing_serve_without_startup_tests(tmp_path, no_refresh):
+    ui = tmp_path/'ui'
+    (ui/'scripts').mkdir(parents=True)
+    (ui/'scripts'/'serve.py').write_text(
+        'import json, os, sys\nprint(json.dumps({"args":sys.argv[1:],"root":os.environ["IQS_DATA_ROOT"],"cwd":os.getcwd()}))\n',
+        encoding='utf8')
+    command = [sys.executable, '-B', str(DASHBOARD), '--ui-root', str(ui)]
+    if no_refresh:
+        command.append('--no-refresh')
+    done = subprocess.run(command, cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
+    assert done.returncode == 0, done.stderr
+    launched = json.loads(done.stdout.splitlines()[-1])
+    assert launched['args'] == ['--no-test', '--port', '8765'] + (['--no-build'] if no_refresh else [])
+    assert Path(launched['cwd']) == ui and Path(launched['root']) == ROOT
+
+
+def test_company_dashboard_plan_and_failure_do_not_report_success(tmp_path):
+    ui = tmp_path/'ui'
+    (ui/'scripts').mkdir(parents=True)
+    (ui/'scripts'/'serve.py').write_text('raise SystemExit(7)\n', encoding='utf8')
+    command = [sys.executable, '-B', str(DASHBOARD), '--ui-root', str(ui)]
+    planned = subprocess.run(command + ['--plan'], cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
+    assert planned.returncode == 0 and json.loads(planned.stdout)['tests'] is False
+    failed = subprocess.run(command, cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
+    assert failed.returncode == 7
 
 
 def _env(tmp_path):

@@ -30,7 +30,8 @@ def main() -> int:
     parser.add_argument("--mode", choices=["quick", "full"], default="quick")
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--module-package-id")
-    parser.add_argument("--max-questions", type=int, default=40)
+    parser.add_argument("--max-questions", type=int,
+                        help="optional dispatch budget; never trims mandatory basic coverage")
     parser.add_argument("--now-utc", required=True)
     parser.add_argument("--allow-coverage-gap", action="store_true")
     args = parser.parse_args()

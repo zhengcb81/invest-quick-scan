@@ -1,5 +1,7 @@
 # 当前接手入口（2026-10-25；本节优先）
 
+用户最新优先项是核实基础必做题和实际可用UI。当前以根PWF顶部P1–P3为准；操作入口`python scripts/open_dashboard.py`，详见[公司与题库浏览器](company-and-bank-ui.md)。基础动态组合为common+杜邦+五力，当前36题；新默认thin扫描不再读历史24题文件，诊断不进核心均分。UI当前完整导入214实体、48评分模块222题及61信息题，只有11实体有12份历史草稿；生产ready/ACK结果尚未接UI，不称全部公司已有评分或完整生产台。统一独审/提交结果以本轮证据与git log核实，完成后再接回StockWiki ACK主线。
+
 用户已授权跨仓修复、真实小样本、独立agent、提交与推送；不要重复问权限。以根task_plan.md顶部当前阶段为准，R1–R5已通过。下方10/18暂停owner路线等记录仅属历史。
 
 测试执行更新（2026-10-25）：根PWF顶部T1–T3测试分层已完成，当前返回StockWiki ACK。日常`python scripts/run_tests.py`默认fast，实测540P/372子测试、总39.608秒；不要每次改动跑一小时全套。完整99文件仍分48fast/48integration/1e2e/2native，完整离线/native/真实探针在大节点按风险选择；范围/隔离/命令见`docs/implementation/testing.md`。新增测试须登记`tests/suites.json`，不能靠skip隐藏覆盖。入口及原两失败定向17P，旧锁与旧test-strategy原字节保持；统一独审/提交结果按根PWF与git log核。

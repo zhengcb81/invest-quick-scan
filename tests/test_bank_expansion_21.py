@@ -16,6 +16,8 @@ AC-05 (routing/scoring derive): ``minimum_questions`` and ``expected_core``
 follow the bank size.
 """
 import copy
+import contextlib
+import io
 import json
 from pathlib import Path
 import shutil
@@ -162,6 +164,114 @@ class DerivedCoreSetTests(unittest.TestCase):
         report = qs.validate_library()
         self.assertEqual(report["core_constructs"], 24)
         self.assertEqual(report["common_questions"], 24)
+
+
+class RequiredBasicCoverageTests(unittest.TestCase):
+    """Every new scan covers the shared core and both diagnostic frameworks."""
+
+    @classmethod
+    def setUpClass(cls):
+        _, cls.modules = qs.load_library()
+        cls.profile = qs.read_json(ROOT / "examples/profile.json")
+        cls.diagnostics = {q["id"] for mid in ("dupont", "porter")
+                           for q in cls.modules[mid]["questions"]}
+
+    def chosen(self, company_type="operating", mode="full"):
+        profile = {**self.profile, "company_type": company_type, "stage": "mature",
+                   "cycle_sensitive": False, "overlays": [], "diagnostic_modules": [],
+                   "industry_modules": ["semiconductors"] if company_type in
+                   ("operating", "pre_revenue") else []}
+        return qs.select_questions(profile, mode, self.modules)[0]
+
+    def test_basic_export_combines_modules_without_moving_question_owners(self):
+        questions = qs.basic_questions(self.modules)
+        self.assertEqual({q["id"] for q in questions},
+                         {q["id"] for q in self.modules["common"]["questions"]} | self.diagnostics)
+        self.assertEqual(len(questions), len({q["id"] for q in questions}))
+        self.assertEqual({q["module_id"] for q in questions}, {"common", "dupont", "porter"})
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+                    self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+                    self.assertTrue(self.diagnostics <= {q["id"] for q in kept})
+                    self.assertTrue(self.diagnostics.isdisjoint(q["question_id"] for q in deferred))
+
+    def test_budget_below_basic_coverage_is_rejected(self):
+        chosen = self.chosen()
+        basic = [q for q in chosen if q["comparison_role"] == "core"
+                 or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+        with self.assertRaisesRegex(ValueError, "budget below mandatory.*basic"):
+            qs._apply_question_budget(chosen, len(basic) - 1)
+
+    def test_explicit_legacy_budget_remains_readable(self):
+        chosen = self.chosen()
+        kept, deferred = qs._apply_question_budget(chosen, 40, protect_basic=False)
+        self.assertTrue(deferred)
+        self.assertFalse(self.diagnostics <= {q["id"] for q in kept})
+
+    def test_financial_diagnostics_require_explicit_na_instead_of_omission(self):
+        profile = {**self.profile, "company_type": "bank", "industry_modules": []}
+        question = next(q for q in self.chosen("bank") if q["id"] == "DUPONT_03")
+        prompt = qs.render_question(question, profile)
+        self.assertIn("not_applicable", prompt)
+        self.assertIn("专属替代指标", prompt)
+        self.assertIn("不进入质量汇总", prompt)
+
+    def test_company_composer_has_no_implicit_question_count_cap(self):
+        import compose_company_bank as composer
+        with tempfile.TemporaryDirectory(prefix='basic-cli-') as temporary:
+            output = Path(temporary) / 'scan'
+            captured = {}
+
+            def compile_fixture(profile, mode, out_dir, **kwargs):
+                captured.update(kwargs)
+                qs.write_json(Path(out_dir) / 'manifest.json',
+                              {'questions': [], 'modules': []})
+
+            arguments = ['compose_company_bank.py', '--profile', str(ROOT / 'examples/profile.json'),
+                         '--mode', 'full', '--out-dir', str(output), '--now-utc', '2026-10-25T12:00:00Z']
+            with mock.patch.object(sys, 'argv', arguments), \
+                    mock.patch.object(qs, 'compose', side_effect=compile_fixture), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(composer.main(), 0)
+            self.assertIsNone(captured['max_questions'])
+
+    def test_historical_default_selection_comes_from_frozen_module_versions(self):
+        import question_selection as selection
+        modules = copy.deepcopy(self.modules)
+        for mid in ('dupont', 'porter'):
+            modules[mid]['version'] = '3.0.0'
+        profile = {**self.profile, 'diagnostic_modules': [], 'diagnostic_rationale': {}}
+        release = {'schema_version': '1.0.0'}
+        historical, historical_modules, _ = selection.published_selection(
+            profile, 'full', modules, release, None, None,
+            historical_profile_defaults=True)
+        current, current_modules, _ = selection.published_selection(
+            profile, 'full', modules, release, None, None)
+        self.assertTrue(self.diagnostics.isdisjoint(q['id'] for q in historical))
+        self.assertTrue(self.diagnostics <= {q['id'] for q in current})
+        self.assertTrue({'dupont', 'porter'}.isdisjoint(historical_modules))
+        self.assertTrue({'dupont', 'porter'} <= set(current_modules))
+
+    def test_quick_keeps_new_low_priority_basic_extensions(self):
+        modules = copy.deepcopy(self.modules)
+        extension = _extension_question(modules['common']['questions'][0])
+        modules['common']['questions'].append(extension)
+        chosen, _, _ = qs.select_questions(self.profile, 'quick', modules)
+        self.assertIn(extension['id'], {q['id'] for q in chosen})
+        minimum = sum(q['comparison_role'] == 'core' or q.get('critical')
+                      or q['module_id'] in ('common', 'dupont', 'porter') for q in chosen)
+        kept, deferred = qs._apply_question_budget(chosen, minimum)
+        self.assertIn(extension['id'], {q['id'] for q in kept})
+        self.assertNotIn(extension['id'], {q['question_id'] for q in deferred})
 
 
 class ExpansionUpgradeTests(unittest.TestCase):

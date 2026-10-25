@@ -1,0 +1,763 @@
+FF.F.FEFEFE                                              [100%]
+=================================== ERRORS ====================================
+_ ERROR at teardown of RoutingTests.test_unclassified_route_keeps_all_basic_diagnostics_mandatory _
+
+path = 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-ej5mc2r1'
+onexc = <function TemporaryDirectory._rmtree.<locals>.onexc at 0x0000020B97069300>
+
+    def _rmtree_unsafe(path, onexc):
+        def onerror(err):
+            if not isinstance(err, FileNotFoundError):
+                onexc(os.scandir, err.filename, err)
+        results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+        for dirpath, dirnames, filenames in results:
+            for name in dirnames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.rmdir(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.rmdir, fullname, err)
+            for name in filenames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.unlink(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.unlink, fullname, err)
+        try:
+>           os.rmdir(path)
+E           PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-ej5mc2r1'
+
+C:\Miniconda\Lib\shutil.py:631: PermissionError
+
+During handling of the above exception, another exception occurred:
+C:\Miniconda\Lib\tempfile.py:955: in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+C:\Miniconda\Lib\tempfile.py:935: in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+C:\Miniconda\Lib\tempfile.py:907: in onexc
+    _resetperms(path)
+C:\Miniconda\Lib\tempfile.py:287: in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+func = <built-in function chmod>
+path = 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-ej5mc2r1'
+args = (448,)
+
+    def _dont_follow_symlinks(func, path, *args):
+        # Pass follow_symlinks=False, unless not supported on this platform.
+        if func in _os.supports_follow_symlinks:
+>           func(path, *args, follow_symlinks=False)
+E           PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-ej5mc2r1'
+
+C:\Miniconda\Lib\tempfile.py:276: PermissionError
+_ ERROR at teardown of RoutingTests.test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route _
+
+path = 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-1l6qbymu'
+onexc = <function TemporaryDirectory._rmtree.<locals>.onexc at 0x0000020B972CE480>
+
+    def _rmtree_unsafe(path, onexc):
+        def onerror(err):
+            if not isinstance(err, FileNotFoundError):
+                onexc(os.scandir, err.filename, err)
+        results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+        for dirpath, dirnames, filenames in results:
+            for name in dirnames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.rmdir(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.rmdir, fullname, err)
+            for name in filenames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.unlink(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.unlink, fullname, err)
+        try:
+>           os.rmdir(path)
+E           PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-1l6qbymu'
+
+C:\Miniconda\Lib\shutil.py:631: PermissionError
+
+During handling of the above exception, another exception occurred:
+C:\Miniconda\Lib\tempfile.py:955: in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+C:\Miniconda\Lib\tempfile.py:935: in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+C:\Miniconda\Lib\tempfile.py:907: in onexc
+    _resetperms(path)
+C:\Miniconda\Lib\tempfile.py:287: in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+func = <built-in function chmod>
+path = 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-1l6qbymu'
+args = (448,)
+
+    def _dont_follow_symlinks(func, path, *args):
+        # Pass follow_symlinks=False, unless not supported on this platform.
+        if func in _os.supports_follow_symlinks:
+>           func(path, *args, follow_symlinks=False)
+E           PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-1l6qbymu'
+
+C:\Miniconda\Lib\tempfile.py:276: PermissionError
+_ ERROR at teardown of RoutingTests.test_new_policy_cannot_drop_a_basic_diagnostic_question _
+
+path = 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-pe4e38j_'
+onexc = <function TemporaryDirectory._rmtree.<locals>.onexc at 0x0000020B972CEA20>
+
+    def _rmtree_unsafe(path, onexc):
+        def onerror(err):
+            if not isinstance(err, FileNotFoundError):
+                onexc(os.scandir, err.filename, err)
+        results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+        for dirpath, dirnames, filenames in results:
+            for name in dirnames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.rmdir(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.rmdir, fullname, err)
+            for name in filenames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.unlink(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.unlink, fullname, err)
+        try:
+>           os.rmdir(path)
+E           PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-pe4e38j_'
+
+C:\Miniconda\Lib\shutil.py:631: PermissionError
+
+During handling of the above exception, another exception occurred:
+C:\Miniconda\Lib\tempfile.py:955: in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+C:\Miniconda\Lib\tempfile.py:935: in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+C:\Miniconda\Lib\tempfile.py:907: in onexc
+    _resetperms(path)
+C:\Miniconda\Lib\tempfile.py:287: in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+func = <built-in function chmod>
+path = 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-pe4e38j_'
+args = (448,)
+
+    def _dont_follow_symlinks(func, path, *args):
+        # Pass follow_symlinks=False, unless not supported on this platform.
+        if func in _os.supports_follow_symlinks:
+>           func(path, *args, follow_symlinks=False)
+E           PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-pe4e38j_'
+
+C:\Miniconda\Lib\tempfile.py:276: PermissionError
+================================== FAILURES ===================================
+_ RequiredBasicCoverageTests.test_basic_export_combines_modules_without_moving_question_owners _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_basic_export_combines_modules_without_moving_question_owners>
+
+    def test_basic_export_combines_modules_without_moving_question_owners(self):
+>       questions = qs.basic_questions(self.modules)
+                    ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'question_sets' has no attribute 'basic_questions'. Did you mean: 'select_questions'?
+
+tests\test_bank_expansion_21.py:185: AttributeError
+___ RequiredBasicCoverageTests.test_budget_below_basic_coverage_is_rejected ___
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_below_basic_coverage_is_rejected>
+
+    def test_budget_below_basic_coverage_is_rejected(self):
+        chosen = self.chosen()
+        basic = [q for q in chosen if q["comparison_role"] == "core"
+                 or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+>       with self.assertRaisesRegex(ValueError, "budget below mandatory.*basic"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: ValueError not raised
+
+tests\test_bank_expansion_21.py:209: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='operating', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'SEMICONDUCTORS_01'
+E                   'SEMICONDUCTORS_02'
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_02'
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='operating', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_04'
+E                   'SEMICONDUCTORS_03'
+E                   'SEMICONDUCTORS_02'
+E                   'SEMICONDUCTORS_01'
+E                   'SEMICONDUCTORS_04'
+E                   'OPERATING_04'
+E                   'OPERATING_03'
+E                   'MATURE_02'
+E                   'MATURE_03'
+E                   Items in the second set but not the first:
+E                   'PORTER_03'
+E                   'DUPONT_06'
+E                   'DUPONT_04'
+E                   'PORTER_05'
+E                   'PORTER_04'
+E                   'PORTER_02'
+E                   'PORTER_01'
+E                   'DUPONT_03'
+E                   'DUPONT_07'
+E                   'DUPONT_05'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='bank', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='bank', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_04'
+E                   'BANK_05'
+E                   'MATURE_02'
+E                   'MATURE_03'
+E                   Items in the second set but not the first:
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+E                   'PORTER_02'
+E                   'PORTER_01'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='insurer', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='insurer', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'INSURER_05'
+E                   'MATURE_01'
+E                   'MATURE_04'
+E                   'MATURE_02'
+E                   'MATURE_03'
+E                   Items in the second set but not the first:
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+E                   'PORTER_02'
+E                   'PORTER_01'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='capital_markets', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='capital_markets', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'CAPITAL_MARKETS_05'
+E                   'MATURE_01'
+E                   'MATURE_04'
+E                   'CAPITAL_MARKETS_04'
+E                   'MATURE_02'
+E                   'MATURE_03'
+E                   Items in the second set but not the first:
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+E                   'PORTER_02'
+E                   'PORTER_01'
+E                   'DUPONT_07'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='property_owner', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='property_owner', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'PROPERTY_OWNER_05'
+E                   'MATURE_01'
+E                   'MATURE_04'
+E                   'PROPERTY_OWNER_04'
+E                   'MATURE_02'
+E                   'MATURE_03'
+E                   Items in the second set but not the first:
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+E                   'PORTER_02'
+E                   'PORTER_01'
+E                   'DUPONT_07'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='property_developer', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='property_developer', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_04'
+E                   'MATURE_02'
+E                   'PROPERTY_DEVELOPER_05'
+E                   'MATURE_03'
+E                   Items in the second set but not the first:
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+E                   'PORTER_02'
+E                   'PORTER_01'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='holding', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='holding', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_03'
+E                   'MATURE_04'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_02'
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='pre_revenue', mode='quick') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'SEMICONDUCTORS_01'
+E                   'SEMICONDUCTORS_02'
+E                   'MATURE_01'
+E                   'MATURE_02'
+E                   Items in the second set but not the first:
+E                   'PORTER_02'
+E                   'PORTER_03'
+E                   'PORTER_05'
+E                   'PORTER_04'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+_ RequiredBasicCoverageTests.test_budget_preserves_every_basic_question_for_all_types_and_modes (company_type='pre_revenue', mode='full') _
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_budget_preserves_every_basic_question_for_all_types_and_modes>
+
+    def test_budget_preserves_every_basic_question_for_all_types_and_modes(self):
+        for company_type, module in self.modules.items():
+            if module["kind"] != "types":
+                continue
+            for mode in ("quick", "full"):
+                with self.subTest(company_type=company_type, mode=mode):
+                    chosen = self.chosen(company_type, mode)
+                    required = [q for q in chosen if q["comparison_role"] == "core"
+                                or q.get("critical") or q["module_id"] in ("dupont", "porter")]
+                    kept, deferred = qs._apply_question_budget(chosen, len(required))
+>                   self.assertEqual({q["id"] for q in kept}, {q["id"] for q in required})
+E                   AssertionError: Items in the first set but not the second:
+E                   'MATURE_01'
+E                   'MATURE_04'
+E                   'PRE_REVENUE_05'
+E                   'SEMICONDUCTORS_03'
+E                   'SEMICONDUCTORS_02'
+E                   'SEMICONDUCTORS_01'
+E                   'SEMICONDUCTORS_04'
+E                   'MATURE_02'
+E                   'MATURE_03'
+E                   Items in the second set but not the first:
+E                   'PORTER_03'
+E                   'DUPONT_06'
+E                   'DUPONT_04'
+E                   'PORTER_05'
+E                   'PORTER_04'
+E                   'PORTER_02'
+E                   'PORTER_01'
+E                   'DUPONT_07'
+E                   'DUPONT_05'
+
+tests\test_bank_expansion_21.py:201: AssertionError
+___ RequiredBasicCoverageTests.test_explicit_legacy_budget_remains_readable ___
+
+self = <test_bank_expansion_21.RequiredBasicCoverageTests testMethod=test_explicit_legacy_budget_remains_readable>
+
+    def test_explicit_legacy_budget_remains_readable(self):
+        chosen = self.chosen()
+>       kept, deferred = qs._apply_question_budget(chosen, 40, protect_basic=False)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: _apply_question_budget() got an unexpected keyword argument 'protect_basic'
+
+tests\test_bank_expansion_21.py:214: TypeError
+_ RoutingTests.test_unclassified_route_keeps_all_basic_diagnostics_mandatory __
+
+self = <test_routing.RoutingTests testMethod=test_unclassified_route_keeps_all_basic_diagnostics_mandatory>
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="iqs-s06-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+>       shutil.copytree(ROOT / "questions", self.root / "questions", ignore=shutil.ignore_patterns("releases"))
+
+tests\test_routing.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\shutil.py:593: in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+C:\Miniconda\Lib\shutil.py:491: in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = WindowsPath('C:/Users/֣����/AppData/Local/Packages/sandbox.{12b9a480-d726-4942-aae2-7087d134c823}/AC/Temp/iqs-s06-ej5mc2r1/questions')
+mode = 511, exist_ok = False
+
+>   ???
+E   PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-ej5mc2r1\\questions'
+
+<frozen os>:228: PermissionError
+_ RoutingTests.test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route _
+
+self = <test_routing.RoutingTests testMethod=test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route>
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="iqs-s06-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+>       shutil.copytree(ROOT / "questions", self.root / "questions", ignore=shutil.ignore_patterns("releases"))
+
+tests\test_routing.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\shutil.py:593: in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+C:\Miniconda\Lib\shutil.py:491: in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = WindowsPath('C:/Users/֣����/AppData/Local/Packages/sandbox.{12b9a480-d726-4942-aae2-7087d134c823}/AC/Temp/iqs-s06-1l6qbymu/questions')
+mode = 511, exist_ok = False
+
+>   ???
+E   PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-1l6qbymu\\questions'
+
+<frozen os>:228: PermissionError
+____ RoutingTests.test_new_policy_cannot_drop_a_basic_diagnostic_question _____
+
+self = <test_routing.RoutingTests testMethod=test_new_policy_cannot_drop_a_basic_diagnostic_question>
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="iqs-s06-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+>       shutil.copytree(ROOT / "questions", self.root / "questions", ignore=shutil.ignore_patterns("releases"))
+
+tests\test_routing.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\shutil.py:593: in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+C:\Miniconda\Lib\shutil.py:491: in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = WindowsPath('C:/Users/֣����/AppData/Local/Packages/sandbox.{12b9a480-d726-4942-aae2-7087d134c823}/AC/Temp/iqs-s06-pe4e38j_/questions')
+mode = 511, exist_ok = False
+
+>   ???
+E   PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\AppData\\Local\\Packages\\sandbox.{12b9a480-d726-4942-aae2-7087d134c823}\\AC\\Temp\\iqs-s06-pe4e38j_\\questions'
+
+<frozen os>:228: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_basic_export_combines_modules_without_moving_question_owners
+FAILED tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_below_basic_coverage_is_rejected
+SUBFAILED(company_type='operating', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='operating', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='bank', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='bank', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='insurer', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='insurer', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='capital_markets', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='capital_markets', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='property_owner', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='property_owner', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='property_developer', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='property_developer', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='holding', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='holding', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='pre_revenue', mode='quick') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+SUBFAILED(company_type='pre_revenue', mode='full') tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_budget_preserves_every_basic_question_for_all_types_and_modes
+FAILED tests/test_bank_expansion_21.py::RequiredBasicCoverageTests::test_explicit_legacy_budget_remains_readable
+FAILED tests/test_routing.py::RoutingTests::test_unclassified_route_keeps_all_basic_diagnostics_mandatory
+FAILED tests/test_routing.py::RoutingTests::test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route
+FAILED tests/test_routing.py::RoutingTests::test_new_policy_cannot_drop_a_basic_diagnostic_question
+ERROR tests/test_routing.py::RoutingTests::test_unclassified_route_keeps_all_basic_diagnostics_mandatory
+ERROR tests/test_routing.py::RoutingTests::test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route
+ERROR tests/test_routing.py::RoutingTests::test_new_policy_cannot_drop_a_basic_diagnostic_question
+22 failed, 2 passed, 3 errors in 5.92s

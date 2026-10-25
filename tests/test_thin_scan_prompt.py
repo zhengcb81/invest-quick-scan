@@ -17,6 +17,51 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import thin_scan  # noqa: E402
 
 
+def test_default_basic_coverage_includes_all_framework_questions():
+    import question_sets
+    _, modules = question_sets.load_library()
+    questions = thin_scan.default_basic_questions()
+    expected = {q['id'] for name in ('common', 'dupont', 'porter') for q in modules[name]['questions']}
+    assert {q['id'] for q in questions} == expected
+    assert len(questions) == len(expected)
+    assert all(not q['core'] for q in questions if q['module_id'] in ('dupont', 'porter'))
+
+
+def test_default_basic_coverage_grows_from_library_without_a_fixed_limit(monkeypatch):
+    import copy
+    import question_sets
+    catalog, original = question_sets.load_library()
+    modules = copy.deepcopy(original)
+    extra = {**modules['common']['questions'][0], 'id': 'EXPANDED_CORE', 'construct_id': 'EXPANDED_CORE'}
+    modules['common']['questions'].append(extra)
+    monkeypatch.setattr(question_sets, 'load_library', lambda: (catalog, modules))
+    assert 'EXPANDED_CORE' in {q['id'] for q in thin_scan.default_basic_questions()}
+
+
+def test_diagnostics_are_completed_but_never_change_summary_means():
+    import question_bank
+    result = question_bank.summarize([
+        {'question_id': 'IQS_01', 'core': True, 'status': 'scored', 'score': 3},
+        {'question_id': 'IND_01', 'core': False, 'status': 'scored', 'score': 4},
+        {'question_id': 'DUPONT_01', 'core': False, 'comparison_role': 'diagnostic', 'status': 'scored', 'score': 10},
+        {'question_id': 'PORTER_01', 'core': False, 'aggregation': 'diagnostic', 'status': 'scored', 'score': 10},
+    ])
+    assert result['core_mean'] == 3 and result['context_mean'] == 4
+    assert result['diagnostic_total'] == result['diagnostic_scored'] == 2
+
+
+def test_not_applicable_requires_retrieved_basis_and_never_gets_a_score():
+    source = {'url': 'https://example.com/bank', 'title': 'Bank profile', 'date': '2026-01-01'}
+    result, problems = thin_scan.clean_answer(
+        {'status': 'not_applicable', 'score': 9, 'summary': '普通企业周转率不适用于该银行',
+         'evidence': [source['url']]}, [source])
+    assert result['status'] == 'not_applicable' and result['score'] is None and not problems
+    missing, problems = thin_scan.clean_answer(
+        {'status': 'not_applicable', 'score': None, 'summary': '没有资料', 'evidence': []}, [source])
+    assert missing['status'] == 'insufficient_evidence' and missing['score'] is None
+    assert 'not_applicable_without_basis' in problems
+
+
 def _source(url: str, summary: str) -> dict:
     return {"url": url, "title": "t", "summary": summary, "date": "2026-10-15", "site": "s"}
 

@@ -8,7 +8,7 @@
 - `build_route_request(identity_context, package_id=..., root=...)` 返回`ROUTE_02`候选问题、package/release/policy身份和精确prompt hash；请求保持StockQA native外层字段形状。`parse_route_response`解析原生路由回答并保留独立分类置信度；`stockqa_adapter.py`消费公开`stockqa.quick_scan_result/1.0.0`结果，核对实体、问题、已完成搜索、实际/请求模型、来源归属及答案SHA-256回执，再交给本地路由/组合入口。分类score绝不进入企业评分；router 2.0—2.2历史形状按各自版本只读兼容。
 - `resolve_route_decision(route_input, package_id=..., route_response=..., execution_receipt=..., user_policy=..., previous_decision=..., expected_previous_decision_id=..., now_utc=..., root=...)` 接受已由调用方确认的实体/证券/截止日、可信 `verified_facts`、完整原始模型回答，以及旧式原生回答需要单独提供的执行回执。resolver 自行解析回答，并由同一回答派生候选、分类置信度和答案SHA-256；不接受调用方拆开的候选/置信度/hash 字段。StockQA公开结果中的绑定回执与答案必须成对使用，单独重复传入的回执必须与其完全相同。每条客观候选保留 entity-bound 来源、理由、分类证据类型、原始重大性输入、周期位置及事件/连续期数。`searched_llm`候选的每个URL必须逐字存在于该回执`search_receipt_id`所选、`completed/search`调用的`web_search_calls[].source_urls`；空集、错误调用或未匹配来源仅记录待核缺口，实际派发收窄为common和必需风险题。固定时钟与候选语义相同的情况下，候选顺序不改变模块选择、eligible集合或派发语义；由于原始回答字节不同，答案哈希和封存决策身份仍会不同。`identity_ref`、已核实事实、回执与用户授权必须由上层受信任入口提供；本模块不通过访问 URL 验证其内容。
 - `validate_route_snapshot` 验证封存内容、政策包、来源、模型请求、scope/profile、必需题和派发状态，保持历史可读。归档 router 2.0 的旧搜索回执没有 `web_search_calls`，按其原发布包和旧回执契约只读验证；router 2.1/2.2历史快照继续按原契约验证；所有新发布版本都必须把每条模型来源绑定到完成的搜索调用。`resolve_route_decision` 不再用 router 2.0 旧包创建新决策，`validate_route_for_execution` 和 `compose_from_route` 也拒绝把旧决策重新派发。`validate_route_for_execution(now_utc=..., expected_decision_id=...)` 另外检查执行时的手工覆盖 TTL；到期瞬间拒绝新执行。生产入口应提供独立存储的 `expected_decision_id`，仅自报 hash 不能证明来源可信。legacy v1 仍走 `module_contract.validate_route_decision`，不能伪装成 v2 策略运行。
-- `enforce_route_budget(decision, maximum)` 对已验证快照检查24核心加必需题预算；`profile_from_route` 是数据投影，`diff_routes` 是相同实体/分部的新旧模块差集。它们不替代入口验证，也不写任务、答案或费用。
+- `enforce_route_budget(decision, maximum)` 对已验证快照检查当前发布核心、杜邦/五力及必需风险题的动态预算；`profile_from_route` 是数据投影，`diff_routes` 是相同实体/分部的新旧模块差集。它们不替代入口验证，也不写任务、答案或费用。
 
 `question_sets.compose_from_route(decision, output_dir, now_utc=..., expected_route_decision_id=..., answer_format="screening-1", max_questions=...)` 派发快照允许的模块，强制必需风险题优先于可选题。manifest保存整个route、精确policy/package绑定、原执行时间和独立expected ID。历史manifest只用封存的原执行时间和ID做读取校验（`validate_recorded_route_execution`），不会因此重新授权派发；重新导出走`validate_route_for_execution`并拒绝任何非当前router版本，即使旧manifest仍可读取。
 
@@ -48,14 +48,14 @@ router 2.3将ROUTE_02外层`status/score`作为独立分类置信度封存到rou
 3. **成长阶段恰好一个。** validation、commercialization、scaling、mature、turnaround、declining。公司年轻不代表高分；成熟不代表衰退。阶段应由商业验证、单位经济、扩张方式与现金特征决定。
 4. **周期性独立判断。** `cycle_sensitive=true` 另加 cyclical 模块。公司可以同时是成熟公司和周期企业，不能把“周期”与“成长阶段”混为一谈。`cycle_position` 写明上行／高位／下行／低位／不明及证据，标签本身不计分。
 5. **重要属性按需叠加。** cross_border、controlled、listing_structure、concentrated、acquisitive、subsidized、distressed、recent_listing。纯海外挂牌不自动触发跨境经营风险；国资、家族或双重股权身份不自动扣分。quick 最多两个属性；更多均重要时用 full，不静默删掉困境等重要问题。
-6. **工具按问题选择。** 默认 `diagnostic_modules=[]`。需要解释回报来源时可选dupont，需要厘清竞争结构时可选porter；每个模块都要在 `diagnostic_rationale` 对象中写出具体待解决问题，例如 `{"dupont":"ROE提高是否主要来自回购后权益缩减"}`。它们不是由行业标签自动触发的必答题。
+6. **基础诊断对所有公司必做。** common、dupont和porter构成基础集合；即使`diagnostic_modules=[]`、公司分类未知或只做quick，也完整包含杜邦与五力。`diagnostic_rationale`可记录重点疑问，但不是触发前提；新扫描不允许diagnostic_exclusions删除基础模块。个别因子无经济含义时逐题说明不适用。
 7. **困难与恢复单独辨识。** 周期下行/低谷/初步修复、暂时经营困难或衰退性质不明时，给`recovery_review=true`及`recovery_rationale`，追加4道recovery诊断；不要求先证明反转成功。turnaround、declining及distressed属性自动触发。成熟周期企业不必改成turnaround，股价下跌也不等于经营低谷。手动选recovery须有诊断理由，与自动触发去重。具体评分与观察状态见[恢复观察](recovery-watch.md)。
 
 多业务集团的分部画像应另建 profile 并标注分部边界。对各部分单独评分，母公司侧重资本配置和资金安全。无可靠分部证据时降低覆盖率，不算机械的集团综合平均数。
 
 ## 拼装与去重
 
-- 先读全部24道 `IQS_` 通用核心题，类型题的 `replaces` 替换单位经济、现金、资产真实性、偿付或估值等特定口径，杜邦和五力另行选择。
+- 先读当前common核心题及全部杜邦、五力基础诊断，题数由数据派生；类型题的 `replaces` 替换单位经济、现金、资产真实性、偿付或估值等特定口径，保留对应核心构念。基础与关键风险题不能被题数预算挤掉；预算不足明确拒绝。
 - quick选所有priority=1和关键核查题；若它们替换一道通用题，就删除原题。priority=2的类型替换题若其对应通用题已入选，也自动入选。关键核查属性会传给替代题，不能通过切换行业避开资金生存或真实性核查。
 - 先对已选模块递归补齐完整`dependencies`闭包，再进行题目拼装；依赖必须属于锁定release且图无环。依赖缺失、未决或其闭包引入冲突时返回`needs_review/blocked`并在发包前停止。
 - `conflicts`只约束本次已选模块组合：release目录可包含互斥备选；已选集合中任一方向声明的冲突都按无向冲突处理。不能仅因互斥备选共存于目录而拒绝整个release，也不能因冲突只单向声明而漏掉拒绝。

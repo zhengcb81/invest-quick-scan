@@ -1,0 +1,241 @@
+{
+  "synthetic_fixture_only": true,
+  "paid_calls": 0,
+  "results": [
+    {
+      "label": "unknown-route",
+      "exit_code": 0,
+      "arguments": [
+        "scripts/question_sets.py",
+        "resolve-route",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\route-input.json",
+        "--module-package-id",
+        "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "--now-utc",
+        "2026-10-25T16:00:00Z",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\route.json"
+      ],
+      "stdout": "{\n  \"decision_id\": \"route_8ce752cbc4975d11f929bee0374ec2665777a6a9caaac52ec2ff887aadde55a0\",\n  \"status\": \"partial\",\n  \"dispatch_status\": \"ready_common_and_risk\",\n  \"output\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\basic-required-2026-10-25\\\\public-cli\\\\route.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "quick-basic-budget36",
+      "exit_code": 0,
+      "arguments": [
+        "scripts/question_sets.py",
+        "compose-route",
+        "--route-decision",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\route.json",
+        "--now-utc",
+        "2026-10-25T16:00:00Z",
+        "--expected-route-decision-id",
+        "route_8ce752cbc4975d11f929bee0374ec2665777a6a9caaac52ec2ff887aadde55a0",
+        "--max-questions",
+        "36",
+        "--out-dir",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\quick"
+      ],
+      "stdout": "{\n  \"question_count\": 36,\n  \"modules\": [\n    \"common\",\n    \"dupont\",\n    \"porter\"\n  ],\n  \"deferred_question_ids\": [],\n  \"module_package_id\": \"pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a\",\n  \"output_dir\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\basic-required-2026-10-25\\\\public-cli\\\\quick\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "unknown-full-route",
+      "exit_code": 0,
+      "arguments": [
+        "scripts/question_sets.py",
+        "resolve-route",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\full-input.json",
+        "--module-package-id",
+        "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "--now-utc",
+        "2026-10-25T16:00:00Z",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\full-route.json"
+      ],
+      "stdout": "{\n  \"decision_id\": \"route_34aba5fa02ec5fb3c4d862aa1d37593705138f2106ebb336b8775ad165b20dfc\",\n  \"status\": \"partial\",\n  \"dispatch_status\": \"ready_common_and_risk\",\n  \"output\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\basic-required-2026-10-25\\\\public-cli\\\\full-route.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "full-basic-budget36",
+      "exit_code": 0,
+      "arguments": [
+        "scripts/question_sets.py",
+        "compose-route",
+        "--route-decision",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\full-route.json",
+        "--now-utc",
+        "2026-10-25T16:00:00Z",
+        "--expected-route-decision-id",
+        "route_34aba5fa02ec5fb3c4d862aa1d37593705138f2106ebb336b8775ad165b20dfc",
+        "--max-questions",
+        "36",
+        "--out-dir",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\full"
+      ],
+      "stdout": "{\n  \"question_count\": 36,\n  \"modules\": [\n    \"common\",\n    \"dupont\",\n    \"porter\"\n  ],\n  \"deferred_question_ids\": [],\n  \"module_package_id\": \"pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a\",\n  \"output_dir\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\basic-required-2026-10-25\\\\public-cli\\\\full\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "basic-budget35-rejected",
+      "exit_code": 2,
+      "arguments": [
+        "scripts/question_sets.py",
+        "compose-route",
+        "--route-decision",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\route.json",
+        "--now-utc",
+        "2026-10-25T16:00:00Z",
+        "--expected-route-decision-id",
+        "route_8ce752cbc4975d11f929bee0374ec2665777a6a9caaac52ec2ff887aadde55a0",
+        "--max-questions",
+        "35",
+        "--out-dir",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\rejected35"
+      ],
+      "stdout": "",
+      "stderr": "Error: question budget below mandatory core, basic diagnostics and critical-risk coverage (required=36, max_questions=35)\n"
+    },
+    {
+      "label": "profile-full-no-hidden-cap",
+      "exit_code": 0,
+      "arguments": [
+        "scripts/compose_company_bank.py",
+        "--profile",
+        "examples/profile.json",
+        "--mode",
+        "full",
+        "--out-dir",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\profile-full",
+        "--now-utc",
+        "2026-10-25T16:00:00Z"
+      ],
+      "stdout": "{\"status\": \"composed\", \"manifest\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\basic-required-2026-10-25\\\\public-cli\\\\profile-full\\\\manifest.json\", \"package_id\": \"pkg_ca11c5c3340cfd45b9dd3babd7f9c0ea60df82c6a489e3a46eb5a2a80fed561e\", \"release_id\": \"modrel_ac0a18a07b65cb589ecc95554fa03e1ac3e3c3e8a643b894d252b2262d3d2fc7\", \"modules\": [\"common\", \"operating\", \"industrial\", \"mature\", \"cyclical\", \"cross_border\", \"dupont\", \"porter\"], \"questions\": 53, \"core\": 24, \"context\": 29, \"coverage_gaps\": [], \"mode\": \"full\"}\n",
+      "stderr": ""
+    },
+    {
+      "label": "profile-full-explicit40",
+      "exit_code": 0,
+      "arguments": [
+        "scripts/compose_company_bank.py",
+        "--profile",
+        "examples/profile.json",
+        "--mode",
+        "full",
+        "--max-questions",
+        "40",
+        "--out-dir",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\basic-required-2026-10-25\\public-cli\\profile-budget40",
+        "--now-utc",
+        "2026-10-25T16:00:00Z"
+      ],
+      "stdout": "{\"status\": \"composed\", \"manifest\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\basic-required-2026-10-25\\\\public-cli\\\\profile-budget40\\\\manifest.json\", \"package_id\": \"pkg_ca11c5c3340cfd45b9dd3babd7f9c0ea60df82c6a489e3a46eb5a2a80fed561e\", \"release_id\": \"modrel_ac0a18a07b65cb589ecc95554fa03e1ac3e3c3e8a643b894d252b2262d3d2fc7\", \"modules\": [\"common\", \"operating\", \"industrial\", \"mature\", \"cyclical\", \"cross_border\", \"dupont\", \"porter\"], \"questions\": 40, \"core\": 24, \"context\": 16, \"coverage_gaps\": [], \"mode\": \"full\"}\n",
+      "stderr": ""
+    },
+    {
+      "manifest": "quick",
+      "question_count": 36,
+      "core": 24,
+      "diagnostics": [
+        "DUPONT_01",
+        "DUPONT_02",
+        "DUPONT_03",
+        "DUPONT_04",
+        "DUPONT_05",
+        "DUPONT_06",
+        "DUPONT_07",
+        "PORTER_01",
+        "PORTER_02",
+        "PORTER_03",
+        "PORTER_04",
+        "PORTER_05"
+      ],
+      "selection_policy": "basic-required-v1",
+      "budget_policy": "basic-required-v1",
+      "deferred": []
+    },
+    {
+      "manifest": "full",
+      "question_count": 36,
+      "core": 24,
+      "diagnostics": [
+        "DUPONT_01",
+        "DUPONT_02",
+        "DUPONT_03",
+        "DUPONT_04",
+        "DUPONT_05",
+        "DUPONT_06",
+        "DUPONT_07",
+        "PORTER_01",
+        "PORTER_02",
+        "PORTER_03",
+        "PORTER_04",
+        "PORTER_05"
+      ],
+      "selection_policy": "basic-required-v1",
+      "budget_policy": "basic-required-v1",
+      "deferred": []
+    },
+    {
+      "manifest": "profile-full",
+      "question_count": 53,
+      "core": 24,
+      "diagnostics": [
+        "DUPONT_01",
+        "DUPONT_02",
+        "DUPONT_03",
+        "DUPONT_04",
+        "DUPONT_05",
+        "DUPONT_06",
+        "DUPONT_07",
+        "PORTER_01",
+        "PORTER_02",
+        "PORTER_03",
+        "PORTER_04",
+        "PORTER_05"
+      ],
+      "selection_policy": "basic-required-v1",
+      "budget_policy": null,
+      "deferred": []
+    },
+    {
+      "manifest": "profile-budget40",
+      "question_count": 40,
+      "core": 24,
+      "diagnostics": [
+        "DUPONT_01",
+        "DUPONT_02",
+        "DUPONT_03",
+        "DUPONT_04",
+        "DUPONT_05",
+        "DUPONT_06",
+        "DUPONT_07",
+        "PORTER_01",
+        "PORTER_02",
+        "PORTER_03",
+        "PORTER_04",
+        "PORTER_05"
+      ],
+      "selection_policy": "basic-required-v1",
+      "budget_policy": "basic-required-v1",
+      "deferred": [
+        "INDUSTRIAL_03",
+        "INDUSTRIAL_04",
+        "MATURE_01",
+        "MATURE_02",
+        "MATURE_03",
+        "MATURE_04",
+        "CYCLICAL_01",
+        "CYCLICAL_02",
+        "CYCLICAL_03",
+        "CYCLICAL_04",
+        "CROSS_BORDER_01",
+        "CROSS_BORDER_02",
+        "CROSS_BORDER_03"
+      ]
+    }
+  ],
+  "rejected_output_absent": true
+}

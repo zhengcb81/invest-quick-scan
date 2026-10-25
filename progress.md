@@ -1,3 +1,15 @@
+## 2026-10-25 — 基础必做题与可用UI（本轮完成）
+
+- 最终唯一整节点独审passed/open_findings=[]，45源码/活跃说明绑定及88UI数据源SHA通过；独立实际旧38/30/24回读、2.5公开未知分类quick/full36题及budget35拒绝均通过。新selection_policy区分新派发与冻结历史读取，不回写旧70发布制品或旧manifest；3个2.5制品单独发布，current不强切。
+- 最后补UI旧24答案显示当前12题缺口、无run显示36题待补及题库链接、not_applicable保留null分并视已判断、unbound警告条件化；真实Node先3RED后最后12P。root实际CUA另验证CATL缺12和五芳斋0run缺36、无补分；保留全名单页可直接使用。
+- root最后thin/比较定向48P（7.84秒，无警告），入口4P；本轮集中fast544P/372子测试，pytest77.57秒、总88.413秒、0F/E/skip，临时根已清。快速层耗时受运行负载影响，上轮39.608秒是当时实测，不承诺固定40秒。基库首组52P/52sub/5F的5个原节点已逐一精确复核闭合（15P/20sub、57.92秒），不把子集通过冒称全组重跑。
+- 4份活跃references/design已清理“按需杜邦五力”旧说明，旧锁未改；PWF/交接/用户操作说明齐备。只读UI仓的精确19路径及主仓本轮改动在独审后正常提交；UI仓无remote，主仓推既有origin，具体commit按git log与发布回执核实。
+
+- 按用户两问核真实代码/数据，并行修基础选择与UI，保留旧发布/答案；发现40题裁剪、partial路由漏基础、thin默认旧24、SKILL过期。当前基础是common24+杜邦7+五力5的动态组合，不迁移旧ID或重复计权；新版路由2.5已新增发布，current旧profile包不被强切。
+- root新增open_dashboard.py，复用UI原服务，默认重建只读展示数据且不跑测试/不调模型；4项入口反例通过。root将thin默认改动态基础，显式旧清单兼容，诊断不进草稿core/context均分；金融不适用须有检索依据、无分。相关47项定向通过（4.20秒，无线程编码警告）。
+- UI最终定向75P/6既有外部env门控skip，6份JS语法通过；生成数据2.455秒，88来源SHA核对通过。已实际浏览器打开8765，题库显示基础36与完整61事实，矩阵214实体/642基础适用，CATL可看旧24题草稿并显示未绑定版本/模型未记录，版本页7locks/9packages/5routers动态计数。
+- UI不是完整生产台：214为实际已导入名单，非约2000目标；12旧运行匹配11家，203家无扫描，最近ready封包/StockWiki ACK未接。root操作说明company-and-bank-ui.md已写；上方最终结果取代本轮中间态。
+
 ## 2026-10-25 — 测试分层：日常fast实测约40秒（本轮完成）
 
 - 新增pytest.ini将发现限定正式tests，避免历史缓存里的runs冻结副本；新增run_tests.py与唯一suites.json，原97+入口测试2共99文件严格分为48fast/48integration/1e2e/2native。默认fast，offline为前三层，all需原显式native runtime且事前缺失直接拒；native逐文件独进程，未启用全套xdist。

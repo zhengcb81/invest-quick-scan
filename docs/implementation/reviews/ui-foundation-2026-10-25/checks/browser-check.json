@@ -1,0 +1,25 @@
+{
+  "kind": "actual_cua_browser_check",
+  "date": "2026-10-25",
+  "url": "http://127.0.0.1:8765/",
+  "browser": "iab",
+  "source": "iqs-question-bank-ui-lab",
+  "checks": [
+    {"page": "#/bank", "result": "passed", "observed": "48 scored modules / 222 questions; mandatory 24+7+5=36; 61 complete fact question texts; current package router 1.0 and working routing policy 2.5 distinctly labeled"},
+    {"page": "#/companies", "result": "passed", "observed": "214 entities; 209 verified / 5 provisional; 11 entities with answers / 12 unbound runs; 642 applicable / 9630 not_evaluated"},
+    {"action": "search company 宁德", "result": "passed", "observed": "one actual entity ENT_99ebb735-f072-41e4-8545-823bc012614f; common/dupont/porter applicable; other modules not_evaluated"},
+    {"page": "CATL actual company detail", "result": "passed", "observed": "2026-10-18 historical draft shown with original time; missing version and model explicitly marked, no inferred model"},
+    {"page": "#/versions", "result": "passed", "observed": "7 locks / 9 packages / 5 routers; current package resolved from current.json"},
+    {"action": "expand FACT_02", "result": "passed", "observed": "full question text and facts.industry / facts_common / priority 1 visible"},
+    {"page": "CATL after final source reload", "result": "passed", "observed": "当前基础必做中尚未回答（12）; all DUPONT_01 through DUPONT_07 and PORTER_01 through PORTER_05 listed as missing with links; original 24 answers and unbound identity retained"},
+    {"page": "浙江五芳斋实业股份有限公司 CN:603237", "result": "passed", "observed": "actual no-run entity ENT_014cdb98-69b0-4712-9730-e7a608d453cf; 0 runs; 当前基础必做中尚未回答（36）; complete linked questionnaire and no fabricated scores"}
+  ],
+  "failed_browser_attempts_preserved_in_session": [
+    "First sandbox listener/browser access timed out; loopback WinError10013, then existing serve started outside sandbox on 127.0.0.1 only",
+    "Playwright button-role lookup did not match HTML summary; fresh DOM observation then clicked exact visible FACT_02 text"
+  ],
+  "paid_api_calls": 0,
+  "production_writes": 0,
+  "full_pool_scored_claim": false,
+  "production_ui_complete_claim": false
+}

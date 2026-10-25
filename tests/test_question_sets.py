@@ -710,19 +710,18 @@ class QuestionSetTests(unittest.TestCase):
         self.assertEqual(sum(q['module_id'] in ('dupont', 'porter')
                              for q in core), 0)
 
-    def test_default_diagnostics_can_be_excluded_only_with_a_reason(self):
+    def test_new_scan_cannot_exclude_basic_diagnostics_even_with_a_reason(self):
         excluded = {**self.profile, 'diagnostic_exclusions': ['dupont', 'porter'],
                     'diagnostic_exclusion_rationale': {
                         'dupont': 'OFFLINE FIXTURE: 该扫描只做行业横比',
                         'porter': 'OFFLINE FIXTURE: 该扫描只做行业横比'}}
-        manifest = self.make_manifest(profile=excluded)
-        self.assertNotIn('dupont', manifest['modules'])
-        self.assertNotIn('porter', manifest['modules'])
-        self.assertFalse(any(q['module_id'] in ('dupont', 'porter')
-                             for q in manifest['questions']))
-        # 核心题集与不排除时一致
-        core = [q for q in manifest['questions'] if q.get('comparison_role') == 'core']
-        self.assertEqual(len(core), len(core_constructs()))
+        # Historical profiles remain readable; a new dispatch may not omit them.
+        historical, _, _ = qs.select_questions(excluded, 'quick', self.modules)
+        self.assertFalse(any(q['module_id'] in ('dupont', 'porter') for q in historical))
+        with tempfile.TemporaryDirectory(prefix='basic-exclude-') as temporary:
+            with self.assertRaisesRegex(ValueError, 'cannot exclude basic diagnostics'):
+                qs.compose(excluded, 'quick', Path(temporary) / 'rejected')
+            self.assertFalse((Path(temporary) / 'rejected').exists())
         for bad in ({'diagnostic_exclusions': ['dupont']},
                     {'diagnostic_exclusions': ['recovery']},
                     {'diagnostic_exclusions': ['dupont', 'dupont']},
@@ -1472,18 +1471,19 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
         self.assertEqual(len([q for q in quick['questions'] if q['module_id'] == 'recovery']), 4)
         self.assertTrue(all(q['comparison_role'] == 'diagnostic' for q in quick['questions'] if q['module_id'] == 'recovery'))
 
-    def test_s06_t3_budget30_exports_all_six_risk_questions_budget24_writes_nothing(self):
+    def test_s06_t3_budget_preserves_basic_and_all_risk_questions(self):
         decision = self.route(self.normal() + [self.fact('distressed', evidence_type='covenant_breach')])
         self.assertEqual(self.compose_route(decision, 'complete')['question_count'], 46)
         with self.assertRaisesRegex(ValueError, 'budget below mandatory'):
             self.compose_route(decision, 'invalid24', max_questions=24)
         self.assertFalse((self.root / 'outputs/invalid24').exists())
-        manifest = self.compose_route(decision, 'budget30', max_questions=30)
+        minimum = decision['dispatch_plan']['minimum_questions']
+        manifest = self.compose_route(decision, 'budget-floor', max_questions=minimum)
         required = set(decision['dispatch_plan']['mandatory_question_ids'])
-        self.assertEqual(manifest['question_count'], 30)
+        self.assertEqual(manifest['question_count'], minimum)
         self.assertTrue(required <= {q['id'] for q in manifest['questions']})
         self.assertTrue(required.isdisjoint(q['question_id'] for q in manifest['deferred_questions']))
-        self.assertEqual(len(manifest['deferred_questions']), 16)
+        self.assertEqual(len(manifest['deferred_questions']), 46 - minimum)
 
     def test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation(self):
         facts = self.normal() + [self.fact(m, materiality={'revenue_share': .3}) for m in ('industrial', 'software')]
@@ -1500,11 +1500,12 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
 
     def test_s06_t5_common_only_and_known_distress_standard_output_keep_unknown_profile(self):
         common = self.compose_route(self.route([]), 'common', answer_format='standard-1')
-        self.assertEqual(common['question_count'], len(core_constructs()))
+        basic_count = len(qs.basic_questions(qs.load_library()[1]))
+        self.assertEqual(common['question_count'], basic_count)
         self.assertNotIn('company_type', common['profile'])
         risk = self.compose_route(self.route([self.fact('distressed', evidence_type='default')]), 'risk')
-        self.assertEqual(risk['question_count'], 30)
-        self.assertEqual(set(risk['modules']), {'common', 'distressed', 'recovery'})
+        self.assertEqual(risk['question_count'], basic_count + 6)
+        self.assertEqual(set(risk['modules']), {'common', 'distressed', 'recovery', 'dupont', 'porter'})
 
     def test_s06_public_export_cannot_bypass_route_profile_id_or_clock(self):
         decision = self.route()
@@ -1699,12 +1700,14 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
         facts = self.normal(); facts[0]['confidence'] = 'low'
         decision = self.route(facts)
         self.assertIn('semiconductors', self.selected(decision), 'preserve sourced classification evidence')
-        self.assertEqual(decision['dispatch_plan']['eligible_module_ids'], ['common'])
-        self.assertEqual(set(self.compose_route(decision, 'uncertain')['modules']), {'common'})
+        self.assertEqual(decision['dispatch_plan']['eligible_module_ids'], ['common', 'dupont', 'porter'])
+        self.assertEqual(set(self.compose_route(decision, 'uncertain')['modules']), {'common', 'dupont', 'porter'})
         facts = self.normal() + [self.fact('bank'), self.fact('distressed', evidence_type='covenant_breach')]
         conflicted = self.route(facts)
-        self.assertEqual(set(conflicted['dispatch_plan']['eligible_module_ids']), {'common', 'distressed', 'recovery'})
-        self.assertEqual(set(self.compose_route(conflicted, 'conflict')['modules']), {'common', 'distressed', 'recovery'})
+        self.assertEqual(set(conflicted['dispatch_plan']['eligible_module_ids']),
+                         {'common', 'distressed', 'recovery', 'dupont', 'porter'})
+        self.assertEqual(set(self.compose_route(conflicted, 'conflict')['modules']),
+                         {'common', 'distressed', 'recovery', 'dupont', 'porter'})
         forged = copy.deepcopy(decision)
         forged['dispatch_plan']['eligible_module_ids'] = sorted(self.selected(decision))
         forged = _route_fixture_module.mc.seal_route_decision(forged)

@@ -1,0 +1,23 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "scripts/question_sets.py",
+    "basic",
+    "--output",
+    "<isolated temporary path>"
+  ],
+  "exit_code": 0,
+  "question_count": 36,
+  "modules": [
+    "common",
+    "dupont",
+    "porter"
+  ],
+  "output_bytes": 96717,
+  "output_sha256": "0cfd9991359e9795509c4f06741ecf6eed8234e390b688d16c4038bfab24e8b9",
+  "paid_calls": 0,
+  "first_probe_issue": "Reviewer initial subprocess omitted -X utf8 and decoded child cp936 stdout as UTF-8; changed review invocation, not product code.",
+  "temporary_directory_removed": true
+}

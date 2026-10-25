@@ -1,6 +1,6 @@
 ---
 name: invest-quick-scan
-description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快速评分与非评分事实画像。24个核心判断配合公司类型、行业和生命周期追问，保留周期低谷与反转观察；采集产品、产业链、供应商客户和管理层等短结构化事实，支持公司、时间与模型比较。不保存公司文档，不替代完整盈利预测。
+description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快速评分与非评分事实画像。通用判断、杜邦分解和波特五力对所有公司必做，再组合公司类型、行业和生命周期追问；保留周期低谷与反转观察，支持公司、时间与模型比较。不保存公司文档，不替代完整盈利预测。
 ---
 
 # 上市公司快速扫描：评分与事实
@@ -11,15 +11,15 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 
 ## 通用模板优先
 
-先读 [买方核心问题清单](references/buy-side-questions.md) 和 [分析方法与适用边界](references/common-framework.md)，查看 [通用问题源文件](questions/common.json)。[main_questions.json](main_questions.json) 是自动生成的 StockQAbyLLM 兼容通用模板，包含全部24题及独立评分锚点。用户提供的 `main_questions_sample.json` 仅保留作参考。
+先读 [买方核心问题清单](references/buy-side-questions.md) 和 [分析方法与适用边界](references/common-framework.md)。基础必做集合是 [common](questions/common.json)、[杜邦](questions/diagnostics/dupont.json) 和 [波特五力](questions/diagnostics/porter.json) 的组合，当前为24个核心判断、7道杜邦题、5道五力题，共36题；数量始终从发布数据派生，允许版本升级扩张。类型替换改变具体题面，不减少核心判断覆盖。完整通用导出使用 [basic_questions.json](basic_questions.json)；[main_questions.json](main_questions.json) 保留旧common导出的兼容用途，不是新扫描的完整基础模板。用户提供的 `main_questions_sample.json` 仅保留作参考。
 
 核心清单回答八组经济问题：客户与生意、竞争与利润归属、执行组织、资本回报与财务真实性、治理与每股价值、生存与永久损失、成长与再投资、价格与回报实现。公司类别改变指标口径，不能取消这些基本判断。
 
-杜邦和五力是可选诊断模块，只有回报来源或竞争结构存在具体疑问才追加，不默认占据快扫篇幅、不重复计分。财务真实性、普通股东权益和资金生存是关键核查题；重大问题或证据缺口不能由其他高分抵消。高杠杆、低税率、早期阶段或市场集中度本身都不等于高质量。
+杜邦和五力对所有公司必做，在quick、full、分类尚未明确及题数预算裁剪时都保留全部题目，不重复计分。金融企业或商业化前企业的个别因子没有经济含义时，仍输出该题并标not_applicable，给出理由和合适替代指标，不能删除整个模块。新扫描不能通过diagnostic_exclusions跳过基础题；预算低于必做覆盖时明确拒绝，不能截掉五力或杜邦。财务真实性、普通股东权益和资金生存是关键核查题；重大问题或证据缺口不能由其他高分抵消。高杠杆、低税率、早期阶段或市场集中度本身都不等于高质量。
 
 周期低谷和暂时经营困难另走[恢复观察](references/recovery-watch.md)：区分当前表现、正常化能力与恢复假设。保留低分，同时展示仍有的优势、修复证据、资金时限和普通股受益条件。质量白名单不能成为所有研究候选的唯一入口。
 
-新版评分仅以24个核心构念及类型替代题汇总可比质量分，行业/阶段/属性题保留为专题评分，不因追加题数改变核心权重。使用[统一行业与阶段口径](questions/scoring-contexts.json)，分清当前、正常化、压力和未来假设；新增题义/口径与旧结果不直接连成趋势。
+新版评分仅以发布包common中声明的核心构念及类型替代题汇总可比质量分；当前核心数为24，不是架构限制。行业/阶段/属性题保留为专题评分，杜邦及五力始终单列诊断，不因追加题数改变核心权重。使用[统一行业与阶段口径](questions/scoring-contexts.json)，分清当前、正常化、压力和未来假设；新增题义/口径与旧结果不直接连成趋势。
 
 模块独立扩题、证据化路由、发布版本锁与增量补扫的后续实施见[组合式题库设计](docs/modular-question-bank-design.md)及S04—S06/Q13/W15/F06/U04任务卡。现有组合能力可直接使用；设计中的独立升级契约和跨仓接线尚未完成。
 
@@ -44,6 +44,7 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 
 ```powershell
 python scripts/question_sets.py validate
+python scripts/question_sets.py basic --output "runs/basic_questions.json"
 python scripts/question_sets.py routing --company "公司全名" --ticker "证券代码" --exchange "交易所" --as-of "2026-09-19" --output "runs/routing_questions.json"
 python scripts/question_sets.py compose --profile "examples/profile.json" --mode quick --out-dir "runs/example"
 python scripts/question_sets.py normalize --manifest "runs/example/manifest.json" --answers "runs/example/raw_answers.json" --review "runs/example/evidence_review.json" --output "runs/example/portrait.json"
@@ -51,8 +52,19 @@ python scripts/question_sets.py normalize --manifest "runs/example/manifest.json
 
 标准评分、事实及三维比较的离线命令见[标准输出](references/standard-output.md)。新模式依赖requirements.txt中的jsonschema；不含客户端、密钥或调度器。已有导出可用 `python -B -X utf8 scripts/view_quick_scan.py --bundle "导出/bundle.json" --open` 复用VIEW只读服务，无需配置PYTHONPATH；只查看既有数据，不能代替扫描/更新。独立目录用`--viewer-root`指定，见[启动与导航实证](docs/implementation/experiments/view-launch-and-navigation-2026-10-15.md)。首次生产运行、自动/手动加公司、持续维护和简洁UI统一由StockWiki入口提供，仍待[跨项目实施包](docs/implementation/README.md)接通，不能把本地编排成功称作一键扫描已上线。
 
-`examples/profile.json` 是虚构的路线演示，使用时替换为真实分类。`quick` 保留24道核心题的全部判断，并加高优先级专属题；`full` 展开所选模块。两种模式都不自动增加杜邦和五力。实际题数在manifest中列明，不承诺固定执行分钟数。多业务集团按有实质影响的分部单独选题，不用最大收入分部代表全部业务，也不在本skill中做SOTP。
+`examples/profile.json` 是虚构的路线演示，使用时替换为真实分类。`quick` 保留完整基础集合与高优先级专属题；`full` 展开所选模块。两种模式都包含杜邦和五力。`compose_company_bank.py` 默认不设题数上限；显式`--max-questions`只能延后选配追问，不能削减基础覆盖及强制风险题。实际题数在manifest中列明，不承诺固定执行分钟数。多业务集团按有实质影响的分部单独选题，不用最大收入分部代表全部业务，也不在本skill中做SOTP。
 
 修改评分问题编辑questions/源JSON，再运行common命令更新兼容导出；事实编辑facts.json，并运行standard_answers.py validate-library。prompt引用的统一口径/schema必须进入manifest hash，不能只更新文字而不记录版本。
 
-当前评分catalog 3.2.0含222题，核心仍24题，事实题库1.0.0含61题。新manifest为3.0、标准观察为1.0.0；旧2.1运行保持原汇总，缺执行元数据标legacy_unattributed，不补造时间或模型。股票池数据库、持续运行与生产UI仍按实施路线开发；本skill的离线代码不是外部运行平台。
+当前评分catalog 3.2.1含48模块、222题；基础必做当前36题，核心评分24题，二者均从数据派生。事实题库1.0.0含61题。新manifest为3.1，selection_policy记录basic-required-v1；显式题数预算另记同名budget_policy。历史无selection_policy的profile manifest依据冻结模块版本恢复当时的可选/必做规则，不能套今天的默认模块；旧预算也按原规则只读校验。旧2.1运行保持原汇总，缺执行元数据标legacy_unattributed，不补造时间或模型。股票池数据库、持续运行与生产UI仍按实施路线开发；本skill的离线代码不是外部运行平台。
+
+profile组装使用当前profile包；路由组装必须显式绑定路由包，二者不能混用。新路由policy 2.5.0让分类未知时也保留common、杜邦和五力；历史2.4的冻结路由按原规则读取，不回写。生成新路由再组装的离线路线如下（`runs/route-input.json`须由调用方提供已核实实体及verified_facts；空事实只执行基础覆盖，不推断行业）：
+
+```powershell
+$routePackage = python scripts/question_sets.py publish-routing | ConvertFrom-Json
+python scripts/question_sets.py resolve-route --input "runs/route-input.json" --module-package-id $routePackage.package_id --now-utc "2026-10-25T12:00:00Z" --output "runs/route.json"
+$route = Get-Content -Raw "runs/route.json" | ConvertFrom-Json
+python scripts/question_sets.py compose-route --route-decision "runs/route.json" --now-utc "2026-10-25T12:00:00Z" --expected-route-decision-id $route.decision_id --out-dir "runs/routed-example"
+```
+
+`publish-routing`不切换current指针；profile默认流程继续可用。路由流程显式采用命令返回的新package_id，不会误读router1包。新扫描若拿到遗漏基础题的历史路由会明确拒绝并要求刷新，历史manifest仍可只读校验。

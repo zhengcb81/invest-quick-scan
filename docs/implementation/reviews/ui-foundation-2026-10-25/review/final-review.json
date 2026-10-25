@@ -1,0 +1,383 @@
+{
+  "protocol": "iqs.independent-node-review/1.0.0",
+  "reviewer_agent": "/root/review_basic_ui26",
+  "implementation_agents": [
+    "/root/audit_base_bank26",
+    "/root/audit_ui26",
+    "/root"
+  ],
+  "reviewed_at": "2026-10-25T15:57:39.440851Z",
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Universal common+DuPont+Porter selection, budgets, historical replay, default thin scan and honest local read-only company/question UI. Not full production UI qualification.",
+  "scope_complete": true,
+  "production_ui_complete": false,
+  "full_pool_scored": false,
+  "financial_accuracy_qualified": false,
+  "verified": {
+    "basic_set": {
+      "common_current": 24,
+      "dupont": 7,
+      "porter": 5,
+      "total_current": 36,
+      "fixed_24_architecture_limit": false,
+      "future_low_priority_basic_extensions_retained": true,
+      "diagnostics_in_core_average": false
+    },
+    "public_route": {
+      "router": "2.5.0",
+      "unclassified_partial_coverage": 36,
+      "budget35_rejected": true,
+      "removed_policy_markers_cannot_reduce_v25_route_to_24": true
+    },
+    "historical_reads": {
+      "real_38_question_manifest_unchanged": true,
+      "real_30_budget_and_24_budget_manifests_unchanged": true,
+      "defaults_derived_from_frozen_versions": true
+    },
+    "ui": {
+      "entities": 214,
+      "verified_entities": 209,
+      "provisional_entities": 5,
+      "modules": 48,
+      "scored_question_bank": 222,
+      "fact_question_texts": 61,
+      "mandatory_applicability_cells": 642,
+      "historical_runs": 12,
+      "associated_companies": 11,
+      "unbound_runs": 12,
+      "model_missing_not_invented": true,
+      "ambiguous_amec_remains_unbound": true,
+      "old_24_answers_show_current_12_missing": true,
+      "no_run_shows_current_36_missing": true,
+      "not_applicable_preserved_null_score": true,
+      "source_raw_sha_verified": 88
+    },
+    "startup": {
+      "reuses_existing_ui": true,
+      "does_not_run_tests": true,
+      "paid_calls": 0,
+      "production_database_writes": 0
+    }
+  },
+  "test_evidence": {
+    "root_launcher": "launcher.xml: 4 passed, no skip/error",
+    "root_thin": "thin-final2.xml: 48 passed, no skip/error",
+    "bank_initial": "targeted.xml: 52 passed + 52 subtests, 5 failed; original failures preserved",
+    "bank_recheck": "recheck.xml: 15 passed + 20 subtests; recheck-closure.json verifies all 5 exact failed nodes closed",
+    "ui_initial": "targeted.log: 75 passed, 6 existing environment-gated skips (not silently counted as pass)",
+    "ui_last": "last-small.log: 12 passed including actual Node DOM missing-12/missing-36/bound-warning cases and N/A adapter",
+    "independent_cli_and_reads": [
+      "independent-selection-probe.json",
+      "independent-public-basic-cli.json",
+      "independent-historical-read.json",
+      "independent-public-route-cli.json",
+      "independent-final-checks.json"
+    ],
+    "full_suite_run": false,
+    "paid_calls": 0
+  },
+  "remaining_productization": [
+    "The UI reads the actual imported 214-company onboarding roster and 12 historical thin-scan draft runs; the target ~2000-company universe is not all registered or scored.",
+    "Production owner ready bundles, StockWiki real-time query/import/ACK and sustained refresh are not connected to this UI.",
+    "61 fact question texts are available; per-company fact answers and full production task/add-company/model-settings operations are not implemented here.",
+    "Historical runs lack version/model markers; preserve unknown fields instead of backfilling. Arbitrary future version anchor diffs still need artifact-specific lookup.",
+    "New router 2.5 is published separately; current.json and old releases remain unchanged and are explicitly distinguished in the UI."
+  ],
+  "source_bindings": [
+    {
+      "repository": "bank",
+      "path": "SKILL.md",
+      "bytes": 12040,
+      "sha256": "87857c5639847d4feedb666b310d0c354e7cc55287bbb470eed5e6e4f1c09051"
+    },
+    {
+      "repository": "bank",
+      "path": "questions/routing-policy.v2.json",
+      "bytes": 17126,
+      "sha256": "e412736654f854a79e376cbe03021c6b3d5ad6821640f277cb9aaaa1daaa4909"
+    },
+    {
+      "repository": "bank",
+      "path": "scripts/compose_company_bank.py",
+      "bytes": 2821,
+      "sha256": "c5f852fe893b7c87a231c7be8a1f703fb9c8a893c83d3dbecb9783ed2d3b1f65"
+    },
+    {
+      "repository": "bank",
+      "path": "scripts/question_manifest.py",
+      "bytes": 13997,
+      "sha256": "15cb20d7a65f0def0e5a14b9bf0e033e0eec3a9f8be44a8bdd1bcca276ff42e6"
+    },
+    {
+      "repository": "bank",
+      "path": "scripts/question_selection.py",
+      "bytes": 10890,
+      "sha256": "dd42beebe16e192fd3d2c5d1d3c5343f80c972853ca4c7c766ce686a60f55218"
+    },
+    {
+      "repository": "bank",
+      "path": "scripts/question_sets.py",
+      "bytes": 70702,
+      "sha256": "6a211f5c5cef1ce3b4b1851c638e60be7f270de01c87192e4b29f93e5d1e33f1"
+    },
+    {
+      "repository": "bank",
+      "path": "scripts/routing.py",
+      "bytes": 67972,
+      "sha256": "0b52d89ea9f06488ecadf5b657398e26f6f6543f881d0a5df6769121358ef75a"
+    },
+    {
+      "repository": "bank",
+      "path": "tests/test_bank_expansion_21.py",
+      "bytes": 31539,
+      "sha256": "64c0608944c319eba67197917845814180761ef1ec0b64569b8a13f0a06fbada"
+    },
+    {
+      "repository": "bank",
+      "path": "tests/test_question_sets.py",
+      "bytes": 109047,
+      "sha256": "b16ab4c5f6f29ff5bca8ed20aa484b1d7f08bd69dd5a8f3a99b27d0b8fc107d7"
+    },
+    {
+      "repository": "bank",
+      "path": "tests/test_routing.py",
+      "bytes": 64873,
+      "sha256": "30060573147256c63ae9b3948951b49a620a678a939cf8f0c60c239b3812bc1f"
+    },
+    {
+      "repository": "bank",
+      "path": "basic_questions.json",
+      "bytes": 96717,
+      "sha256": "0cfd9991359e9795509c4f06741ecf6eed8234e390b688d16c4038bfab24e8b9"
+    },
+    {
+      "repository": "bank",
+      "path": "questions/releases/locks/modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df.json",
+      "bytes": 61995,
+      "sha256": "90914f8fd0f06d5e18e5ce9d5250cec944d3274a084ae4f783572fe54866fac8"
+    },
+    {
+      "repository": "bank",
+      "path": "questions/releases/packages/pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a.json",
+      "bytes": 48141,
+      "sha256": "6732663acedc74a9c173704981bd1012dafd9c4440214e533528c425745864f0"
+    },
+    {
+      "repository": "bank",
+      "path": "questions/releases/routing/router_2_5_0-a13a6a6bd9b66f92ff536e3f63782abbc6621b9e33606e70375a89fb433992b0.json",
+      "bytes": 11628,
+      "sha256": "a13a6a6bd9b66f92ff536e3f63782abbc6621b9e33606e70375a89fb433992b0"
+    },
+    {
+      "repository": "ui",
+      "path": "README.md",
+      "bytes": 2796,
+      "sha256": "7fe9a72cfd7db7dad99fd9019f6d243d2cea8b21ccf2c5625c49f4614537d772"
+    },
+    {
+      "repository": "ui",
+      "path": "adapters/answer_repository.py",
+      "bytes": 10197,
+      "sha256": "8a6a63b67e9368b4c97bf7746ecbbd5b93fe1d31b8e585f24cfb6e45b8e82069"
+    },
+    {
+      "repository": "ui",
+      "path": "adapters/applicability_resolver.py",
+      "bytes": 5790,
+      "sha256": "917a3d715c347d64a211db900156a9e20a9a6d0032daca5f162f11d605caf85a"
+    },
+    {
+      "repository": "ui",
+      "path": "adapters/applicability_input.py",
+      "bytes": 3457,
+      "sha256": "8b2a4370a480f490ad44beb66e58e31c408bb627d4b3f6d2397e1707f47b9190"
+    },
+    {
+      "repository": "ui",
+      "path": "scripts/build_data.py",
+      "bytes": 20702,
+      "sha256": "e74d860f3082148fa7a8b063be7ebe8ce82f13388ce2116f814c9bb9585a7044"
+    },
+    {
+      "repository": "ui",
+      "path": "src/app/store.js",
+      "bytes": 6563,
+      "sha256": "36176329b940bcf814612e19b5dbb17ed71b1baee8c239f04a51a3ef24a86cef"
+    },
+    {
+      "repository": "ui",
+      "path": "src/app/ui/bank_overview.js",
+      "bytes": 7750,
+      "sha256": "8eba845688f0462c7b627b187ee19f58e256f7d680f067f1d989ba715c6d3c30"
+    },
+    {
+      "repository": "ui",
+      "path": "src/app/ui/companies_matrix.js",
+      "bytes": 22002,
+      "sha256": "f6067043cd90dd14e34287be0d623280ac2322e18c39dbb5837a58e6335bf8a9"
+    },
+    {
+      "repository": "ui",
+      "path": "src/app/ui/data_notes.js",
+      "bytes": 9885,
+      "sha256": "b0fefbe34baa5b807d483ac7f5d8fa3823adefde9b6c590a413360d82a97c012"
+    },
+    {
+      "repository": "ui",
+      "path": "src/app/ui/entity_detail.js",
+      "bytes": 12112,
+      "sha256": "d94b249d09b937f300e753f14f3f7eff71f36a37d0270499203e49642225cad2"
+    },
+    {
+      "repository": "ui",
+      "path": "src/app/ui/versions.js",
+      "bytes": 7847,
+      "sha256": "687357771adb43283871846ea85b94a3d457093cecbc83663c26677069ad0d39"
+    },
+    {
+      "repository": "ui",
+      "path": "tests/test_use_ready.py",
+      "bytes": 6884,
+      "sha256": "c72f6d29b49c18119a4194373f5107f8f3c963594780704d4e1028151910eb35"
+    },
+    {
+      "repository": "ui",
+      "path": "src/generated/bank.json",
+      "bytes": 212990,
+      "sha256": "7fd9f1a8881ebbfb32820446cce12bb7d9f8a540df3eee5d242bc2bc12102fce"
+    },
+    {
+      "repository": "ui",
+      "path": "src/generated/manifest.json",
+      "bytes": 15157,
+      "sha256": "317926f780fb28ef811502b96aad99b90964e0b4e83439b5d6ac7dea4757c88f"
+    },
+    {
+      "repository": "ui",
+      "path": "src/generated/roster.json",
+      "bytes": 3777465,
+      "sha256": "4c8aba26e09e03382faa30e9cf49de23976ba24e7df33d76888774fb9829371f"
+    },
+    {
+      "repository": "ui",
+      "path": "src/generated/versions.json",
+      "bytes": 527972,
+      "sha256": "6c0e4d88d524151cd5c273cfb63c1382ed23de706b93115c1dee3a59f296a4b9"
+    },
+    {
+      "repository": "ui",
+      "path": "adapters/contracts.py",
+      "bytes": 9394,
+      "sha256": "9b42fa664f9fed86ac461ab192c2b65b29047a7679f02ca148c16747ef951978"
+    },
+    {
+      "repository": "ui",
+      "path": "src/app/constants.js",
+      "bytes": 5259,
+      "sha256": "f8cd99ff8a7b4d744164d9ab5917a798ae3adecd2aaf7ee72c92e7650182a709"
+    },
+    {
+      "repository": "ui",
+      "path": "tests/test_required_answers_ui.py",
+      "bytes": 4275,
+      "sha256": "66ee5cabb4dcfe99dad5eac34f0a994f8a4300163d2043e03bb20ada4e9321f5"
+    },
+    {
+      "repository": "root",
+      "path": "scripts/open_dashboard.py",
+      "bytes": 2371,
+      "sha256": "2203de942780df5710e54daca14104e1f939c3a778dcedb71fccc8fd15390544"
+    },
+    {
+      "repository": "root",
+      "path": "scripts/question_bank.py",
+      "bytes": 4995,
+      "sha256": "c0a4ac8f994535ab40d80ba88fa67815bf029f5538cd0e61cb35aadbbd7be5f6"
+    },
+    {
+      "repository": "root",
+      "path": "scripts/thin_scan.py",
+      "bytes": 28844,
+      "sha256": "f09775a408b1113697d46ebe508c5bb71a822488437d6a5c08487bfba1c44b40"
+    },
+    {
+      "repository": "root",
+      "path": "scripts/thin_compare.py",
+      "bytes": 6402,
+      "sha256": "c144688810586b84e334e1c9969549fc6c9c993ec5ccc153d8b238532d098998"
+    },
+    {
+      "repository": "root",
+      "path": "tests/test_question_bank.py",
+      "bytes": 8700,
+      "sha256": "c266b50ca28fac7ee022b3115fcdb0fb4edf657b1ba8f9b5e26d31f21bbab34c"
+    },
+    {
+      "repository": "root",
+      "path": "tests/test_thin_scan_prompt.py",
+      "bytes": 7917,
+      "sha256": "55a13e485b06d98daebdc7bc10e69ca5253280261c8c59c07019c744762d23ae"
+    },
+    {
+      "repository": "root",
+      "path": "tests/test_view_launcher.py",
+      "bytes": 4815,
+      "sha256": "fb8e551b65fc3f4c9ffd97b5816888214d5e892e10330cefcb1e9eaea4ccda22"
+    },
+    {
+      "repository": "root",
+      "path": "docs/implementation/company-and-bank-ui.md",
+      "bytes": 4043,
+      "sha256": "eaa60c1f2234a37c7011d8aecd21766aac1069f8cd8f107b05ec670784381ea8"
+    },
+    {
+      "repository": "root",
+      "path": "references/buy-side-questions.md",
+      "bytes": 15680,
+      "sha256": "baae9a563b679a48d4c655e315a196f349bd5abebd8d556ad11b7745fbea91f5"
+    },
+    {
+      "repository": "root",
+      "path": "references/common-framework.md",
+      "bytes": 6162,
+      "sha256": "4fd4f3812c67a3896b3d0dcc65492b6df9327ec6d38099aed554950ab0edc424"
+    },
+    {
+      "repository": "root",
+      "path": "references/routing.md",
+      "bytes": 15538,
+      "sha256": "38a238903063ada63de8bb14dd033733e688f8996d8043eeaa033e0ae6948218"
+    },
+    {
+      "repository": "root",
+      "path": "docs/modular-question-bank-design.md",
+      "bytes": 17157,
+      "sha256": "32f85249c1503ed4e4b0ccb8b6b382400a428676b76e4eaf09b9794f4cb0c613"
+    }
+  ],
+  "independent_evidence": [
+    {
+      "path": "independent-selection-probe.json",
+      "sha256": "3e1a0ea03f3a160fcad74d0cc31ec92ed84609cc002f7aa68b328b1bbd922ac5"
+    },
+    {
+      "path": "independent-public-basic-cli.json",
+      "sha256": "5fd51a0b94bb4f8392e0be85a565592c25baf35fef76d109d880c2dda4a030ce"
+    },
+    {
+      "path": "independent-historical-read.json",
+      "sha256": "6efedd131ec6c306f406da6088d84012ee7bfb82b1a8cf2796c1040592cf1b58"
+    },
+    {
+      "path": "independent-public-route-cli.json",
+      "sha256": "f06e65aef9a0fc2653d62a6426c31f33ef2ce9f9ca58dbfc7e46af9d578c40bb"
+    },
+    {
+      "path": "independent-final-checks.json",
+      "sha256": "7bd44860534ddb4df8035b78b1913b59389af515d2846bcbeac9b34d1fa2cdf4"
+    }
+  ],
+  "reviewer_source_mutations": 0,
+  "reviewer_paid_calls": 0
+}

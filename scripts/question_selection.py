@@ -13,7 +13,8 @@ import question_library as library
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def _select_from_module_ids(profile, mode, modules, selected_modules, mandatory_question_ids=()):
+def _select_from_module_ids(profile, mode, modules, selected_modules, mandatory_question_ids=(),
+                            *, include_basic=False):
     if mode not in ('quick', 'full'):
         raise ValueError('mode must be quick or full')
     if len(selected_modules) != len(set(selected_modules)) or 'common' not in selected_modules:
@@ -31,7 +32,8 @@ def _select_from_module_ids(profile, mode, modules, selected_modules, mandatory_
     for module_id in selected_modules:
         for original in modules[module_id]['questions']:
             if (mode == 'full' or original['priority'] == 1 or original.get('critical')
-                    or original['id'] in mandatory_question_ids):
+                    or original['id'] in mandatory_question_ids or (include_basic and
+                        module_id in ('common', *library.ALWAYS_APPLICABLE_DIAGNOSTICS))):
                 chosen.append({**original, 'module_id': module_id})
     # A specialised replacement may be essential even when marked lower priority.
     chosen_ids = {q['id'] for q in chosen}
@@ -53,7 +55,8 @@ def _select_from_module_ids(profile, mode, modules, selected_modules, mandatory_
     return chosen, selected_modules, replacements
 
 
-def select_questions(profile, mode, modules, contexts=None, *, root=None):
+def select_questions(profile, mode, modules, contexts=None, *, root=None, default_diagnostics=None,
+                     include_basic=True):
     library.validate_profile(profile, modules, contexts, root=Path(root) if root else ROOT)
     if mode == 'quick' and len(profile.get('overlays', [])) > 2:
         raise ValueError('more than two material overlays: use full instead of silently omitting risks')
@@ -69,26 +72,38 @@ def select_questions(profile, mode, modules, contexts=None, *, root=None):
     # RULE-SCOPE-DECISION-19（所有者 2026-10-24）：dupont/porter 对所有公司必做，
     # 组装默认恒入；仅当 profile 在 diagnostic_exclusions 显式排除（并给理由）时缺席。
     excluded_diagnostics = set(profile.get('diagnostic_exclusions', []))
+    defaults = (library.ALWAYS_APPLICABLE_DIAGNOSTICS if default_diagnostics is None
+                else default_diagnostics)
     selected.extend(sorted(set(profile.get('diagnostic_modules', []))
-                           | (set(library.ALWAYS_APPLICABLE_DIAGNOSTICS) - excluded_diagnostics)))
+                           | (set(defaults) - excluded_diagnostics)))
     if (profile.get('recovery_review') or profile['stage'] in ('turnaround', 'declining')
             or 'distressed' in profile.get('overlays', [])):
         selected.append('recovery')
     selected.extend(sorted(profile.get('investment_lenses', [])))
     selected = list(dict.fromkeys(selected))
-    return _select_from_module_ids(profile, mode, modules, selected)
+    return _select_from_module_ids(profile, mode, modules, selected, include_basic=include_basic)
 
 
-def select_questions_for_route(profile, mode, modules, selected_module_ids, mandatory_question_ids=()):
+def select_questions_for_route(profile, mode, modules, selected_module_ids, mandatory_question_ids=(),
+                               *, include_basic=False):
     """S06 seam: a verified partial route may contain common and known risks only."""
     priority = {'common': 0, 'common_extensions': 1, 'types': 2, 'industries': 3,
                 'stages': 4, 'overlays': 5, 'diagnostics': 6, 'lenses': 7}
     ordered = sorted(selected_module_ids, key=lambda module_id: (
         priority.get(modules[module_id]['kind'], 99), module_id))
-    return _select_from_module_ids(profile, mode, modules, ordered, mandatory_question_ids)
+    return _select_from_module_ids(profile, mode, modules, ordered, mandatory_question_ids,
+                                   include_basic=include_basic)
 
 
-def apply_question_budget(questions, maximum, mandatory_question_ids=()):
+def apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True):
+    """Trim optional follow-ups while retaining the complete shared questionnaire.
+
+    ``protect_basic=False`` is only for reading a previously frozen manifest
+    written before basic-required-v1; new dispatches must use the default.
+    Diagnostic coverage is independent of scoring aggregation and critical risk.
+    """
+    if type(protect_basic) is not bool:
+        raise ValueError('protect_basic must be boolean')
     if set(mandatory_question_ids) - {q['id'] for q in questions}:
         raise ValueError('selected questionnaire omits a mandatory routed question')
     if maximum is None:
@@ -96,9 +111,11 @@ def apply_question_budget(questions, maximum, mandatory_question_ids=()):
     if type(maximum) is not int or maximum < 1:
         raise ValueError('max_questions must be a positive integer')
     required = [q for q in questions if q.get('comparison_role') == 'core' or q.get('critical')
-                or q['id'] in mandatory_question_ids]
+                or q['id'] in mandatory_question_ids or (protect_basic and
+                    q.get('module_id') in ('common', *library.ALWAYS_APPLICABLE_DIAGNOSTICS))]
     if len(required) > maximum:
-        raise ValueError('question budget below mandatory core and critical-risk coverage')
+        raise ValueError('question budget below mandatory core, basic diagnostics and critical-risk coverage'
+                         f' (required={len(required)}, max_questions={maximum})')
     optional = [q for q in questions if q not in required]
     kept_ids = {q['id'] for q in required + optional[:maximum - len(required)]}
     kept = [q for q in questions if q['id'] in kept_ids]
@@ -108,12 +125,20 @@ def apply_question_budget(questions, maximum, mandatory_question_ids=()):
 
 
 def published_selection(profile, mode, modules, release, route_decision, contexts, package=None,
-                        *, root=None):
+                        *, root=None, historical_profile_defaults=False):
     local_root = Path(root) if root else ROOT
     if route_decision is None:
         if release['schema_version'] == '2.0.0':
             raise ValueError('routing policy v2 requires a frozen route decision')
-        return select_questions(profile, mode, modules, contexts, root=local_root)
+        defaults = None
+        if historical_profile_defaults:
+            # Immutable 3.0.0 diagnostics were optional. 3.0.1 introduced the
+            # owner-mandated defaults. Never infer historical selection from
+            # today's catalog or a manifest's untrusted module list.
+            defaults = tuple(mid for mid in library.ALWAYS_APPLICABLE_DIAGNOSTICS
+                             if module_contract._version(modules[mid]['version']) >= (3, 0, 1))
+        return select_questions(profile, mode, modules, contexts, root=local_root,
+                                default_diagnostics=defaults, include_basic=not historical_profile_defaults)
     if route_decision.get('schema_version') == '2.0.0':
         import routing as route_engine
 
@@ -128,7 +153,8 @@ def published_selection(profile, mode, modules, release, route_decision, context
         selected = route_decision['dispatch_plan'].get('eligible_module_ids',
                     [item['module_id'] for item in route_decision['module_decisions'] if item['decision'] == 'selected'])
         return select_questions_for_route(profile, mode, modules, selected,
-                                           route_decision['dispatch_plan']['mandatory_question_ids'])
+                                           route_decision['dispatch_plan']['mandatory_question_ids'],
+                                           include_basic=module_contract._version(release['router_version']) >= (2, 5, 0))
     module_contract.validate_route_decision(route_decision, release)
     if route_decision['entity_id'] != profile.get('entity_id') or route_decision['as_of'] != profile.get('as_of'):
         raise ValueError('route decision identity/cutoff differs from profile')

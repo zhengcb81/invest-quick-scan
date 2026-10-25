@@ -152,6 +152,13 @@ def export_questions(questions, profile=None, answer_format='legacy', contexts=N
     return [{'category': key, 'questions': values} for key, values in categories.items()]
 
 
+def basic_questions(modules):
+    """Shared mandatory coverage without changing historical module ownership."""
+    return [{**question, 'module_id': module_id}
+            for module_id in ('common', *library.ALWAYS_APPLICABLE_DIAGNOSTICS)
+            for question in sorted(modules[module_id]['questions'], key=lambda item: item['id'])]
+
+
 def renderer_rules_sha256():
     return _renderer_rules_sha256()
 
@@ -162,8 +169,9 @@ def publish_library():
                                    renderer_rules_sha256=renderer_rules_sha256())
 
 
-def _apply_question_budget(questions, maximum, mandatory_question_ids=()):
-    return _selection_contract.apply_question_budget(questions, maximum, mandatory_question_ids)
+def _apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True):
+    return _selection_contract.apply_question_budget(
+        questions, maximum, mandatory_question_ids, protect_basic=protect_basic)
 
 
 def _published_selection(profile, mode, modules, release, route_decision, contexts, package=None):
@@ -192,6 +200,9 @@ def _validate_published_manifest(manifest):
 def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=None,
             route_decision=None, max_questions=None, now_utc=None, expected_route_decision_id=None):
     profile = json.loads(json.dumps(profile, ensure_ascii=False))
+    if profile.get('diagnostic_exclusions'):
+        raise ValueError('new scans cannot exclude basic diagnostics; retain each question and return '
+                         'not_applicable with a reason and an appropriate replacement metric when needed')
     for key in ('industry_modules', 'overlays', 'diagnostic_modules',
                 'diagnostic_exclusions', 'investment_lenses', 'common_extension_modules'):
         if isinstance(profile.get(key), list):
@@ -224,6 +235,11 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
             expected_decision_id=expected_route_decision_id)
     chosen, selected, replacements = _published_selection(
         profile, mode, modules, release, route_decision, contexts, package)
+    required_diagnostics = {q['id'] for module_id in library.ALWAYS_APPLICABLE_DIAGNOSTICS
+                            for q in modules[module_id]['questions']}
+    if not required_diagnostics <= {q['id'] for q in chosen}:
+        raise ValueError('new scan requires all basic diagnostics; refresh the frozen route with router 2.5 '
+                         'and retain non-meaningful questions as explicit not_applicable')
     mandatory = (route_decision['dispatch_plan']['mandatory_question_ids'] if route_v2 else ())
     chosen, deferred = _apply_question_budget(chosen, max_questions, mandatory)
     metric_reference = 'schemas/quick_scan/metric.schema.json'
@@ -269,6 +285,7 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         source_hashes[reference] = module_contract.digest(package['format_resources'][reference])
     manifest = {
         'schema_version': '3.1',
+        'selection_policy': 'basic-required-v1',
         'template_version': release['catalog_version'],
         'renderer_version': release['renderer_version'],
         'mode': mode,
@@ -291,6 +308,8 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         'question_metric_mappings': metric_mappings,
         'questions': manifest_questions,
     }
+    if max_questions is not None:
+        manifest['budget_policy'] = 'basic-required-v1'
     if route_decision is not None:
         manifest['route_decision'] = route_decision
         manifest['route_decision_id'] = route_decision['decision_id']
@@ -1059,6 +1078,8 @@ def main():
     sub.add_parser('validate')
     common = sub.add_parser('common')
     common.add_argument('--output', required=True)
+    basic = sub.add_parser('basic', help='export mandatory common, DuPont and Porter coverage')
+    basic.add_argument('--output', required=True)
     routing = sub.add_parser('routing')
     for key in ('company', 'ticker', 'exchange', 'as-of', 'output'):
         routing.add_argument('--' + key, required=True)
@@ -1108,6 +1129,12 @@ def main():
             questions = sorted(questions, key=lambda q: q['id'])
             write_json(args.output, export_questions(questions))
             result = {'questions': len(questions), 'output': args.output}
+        elif args.command == 'basic':
+            _, modules = load_library()
+            questions = basic_questions(modules)
+            write_json(args.output, export_questions(questions))
+            result = {'questions': len(questions), 'modules': ['common', *library.ALWAYS_APPLICABLE_DIAGNOSTICS],
+                      'output': args.output}
         elif args.command == 'routing':
             write_json(args.output, routing_question(args.company, args.ticker, args.exchange, args.as_of))
             result = {'output': args.output}

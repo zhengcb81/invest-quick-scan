@@ -157,8 +157,19 @@ def _validate_published_manifest(manifest, *, root):
     if (route_decision is None and 'route_decision_id' in manifest) or (
             route_decision is not None and manifest.get('route_decision_id') != route_decision.get('decision_id')):
         raise ValueError('manifest route decision identity mismatch')
+    selection_policy = manifest.get('selection_policy')
+    if selection_policy not in (None, 'basic-required-v1'):
+        raise ValueError('unsupported question selection policy')
+    if selection_policy == 'basic-required-v1' and profile.get('diagnostic_exclusions'):
+        raise ValueError('new scan cannot exclude basic diagnostics')
     expected, selected, replacements = published_selection(
-        profile, mode, modules, release, route_decision, contexts, package, root=root)
+        profile, mode, modules, release, route_decision, contexts, package, root=root,
+        historical_profile_defaults=selection_policy is None)
+    if selection_policy == 'basic-required-v1':
+        required = {q['id'] for mid in library.ALWAYS_APPLICABLE_DIAGNOSTICS
+                    for q in modules[mid]['questions']}
+        if not required <= {q['id'] for q in expected}:
+            raise ValueError('new scan selection omits mandatory basic diagnostics')
     mandatory = ()
     if route_decision is not None and route_decision.get('schema_version') == '2.0.0':
         import routing as route_engine
@@ -174,7 +185,12 @@ def _validate_published_manifest(manifest, *, root):
         mandatory = route_decision['dispatch_plan']['mandatory_question_ids']
     elif 'routing_execution' in manifest:
         raise ValueError('legacy manifest cannot claim v2 routing execution')
-    expected, deferred = apply_question_budget(expected, manifest.get('max_questions'), mandatory)
+    budget_policy = manifest.get('budget_policy')
+    if budget_policy not in (None, 'basic-required-v1'):
+        raise ValueError('unsupported question budget policy')
+    expected, deferred = apply_question_budget(
+        expected, manifest.get('max_questions'), mandatory,
+        protect_basic=budget_policy == 'basic-required-v1')
     if (manifest.get('modules') != selected or manifest.get('replacements') != replacements
             or manifest.get('module_locks') != module_locks(release, selected)
             or manifest.get('deferred_questions') != deferred):

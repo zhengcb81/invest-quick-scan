@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="24" time="5.498" timestamp="2026-10-25T15:36:39.882197+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_bank_expansion_21.RequiredBasicCoverageTests" name="test_basic_export_combines_modules_without_moving_question_owners" time="0.609" /><testcase classname="tests.test_bank_expansion_21.RequiredBasicCoverageTests" name="test_budget_below_basic_coverage_is_rejected" time="0.003" /><testcase classname="tests.test_bank_expansion_21.RequiredBasicCoverageTests" name="test_budget_preserves_every_basic_question_for_all_types_and_modes" time="0.011" /><testcase classname="tests.test_bank_expansion_21.RequiredBasicCoverageTests" name="test_explicit_legacy_budget_remains_readable" time="0.003" /><testcase classname="tests.test_bank_expansion_21.RequiredBasicCoverageTests" name="test_financial_diagnostics_require_explicit_na_instead_of_omission" time="0.004" /><testcase classname="tests.test_routing.RoutingTests" name="test_unclassified_route_keeps_all_basic_diagnostics_mandatory" time="0.927"><failure message="PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-l7amxk8t\\questions\\releases\\artifacts\\acquisitive\\.publish-z39f4pui' -&gt; '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-l7amxk8t\\questions\\releases\\artifacts\\acquisitive\\3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json'">self = &lt;test_routing.RoutingTests testMethod=test_unclassified_route_keeps_all_basic_diagnostics_mandatory&gt;
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="iqs-s06-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        shutil.copytree(ROOT / "questions", self.root / "questions", ignore=shutil.ignore_patterns("releases"))
+        for ref in ("schemas/answer-content.schema.json", "schemas/quick_scan/metric.schema.json",
+                    "schemas/quick_scan/score.schema.json", "schemas/observation.schema.json",
+                    "schemas/quick_scan/module-legacy-baseline.json"):
+            target = self.root / ref
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / ref, target)
+&gt;       self.package = routing.publish_routing_package(root=self.root,
+            renderer_version=qs.RENDERER_VERSION, renderer_rules_sha256=qs.renderer_rules_sha256())
+
+tests\test_routing.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\routing.py:260: in publish_routing_package
+    return registry.publish(root=Path(root), renderer_version=renderer_version,
+scripts\module_registry.py:458: in publish
+    _write_immutable(_safe_path(root, reference), raw)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/_b26_tmp/iqs-s06-l7amxk8t/questions/releases/artifacts/acquisitive/3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json')
+raw = b'{\r\n  "version": "3.0.0",\r\n  "module_id": "acquisitive",\r\n  "kind": "overlays",\r\n  "name": "\xe5\xb9\xb6\xe8\... "comparison_role": "context",\r\n      "rubric_version": "1.0.0",\r\n      "scope": "entity"\r\n    }\r\n  ]\r\n}\r\n'
+
+    def _write_immutable(path: Path, raw: bytes) -&gt; None:
+        native = _filesystem_path(path)
+        native.parent.mkdir(parents=True, exist_ok=True)
+        if native.exists():
+            if native.read_bytes() != raw:
+                raise ValueError(f"immutable release artifact changed: {path.name}")
+            return
+        with tempfile.NamedTemporaryFile(dir=native.parent, prefix=".publish-", delete=False) as handle:
+            handle.write(raw)
+            handle.flush()
+            os.fsync(handle.fileno())
+            temp_path = Path(handle.name)
+        try:
+            # Link an already complete same-directory temporary file without
+            # replacing a concurrent winner. An unsupported filesystem fails
+            # closed; there is no destructive replace fallback for archives.
+            try:
+&gt;               os.link(temp_path, native)
+E               PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-l7amxk8t\\questions\\releases\\artifacts\\acquisitive\\.publish-z39f4pui' -&gt; '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-l7amxk8t\\questions\\releases\\artifacts\\acquisitive\\3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json'
+
+scripts\module_registry.py:111: PermissionError</failure></testcase><testcase classname="tests.test_routing.RoutingTests" name="test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route" time="0.677"><failure message="PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-q7m_wv9u\\questions\\releases\\artifacts\\acquisitive\\.publish-im8tak6w' -&gt; '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-q7m_wv9u\\questions\\releases\\artifacts\\acquisitive\\3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json'">self = &lt;test_routing.RoutingTests testMethod=test_basic_diagnostic_cannot_be_manually_vetoed_for_a_new_route&gt;
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="iqs-s06-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        shutil.copytree(ROOT / "questions", self.root / "questions", ignore=shutil.ignore_patterns("releases"))
+        for ref in ("schemas/answer-content.schema.json", "schemas/quick_scan/metric.schema.json",
+                    "schemas/quick_scan/score.schema.json", "schemas/observation.schema.json",
+                    "schemas/quick_scan/module-legacy-baseline.json"):
+            target = self.root / ref
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / ref, target)
+&gt;       self.package = routing.publish_routing_package(root=self.root,
+            renderer_version=qs.RENDERER_VERSION, renderer_rules_sha256=qs.renderer_rules_sha256())
+
+tests\test_routing.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\routing.py:260: in publish_routing_package
+    return registry.publish(root=Path(root), renderer_version=renderer_version,
+scripts\module_registry.py:458: in publish
+    _write_immutable(_safe_path(root, reference), raw)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/_b26_tmp/iqs-s06-q7m_wv9u/questions/releases/artifacts/acquisitive/3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json')
+raw = b'{\r\n  "version": "3.0.0",\r\n  "module_id": "acquisitive",\r\n  "kind": "overlays",\r\n  "name": "\xe5\xb9\xb6\xe8\... "comparison_role": "context",\r\n      "rubric_version": "1.0.0",\r\n      "scope": "entity"\r\n    }\r\n  ]\r\n}\r\n'
+
+    def _write_immutable(path: Path, raw: bytes) -&gt; None:
+        native = _filesystem_path(path)
+        native.parent.mkdir(parents=True, exist_ok=True)
+        if native.exists():
+            if native.read_bytes() != raw:
+                raise ValueError(f"immutable release artifact changed: {path.name}")
+            return
+        with tempfile.NamedTemporaryFile(dir=native.parent, prefix=".publish-", delete=False) as handle:
+            handle.write(raw)
+            handle.flush()
+            os.fsync(handle.fileno())
+            temp_path = Path(handle.name)
+        try:
+            # Link an already complete same-directory temporary file without
+            # replacing a concurrent winner. An unsupported filesystem fails
+            # closed; there is no destructive replace fallback for archives.
+            try:
+&gt;               os.link(temp_path, native)
+E               PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-q7m_wv9u\\questions\\releases\\artifacts\\acquisitive\\.publish-im8tak6w' -&gt; '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-q7m_wv9u\\questions\\releases\\artifacts\\acquisitive\\3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json'
+
+scripts\module_registry.py:111: PermissionError</failure></testcase><testcase classname="tests.test_routing.RoutingTests" name="test_new_policy_cannot_drop_a_basic_diagnostic_question" time="0.819"><failure message="PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-xe9g0ngr\\questions\\releases\\artifacts\\acquisitive\\.publish-t7bkc3gf' -&gt; '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-xe9g0ngr\\questions\\releases\\artifacts\\acquisitive\\3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json'">self = &lt;test_routing.RoutingTests testMethod=test_new_policy_cannot_drop_a_basic_diagnostic_question&gt;
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="iqs-s06-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        shutil.copytree(ROOT / "questions", self.root / "questions", ignore=shutil.ignore_patterns("releases"))
+        for ref in ("schemas/answer-content.schema.json", "schemas/quick_scan/metric.schema.json",
+                    "schemas/quick_scan/score.schema.json", "schemas/observation.schema.json",
+                    "schemas/quick_scan/module-legacy-baseline.json"):
+            target = self.root / ref
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / ref, target)
+&gt;       self.package = routing.publish_routing_package(root=self.root,
+            renderer_version=qs.RENDERER_VERSION, renderer_rules_sha256=qs.renderer_rules_sha256())
+
+tests\test_routing.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\routing.py:260: in publish_routing_package
+    return registry.publish(root=Path(root), renderer_version=renderer_version,
+scripts\module_registry.py:458: in publish
+    _write_immutable(_safe_path(root, reference), raw)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/_b26_tmp/iqs-s06-xe9g0ngr/questions/releases/artifacts/acquisitive/3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json')
+raw = b'{\r\n  "version": "3.0.0",\r\n  "module_id": "acquisitive",\r\n  "kind": "overlays",\r\n  "name": "\xe5\xb9\xb6\xe8\... "comparison_role": "context",\r\n      "rubric_version": "1.0.0",\r\n      "scope": "entity"\r\n    }\r\n  ]\r\n}\r\n'
+
+    def _write_immutable(path: Path, raw: bytes) -&gt; None:
+        native = _filesystem_path(path)
+        native.parent.mkdir(parents=True, exist_ok=True)
+        if native.exists():
+            if native.read_bytes() != raw:
+                raise ValueError(f"immutable release artifact changed: {path.name}")
+            return
+        with tempfile.NamedTemporaryFile(dir=native.parent, prefix=".publish-", delete=False) as handle:
+            handle.write(raw)
+            handle.flush()
+            os.fsync(handle.fileno())
+            temp_path = Path(handle.name)
+        try:
+            # Link an already complete same-directory temporary file without
+            # replacing a concurrent winner. An unsupported filesystem fails
+            # closed; there is no destructive replace fallback for archives.
+            try:
+&gt;               os.link(temp_path, native)
+E               PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-xe9g0ngr\\questions\\releases\\artifacts\\acquisitive\\.publish-t7bkc3gf' -&gt; '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\_b26_tmp\\iqs-s06-xe9g0ngr\\questions\\releases\\artifacts\\acquisitive\\3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json'
+
+scripts\module_registry.py:111: PermissionError</failure></testcase></testsuite></testsuites>

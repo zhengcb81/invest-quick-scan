@@ -90,8 +90,10 @@ def load_manifest(path: Path) -> dict:
 
 
 def summarize(records: list[dict]) -> dict:
-    core = [r for r in records if r.get("core")]
-    context = [r for r in records if not r.get("core")]
+    diagnostic = [r for r in records if r.get("comparison_role") == "diagnostic"
+                  or r.get("aggregation") == "diagnostic"]
+    core = [r for r in records if r.get("core") and r not in diagnostic]
+    context = [r for r in records if not r.get("core") and r not in diagnostic]
     core_scored = [r for r in core if r.get("status") == "scored"]
     context_scored = [r for r in context if r.get("status") == "scored"]
 
@@ -107,4 +109,6 @@ def summarize(records: list[dict]) -> dict:
         "context_total": len(context),
         "context_scored": len(context_scored),
         "context_mean": mean(context_scored),
+        "diagnostic_total": len(diagnostic),
+        "diagnostic_scored": sum(r.get("status") == "scored" for r in diagnostic),
     }

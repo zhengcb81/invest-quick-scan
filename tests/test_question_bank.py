@@ -9,6 +9,45 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import question_bank  # noqa: E402
 
 
+def test_thin_default_cli_covers_dynamic_basic_and_preserves_explicit_legacy(tmp_path):
+    import question_sets
+    _, modules = question_sets.load_library()
+    expected = {q['id'] for module in ('common', 'dupont', 'porter') for q in modules[module]['questions']}
+    for mode in ('basic', 'legacy'):
+        out = tmp_path/mode
+        command = [sys.executable, '-B', '-X', 'utf8', str(ROOT/'scripts/thin_scan.py'),
+                   '--company', 'dry-run-only', '--out', str(out), '--dry-run']
+        if mode == 'legacy':
+            command += ['--questions', str(ROOT/'docs/implementation/questions-24.json')]
+        done = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, encoding='utf8', timeout=30)
+        assert done.returncode == 0, done.stderr
+        doc = json.loads((out/'answers.json').read_text(encoding='utf8'))
+        want = expected if mode == 'basic' else {q['id'] for q in json.loads((ROOT/'docs/implementation/questions-24.json').read_text(encoding='utf8'))['questions']}
+        assert {a['question_id'] for a in doc['answers']} == want
+        assert doc['meta']['calls'] == doc['meta']['searches'] == 0
+        assert doc['bank'] is None and doc['importable'] is False
+        assert doc['summary']['diagnostic_total'] == (sum(len(modules[m]['questions']) for m in ('dupont', 'porter')) if mode == 'basic' else 0)
+
+
+def test_thin_compare_preserves_type_core_and_excludes_diagnostic_score(tmp_path, monkeypatch):
+    import thin_compare
+    import question_sets
+    _, modules = question_sets.load_library()
+    replacement = next(q for q in modules['bank']['questions'] if q.get('comparison_role') == 'core')
+    run = tmp_path/'runs'/'thin-scan-test-2026-10-18'
+    run.mkdir(parents=True)
+    (run/'answers.json').write_text(json.dumps({'company': 'test', 'meta': {'cost_micros': 0}, 'answers': [
+        {'question_id': replacement['id'], 'question': replacement['question'], 'core': True, 'status': 'scored', 'score': 3},
+        {'question_id': 'DUPONT_01', 'question': 'diagnostic', 'core': False, 'comparison_role': 'diagnostic', 'status': 'scored', 'score': 10},
+    ]}), encoding='utf8')
+    out = tmp_path/'compare'
+    monkeypatch.setattr(sys, 'argv', ['thin_compare.py', '--runs', str(tmp_path/'runs'), '--out', str(out)])
+    assert thin_compare.main() == 0
+    page = (out/'compare.html').read_text(encoding='utf8')
+    assert '<td>2/2</td><td>3.0</td>' in page
+    assert "<td class='s'>10</td>" in page and '核心题草稿均分' in page
+
+
 def _manifest(path: Path) -> Path:
     document = {
         "module_package_id": "pkg_test",
@@ -84,7 +123,7 @@ def test_thin_scan_dry_run_binds_bank(tmp_path):
     manifest = _manifest(tmp_path / "manifest.json")
     out = tmp_path / "out"
     done = subprocess.run(
-        [sys.executable, str(ROOT / "scripts/thin_scan.py"),
+        [sys.executable, '-B', '-X', 'utf8', str(ROOT / "scripts/thin_scan.py"),
          "--company", "测试公司", "--out", str(out), "--dry-run",
          "--bank-manifest", str(manifest)],
         cwd=str(ROOT), capture_output=True, text=True, encoding="utf-8",
