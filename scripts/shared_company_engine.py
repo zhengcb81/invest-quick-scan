@@ -165,7 +165,66 @@ def _production_answer_semantics(task, services):
     if getattr(task, "company_doc", {}).get("origin") != "owner_public":
         return None
     lifecycle = getattr(services, "lifecycle", None)
-    return _frozen_answer_semantics(task, getattr(lifecycle, "_observation_context", None))
+    context = copy.deepcopy(getattr(lifecycle, "_observation_context", None))
+    original = _frozen_answer_semantics(task, context)
+
+    def validate_native(answer, question_id, *, attempt_ref, evidence_board):
+        original(answer, question_id)
+        _validate_native_answer_sources(task, services, context, answer, question_id,
+                                        attempt_ref=attempt_ref, evidence_board=evidence_board)
+
+    validate_native.semantic_version = 2
+    validate_native.base_semantic_validator = original
+    validate_native.prompt_rules = original.prompt_rules
+    return validate_native
+
+
+def _validate_native_answer_sources(task, services, context, answer, question_id,
+                                    *, attempt_ref, evidence_board):
+    """Read the exact native member/use proof; never infer a latest response."""
+    from iqs_company_agent_lab.answers import check_citation_closure
+    from src.core.models import Answer
+    from src.utils.quick_scan_observation_context import validate_standard_answer
+    from src.utils.quick_scan_result_outbox import canonical_sha256
+    from src.utils.quick_scan_work_transport import project_quick_scan_search
+
+    inspected = services.inspect_attempt(attempt_ref)
+    if (not inspected.get("known") or not inspected.get("response_saved")
+        or inspected.get("outcome_recorded") != "response_available" or evidence_board is None):
+        raise ValueError("original successful current native reference required")
+    body, board = copy.deepcopy(answer), copy.deepcopy(evidence_board)
+    check_citation_closure(body, board, board.publication_exclusive_date)
+    _native_final_answer(inspected["response_saved"], question_id, body, evidence_board=evidence_board)
+    entry = services.owner.entries.get(question_id)
+    if not isinstance(entry, dict) or entry.get("kind") != "work":
+        raise ValueError("original question work member required")
+    work_id, native = entry["work_item_id"], inspected["native_receipt"]
+    matches = [row for row in services.store.list_attempts(work_id)
+        if row["phase"] == "response_available"
+        and (services.store.get_attempt_response(row["attempt_id"]) or {}).get("receipt") == native]
+    if len(matches) != 1:
+        raise ValueError("exact original successful native work member required")
+    attempt_id = matches[0]["attempt_id"]
+    use = services.store.get_external_context_use(attempt_id)
+    if not use or not use.get("proof"):
+        raise ValueError("original external context use proof required")
+    saved_context = services.store.get_observation_context(work_id)
+    if (not saved_context or saved_context["context"] != context
+        or saved_context["context_sha256"] != canonical_sha256(context)):
+        raise ValueError("original frozen observation context required")
+    execution = copy.deepcopy(native)
+    execution["work_transport"] = dict(work_attempt_id=attempt_id, final_receipt=copy.deepcopy(native))
+    execution["external_context_use"] = copy.deepcopy(use["proof"])
+    projection = project_quick_scan_search(execution, work_store=services.store, work_item_id=work_id)
+    if projection.get("search_status") != "executed" or not projection.get("source_urls"):
+        raise ValueError("original verified source projection required")
+    transported = Answer(json.dumps(body, ensure_ascii=False), score=body.get("score"),
+                         status=body.get("status"), source="llm", metadata={"execution": execution})
+    summary, standard = services.lifecycle._standard_transport(transported.text)
+    normalized = dict(entity_id=services.store.get_item(work_id)["entity_id"], question_id=question_id,
+                      status=transported.status, score=transported.score, description=summary)
+    validate_standard_answer(standard, metadata=context["questions"][question_id]["metadata"],
+                             normalized_answer=normalized, source_urls=projection["source_urls"])
 
 
 def _write_atomic(path, payload):
@@ -378,6 +437,7 @@ def _execute_with_port(task, services, port, *, output, session_dir, transport_o
         journal=journal,
         execution_revision=2,
         answer_semantic_validator=semantic_validator,
+        answer_semantic_validator_version=getattr(semantic_validator, "semantic_version", 1),
         answer_semantic_rules=getattr(semantic_validator, "prompt_rules", ()),
     )
     runner_ref.append(runner)
@@ -546,6 +606,7 @@ def resume_shared_engine(
         checkpoint,
         journal,
         answer_semantic_validator=semantic_validator,
+        answer_semantic_validator_version=getattr(semantic_validator, "semantic_version", 1),
         answer_semantic_rules=getattr(semantic_validator, "prompt_rules", ()),
     )
     runner_ref.append(runner)
@@ -802,7 +863,7 @@ def finalize_shared_engine(task, services, export_dir):
         qid, body = slot["question_id"], slot["answer"]
         try:
             probe = copy.deepcopy(body)
-            semantic_validator(probe, qid)
+            getattr(semantic_validator, "base_semantic_validator", semantic_validator)(probe, qid)
             if probe != body:
                 raise ValueError("original semantic validator changed answer")
         except Exception as error:
@@ -830,6 +891,15 @@ def finalize_shared_engine(task, services, export_dir):
                 if (services.store.get_attempt_response(attempt["attempt_id"]) or {}).get("receipt") == native
             ]
             if len(members) == 1:
+                if getattr(semantic_validator, "semantic_version", 1) == 2:
+                    try:
+                        probe = copy.deepcopy(body)
+                        semantic_validator(probe, qid, attempt_ref=reference,
+                                           evidence_board=copy.deepcopy(evidence_board))
+                        if probe != body:
+                            raise ValueError("original semantic validator changed answer")
+                    except Exception as error:
+                        raise SharedEngineRejected("finalization_standard_answer_contract_requires_repair") from error
                 candidates.append((reference, members[0]["attempt_id"], native))
                 break
         if not candidates:

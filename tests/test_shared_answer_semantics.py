@@ -185,3 +185,77 @@ def test_finalizer_rechecks_original_semantics_before_native_output_match(origin
     with pytest.raises(engine.SharedEngineRejected, match="standard_answer_contract"):
         engine.finalize_shared_engine(single, services, Path("unused-unit-only"))
     assert services.saves == [] and services.restores == []
+
+
+def test_v2_callback_receives_exact_current_ref_and_readonly_board(original):
+    task, qid, body, _ = original
+    seen = []
+
+    def callback(probe, question_id, *, attempt_ref, evidence_board):
+        seen.append((question_id, attempt_ref, evidence_board.snapshot()))
+
+    runner = Runner(task, SyntheticReplayPort(helpers.scenario_doc([]), task.raw["run_id"]),
+                    answer_semantic_validator=callback, answer_semantic_validator_version=2)
+    runner._start()
+    runner._apply_answers({"question_ids": [qid]}, [body], "synthetic:exact-current-ref")
+    assert seen[0][0:2] == (qid, "synthetic:exact-current-ref")
+    assert runner.state.slot(qid)["execution_status"] == "completed"
+
+
+@pytest.fixture
+def native_bound(original, monkeypatch):
+    # Boundary-only unit double, not an owner admission or actual search positive.
+    task, qid, body, context = original
+    task.company_doc["origin"] = "owner_public"
+    context = copy.deepcopy(context)
+    context["questions"] = {qid: {"metadata": {"entity_id": "UNIT_ENTITY", "question_id": qid,
+                                               "information_cutoff": task.raw["information_cutoff"]}}}
+    native = {"attempt_id": "UNIT_SDK_ATTEMPT"}
+    work_id = "UNIT_WORK"
+    source = {"url": body["evidence"][0]["url"]}
+    store = SimpleNamespace(
+        list_attempts=lambda _: [{"attempt_id": "UNIT_NATIVE", "phase": "response_available"}],
+        get_attempt_response=lambda _: {"receipt": copy.deepcopy(native)},
+        get_external_context_use=lambda _: {"proof": {"work_item_id": work_id}},
+        get_item=lambda _: {"entity_id": "UNIT_ENTITY"},
+        get_observation_context=lambda _: {"context": copy.deepcopy(context), "context_sha256": sha256_hex(context)},
+    )
+    from src.runners.llm_runner import QuickScanWorkLifecycle
+    lifecycle = SimpleNamespace(_observation_context=copy.deepcopy(context))
+    lifecycle._standard_transport = lambda text: QuickScanWorkLifecycle._standard_transport(lifecycle, text)
+    services = SimpleNamespace(lifecycle=lifecycle, store=store,
+        owner=SimpleNamespace(entries={qid: {"kind": "work", "work_item_id": work_id}}),
+        inspect_attempt=lambda ref: {"known": ref == "stockqa:UNIT_SDK_ATTEMPT",
+            "outcome_recorded": "response_available", "native_receipt": copy.deepcopy(native),
+            "response_saved": {"final_content": json.dumps(body), "tool_calls": None}})
+    import src.utils.quick_scan_work_transport as transport
+    monkeypatch.setattr(transport, "project_quick_scan_search", lambda *args, **kwargs:
+                        {"search_status": "executed", "source_urls": [source["url"]]})
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+    return task, qid, body, services, source, EvidenceBoard(2000)
+
+
+def test_production_v2_keeps_original_body_while_validating_exact_native(native_bound):
+    task, qid, body, services, _, board = native_bound
+    callback = engine._production_answer_semantics(task, services)
+    before, board_before = copy.deepcopy(body), copy.deepcopy(board.snapshot())
+    callback(body, qid, attempt_ref="stockqa:UNIT_SDK_ATTEMPT", evidence_board=board)
+    assert body == before and board.snapshot() == board_before
+    assert callback.semantic_version == 2
+
+
+@pytest.mark.parametrize("kind", ["wrong_ref", "bad_source", "missing_proof", "future_date"])
+def test_production_v2_source_ref_cutoff_fail_closed(native_bound, kind):
+    task, qid, body, services, source, board = native_bound
+    ref = "stockqa:UNIT_SDK_ATTEMPT"
+    if kind == "wrong_ref":
+        ref = "stockqa:FOREIGN"
+    elif kind == "bad_source":
+        source["url"] = "https://example.invalid/foreign-original-receipt"
+    elif kind == "missing_proof":
+        services.store.get_external_context_use = lambda _: None
+    else:
+        body["evidence"][0]["published_at"] = "2099-01-01"
+    callback = engine._production_answer_semantics(task, services)
+    with pytest.raises(ValueError):
+        callback(body, qid, attempt_ref=ref, evidence_board=board)
