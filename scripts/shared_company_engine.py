@@ -34,6 +34,9 @@ def capabilities():
     return {
         "protocol": PROTOCOL,
         "execution_api": "execute_shared_engine",
+        "finalization_api": "finalize_shared_engine",
+        "finalization_mode": "explicit_original_owner_checkpoint_only",
+        "finalization_requires_verified_search": True,
         "requires": [
             "original_ApprovedRefreshSession",
             "original_OwnerResearchServices",
@@ -57,6 +60,7 @@ def capabilities():
             "search_queries": 0,
             "qualification_granted": False,
         },
+        "unsupported_scope": "implicit_research_execution_and_cli",
         "unsupported": [
             "native_multiturn_packs",
             "automatic_unknown_resend",
@@ -609,3 +613,174 @@ def _scan_preflight(task, services, session_config):
         )
 
     return config
+
+
+def _verified_finalization_export(task, export_dir):
+    """Revalidate original task/checkpoint/journals before native publication.
+
+    This reads existing artifacts only. It does not run a strategy, create a
+    model session, or infer authority from a report's observational booleans.
+    """
+    from iqs_company_agent_lab.checkpoint import load_checkpoint
+    from iqs_company_agent_lab.pathsafety import check_traceable_links
+    from iqs_company_agent_lab.provenance import read_runtime_summary
+    from iqs_company_agent_lab.resume import _verify_snapshot_against_history
+    from iqs_company_agent_lab.runner import input_manifest_sha256
+    from iqs_company_agent_lab.schemalib import validate
+    from iqs_company_agent_lab.strictjson import loads
+    from iqs_company_agent_lab.task import task_bundle
+
+    export_dir = Path(export_dir)
+    checkpoint_path = export_dir / "checkpoint.json"
+    run_path = export_dir / "research-run.json"
+    check_traceable_links(checkpoint_path)
+    check_traceable_links(run_path)
+    checkpoint = load_checkpoint(checkpoint_path)
+    if (
+        checkpoint.get("pending_intent") is not None
+        or checkpoint.get("pending_receipt") is not None
+        or checkpoint.get("task_bundle") != task_bundle(task)
+    ):
+        raise SharedEngineRejected("finalization_requires_original_completed_checkpoint")
+    _verify_snapshot_against_history(checkpoint_path, checkpoint, task)
+    raw = run_path.read_bytes()
+    run = loads(raw)
+    scan = task.raw.get("protocol") == "iqs.company-scan-task/1.0.0"
+    validate("scan-run" if scan else "research-run-v1.1", run)
+    if (
+        run.get("run_id") != task.raw["run_id"]
+        or run.get("company_ref") != task.company_ref
+        or run.get("information_cutoff") != task.raw["information_cutoff"]
+        or run.get("input_manifest_sha256") != input_manifest_sha256(task.raw)
+        or run.get("slots") != checkpoint["state"]["slots"]
+        or [row["question_id"] for row in run["slots"]] != task.question_ids
+    ):
+        raise SharedEngineRejected("finalization_export_original_task_or_slots_mismatch")
+    # Sidecars recompute their native observations from the byte-bound original
+    # journals and board. Their owner/financial booleans remain unchanged.
+    summary = read_runtime_summary(export_dir, run, raw)
+    if summary is None or summary["input_manifest_sha256"] != input_manifest_sha256(task.raw):
+        raise SharedEngineRejected("finalization_original_runtime_evidence_required")
+    return run
+
+
+def _native_final_answer(saved, question_id, expected_answer):
+    """Match the completed slot to safe original output, never caller text."""
+    from iqs_company_agent_lab.answers import parse_answers_payload
+    from iqs_company_agent_lab.strictjson import loads
+
+    payloads = []
+    if saved.get("final_content"):
+        try:
+            payloads.append(parse_answers_payload(saved["final_content"]))
+        except (ValueError, TypeError, KeyError):
+            pass
+    for call in saved.get("tool_calls") or []:
+        if call.get("name") == "submit_answers":
+            arguments = call.get("arguments")
+            payloads.append(loads(arguments) if isinstance(arguments, str) else arguments)
+    matches = []
+    for payload in payloads:
+        if not isinstance(payload, dict) or not isinstance(payload.get("answers"), list):
+            continue
+        matches.extend(
+            answer
+            for answer in payload["answers"]
+            if isinstance(answer, dict) and answer.get("question_id") == question_id
+        )
+    if len(matches) != 1 or matches[0] != expected_answer:
+        raise SharedEngineRejected("finalization_answer_differs_from_original_native_output")
+
+
+def finalize_shared_engine(task, services, export_dir):
+    """Explicitly seal original successful answers with existing owner services.
+
+    The research execute/resume APIs stay read/export-only. This separate API
+    requires each final answer to match a safe original native response and
+    its exact original work member. It restores only an unexpired original
+    handle through StockQA's public method, then uses commit_standard_answers.
+    Existing matching checkpoints are reused without a lease or another HTTP.
+
+    Each native checkpoint is atomic, while a multi-question publication can
+    stop after an earlier checkpoint was saved. Such partial progress stays in
+    the original store; invoking this API again reuses it, never resends a model
+    request. A missing search proof or expired lease remains a native refusal.
+    """
+    from src.utils.quick_scan_owner_research import OwnerResearchServices
+
+    if not isinstance(services, OwnerResearchServices) or services.task is not task:
+        raise SharedEngineRejected("original_owner_research_services_required")
+    services._assert_registered_inputs()
+    run = _verified_finalization_export(task, export_dir)
+    if any(row["execution_status"] != "completed" or row.get("answer") is None for row in run["slots"]):
+        raise SharedEngineRejected("finalization_all_original_slots_must_be_completed")
+    plan = []
+    for slot in run["slots"]:
+        qid, body = slot["question_id"], slot["answer"]
+        entry = services.owner.entries.get(qid)
+        if not isinstance(entry, dict) or entry.get("kind") != "work":
+            raise SharedEngineRejected("finalization_original_work_member_required")
+        work_id = entry["work_item_id"]
+        candidates = []
+        for reference in reversed(slot.get("attempt_refs", [])):
+            if not isinstance(reference, str) or not reference.startswith("stockqa:"):
+                continue
+            inspected = services.inspect_attempt(reference)
+            saved = inspected.get("response_saved")
+            if not inspected.get("known") or not isinstance(saved, dict):
+                continue
+            try:
+                _native_final_answer(saved, qid, body)
+            except SharedEngineRejected:
+                continue
+            native = inspected["native_receipt"]
+            members = [
+                attempt
+                for attempt in services.store.list_attempts(work_id)
+                if (services.store.get_attempt_response(attempt["attempt_id"]) or {}).get("receipt") == native
+            ]
+            if len(members) == 1:
+                candidates.append((reference, members[0]["attempt_id"], native))
+                break
+        if not candidates:
+            raise SharedEngineRejected("finalization_original_native_answer_and_member_required")
+        reference, attempt_id, native = candidates[0]
+        checkpoint = services.store.get_answer_checkpoint(work_id)
+        if checkpoint is not None:
+            standard = services.store.get_standard_answer(work_id)
+            if (
+                checkpoint["attempt_id"] != attempt_id
+                or not isinstance(standard, dict)
+                or standard.get("answer") != body
+                or checkpoint["payload"]["provenance"].get("provider_attempt_id") != native["attempt_id"]
+            ):
+                raise SharedEngineRejected("finalization_existing_checkpoint_conflict")
+        plan.append((qid, body, work_id, reference, checkpoint))
+    # Inspect every selected original member/answer before the first save.
+    # The native commit then independently rechecks lease, context, receipt and
+    # schema atomically. This never grants or renews a work item.
+    for qid, _, _, reference, checkpoint in plan:
+        if checkpoint is None:
+            services.restore_finalization_handle(qid, native_reference=reference)
+    result, reused = [], []
+    for qid, body, work_id, reference, checkpoint in plan:
+        # The original service also repairs a prior checkpoint->seal crash.
+        # Its idempotent branch validates the same full answer and receipt and
+        # reseals through the native lifecycle, without another lease or send.
+        services.commit_standard_answers([copy.deepcopy(body)], native_reference=reference)
+        if checkpoint is None:
+            checkpoint = services.store.get_answer_checkpoint(work_id)
+            if checkpoint is None:
+                raise SharedEngineRejected("finalization_native_checkpoint_not_persisted")
+        else:
+            reused.append(qid)
+        delivery = services.store.get_result_delivery(work_id)
+        result.append(dict(question_id=qid, work_item_id=work_id, native_reference=reference,
+                           checkpoint_id=checkpoint["checkpoint_id"], checkpoint_sha256=checkpoint["payload_sha256"],
+                           delivery_state=None if delivery is None else delivery["state"]))
+    pending = [row["question_id"] for row in result if row["delivery_state"] not in {"ready", "delivered"}]
+    return dict(protocol="iqs.shared-engine-finalization/1.0.0", run_id=run["run_id"],
+                status="checkpointed_delivery_pending" if pending else "completed",
+                checkpoint_status="completed", pending_delivery_question_ids=pending,
+                checkpoints=result, reused_question_ids=reused,
+                new_model_http=0, financial_accuracy_assessed=False)
