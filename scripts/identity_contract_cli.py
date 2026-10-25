@@ -18,9 +18,9 @@ from referencing import Registry, Resource
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_VERSION = "2.2.0"
-CLI_VERSION = "1.1.0"
+CLI_VERSION = "1.2.0"
 DEFAULT_WIRE_PROFILE = "stockwiki-g2b/1.0.0"
-WIRE_PROFILES = ("legacy", DEFAULT_WIRE_PROFILE)
+WIRE_PROFILES = ("legacy", DEFAULT_WIRE_PROFILE, "stockwiki-g2b/1.1.0")
 MAX_INPUT_BYTES = 1_048_576
 REQUEST_SCHEMA_PATH = ROOT / "schemas" / "quick_scan" / "identity-cli-request.schema.json"
 IDENTITY_SCHEMA_PATH = ROOT / "schemas" / "quick_scan" / "identity.schema.json"
@@ -241,7 +241,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--input", required=True, help="Path to one JSON validation request")
     parser.add_argument("--schema-version", required=True, help="Identity package version")
     parser.add_argument("--wire-profile", default=DEFAULT_WIRE_PROFILE,
-                        help="Registered read-wire profile (default: stockwiki-g2b/1.0.0; legacy supported)")
+                        help="Registered read-wire profile (default: stockwiki-g2b/1.0.0; explicit compact: stockwiki-g2b/1.1.0; legacy supported)")
     parser.add_argument("--version", action="version",
                         version=f"identity_contract_cli {CLI_VERSION}; package {SCHEMA_VERSION}; default profile {DEFAULT_WIRE_PROFILE}")
     args = parser.parse_args(argv)

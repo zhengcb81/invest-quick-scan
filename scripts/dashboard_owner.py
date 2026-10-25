@@ -369,8 +369,10 @@ def _owner_worker(config, operation, payload):
             if not isinstance(query, str) or not query.strip() or len(query) > 1000:
                 raise DashboardOwnerError("entity_id_required", "Choose an existing entity ID; names do not authorize identity changes")
             candidates = build_quick_scan_search(paths, {"text": query, "page_size": 100})
+            display_candidates = [_member_display(row, identity.get_entity(row["entity_id"]))
+                                  for row in candidates["rows"]]
             return {"protocol": PROTOCOL, "status": "ambiguous" if candidates["total"] > 1 else "choose_entity" if candidates["total"] else "unresolved",
-                    "candidates": candidates["rows"], "can_apply": False, "identity_changed": False}
+                    "candidates": display_candidates, "can_apply": False, "identity_changed": False}
         if payload.get("query"):
             raise DashboardOwnerError("invalid_payload", "Use either entity_id or a candidate query")
         selected_entity = _identifier(payload["entity_id"], "entity_id")

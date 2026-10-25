@@ -1,3 +1,28 @@
+## 2026-10-25T21:48Z — 保留真实失败并修复输出与恢复边界
+
+- CATL三次真实MiMo Pro请求总费用97105微USD，全部settled/in_flight0；原账本实查8failed、2leased、2result_ready、24pending，不把2个已存答案当整公司完成。为停止同类错误，原revoke-delegation仅撤本次entity grant；在途安全结算，21:32:07原进程exit1/paused，未强杀或删除原库。
+- 第二包HTTP200但response_status=length，16384输出含14477thinking，final空间不足；不是未调用联网。首包缺最终body，只有hash无法恢复，明确保留证据缺口。思考继续开启，原设置UI把新准备输出改32768；官网JSON模式显式接原SDK，实际payload/hash/metadata绑定，原默认/不支持协议拒绝与严格schema保持；隔离完整client209P+独立13P已过。
+- 原身份前置和旧route修订CAS更新通过原生5P/6P，保留旧schema/default与snapshot字节。8766仅自有服务在任务退出后安全重启session22521，加载日志flush与失败恢复边界；原readonly8765保留。
+- 新最终答案诊断本机optin已配置，独审发现escape隐私标记与non-directory两组问题已交作者直接修，不再发外包卡。QAEngine增加首错停止后续发包（含unknown/partial恢复）正在独立收口；没通过前不重新付费。MSFT/Tencent从新rev3 UI继续原准备。
+
+## 2026-10-25T21:20Z — 三市场实际运行新证据
+
+- MSFT/Tencent官方注册地US/KY，经原entity-import各rev2→3并生成新IVR；原安全前置与两个实际公开G2b1.1 CLI通过。UI放弃旧rev2准备只停止继续登记，原已写阶段保留；新预览正确拦截route_identity_changed，待原生命周期重绑定，不忽略修订。
+- CATL恢复后首个真实MiMo Pro包HTTP200、联网2次，原usage输入20766/输出13379（含thinking7373），原预算已结算30673微USD。4题因invalid_question未成为有效答案，第二包仍inflight；不误写为0HTTP，也不把200当准确答案。独立agent定位格式根因与可恢复路径。
+- 根修定向通过：ledger原公开main含真实原owner封存/导入ACK/恢复（隔离mock外网）2P；compact admission原公开入口1P+175P/35P；pre-route真实身份前置5P；未重跑小时全套。当前仍不能宣称UI全流程可直接使用，实际108题/入库/ACK尚待。
+
+## 2026-10-25 20:45Z — UI真启动抓到原账本布局根因（0费用）
+
+CATL原两scope完整登记成功，UI编排预览并明确start已执行，首次原进程在任何HTTP前以refresh_execution_original_ledger_required拒绝。已亲读原错误栈/runner：assert先强制runtime旁默认quick_scan_work.sqlite，而实际runner随后正确选approved_session.service.store；新合法显式work路径被误拒。StockQA分线按明确executor_store接线根修，保留默认/不同账本/策略变更全部检查，单元+公开main原admission反例TDD中；不搬移/复制/清空账本，不对未知请求重发。预算原状态requests0/spent0/reserved0。MSFT准备已后台提交，Tencent预览36题/真实00700；3公司并非已扫完。UI源3项根修33P+独审3额外边界过，已正常本地提交b37d8e8（无remote）；SDKpublish_time ab52d18已推原origin。
+
+## 2026-10-25 20:32Z — 三市场原部署已连接，进入UI验收
+
+新u25-live原工作账本/策略已建（USD25/250模型请求/并发3，MiMo Pro native search+thinking）；费用卡按官网USD估算含search0.005/次，实际账单未知。旧1.2单题实验策略原字节保留，以原contract校验并OS锁/CAS明确发布新purpose1.1/v3，不伪称1.2兼容。旧work SHA前后完全相同、0预留/在途/未结算。腾讯按HKEX/issuer官网经原ATT→IVR导入两阶段均真成功，微软/腾讯合并报表subject原import通过，not_enumerated边界明确；不复制财报/全文。UI正保存已核配置，再原名单preview/apply及三公司动态36基础题。原SDKpublish_time别名根修已211P，独审进行。恢复时两个原API名称/构造器误猜在写前拒绝，已按源码from_root/实际public API纠正，无假成功。
+
+## 2026-10-25 — UI三市场真实运行接续
+
+已启动UI三市场真实验收；原新版服务8766可读，源基线IQSf0bd669/UI2186a3c。两个只读agent核部署/身份，不动旧r25或调用付费。PWF resolver -CheckAmbiguity无named输出，沿用根计划。已知文件名误指dashboard_prepare_native.py不存在，实际dashboard_prepare.py；CodeGraph一次context长等已停止，沿已知源码继续。
+
 ## 2026-10-25 — M节点已提交并发布
 
 UI17个精确文件已正常本地commit2186a3cc982767300a67c394fdab74b955696799，无remote不虚报推送；IQS53文件源码/说明/薄证据正常提交b8163d2ada331f6fcb1351164728179454be2983并推既有origin/master，远端refs核相同。21最终源码工作树raw再次匹配独审；UI Git blob 4精确/13仅CRLF-LF差异，原文不改，双SHA见publication.json；root4文件提交字节亦核。原红灯XML机器空白精确保留，仅该两路径whitespace属性，不跳hook；其他源码/说明正常检查。PWF/交接/42件薄归档哈希清单已齐。M1–M5完成，8766可用，原业务部署/新预算仍需真实配置，不扩大r25/不授金融资格。

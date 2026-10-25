@@ -1,3 +1,17 @@
+## 2026-10-25T21:51Z — 当前任务仍为三市场真实UI扫描到入库
+
+不要把下方旧UI工程 complete 当本轮真实验收 complete。用户已全部授权跨仓修复、真实调用、独审、提交/推送，不再询问权限。当前根PWF L1完成、L2/L3进行中、L4/L5未过。
+
+- 本机原UI8766，当前自有server session22521，已安全重启加载修复；旧readonly8765保留。实际名单215，原工作区 runs/r25-live/owner-workspace，新的原预算/运行在 runs/u25-live（USD25/250HTTP/并发3，旧r25账本不重置）。模型MiMo Pro/native search/thinking=true；新prepare输出32768，四题一包，证券原规则singleton。
+- CATL旧准备prepare_04eba4344a9b4c3fb26beb8af7ffe9b7注册33+3；run-4a812fef0ddc4a418c80fcaf6dbd3863已退出/paused。三真HTTP结算共97105微USD；账本8failed/2leased/2result_ready/24pending。仅撤其entity原委托阻止继续错误，未删回执/费用。最终body首包没留不可凭hash恢复；第二包length因thinking共用输出cap。新SDK JSON模式、诊断和QA首错停发分别在修复/独审，全部通过前不resume收费。
+- MSFT/Tencent已原entity-import更新countryUS/KY、rev3+新IVR，真实公开G2b2.2/profile1.1均valid。旧rev2准备abandoned保留已写阶段；新MSFT通过真实UI原登记job prepjob_805726bbfdb94183abee37c1fd344faf（21:49:30受理），Tencent在同页新预览。原route身份修订只从history读取旧ID作CAS，仍重核新原身份/主体/预算；不改旧snapshot。
+- 本轮工程薄证据在 docs/implementation/reviews/ui-live-trimarket-2026-10-25/；完整隔离红绿/实际运行/诊断留本机 runs/ui-live-trimarket-2026-10-25/。final诊断严格optin只存有界最终JSON，不能保存私有thinking/提示词/网页全文，且不授予replay/准入/ACK。原活跃派发不可杀，不确定HTTP不可重发；原公开preview为恢复准绳，不能手工改SQLite状态或换身份绕旧工单。
+- 接着：完成诊断隐私/non-dir独审整改与QA停止派发独审→从UI运行新MSFT/Tencent、按原preview恢复CATL→全部36题真实状态/费用/原入库及exactACK→核历史/模型及少量金融事实→最终PWF/操作手册/精确提交推送。源代码和测试工程通过不能替代这条真实流程。
+- CUA操作只使用其公开API；当前工作tab11。后台tab0宽无法真实鼠标操作曾导致未发送动作；已为本次测试临时设1280x900视口，结束须reset，只清理自建tab不动用户tab3。
+- 保留别的writer docs/implementation/parallel-lanes/packages/2026-10-10/README.md 四行改动，以及其他历史untracked。Git只精确stage己方文件，真实DB/config/answers/goldens不推远端；StockQA/UI兄弟仓已有分别ab52d18/b37d8e8，UI无remote；本轮其余源码待正常提交，不可混称已发布。
+
+---
+
 # 当前交接：UI体验整改 M 节点（2026-10-25）
 
 用户全部后续授权持续有效：直接修复、独立agent整节点审查、精确提交及既有origin推送；不要再次询问。M1–M4已通过整节点独审passed/open_findings=[]，21最终源码锁，原22发现及IR-01–05闭合；M5已完成：UI2186a3c本地提交（无remote），IQSb8163d2源码/证据已推origin/master并核refs，当前文档收口以Git日志为准，下方U6段是历史基线。最新入口为根task_plan.md顶部M1–M5及[整改验收](reviews/ui-remediation-2026-10-25/README.md)。

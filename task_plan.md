@@ -1,3 +1,21 @@
+## 2026-10-25 — 当前任务：UI三市场真实扫描与可用部署
+
+用户明确要求继续接好原部署、模型与新预算，自选A/HK/US各一两家经UI跑完整真实扫描→入库→原ACK，直接修复、更新PWF/提交推送，不重复问权限。沿用本根PWF和原owner公共工具；不重置/扩充旧r25六请求预算，不复制或伪造旧PRE/费用授权，不保存财报/网页全文或私有思考。
+
+| 阶段 | 实际交付与通过标准 | Status |
+|---|---|---|
+| L1 | 原部署/原SDK/官网费用/三市场身份已核；u25-live新原预算已建立，UI保存配置，新purpose原策略明确发布，旧账本SHA不变 | complete |
+| L2 | CATL原33公司题+3证券题已登记/真实请求；MSFT/Tencent已原身份补注册地至rev3，新IVR与公开1.1校验通过；旧rev2准备已从UIabandon保留，待原route重绑定再新预览；thinking=true | in_progress |
+| L3 | ledger/compact BIND根修与原入口离线E2E已过。CATL UI原恢复后实际MiMo200/native search2，三物理包均已结算共$0.097105：原账本8failed/2leased/2result_ready/24pending；length包含思考耗尽输出，首包final未保留不能恢复猜字段。已原撤权停止后续，进程安全退出，未unknown重发。新增显式JSON模式/32768输出/最终答案诊断与首错停发，实际完整答案/入库待验 | in_progress |
+| L4 | UI交付入原StockWiki并exactACK回原StockQA，三市场结果/历史查询实读；独立agent整节点审与问题根修，定向测试 | pending |
+| L5 | 临时测试清理/真实运行可恢复状态保留，操作说明/PWF/薄证据、精确提交及既有origin推送 | pending |
+
+### Next Step
+
+继续UI原真实执行与两scope完整交付，不能把进程running当结果完成。已选A股CATL、港股腾讯00700、美股微软MSFT，基础36题不删减；新u25-live原USD25/250模型HTTP/并发3、native搜索另记实际次数，费用为官网USD估算非已知账单。旧1.2单题用途原策略完整保存，新1.1/v3用途明确CAS发布，非静默降级；旧work hash相同。腾讯原ATT→IVR、两集团not_enumerated范围登记通过、UI原名单215（保留原5provisional），未下载文档。MiMo publish_time最小SDK根修独审/211P通过，StockQA ab52d18已正常提交推origin。UI高级JSON字段同步/无包提示/当前名单刷新33P，后台候选身份展示20P，独立整节点增审中。原server8766自有session71341继续运行；root持本机配置/部署/PWF/UI；10/10README他人改动保留。真实结果/DB/环境密钥不导出，最终只薄证据。
+
+---
+
 ## 2026-10-25 — 当前任务：按两份独立UI审查集中整改
 
 用户已明确授权直接整改、独立终审、发现问题根修、PWF/提交推送；不重复问权限。本节为唯一当前入口，下方U6和审查记录保留为历史与依据。继续复用原身份、预算、任务、缓存、三态和资格，浏览/验收不启动收费模型或写真实业务数据。

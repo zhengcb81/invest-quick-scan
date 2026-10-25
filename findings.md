@@ -1,3 +1,18 @@
+## 2026-10-25T21:51Z — 真实包与身份修订新发现
+
+实际native完成/HTTP200不代表答案有效或完整。MiMo thinking与final共享max_completion_tokens，真实第二包length输出16384含14477thinking；只留hash的首包不能倒推精确格式错误。原budget三次均结算97105微USD，8failed/2leased/2result_ready/24pending如实保留。新增原SDK显式官方JSON模式（保持默认请求不变、hash绑定actualpayload）、新准备cap32768、final-only optin诊断及首错停发；JSON语法不能替代原schema/财务证据检查。诊断独审已发现escaped privacy/trailing prose/non-directory，直接根修后再收费。
+
+原verified名称标签不足：旧MSFT/Tencent原DTO缺incorporation_country且用合法compact BIND；新版显式1.1仅扩词法，先修原country和新IVR，不放宽缺字段。原身份rev2→3使route current旧绑定失效，安全新预览用原history旧ID仅作CAS目标，原record/set_current仍核新binding，旧snapshot字节不变。原CLI/CAS与unknown guard保持。
+
+## 2026-10-25 — 实UI运行发现两个原跨仓契约缺口
+
+1. 新部署有显式原work_store，原runner后续确实用approved_session.service.store，却在先前assert_executor_policy先硬比runtime目录quick_scan_work.sqlite。保留原store一致性/预算projection/热reader检查，改传实际同一对象；默认布局/异库继续拒。CATL实际原run4a812...以此拒，0HTTP/0费用，独立8反例已过，公开main红精准复现。
+2. 原MSFT serializer合法source_binding_ref=BIND_bdcbad655ea67df3f9ded4c9b1bf836a是compact32hex；Q13 _BINDING_ID只接受BND历史或BIND带连字符UUIDv4。原proof/current权限、36题/C06加载/33题plan都通过，纯_canonical_bindings才抛invalid source_binding_refs并被admission generic包住。Tencent同型拒；CATL恰为UUID格式可准入。根修只能增加严格compact格式兼容，保留真实原ID/receipt，不重写身份或弱化成任意字符串。证明文件msft-admission-diagnosis/binding-root-cause.json，修复分线隔离TDD中。
+
+## 2026-10-25 — UI三市场真实运行接续
+
+实际部署未填prepare，不能仅把UI按钮变绿。新实验须原公共工具生成全新费用/工作scope，旧r25账本不可扩额。自动prepare原policy1.0/1.1与已登记高级policy不是同能力；36基础题会按entity/security拆scope，全部原ready才是完整公司。
+
 ## 2026-10-25 — 发布核对
 
 UI2186a3c本地无remote；IQSb8163d2已推origin/master并核refs。原21个独审raw SHA均仍一致；GitCRLF/LF差异按仅换行逐文件记录，不把规范化字节说成完全相同。原机器红灯XML含pytest正常尾空白，保持raw证据，仅两精确归档路径设whitespace属性，不放宽源码/说明或跳hook。其他writer10/10README与历史未跟踪文件不在提交中，临时测试根/fixture不存在。

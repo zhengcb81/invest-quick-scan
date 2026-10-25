@@ -439,6 +439,7 @@ class ExecutionGateway:
                     if written < 1024 * 1024:
                         safe = line[:1024 * 1024 - written]
                         log.write(safe)
+                        log.flush()
                         written += len(safe)
             exit_code = process.wait()
             record.update(process_state="process_exited", finished_at=_now(), exit_code=exit_code,
@@ -454,7 +455,9 @@ class ExecutionGateway:
                         try:
                             with self._control_lock('finish'):
                                 current = _read(path)
-                                record['launcher_state'] = 'paused' if current.get('launcher_state') == 'draining' else current.get('launcher_state', 'running')
+                                known_failure = (record.get('process_state') == 'process_exited'
+                                    and type(record.get('exit_code')) is int and record['exit_code'] != 0)
+                                record['launcher_state'] = 'paused' if known_failure or current.get('launcher_state') == 'draining' else current.get('launcher_state', 'running')
                                 _write(path, record)
                             break
                         except DashboardExecutionError as error:

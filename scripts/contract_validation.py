@@ -32,21 +32,30 @@ SCORE_SCHEMA = _load("schemas/quick_scan/score.schema.json")
 IDENTITY_SCHEMA = _load("schemas/quick_scan/identity.schema.json")
 STOCKWIKI_G2B_WIRE_PROFILE = "stockwiki-g2b/1.0.0"
 IDENTITY_WIRE_PROFILE_SCHEMA = _load("schemas/quick_scan/identity-wire-profile.schema.json")
+STOCKWIKI_G2B_COMPACT_WIRE_PROFILE = "stockwiki-g2b/1.1.0"
+IDENTITY_COMPACT_WIRE_PROFILE_SCHEMA = _load("schemas/quick_scan/identity-wire-profile-1.1.schema.json")
+STOCKWIKI_G2B_WIRE_PROFILES = frozenset({STOCKWIKI_G2B_WIRE_PROFILE, STOCKWIKI_G2B_COMPACT_WIRE_PROFILE})
 
 
 def identity_schema_for_wire_profile(wire_profile: str | None = None) -> dict:
     """Derive a consumer dialect without modifying the frozen identity schema.
 
     The default remains the historical contract; only an explicit registered
-    profile permits the real owner BIND_UUIDv4 spelling. Caller copies cannot
+    profile permits owner BIND spellings. The explicit 1.1 profile additionally
+    supports compact references without modifying the historical 1.0 dialect.
+    Caller copies cannot
     change either global schema or a subsequent legacy validation.
     """
     schema = deepcopy(IDENTITY_SCHEMA)
     if wire_profile is None or wire_profile == "legacy":
         return schema
-    if wire_profile != STOCKWIKI_G2B_WIRE_PROFILE:
+    profiles = {
+        STOCKWIKI_G2B_WIRE_PROFILE: IDENTITY_WIRE_PROFILE_SCHEMA,
+        STOCKWIKI_G2B_COMPACT_WIRE_PROFILE: IDENTITY_COMPACT_WIRE_PROFILE_SCHEMA,
+    }
+    if wire_profile not in profiles:
         raise ValueError("unknown identity wire profile")
-    binding_ref_schema = IDENTITY_WIRE_PROFILE_SCHEMA["definitions"]["SourceBindingRef"]
+    binding_ref_schema = profiles[wire_profile]["definitions"]["SourceBindingRef"]
     for definition, field in (("ListingV21", "source_binding_ref"),
                               ("SourceBindingV21", "binding_ref")):
         schema["definitions"][definition]["properties"][field] = deepcopy(binding_ref_schema)
@@ -174,7 +183,7 @@ def _identity_receipt(
     if not isinstance(receipt, dict):
         raise ValueError("identity receipt is missing")
     active_fields = [receipt[field] for field in ("status", "effective_status") if field in receipt]
-    status_present = "status" in receipt or wire_profile == STOCKWIKI_G2B_WIRE_PROFILE
+    status_present = "status" in receipt or wire_profile in STOCKWIKI_G2B_WIRE_PROFILES
     revision = receipt.get("identity_revision")
     if (receipt.get("receipt_id") != receipt_id
             or receipt.get("entity_id") != value["entity_id"]
@@ -570,7 +579,7 @@ def validate_entity(
                 or not (
                     isinstance(receipt.get("evidence_ref"), str)
                     and receipt["evidence_ref"].strip()
-                    or wire_profile == STOCKWIKI_G2B_WIRE_PROFILE
+                    or wire_profile in STOCKWIKI_G2B_WIRE_PROFILES
                     and receipt.get("basis") == "user_exact_security_attestation"
                     and "evidence_ref" in receipt
                     and receipt["evidence_ref"] is None

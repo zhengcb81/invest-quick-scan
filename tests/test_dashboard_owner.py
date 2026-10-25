@@ -128,6 +128,77 @@ def test_member_list_projects_original_identity_name_and_security_without_writes
     assert _tree(workspace) == before
 
 
+def test_candidate_lookup_projects_original_identity_and_keeps_search_dto_unchanged(owner):
+    gateway, workspace, _ = owner
+    before = _tree(workspace)
+    original_search = gateway.search("0700")
+    assert original_search["total"] == 1
+    result = gateway.universe_preview({"query": "0700", "reason": "lookup only"})
+    assert result["status"] == "choose_entity"
+    assert result["can_apply"] is False and result["identity_changed"] is False
+    assert "preview_token" not in result
+    candidate = result["candidates"][0]
+    original = gateway.entity(candidate["entity_id"])
+    assert candidate["entity_id"] == ENTITY
+    assert candidate["identity_state"] == original["entity"]["identity_state"] == "provisional"
+    assert candidate["identity_revision"] == original["entity"]["identity_revision"]
+    assert candidate["canonical_name"] == original["entity"]["canonical_name"]
+    assert candidate["securities"] == original["securities"]
+    assert candidate["identity_display_source"] == "StockWiki.get_entity"
+    assert candidate["identity_display_available"] is True
+    # Candidate labels come from the original ID. The ordinary W09 list DTO
+    # retains its shape, pagination, qualification and stored score metadata.
+    original_row = original_search["rows"][0]
+    labels = {"canonical_name", "identity_state", "identity_revision", "securities",
+              "identity_display_available", "identity_display_source"}
+    assert {key: value for key, value in candidate.items() if key not in labels} == {
+        key: value for key, value in original_row.items() if key not in labels}
+    assert gateway.search("0700")["rows"] == original_search["rows"]
+    assert gateway.universe_list()["member_count"] == 0
+    assert _tree(workspace) == before
+
+
+def test_same_name_candidate_lookup_preserves_each_original_id_revision_and_security(owner):
+    gateway, workspace, _ = owner
+    # Change one synthetic temporary identity through the original store API.
+    # This makes names identical while IDs, revisions and securities differ;
+    # neither name matching nor a candidate lookup may merge these entities.
+    script = r'''
+import sys
+from pathlib import Path
+sys.path[:0]=[sys.argv[1], str(Path(sys.argv[1])/'tests')]
+from stockwiki.paths import WorkspacePaths
+from stockwiki.quick_scan_store import QuickScanStore
+from test_quick_scan_observations import _seed_entity
+store=QuickScanStore(WorkspacePaths.from_root(Path(sys.argv[2])))
+first=store.get_entity(sys.argv[3])
+second=_seed_entity(sys.argv[4],tickers=['600519'])
+bindings=second.pop('_bindings')
+second.update(canonical_name=first['canonical_name'],identity_revision=2)
+store.save_entity(second,source_bindings=bindings)
+'''
+    seeded = subprocess.run([sys.executable, "-B", "-c", script, str(STOCKWIKI), str(workspace), ENTITY, SECOND],
+                            capture_output=True, text=True, encoding="utf-8", timeout=40, env=_env())
+    assert seeded.returncode == 0, seeded.stderr
+    name = gateway.entity(ENTITY)["entity"]["canonical_name"]
+    before = _tree(workspace)
+    result = gateway.universe_preview({"query": name, "reason": "same-name lookup only"})
+    assert result["status"] == "ambiguous" and result["can_apply"] is False
+    assert result["identity_changed"] is False and "preview_token" not in result
+    candidates = {row["entity_id"]: row for row in result["candidates"]}
+    assert set(candidates) == {ENTITY, SECOND}
+    assert {row["canonical_name"] for row in candidates.values()} == {name}
+    assert candidates[ENTITY]["identity_revision"] == 1
+    assert candidates[SECOND]["identity_revision"] == 2
+    for entity_id in (ENTITY, SECOND):
+        original = gateway.entity(entity_id)
+        assert candidates[entity_id]["identity_state"] == original["entity"]["identity_state"]
+        assert candidates[entity_id]["securities"] == original["securities"]
+    assert candidates[ENTITY]["securities"] != candidates[SECOND]["securities"]
+    assert gateway.universe_list()["member_count"] == 0
+    assert _tree(workspace) == before
+
+
 def test_library_coverage_counts_original_records_not_completed_scans_or_financial_quality(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)

@@ -277,6 +277,81 @@ def test_pause_drains_company_then_resume_rechecks_original(deployment):
     assert gateway.tasks()["tasks"][0]["launch_attempt"] == 2
 
 
+def test_known_failed_process_pauses_without_resend_and_resume_requires_original_safety(deployment):
+    config, runtime, _ = deployment
+    child = Path(config['stockqa_root']) / 'main_with_llm.py'
+    child.write_text(child.read_text(encoding='utf8') + '\nsys.exit(1)\n', encoding='utf8')
+    gateway = ExecutionGateway(config)
+    run_id = start(gateway)['run']['run_id']
+    wait_done(gateway, run_id)
+    state_path = Path(config['state_root']) / (run_id + '.json')
+    record = json.loads(state_path.read_text(encoding='utf8'))
+    assert record['process_state'] == 'process_exited' and record['exit_code'] == 1
+    assert record['launcher_state'] == 'paused'
+    assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
+    assert 'resume' in gateway.tasks()['tasks'][0]['allowed_actions']
+    assert (runtime / 'calls.txt').read_text().splitlines() == ['1'], 'Offering recovery must not dispatch'
+
+    inspector = Path(config['stockqa_root']) / 'src/utils/quick_scan_refresh_inspect_cli.py'
+    original = inspector.read_text(encoding='utf8')
+    for blocked_source in (
+        original.replace('request.get("available", True)', 'False'),
+        original.replace('request.get("work_items", [])', '[{"status":"uncertain"}]'),
+    ):
+        inspector.write_text(blocked_source, encoding='utf8')
+        before = state_path.read_bytes()
+        assert 'resume' not in gateway.tasks()['tasks'][0]['allowed_actions']
+        with pytest.raises(DashboardExecutionError) as raised:
+            gateway.control(run_id, 'resume')
+        assert raised.value.code == 'resume_blocked'
+        assert state_path.read_bytes() == before
+        assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
+
+    inspector.write_text(original, encoding='utf8')
+    assert gateway.control(run_id, 'resume')['process_started'] is True
+    wait_done(gateway, run_id)
+    assert (runtime / 'calls.txt').read_text().splitlines() == ['1', '1']
+    assert gateway.tasks()['tasks'][0]['launch_attempt'] == 2
+
+
+@pytest.mark.parametrize('exit_code,persisted_launcher,wait_unknown,expected_launcher', [
+    (0, 'running', False, 'running'),
+    (0, 'draining', False, 'paused'),
+    (1, 'running', False, 'paused'),
+    (1, 'draining', False, 'paused'),
+    (2, 'paused', False, 'paused'),
+    (None, 'running', False, 'running'),
+    (1, 'running', True, 'running'),
+    (1, 'draining', True, 'paused'),
+])
+def test_finish_merges_known_failure_with_original_drain_without_authorizing_unknown(
+    tmp_path, exit_code, persisted_launcher, wait_unknown, expected_launcher
+):
+    gateway = ExecutionGateway({'state_root': str(tmp_path / 'state')})
+    run_id = 'run-' + 'c' * 32
+    path = gateway.state_root / (run_id + '.json')
+    record = {'run_id': run_id, 'process_state': 'running', 'launcher_state': 'running',
+              'exit_code': 17, 'log_path': str(tmp_path / 'child.log')}
+    put(path, {**record, 'launcher_state': persisted_launcher})
+
+    class ExitedChild:
+        stdout = []
+
+        def wait(self):
+            if wait_unknown:
+                raise OSError('isolated_unknown_wait')
+            return exit_code
+
+    child = ExitedChild()
+    gateway._processes[run_id] = child
+    gateway._finish(child, path, record)
+    result = json.loads(path.read_text(encoding='utf8'))
+    assert result['process_state'] == ('needs_original_inspection' if wait_unknown else 'process_exited')
+    assert result['launcher_state'] == expected_launcher
+    assert run_id not in gateway._processes
+    assert not (tmp_path / 'calls.txt').exists()
+
+
 def test_start_requires_original_preview_and_refuses_changed_plan(deployment):
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
@@ -354,3 +429,60 @@ def test_corrupt_launch_reference_cannot_turn_into_new_start(deployment):
         start(gateway)
     assert raised.value.code == "process_reference_corrupt"
     assert not (runtime / "calls.txt").exists()
+
+
+def test_process_log_is_redacted_and_visible_while_child_is_still_running(tmp_path, monkeypatch):
+    """A short progress line must be readable before EOF, with redaction and cap intact."""
+    import threading
+
+    secret = 'midstream-secret-material'
+    monkeypatch.setenv('MIDSTREAM_API_KEY', secret)
+    gateway = ExecutionGateway({'state_root': str(tmp_path / 'state')})
+    run_id = 'run-' + 'd' * 32
+    log_path = tmp_path / 'child.log'
+    path = gateway.state_root / (run_id + '.json')
+    record = {'run_id': run_id, 'process_state': 'running', 'launcher_state': 'running',
+              'log_path': str(log_path)}
+    put(path, record)
+    line_processed = threading.Event()
+    allow_finish = threading.Event()
+    wait_entered = threading.Event()
+
+    class MidstreamChild:
+        def __init__(self):
+            self.stdout = self.lines()
+
+        def lines(self):
+            yield 'phase=owner_checked key=' + secret + ' Bearer abcdefghijklmnopqrstuvwxyz\n'
+            line_processed.set()
+            if not allow_finish.wait(10):
+                raise RuntimeError('isolated_test_release_timeout')
+            yield 'x' * (2 * 1024 * 1024) + '\n'
+            yield 'after-cap-must-not-be-written\n'
+
+        def wait(self):
+            wait_entered.set()
+            return 0
+
+    child = MidstreamChild()
+    gateway._processes[run_id] = child
+    worker = threading.Thread(target=gateway._finish, args=(child, path, record), daemon=True)
+    worker.start()
+    try:
+        assert line_processed.wait(5), 'The logger did not consume the first child line'
+        assert worker.is_alive() and not wait_entered.is_set()
+        assert run_id in gateway._processes
+        assert json.loads(path.read_text(encoding='utf8'))['process_state'] == 'running'
+        visible = log_path.read_text(encoding='utf8')
+        assert 'phase=owner_checked' in visible, 'Progress remained buffered until process exit'
+        assert secret not in visible and 'abcdefghijklmnopqrstuvwxyz' not in visible
+        assert '[REDACTED]' in visible
+    finally:
+        allow_finish.set()
+        worker.join(10)
+    assert not worker.is_alive()
+    final = log_path.read_text(encoding='utf8')
+    assert len(final) == 1024 * 1024
+    assert secret not in final and 'after-cap-must-not-be-written' not in final
+    assert run_id not in gateway._processes
+    assert json.loads(path.read_text(encoding='utf8'))['process_state'] == 'process_exited'

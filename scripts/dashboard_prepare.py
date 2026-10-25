@@ -449,6 +449,47 @@ class PrepareGateway:
                 "API_requests": 0, "owner_database_writes": 0}
 
 
+def _preview_route_anchor(routes, *, subject_key, entity_id, now_utc):
+    """Read the original current ID solely as an expected-current CAS target.
+
+    A stale identity-bound route is never executable authority. The original
+    owner history permits a NEW validated route to replace it on explicit
+    apply, preserving the old immutable snapshot and subject revision.
+    """
+    try:
+        value = routes.get_current_anchor(subject_key=subject_key, scope="entity", scope_id=entity_id, now_utc=now_utc)
+    except Exception as error:
+        code = getattr(error, "code", None)
+        if code == "route_current_unavailable":
+            return None
+        if code != "route_identity_changed":
+            raise
+        history = routes.current_history(subject_key=subject_key, scope="entity", scope_id=entity_id)
+        invalid = DashboardPrepareError("owner_route_rebind_unavailable",
+            "Original route history needs inspection before preparing a new identity revision", 409)
+        if not isinstance(history, list) or not history:
+            raise invalid
+        previous = None
+        for version, row in enumerate(history, 1):
+            if (not isinstance(row, dict) or type(row.get("version")) is not int or row["version"] != version
+                    or (row.get("subject_key"), row.get("scope"), row.get("scope_id")) != (subject_key, "entity", entity_id)
+                    or not isinstance(row.get("decision_id"), str)
+                    or not re.fullmatch(r"route_[a-f0-9]{64}", row["decision_id"])
+                    or "previous_decision_id" not in row or row["previous_decision_id"] != previous):
+                raise invalid
+            previous = row["decision_id"]
+        row = history[-1]
+        # The original public getter verifies immutable route/manifest/metadata
+        # hashes. A missing/corrupt snapshot must not become an empty anchor.
+        snapshot = routes.get_snapshot(row["decision_id"])
+        if (not isinstance(snapshot, dict) or snapshot.get("decision_id") != row["decision_id"]
+                or (snapshot.get("subject_key"), snapshot.get("scope"), snapshot.get("scope_id"), snapshot.get("entity_id"))
+                != (subject_key, "entity", entity_id, entity_id)):
+            raise invalid
+        return {"decision_id": row["decision_id"], "anchor_version": row["version"]}
+    return {"decision_id": value["expected_decision_id"], "anchor_version": value["anchor_version"]}
+
+
 def _snapshot(config, payload):
     from stockwiki.paths import WorkspacePaths
     from stockwiki.quick_scan_store import QuickScanStore
@@ -471,6 +512,25 @@ def _snapshot(config, payload):
         raise DashboardPrepareError("preview_stale", "Original owner time is not frozen; create a new bank preview", 409)
     request = build_identity_request(identity, IdentityReceiptStore(paths), MarketRegistryStore(paths),
                                     entity_id=payload["entity_id"], as_of=owner_snapshot_as_of)
+    try:
+        from . import contract_validation as cv
+    except ImportError:
+        import contract_validation as cv
+    # Validate the exact native owner DTO before selecting a listing, subject
+    # or question route. A verified label alone cannot satisfy this contract;
+    # missing attributes must be repaired at the original owner, never filled
+    # into an immutable preview or promoted by a caller-supplied assertion.
+    try:
+        context = request["trusted_context"]
+        cv.validate_entity(request["payload"],
+            trusted_identity_receipts=context["identity_receipts"],
+            trusted_source_bindings=context["source_bindings"],
+            trusted_market_registry=context["market_registry"],
+            wire_profile="stockwiki-g2b/1.1.0")
+    except (ValueError, KeyError, TypeError, AttributeError, cv.JsonSchemaValidationError):
+        raise DashboardPrepareError("owner_identity_contract_invalid",
+            "Complete or correct the original identity attributes and evidence, then create a new bank preview", 409,
+            {"required_action": "repair_original_identity_and_create_new_preview"}) from None
     listings = [row for row in request["payload"]["listings"] if row.get("listing_status") in {"active", "suspended"}]
     if payload.get("security_id"):
         listings = [row for row in listings if row["security_id"] == payload["security_id"]]
@@ -513,12 +573,7 @@ def _snapshot(config, payload):
         routes = QuickScanRouteStore(identity, validator=IqsRouteValidator(Path(config["iqs_root"]), runs_dir=paths.runs_dir,
             release_root=Path(config.get("iqs_release_root", config["iqs_root"]))))
         binding = routes.identity_binding(key)
-        try:
-            value = routes.get_current_anchor(subject_key=key, scope="entity", scope_id=payload["entity_id"], now_utc=_now())
-            anchor = {"decision_id": value["expected_decision_id"], "anchor_version": value["anchor_version"]}
-        except Exception as error:
-            if getattr(error, "code", None) != "route_current_unavailable":
-                raise
+        anchor = _preview_route_anchor(routes, subject_key=key, entity_id=payload["entity_id"], now_utc=_now())
         gap = None
     return {"identity": request, "subjects": subjects, "binding": binding, "anchor": anchor, "subject_gap": gap, "bootstrap": bootstrap,
             "owner_snapshot_as_of": owner_snapshot_as_of, "scope_as_of": scope_as_of,

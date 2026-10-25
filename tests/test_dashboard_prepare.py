@@ -55,12 +55,22 @@ base=Path(sys.argv[2]);paths=WorkspacePaths.from_root(base/'owner')
 identity=QuickScanStore(paths);identity.migrate();receipts=IdentityReceiptStore(paths);receipts.migrate()
 recorded_at=(datetime.now(timezone.utc)-timedelta(seconds=1)).isoformat().replace('+00:00','Z') if sys.argv[3]=='fresh_today' else '2026-09-29T00:00:00Z'
 entity=_entity('verified');bindings=[_binding()]
+if sys.argv[3]=='revision_2':
+    entity['identity_revision']=2
+if sys.argv[3] in {'compact', 'null_country'}:
+    # Real owner lexical dialect, synthetic issuer/evidence only. The compact
+    # spelling is intentionally not a UUIDv4; source-master hashes also occur.
+    ref='BIND_bdcbad655ea67df3f9ded4c9b1bf836a'
+    entity['securities'][0]['source_binding_ref']=ref
+    bindings[0]['binding_ref']=ref
+if sys.argv[3]=='null_country':
+    entity['incorporation_country']=None
 if sys.argv[3]=='multi':
     secondary=dict(entity['securities'][0],security_id='SEC_2c3b5e4f-0000-4b2c-9d3e-000000000002',ticker='ACMB',source_binding_ref='BND_fixture_acme_2')
     entity['securities'].append(secondary)
     bindings.append(dict(bindings[0],security_id=secondary['security_id'],ticker=secondary['ticker'],binding_ref=secondary['source_binding_ref'],source_record_id='urn:company-wiki:source:fixture-acme-class-b'))
 partial={'kind':'verified_issuer','receipt_id':entity['verified_issuer_receipt_id'],
-'entity_id':entity['entity_id'],'identity_revision':1,'recorded_at':recorded_at,
+'entity_id':entity['entity_id'],'identity_revision':entity['identity_revision'],'recorded_at':recorded_at,
 'same_legal_issuer':True,'evidence_ref':'https://example.invalid/issuer-only-synthetic'}
 result=import_entity(identity,receipts,{'entity':entity,'source_bindings':bindings,'issuer_receipt':partial},at=recorded_at)
 assert result['receipt_recorded'],result
@@ -81,7 +91,8 @@ SubjectBoundObservationStore(paths,contract=None).migrate()
 '''
         done = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", source, str(WIKI), str(base),
                                "multi" if getattr(request, "param", False) is True else
-                               "fresh_today" if getattr(request, "param", None) == "fresh_today" else "single"],
+                               getattr(request, "param", None) if getattr(request, "param", None) in
+                               {"fresh_today", "compact", "null_country", "revision_2"} else "single"],
                               cwd=base, env=_env(), capture_output=True, timeout=60)
         assert done.returncode == 0, done.stderr.decode("utf-8", "replace")
         policy = {"configured": True, "policy_id": "isolated-dashboard-new-scope", "policy_version": "1.0.0",
@@ -150,6 +161,234 @@ def test_preview_all_36_uses_original_serializer_and_keeps_original_databases_un
     assert result["selected_subject"]["scope_kind"] == "standalone_issuer"
     assert tree(base / "owner") == before
     assert gateway.preparation(result["preview_id"])["status"] == "not_applied"
+
+
+@pytest.mark.parametrize("original", ["compact"], indirect=True)
+def test_snapshot_accepts_native_compact_g2b_without_rewriting_identity_or_historical_contracts(original):
+    from scripts import contract_validation as cv
+    gateway, base, _ = original
+    historical_files = [ROOT / "schemas/quick_scan/identity.schema.json",
+                        ROOT / "schemas/quick_scan/identity-wire-profile.schema.json"]
+    historical = {str(path): path.read_bytes() for path in historical_files}
+    legacy_schema = copy.deepcopy(cv.IDENTITY_SCHEMA)
+    before = tree(base / "owner")
+    native = gateway._worker("snapshot", {"entity_id": ENTITY, "owner_snapshot_as_of": "2026-10-25T00:00:00Z",
+        "scope_as_of": None, "scope_selector": "existing"})
+    request, context = native["identity"], native["identity"]["trusted_context"]
+    cv.validate_entity(request["payload"], trusted_identity_receipts=context["identity_receipts"],
+        trusted_source_bindings=context["source_bindings"], trusted_market_registry=context["market_registry"],
+        wire_profile="stockwiki-g2b/1.1.0")
+    ref = "BIND_bdcbad655ea67df3f9ded4c9b1bf836a"
+    assert native["selected_listing"]["source_binding_ref"] == ref
+    assert list(context["source_bindings"]) == [ref]
+    assert set(native) == {"identity", "subjects", "binding", "anchor", "subject_gap", "bootstrap",
+        "owner_snapshot_as_of", "scope_as_of", "selected_listing", "listing_binding"}
+    # New read-profile support must not mutate frozen schemas or relax the
+    # legacy/default and 1.0 validation of this same native compact payload.
+    for profile in (None, "stockwiki-g2b/1.0.0"):
+        with pytest.raises((ValueError, cv.JsonSchemaValidationError)):
+            cv.validate_entity(request["payload"], trusted_identity_receipts=context["identity_receipts"],
+                trusted_source_bindings=context["source_bindings"], trusted_market_registry=context["market_registry"],
+                wire_profile=profile)
+    assert cv.IDENTITY_SCHEMA == legacy_schema
+    assert {str(path): path.read_bytes() for path in historical_files} == historical
+    assert tree(base / "owner") == before
+
+
+@pytest.mark.parametrize("original", ["null_country"], indirect=True)
+def test_native_verified_missing_country_is_refused_before_route_and_without_owner_writes(original, monkeypatch):
+    gateway, base, _ = original
+    monkeypatch.syspath_prepend(str(ROOT / "scripts"))
+    import routing
+    routes = []
+    def route_must_not_run(*args, **kwargs):
+        routes.append(True)
+        raise AssertionError("Invalid native identity reached question routing")
+    monkeypatch.setattr(routing, "resolve_route_decision", route_must_not_run)
+    before = tree(base / "owner")
+    ledger = (base / "work.sqlite").read_bytes()
+    with pytest.raises(DashboardPrepareError) as error:
+        gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+    assert error.value.code == "owner_identity_contract_invalid"
+    assert "original identity attributes" in error.value.message
+    assert error.value.details["required_action"] == "repair_original_identity_and_create_new_preview"
+    assert routes == [] and not Path(gateway.options["state_root"]).exists()
+    assert tree(base / "owner") == before and (base / "work.sqlite").read_bytes() == ledger
+
+
+@pytest.mark.parametrize("original", ["compact"], indirect=True)
+def test_snapshot_maps_native_contract_shape_and_semantic_failures_to_stable_repair_action(original, monkeypatch):
+    from scripts.dashboard_prepare import _snapshot
+    gateway, base, config = original
+    selection = {"entity_id": ENTITY, "owner_snapshot_as_of": "2026-10-25T00:00:00Z",
+                 "scope_as_of": None, "scope_selector": "existing"}
+    # Start with a genuine owner-serialized DTO. Only corrupted transport
+    # copies below are injected; no store, receipt or authority is repaired.
+    native = gateway._worker("snapshot", selection)["identity"]
+    monkeypatch.syspath_prepend(str(WIKI))
+    import stockwiki.identity_g2b as g2b
+    import stockwiki.identity_snapshot as owner_snapshot
+    def selection_must_not_run(*args, **kwargs):
+        raise AssertionError("Invalid contract reached original listing selection")
+    monkeypatch.setattr(owner_snapshot, "resolve_listing_binding", selection_must_not_run)
+    malformed = copy.deepcopy(native)
+    malformed["trusted_context"].pop("source_bindings")
+    mismatched = copy.deepcopy(native)
+    receipt = next(iter(mismatched["trusted_context"]["identity_receipts"].values()))
+    receipt["identity_revision"] += 1
+    unregistered_mic = copy.deepcopy(native)
+    unregistered_mic["trusted_context"]["market_registry"] = {"US": ["XHKG"]}
+    before = tree(base / "owner")
+    for invalid in (malformed, mismatched, unregistered_mic):
+        frozen = copy.deepcopy(invalid)
+        monkeypatch.setattr(g2b, "build_identity_request", lambda *args, **kwargs: invalid)
+        with pytest.raises(DashboardPrepareError) as error:
+            _snapshot(config, selection)
+        assert error.value.code == "owner_identity_contract_invalid" and error.value.status == 409
+        assert error.value.details == {"required_action": "repair_original_identity_and_create_new_preview"}
+        assert invalid == frozen and tree(base / "owner") == before
+
+
+@pytest.mark.parametrize("original", ["revision_2"], indirect=True)
+def test_original_identity_revision_refresh_keeps_subject_and_history_and_uses_original_cas(original):
+    gateway, base, config = original
+    subject_key = "ASJ_33333333-3333-4333-8333-333333333333@1"
+    source = r'''
+import json,sys,hashlib
+from pathlib import Path
+from datetime import datetime,timezone
+sys.path[:0]=[sys.argv[1],str(Path(sys.argv[1])/'tests')]
+from stockwiki.paths import WorkspacePaths
+from stockwiki.quick_scan_store import QuickScanStore
+from stockwiki.identity_import import import_entity
+from stockwiki.identity_receipts import IdentityReceiptStore
+from stockwiki.quick_scan_routes import QuickScanRouteStore
+from stockwiki.quick_scan_route_validation import IqsRouteValidator,RouteStoreError
+from test_identity_g2b_export import _binding
+request=json.loads(sys.stdin.buffer.read())
+paths=WorkspacePaths.from_root(Path(request['workspace']))
+identity=QuickScanStore(paths)
+routes=QuickScanRouteStore(identity,validator=IqsRouteValidator(Path(sys.argv[2]),runs_dir=Path(request['runs']),release_root=Path(sys.argv[2])))
+now=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
+before=hashlib.sha256(identity.database_path.read_bytes()).hexdigest()
+if request['operation']=='upgrade':
+    entity=identity.get_entity(request['entity_id'])
+    assert entity['identity_revision']==2
+    entity['identity_revision']=3;entity['verified_issuer_receipt_id']='IVR_fixture_revision_3'
+    receipt={'kind':'verified_issuer','receipt_id':entity['verified_issuer_receipt_id'],'entity_id':entity['entity_id'],
+        'identity_revision':3,'recorded_at':now,'same_legal_issuer':True,'evidence_ref':'https://example.invalid/reviewed-revision-3'}
+    imported=import_entity(identity,IdentityReceiptStore(paths),{'entity':entity,'source_bindings':[_binding()],'issuer_receipt':receipt},at=now)
+    assert imported['receipt_recorded'],imported
+    try:
+        routes.get_for_execution(subject_key=request['subject_key'],scope='entity',scope_id=entity['entity_id'],now_utc=now)
+    except RouteStoreError as exc:
+        result={'old_execution_refused':exc.code}
+    else:
+        raise AssertionError('Stale identity route became executable')
+else:
+    directory=Path(request['directory']);route=json.loads((directory/'route.json').read_text(encoding='utf-8'))
+    routes.record_snapshot((directory/'route.json').read_bytes(),(directory/'manifest.json').read_bytes(),
+        subject_key=request['subject_key'],expected_decision_id=route['decision_id'])
+    try:
+        result=routes.set_current(route['decision_id'],subject_key=request['subject_key'],
+            expected_current_decision_id=request['expected_current'],now_utc=now)
+    except RouteStoreError as exc:
+        result={'error_code':exc.code,'identity_database_unchanged':hashlib.sha256(identity.database_path.read_bytes()).hexdigest()==before}
+binding=routes.identity_binding(request['subject_key'])
+result.update(binding={k:binding[k] for k in ('subject_key','identity_revision','perimeter_sha256','route_identity_ref')},
+    snapshots={row['decision_id']:{k:row[k] for k in ('route_raw_sha256','manifest_raw_sha256','metadata_sha256')}
+        for row in routes.snapshots_for_subject(request['subject_key'])})
+print(json.dumps(result))
+'''
+    def original_route(operation, directory=None, expected_current=None):
+        request = {"operation": operation, "workspace": config["workspace_root"], "entity_id": ENTITY,
+            "subject_key": subject_key, "runs": str(base / "route-validation"),
+            "directory": str(directory) if directory else None, "expected_current": expected_current}
+        done = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", source, str(WIKI), str(ROOT)],
+            cwd=base, env=_env(), input=json.dumps(request).encode("utf-8"), capture_output=True, timeout=90)
+        assert done.returncode == 0, done.stderr.decode("utf-8", "replace")
+        return json.loads(done.stdout)
+    first = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+    first_dir = Path(gateway.options["state_root"]) / "candidates" / first["preview_id"]
+    old = original_route("activate", first_dir)
+    assert old["status"] == "activated" and old["binding"]["identity_revision"] == 2
+    upgrade = original_route("upgrade")
+    assert upgrade["old_execution_refused"] == "route_identity_changed"
+    before = tree(base / "owner")
+    refreshed = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+    assert refreshed["can_apply"] and tree(base / "owner") == before
+    new_dir = Path(gateway.options["state_root"]) / "candidates" / refreshed["preview_id"]
+    native = json.loads((new_dir / "native.json").read_text(encoding="utf-8"))
+    assert native["binding"]["identity_revision"] == 3
+    assert native["binding"]["subject_key"] == old["binding"]["subject_key"] == subject_key
+    assert native["binding"]["perimeter_sha256"] == old["binding"]["perimeter_sha256"]
+    assert native["anchor"] == {"decision_id": old["decision_id"], "anchor_version": 1}
+    current = original_route("activate", new_dir, old["decision_id"])
+    assert current["status"] == "activated" and current["version"] == 2
+    assert current["binding"] == upgrade["binding"]
+    assert current["snapshots"][old["decision_id"]] == old["snapshots"][old["decision_id"]]
+    # A competing session already changed current. Even the same fresh
+    # candidate cannot bypass the original expected-current CAS comparison.
+    conflict = original_route("activate", new_dir, old["decision_id"])
+    assert conflict["error_code"] == "route_current_conflict" and conflict["identity_database_unchanged"]
+    assert conflict["snapshots"] == current["snapshots"]
+
+
+def test_preview_route_rebind_rejects_invalid_original_history_and_snapshot_shapes():
+    from types import SimpleNamespace
+    from scripts.dashboard_prepare import _preview_route_anchor
+    subject = "ASJ_33333333-3333-4333-8333-333333333333@1"
+    decision = "route_" + "a" * 64
+    row = {"subject_key": subject, "scope": "entity", "scope_id": ENTITY, "version": 1,
+           "decision_id": decision, "previous_decision_id": None}
+    snapshot = {"decision_id": decision, "subject_key": subject, "scope": "entity", "scope_id": ENTITY, "entity_id": ENTITY}
+    def stale(**kwargs):
+        raise DashboardPrepareError("route_identity_changed", "Synthetic stale original route")
+    bad_histories = [None, [], [None], [dict(row, version=True)], [dict(row, version=2)],
+        [dict(row, subject_key="ASJ_OTHER@1")], [dict(row, scope_id="ENT_OTHER")], [dict(row, scope="segment")],
+        [dict(row, decision_id="../route_" + "a" * 64)], [dict(row, previous_decision_id=decision)],
+        [row, dict(row, version=2, decision_id="route_" + "b" * 64, previous_decision_id=None)]]
+    bad_snapshots = [None, {}, dict(snapshot, decision_id="route_" + "b" * 64),
+        dict(snapshot, subject_key="ASJ_OTHER@1"), dict(snapshot, entity_id="ENT_OTHER"), dict(snapshot, scope="segment")]
+    for history, candidate in [(item, snapshot) for item in bad_histories] + [([row], item) for item in bad_snapshots]:
+        routes = SimpleNamespace(get_current_anchor=stale, current_history=lambda **kwargs: history,
+            get_snapshot=lambda expected: candidate)
+        with pytest.raises(DashboardPrepareError) as error:
+            _preview_route_anchor(routes, subject_key=subject, entity_id=ENTITY, now_utc="2026-10-25T00:00:00Z")
+        assert error.value.code == "owner_route_rebind_unavailable"
+
+
+def test_preview_route_anchor_preserves_non_identity_refusals_and_never_grants_execution():
+    from types import SimpleNamespace
+    from scripts.dashboard_prepare import _preview_route_anchor
+    subject = "ASJ_33333333-3333-4333-8333-333333333333@1"
+    def unexpected(*args, **kwargs):
+        raise AssertionError("Unexpected history, snapshot or execution call")
+    routes = SimpleNamespace(get_current_anchor=lambda **kwargs: {"expected_decision_id": "route_" + "a" * 64, "anchor_version": 2},
+        current_history=unexpected, get_snapshot=unexpected, get_for_execution=unexpected)
+    selection = {"subject_key": subject, "entity_id": ENTITY, "now_utc": "2026-10-25T00:00:00Z"}
+    assert _preview_route_anchor(routes, **selection) == {"decision_id": "route_" + "a" * 64, "anchor_version": 2}
+    for code in ("route_current_unavailable", "route_current_corrupted", "route_snapshot_corrupted", "route_time_before_activation", "unknown_guard"):
+        refusal = DashboardPrepareError(code, "Synthetic original refusal")
+        def original_refusal(**kwargs):
+            raise refusal
+        routes.get_current_anchor = original_refusal
+        if code == "route_current_unavailable":
+            assert _preview_route_anchor(routes, **selection) is None
+        else:
+            with pytest.raises(DashboardPrepareError) as error:
+                _preview_route_anchor(routes, **selection)
+            assert error.value is refusal
+    routes.get_current_anchor = lambda **kwargs: (_ for _ in ()).throw(DashboardPrepareError("route_identity_changed", "Synthetic"))
+    routes.current_history = lambda **kwargs: [{"subject_key": subject, "scope": "entity", "scope_id": ENTITY, "version": 1,
+        "decision_id": "route_" + "a" * 64, "previous_decision_id": None}]
+    damaged = DashboardPrepareError("route_snapshot_corrupted", "Synthetic original hash guard")
+    def corrupted_snapshot(expected):
+        raise damaged
+    routes.get_snapshot = corrupted_snapshot
+    with pytest.raises(DashboardPrepareError) as error:
+        _preview_route_anchor(routes, **selection)
+    assert error.value is damaged
 
 
 def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_replays_exact_result(original):
