@@ -1,3 +1,17 @@
+## 2026-10-25 — 工作台产品接线节点验收完成、继续U6
+
+- 根README已加入一条命令启动、当前范围、连接配置和原包登记，详细契约dashboard-product-contract.md；工作台实际214实体/222评分题/61信息题可查，生产原观察和12历史草稿分开。主控HTTP复用原UI服务，GET零模型，写入同源/CSRF，重复字段/NaN/1MiB/64深度拒绝；原三态条件+短token保存原snapshot，15分钟过期409，实际前两页各50且无交集。
+- 真实原r25 CATL IQS_05已通过产品HTTP入库，重复导入复用同ack_d3f0e31ffd7abb540bc80f31、history.count始终1。初次原StockQA拒绝缺consumer binding后，根修产品为导入前从独立owner.status绑定原接收目标，再将exact ACK回原apply_result_delivery_ack；最终原work delivered，0新增LLMHTTP。复制工作区storeID负例仍正确拒绝，未伪造PRE；该一题旧24 manifest与review_pending不授金融准确性或全36题/全名单覆盖。
+- 独审修掉run_id错选、原DTO错映射、import/exec登记混用、available=false被configured假绿、退出任务配置锁死、重启未知记录漏查、JSON深度递归500、空conditions传错、原snapshot翻页遗漏；关键直接POST unknown恢复漏needs_original_inspection已根修且同一反例0进程。结束线程与另一服务暂停写竞态改同一跨进程控制锁，测试使用明确子进程barrier。逐题模型修订/反证/缺项原记录可展开；缺库不当真0。
+- 首次原模型策略缺失时提供未启用模板、原配置revision，用户填写顺序/真实provider/预算后原validator保存，不返回provider密钥，不自动派发。原StockQA源码本轮不改，设置仍写用户选择的原运行文件；本机只配置引用，不启用策略。
+- root集中集成61P/36.15秒，后续新增原ACK/恢复23P/80.68秒、HTTP与拒绝ACK18P/15.11秒、最终HTTP/设置18P/9.15秒（范围重叠，不相加当唯一case）。独立最终执行+HTTP35P/30.25秒、前端9P、原owner11P、StockWiki新API8P及独立原ACK正反/部分重试均过；StockWiki原集中78P/static也通过。先前系统Temp权限、夹具重复observation、测试GBK和深度500均保留原证据/根修，未隐藏失败。
+- 独立agent /root/review_ui_product27最终passed/open_findings=[]，40源码/测试/无钥模板hash绑定；薄证据26件见reviews/dashboard-product-2026-10-25，不导出回答/context/思考/数据库/本机配置。6个root自有显式临时树已清，review/owner分线自有树也清。CUA实际浏览结果214、CATL一题7分/MiMo Pro/时间/旧题义版本/原来源，页面可直接用。未跑小时级全套或新付费实验。
+- StockWiki已正常提交7c68af4；UI无remote，已正常本地提交a598cce。主仓提交/各既有remote推送及Git blob一致性按本轮发布回执核实。U6仍需任意实体自动准备原包与连续全名单执行；当前automatic_pool_dispatch=false，已登记包控制不等于全池一键完成。
+
+## 2026-10-25 — UI产品接线进行中
+
+根README与启动配置已加入；Owner/Execution薄网关、同源HTTP与工作台各页已落地，仍在整节点独审和真实验收。StockWiki原public PRE预检缺口已在owner内补preview_import，真实原r25只读预检前后5库SHA一致；复制库因path-bound store_id正确拒绝，未伪造收据。实际已有CATL一题通过HTTP导入，重复导入复用同ACK；StockQA对账实际暴露原consumer binding缺失，尚未交付，不将StockWiki入库误称StockQA delivered。现修为从独立StockWiki public status冻结接收目标，再原API应用exact ACK；没有新增模型请求。
+
 ## 2026-10-25 — 基础必做题与可用UI（本轮完成）
 
 - 最终唯一整节点独审passed/open_findings=[]，45源码/活跃说明绑定及88UI数据源SHA通过；独立实际旧38/30/24回读、2.5公开未知分类quick/full36题及budget35拒绝均通过。新selection_policy区分新派发与冻结历史读取，不回写旧70发布制品或旧manifest；3个2.5制品单独发布，current不强切。

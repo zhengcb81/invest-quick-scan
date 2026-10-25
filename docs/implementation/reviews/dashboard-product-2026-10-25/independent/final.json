@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "reviewer_agent": "/root/review_ui_product27",
+  "implementer_agent": "/root",
+  "independent_agent": true,
+  "open_findings": [],
+  "scope": "UI product source and original owner/execution boundaries at the reviewed byte hashes",
+  "source_tree_sha256": "4518b9510e0b2c07cc04305349c812b744d3ebda74064c95ab87f4a593ca69ed",
+  "source_manifest": "reviewed-source-inputs.json",
+  "source_files": 40,
+  "focused_checks": {
+    "final_execution_and_http": {"passed": 35, "seconds": 30.25, "evidence": "final-execution-http.junit.xml"},
+    "original_owner_gateway": {"passed": 11, "evidence": "owner-execution.junit.xml", "note": "Initial combined run also contained 15 execution cases; those are superseded by the final execution run, not added twice."},
+    "final_frontend_real_ESM": {"passed": 9, "seconds": 3.720},
+    "original_StockWiki_public_import_preview": {"passed": 8, "seconds": 2.62, "evidence": "stockwiki-preview.junit.xml"},
+    "independent_original_StockQA_ACK_probe": {"passed": true, "evidence": "native-ack-result.json"},
+    "independent_unknown_resume_red_green_probe": {"passed": true, "evidence": "unknown-resume-result.json"}
+  },
+  "paid_API_calls": 0,
+  "production_database_mutations_by_reviewer": 0,
+  "temporary_fixture_directories_removed": true,
+  "financial_qualification_granted": false,
+  "full_stock_pool_scan_claimed": false,
+  "commit_binding": "Coordinator must verify these exact reviewed source blobs at final commits. The reviewer does not invent an unborn commit.",
+  "preserved_product_boundaries": [
+    "Only registered original execution bundles can be launched; automatic_pool_dispatch remains false.",
+    "Scans, imports and exact ACK reconciliation remain separate original-owner operations with truthful pending/rejected/conflict states.",
+    "Missing inputs, unavailable model credentials, absent observations and unverified financial conclusions remain explicit.",
+    "Browsing and preview do not call paid models. This review does not replace the coordinator's actual browser and original ready-package acceptance."
+  ]
+}

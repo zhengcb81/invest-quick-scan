@@ -1,0 +1,85 @@
+{
+  "protocol": "iqs.dashboard.native-copy-guard/1.0.0",
+  "source_before": {
+    "analysis_subjects.sqlite": "1bbcc460c23c85eb10c4eeb7558912b89f69175195b2ffd3263be31df7b80c27",
+    "identity_receipts.sqlite": "c978de45e11da6327cc7c89517f9b95d07e9f021bb68968981c1892e56e4efa4",
+    "market_registry.sqlite": "06e9d711acc2c1863edb450f70b3de5d00ab5b6cf7dea38f805616b284639ddd",
+    "scan.sqlite": "2bdbb80c32f3bd2ac4801d45e04c24c6836153d5c79af16fddeca133a810a26d",
+    "scan_observations.sqlite": "f253534678132277709debff5ac63d29a53e0a5b1d2fbb81f146dc635c6affcb"
+  },
+  "paid_calls": 0,
+  "preview": {
+    "protocol": "iqs.dashboard.owner/1.0.0",
+    "status": "preview",
+    "bundle_id": "CATL_GEN3",
+    "package_id": "pkg_542053228473d4fe16ff851c1274ebe8e470b372cfb68f29d70af1e40afdfded",
+    "items": [
+      {
+        "item_id": "itm_66974a8a63b6951cd6e7714b6472482272f2f490a5f754dfeb655caf09181e88",
+        "observation_id": "obs_66cdb504ca84a86de90e66b2dfeb212e9ad38422cc18d57981c980ba033f2072",
+        "payload_sha256": "70e16bed92430e90c1546c5b4a8faa1bcf1044a30d73a77fd30ae6ba732ba97c",
+        "status": "rejected",
+        "error_code": "subject_contract_output_invalid",
+        "exact_ack_replay": false
+      }
+    ],
+    "item_count": 1,
+    "can_apply": false,
+    "owner_preview": {
+      "protocol": "stockwiki.import_preview/1.0.0",
+      "package_id": "pkg_542053228473d4fe16ff851c1274ebe8e470b372cfb68f29d70af1e40afdfded",
+      "store_id": "qsobs_f6f8497b61ada7b6",
+      "items": [
+        {
+          "item_id": "itm_66974a8a63b6951cd6e7714b6472482272f2f490a5f754dfeb655caf09181e88",
+          "observation_id": "obs_66cdb504ca84a86de90e66b2dfeb212e9ad38422cc18d57981c980ba033f2072",
+          "payload_sha256": "70e16bed92430e90c1546c5b4a8faa1bcf1044a30d73a77fd30ae6ba732ba97c",
+          "status": "rejected",
+          "error_code": "subject_contract_output_invalid",
+          "exact_ack_replay": false
+        }
+      ],
+      "item_count": 1,
+      "can_apply": false,
+      "preview_only": true,
+      "ack_produced": false,
+      "database_writes": 0,
+      "API_requests": 0,
+      "financial_accuracy_proven": false,
+      "race_note": "The original import transaction rechecks current state"
+    },
+    "preview_token": "89629d0d2233a385d74f3c2a528ae9d1b8ca99392641427dcd87de382becdd6a",
+    "replay": false,
+    "financial_accuracy_proven": false,
+    "network_calls": 0,
+    "llm_calls": 0
+  },
+  "apply_refusal": {
+    "code": "owner_import_preview_rejected",
+    "message": "Original owner refused this bundle",
+    "status": 409,
+    "details": {
+      "items": [
+        {
+          "item_id": "itm_66974a8a63b6951cd6e7714b6472482272f2f490a5f754dfeb655caf09181e88",
+          "observation_id": "obs_66cdb504ca84a86de90e66b2dfeb212e9ad38422cc18d57981c980ba033f2072",
+          "payload_sha256": "70e16bed92430e90c1546c5b4a8faa1bcf1044a30d73a77fd30ae6ba732ba97c",
+          "status": "rejected",
+          "error_code": "subject_contract_output_invalid",
+          "exact_ack_replay": false
+        }
+      ],
+      "store_id": "qsobs_f6f8497b61ada7b6"
+    }
+  },
+  "copied_database_unchanged": true,
+  "cleanup_complete": true,
+  "source_after": {
+    "analysis_subjects.sqlite": "1bbcc460c23c85eb10c4eeb7558912b89f69175195b2ffd3263be31df7b80c27",
+    "identity_receipts.sqlite": "c978de45e11da6327cc7c89517f9b95d07e9f021bb68968981c1892e56e4efa4",
+    "market_registry.sqlite": "06e9d711acc2c1863edb450f70b3de5d00ab5b6cf7dea38f805616b284639ddd",
+    "scan.sqlite": "2bdbb80c32f3bd2ac4801d45e04c24c6836153d5c79af16fddeca133a810a26d",
+    "scan_observations.sqlite": "f253534678132277709debff5ac63d29a53e0a5b1d2fbb81f146dc635c6affcb"
+  },
+  "source_unchanged": true
+}

@@ -1,3 +1,7 @@
+## 2026-10-25 — 产品接线的真实边界
+
+原StockQA main_with_llm已有owner参数，应复用，不新增模型客户端。StockWiki W09公开读能力不能冒充C06；原/api/jobs不是快扫任务。PRE收据绑定原数据库绝对路径派生的store_id，复制工作区并非合法正例。原StockWiki公开API缺少只读全PRE预检，已补在SubjectBoundObservationStore内部复用原验证。实际已导入一条CATL旧manifest IQS_05；原StockQA消费者绑定仍需在接收前由独立ownerDTO建立，不能从ACK反向学习目标。前端须使用run_id、process_state/launcher_state、独立import登记及manual_pin等真实字段；空条件要省略而非[]；翻页要复用原snapshot，不能每页重排。
+
 ## 2026-10-25 — 基础题与UI实际贯通检查
 
 此前“BASIC-21已验收”不足以证明所有公司基础题完整：默认40题预算会挤掉杜邦/五力，partial路由的eligible集合也会漏诊断；thin_scan默认仍取历史questions-24文件，SKILL仍错称可选。需同时保护选择/预算/新路由及默认薄扫描入口，并按冻结包恢复旧manifest选择，不回写旧文件。

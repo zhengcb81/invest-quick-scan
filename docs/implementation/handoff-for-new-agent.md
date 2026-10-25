@@ -1,3 +1,19 @@
+# 当前接手入口：工作台产品接线（2026-10-25；本节优先）
+
+最新用户指令是把使用方法写根README，继续UI产品化并补缺失功能；本轮保持已有全部跨仓、测试、审查、提交推送授权，不重复询问。根README和dashboard-product-contract.md为当前操作入口，根PWF U阶段为当前执行状态。下方“生产结果尚未接UI”已被本节实际交付取代，历史记录保留。
+
+当前已有工作台/生产结果三态条件/历史模型/事实/名单维护/设置/任务控制/导入ACK，同源HTTP复用原UI服务。214实体、48评分模块222题、61事实题可查；旧12运行/11公司与原观察分开。原r25 CATL IQS_05已通过产品HTTP导入StockWiki，独立owner.status绑定消费者后exact ACK回写StockQA，实际delivered，0新增LLM HTTP；原预算用尽，不重发cold。原24题manifest不回写。工作区必须显示isolated_research，published/review_pending不等于金融准确性通过。
+
+产品source：IQS scripts/dashboard_service.py、dashboard_http.py、dashboard_owner.py、dashboard_execution.py和open_dashboard.py；UI仍在同级iqs-question-bank-ui-lab（无remote，正常本地commit）；StockWiki仅本轮SubjectBoundObservationStore公开preview_import与相应测试。原StockQA源码本轮无修改，SDK/账本/身份/PRE/lease/费用守卫保留。
+
+原r25导入初次暴露消费者绑定缺失，原API正确拒绝；产品已修为接收前独立DTO绑定，不从ACK学习。复制工作区path-bound store_id正确拒绝；不得移植收据/伪造正例。真实包、原ACK、最后delivered验收本地runs/dashboard-owner-accept-2026-10-25/；回答正文、配置、数据库不推远端。可发布薄证据见本轮reviews归档。
+
+**下一主线仍需实施**：为任意唯一实体自动组合题库、准备原公开准入/预算并登记执行包，连续全名单派发/完成交付映射。当前automatic_pool_dispatch=false；注册包控制已可用，不得把空登记列表或禁用按钮称为全池一键扫描完成。优先复用原StockWiki/StockQA已有入口，不新造题目队列或模型客户端；按现有用户名单，不自行选2000公司。首次策略不存在时界面提供未启用模板，用户填写真实模型/顺序/预算，原validator通过后保存。
+
+日常分层测试，不跑小时级全套。新增4个dashboard测试文件已入integration；原生ACK/跨仓与HTTP按受影响范围集中验收。本轮独审/最终提交与推送以实际git log及本轮review final为准，不把正在审查的版本写成已通过。
+
+---
+
 # 当前接手入口（2026-10-25；本节优先）
 
 用户最新优先项是核实基础必做题和实际可用UI。当前以根PWF顶部P1–P3为准；操作入口`python scripts/open_dashboard.py`，详见[公司与题库浏览器](company-and-bank-ui.md)。基础动态组合为common+杜邦+五力，当前36题；新默认thin扫描不再读历史24题文件，诊断不进核心均分。UI当前完整导入214实体、48评分模块222题及61信息题，只有11实体有12份历史草稿；生产ready/ACK结果尚未接UI，不称全部公司已有评分或完整生产台。统一独审/提交结果以本轮证据与git log核实，完成后再接回StockWiki ACK主线。

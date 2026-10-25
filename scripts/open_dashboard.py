@@ -12,11 +12,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="打开公司与题库浏览器；刷新只读数据，不调用模型。日常启动不运行测试。")
+    parser = argparse.ArgumentParser(description="打开公司快扫工作台；浏览不调用模型，日常启动不运行测试。")
     parser.add_argument("--ui-root", type=Path, default=ROOT.parent / "iqs-question-bank-ui-lab")
     parser.add_argument("--data-root", type=Path, default=ROOT, help="快扫数据根；默认当前项目")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--no-refresh", action="store_true", help="仅看已构建快照；不重建UI数据")
+    parser.add_argument("--dashboard-config", type=Path, help="本机owner与执行配置；默认config/dashboard.local.json")
     parser.add_argument("--plan", action="store_true", help="显示启动范围，不执行")
     args = parser.parse_args(argv)
     if not 1 <= args.port <= 65535:
@@ -30,12 +31,14 @@ def main(argv=None):
     command = [sys.executable, "-u", "-B", "-X", "utf8", str(serve), "--no-test", "--port", str(args.port)]
     if args.no_refresh:
         command.append("--no-build")
+    if args.dashboard_config:
+        command.extend(["--dashboard-config", str(args.dashboard_config.resolve())])
     if args.plan:
         print(json.dumps({"command": command, "cwd": str(ui_root), "data_root": str(data_root),
                           "refresh": not args.no_refresh, "tests": False, "model_calls": False}, ensure_ascii=False))
         return 0
     environment = {**os.environ, "IQS_DATA_ROOT": str(data_root), "PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1"}
-    print("公司与题库浏览器：本机只读展示；缺失评分保持空白。Ctrl+C停止。", flush=True)
+    print("公司快扫工作台：浏览不调用模型；操作前显示原owner预检。缺失评分保持空白。Ctrl+C停止。", flush=True)
     try:
         return subprocess.run(command, cwd=ui_root, env=environment).returncode
     except OSError as exc:
