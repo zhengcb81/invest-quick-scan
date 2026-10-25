@@ -1,3 +1,20 @@
+## 2026-10-25T22:27Z — 用户明确暂停（当前接续入口）
+
+本轮停止进一步实施、测试、审查与模型调用；下次用户明确继续后再执行。不要把下方早先“进行中”描述当活跃派发，也不要把工程通过当三市场真实入库完成。
+
+- 已正常提交/推送：IQS `6efaaaa`（17个工程/PWF文件）、StockQA `51028b0`（16个源码/测试文件，原钩子全部通过）；先前StockQA `ab52d18`、UI本地 `b37d8e8`保留，UI无remote。
+- 真实原账本暂停快照：3笔settled共USD0.097105、in_flight=0；MSFT/Tencent各36 pending且0 attempt；CATL8 failed/2 leased/2 result_ready/24 pending。三市场全36题及入库/ACK仍未完成，不能称直接扫描已验收。
+- 22:09运行工具宿主刷新，原8766服务、MSFT PID6588与Tencent PID25008均确认不在；没有新增HTTP/扣费。原run `run-d3614e2c9965403a952057ef0c342d9a`、`run-14f3feca62cd4d9f8859c72f44549bf9`保留needs_original_inspection/安全暂停边界，绝不新建重复任务。
+- 原UI已明确暂停 `batch-0d8eca7295c04e6fb2530161c64104a8`，原文件state=draining、pause_requested_at=22:26:14Z，未完成范围保留。当前自有8766恢复只读服务exec session41126/PID23560（接续时必须重查，不能盲kill/盲信旧PID）。
+- 尚未提交的己方源码：IQS `scripts/dashboard_execution.py` SHA dbe857b936a68dd0f4373f0b3a2c5821c619c90a8601e2df86804aed34224f2b 与 `tests/test_dashboard_execution.py` SHA68a4944460993929b503ef73ad040ee5150c289c86d962d157387f8c0b463366：PID明确不存在才允许同run显式恢复，作者59P，独审尚未完成。StockQA `src/providers/base_llm_provider.py` SHAb63f0c6fd0be8671afe7f101eb3f56b9816b9ddd2560a702586ae67fbb187407：仅补既有score契约提示items=[]/非scoredmetrics=[]，未验证/未独审/未提交；不能冒称已发布。
+- 诊断隐私整改已由非作者21P签收；原SDK209P+独立13P，停止后续发包作者58P/独立7P均已过，包含在StockQA51028b0。原标准答案验证器未放宽。
+- 金融基准 `runs/ui-live-trimarket-2026-10-25/financial-reference/` 已冻结；CATL精确诊断见 `catl-standard-diagnosis/`：IQS11非scored含metrics确证，IQS09具体字段因正文缺失仍未知；两条ready只证明原schema可通过，不是金融验收（其中IQS12为2024资料）。不得从hash重建答案或把旧数据当2026最新。
+- 暂停快照：`runs/ui-live-trimarket-2026-10-25/pause-2026-10-25.json`。所有agent已停止；自有离线临时目录清理，原运行/预算/答案/身份与回执保留。不得删除正式库或把真实回答/原DTO/密钥推远端。保留另一writer的10/10施工包README四行修改及历史untracked。
+
+**下次顺序**：先亲查PID/预算/原run与Git→完成仅上述3个未提交源码的定向检查/独审→按原状态安全重载UI，明确核原状态并resume同run，再resume原batch→CATL通过原fresh preview/确认判断新代际或原attach（不换身份/asof/model/ledger逃恢复）→真实全部题有效状态、原StockWiki入库/exactACK和UI结果读取→少量官方事实抽检→最终文档/精确提交推送。禁止整家公司盲重问；不需要重新跑小时全套或再发整改卡。
+
+---
+
 ## 2026-10-25T21:51Z — 当前任务仍为三市场真实UI扫描到入库
 
 不要把下方旧UI工程 complete 当本轮真实验收 complete。用户已全部授权跨仓修复、真实调用、独审、提交/推送，不再询问权限。当前根PWF L1完成、L2/L3进行中、L4/L5未过。

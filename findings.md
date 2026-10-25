@@ -1,3 +1,7 @@
+## 2026-10-25T22:27Z — 暂停事实与未完边界
+
+用户要求暂停，当前没有新在途模型请求。已发布IQS6efaaaa/StockQA51028b0；宿主刷新后原进程已不存在，但旧run仍需原状态检查，不能盲重发。IQS新增PID恢复2文件作者59P待独审，StockQA Base提示1文件未完成测试/独审，均保留WIP不冒称已发布。实际3笔费用共USD0.097105，MSFT/Tencent各36pending/0attempt，CATL2ready仍不构成完整或金融通过。精确接续见task_plan/handoff顶部；保存原账本/回执，不重置费用。
+
 ## 2026-10-25T21:51Z — 真实包与身份修订新发现
 
 实际native完成/HTTP200不代表答案有效或完整。MiMo thinking与final共享max_completion_tokens，真实第二包length输出16384含14477thinking；只留hash的首包不能倒推精确格式错误。原budget三次均结算97105微USD，8failed/2leased/2result_ready/24pending如实保留。新增原SDK显式官方JSON模式（保持默认请求不变、hash绑定actualpayload）、新准备cap32768、final-only optin诊断及首错停发；JSON语法不能替代原schema/财务证据检查。诊断独审已发现escaped privacy/trailing prose/non-directory，直接根修后再收费。
