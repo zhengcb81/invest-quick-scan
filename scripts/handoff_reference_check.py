@@ -209,6 +209,26 @@ def _blob_sha256(repo: Path, commit: str, rel: str) -> str | None:
     return forms[0] if forms else None
 
 
+_VERSION_REF_RE = re.compile(r"^(?P<path>[\w./-]+\.\w+)\s*@\s*(?P<ref>[0-9a-f]{7,40})\b")
+
+
+def _declared_pin(interface: dict) -> tuple[str, str] | None:
+    """Parse ``"<path> @ <commit>"`` out of an interface's version field.
+
+    A handoff may pin an interface to a commit rather than to the delivery HEAD —
+    APPLIC-RESOLVE-14 names ``adapters/contracts.py @ 9ab7a339``, a UI commit that
+    predates the package. The hash describes that tree, so it must be resolved
+    against that commit or the check reports a false failure.
+    """
+    version = interface.get("version")
+    if not isinstance(version, str):
+        return None
+    match = _VERSION_REF_RE.match(version.strip())
+    if not match:
+        return None
+    return match.group("path"), match.group("ref")
+
+
 def _candidate_paths(handoff: dict, handoff_path: Path) -> list[str]:
     """Paths the handoff itself names: artifacts entries plus changed_paths."""
     seen: list[str] = []
@@ -281,6 +301,27 @@ def check_interface_hashes(handoff: dict, repo: Path, commit: str = "",
             if value in extern_index[root]:
                 break
         else:
+            # 接口可能把版本钉在某个 commit 上（"path @ <sha>"），
+            # 此时哈希描述的是那个 tree，而不是交付 HEAD。
+            pin = _declared_pin(interface)
+            if pin is not None:
+                pin_path, pin_ref = pin
+                matched = False
+                for root_dir in [repo, *externals]:
+                    if value in _blob_sha256s(root_dir, pin_ref, pin_path):
+                        matched = True
+                        break
+                if matched:
+                    continue
+                problems.append({
+                    "kind": "interface_hash_unmatched",
+                    "name": interface.get("name"),
+                    "direction": interface.get("direction"),
+                    "value": value,
+                    "detail": (f"pinned to {pin_ref[:9]}:{pin_path} "
+                               "but that blob does not hash to it"),
+                })
+                continue
             if commit_index is None:
                 commit_index = {}
                 candidates = (_candidate_paths(handoff, handoff_path)

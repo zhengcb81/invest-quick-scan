@@ -308,3 +308,50 @@ def test_raw_blob_hash_is_accepted_for_a_crlf_checkout(repo, tmp_path):
     path.write_text(json.dumps(handoff), encoding="utf-8")
 
     assert refs.verify_all(handoff, path) == []
+
+
+def test_interface_pinned_to_an_older_commit_resolves(repo, tmp_path):
+    """A handoff may pin an interface to a commit, not to the delivery HEAD.
+
+    APPLIC-RESOLVE-14 names "adapters/contracts.py @ 9ab7a339", a UI commit that
+    predates the package. The hash describes that tree; resolving it against today's
+    worktree reports a false failure.
+    """
+    first = repo / "src" / "code.py"
+    first.write_text("print('v1')\n", encoding="utf-8")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-q", "-m", "v1")
+    pinned = _git(repo, "rev-parse", "HEAD")
+    pinned_hash = hashlib.sha256(first.read_bytes()).hexdigest()
+
+    first.write_text("print('v2')\n", encoding="utf-8")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-q", "-m", "v2")
+
+    handoff = _handoff(repo)
+    handoff["interfaces"] = [{
+        "name": "pinned", "direction": "both", "content_hash": pinned_hash,
+        "version": f"src/code.py @ {pinned}",
+    }]
+    path = tmp_path / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+
+    assert refs.verify_all(handoff, path) == []
+
+
+def test_pin_with_wrong_hash_is_still_reported(repo, tmp_path):
+    """The pin path must not become a blanket pass."""
+    first = repo / "src" / "code.py"
+    pinned = _git(repo, "rev-parse", "HEAD")
+
+    handoff = _handoff(repo)
+    handoff["interfaces"] = [{
+        "name": "pinned", "direction": "both", "content_hash": "a" * 64,
+        "version": f"src/code.py @ {pinned}",
+    }]
+    path = tmp_path / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+
+    problems = refs.verify_all(handoff, path)
+
+    assert any(p["kind"] == "interface_hash_unmatched" for p in problems)
