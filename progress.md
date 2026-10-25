@@ -1,3 +1,7 @@
+## 2026-10-25 17:05Z — U5已发布，U6接续
+
+IQS e42148b已推origin/master；StockWiki7c68af4和UIa598cce均正常本地commit，但实查两仓无origin/remote，不配置猜测目的地，不能声称已推。40独审工作树SHA全部未变；Git36精确raw一致、4个既有CRLF/LF归一化仅换行，显式双哈希归档，不伪称40byte一致。发布证据在dashboard-product-2026-10-25/publication，历史26件清单保留。U5关闭（注册包范围）；U6继续任意实体原包自动准备与公司层连续批跑，已并行只读原API勘察和独占新batch协调/测试，root持有HTTP与UI。当前可用服务8766 session53324，原8765旧只读服务不动。
+
 ## 2026-10-25 — 工作台产品接线节点验收完成、继续U6
 
 - 根README已加入一条命令启动、当前范围、连接配置和原包登记，详细契约dashboard-product-contract.md；工作台实际214实体/222评分题/61信息题可查，生产原观察和12历史草稿分开。主控HTTP复用原UI服务，GET零模型，写入同源/CSRF，重复字段/NaN/1MiB/64深度拒绝；原三态条件+短token保存原snapshot，15分钟过期409，实际前两页各50且无交集。

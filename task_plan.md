@@ -8,12 +8,12 @@
 | U2 | 原StockWiki生产查询/名单/PRE预检与原r25一题真实导入；消费者独立绑定、exact ACK回原StockQA为delivered，0新HTTP | complete |
 | U3 | 已登记原包的执行/预览/任务/策略、安全drain与unknown拒绝重发已接；任意公司自动准备与全名单连续派发转U6，不冒称完成 | complete (registered scope) |
 | U4 | 同源HTTP与工作台各页、原三态筛选/快照分页、模型时间版本原记录；固定包/名单/设置按钮接原owner，旧入口兼容 | complete (registered scope) |
-| U5 | 集中集成61P，原ACK/执行23P，独审最终35P+前端9P/open_findings=[]；真实CUA/原r25 delivered及薄证据已完成，精确发布收尾 | in_progress |
-| U6 | 任意唯一实体→动态基础/专属模块→原准入/预算/执行包自动准备；按既有名单持续批跑与交付，沿原owner复用恢复/额度，不另造队列 | pending |
+| U5 | 集中集成/原ACK正反/最终独审与CUA已过；40raw复核，Git36字节一致+4仅既有换行；IQS e42148b已推，SW7c68af4/UIa598cce本地提交（无remote） | complete |
+| U6 | 任意唯一实体→动态基础/专属模块→原准入/预算/执行包自动准备；按既有名单持续批跑与交付，沿原owner复用恢复/额度，不另造队列 | in_progress |
 
 ### Next Step
 
-本轮三分线已冻结交回，总控已接管修复并整节点审查。先完成U5证据/提交推送，再继续U6任意公司自动准备与连续名单执行；不能止于固定包演示。当前本机UI8766，使用python scripts/open_dashboard.py。原StockWiki W09查询不能冒充C06；旧refresh基本信息请求不能冒充全部评分执行；原StockQA main_with_llm.py已有owner参数，必须复用，不另造客户端。新UI默认GET安全，POST需同源及CSRF；密钥仅保留环境引用，服务只监听loopback。先打通现有owner数据和固定执行配置，再补缺失操作能力，不把禁用按钮称作功能已完成。
+本轮三分线已冻结交回，总控已接管修复并整节点审查。U5已完成并正常提交，主仓已推e42148b；SW/UI无remote只本地提交，不捏造推送。现在继续U6：只读勘察原public capture/admission链路与独立公司层批协调并行，后者只写dashboard_batches.py与其测试；root独占HTTP/前端整合。不能止于固定包演示。当前本机UI8766，使用python scripts/open_dashboard.py。原StockWiki W09查询不能冒充C06；旧refresh基本信息请求不能冒充全部评分执行；原StockQA main_with_llm.py已有owner参数，必须复用，不另造客户端。新UI默认GET安全，POST需同源及CSRF；密钥仅保留环境引用，服务只监听loopback。先打通现有owner数据和固定执行配置，再补缺失操作能力，不把禁用按钮称作功能已完成。
 
 ## 2026-10-25 — 当前优先：基础必做题贯通与可用UI核验
 
