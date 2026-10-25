@@ -1,3 +1,86 @@
+## 2026-10-25 — 全面清收：BASIC-BANK-EXPANSION-21 验收、vendor 刷新、UI 消费端补齐、open items 从 39 清到 23
+
+本轮起点是所有者三连指令：「继续，不要停」「open 的那些问题都解决了吗？如果没有就把它们都解决掉」
+「全面更新 PWF 文档」。以下按**做了什么 + 为什么**记录。
+
+### 一、BASIC-BANK-EXPANSION-21 验收（三仓）
+
+| 仓 | commit | 内容 |
+|---|---|---|
+| 主仓 | `f606fa9` | 删 `CORE_IDS`；`core_construct_ids()` 从 `comparison_role=="core"` 派生；`routing.minimum_question_count()`；rubric 分母派生；新增 23 条 AC 测试 |
+| 银行 lab | `c3feee6` | `validate_bank`/`compose`/`build_bank`/`audit_bundle` 全改派生 |
+| UI lab | `c45756e` | `build_data.py` 派生 `core_constructs`；四个视图改计数；重建生成数据 |
+
+**独立实测**（不是听声明）：硬编码模式 `IQS_24|range\(1,25\)|24 \+ len\(|== 24|!= 24` 在三仓 `scripts/`+`tools/` 扫描 **0 命中**；主仓受影响 7 文件 **195 passed / 235 subtests**；新卡测试 **23 passed**；银行 **54 OK** + `validate_bank --releases` modules=62 questions=257；UI **126 OK / 6 skip**，`core_constructs.count=24`。
+
+**为什么值得记**：报告声称的「零行为变化」我按 AC-01 复算法核过 —— 派生逻辑确实下传到了 `validate_module`/`validate_registry`/`validate_release`/`summarize`/routing 五处，不是把 24 换成另一个常数。
+
+### 二、银行 vendor 基线刷新（3.2.0 → 3.2.1）
+
+**做了什么**：7 个漂移文件 + 8 个主仓新增发布制品同步进 `vendor/invest-quick-scan-baseline/questions/`，现 **124/124 逐字节一致**（`git 2c56f21`）。
+
+**为什么**：R3 把主仓 catalog 推到 3.2.1 并换了 industrial 文本，但银行镜像还停在 3.2.0 —— 即「银行拿旧文本发布」。这不是风格问题：银行 catalog 的 `generated_from` 明确写着 baseline 版本，两者不一致时下游无法判断自己拿到的是哪一代规则。
+
+**刷新暴露两个被旧基线掩盖的真问题**（这是本项最大的收获）：
+1. `generated_from` 是**硬编码字符串**（「3.2.0, 48 modules, 222 questions」）→ 改为从 `vendor_catalog` + `vendor_modules` 派生。第一次改还踩了坑：用 `vendor_catalog['modules']` 算题数得 0，因为 catalog 只存元数据不含 questions，改用已加载的 `vendor_modules` 才对。
+2. industrial 有银行侧增补（`counter_evidence`/`replaces`）却与基线**同版本 3.1.0** → 版本守卫正确拒绝，升 **3.1.1** 表达「基线文本 + 银行增补」。
+
+### 三、UI 消费端补齐（LLM basis + pytest 可跑）
+
+| 改动 | commit | 为什么 |
+|---|---|---|
+| 6 个 LLM basis kind 进枚举 + 图例 | `0db872d` | 真实快照有 **138 格 `llm_judged_applicable`** 和 **679 格 `llm_unsure_or_no`**，UI 全部渲染成未知 basis；历史口径（R2 前互证）单独标注，让读页面的人能分辨格子出自哪套规则 |
+| 导出测试去硬编码 | `0db872d` | 原断言写死 1846/8426、9613/642/17，只有通道关闭的快照成立。改为与导出文档自报的 `distribution_after`/`decided_confidence` 交叉核对 —— **通道关闭 + 通道开启两种导出各跑 128 tests 均通过** |
+| `tests/conftest.py` | `5de7b53` | pytest 不走 unittest 的 sys.path 逻辑，11 个测试模块 collection 阶段就报 `No module named 'context'`。补一行让 pytest 也能跑：**122 passed / 10647 subtests**，unittest 权威套件仍 128 OK |
+
+**一个被写死数字掩盖的缺陷**：confidence 断言读 `c["decided_confidence"]`，但导出文档把它放在 **`basis.decided_confidence`**（快照原形），而 resolver 的 `to_dict()` 按向后兼容红线在 None 时剔除顶层字段。语义一致、取值层不同 —— 写死数字时永远发现不了。
+
+### 四、applic 输入锁 re-baseline（policy 2.4.0）
+
+**做了什么**：新建 `inputs.lock.rule-scope-19-r3.json`（旧锁保留并加 `superseded_by`），`verify_inputs` **8/8 ok**；重建谓词与快照 → `applicsnap_3ed74894`。
+
+**为什么**：R3 后 policy 字节已变，旧锁 fail-closed 拒绝加载（设计如此）。但**重钉而不留证**会让未来的人看到 snapshot_id 变化就误判为语义回归。
+
+**关键取证（10272 格逐格）**：`attributes_version` 不变；`predicate_version`/`snapshot_id` 变（inputs 进内容寻址，预期）；**判定差异格数 = 0**，basis 分布与 state 分布完全相同。结论写进 `APPLIC-REBASELINE-R3.md`：新快照与旧快照**判定上逐格等价**，差异仅限两个溯源字段。policy 2.4.0 的改动只在路由侧（新增 `default_diagnostic`），不触及 48 条适用性谓词。
+
+### 五、修掉的真缺陷（6 项，都有能失败的测试）
+
+| 缺陷 | commit | 为什么是真问题 |
+|---|---|---|
+| 交接检查器参考系错误 | `73bd702` | 拿**当前工作树**比 hash，而交接描述的是 `result_commit` 的字节。21 改写两个文件后，两个已验收的包突然变红 —— 假失败。改为对 commit 的三种字节形式（`cat-file --filters`/原始 blob/工作树）校验 |
+| 接口 hash 钉在旧 commit | `e2a99a3` | `interfaces[].version` 里的 `path @ sha` 未被解析，APPLIC-RESOLVE-14 钉的是 UI `9ab7a339`（早于该包），永远对不上。该包现 exit 0 |
+| 同版本对应两份内容 | `9436128` | dupont/porter 各有两个 4.2.0 归档、`applies_when` 不同，**无人检测**。加守卫：最新锁 vs 模块文件比对 |
+| `uniqueItems` 被静默忽略（F-002） | `5f1f3ad` | `module.schema.json` 声明了约束但校验器不实现 —— 重复项能通过校验。按 JSON 相等比较（`true`≠`1`、`1`=`1.0`），新增 10 条测试 |
+| schema 固定读 `LAB_ROOT`（A-004） | `3f90f3f` | 对副本校验时用的是**原仓规则**，副本 schema 漂移永远发现不了。两个测试夹具补拷 `schemas/` |
+| 产物换行随平台变（F-003） | `de36123` | `write_text` 在 Windows 写 CRLF，而所有产物**内容寻址** —— 同内容两个 id。改 `write_bytes` 显式 LF |
+| golden 输出不区分 gate/replay | `cb7b214` | 回放证据冒充门禁。文件名按 `gate_mode` 输出 `golden-gate-*`/`golden-replay-*` |
+| version-policy 与裁定冲突 | `6d94f3d` | 政策说 `applies_when` 变更须 major，而 D-2026-10-24 裁定允许 minor 文本修订。记明例外，裁定优先 |
+
+**「最新锁」判定的两次返工值得记**：先按文件名字典序（`qrel_fbe8a3a9` 排最后但其实是 10-21 的 4.1.0 旧锁），再按 catalog semver（同版本多把锁仍会选错），最后定为 **catalog semver + mtime**。内容寻址的 id 与发布时间无关，这个坑在别处还会遇到。
+
+### 六、open items：39 → 23
+
+**已关闭 16 项**（含上面 8 个缺陷 + 8 个「上轮已修但未标注」）。**剩余 23 项分类**：
+- **需所有者签收/裁定**（我不代签）：包级门 S01/S04/S05/S06/U01–U04、`production_ready=false`、139 条 assumed 属性待审、G5 签收
+- **需真实数据**：`not_applicable=0` 待矩阵出现真实不适用格、12 家公司未绑定、徽标密度优化
+- **明确的后续小版本**：A-005/N-001/O-C2-001 等 P3 项、N6 渲染黄金字节比对
+- **设计如此（非缺陷）**：not_evaluated 不写进 route_decisions（写进去 UI 会误渲染成 unknown）、F-004 三个 schema 缺失（实际有手写校验）
+
+### 七、最终状态
+
+| 仓 | HEAD | dirty | 测试 |
+|---|---|---|---|
+| invest-quick-scan | `e2a99a3` | 1590（历史遗留，非本轮） | **1065 passed / 4 skipped / 761 subtests**（78 分钟） |
+| iqs-applic-lab | `25a6ab7` | 0 | 323 passed / 234 subtests |
+| iqs-question-bank-lab | `de36123` | 0 | 67 OK + validate_bank OK |
+| iqs-question-bank-ui-lab | `b6bf843` | 0 | 128 OK / 6 skip；pytest 122 passed |
+
+**9/9 包主控 CLI `--verify-references` exit 0。**
+
+### 八、反复踩到的坑（写进 findings）
+
+**`read_text`/`write_text` 会把 LF 变 CRLF**。我多次改文件时把 40 行改动变成 1000+ 行 diff，其中一次还提交了（`a919088`），后来 `git reset` 重做。修法：`write_bytes`，或从 `git show HEAD~1:path` 取原字节后字节级插入。这个坑对**内容寻址**的产物是真损害，不只是 diff 噪音 —— 已在 `de36123` 把 `write_pretty_json` 本身修成平台无关。
+
 ## 2026-10-24 — 所有者追加裁定 R3：发布契约按方案 B 落地、路由默认诊断上线、基本题库扩张另卡
 
 所有者原话（见 [OWNER-RULINGS-R3.md](docs/implementation/parallel-lanes/packages/2026-10-24/OWNER-RULINGS-R3.md)）：

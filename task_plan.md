@@ -1,3 +1,58 @@
+## 2026-10-25 — 清收轮：阶段状态与下一步
+
+### Goal
+
+把 2026-10-24 批次的六包全部收口，并把跨仓不一致（银行 vendor 漂移、UI 消费端缺口、applic 输入锁过期）一并修掉；open items 清到只剩「需所有者签收」与「明确后续小版本」。
+
+### 阶段
+
+| 阶段 | 内容 | Status |
+|---|---|---|
+| 1 | BASIC-BANK-EXPANSION-21 三仓验收并落盘 | **complete** — 主仓 `f606fa9`、银行 `c3feee6`、UI `c45756e`；硬编码 0 命中；195+23+54+126 测试 |
+| 2 | 修交接检查器参考系（工作树 vs result_commit） | **complete** — `73bd702`；4 条测试含 1 条必须仍失败 |
+| 3 | 银行 vendor 刷新 3.2.0→3.2.1 + 派生 generated_from | **complete** — `2c56f21`；124/124 逐字节一致 |
+| 4 | UI 补 LLM basis 图例 + 导出测试去硬编码 | **complete** — `0db872d`；两种导出各 128 tests |
+| 5 | applic 输入锁 re-baseline（policy 2.4.0） | **complete** — `63c64bf`；10272 格逐格零差异 |
+| 6 | UI pytest 可跑（conftest） | **complete** — `5de7b53`；122 passed / 10647 subtests |
+| 7 | 银行 activation 文案对齐裁定 | **complete** — `1a6d553` + `bb7d72e` 发布制品 |
+| 8 | 修 6 个真缺陷（pin 解析/同版本/uniqueItems/schema root/CRLF/golden 命名） | **complete** — `e2a99a3`/`9436128`/`5f1f3ad`/`3f90f3f`/`de36123`/`cb7b214` |
+| 9 | version-policy 记录裁定例外 | **complete** — `6d94f3d` |
+| 10 | open items 分类清收（39→23） | **complete** — 关闭 16 项，每项标注依据 |
+| 11 | PWF 三文件更新 | **complete** — 本条目 + `progress.md` + `findings.md` |
+
+### Next Step
+
+**等所有者决定两件事**：
+1. 剩余 23 项 open items 中，**需签收的包级门**（S01/S04/S05/S06/U01–U04、`production_ready=false`、G5）由谁签、何时签；
+2. 是否继续派发 `BASIC-BANK-EXPANSION-21` 卡里登记的两项非目标（F3 历史答案迁移、F4 把 dupont/porter 题迁入 common）。
+
+若继续，建议顺序：① 银行 vendor 的 `_authoring` 与主仓 catalog 建立自动一致性检查（当前靠人工比对）；② 主仓全量测试已 78 分钟，考虑分层快/慢套件。
+
+### Decisions Made
+
+| 决定 | 理由 |
+|---|---|
+| 历史设计文档加注记而非改写 | `design/owner-approval.json` 是**签收证据**，改写会毁掉审计链；`functional-tech.md` 是历史设计快照 |
+| not_evaluated 不写进 route_decisions | 写进去 UI 会误渲染成 unknown；「源里没有规则」正是 not_evaluated 的定义 |
+| 同版本守卫只在最新锁上生效 | 历史锁合法引用旧归档，模拟升级的中间态亦然；全量强制是假阳性 |
+| 旧输入锁保留 + `superseded_by` | 改写哈希会让它声称描述从未见过的字节 |
+| 「最新锁」按 catalog semver + mtime | 内容寻址 id 与发布时间无关；字典序和单纯 semver 都会选错（两次返工） |
+| F-004 标为「形式统一」而非缺陷 | 三者实际有手写校验（tombstones 双向、packages 内容寻址、coverage 洞检查），缺的是 schema 文件 |
+
+### Errors Encountered
+
+| 错误 | 尝试 | 解决 |
+|---|---|---|
+| `test_module_contract` 失败，误判为回归 | 1 | 实为 BASIC-BANK-EXPANSION-21 的中间态（`"frozen 24"` 守卫正被改成 `core_ids` 派生）；等它完成后复跑 195 passed |
+| 主仓全量测试 78 分钟未完，疑卡死 | 1 | 查 PID CPU=2303s 确认在真跑；最终 1065 passed |
+| `git status --porcelain --cached` 报错 | 1 | `--cached` 不是 `git status` 的选项，应查 `git diff --cached` |
+| 同版本守卫初版对历史锁报错（8 处） | 1 | 加「只对最新锁」范围 |
+| 同版本守卫第二次改后抓不到篡改 | 2 | `is_newest_lock` 判定错（字典序）→ 改 catalog semver → 仍错（同版本多锁）→ 最终 mtime |
+| 提交 1008 行 diff（实为 40 行） | 1 | `read_text`/`write_text` 把 LF 转 CRLF；`git reset` 后从 `git show HEAD~1` 取原字节重放 |
+| 临时脚本 `attrs.py`/`inspect.py` 污染 import | 2 | 清理 `$env:TEMP` 下同名文件，改用独立子目录 `iqs-tools` |
+| pwsh `>` 重定向写 UTF-16 | 1 | 改用 Python `write_text(encoding='utf-8')` 写产物 |
+| 银行幂等测试失败 | 1 | 先跑了 `validate_bank --releases` 污染工作树；从干净状态跑即过（已写进 commit message） |
+
 ## 2026-10-22 — bank 模式真实跑：修好必崩回归，卡在凭证
 
 用户授权跑 CATL 38 题完整 bank（真实付费）。本轮做了三件事：
