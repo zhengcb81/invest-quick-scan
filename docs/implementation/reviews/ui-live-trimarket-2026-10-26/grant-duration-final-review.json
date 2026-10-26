@@ -1,0 +1,53 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "author": "/root",
+  "status": "passed",
+  "open_findings": [],
+  "completed_at": "2026-10-26T18:53:38.703794+00:00",
+  "scope": "Same recovery major node addendum: trusted deployment duration for NEW exact-scope original delegated execution confirmations",
+  "source_sha256": {
+    "scripts/dashboard_prepare.py": "75b94189cc3d0d1bb97c8e11dff2639875b31d60e531657a9bc43bdf34c49e5f",
+    "scripts/dashboard_service.py": "381d2ebe5122ba472e0f7f7ce3ddc98b11e6ba5dbe4dddcc5d70f3dfff9bc093",
+    "tests/test_dashboard_grant_duration.py": "8d1f356d8aaf8664be4014a313f103a8e4d952249902a3f70d475405e3d8e624"
+  },
+  "tests": {
+    "passed": 35,
+    "independent_new_cases": 14,
+    "existing_tests_included": 21,
+    "seconds": 1.68,
+    "xml": "final-tests.xml",
+    "xml_sha256": "b6efc44bd981d7d22f4ea0bc62919abc98aa743306b6a4baaf9c06763930ebb6",
+    "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 C:/Miniconda/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider tests/test_dashboard_grant_duration.py tests/test_dashboard_product_prepare_api.py runs/resume-ui-live-2026-10-26/grant-duration-independent/test_independent.py --basetemp <review>/final-temp --junitxml <review>/final-tests.xml"
+  },
+  "checks": [
+    "Trusted config validator and native helper require strict int900..86400; bool/float/string/null/containers/NaN/oversized input rejected",
+    "Omitted option remains3600seconds; original worker/native timeouts unchanged",
+    "Independent test executes actual_prepare_scope to native-install boundary with fake original transports and inspects written install spec: default3600 and900/3600/14400/86400 consumed as seconds in UTC expires_at",
+    "Native owner grant validation source independently read: positive validity no greater than timedelta(hours=24); no owner cap change",
+    "Actual install-spec path remains fixed original owner config filename; original preview ID/hash, agent and authorization reference remain bound",
+    "Install failure path restores preexisting install bytes exactly; old synthetic grant file bytes untouched; no renewal API or grant rewrite added",
+    "Bad TTL blocks original native child before subprocess invocation",
+    "Untrusted company selection cannot supply delegation_ttl_seconds",
+    "Changing TTL changes preparation configuration fingerprint and requires a new preview; does not mutate earlier authorization/budget",
+    "Original preview freshness/owner policy/quote/budget/current_permissions unchanged"
+  ],
+  "cleanup": {
+    "owned_test_trees_removed": [
+      "test-temp",
+      "final-temp"
+    ],
+    "source_or_index_edits_by_reviewer": [],
+    "new_real_grants_created": 0,
+    "paid_API_requests": 0,
+    "real_task_or_DB_or_permission_writes": 0
+  },
+  "harness_correction": {
+    "initial-harness.xml": "7F/28P because reviewer negativefixture omitted stockwiki_root and raisedKeyError before TTL validation; corrected only syntheticfixture deployment root, final35P. No production source fix required."
+  },
+  "limits": [
+    "No real4h grant generated or stored by reviewer; root must validate actual original grant response after explicitly selecting config through UI",
+    "This addendum does not rerun11minute manifest E2E or certify separateStockQAanchor recovery delta",
+    "Frontend status-only copy change reserved for finalUI review, not included in these3sourcepins",
+    "Engineering review does not establish complete real-company scan/importACK or financial correctness"
+  ]
+}

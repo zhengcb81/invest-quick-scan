@@ -1,3 +1,15 @@
+## 2026-10-26T19:12Z — 真实UI旧引用归档与新确认时长完成，继续原扫描
+
+同一恢复节点已独审通过：新确认时长14P+原API21P/独审35P；UI原33P及独立10P；启动引用归档作者55P/独审30P（重叠不相加）。实际从8766 UI核原状态并归档旧腾讯run-14f3feca62cd4d9f8859c72f44549bf9，原PID复用证据、33pending均保留，仅本地引用observed_stopped/retired；随后UI原CAS成功保存新准备14400秒。旧grant不延长，原预算仍3笔settled/97105微USD/0在途。
+
+原冻结题包复用已成功登记三市场108题；真实微软再启动在POST前发现原anchor epoch2/current4被旧严格路径拒绝，正在补原ApprovedRefreshSession current check下的合法接续；并补CATL已有IQS10/12 checkpoint恢复，原旧context/outbox保留，不重问、不重新seal新权限。二者尚待最终独审，不称真实付费扫描或完整入库已完成。
+
+### Next Step
+
+完成SDK epoch+ready恢复同节点独审，再用UI同公司/2026-10-25截止/原ASJ/证券/模型做新的4小时确认；全准备结束后启动原work，验证完整36题、原StockWiki入库、exact ACK及缓存重启0新HTTP。无需小时全套或重复权限询问。
+
+---
+
 ## 2026-10-26 — 原冻结题包复用工程已完成独审，继续真实UI验证
 
 Prepare两文件最终SHA与独审锁亲核一致；36项定向独审通过（含29独立反例），原真实SDK合成工程正例2P/660.733s，严格证明原33+3准入→current原路由变动→原CAS重激活旧bank→相同36 work IDs→真正prepare_execution通过，ledger字节不变。未重复11分钟测试。原StockQA manifest/身份/主体校验未放宽，只允许明确路由运行元数据差异的原冻结bank逐字节复用；新增题、题义/版本/身份/perimeter/日期/模块差异不吞。

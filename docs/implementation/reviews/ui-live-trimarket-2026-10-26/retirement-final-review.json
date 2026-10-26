@@ -1,0 +1,48 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "author": "/root/resume_gateway_review",
+  "status": "passed",
+  "open_findings": [],
+  "completed_at": "2026-10-26T19:08:53.634456+00:00",
+  "scope": "Same recovery node: explicit retirement of an original launch reference after original work and stopped-process checks",
+  "source_sha256": {
+    "scripts/dashboard_execution.py": "de470ae38839dc5631c3da4ac88e3b6ad2e45e9362c20c47d7bdce60434fab11",
+    "tests/test_dashboard_execution.py": "6b9fd5b43aebef7da739b552ce7df36d6c82e81783cae0af5a9f7b59f18344fe",
+    "scripts/dashboard_service.py": "47731eb9e022f86a690fdfbd6ce5413c43be9426d53340a4b930907c36b3ced0"
+  },
+  "tests": {
+    "passed": 30,
+    "independent_new_cases": 13,
+    "author_retire_cases": 17,
+    "seconds": 20.57,
+    "deselected": 81,
+    "xml": "tests.xml",
+    "xml_sha256": "9e5b9495ba817d2593493a17f3d23258e1cfc5be8ab6d2b7e871a2d18ee40002",
+    "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 C:/Miniconda/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider tests/test_dashboard_execution.py runs/resume-ui-live-2026-10-26/retirement-independent/test_independent.py -k \"retire or retirement\" --basetemp <review>/test-temp --junitxml <review>/tests.xml"
+  },
+  "checks": [
+    "Retire consumes only exact original run/bundle reference and holds original process-control fence",
+    "Real work inspection is refreshed, not cached UI authority; exact expectedquestion set required and only pending/failed/result_ready/delivered accepted",
+    "Expired original consent doesnot authorize paid execution; retiring local stoppedreference deliberately uses original workread without renewing consent or budget",
+    "OS evidence cannot use readonlycheckpoint shortcut; live/unknown PID refuses unless shared read-only helper proves original stopped/absent/reused; any locallyowned child refuses.",
+    "Fingerprint is checked before and after original I/O; unknown/scopecoverage/ownedchild/TOCTOU refusal leaves original reference bytes unchanged",
+    "Retired references require coupled observed_stopped/retired states and strict local evidence integrity; resealed malformedprotocol/time/counts/status/fingerprint cannot unlockconfig",
+    "Retired samebundle cannot start/resume/pause, repeatedretire idempotent, latefinish cannot resurrect reference",
+    "active_references excludes only validated retired references; other active/unknown records still block setup",
+    "Actualservice route rejects forcebody, usesoriginalrunID; authorsyntheticservice test shows setup409 beforeexplicitretire andsetup200after",
+    "Retirement is only local orchestration metadata: original work/answer/fee/identity/permission remain unchanged; completion flagfalse"
+  ],
+  "combined_source_note": "dashboard_service.py includes root reviewedTTL upperhunk plus retirement tasksroute lowerhunk. PreviousTTLreport service381d2ebe is historical; this47731eb9 finalpin incorporates both authorized changes without rerunning unchangedTTLcaplogic.",
+  "cleanup": {
+    "owned_test_temp_removed": true,
+    "source_or_index_edits_by_reviewer": [],
+    "production_tasks_or_DB_or_permissions_changed": 0,
+    "paid_API_requests": 0,
+    "signals_or_termination": 0
+  },
+  "limits": [
+    "Synthetic originalexecutor fixtures only; mainUI must execute actual retirement and inspect real response",
+    "Not proof of finished company scan, deliveryACK or financialaccuracy",
+    "SDK anchor/currentepoch/checkpointhydration remains separatefinalscope inside same major-node review"
+  ]
+}

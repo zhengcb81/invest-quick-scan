@@ -203,6 +203,188 @@ def orphaned_pending_run(deployment, *, pid=67890):
     return gateway, run_id, path
 
 
+def retirement_pending_run(deployment):
+    """Exact registered fake scope; no original owner, work DB or model call."""
+    config, runtime, bundle = deployment
+    gateway, run_id, path = orphaned_pending_run(deployment)
+    inspector = Path(config['stockqa_root']) / 'src/utils/quick_scan_refresh_inspect_cli.py'
+    inspector.write_text(inspector.read_text().replace('[{"status":"pending"}]',
+        '[{"question_id":"Q1","status":"pending"}]'))
+    request = json.loads(Path(bundle['inspection_request']).read_text())
+    request['question_ids'] = ['Q1']
+    put(Path(bundle['inspection_request']), request)
+    record = json.loads(path.read_text())
+    record['bundle_fingerprint'] = gateway._fingerprint(bundle)
+    put(path, record)
+    return gateway, run_id, path
+
+
+def test_retire_stopped_reference_with_expired_grant_preserves_owner_and_is_terminal(deployment, monkeypatch):
+    _, runtime, bundle = deployment
+    admission = Path(bundle['admission_config'])
+    data = json.loads(admission.read_text())
+    data['permission_error'] = 'delegation_expired_or_future'
+    put(admission, data)
+    gateway, run_id, path = retirement_pending_run(deployment)
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda _: 'absent')
+    ledger = Path(data['work_store']); before = ledger.read_bytes()
+    assert gateway.preview({'bundle_id':'test'})['can_start'] is False
+    assert len(gateway.active_references()['tasks']) == 1
+    raw = path.read_bytes()
+    assert 'retire' in gateway.tasks()['tasks'][0]['allowed_actions']
+    assert path.read_bytes() == raw
+    retired = gateway.control(run_id, 'retire')
+    assert retired['process_started'] is False and retired['API_requests'] == 0
+    assert retired['run']['process_state'] == 'observed_stopped'
+    assert retired['run']['launcher_state'] == 'retired'
+    assert retired['run']['retirement']['process_evidence'] == 'absent'
+    assert retired['run']['retirement']['work_status_counts'] == {'pending':1}
+    assert gateway.active_references()['tasks'] == []
+    assert gateway.tasks()['tasks'][0]['allowed_actions'] == ['inspect']
+    after = path.read_bytes()
+    assert gateway.control(run_id,'retire')['status'] == 'already_retired'
+    assert path.read_bytes() == after
+    for action in ['resume','pause']:
+        with pytest.raises(DashboardExecutionError) as error: gateway.control(run_id,action)
+        assert error.value.code == 'run_retired'
+    with pytest.raises(DashboardExecutionError) as error: gateway.start({'bundle_id':'test'})
+    assert error.value.code == 'run_retired'
+    assert ledger.read_bytes() == before and not (runtime/'calls.txt').exists()
+
+
+@pytest.mark.parametrize('state', ['leased','uncertain','missing','unrecognized'])
+def test_retire_refuses_unknown_original_work_even_if_pid_absent(deployment, monkeypatch, state):
+    config, runtime, _ = deployment
+    gateway, run_id, path = retirement_pending_run(deployment)
+    inspector = Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
+    inspector.write_text(inspector.read_text().replace('"status":"pending"',f'"status":"{state}"'))
+    monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
+    before=path.read_bytes()
+    assert 'retire' not in gateway.tasks()['tasks'][0]['allowed_actions']
+    with pytest.raises(DashboardExecutionError) as error: gateway.control(run_id,'retire')
+    assert error.value.code == 'retirement_work_unknown'
+    assert path.read_bytes()==before and not (runtime/'calls.txt').exists()
+
+
+@pytest.mark.parametrize('state', ['present','present_exited','unknown'])
+def test_retire_never_uses_readonly_checkpoint_shortcut_to_bypass_os_unknown(deployment,monkeypatch,state):
+    config,runtime,_=deployment
+    gateway,run_id,path=retirement_pending_run(deployment)
+    inspector=Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
+    inspector.write_text(inspector.read_text().replace('"status":"pending"','"status":"result_ready"'))
+    observed=[]
+    def probe(record,readonly): observed.append(readonly); return state
+    monkeypatch.setattr(gateway_module,'_process_recovery_evidence',probe)
+    before=path.read_bytes()
+    assert 'retire' not in gateway.tasks()['tasks'][0]['allowed_actions']
+    observed.clear()  # Existing readonly resume projection is a separate action.
+    with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
+    assert error.value.code=='original_process_unknown'
+    assert observed == [False]
+    assert path.read_bytes()==before and not (runtime/'calls.txt').exists()
+
+
+@pytest.mark.parametrize('fault',['owned_child','bundle_changed','incomplete_scope'])
+def test_retire_never_overrides_original_process_inputs_or_scope(deployment,monkeypatch,fault):
+    config,runtime,bundle=deployment
+    gateway,run_id,path=retirement_pending_run(deployment)
+    if fault=='owned_child':gateway._processes[run_id]=object()
+    elif fault=='bundle_changed':Path(bundle['questions']).write_text('changed')
+    else:
+        inspector=Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
+        inspector.write_text(inspector.read_text().replace('"question_id":"Q1"','"question_id":"OTHER"'))
+    monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
+    before=path.read_bytes()
+    with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
+    assert error.value.code=={'owned_child':'company_still_draining','bundle_changed':'bundle_changed','incomplete_scope':'retirement_work_unknown'}[fault]
+    assert path.read_bytes()==before and not (runtime/'calls.txt').exists()
+
+
+def test_retire_rechecks_process_after_ui_offer_without_writing_on_change(deployment,monkeypatch):
+    _,runtime,_=deployment
+    gateway,run_id,path=retirement_pending_run(deployment)
+    values=iter(['absent','present'])
+    monkeypatch.setattr(gateway_module,'_process_recovery_evidence',lambda record,readonly:next(values))
+    assert 'retire' in gateway.tasks()['tasks'][0]['allowed_actions']
+    before=path.read_bytes()
+    with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
+    assert error.value.code=='original_process_unknown'
+    assert path.read_bytes()==before and not(runtime/'calls.txt').exists()
+
+
+def test_retire_rechecks_original_work_after_cached_offer(deployment,monkeypatch):
+    config,runtime,_=deployment
+    gateway,run_id,path=retirement_pending_run(deployment)
+    monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
+    assert 'retire' in gateway.tasks()['tasks'][0]['allowed_actions']
+    inspector=Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
+    inspector.write_text(inspector.read_text().replace('"status":"pending"','"status":"leased"'))
+    before=path.read_bytes()
+    with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
+    assert error.value.code=='retirement_work_unknown'
+    assert path.read_bytes()==before and not(runtime/'calls.txt').exists()
+
+
+def test_retire_rechecks_fingerprint_after_native_inspection(deployment,monkeypatch):
+    _,runtime,bundle=deployment
+    gateway,run_id,path=retirement_pending_run(deployment)
+    def stopped(record,readonly):
+        Path(bundle['questions']).write_text('changed while reading original state')
+        return 'absent'
+    monkeypatch.setattr(gateway_module,'_process_recovery_evidence',stopped)
+    before=path.read_bytes()
+    with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
+    assert error.value.code=='bundle_changed'
+    assert path.read_bytes()==before and not(runtime/'calls.txt').exists()
+
+
+def test_retire_cached_task_projection_does_not_spawn_another_inspector(deployment,monkeypatch):
+    gateway,run_id,_=retirement_pending_run(deployment)
+    monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
+    gateway.control(run_id,'inspect')
+    def no_inspect(*args,**kwargs):raise AssertionError('cached projection must not spawn another owner process')
+    monkeypatch.setattr(gateway,'_inspect_work',no_inspect)
+    assert 'retire' in gateway.tasks(inspect_owner=False)['tasks'][0]['allowed_actions']
+
+
+def test_retired_reference_rejects_corrupt_local_proof_and_late_finish_cannot_unretire(deployment,monkeypatch):
+    gateway,run_id,path=retirement_pending_run(deployment)
+    monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
+    stale=json.loads(path.read_text())
+    gateway.control(run_id,'retire')
+    before=path.read_bytes()
+    class LateProcess:
+        stdout=[]
+        def wait(self):return 0
+    gateway._finish(LateProcess(),path,stale)
+    assert path.read_bytes()==before
+    record=json.loads(before);record['retirement']['process_evidence']='unknown';put(path,record)
+    with pytest.raises(DashboardExecutionError) as error:gateway.active_references()
+    assert error.value.code=='process_reference_corrupt'
+
+
+def test_retire_product_api_unlocks_settings_only_after_explicit_safe_retirement(deployment,tmp_path,monkeypatch):
+    from dashboard_service import DashboardService
+    _,runtime,_=deployment
+    gateway,run_id,path=retirement_pending_run(deployment)
+    monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
+    service=DashboardService(tmp_path/'product',execution_factory=lambda _:gateway)
+    code,response=service.dispatch('GET','/api/product/setup')
+    assert code==200
+    setup={'config':response['data']['config'],'revision_sha256':response['data']['revision_sha256']}
+    setup['config']['workspace_label']='Temporary isolated setup'
+    code,response=service.dispatch('PUT','/api/product/setup',setup)
+    assert code==409 and response['error']['code']=='execution_active'
+    before=path.read_bytes()
+    code,response=service.dispatch('POST',f'/api/product/tasks/{run_id}/retire',{'force':True})
+    assert code==400 and path.read_bytes()==before
+    code,response=service.dispatch('POST',f'/api/product/tasks/{run_id}/retire',{})
+    assert code==200 and response['data']['run']['launcher_state']=='retired'
+    code,response=service.dispatch('PUT','/api/product/setup',setup)
+    assert code==200 and response['data']['config']['workspace_label']=='Temporary isolated setup'
+    assert not(runtime/'calls.txt').exists()
+
+
 def test_orphaned_absent_pid_explicit_resume_reuses_original_run_and_inspector(deployment, monkeypatch):
     config, runtime, bundle = deployment
     gateway, run_id, path = orphaned_pending_run(deployment)

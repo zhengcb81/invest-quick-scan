@@ -1,0 +1,58 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "author": "/root",
+  "status": "passed",
+  "open_findings": [],
+  "completed_at": "2026-10-26T19:03:20.244140+00:00",
+  "scope": "Same recovery node UI4source addendum: stopped-run retirement, finite newgrant duration and truthful recovery wording",
+  "source_sha256": {
+    "src/app/ui/product.js": "d1163ca711c63e12a78020c5e92373578cb2dd1473d5302947d69921f1ec0965",
+    "src/app/ui/product_forms.js": "2503ccf7b495781ce2ef0cfe2ce5cde8ae8c058633b3ae704bd6e1fc71352569",
+    "src/app/ui/product_core.js": "fd4a69296f254db39a7dca50e6eae31cb4c38f565d02a24531a0d6e2874d9176",
+    "tests/test_product_ui.py": "3a882c93900e2275d2995f249dee694e239e035c9db696427b2ac9f0381e056f"
+  },
+  "tests": {
+    "passed": 10,
+    "independent_scenarios": 3,
+    "selected_original_scenarios": 7,
+    "seconds": 2.24,
+    "xml": "final-tests.xml",
+    "xml_sha256": "5b6d0b15fd9c1a795d2629f9a21cc561088498893b49c8d487259f5117951e9b",
+    "method": "Execute actual frontend ESM on original fakeDOM/API harness; add independent scenarios via a local harness injection without modifying UI source. No actual browser tasks or network used.",
+    "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 C:/Miniconda/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider runs/resume-ui-live-2026-10-26/recovery-ui-independent/test_ui_independent.py --basetemp <review>/final-temp --junitxml <review>/final-tests.xml"
+  },
+  "closed_findings": [
+    {
+      "id": "UI-HOURS-01",
+      "priority": "P2",
+      "red": "first.xml:1F/9P; legitimate1.1hours became3960.0000000000005 and would failstrictintbackend",
+      "fix": "Normalize nearinteger floatingnoise only inside900..86400seconds; epsilon*4 threshold; preserve rawoutofrange andtruefractionalseconds forbackendrejection",
+      "verification": "1.1->3960,0.25->900,4->14400,24->86400; justbelow0.25 remains<900,justabove24 remains>86400,.2501remainsnoninteger"
+    }
+  ],
+  "checks": [
+    "Default1hour isdisplayonly anddoesnot writeTTL until userinput",
+    "Blank deletes onlyTTLkey while preservingunknown nested/rootfields andoriginalinputobject",
+    "Trusted config save retains originalCAS andunknownfields; pending save locks edits; conflicts request reread, no mutationautoretry",
+    "Retire button requires per-taskallowed_actions andusesoriginalrun_id ratherthanbundleID",
+    "Concurrent doubleevents onretire sendonePOST; timeoutpath sendsonePOST anddoesnot startprepare/apply orpaidtasks",
+    "Actual product_api consumes150000ms timeout; waitingwindow doesnot add retries",
+    "Observed_stopped/retired renderChinese but retain businesscompletion disclaimer; resume/retiredisabledwhenoriginalallowlist removed",
+    "Fournewrecoverycodes carryconcrete safe instructions; ledgerbusydoesnot suggest newpreparation; abandonment preserveswork/results/history"
+  ],
+  "cleanup": {
+    "owned_test_trees_removed": [
+      "test-temp",
+      "final-temp"
+    ],
+    "source_or_index_edits_by_reviewer": [],
+    "production_UI_actions": 0,
+    "paid_API_requests": 0,
+    "real_task_or_DB_or_permission_writes": 0
+  },
+  "limits": [
+    "No live4houroriginalgrantcreated; mainUI integration mustverifyactualownerexpires_at",
+    "BackendretireandSDKanchor/checkpointhydrationneedtheirfinalsourcepinsseparately; thisreportdoesnotpretendtocoverunfinishedbackend",
+    "Notabrowservisual/accessibilitycertification, paidscan/importACK orfinancialqualitysignoff"
+  ]
+}

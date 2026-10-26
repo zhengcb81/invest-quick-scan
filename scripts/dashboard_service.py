@@ -30,7 +30,7 @@ CONFIG_KEYS = PATH_KEYS | {'schema_version', 'universe_id', 'execution_bundles',
                           'timeout_seconds', 'workspace_kind', 'workspace_label', 'prepare', 'batch'}
 PREPARE_KEYS = {'state_root', 'admission_config', 'module_package_id', 'producer',
     'authorization_reference', 'agent', 'runtime_dir', 'spend_authorization', 'search_policy',
-    'pack_size', 'thinking', 'max_output_tokens', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds'}
+    'pack_size', 'thinking', 'max_output_tokens', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds'}
 PREPARE_PATHS = {'state_root', 'admission_config', 'runtime_dir', 'spend_authorization', 'search_policy'}
 
 
@@ -119,6 +119,9 @@ def validate_config(value, root):
     options = result['prepare']
     if not isinstance(options, dict) or set(options)-PREPARE_KEYS:
         raise ProductError('invalid_prepare_config', '公司准备配置包含未知字段。')
+    if 'delegation_ttl_seconds' in options and (type(options['delegation_ttl_seconds']) is not int
+            or not 900 <= options['delegation_ttl_seconds'] <= 86400):
+        raise ProductError('invalid_prepare_config', '新原执行确认有效期须为900至86400秒；不更新已有确认。')
     result['prepare'] = dict(options)
     for key,lower,upper in [('worker_timeout_seconds',60,3600),('native_timeout_seconds',30,900)]:
         if key in options and (type(options[key]) is not int or not lower<=options[key]<=upper):
@@ -545,7 +548,9 @@ class DashboardService:
                 return getattr(self._gateway('owner'), action)(body)
             if path in {'tasks/preview', 'tasks/start'}:
                 return getattr(self._gateway('execution'), path.split('/')[1])(body)
-            match = re.fullmatch(r'tasks/([A-Za-z0-9_.-]{1,128})/(inspect|pause|resume)', path)
+            match = re.fullmatch(r'tasks/([A-Za-z0-9_.-]{1,128})/(inspect|pause|resume|retire)', path)
             if match:
+                if match[2] == 'retire' and body:
+                    raise ProductError('invalid_body', '退役原启动引用无需额外参数。')
                 return self._gateway('execution').control(*match.groups())
         raise ProductError('method_or_route_not_allowed', '该接口或方法不支持。', 405)

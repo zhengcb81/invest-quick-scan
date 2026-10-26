@@ -95,7 +95,17 @@ def _env():
     return value
 
 
+def _delegation_ttl_seconds(config):
+    """Duration for a NEW exact-scope native grant; never renew an old one."""
+    value = config.get('prepare', {}).get('delegation_ttl_seconds', 3600)
+    if type(value) is not int or not 900 <= value <= 86400:
+        raise DashboardPrepareError('preparation_delegation_duration_invalid',
+            'Use a finite native grant duration of 900–86400 seconds', 503)
+    return value
+
+
 def _timeouts(config):
+    _delegation_ttl_seconds(config)
     options = config.get("prepare", {})
     worker = options.get("worker_timeout_seconds", 900)
     native = options.get("native_timeout_seconds", 300)
@@ -922,7 +932,7 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     original = RefreshRecordStore(paths).load(preview["preview_id"])
     install = {"protocol": "stockwiki.refresh_delegation_install/1.0.0", "workspace_root": str(paths.root), "preview_id": preview["preview_id"],
                "preview_record_sha256": original["record_sha256"], "agent": options["agent"], "authorization_reference": options["authorization_reference"],
-               "expires_at": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat().replace("+00:00", "Z")}
+               "expires_at": (datetime.now(timezone.utc) + timedelta(seconds=_delegation_ttl_seconds(config))).isoformat().replace("+00:00", "Z")}
     # This is the original fixed local owner install file. Its previous bytes
     # are restored after install/confirm; immutable original grants remain.
     install_path = paths.config_dir / "quick_scan_delegation_install.json"

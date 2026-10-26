@@ -165,6 +165,36 @@ def _digest(value):
                                      allow_nan=False, separators=(",", ":")).encode()).hexdigest()
 
 
+_STOPPED_EVIDENCE = {'known_local_exit', 'absent', 'original_pid_reused'}
+
+
+def _valid_retirement(record):
+    proof = record.get('retirement')
+    fields = {'protocol', 'observed_at', 'process_evidence', 'bundle_fingerprint',
+              'work_inspection_sha256', 'work_item_count', 'work_status_counts', 'proof_sha256'}
+    if not isinstance(proof, dict) or set(proof) != fields:
+        return False
+    try:
+        moment = proof['observed_at']
+        if (proof['protocol'] != 'iqs.dashboard_stopped_reference/1.0.0'
+            or not isinstance(moment, str) or not moment.endswith('Z')
+            or datetime.fromisoformat(moment.replace('Z', '+00:00')).utcoffset() is None
+            or proof['process_evidence'] not in _STOPPED_EVIDENCE
+            or proof['bundle_fingerprint'] != record['bundle_fingerprint']
+            or re.fullmatch('[a-f0-9]{64}', str(proof['work_inspection_sha256'])) is None
+            or type(proof['work_item_count']) is not int or proof['work_item_count'] < 1
+            or not isinstance(proof['work_status_counts'], dict)
+            or not proof['work_status_counts']
+            or set(proof['work_status_counts']) - {'pending', 'failed', 'result_ready', 'delivered'}
+            or any(type(count) is not int or count < 1 for count in proof['work_status_counts'].values())
+            or sum(proof['work_status_counts'].values()) != proof['work_item_count']
+            or proof['proof_sha256'] != _digest({k:v for k,v in proof.items() if k != 'proof_sha256'})):
+            return False
+        return True
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return False
+
+
 _POLICY_HELPER = r'''
 import contextlib, hashlib, json, pathlib, sys
 source, target, mode = sys.argv[1:]
@@ -401,14 +431,8 @@ class ExecutionGateway:
         return {"status": "passed", "confirmation_id": bundle["confirmation_id"],
                 "inspection_mode": "current_permissions", "registered_action_checked": True}
 
-    def preview(self, payload):
-        key, bundle = self._select(payload)
-        grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
-        root, runtime, admission, missing = self._deployment(bundle)
-        if missing:
-            return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"), "status": "blocked", "missing": missing,
-                    "bundle_fingerprint": self._fingerprint(bundle),
-                    "blocked_reasons": missing, "preview_id": None, "can_start": False, "API_requests": 0}
+    def _inspect_work(self, bundle, root, runtime, admission):
+        """Original fixed read-only ledger inspection, not consent or dispatch."""
         command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8", "-m",
                    "src.utils.quick_scan_refresh_inspect_cli", "--ledger", admission["work_store"],
                    "--policy", admission["budget_policy_file"], "--request", bundle["inspection_request"],
@@ -420,6 +444,40 @@ class ExecutionGateway:
             or inspection.get("reservation_created") is not False
             or not isinstance(inspection.get("quote"), dict)):
             raise DashboardExecutionError("owner_inspection_contract_invalid", "原执行器返回了不匹配的预览结构", 409)
+        return inspection
+
+    def _retirement_work(self, bundle):
+        root, runtime, admission, missing = self._deployment(bundle)
+        if missing:
+            raise DashboardExecutionError('retirement_inspection_unavailable', '原范围部署不完整，不能登记已停止事实', 409)
+        inspection = self._inspect_work(bundle, root, runtime, admission)
+        return self._retirement_work_summary(bundle, inspection)
+
+    def _retirement_work_summary(self, bundle, inspection):
+        """Validate original scope metadata; cached UI evidence never controls writes."""
+        work = self.inspection_work_items(inspection)
+        expected = _read(bundle['inspection_request']).get('question_ids')
+        actual = [row.get('question_id') for row in work]
+        if (type(inspection.get('API_requests')) is not int or inspection['API_requests'] != 0
+            or not isinstance(expected, list) or not expected or any(not isinstance(qid, str) or not qid for qid in expected)
+            or len(set(expected)) != len(expected) or any(not isinstance(qid, str) for qid in actual)
+            or len(actual) != len(set(actual)) or set(actual) != set(expected)
+            or any(row.get('status') not in {'pending', 'failed', 'result_ready', 'delivered'} for row in work)):
+            raise DashboardExecutionError('retirement_work_unknown', '原范围含在途、未知或缺少题目，不能退役启动引用', 409)
+        counts = {}
+        for row in work:
+            counts[row['status']] = counts.get(row['status'], 0) + 1
+        return {'work_inspection_sha256': _digest(inspection), 'work_item_count': len(work), 'work_status_counts': counts}
+
+    def preview(self, payload):
+        key, bundle = self._select(payload)
+        grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
+        root, runtime, admission, missing = self._deployment(bundle)
+        if missing:
+            return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"), "status": "blocked", "missing": missing,
+                    "bundle_fingerprint": self._fingerprint(bundle),
+                    "blocked_reasons": missing, "preview_id": None, "can_start": False, "API_requests": 0}
+        inspection = self._inspect_work(bundle, root, runtime, admission)
         quote = inspection.get("quote", {})
         work = self.inspection_work_items(inspection)
         unknown = any(row.get("status") in {"uncertain", "leased"} for row in work)
@@ -460,8 +518,10 @@ class ExecutionGateway:
                     and path.stem == value["run_id"]
                     and isinstance(value.get("bundle_id"), str)
                     and re.fullmatch(r"[a-f0-9]{64}", str(value.get("bundle_fingerprint", "")))
-                    and value.get("process_state") in {"starting", "running", "process_exited", "launch_failed", "needs_original_inspection"}
-                    and value.get("launcher_state") in {"running", "draining", "paused"}):
+                    and value.get("process_state") in {"starting", "running", "process_exited", "launch_failed", "needs_original_inspection", "observed_stopped"}
+                    and value.get("launcher_state") in {"running", "draining", "paused", "retired"}
+                    and ((value.get('process_state') == 'observed_stopped') == (value.get('launcher_state') == 'retired'))
+                    and (value.get('launcher_state') != 'retired' or _valid_retirement(value))):
                     values.append(value)
                 else:
                     raise ValueError("invalid_process_reference")
@@ -493,7 +553,7 @@ class ExecutionGateway:
             value["work_completion_authoritative"] = False
             value['process_state_notice'] = '本地启动记录不是操作系统存活证明；恢复时重新检查原进程和原owner。'
             actions = ["inspect"]
-            if value.get("launcher_state") != "paused":
+            if value.get("launcher_state") not in {"paused", "retired"}:
                 actions.append("pause")  # Stops future companies, never interrupts an HTTP.
             try:
                 if inspect_owner:
@@ -509,14 +569,28 @@ class ExecutionGateway:
                     continue
                 value["owner_preview"] = preview
                 value["inspection_status"] = "available"
+                stopped_evidence = None
                 if (value.get("launcher_state") in {"paused", "draining"}
                     and value["run_id"] not in self._processes
                     and value["bundle_fingerprint"] == self._fingerprint(self.bundles[value["bundle_id"]])
                     and preview["can_start"]):
                     evidence = _process_recovery_evidence(value, preview.get('readonly_recovery'))
+                    if preview.get('readonly_recovery') is False:
+                        stopped_evidence = evidence
                     value['process_recovery_evidence'] = evidence
                     if evidence in {'known_local_exit', 'original_checkpoints_only', 'absent', 'original_pid_reused'}:
                         actions.append("resume")
+                if (isinstance(preview.get('inspection'), dict)
+                    and value.get('launcher_state') != 'retired' and value['run_id'] not in self._processes
+                    and value['bundle_fingerprint'] == self._fingerprint(self.bundles[value['bundle_id']])):
+                    try:
+                        self._retirement_work_summary(self.bundles[value['bundle_id']], preview['inspection'])
+                        if stopped_evidence is None:
+                            stopped_evidence = _process_recovery_evidence(value, False)
+                        if stopped_evidence in _STOPPED_EVIDENCE:
+                            actions.append('retire')
+                    except DashboardExecutionError:
+                        pass
             except DashboardExecutionError as error:
                 value.update(inspection_status="unavailable", inspection_error=error.code)
             value["allowed_actions"] = actions
@@ -546,6 +620,8 @@ class ExecutionGateway:
                 prior = [row for row in self._records() if row["bundle_id"] == key]
                 if prior:
                     record = prior[-1]
+                    if record['launcher_state'] == 'retired':
+                        raise DashboardExecutionError('run_retired', '该启动引用已退役；保留历史，新执行须原同scope准备', 409)
                     if record["bundle_fingerprint"] != self._fingerprint(bundle):
                         raise DashboardExecutionError("bundle_changed", "执行包已改变；保留原任务，请登记新包后执行", 409)
                     if record["process_state"] in {"running", "starting"} and record["run_id"] not in self._processes:
@@ -613,6 +689,8 @@ class ExecutionGateway:
                         try:
                             with self._control_lock('finish'):
                                 current = _read(path)
+                                if current.get('process_state') == 'observed_stopped' and current.get('launcher_state') == 'retired':
+                                    break  # Another original control already observed this launch stopped.
                                 known_failure = (record.get('process_state') == 'process_exited'
                                     and type(record.get('exit_code')) is int and record['exit_code'] != 0)
                                 record['launcher_state'] = 'paused' if known_failure or current.get('launcher_state') == 'draining' else current.get('launcher_state', 'running')
@@ -636,6 +714,31 @@ class ExecutionGateway:
                 self._owner_snapshots[run_id] = {'preview': preview, 'observed_at': _now()}
                 return {"run": record, "preview": preview}
             path = self.state_root / (run_id + ".json")
+            if record['launcher_state'] == 'retired':
+                if action == 'retire':
+                    return {'status': 'already_retired', 'run': record, 'process_started': False, 'API_requests': 0}
+                raise DashboardExecutionError('run_retired', '该启动引用已退役；仅可查看原状态和历史', 409)
+            if action == 'retire':
+                if run_id in self._processes:
+                    raise DashboardExecutionError('company_still_draining', '当前公司尚未安全退出；不能退役启动引用', 409)
+                _, bundle = self._select({'bundle_id': record['bundle_id']})
+                if record['bundle_fingerprint'] != self._fingerprint(bundle):
+                    raise DashboardExecutionError('bundle_changed', '原执行包已变化，先核对原范围', 409)
+                work = self._retirement_work(bundle)
+                evidence = _process_recovery_evidence(record, False)
+                if evidence not in _STOPPED_EVIDENCE:
+                    raise DashboardExecutionError('original_process_unknown', '未能确认原启动已停止，不能退役引用', 409)
+                if record['bundle_fingerprint'] != self._fingerprint(bundle):
+                    raise DashboardExecutionError('bundle_changed', '核对期间原执行包发生变化，未退役启动引用', 409)
+                proof = {'protocol': 'iqs.dashboard_stopped_reference/1.0.0', 'observed_at': _now(),
+                    'process_evidence': evidence, 'bundle_fingerprint': record['bundle_fingerprint'], **work}
+                proof['proof_sha256'] = _digest(proof)
+                record.update(process_state='observed_stopped', launcher_state='retired', retirement=proof,
+                    work_completion_authoritative=False,
+                    completion_notice='仅确认旧启动已停止；原工作、答案、费用和权限未改变。新执行仍须原同scope准备。')
+                _write(path, record)
+                return {'status': 'retired', 'run': record, 'process_started': False, 'API_requests': 0,
+                    'owner_database_writes': 0, 'paid_dispatch_started': False}
             if action == "pause":
                 state = "draining" if record["process_state"] in {"running", "starting"} else "paused"
                 record.update(launcher_state=state, pause_scope="company_boundary", pause_requested_at=_now())
@@ -681,7 +784,7 @@ class ExecutionGateway:
                 threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
                 return {"run": record, "state": "running", "process_started": True, "paid_dispatch_started": None,
                         "notice": "仅恢复同一原owner登记范围；原执行器复用已保存答案，未知HTTP不重发"}
-            raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume"]})
+            raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume", "retire"]})
 
     @contextmanager
     def _control_lock(self, action):
