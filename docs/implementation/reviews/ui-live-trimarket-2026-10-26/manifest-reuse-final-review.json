@@ -1,0 +1,72 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "author": "/root/base_prompt_verify",
+  "status": "passed",
+  "open_findings": [],
+  "completed_at": "2026-10-26T09:24:30.703159+00:00",
+  "scope": "Same UI recovery node: reuse exact original active-work frozen bank, retaining strict original hash/CAS rules",
+  "source_sha256": {
+    "scripts/dashboard_prepare.py": "5df4727b2ff5983e9f06132792fd60028c374ce1253c78076fa6c901b0ba1284",
+    "tests/test_dashboard_prepare.py": "77c7a57afc110c1853e42e8835af10bc20d6704b063110c1731cc7133faf7df4"
+  },
+  "tests": {
+    "passed": 36,
+    "independent_new_cases": 29,
+    "author_contract_cases": 7,
+    "seconds": 1.14,
+    "deselected": 23,
+    "xml": "final-tests.xml",
+    "xml_sha256": "92b03297b35fbe758ffcb301ac0422f67014dbcbccfa1a7443723ee2a1ee0f60",
+    "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 C:/Miniconda/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider tests/test_dashboard_prepare.py runs/resume-ui-live-2026-10-26/manifest-reuse-independent/test_manifest_independent.py -k \"frozen_bank_equivalence or reuse_requires or independent\" --basetemp <review>/final-temp --junitxml <review>/final-tests.xml",
+    "overlap": "Initial32P and final36P overlap; do not sum."
+  },
+  "reviewed_native_evidence": {
+    "path": "../manifest-reuse-remediation/native-green.xml",
+    "xml_sha256": "935ce2b6a200e824c96dfb5df4fee434b6d1aca28c412aa53efd1281af72bb58",
+    "tests": 2,
+    "seconds": 660.733,
+    "repeated_by_reviewer": false,
+    "assertions_read": [
+      "Original first33+3 registration, original activeORF selectsbank",
+      "Original record_snapshot/set_current creates intervening current withoutmanualSQL",
+      "Thirdfresh preparation reusesoriginalmanifest raw andoriginalhistory isold/new/old",
+      "Same36originalworkIDs reused",
+      "Actualoriginalprepare_execution acceptsentity33/security3 allpending",
+      "Fixturework.sqlite bytes identical before/after actualprepare_execution"
+    ],
+    "fixture": "Syntheticisolated original owners/schemas/SDK, not real financial golden",
+    "author_fixture_cleanup_verified": "dashboard-prepare-test-u1e_05rs absent"
+  },
+  "checks": [
+    "ReadOnlyWorkView native mode=ro/query_only and no migration/claim; fixed helper contains no paid/provider call",
+    "Only unique original activework bankhash selects original snapshot; no caller-supplied substitute authority",
+    "Original snapshotgetter checks immutable raw hashes/current identity binding",
+    "Closed equivalence rejectsqid/version/scope/weight/responsekind/modulelock/security/profile/facts/cutoff/unknowncontractfield/identityrevision/perimeter/raw drift",
+    "Only explicitly named route/runtime volatile keys ignored; original expiry never extended",
+    "Original currentexecution validator called on originalraw atcurrentUTC; historical-only result cannot authorize",
+    "Apply rechecks workbindings before routewrite; changed/disappeared/newlyactive yieldpreview_stale",
+    "Reuse doesnot callrecord_snapshot; originalset_current CAS conflict and expectedcurrentID preserved",
+    "StockQA strict registered_scope and ORF hash checks unchanged"
+  ],
+  "timing_binding": {
+    "production_mtime_utc": "2026-10-26T08:58:07.5819287Z",
+    "native_started_utc": "2026-10-26T09:00:46.568366+00:00",
+    "test_final_mtime_utc": "2026-10-26T09:01:58.6717078Z",
+    "author_confirmed": "After native session17151 started only six cheap parameterized branches were appended. Native flow test, originalfixture, subprocesses/assertions and production source unchanged; puretest deepcopy fix preceded native start. NativeXML2cases excludes six appended branches; laterauthor7P and independent36P cover them."
+  },
+  "cleanup": {
+    "reviewer_owned_test_trees_removed": [
+      "test-temp",
+      "final-temp"
+    ],
+    "source_or_index_edits_by_reviewer": [],
+    "paid_API_requests": 0,
+    "production_task_or_DB_or_permission_writes": 0
+  },
+  "reviewer_report_generation_correction": "Initial report writer used Windows str(Path) keys then looked up slash keys, causingKeyError before report creation; corrected only report serialization, no test/source/authority change.",
+  "limits": [
+    "Engineering recovery review, not paidscan, importACK or financialqualification",
+    "660second author nativeE2E reviewed butnot rerun; current36case isolated suite binds finalsource/test hashes",
+    "No new small reviewgate or repeated fullsuite"
+  ]
+}

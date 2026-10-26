@@ -106,6 +106,139 @@ def _timeouts(config):
     return worker, native
 
 
+_WORK_BANK_BINDING_READER = r'''
+import contextlib, json, sys
+sys.path.insert(0, sys.argv[1])
+with contextlib.redirect_stdout(sys.stderr):
+    from contextlib import closing
+    from src.utils.quick_scan_refresh_admission import safe_read
+    from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
+    from src.utils.quick_scan_result_outbox import canonical_sha256
+    request = json.load(sys.stdin)
+    config = safe_read(sys.argv[2])
+    if config.get("protocol") != "stockqa.refresh_admission_config/1.0.0":
+        raise ValueError("existing_work_deployment_invalid")
+    view = ReadOnlyWorkView(config["work_store"])
+    result = []
+    with closing(view._connect()) as connection:
+        connection.execute("BEGIN")
+        view._inspection_connection = connection
+        rows = view.owner_refresh_projection(entity_id=request["entity_id"],
+            question_ids=list(request["scope_bindings"]), scope_bindings=request["scope_bindings"])
+        for qid, row in rows.items():
+            if row["status"] not in {"pending", "leased", "uncertain", "result_ready"}:
+                continue
+            record = view.get_owner_refresh_binding(row["work_item_id"])
+            if record is None:
+                raise ValueError("existing_work_binding_unavailable")
+            binding = record["binding"]
+            if any(binding.get(k) != request[k] for k in (
+                "entity_id", "subject_key", "perimeter_sha256", "identity_revision", "information_cutoff")):
+                raise ValueError("existing_work_subject_binding_changed")
+            if any(binding.get(k) != v for k, v in request["scope_bindings"][qid].items()):
+                raise ValueError("existing_work_scope_changed")
+            result.append({"question_id":qid,"work_item_id":row["work_item_id"],
+                "generation":row["generation"],"manifest_raw_sha256":binding["manifest_raw_sha256"],
+                "binding_sha256":canonical_sha256(binding)})
+print(json.dumps({"protocol":"iqs.original_work_bank_bindings/1.0.0", "rows":result,
+    "API_requests":0,"database_writes":0}, allow_nan=False))
+'''
+
+
+def _equivalent_frozen_bank(manifest, route, snapshot, binding, expected_hash):
+    """Exact original bytes plus a closed comparison of routing-only volatility.
+
+    This proves candidate equivalence, not execution permission. Original owner
+    validation and current-anchor CAS still run before original admission.
+    """
+    invalid = DashboardPrepareError("existing_work_bank_changed",
+        "Unfinished original work requires its exact frozen bank; inspect the original work instead of rebinding it", 409)
+    try:
+        raw, route_raw = snapshot['manifest_raw'], snapshot['route_raw']
+        old, old_route = json.loads(raw), json.loads(route_raw)
+        if (hashlib.sha256(raw).hexdigest() != expected_hash
+            or snapshot['manifest_raw_sha256'] != expected_hash
+            or hashlib.sha256(route_raw).hexdigest() != snapshot['route_raw_sha256']
+            or _bytes(snapshot['metadata']['binding']) != _bytes(binding)
+            or old['route_decision'] != old_route
+            or old['route_decision_id'] != snapshot['decision_id']
+            or old_route['decision_id'] != snapshot['decision_id']
+            or manifest['route_decision'] != route or manifest['route_decision_id'] != route['decision_id']):
+            raise invalid
+        def without(value, keys):
+            return {k:v for k,v in value.items() if k not in keys}
+        if (_bytes(without(old, {'route_decision','route_decision_id','routing_execution'}))
+            != _bytes(without(manifest, {'route_decision','route_decision_id','routing_execution'}))
+            or _bytes(without(old_route, {'decision_id','decided_at'}))
+            != _bytes(without(route, {'decision_id','decided_at'}))
+            or _bytes(without(old['routing_execution'], {'checked_at','expected_decision_id'}))
+            != _bytes(without(manifest['routing_execution'], {'checked_at','expected_decision_id'}))):
+            raise invalid
+    except (KeyError, TypeError, ValueError) as error:
+        if isinstance(error, DashboardPrepareError):
+            raise
+        raise invalid from error
+
+
+def _reusable_bank(config, payload):
+    """Only original active-work hashes select a unique original owner snapshot."""
+    from stockwiki.paths import WorkspacePaths
+    from stockwiki.quick_scan_store import QuickScanStore
+    from stockwiki.quick_scan_routes import QuickScanRouteStore
+    from stockwiki.quick_scan_route_validation import IqsRouteValidator
+    native, manifest, route = payload['native'], payload['manifest'], payload['route']
+    binding = native['binding']
+    scopes = {}
+    for q in manifest['questions']:
+        scope = q['scope']
+        if scope not in {'entity','security'}:
+            raise DashboardPrepareError('existing_work_scope_not_supported','Original scope requires explicit preparation',409)
+        scopes[q['id']] = {'scope':scope,'scope_id':binding['entity_id'] if scope=='entity' else native['selected_listing']['security_id']}
+    request = {k:binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision')}
+    request.update(information_cutoff=route['as_of'],scope_bindings=scopes)
+    try:
+        done = subprocess.run([config.get('stockqa_python') or sys.executable,'-B','-X','utf8','-c',
+            _WORK_BANK_BINDING_READER,config['stockqa_root'],config['prepare']['admission_config']],
+            input=_bytes(request),capture_output=True,env=_env(),cwd=config['stockqa_root'],
+            timeout=_timeouts(config)[1],creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+        result=json.loads(done.stdout)
+        if (done.returncode or len(done.stdout)>MAX_BYTES
+            or result.get('protocol')!='iqs.original_work_bank_bindings/1.0.0'
+            or type(result.get('API_requests')) is not int or result['API_requests']!=0
+            or type(result.get('database_writes')) is not int or result['database_writes']!=0
+            or not isinstance(result.get('rows'),list)):
+            raise ValueError('invalid_original_binding_read')
+    except (OSError,ValueError,subprocess.TimeoutExpired) as error:
+        raise DashboardPrepareError('existing_work_binding_unavailable',
+            'Original unfinished-work bindings are unavailable; inspect the owner before preparing',409) from error
+    rows=result['rows']
+    if not rows:
+        return None
+    hashes={row.get('manifest_raw_sha256') for row in rows}
+    if len(hashes)!=1 or any(not isinstance(h,str) or re.fullmatch('[a-f0-9]{64}',h) is None for h in hashes):
+        raise DashboardPrepareError('existing_work_manifest_conflict','Original active work requires incompatible frozen banks',409)
+    expected_hash=next(iter(hashes))
+    paths=WorkspacePaths.from_root(Path(config['workspace_root']))
+    routes=QuickScanRouteStore(QuickScanStore(paths),validator=IqsRouteValidator(Path(config['iqs_root']),
+        runs_dir=Path(config['prepare']['state_root'])/'reuse-validation',
+        release_root=Path(config.get('iqs_release_root',config['iqs_root']))))
+    if _bytes(routes.identity_binding(binding['subject_key']))!=_bytes(binding):
+        raise DashboardPrepareError('existing_work_subject_binding_changed','Original subject identity changed',409)
+    matches=[s for s in routes.snapshots_for_subject(binding['subject_key']) if s['manifest_raw_sha256']==expected_hash]
+    if len(matches)!=1:
+        raise DashboardPrepareError('existing_work_snapshot_required','Exactly one original owner snapshot must match the active-work bank hash',409)
+    snapshot=routes.get_snapshot(matches[0]['decision_id'])
+    _equivalent_frozen_bank(manifest,route,snapshot,binding,expected_hash)
+    validation=routes.validator.validate(snapshot['route_raw'],snapshot['manifest_raw'],
+        expected_decision_id=snapshot['decision_id'],validation_mode='execution',now_utc=_now())
+    if validation.get('new_execution_authorized') is not True:
+        raise DashboardPrepareError('existing_work_route_not_executable','Original route cannot currently be executed',409)
+    return {'decision_id':snapshot['decision_id'],'manifest_raw_sha256':expected_hash,
+        'route_raw_sha256':snapshot['route_raw_sha256'],'work_bindings_sha256':_sha(rows),
+        'work_count':len(rows),'manifest_raw':snapshot['manifest_raw'].decode('utf-8'),
+        'route_raw':snapshot['route_raw'].decode('utf-8')}
+
+
 def _phase_artifacts(directory):
     """Names only: never copy captured answers, runtime files or credentials."""
     directory = Path(directory)
@@ -327,13 +460,20 @@ class PrepareGateway:
             user_policy=profile.get("user_policy"), now_utc=now, root=Path(self.config["iqs_root"]))
         directory.mkdir(parents=True, exist_ok=False)
         try:
-            question_sets.compose_from_route(route, directory, now_utc=now,
+            proposed = directory / "proposed-bank"
+            question_sets.compose_from_route(route, proposed, now_utc=now,
                 expected_route_decision_id=route["decision_id"], answer_format="standard-1")
+            _new(proposed / "route.json", route)
+            manifest = _read(proposed / "manifest.json")
+            gaps = self._execution_gaps()
+            reused = self._worker("bank_reuse", {"native": native, "manifest": manifest, "route": route}) if binding is not None and not gaps else None
+            _new_raw(directory / "manifest.json", reused['manifest_raw'].encode('utf-8') if reused else (proposed / "manifest.json").read_bytes())
+            _new_raw(directory / "questions.json", (proposed / "questions.json").read_bytes())
             _new(directory / "identity.json", identity)
-            _new(directory / "route.json", route)
+            _new_raw(directory / "route.json", reused['route_raw'].encode('utf-8') if reused else (proposed / "route.json").read_bytes())
             _new(directory / "native.json", native)
             manifest = _read(directory / "manifest.json")
-            gaps = self._execution_gaps()
+            route = _read(directory / "route.json")
             if issuer["identity_state"] != "verified":
                 gaps.append("route_identity_unverified")
             if binding is None and native.get("bootstrap") is None:
@@ -345,7 +485,9 @@ class PrepareGateway:
                       "selection": payload, "snapshot_sha256": _snapshot_sha(native), "config_sha256": self._configuration_binding(payload),
                       "owner_snapshot_as_of": native["owner_snapshot_as_of"], "scope_as_of": native["scope_as_of"],
                       "files": {name: hashlib.sha256((directory / name).read_bytes()).hexdigest()
-                                for name in ("identity.json", "route.json", "native.json", "manifest.json", "questions.json")},
+                                for name in ("identity.json", "route.json", "native.json", "manifest.json", "questions.json",
+                                    "proposed-bank/route.json", "proposed-bank/manifest.json", "proposed-bank/questions.json")},
+                      "bank_reuse": {k:v for k,v in reused.items() if k not in {'manifest_raw','route_raw'}} if reused else None,
                       "bank": {"entity_id": entity_id, "company": issuer["canonical_name"], "identity_state": issuer["identity_state"],
                                "information_cutoff": as_of, "mode": mode, "module_package_id": manifest["module_package_id"],
                                "modules": manifest["modules"], "question_count": len(manifest["questions"]),
@@ -682,8 +824,21 @@ def _apply(config, payload):
         manifest = _read(frozen_dir / "manifest.json")
         if [row["id"] for row in manifest["questions"]] != record["bank"]["question_ids"]:
             raise DashboardPrepareError("prepared_bank_changed", "The original applied scope changed the previewed question selection", 409)
-    routes.record_snapshot((frozen_dir / "route.json").read_bytes(), (frozen_dir / "manifest.json").read_bytes(),
-                          subject_key=binding["subject_key"], expected_decision_id=route["decision_id"])
+    if (directory / "proposed-bank/manifest.json").exists() and native.get('binding'):
+        latest = _reusable_bank(config, {'native': native,
+            'manifest': _read(directory / 'proposed-bank/manifest.json'),
+            'route': _read(directory / 'proposed-bank/route.json')})
+        latest_meta = {k:v for k,v in latest.items() if k not in {'manifest_raw','route_raw'}} if latest else None
+        if latest_meta != record.get('bank_reuse'):
+            raise DashboardPrepareError('preview_stale','Original unfinished-work bank bindings changed',409)
+    if record.get('bank_reuse'):
+        original = routes.get_snapshot(route['decision_id'])
+        if (original is None or original['route_raw'] != (frozen_dir/'route.json').read_bytes()
+            or original['manifest_raw'] != (frozen_dir/'manifest.json').read_bytes()):
+            raise DashboardPrepareError('existing_work_snapshot_required','Original frozen bank is missing or changed',409)
+    else:
+        routes.record_snapshot((frozen_dir / "route.json").read_bytes(), (frozen_dir / "manifest.json").read_bytes(),
+                              subject_key=binding["subject_key"], expected_decision_id=route["decision_id"])
     routes.set_current(route["decision_id"], subject_key=binding["subject_key"],
                        expected_current_decision_id=(native["anchor"] or {}).get("decision_id"), now_utc=_now())
     # Identified transport, metadata and exact original identity bytes are
@@ -821,7 +976,14 @@ def _main():
         request = json.loads(raw.decode("utf-8"))
         config = request["config"]
         sys.path.insert(0, config["stockwiki_root"])
-        result = _snapshot(config, request["payload"]) if request["operation"] == "snapshot" else _apply(config, request["payload"])
+        if request["operation"] == "snapshot":
+            result = _snapshot(config, request["payload"])
+        elif request["operation"] == "bank_reuse":
+            result = _reusable_bank(config, request["payload"])
+        elif request["operation"] == "apply":
+            result = _apply(config, request["payload"])
+        else:
+            raise DashboardPrepareError('operation_invalid','Unknown preparation worker operation')
         print(json.dumps({"ok": True, "data": result}, ensure_ascii=False, allow_nan=False))
         return 0
     except Exception as error:

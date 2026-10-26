@@ -1,3 +1,19 @@
+## 2026-10-26 — 原冻结题包复用工程已完成独审，继续真实UI验证
+
+Prepare两文件最终SHA与独审锁亲核一致；36项定向独审通过（含29独立反例），原真实SDK合成工程正例2P/660.733s，严格证明原33+3准入→current原路由变动→原CAS重激活旧bank→相同36 work IDs→真正prepare_execution通过，ledger字节不变。未重复11分钟测试。原StockQA manifest/身份/主体校验未放宽，只允许明确路由运行元数据差异的原冻结bank逐字节复用；新增题、题义/版本/身份/perimeter/日期/模块差异不吞。
+
+现场再核仍3笔settled USD0.097105、0在途，CATL10failed/2ready/24pending、微软腾讯各36pending。两个真实known-response决议已完成，旧CATL批次现已由UI安全abandoned，原工作/费用保留。下一步发布此两源并重载自有8766；因委托已到期，要经原UI用同2026-10-25截止/原ASJ/证券/模型重新准备，核原manifest raw复用、原work IDs/generation，再开始真实扫描/原入库ACK。当前完整三市场验收仍未完成。
+
+---
+
+## 2026-10-26T08:59Z — CATL两个真实known-response决议完成
+
+原公开CLI已将IQS09/IQS11的两个已知校验失败响应记录为known_response_resolution，原work由leased2转failed2；CATL现10failed/2result_ready/24pending，已有ready10/12保留不重问。实际两次apply均recorded/API0/dispatchfalse，8张原物理表（attempt/response/pack/member/outcome/budget/terminal/send_receipt）前后逐表哈希完全相同。固定临时安装文件原字节恢复。没有把诊断当答案、删除原响应、重置费用或手写新代际。原模板曾错误用nullsnapshot，已回到原source_query完整冻结引用，未放宽原schema。真实薄证据reviews/ui-live-trimarket-2026-10-26/catl-known-response-actual.json，本地原回执runs/resume-ui-live-2026-10-26/catl-original-apply/。
+
+当前继续根修fresh准备复用immutable manifest：已精确证实MSFT/Tencent72题仅binding.manifest_raw_sha256因新路由元数据而不等，题目与profile相等，准备分线用原work绑定hash找到原StockWiki snapshot、严格等价核验并原CAS重激活。执行器原校验不放宽；真实模型/完整36题/入库/exactACK仍待实际通过，不以本次恢复控制完成代替。
+
+---
+
 ## 2026-10-26 — 恢复控制已独审，真实接续另暴露绑定缺口
 
 旧双公司编排已通过原UI显式结束（batch-0d8eca7295c04e6fb2530161c64104a8=abandoned），原entry/work/result/费用保留；实际旧Tencent PID25008被Chrome复用，只读创建时间证明原进程已退出，不曾杀Chrome。PID/abandon/权限预检同节点最终独审passed，原73P/33P、batch81P/21P、PID38P均标重叠不相加；详runs/resume-ui-live-2026-10-26/consent-preflight-independent/final.json。

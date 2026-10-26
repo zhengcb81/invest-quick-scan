@@ -18,6 +18,67 @@ import pytest
 
 from scripts.dashboard_prepare import DashboardPrepareError, PrepareGateway, _env, _new, _apply_guard, _control_path, _native_cli, _timeouts, _sha, _snapshot_sha
 
+
+def test_frozen_bank_equivalence_ignores_only_route_clock_and_id_not_meaning():
+    from scripts.dashboard_prepare import _equivalent_frozen_bank
+    binding={'entity_id':ENTITY,'identity_revision':3,'perimeter_sha256':'a'*64}
+    old_route={'decision_id':'old','decided_at':'2026-10-25T01:00:00Z','as_of':'2026-10-25',
+        'identity_ref':'same-original-binding','profile_context':{'verified_facts':[]},'module_decisions':['common']}
+    old_manifest={'questions':[{'id':'A','text':'exact','semantic_sha256':'b'*64}],
+        'question_count':1,'module_locks':['original-lock'],'route_decision':old_route,
+        'route_decision_id':'old','routing_execution':{'checked_at':'old','expected_decision_id':'old','allowed':True}}
+    fresh_route={**old_route,'decision_id':'new','decided_at':'2026-10-26T01:00:00Z'}
+    fresh={**old_manifest,'route_decision':fresh_route,'route_decision_id':'new',
+        'routing_execution':{'checked_at':'new','expected_decision_id':'new','allowed':True}}
+    raw=json.dumps(old_manifest).encode();route_raw=json.dumps(old_route).encode()
+    snapshot={'decision_id':'old','manifest_raw':raw,'route_raw':route_raw,
+        'manifest_raw_sha256':hashlib.sha256(raw).hexdigest(),'route_raw_sha256':hashlib.sha256(route_raw).hexdigest(),
+        'metadata':{'binding':binding}}
+    _equivalent_frozen_bank(fresh,fresh_route,snapshot,binding,snapshot['manifest_raw_sha256'])
+    for kind in ['semantic','extra_question','identity','perimeter','module','as_of','facts','unknown_metadata','expected_hash']:
+        manifest=copy.deepcopy(fresh)
+        route=manifest['route_decision']
+        snap,current=copy.deepcopy(snapshot),copy.deepcopy(binding)
+        expected=snapshot['manifest_raw_sha256']
+        if kind=='semantic':manifest['questions'][0]['text']='different meaning'
+        elif kind=='extra_question':manifest['questions'].append({'id':'B','text':'new'});manifest['question_count']=2
+        elif kind=='identity':current['identity_revision']=4
+        elif kind=='perimeter':current['perimeter_sha256']='c'*64
+        elif kind=='module':manifest['module_locks']=['new-lock']
+        elif kind=='as_of':route['as_of']='2026-10-26'
+        elif kind=='facts':route['profile_context']['verified_facts']=['different']
+        elif kind=='unknown_metadata':manifest['new_contract_field']='must not be discarded'
+        else:expected='f'*64
+        with pytest.raises(DashboardPrepareError):
+            _equivalent_frozen_bank(manifest,route,snap,current,expected)
+
+
+@pytest.mark.parametrize('fault',['conflicting_hashes','invalid_hash','missing_snapshot','duplicate_snapshot','reader_unavailable','no_active_work'])
+def test_reuse_requires_exact_unique_original_work_hash_and_owner_snapshot(tmp_path,monkeypatch,fault):
+    from types import SimpleNamespace
+    from scripts import dashboard_prepare as api
+    monkeypatch.syspath_prepend(str(WIKI))
+    import stockwiki.quick_scan_routes as native_routes
+    binding={'entity_id':ENTITY,'subject_key':'ASJ_test@1','identity_revision':3,'perimeter_sha256':'a'*64}
+    payload={'native':{'binding':binding,'selected_listing':{'security_id':'SEC_test'}},
+        'manifest':{'questions':[{'id':'Q','scope':'entity'}]},'route':{'as_of':'2026-10-25'}}
+    hashes=['b'*64]
+    if fault=='conflicting_hashes':hashes.append('c'*64)
+    elif fault=='invalid_hash':hashes=['not-a-sha']
+    elif fault=='no_active_work':hashes=[]
+    rows=[{'manifest_raw_sha256':h} for h in hashes]
+    response={'protocol':'iqs.original_work_bank_bindings/1.0.0','rows':rows,'API_requests':0,'database_writes':0}
+    monkeypatch.setattr(api.subprocess,'run',lambda *args,**kwargs:SimpleNamespace(returncode=2 if fault=='reader_unavailable' else 0,stdout=json.dumps(response).encode()))
+    snapshots=[] if fault!='duplicate_snapshot' else [{'decision_id':'route_a','manifest_raw_sha256':'b'*64},{'decision_id':'route_b','manifest_raw_sha256':'b'*64}]
+    fake=SimpleNamespace(identity_binding=lambda _:binding,snapshots_for_subject=lambda _:snapshots)
+    monkeypatch.setattr(native_routes,'QuickScanRouteStore',lambda *args,**kwargs:fake)
+    config={'stockqa_root':str(QA),'workspace_root':str(tmp_path),'iqs_root':str(ROOT),
+        'prepare':{'admission_config':str(tmp_path/'admission.json'),'state_root':str(tmp_path/'state')}}
+    if fault=='no_active_work':
+        assert api._reusable_bank(config,payload) is None
+    else:
+        with pytest.raises(DashboardPrepareError):api._reusable_bank(config,payload)
+
 ROOT = Path(__file__).resolve().parents[1]
 WIKI = ROOT.parent / "StockWiki"
 QA = ROOT.parent / "StockQAbyLLM"
@@ -451,6 +512,84 @@ def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_
         "source_sha256": {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
                           for path in (ROOT / "scripts/dashboard_prepare.py", Path(__file__))}}
     (ROOT / "runs/dashboard-prepare28-native-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+
+
+def test_fresh_preparation_reuses_exact_original_work_bank_after_current_route_churn(original):
+    gateway, base, config = original
+    selection={'entity_id':ENTITY,'as_of':'2026-10-25','mode':'quick'}
+    first=gateway.bank_preview(selection)
+    initial=gateway.apply({k:first[k] for k in ('preview_id','preview_token')})
+    first_dir=Path(gateway.options['state_root'])/'candidates'/first['preview_id']
+    original_manifest=(first_dir/'manifest.json').read_bytes()
+    original_route=json.loads((first_dir/'route.json').read_text())
+    repeated=gateway.bank_preview(selection)
+    assert repeated['bank_reuse']['decision_id']==original_route['decision_id']
+    assert repeated['bank_reuse']['work_count']==36
+    # Simulate the earlier product bug using only ORIGINAL route record/CAS.
+    # This preserves a real newer current snapshot/history, not hand-written SQL.
+    proposed=Path(gateway.options['state_root'])/'candidates'/repeated['preview_id']/'proposed-bank'
+    source=r'''
+import json,sys
+from pathlib import Path
+from datetime import datetime,timezone
+sys.path.insert(0,sys.argv[1])
+from stockwiki.paths import WorkspacePaths
+from stockwiki.quick_scan_store import QuickScanStore
+from stockwiki.quick_scan_routes import QuickScanRouteStore
+from stockwiki.quick_scan_route_validation import IqsRouteValidator
+r=json.load(sys.stdin);paths=WorkspacePaths.from_root(Path(r['workspace']))
+routes=QuickScanRouteStore(QuickScanStore(paths),validator=IqsRouteValidator(Path(sys.argv[2]),runs_dir=Path(r['runs']),release_root=Path(sys.argv[2])))
+subject=r['subject_key'];now=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
+if r['operation']=='activate':
+ d=Path(r['directory']);route=json.loads((d/'route.json').read_text())
+ routes.record_snapshot((d/'route.json').read_bytes(),(d/'manifest.json').read_bytes(),subject_key=subject,expected_decision_id=route['decision_id'])
+ result=routes.set_current(route['decision_id'],subject_key=subject,expected_current_decision_id=r['expected'],now_utc=now)
+else:
+ current=routes.get_for_execution(subject_key=subject,scope='entity',scope_id=r['entity_id'],now_utc=now)
+ result={'decision_id':current['expected_decision_id'],'history':[x['decision_id'] for x in routes.current_history(subject_key=subject,scope='entity',scope_id=r['entity_id'])]}
+print(json.dumps(result))
+'''
+    def owner(operation,**extra):
+        request={'operation':operation,'workspace':config['workspace_root'],
+            'subject_key':first['selected_subject']['key'],'entity_id':ENTITY,'runs':str(base/'reuse-native-validation'),**extra}
+        done=subprocess.run([sys.executable,'-B','-X','utf8','-c',source,str(WIKI),str(ROOT)],
+            input=json.dumps(request).encode(),cwd=base,env=_env(),capture_output=True,timeout=90)
+        assert done.returncode==0,done.stderr.decode('utf-8','replace')
+        return json.loads(done.stdout)
+    churn=owner('activate',directory=str(proposed),expected=original_route['decision_id'])
+    assert churn['decision_id']!=original_route['decision_id']
+    fresh=gateway.bank_preview(selection)
+    fresh_dir=Path(gateway.options['state_root'])/'candidates'/fresh['preview_id']
+    assert fresh['bank_reuse']['decision_id']==original_route['decision_id']
+    assert (fresh_dir/'manifest.json').read_bytes()==original_manifest
+    final=gateway.apply({k:fresh[k] for k in ('preview_id','preview_token')})
+    ids=lambda result: sorted(x['work_item_id'] for group in result['execution_bundles'] for x in group['admission']['registration']['items'])
+    assert ids(final)==ids(initial) and len(ids(final))==36
+    current=owner('read')
+    assert current['history']==[original_route['decision_id'],churn['decision_id'],original_route['decision_id']]
+    assert current['decision_id']==original_route['decision_id']
+    check=r'''
+import contextlib,json,sys,hashlib
+from pathlib import Path
+sys.path.insert(0,sys.argv[1]);bundles=json.load(sys.stdin)
+with contextlib.redirect_stdout(sys.stderr):
+ from src.utils.quick_scan_refresh_execution import prepare_execution
+ results=[]
+ for b in bundles:
+  paths={k:b[v] for k,v in {'manifest.json':'manifest','identity.json':'identity_snapshot','authority.json':'c06_authority','owner-config.json':'owner_config','questions.json':'questions'}.items()}
+  session=prepare_execution(b['admission_config'],b['confirmation_id'],input_paths=paths)
+  results.append({'scope':b['scope'],'count':len(session.entries),'all_original_pending':all(w['status']=='pending' for w in session.work.values()),'API_requests':0})
+print(json.dumps(results))
+'''
+    before=(base/'work.sqlite').read_bytes()
+    checked=subprocess.run([sys.executable,'-B','-X','utf8','-c',check,str(QA)],
+        input=json.dumps([x['execution_bundle'] for x in final['execution_bundles']]).encode(),
+        cwd=base/'runtime',env=_env(),capture_output=True,timeout=180)
+    assert checked.returncode==0,checked.stderr.decode('utf-8','replace')
+    scopes=json.loads(checked.stdout)
+    assert [(x['scope'],x['count']) for x in scopes]==[('entity',33),('security',3)]
+    assert all(x['all_original_pending'] and x['API_requests']==0 for x in scopes)
+    assert (base/'work.sqlite').read_bytes()==before
 
 
 def test_configuration_binding_is_composable_but_binds_target_scope_policy_and_selected_profile(original):
