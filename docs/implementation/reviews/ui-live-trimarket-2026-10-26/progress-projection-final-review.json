@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewer": "/root/base_prompt_verify",
+  "author": "/root/resume_gateway_review",
+  "source_sha256": {
+    "scripts/dashboard_execution.py": "c9465d148d46504f170bdd8de099e4fd03db47db9608585934ffd72ad17b74fb",
+    "tests/test_dashboard_execution.py": "dac57c0925a1f885ddd4f7431fd18e805d2f693c8438f342a793be736d5a23d5"
+  },
+  "source_pin_match": true,
+  "independent_tests": {
+    "count": 23,
+    "passed": 23,
+    "time_seconds": 1.0,
+    "junit": "final.xml",
+    "script": "test_independent.py",
+    "command": "python -B -X utf8 -m pytest <review-root>/test_independent.py -q --tb=short -p no:cacheprovider --basetemp=<review-owned test-temp> --junitxml=<review-root>/final.xml"
+  },
+  "covered": [
+    "Native schema1.1 keyed work_items shape matches original author metadata row fields generation/status/work_item_id; 33 rows map8ready25pending, no fabricated top-level counts consumed, rawDTO untouched",
+    "All7 known statuses exact nonzero counts; no invented zeros/percentage, financial completion or API progress",
+    "11 empty/malformed/weak/unrecognized shapes return explicit unknown counts None",
+    "Cache read retains original observation time and cached marker with no fresh inspector invocation",
+    "Successful fresh read takes new snapshot/time and actual updated states, ignores old labels",
+    "Fresh failure and never-inspected record return unknown rather than stale persisted label/counts",
+    "Underlying _inspect_work uses only original readonly inspect CLI exact ledger/policy/request/schema; no model runner or provider invocation",
+    "tasks action/admission paths still perform their existing original checks; projected counts never feed admission or change work"
+  ],
+  "real_native_evidence_limit": "Author native-metadata.json inspected for actual DTO protocol/shape/count fields; independent tests construct representative same-shaped synthetic DTOs. This review did not repeat real ledger inspection, read answers or run model/long native tests. Author metadata is not promoted to new non-author runtime evidence.",
+  "operations": {
+    "source_writes": 0,
+    "real_database_reads": 0,
+    "real_database_writes": 0,
+    "paid_API_requests": 0,
+    "production_process_controls": 0,
+    "PWF_writes": 0
+  }
+}

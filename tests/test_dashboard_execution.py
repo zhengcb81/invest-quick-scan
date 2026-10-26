@@ -219,6 +219,87 @@ def retirement_pending_run(deployment):
     return gateway, run_id, path
 
 
+def native_progress_run(deployment, work_items):
+    config,runtime,bundle=deployment
+    gateway,run_id,path=orphaned_pending_run(deployment)
+    inspector=Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
+    inspector.write_text(inspector.read_text().replace('[{"status":"pending"}]','request.get("work_items", [])'))
+    request=json.loads(Path(bundle['inspection_request']).read_text())
+    request['work_items']=work_items
+    put(Path(bundle['inspection_request']),request)
+    record=json.loads(path.read_text());record['bundle_fingerprint']=gateway._fingerprint(bundle);put(path,record)
+    return gateway,run_id,path
+
+
+def test_native_keyed_work_progress_is_visible_while_lease_blocks_dispatch(deployment):
+    _,runtime,bundle=deployment
+    rows={f'Q{i}':{'status':'result_ready' if i<8 else 'leased' if i<12 else 'pending',
+                   'work_item_id':f'WORK_{i}','generation':1} for i in range(33)}
+    gateway,run_id,path=native_progress_run(deployment,rows)
+    before=path.read_bytes();ledger=Path(json.loads(Path(bundle['admission_config']).read_text())['work_store'])
+    ledger_before=ledger.read_bytes()
+    task=gateway.tasks(run_ids=[run_id])['tasks'][0]
+    assert task['owner_preview']['can_start'] is False
+    assert task['status_counts']=={'result_ready':8,'leased':4,'pending':21}
+    assert task['counts']==task['status_counts']
+    assert task['status_counts_source']=='stockqa.refresh_inspection/1.0.0'
+    assert task['status_counts_is_cached_projection'] is False
+    assert task['inspection_observed_at']==task['status_counts_observed_at']
+    assert '原scope' in task['progress_label'] and '已保存8' in task['progress_label'] and '在途4' in task['progress_label']
+    assert path.read_bytes()==before and ledger.read_bytes()==ledger_before and not(runtime/'calls.txt').exists()
+
+
+def test_progress_cache_keeps_its_original_time_and_never_launches_new_inspection_on_poll(deployment,monkeypatch):
+    rows={'Q1':{'status':'result_ready'},'Q2':{'status':'pending'}}
+    gateway,run_id,path=native_progress_run(deployment,rows)
+    gateway.control(run_id,'inspect')
+    observed=gateway._owner_snapshots[run_id]['observed_at']
+    def forbidden(*args,**kwargs):raise AssertionError('Cached progress cannot issue a new owner process')
+    monkeypatch.setattr(gateway,'_inspect_work',forbidden)
+    task=gateway.tasks(run_ids=[run_id],inspect_owner=False)['tasks'][0]
+    assert task['status_counts']=={'result_ready':1,'pending':1}
+    assert task['status_counts_is_cached_projection'] is True
+    assert task['status_counts_observed_at']==observed
+    assert '缓存' in task['progress_label'] and observed in task['progress_label']
+
+
+def test_uninspected_running_reference_is_explicit_unknown_progress_not_empty_counts(deployment,monkeypatch):
+    gateway,run_id,_=native_progress_run(deployment,{'Q1':{'status':'pending'}})
+    def forbidden(*args,**kwargs):raise AssertionError('Reference listing cannot inspect owner')
+    monkeypatch.setattr(gateway,'preview',forbidden)
+    task=gateway.tasks(run_ids=[run_id],inspect_owner=False)['tasks'][0]
+    assert task['status_counts'] is None and task['counts'] is None
+    assert '未读取' in task['progress_label']
+    assert task['work_completion_authoritative'] is False
+
+
+@pytest.mark.parametrize('rows',[{'Q1':{}},{'Q1':{'status':'future-unrecognized'}},[]])
+def test_missing_or_unrecognized_progress_does_not_invent_zero_completion(deployment,rows):
+    gateway,run_id,_=native_progress_run(deployment,rows)
+    task=gateway.tasks(run_ids=[run_id])['tasks'][0]
+    assert task['status_counts'] is None and task['counts'] is None
+    assert '无法核实' in task['progress_label']
+    assert task['work_completion_authoritative'] is False
+
+
+def test_legacy_list_work_progress_projects_exact_native_counts(deployment):
+    gateway,run_id,_=native_progress_run(deployment,[{'status':'failed'},{'status':'delivered'},{'status':'uncertain'}])
+    task=gateway.tasks(run_ids=[run_id])['tasks'][0]
+    assert task['status_counts']=={'failed':1,'delivered':1,'uncertain':1}
+    assert '失败1' in task['progress_label'] and '待核实1' in task['progress_label'] and '已交付1' in task['progress_label']
+
+
+def test_failed_fresh_inspection_never_presents_earlier_cached_counts_as_fresh(deployment,monkeypatch):
+    gateway,run_id,_=native_progress_run(deployment,{'Q1':{'status':'result_ready'}})
+    gateway.control(run_id,'inspect')
+    def unavailable(*args,**kwargs):raise DashboardExecutionError('owner_transport_unavailable','offline fixture',503)
+    monkeypatch.setattr(gateway,'preview',unavailable)
+    task=gateway.tasks(run_ids=[run_id])['tasks'][0]
+    assert task['inspection_status']=='unavailable'
+    assert task['status_counts'] is None and task['counts'] is None
+    assert '无法核实' in task['progress_label']
+
+
 def test_retire_stopped_reference_with_expired_grant_preserves_owner_and_is_terminal(deployment, monkeypatch):
     _, runtime, bundle = deployment
     admission = Path(bundle['admission_config'])

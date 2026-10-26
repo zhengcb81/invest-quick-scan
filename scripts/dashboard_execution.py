@@ -408,6 +408,36 @@ class ExecutionGateway:
             return value  # Historical transport fixtures; never rewrite native bytes.
         raise DashboardExecutionError('owner_inspection_contract_invalid','原执行检查缺少逐题映射。',409)
 
+    @classmethod
+    def work_progress_projection(cls, inspection, *, observed_at, cached):
+        """Display only native work states from an explicitly dated snapshot.
+
+        No process flag, score, budget, cached label or exit code is progress
+        evidence. This projection is never used for admission or execution.
+        """
+        empty = {'status_counts': None, 'counts': None,
+            'status_counts_source': None, 'status_counts_observed_at': observed_at,
+            'status_counts_is_cached_projection': cached,
+            'progress_label': '原进度无法核实，请核原状态。'}
+        labels = {'result_ready': '已保存', 'leased': '在途', 'pending': '待问',
+                  'uncertain': '待核实', 'failed': '失败', 'delivered': '已交付', 'missing': '原工作缺失'}
+        try:
+            rows = cls.inspection_work_items(inspection)
+            if not rows or any(row.get('status') not in labels for row in rows):
+                return empty
+            counts = {}
+            for row in rows:
+                counts[row['status']] = counts.get(row['status'], 0) + 1
+        except (DashboardExecutionError, TypeError, AttributeError):
+            return empty
+        parts = '、'.join(label + str(counts[state]) for state, label in labels.items() if counts.get(state))
+        marker = '缓存快照' if cached else '本次核实快照'
+        moment = observed_at if isinstance(observed_at, str) and observed_at else '时间未记录'
+        return {'status_counts': counts, 'counts': dict(counts),
+            'status_counts_source': inspection.get('protocol'), 'status_counts_observed_at': observed_at,
+            'status_counts_is_cached_projection': cached,
+            'progress_label': f'原scope工作快照：{parts}（共{len(rows)}题；{marker}；核实于{moment}）'}
+
     def _registered_permissions(self, bundle, root, runtime):
         """Read original registered consent/current authority, never admit new work.
 
@@ -552,13 +582,19 @@ class ExecutionGateway:
                 value.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
             value["work_completion_authoritative"] = False
             value['process_state_notice'] = '本地启动记录不是操作系统存活证明；恢复时重新检查原进程和原owner。'
+            value.update(status_counts=None, counts=None, status_counts_source=None,
+                status_counts_observed_at=None, status_counts_is_cached_projection=None,
+                progress_label='原进度未读取，请核原状态。')
             actions = ["inspect"]
             if value.get("launcher_state") not in {"paused", "retired"}:
                 actions.append("pause")  # Stops future companies, never interrupts an HTTP.
             try:
                 if inspect_owner:
                     preview = self.preview({"bundle_id": value["bundle_id"]})
-                    self._owner_snapshots[value['run_id']] = {'preview': preview, 'observed_at': _now()}
+                    observed_at = _now()
+                    self._owner_snapshots[value['run_id']] = {'preview': preview, 'observed_at': observed_at}
+                    value['inspection_observed_at'] = observed_at
+                    value['inspection_is_cached_projection'] = False
                 elif value['run_id'] in self._owner_snapshots:
                     snapshot = self._owner_snapshots[value['run_id']]
                     preview = snapshot['preview']
@@ -569,6 +605,9 @@ class ExecutionGateway:
                     continue
                 value["owner_preview"] = preview
                 value["inspection_status"] = "available"
+                value.update(self.work_progress_projection(preview.get('inspection'),
+                    observed_at=value.get('inspection_observed_at'),
+                    cached=value.get('inspection_is_cached_projection') is True))
                 stopped_evidence = None
                 if (value.get("launcher_state") in {"paused", "draining"}
                     and value["run_id"] not in self._processes
@@ -592,7 +631,8 @@ class ExecutionGateway:
                     except DashboardExecutionError:
                         pass
             except DashboardExecutionError as error:
-                value.update(inspection_status="unavailable", inspection_error=error.code)
+                value.update(inspection_status="unavailable", inspection_error=error.code,
+                    progress_label='原进度无法核实，请核原状态。')
             value["allowed_actions"] = actions
         return {"protocol": "iqs.dashboard_process_references/1.0.0", "tasks": values, 'total': total,
                 'offset': offset, 'limit': limit, 'next_offset': offset+limit if offset+limit < total else None, "API_requests": 0}

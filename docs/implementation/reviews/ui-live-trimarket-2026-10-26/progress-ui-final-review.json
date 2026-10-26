@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewer": "/root/resume_gateway_review",
+  "author": "/root",
+  "completed_at": "2026-10-26T19:58:49.966278+00:00",
+  "source_sha256": {
+    "src/app/ui/product.js": "8613b8b59a3e0f3a9666c7f6a09055f7a007c37a2f6398bd348105ce1decae20",
+    "src/app/ui/product_core.js": "a613bfed04aeb42e380e924bcac4c1bf5ad421dfe19ec22f1e31343df1fbcfab",
+    "tests/test_product_ui.py": "5c9d35cf5734b558e56e104ef87c7b67b729a89586c969e1fd6e4aaae46a102f"
+  },
+  "findings_closed": [
+    {
+      "id": "UI-PROG-01",
+      "problem": "Explicit null status_counts incorrectly fell back to stale legacy counts99",
+      "fix": "Own-property authoritative choice; null/invalid never refills from legacy or nested"
+    },
+    {
+      "id": "UI-PROG-02",
+      "problem": "Generic total/completed counts inflated denominator41 and unsupported scored work state was displayed as known zeros",
+      "fix": "Seven native work states closed; invalid keys/states remain unread"
+    },
+    {
+      "id": "UI-PROG-03",
+      "problem": "Null task threw and object time was printed as verification timestamp",
+      "fix": "Null/nonobject task unknown; timestamp only ISOparseable string otherwise unrecorded"
+    }
+  ],
+  "tests": {
+    "independent_red": "11passed/6failed across17 cases",
+    "independent_final": "17passed/0failed, actual ESM source import; final-tests.json",
+    "source_actual_ESM_integration": {
+      "passed": 3,
+      "deselected": 31,
+      "seconds": 1.62,
+      "xml": "source-final.xml",
+      "scope": "task-progress/scan-preview-start/original-run-inspection"
+    },
+    "permanent_regression": "Six counterexamples added to existing tracked task-progress scenario, exact final test hash pinned"
+  },
+  "checks": [
+    "Native keyed/list DTO actual state counts; missing data never process-derived completion",
+    "Cache marker and observation time explicitly preserved",
+    "No authority/control/dispatch changes: product.js only helper import and one text consumption",
+    "Presentation only; not a claim that cached state is current, or a financial qualification"
+  ],
+  "cleanup": {
+    "owned_test_temp_removed": true,
+    "source_or_configuration_writes_by_reviewer": 0,
+    "real_task_or_database_writes": 0,
+    "external_API_calls": 0,
+    "real_service_restart": 0
+  },
+  "limits": [
+    "Mock DOM/API actual ESM integration is not real browser validation",
+    "Actual UI hot reload/real model progress confirmation remains root responsibility",
+    "Backend source reviewed separately by distinct base agent"
+  ]
+}

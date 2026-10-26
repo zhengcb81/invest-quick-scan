@@ -1,3 +1,43 @@
+## 2026-10-26 — 原scope进度展示已独审；真实回答根因修复继续
+
+UI7987b8c已本地提交（无remote）：不再显示{}，按原inspect qid映射显示scope保存/在途/待问/失败，保留缓存/核实时间；显式unknown不回填旧counts，aggregate键/非work状态/坏时间不伪装进度。后端作者44P/非作者23P，UI17非作者/原3快ESM通过，6个真实反例永久化，薄报告已归档progress-*-final-review。原权限/派发/资格不变，待安全重载原8766后以实际UI核验。
+
+未来prompt基础改进StockQA557eba6正常钩子通过并推送：唯一分部metric_id/原题粒度证据/日期趋势/outer identity精确回显/inner禁止owner元信息；作者84P、最终独审21P（早18重叠），不声称单题vendor JSON模式本就开启。新发现CATL三题省略currency必填字段，正在同两源补required字段完整/非货币currency:null提示和4个原payload/validator快验；不补历史答案，不降低schema，不把旧21当新补充已审。
+
+实际仍9settled累计USD0.267751账本估计/0在途、17ready（其中本轮15）、4failed、5已收响应但leased。5成员原known-response只读计划准备中，root本人会执行原CLI确认/apply；旧17与8物理表保留，再用原UI更小题包接续其余工作。三市场金融抽查明确未通过，真实入库/exact ACK与缓存恢复全链路也尚未关闭。
+
+### Next Step
+
+发布本节点backend/PWF并安全重载UI，确认原scope进度实显示；完成currency增补与5原无效响应决议，再新准备/派发剩余工作。
+
+---
+
+## 2026-10-26T19:46Z — 首轮真实返回已完成，保留部分答案并根修质量问题
+
+当前真实批batch-2dfa…blocked，0在途，原9笔settled累计267751微USD（原usage价格表估计，不冒称最终invoice）；本轮新增6次HTTP200，共24个题目提交，15条新合法ready，加旧2条共17ready。该15/24只是契约接收率，不是金融正确率。当前MSFT24pending/8ready/4failed（第三包外层foreign_entity_id原parser全包拒），Tencent32pending/2ready/2leased（01/04 duplicate metric ID），CATL26pending/7ready/3leased（05/06/08仍需原validator逐题诊断）。所有响应与费用保留，不盲重发5leased或重问17ready。新standard保存不等于已有原StockWiki ACK。
+
+独立金融抽查三市场各一条新增IQS03已完成，financial_quality_passed=false：同题对集团盈利代理与产品/客户/项目全成本的门槛不一致，浅snippet漏取官方数据，日期、趋势及ROE定义有明确问题；部分核心数字获官方短页支持。详reviews/ui-live-trimarket-2026-10-26/financial-first-sample-review.json；不下载文件、不保存思考或答文全文。
+
+未来prompt正在同两文件根修：唯一metric_id/分部分别custom.*、缺题面层级证据须null、统一期间/单位/来源/信息日期、趋势核数列；模型外层identity必填须逐字复制原给定值，内部标准answer不得带owner元信息。原parser/validator不放宽，旧已加载workers不热改。UI另实证原inspect work_items是qid映射而无top counts，故原页面一直{}；backend薄进度投影已作者44P/独立23P通过，UI同17独立反例已闭合且永久化，最终报告待齐后发布和安全重载。
+
+### Next Step
+
+完成未来prompt与进度展示同产品节点独审/发布；先原公开CLI对5已知未形成标准答案的leased成员做有凭据known_response_resolution（root执行），8原物理表及17ready不变；再同原UI以更小题包重新准备原剩余work，原planner仅为已失效成员选新代际。继续完整36题、入库/exact ACK/缓存重启验收；金融问题如实保留，不能称已可自动白名单。
+
+---
+
+## 2026-10-26T19:30Z — 三市场真实UI批次已开始派发模型
+
+三新准备已registered。19:27:09Z独立原库一致事务核108题/6scope/6grant passed/findings=[]：所有原work IDs、代际、题库与身份字节、ASJ/perimeter/截止25/MiMoPro相同，CATL原10gen2保持，没有gen3；两ready原checkpoint/attempt1保留。配置14400秒，实际grant created到expires约14380–14388秒，差额是原安装校验耗时，不冒称恰14400。薄summary已归档reviews/ui-live-trimarket-2026-10-26/actual-four-hour-preparation-summary.json。
+
+实际UI于19:27:29Z明确启动batch-2dfa002072d14e71983e2645ef702b22，完整3公司/6scope、并发3；新run微软d37bb43103424fce9d0f5830c61328ed、腾讯8f2a7f63b46e44f2aabeb8f03eafd110、宁德acd7042bdaf24fa19b7c162769cdd427。19:30:46Z原账本首次见本轮新增in_flight1，旧3settled97105微USD保留；三公司各IQS01–04已leased，不把12个leased说成12次HTTP。独立亲查4题打包路径在claim/pending.append之前hydrate，缓存命中直接continue，不纳入物理包。金融抽查已启动，只取本次新回答，不用旧IQS12或schema通过冒充准确性。
+
+### Next Step
+
+继续观察原物理请求与返回质量，根修真实失败（若有）；最终完整36题/原StockWiki入库/exact ACK/重启缓存0新HTTP仍待实际验收。正在运行时不改执行器源码、不盲重启/重发。
+
+---
+
 ## 2026-10-26 — 原工作跨版本与已答缓存恢复已发布，三市场UI实跑继续
 
 StockQA620d405正常钩子全部通过并推送origin，3源最终SHA亲核与独审锁一致；作者59P22.88s、非作者最终38P（23新增，含原状态补充；与早先34重叠不相加），mypy2源通过。只在真实ApprovedRefreshSession和fresh原权限/原record/spec/ORF一致下接受单调增加的current anchor epoch，旧binding不改；CATL原IQS10/12以旧checkpoint/context/standard answer/receipt/outbox恢复，0claim/0HTTP、原账本字节不变。两旧pkg早已ready，不需重新seal。薄证据见reviews/ui-live-trimarket-2026-10-26/anchor-ready-final-review.json及actual-catl-*。

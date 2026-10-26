@@ -1,0 +1,246 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "status": "three_market_first_new_sample_review_complete_with_quality_findings",
+  "cutoff": "2026-10-25",
+  "new_batch_started_at": "2026-10-26T19:27:29.785669Z",
+  "read_mode": "SQLite URI mode=ro; PRAGMA query_only=ON",
+  "paid_API_requests_by_reviewer": 0,
+  "downloaded_documents": 0,
+  "private_reasoning_exported": false,
+  "full_answer_exported": false,
+  "samples": [
+    {
+      "company": "Tencent",
+      "question_id": "IQS_03",
+      "attempt_id": "ATTEMPT_6544e917feb54f1b9be84278d891dcaf",
+      "new_attempt_http_status": 200,
+      "score": 7,
+      "status": "scored",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "basis": "trailing",
+      "currency": "CNY",
+      "answer_information_as_of": "2026-03-18",
+      "numeric_spotcheck": {
+        "non_IFRS_operating_margin_percent": {
+          "model": 37,
+          "official": 37,
+          "match": true
+        },
+        "attributable_IFRS_net_margin_percent": {
+          "model": 29.9,
+          "calculation": "224842/751766*100 = 29.9085",
+          "match_rounded": true
+        },
+        "company_defined_FCF_CNY_million": {
+          "model": 182600,
+          "official_rounded": 182600,
+          "match": true
+        },
+        "reported_capex_CNY_million": {
+          "model": 79200,
+          "official_rounded": 79200,
+          "match": true
+        }
+      },
+      "official_public_verification": [
+        {
+          "url": "https://www.tencent.com/investors/results/",
+          "type": "HTML investor index; FY2025 annual release exists"
+        },
+        {
+          "url": "https://www.tencent.com/investors/investor-news/",
+          "type": "HTML official publication index confirms2026-03-18 release"
+        },
+        {
+          "url": "https://static.www.tencent.com/uploads/2026/03/18/bd32d8ee320b72f0d72d545fd2d65851.pdf",
+          "type": "official search-indexed excerpt only; no PDF fetched or downloaded",
+          "published_at": "2026-03-18",
+          "fact_paraphrase": "FY2025 revenue751.8bn, gross profit422.6bn, adjusted op280.7bn/margin37%, company FCF182.6bn, capex79.2bn"
+        }
+      ],
+      "original_answer_source_urls": [
+        "https://static.www.tencent.com/uploads/2026/03/18/e6a646796d0d869acc76271c9ee1a6a5.pdf",
+        "https://static.www.tencent.com/uploads/2026/04/09/62d786fcf3d3c8cb7e54791ee95439ac.pdf"
+      ],
+      "original_source_limit": "Exact cited PDF bodies not fetched. Core reported metrics crosschecked against official IR-linked alternate English release search excerpt. Five-year sequence only compared internally, not fully reverified source table.",
+      "findings": [
+        {
+          "id": "FIN-TC-01",
+          "severity": "content_warning",
+          "issue": "information_as_of is2026-03-18 while one source published2026-04-09",
+          "cutoff_leakage": false,
+          "expected": "Set answer information date at least as late as used source, or remove later-source reliance; preserve2026-10-25 cutoff."
+        },
+        {
+          "id": "FIN-TC-02",
+          "severity": "content_warning",
+          "issue": "Says yearly expansion despite2021->2022 operating-profit decline152729->143203 CNYmillion.",
+          "expected": "Describe dip followed by2023-2025 recovery, not monotonic growth."
+        },
+        {
+          "id": "FIN-TC-03",
+          "severity": "scope_warning",
+          "issue": "Group earnings and FCF do not establish product/customer unit economics or reasonable payback; acknowledged missing CAC/cost allocation/working-capital evidence.",
+          "expected": "Qualify7score as group-level proxy; leave payback unknown; no categorical product-unit-economics conclusion."
+        }
+      ],
+      "unknown_assessment": "Partial coverage and missing fields appropriate; observed group-profit signal may be scored with caveat, but specific payback/CAC claims must remain unknown.",
+      "sample_conclusion": "Core reported amounts and period/currency/IFRS-vs-adjusted labels provisionally match; content warnings prevent a clean whole-answer financial pass.",
+      "original_ledger_binding": {
+        "work_item_id": "WORK_147fb87abb0947319b6910029bc7569c",
+        "prepared_at": 1793043006.8860686,
+        "completed_at": 1793043320.4124985,
+        "entity_id": "ENT_ce0f5c34-d14e-4687-b6c3-19d58dce38d3",
+        "generation": 1,
+        "answer_sha256": "d9160e9fe121b774ebacd23db75f7b30140d4ee3f3f8714a146df6ab7bf1ade2"
+      }
+    },
+    {
+      "company": "MSFT",
+      "question_id": "IQS_03",
+      "attempt_id": "ATTEMPT_9389ed4d84d2401182aaab08a5fa6384",
+      "new_attempt_http_status": 200,
+      "score": null,
+      "status": "insufficient_evidence",
+      "period_start": "2023-07-01",
+      "period_end": "2026-06-30",
+      "basis": "not_applicable",
+      "answer_information_as_of": "2026-07-29",
+      "official_public_verification": [
+        {
+          "url": "https://www.microsoft.com/en-us/investor/earnings/fy-2026-q4/press-release-webcast",
+          "type": "HTML official release opened read-only; no document download",
+          "published_at": "2026-07-29",
+          "fact_paraphrase": "Q4FY26 revenue90007m and operating income40603m; FY26 revenue331839m and operating income155237m, allUSD."
+        },
+        {
+          "url": "https://www.microsoft.com/investor/reports/ar25/index.html",
+          "type": "HTML annual report; FY25 headline op128.5bn/revenue281.7bn present; no PDF download"
+        }
+      ],
+      "unknown_assessment": "Null score is defensible for undisclosed product/customer CAC/allocated all-in cost/payback; unknown must not be silently converted to5. Group operating margins are available in the exact official source already cited, so they are not genuinely missing.",
+      "findings": [
+        {
+          "id": "FIN-MS-01",
+          "severity": "retrieval_quality_warning",
+          "issue": "Answer says its FY26Q4 source only supports revenue/demand and lists operating margin missing, though that same public official HTML has revenue and operating income for quarter and fiscal year.",
+          "official_available_metrics": {
+            "FY26Q4_operating_margin_percent": 45.1109,
+            "FY26_operating_margin_percent": 46.7808
+          },
+          "expected": "Extract available group profitability as partial evidence, clearly distinguish it from undisclosed product/customer full-cost unit economics. Do not infer unit economics from group margin."
+        }
+      ],
+      "sample_conclusion": "Appropriate conservative null-score behavior for the precise unit-economics question, but source extraction incomplete; not a clean content-completeness pass. No invented numerical answer detected.",
+      "original_ledger_binding": {
+        "work_item_id": "WORK_d0b99f0fa29d4d45a5743df2601bc049",
+        "prepared_at": 1793042979.8903742,
+        "completed_at": 1793043356.3764198,
+        "entity_id": "ENT_0601ba07-7e9c-4fc6-8730-df538050e3e8",
+        "generation": 1,
+        "answer_sha256": "286cf4fbfd51e735f55abfb0430984ebdf158c591b1279d27bb25ad187f73e34"
+      }
+    },
+    {
+      "company": "CATL",
+      "question_id": "IQS_03",
+      "attempt_id": "ATTEMPT_cd19e1e7758840ebacdd7d44b8686e0c",
+      "new_attempt_http_status": 200,
+      "score": 7,
+      "status": "scored",
+      "period_start": "2022-01-01",
+      "period_end": "2025-12-31",
+      "basis": "trailing",
+      "currency": "CNY for amounts; null for percentages",
+      "answer_information_as_of": "2026-03-10",
+      "official_public_verification": [
+        {
+          "url": "https://www.catl.com/en/hungarynews/6226.html",
+          "published_at": "2024-04-01",
+          "type": "official HTML opened read-only",
+          "fact_paraphrase": "FY2023 revenue400.92bnCNY and attributable profit44.12bnCNY match rounded answer."
+        },
+        {
+          "url": "https://www.catl.com/news/9654.html",
+          "published_at": "2026-03-10",
+          "type": "official short HTML opened read-only",
+          "fact_paraphrase": "FY2025 revenue423.7bn, attributable profit72.2bn, OCF133.2bnCNY; dividend69.57CNY/10shares and three-year50%payout narrative."
+        },
+        {
+          "url": "https://www.catl.com/uploads/1/file/public/202403/20240321205248_hda9h48qci.pdf",
+          "type": "official search-indexed snippet only; no PDF fetch/download",
+          "fact_paraphrase": "FY2023 weighted ROE24.04%, FY2022weighted24.67%; method differs from broker ratios23.6%/24.8% in answer."
+        }
+      ],
+      "original_answer_source_urls": [
+        "https://pdf.dfcfw.com/pdf/H3_AP202407211638148308_1.pdf",
+        "https://www.catl.com/uploads/1/file/public/202603/20260310105829_c5p2l3q9ll.pdf",
+        "https://www.catl.com/uploads/1/file/public/202503/20250317094543_6ig9e0mwng.pdf"
+      ],
+      "findings": [
+        {
+          "id": "FIN-CA-01",
+          "severity": "comparability_warning",
+          "issue": "Metric financial.roe23.6% cites broker calculation; official weighted ROE24.04% is a different methodology. Broker denominator not independently reproduced.",
+          "expected": "Keep the explicit broker label and do not compare it as the same standard reported weighted ROE; reproduce denominator or use official definition."
+        },
+        {
+          "id": "FIN-CA-02",
+          "severity": "retrieval_quality_warning",
+          "issue": "Broad2022-2025 answer window has main profitability metrics only for2023, despite official2025 short-page financials already public at its declared information date.",
+          "expected": "Retain historical signal with metric periods, also extract latest available group financials; do not imply2023ROE is current."
+        },
+        {
+          "id": "FIN-CA-03",
+          "severity": "scope_warning",
+          "issue": "Group profitability/dividends and qualitative accounting commentary do not prove full-cost product/customer unit economics; answer admits missing cost allocation/payback.",
+          "expected": "Use qualified group proxy or unknown unit-level claim, not categorical unit-economics established."
+        }
+      ],
+      "unknown_assessment": "Missing product/customer full-cost and payback are appropriately disclosed; categorical positive unit-economics claim is stronger than evidence. Score7 is not independently validated.",
+      "sample_conclusion": "Selected amounts/dividend agree with official short pages; ratio-definition, freshness and unit-economics inference warnings remain. No clean whole-answer financial pass.",
+      "original_ledger_binding": {
+        "work_item_id": "WORK_3d31463f0af545bbaf53d935028ec460",
+        "prepared_at": 1793043032.9580276,
+        "completed_at": 1793043511.233127,
+        "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+        "generation": 2,
+        "answer_sha256": "1e0b807bd44af9bf5d9164142d7dd03ca820190442fe0b8ffa5767f718d39d7e"
+      }
+    }
+  ],
+  "not_covered": [
+    "DuPont decomposition not yet available",
+    "all108 answers",
+    "scores as investment recommendations",
+    "complete exact PDF source validation"
+  ],
+  "updated_at": "2026-10-26T19:44:23.155827+00:00",
+  "cross_sample_finding": {
+    "id": "FIN-CROSS-01",
+    "issue": "Same IQS03 full-cost unit-economics question is null-scored forMSFT but7-scored using group-profit proxies forTencent/CATL; differences in actual disclosed cohort cost do not explain the evidence-standard mismatch.",
+    "expected": "Keep unit-level unknown distinct from group-profit proxy; same evidence-to-score rule across companies. No automatic score overwrites or paid re-asks authorized by this review."
+  },
+  "financial_quality_passed": false,
+  "scope_complete": true,
+  "DuPont_followup": "Deferred; no new DuPont answer yet at last count. This freezes first real3-market sample review and does not wait indefinitely.",
+  "response_completeness_metadata": {
+    "company": "Tencent",
+    "question_ids": [
+      "IQS_01",
+      "IQS_04"
+    ],
+    "reviewer_observed": "Each new original attempt response_available/HTTP200/executed with completed receipt but work stillleased and no standard answer; not counted as completed answer.",
+    "parent_reported_other_agent_diagnosis": "Original offline validator identifies duplicate metric IDs: same FY2025/CNY repeated business.segment_revenue for different segments. This reviewer did not reproduce validator diagnosis.",
+    "no_automatic_remediation": "No answer mutation, deduplication, validator weakening, additional paid ask or true-work status change by reviewer."
+  },
+  "key_conclusion": "The original pipeline can obtain real new answers, but this3-market sample does not support a clean financial-quality pass. Core selected group amounts often match official sources. Unit-economics evidence-to-score is inconsistent across companies; source extraction/date/definition/completeness need correction before interpreting comparable whitelist scores.",
+  "recommended_root_causes_to_address": [
+    "Separate observed group-profit proxy from product/customer unit-economics evidence; apply same unknown/scoring rule across companies.",
+    "Fetch/read short official source content when snippet misses readily available reported group metrics, preserving cutoff and metric period.",
+    "Use reproducible accounting definitions; do not silently compare brokerROE with weighted reportedROE.",
+    "Check narrative against numerical trend and latest used source date.",
+    "Require metric_id uniqueness per answer; segment-specific custom IDs where appropriate; do not weaken original validator."
+  ]
+}
