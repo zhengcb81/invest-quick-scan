@@ -151,7 +151,7 @@ def test_stale_control_file_is_not_a_permanent_lock(deployment):
     assert (runtime/'calls.txt').read_text().splitlines()==['1']
 
 
-def test_unknown_persisted_process_cannot_resume_by_direct_post(deployment):
+def test_unknown_persisted_process_cannot_resume_by_direct_post(deployment, monkeypatch):
     config, runtime, _ = deployment
     gateway = ExecutionGateway(config)
     run_id = start(gateway)['run']['run_id']
@@ -160,12 +160,175 @@ def test_unknown_persisted_process_cannot_resume_by_direct_post(deployment):
     record = json.loads(record_path.read_text(encoding='utf8'))
     record.update(process_state='needs_original_inspection', launcher_state='paused')
     put(record_path, record)
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda pid: 'unknown')
     restarted = ExecutionGateway(config)
     assert 'resume' not in restarted.tasks()['tasks'][0]['allowed_actions']
     with pytest.raises(DashboardExecutionError) as raised:
         restarted.control(run_id, 'resume')
     assert raised.value.code == 'original_process_unknown'
     assert (runtime/'calls.txt').read_text().splitlines() == ['1']
+
+
+def orphaned_pending_run(deployment, *, pid=67890):
+    """A local reference after gateway loss; never a real runtime or paid CLI."""
+    config, runtime, bundle = deployment
+    inspector = Path(config['stockqa_root']) / 'src/utils/quick_scan_refresh_inspect_cli.py'
+    inspector.write_text(inspector.read_text(encoding='utf8').replace(
+        'request.get("work_items", [])', '[{"status":"pending"}]'), encoding='utf8')
+    gateway = ExecutionGateway(config)
+    run_id = 'run-' + 'f' * 32
+    folder = gateway.state_root / run_id
+    folder.mkdir(parents=True)
+    record = {'protocol': 'iqs.dashboard_process_reference/1.0.0', 'run_id': run_id,
+        'bundle_id': 'test', 'entity_id': bundle['entity_id'],
+        'bundle_fingerprint': gateway._fingerprint(bundle), 'process_state': 'running',
+        'launcher_state': 'paused', 'launch_attempt': 1, 'pid': pid,
+        'started_at': '2026-10-25T00:00:00Z', 'result_path': str(folder / 'result.json'),
+        'log_path': str(folder / 'process.log')}
+    path = gateway.state_root / (run_id + '.json')
+    put(path, record)
+    return gateway, run_id, path
+
+
+def test_orphaned_absent_pid_explicit_resume_reuses_original_run_and_inspector(deployment, monkeypatch):
+    config, runtime, bundle = deployment
+    gateway, run_id, path = orphaned_pending_run(deployment)
+    calls = []
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda pid: calls.append(pid) or 'absent')
+    ledger = Path(json.loads(Path(bundle['admission_config']).read_text())['work_store'])
+    before = ledger.read_bytes()
+    row = gateway.tasks()['tasks'][0]
+    assert row['process_state'] == 'needs_original_inspection' and 'resume' in row['allowed_actions']
+    assert not (runtime / 'calls.txt').exists() and ledger.read_bytes() == before
+    launched = gateway.control(run_id, 'resume')
+    assert launched['run']['run_id'] == run_id and launched['run']['launch_attempt'] == 2
+    assert launched['process_started'] is True and len(calls) == 2
+    wait_done(gateway, run_id)
+    assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
+    assert ledger.read_bytes() == before and len(list(gateway.state_root.glob('run-*.json'))) == 1
+
+
+@pytest.mark.parametrize('probe', ['present', 'present_exited', 'unknown'])
+def test_orphaned_nonabsent_pid_never_offers_or_starts_nonreadonly_resume(deployment, monkeypatch, probe):
+    _, runtime, _ = deployment
+    gateway, run_id, path = orphaned_pending_run(deployment)
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda pid: probe)
+    before = path.read_bytes()
+    assert 'resume' not in gateway.tasks()['tasks'][0]['allowed_actions']
+    with pytest.raises(DashboardExecutionError) as raised:
+        gateway.control(run_id, 'resume')
+    assert raised.value.code == 'original_process_unknown'
+    assert path.read_bytes() == before and not (runtime / 'calls.txt').exists()
+
+
+def test_orphaned_resume_reprobes_pid_after_offering_recovery(deployment, monkeypatch):
+    _, runtime, _ = deployment
+    gateway, run_id, path = orphaned_pending_run(deployment)
+    outcomes = iter(['absent', 'present'])
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda pid: next(outcomes))
+    assert 'resume' in gateway.tasks()['tasks'][0]['allowed_actions']
+    before = path.read_bytes()
+    with pytest.raises(DashboardExecutionError) as raised:
+        gateway.control(run_id, 'resume')
+    assert raised.value.code == 'original_process_unknown'
+    assert path.read_bytes() == before and not (runtime / 'calls.txt').exists()
+
+
+def test_orphaned_missing_pid_stays_unknown_even_when_original_pending_work_is_ready(deployment):
+    _, runtime, _ = deployment
+    gateway, run_id, path = orphaned_pending_run(deployment, pid=None)
+    before = path.read_bytes()
+    assert 'resume' not in gateway.tasks()['tasks'][0]['allowed_actions']
+    with pytest.raises(DashboardExecutionError) as raised:
+        gateway.control(run_id, 'resume')
+    assert raised.value.code == 'original_process_unknown'
+    assert path.read_bytes() == before and not (runtime / 'calls.txt').exists()
+
+
+@pytest.mark.parametrize('change', ['bundle', 'uncertain', 'leased', 'budget'])
+def test_orphaned_absent_pid_does_not_override_changed_bundle_or_original_owner(deployment, monkeypatch, change):
+    config, runtime, bundle = deployment
+    gateway, run_id, path = orphaned_pending_run(deployment)
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda pid: 'absent')
+    inspector = Path(config['stockqa_root']) / 'src/utils/quick_scan_refresh_inspect_cli.py'
+    if change == 'bundle':
+        Path(bundle['questions']).write_text('{"changed":true}')
+    elif change == 'budget':
+        inspector.write_text(inspector.read_text().replace('request.get("available", True)', 'False'))
+    else:
+        inspector.write_text(inspector.read_text().replace('"status":"pending"', f'"status":"{change}"'))
+    before = path.read_bytes()
+    assert 'resume' not in gateway.tasks()['tasks'][0]['allowed_actions']
+    with pytest.raises(DashboardExecutionError) as raised:
+        gateway.control(run_id, 'resume')
+    assert raised.value.code == ('bundle_changed' if change == 'bundle' else 'resume_blocked')
+    assert path.read_bytes() == before and not (runtime / 'calls.txt').exists()
+
+
+def test_orphaned_readonly_recovery_remains_compatible_with_unknown_pid(deployment, monkeypatch):
+    config, runtime, _ = deployment
+    gateway, run_id, _ = orphaned_pending_run(deployment, pid=None)
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda pid: 'unknown')
+    inspector = Path(config['stockqa_root']) / 'src/utils/quick_scan_refresh_inspect_cli.py'
+    inspector.write_text(inspector.read_text().replace('"status":"pending"', '"status":"result_ready"')
+        .replace('request.get("available", True)', 'False'))
+    assert 'resume' in gateway.tasks()['tasks'][0]['allowed_actions']
+    assert gateway.control(run_id, 'resume')['process_started'] is True
+    wait_done(gateway, run_id)
+
+
+@pytest.mark.parametrize('pid', [None, True, False, 0, -1, '1234', 2**32])
+def test_process_probe_rejects_invalid_or_missing_pid_without_os_calls(pid):
+    assert gateway_module._probe_process(pid) == 'unknown'
+
+
+def test_process_probe_current_pid_is_readonly_and_present(monkeypatch):
+    import os
+    if sys.platform != 'win32':
+        pytest.skip('Win32 read-only process probe')
+    monkeypatch.setattr(os, 'kill', lambda *args: (_ for _ in ()).throw(AssertionError('never signal a process')))
+    assert gateway_module._probe_process(os.getpid()) == 'present'
+
+
+@pytest.mark.parametrize('error,expected', [(87, 'absent'), (5, 'unknown'), (0, 'unknown'), (6, 'unknown')])
+def test_process_probe_only_explicit_win32_pid_absence_is_permission(error, expected, monkeypatch):
+    import ctypes
+    from unittest.mock import Mock
+    if sys.platform != 'win32':
+        pytest.skip('Win32 read-only process probe')
+    kernel = Mock()
+    kernel.OpenProcess.return_value = 0
+    monkeypatch.setattr(ctypes, 'WinDLL', lambda *args, **kwargs: kernel)
+    monkeypatch.setattr(ctypes, 'get_last_error', lambda: error)
+    assert gateway_module._probe_process(1234) == expected
+    kernel.OpenProcess.assert_called_once_with(0x1000, False, 1234)
+    kernel.CloseHandle.assert_not_called()
+
+
+@pytest.mark.parametrize('exit_code,readable,close_ok,expected', [
+    (259, True, True, 'present'),
+    (0, True, True, 'present_exited'),
+    (259, False, True, 'unknown'),
+    (259, True, False, 'unknown'),
+])
+def test_process_probe_never_authorizes_an_existing_or_unreadable_handle(exit_code, readable, close_ok, expected, monkeypatch):
+    import ctypes
+    from ctypes import wintypes
+    from unittest.mock import Mock
+    if sys.platform != 'win32':
+        pytest.skip('Win32 read-only process probe')
+    kernel = Mock()
+    kernel.OpenProcess.return_value = 123
+    kernel.CloseHandle.return_value = close_ok
+    def exit_status(handle, pointer):
+        assert handle == 123
+        ctypes.cast(pointer, ctypes.POINTER(wintypes.DWORD)).contents.value = exit_code
+        return readable
+    kernel.GetExitCodeProcess.side_effect = exit_status
+    monkeypatch.setattr(ctypes, 'WinDLL', lambda *args, **kwargs: kernel)
+    assert gateway_module._probe_process(1234) == expected
+    kernel.OpenProcess.assert_called_once_with(0x1000, False, 1234)
+    kernel.CloseHandle.assert_called_once_with(123)
 
 
 def test_preview_calls_only_original_inspector_and_keeps_ledger_bytes(deployment, monkeypatch):

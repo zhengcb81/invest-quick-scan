@@ -36,6 +36,52 @@ def _now():
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _probe_process(pid):
+    """Read-only Win32 evidence, never a signal or permission to retry work.
+
+    Only ERROR_INVALID_PARAMETER for a valid PID proves that PID is absent.
+    Any extant handle (including a possibly reused/exited PID), access denial,
+    missing ID, unsupported platform or failed API call remains non-authorizing.
+    """
+    if type(pid) is not int or not 1 <= pid <= 0xffffffff or sys.platform != 'win32':
+        return 'unknown'
+    try:
+        import ctypes
+        from ctypes import wintypes
+
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+        kernel.OpenProcess.restype = wintypes.HANDLE
+        kernel.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+        kernel.GetExitCodeProcess.restype = wintypes.BOOL
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        kernel.CloseHandle.restype = wintypes.BOOL
+        ctypes.set_last_error(0)
+        handle = kernel.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return 'absent' if ctypes.get_last_error() == 87 else 'unknown'
+        evidence = 'unknown'
+        try:
+            code = wintypes.DWORD()
+            if kernel.GetExitCodeProcess(handle, ctypes.byref(code)):
+                evidence = 'present' if code.value == 259 else 'present_exited'
+        finally:
+            if not kernel.CloseHandle(handle):
+                evidence = 'unknown'
+        return evidence
+    except Exception:
+        return 'unknown'
+
+
+def _process_recovery_evidence(record, readonly_recovery):
+    """One rule for UI action projection and fresh explicit resume checks."""
+    if record.get('process_state') not in {'running', 'starting', 'needs_original_inspection'}:
+        return 'known_local_exit'
+    if readonly_recovery is True:
+        return 'original_checkpoints_only'
+    return _probe_process(record.get('pid'))
+
+
 def _read(path):
     raw = Path(path).read_bytes()
     if len(raw) > 8 * 1024 * 1024:
@@ -335,6 +381,7 @@ class ExecutionGateway:
             if value["process_state"] in {"running", "starting"} and value["run_id"] not in self._processes:
                 value.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
             value["work_completion_authoritative"] = False
+            value['process_state_notice'] = '本地启动记录不是操作系统存活证明；恢复时重新检查原进程和原owner。'
             actions = ["inspect"]
             if value.get("launcher_state") != "paused":
                 actions.append("pause")  # Stops future companies, never interrupts an HTTP.
@@ -352,13 +399,14 @@ class ExecutionGateway:
                     continue
                 value["owner_preview"] = preview
                 value["inspection_status"] = "available"
-                original_process_unknown = value["process_state"] == "needs_original_inspection"
                 if (value.get("launcher_state") in {"paused", "draining"}
                     and value["run_id"] not in self._processes
                     and value["bundle_fingerprint"] == self._fingerprint(self.bundles[value["bundle_id"]])
-                    and preview["can_start"]
-                    and (not original_process_unknown or preview.get("readonly_recovery"))):
-                    actions.append("resume")
+                    and preview["can_start"]):
+                    evidence = _process_recovery_evidence(value, preview.get('readonly_recovery'))
+                    value['process_recovery_evidence'] = evidence
+                    if evidence in {'known_local_exit', 'original_checkpoints_only', 'absent'}:
+                        actions.append("resume")
             except DashboardExecutionError as error:
                 value.update(inspection_status="unavailable", inspection_error=error.code)
             value["allowed_actions"] = actions
@@ -495,10 +543,16 @@ class ExecutionGateway:
                 preview = self.preview({"bundle_id": key})
                 if not preview["can_start"]:
                     raise DashboardExecutionError("resume_blocked", "原任务状态尚不支持安全恢复", 409, preview)
-                if record["process_state"] in {"running", "starting", "needs_original_inspection"} and not preview["readonly_recovery"]:
-                    raise DashboardExecutionError("original_process_unknown", "服务重启后原进程状态未知；只允许已完成检查点的只读恢复", 409)
+                # The UI's earlier projection is never authority: re-probe
+                # under the original control lock after fresh owner checks.
+                evidence = _process_recovery_evidence(record, preview.get('readonly_recovery'))
+                if evidence not in {'known_local_exit', 'original_checkpoints_only', 'absent'}:
+                    raise DashboardExecutionError("original_process_unknown", "未能确认原进程已不存在；仅允许原检查点的只读恢复", 409)
                 root, runtime, _, _ = self._deployment(bundle)
                 attempt = record.get("launch_attempt", 1) + 1
+                if evidence == 'absent':
+                    record['recovered_process_observation'] = {'pid': record['pid'],
+                        'state': 'absent', 'observed_at': _now(), 'source': 'win32_readonly_probe'}
                 record.update(launch_attempt=attempt, result_path=str(self.state_root / run_id / f"result-{attempt}.json"),
                               log_path=str(self.state_root / run_id / f"process-{attempt}.log"), process_state="starting",
                               launcher_state="running", resumed_at=_now())
