@@ -937,7 +937,8 @@ def test_advanced_original_owner_dialect_is_a_preapply_gap_without_touching_orig
     for dialect in ("1.2.0", "1.3.0", "1.4.0", "1.5.0"):
         policy["protocol"] = "stockwiki.refresh_owner_policy/" + dialect
         policy_file.write_text(json.dumps(policy), encoding="utf-8")
-        assert "native_prepare_owner_dialect_not_supported" in gateway._execution_gaps()
+        expected = "recovery_policy_refs_required" if dialect == "1.2.0" else "native_prepare_owner_dialect_not_supported"
+        assert expected in gateway._execution_gaps()
     assert tree(base / "owner/data") == data
     assert hashlib.sha256((base / "work.sqlite").read_bytes()).hexdigest() == ledger
 

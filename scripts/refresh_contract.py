@@ -346,6 +346,8 @@ def create_preview(request, owner_state, *, created_at, expires_at):
             if (
                 item["decision"] != expected
                 or item["existing_work_status"] not in {"failed", "result_ready", "delivered"}
+                or c["purpose"] == "retry_unusable_checkpoint"
+                and item["existing_work_status"] != "result_ready"
                 or c["purpose"] == "retry_unusable_answer"
                 and item["existing_work_status"] != "failed"
             ):

@@ -25,12 +25,12 @@ BUNDLE_PATHS = {'questions', 'manifest', 'identity_snapshot', 'c06_authority', '
                 'runtime_dir', 'package', 'release', 'work_store'}
 BUNDLE_KEYS = BUNDLE_PATHS | {'entity_id', 'company', 'provider', 'confirmation_id',
     'inspection_schema_version', 'pack_size', 'thinking', 'max_output_tokens', 'security_scope_id',
-    'package_sha256', 'release_sha256', 'work_item_ids', 'company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings'}
+    'package_sha256', 'release_sha256', 'work_item_ids', 'company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings', 'recovery_subset', 'execution_question_ids', 'execution_question_count'}
 CONFIG_KEYS = PATH_KEYS | {'schema_version', 'universe_id', 'execution_bundles', 'import_bundles',
                           'timeout_seconds', 'workspace_kind', 'workspace_label', 'prepare', 'batch'}
 PREPARE_KEYS = {'state_root', 'admission_config', 'module_package_id', 'producer',
     'authorization_reference', 'agent', 'runtime_dir', 'spend_authorization', 'search_policy',
-    'pack_size', 'thinking', 'max_output_tokens', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds'}
+    'pack_size', 'thinking', 'max_output_tokens', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs'}
 PREPARE_PATHS = {'state_root', 'admission_config', 'runtime_dir', 'spend_authorization', 'search_policy'}
 
 
@@ -122,6 +122,12 @@ def validate_config(value, root):
     if 'delegation_ttl_seconds' in options and (type(options['delegation_ttl_seconds']) is not int
             or not 900 <= options['delegation_ttl_seconds'] <= 86400):
         raise ProductError('invalid_prepare_config', '新原执行确认有效期须为900至86400秒；不更新已有确认。')
+    if 'recovery_work_decision_refs' in options:
+        from dashboard_prepare import _recovery_refs, DashboardPrepareError
+        try:
+            _recovery_refs({'prepare': options})
+        except DashboardPrepareError as error:
+            raise ProductError('invalid_prepare_config', '恢复模式须显式选择唯一的原工作与原控制决策引用。') from error
     result['prepare'] = dict(options)
     for key,lower,upper in [('worker_timeout_seconds',60,3600),('native_timeout_seconds',30,900)]:
         if key in options and (type(options[key]) is not int or not lower<=options[key]<=upper):

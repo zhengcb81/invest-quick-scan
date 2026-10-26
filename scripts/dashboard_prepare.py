@@ -95,6 +95,67 @@ def _env():
     return value
 
 
+def _recovery_refs(config):
+    options = config.get("prepare", {})
+    if "recovery_work_decision_refs" not in options:
+        return None
+    refs = options["recovery_work_decision_refs"]
+    if not isinstance(refs, list) or not 1 <= len(refs) <= 500:
+        raise DashboardPrepareError("recovery_refs_invalid", "Recovery needs exact original work-decision references", 409)
+    seen = set()
+    for row in refs:
+        if (not isinstance(row, dict) or set(row) != {"work_item_id", "decision_id"}
+            or re.fullmatch(r"WORK_[a-f0-9]{32}", str(row.get("work_item_id", ""))) is None
+            or re.fullmatch(r"owd1_[a-f0-9]{64}", str(row.get("decision_id", ""))) is None
+            or row["work_item_id"] in seen):
+            raise DashboardPrepareError("recovery_refs_invalid", "Recovery references must be exact and unique", 409)
+        seen.add(row["work_item_id"])
+    return copy.deepcopy(refs)
+
+
+def _recovery_subset(config, directory, manifest, native, policy):
+    refs = _recovery_refs(config)
+    dialect = policy["protocol"].split("/")[-1]
+    if refs is None and dialect in {"1.0.0", "1.1.0"}:
+        return None
+    if refs is None or dialect != "1.2.0":
+        raise DashboardPrepareError("recovery_policy_refs_required", "Explicit policy 1.2 and original unusable-checkpoint references must be selected together", 409)
+    admission = _read(config["prepare"]["admission_config"])
+    entity = native["binding"]["entity_id"]
+    selected = native["selected_listing"]["security_id"]
+    scopes = {q["id"]: {"scope": q["scope"], "scope_id": selected if q["scope"] == "security" else entity} for q in manifest["questions"]}
+    query = {"entity_id": entity, "question_ids": list(scopes), "scope_bindings": scopes}
+    path = directory / "recovery-projection-request.json"
+    _new(path, query)
+    projection = _native_cli(config, "qa", "src.utils.quick_scan_work_decision_inspect_cli", [
+        "--ledger", admission["work_store"], "--policy", admission["budget_policy_file"], "--owner-controls", str(path)])
+    if (projection.get("protocol") != "stockqa.owner_control_projection/1.0.0"
+        or projection.get("entity_id") != entity or projection.get("authority") != "original_journal_read_not_permission"
+        or type(projection.get("API_requests")) is not int or projection["API_requests"] != 0
+        or type(projection.get("database_writes")) is not int or projection["database_writes"] != 0
+        or not isinstance(projection.get("rows"), dict)):
+        raise DashboardPrepareError("recovery_projection_invalid", "Original read-only recovery projection is unavailable", 409)
+    by_work = {row["work_item_id"]: (qid, row) for qid, row in projection["rows"].items() if isinstance(row, dict) and isinstance(row.get("work_item_id"), str)}
+    items = []
+    for ref in refs:
+        match = by_work.get(ref["work_item_id"])
+        if match is None:
+            continue  # Explicit global references may include another company.
+        qid, row = match
+        if (qid not in scopes or row.get("retry_decision_id") != ref["decision_id"]
+            or row.get("retry_purpose") != "retry_unusable_checkpoint" or row.get("status") != "result_ready"
+            or type(row.get("generation")) is not int or row.get("target_generation") != row["generation"] + 1
+            or row.get("delivery_required") is not False):
+            raise DashboardPrepareError("recovery_source_changed", "An exact original unusable checkpoint decision no longer matches", 409)
+        items.append({"question_id": qid, **ref, "source_generation": row["generation"], "target_generation": row["target_generation"]})
+    if not items:
+        raise DashboardPrepareError("recovery_source_missing", "No selected original recovery decision belongs to this exact company and bank", 409)
+    items.sort(key=lambda row: row["question_id"])
+    return {"protocol": "iqs.dashboard-recovery-subset/1.0.0", "purpose": "retry_unusable_checkpoint",
+        "execution_question_ids": [row["question_id"] for row in items], "execution_question_count": len(items),
+        "full_bank_question_count": len(manifest["questions"]), "items": items}
+
+
 def _delegation_ttl_seconds(config):
     """Duration for a NEW exact-scope native grant; never renew an old one."""
     value = config.get('prepare', {}).get('delegation_ttl_seconds', 3600)
@@ -209,7 +270,7 @@ def _reusable_bank(config, payload):
     try:
         done = subprocess.run([config.get('stockqa_python') or sys.executable,'-B','-X','utf8','-c',
             _WORK_BANK_BINDING_READER,config['stockqa_root'],config['prepare']['admission_config']],
-            input=_bytes(request),capture_output=True,env=_env(),cwd=config['stockqa_root'],
+            input=_bytes(request),capture_output=True,env=_env(),cwd=config.get('prepare', {}).get('runtime_dir', config['stockqa_root']),
             timeout=_timeouts(config)[1],creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
         result=json.loads(done.stdout)
         if (done.returncode or len(done.stdout)>MAX_BYTES
@@ -370,8 +431,10 @@ class PrepareGateway:
                 protocol = original_policy.get("protocol") if isinstance(original_policy, dict) else None
                 if not isinstance(protocol, str) or not protocol.startswith("stockwiki.refresh_owner_policy/"):
                     missing.append("native_prepare_owner_policy_invalid")
-                elif protocol not in {"stockwiki.refresh_owner_policy/1.0.0", "stockwiki.refresh_owner_policy/1.1.0"}:
+                elif protocol not in {"stockwiki.refresh_owner_policy/1.0.0", "stockwiki.refresh_owner_policy/1.1.0", "stockwiki.refresh_owner_policy/1.2.0"}:
                     missing.append("native_prepare_owner_dialect_not_supported")
+                elif (protocol == "stockwiki.refresh_owner_policy/1.2.0") != (_recovery_refs(self.config) is not None):
+                    missing.append("recovery_policy_refs_required")
             except (OSError, ValueError, TypeError):
                 missing.append("native_prepare_owner_policy_invalid")
         for key in ("admission_config", "runtime_dir", "spend_authorization"):
@@ -484,6 +547,7 @@ class PrepareGateway:
             _new(directory / "native.json", native)
             manifest = _read(directory / "manifest.json")
             route = _read(directory / "route.json")
+            recovery = _recovery_subset(self.config, directory, manifest, native, _read(Path(self.config["workspace_root"]) / "config/quick_scan_refresh.json")) if not gaps else None
             if issuer["identity_state"] != "verified":
                 gaps.append("route_identity_unverified")
             if binding is None and native.get("bootstrap") is None:
@@ -511,6 +575,11 @@ class PrepareGateway:
                       "selected_subject": ({"key": binding["subject_key"], "scope_kind": binding["subject"]["scope_kind"]} if binding else
                                            {"key": native["bootstrap"]["subject_key"], "scope_kind": "standalone_issuer"} if native.get("bootstrap") else None),
                       "blocked_reasons": sorted(set(gaps)), "can_apply": not gaps}
+            record["recovery_subset"] = recovery
+            record["execution_question_ids"] = recovery["execution_question_ids"] if recovery else record["bank"]["question_ids"]
+            record["execution_question_count"] = len(record["execution_question_ids"])
+            if recovery:
+                record["files"]["recovery-projection-request.json"] = hashlib.sha256((directory / "recovery-projection-request.json").read_bytes()).hexdigest()
             record["preview_token"] = _sha(record)
             _new(directory / "preview.json", record)
         except Exception:
@@ -784,8 +853,9 @@ def _apply(config, payload):
     paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
     policy = _read(paths.config_dir / "quick_scan_refresh.json")
     dialect = policy["protocol"].split("/")[-1]
-    if dialect not in {"1.0.0", "1.1.0"}:
-        raise DashboardPrepareError("registered_control_scope_required", "This owner policy requires an exact original work/exposure control; no fallback to a new generation is allowed", 409)
+    recovery = _recovery_subset(config, directory, manifest, native, policy)
+    if recovery != record.get("recovery_subset"):
+        raise DashboardPrepareError("recovery_source_changed", "Original recovery controls changed after the bank preview", 409)
     expected = {"stockwiki_code_root": config["stockwiki_root"], "stockwiki_workspace_root": config["workspace_root"],
                 "iqs_code_root": config["iqs_root"], "iqs_release_root": config.get("iqs_release_root", config["iqs_root"])}
     if any(Path(admission[key]).resolve() != Path(value).resolve() for key, value in expected.items()) or Path(policy["qa"]["work_store"]).resolve() != Path(admission["work_store"]).resolve() or Path(policy["qa"]["budget_policy_file"]).resolve() != Path(admission["budget_policy_file"]).resolve():
@@ -867,6 +937,8 @@ def _apply(config, payload):
         root=Path(expected["iqs_release_root"]), observation_schema_version="1.2.0")
     grouped = {}
     for question in manifest["questions"]:
+        if recovery and question["id"] not in recovery["execution_question_ids"]:
+            continue
         ref = authority["observation_context"]["questions"][question["id"]]["subject_binding"]["subject_ref"]
         grouped.setdefault(_sha(ref), {"ref": ref, "questions": []})["questions"].append(question)
     executions = []
@@ -894,6 +966,8 @@ def _apply(config, payload):
     result = {"protocol": PROTOCOL, "status": "prepared", "bundle_id": first["bundle_id"], "bundle": first["execution_bundle"],
               "execution_bundle": first["execution_bundle"], "execution_bundles": executions,
               "question_count_total": sum(item["question_count"] for item in executions),
+              "recovery_subset": recovery, "execution_question_ids": record["execution_question_ids"],
+              "execution_question_count": record["execution_question_count"], "full_bank_question_count": record["bank"]["question_count"],
               "confirmation_id": first["confirmation_id"], "admission": first["admission"],
               "API_requests": 0, "dispatch_started": False, "financial_accuracy_proven": False,
               "owner_state_changed": True, "meaning": "All question scopes registered with native owner; execution still requires original current checks"}
@@ -909,7 +983,7 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     options = config["prepare"]
     dialect = policy["protocol"].split("/")[-1]
     field_ids = sorted({row.get("field_id", row["metric_id"]) for row in selected_questions})
-    query = {"message_type": "request", "schema_version": "2.6.0" if dialect == "1.1.0" else "2.0.0", "request_id": run_id + "-query",
+    query = {"message_type": "request", "schema_version": "2.6.0" if dialect in {"1.1.0", "1.2.0"} else "2.0.0", "request_id": run_id + "-query",
              "consumer_id": admission["consumer_id"], "operation": "get_profiles", "requested_at": _now(),
              "payload": {"subject_refs": [subject_ref], "field_ids": field_ids, "information_cutoff": record["bank"]["information_cutoff"],
                          "include_history": True, "model_filter": None, "snapshot_id": None}}
@@ -923,6 +997,10 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     request = {"protocol": "iqs.refresh_request/" + dialect, "operation": "request_refresh", "request_id": run_id + "-refresh",
                "consumer_id": admission["consumer_id"], "requested_at": _now(), "source_query": query, "subject_refs": [subject_ref],
                "field_ids": field_ids, "origin_task_id": run_id, "reason": "User-selected dashboard bank; original owner admission only"}
+    recovery = record.get("recovery_subset")
+    scope_refs = [{"work_item_id": row["work_item_id"], "decision_id": row["decision_id"]} for row in recovery["items"] if row["question_id"] in {q["id"] for q in selected_questions}] if recovery else None
+    if recovery:
+        request.update(cohort_id=run_id, work_decision_refs=scope_refs)
     _new(directory / "refresh.json", request)
     owner_common = [*common, "--iqs-release-root", expected["iqs_release_root"]]
     preview = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli", [*owner_common, "--request", str(directory / "refresh.json")])
@@ -957,6 +1035,8 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     inspect = {"entity_id": record["bank"]["entity_id"], "question_ids": [row["id"] for row in selected_questions],
                "scope_bindings": {row["id"]: {"scope": subject_ref["scope"], "scope_id": subject_ref["scope_id"]} for row in selected_questions},
                "policy_id": policy["qa"]["policy_id"], "route_id": policy["qa"]["route_id"], "provider_config_ref": policy["qa"]["provider_config_ref"], "model": policy["model"]}
+    if recovery:
+        inspect.update(cohort_id=run_id, work_decision_refs=scope_refs)
     _new(directory / "inspection-request.json", inspect)
     bundle = {"entity_id": record["bank"]["entity_id"], "company": record["bank"]["company"], "provider": policy["provider"],
               "company_preparation_id": record["preview_id"], "scope": subject_ref["scope"],
@@ -966,6 +1046,8 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
               "admission_config": options["admission_config"], "inspection_request": str(directory / "inspection-request.json"), "inspection_schema_version": dialect,
               "spend_authorization": options["spend_authorization"], "runtime_dir": options["runtime_dir"], "pack_size": options.get("pack_size", 1),
               "thinking": options.get("thinking", True), "max_output_tokens": options.get("max_output_tokens", 8192)}
+    if recovery:
+        bundle.update(recovery_subset=copy.deepcopy(recovery), execution_question_ids=[q["id"] for q in selected_questions], execution_question_count=len(selected_questions))
     if options.get("search_policy"):
         bundle["search_policy"] = options["search_policy"]
     if subject_ref["scope"] == "security":
