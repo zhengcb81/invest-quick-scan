@@ -1,0 +1,50 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "prior_independent_reviewer": "/root/base_prompt_verify",
+  "author": "/root/resume_gateway_review",
+  "status": "passed",
+  "open_findings": [],
+  "completed_at": "2026-10-26T08:42:59.921441+00:00",
+  "scope": "publication formatting delta only, two approved StockQA paths",
+  "method": "Independent subprocess git show :path reads actual unstaged index blobs; parse each blob/current raw worktree as Python AST including imports/docstrings but excluding line/column attributes; exact AST dumps equal. Index SHA exactly matches source-sha256.json pre-hook reviewed lock.",
+  "files": [
+    {
+      "path": "src/utils/quick_scan_work_decision_authority.py",
+      "index_blob_sha256": "ced741921319a1ebedb529eaf4e31ed49cac1d17d526411ec6261a202496ae5e",
+      "index_as_crlf_sha256": "19eda39f62123ca93c4f9cbdb71cafa9d1133036a0f24f0e039dabd78d2036ff",
+      "current_raw_sha256": "566d7c3556729e07b810cca889ee4125973ee71290710b6f642725559cc60686",
+      "ast_equal": true,
+      "matches_original_reviewed_sha256": true,
+      "verified_original_reviewed_sha256": "ced741921319a1ebedb529eaf4e31ed49cac1d17d526411ec6261a202496ae5e"
+    },
+    {
+      "path": "tests/unit/test_quick_scan_work_delegation_authority.py",
+      "index_blob_sha256": "8810b84edee7bcfd83190c2fee7024d1c6e707d8a5c89207981f74e4d014124e",
+      "index_as_crlf_sha256": "6433bd8aa600ece8e60a953d5e845f3fd78db90d47d209b9c56deff66e2ddd9c",
+      "current_raw_sha256": "e3772b5ff567235dd4e3023ec416ffe7cfaf945f8ea604a771adc3072c27af74",
+      "ast_equal": true,
+      "matches_original_reviewed_sha256": true,
+      "verified_original_reviewed_sha256": "8810b84edee7bcfd83190c2fee7024d1c6e707d8a5c89207981f74e4d014124e"
+    }
+  ],
+  "tests": {
+    "passed": 32,
+    "seconds": 1.8,
+    "junitxml": "publication-final-tests.xml",
+    "xml_sha256": "2e946f432a23cffd7ba1342f788e84bbc9a99adb4161c007950893935ad19de0",
+    "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 C:/Miniconda/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider tests/unit/test_quick_scan_work_delegation_authority.py tests/unit/test_quick_scan_work_decision_authority.py -k \"delegation or owner_transport_is_fixed_and_bad_wire_creates_no_grant or invalid_owner_id_cannot_reach_native_process\" --basetemp <IQS>/runs/resume-ui-live-2026-10-26/catl-decision-repair/independent-review/publication-final-temp --junitxml <same>/publication-final-tests.xml"
+  },
+  "publication_assessment": "Formatting-only delta changes no parsed Python semantics; tested final current source hashes are suitable for exact normal staging/commit. Does not assert commit or push already completed.",
+  "prior_review": "Original permission work/public CLI and WD-01 review preserved in final.json/review.md; no repeat of513second original public E2E and no claim that this32-case subset replaces that evidence. This file closes final.json publication_format_delta_verification_pending for these2 paths only.",
+  "cleanup": {
+    "owned_test_temp_removed": true,
+    "source_or_index_modified_by_reviewer": false,
+    "paid_API_requests": 0,
+    "production_database_or_permission_or_task_writes": 0
+  },
+  "limits": [
+    "Publication delta review only; not a new independent audit of all original6files",
+    "No real CATL work decision applied by reviewer",
+    "No model answers/financial correctness/importACK qualification"
+  ]
+}

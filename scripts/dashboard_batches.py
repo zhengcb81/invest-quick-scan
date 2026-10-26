@@ -18,6 +18,11 @@ import threading
 import time
 import uuid
 
+try:
+    from .dashboard_execution import _process_recovery_evidence
+except ImportError:
+    from dashboard_execution import _process_recovery_evidence
+
 
 # One byte bound for both sides of the atomic record protocol. Synthetic
 # 5,000-scope engineering DTOs, including completed launch references, are
@@ -98,7 +103,7 @@ class BatchGateway:
     """
     PROTOCOL = "iqs.dashboard_batch_reference/1.0.0"
     _ACTIVE = {"launching", "running", "attached"}
-    _STATES = {"running", "draining", "paused", "blocked", "owner_ready", "needs_original_inspection"}
+    _STATES = {"running", "draining", "paused", "blocked", "owner_ready", "needs_original_inspection", "abandoned"}
 
     def __init__(self, execution, state_root, *, max_concurrency=1,
                  poll_interval=0.5, autostart=True):
@@ -396,7 +401,7 @@ class BatchGateway:
                 "bundle_ids": [row["bundle_id"] for row in entries], "state": state, "complete": state == "owner_ready"})
         result["company_counts"] = {"total": len(groups), **{state: sum(row["state"] == state for row in result["company_groups"])
             for state in ("owner_ready", "running", "selected", "blocked", "failed")}}
-        result["allowed_actions"] = ["pause", "resume"] if result["state"] != "owner_ready" else []
+        result["allowed_actions"] = (["pause", "resume", "abandon"] if result["state"] not in {"owner_ready", "abandoned"} else [])
         result["work_state_owner"] = "StockQAbyLLM"
         result["projection_observed_at"] = record.get("updated_at")
         result["projection_is_dispatch_permission"] = False
@@ -473,7 +478,7 @@ class BatchGateway:
             chosen_entities = {row["entity_id"] for row in entries}
             if any(row["entity_id"] in chosen_entities and (row["state"] in self._ACTIVE
                 or row["state"] == "selected" and other["state"] in {"running", "draining", "paused", "needs_original_inspection"}
-                or self._uncertain(row)) for other in records for row in other["entries"]):
+                or self._uncertain(row)) for other in records if other['state'] != 'abandoned' for row in other["entries"]):
                 raise DashboardBatchError("batch_entity_active", "所选公司已有运行或未知启动引用；先核原批，不能另建并发范围", 409)
             # A local pool preview is not budget authority. Recheck its hashes
             # without starting thousands of native inspector processes; each
@@ -598,7 +603,7 @@ class BatchGateway:
                 record["state"] = "blocked"
                 self._save(record)
                 return False
-            other_entities = {entry["entity_id"] for other in self._records() if other["batch_id"] != batch_id
+            other_entities = {entry["entity_id"] for other in self._records() if other["batch_id"] != batch_id and other['state'] != 'abandoned'
                 for entry in other["entries"] if entry["state"] in self._ACTIVE or self._uncertain(entry)}
             for index, entry in enumerate(record["entries"]):
                 if active + len(other_entities) >= min(record["max_concurrency"], self.max_concurrency):
@@ -691,10 +696,14 @@ class BatchGateway:
             thread.start()
 
     def control(self, batch_id, action):
-        if action not in {"pause", "resume"}:
-            raise DashboardBatchError("batch_control_unsupported", "只支持公司边界暂停与明确恢复", 409)
+        if action not in {"pause", "resume", "abandon"}:
+            raise DashboardBatchError("batch_control_unsupported", "只支持暂停、明确恢复或结束已停编排", 409)
         with self._mutation():
             record = self._record(batch_id)
+            if action == 'abandon':
+                return self._abandon(record)
+            if record['state'] == 'abandoned':
+                raise DashboardBatchError('batch_abandoned', '该编排已结束；原工作与结果保留，须重新准备同一范围。', 409)
             if action == "pause":
                 active = any(row["state"] in self._ACTIVE for row in record["entries"])
                 if record["state"] != "owner_ready":
@@ -761,6 +770,61 @@ class BatchGateway:
             "company_dispatch_scheduled": record["state"] == "running", "paid_dispatch_started": None,
             "owner_inspection_deferred_scope_count": len(registration_only),
             "notice": "已核冻结原输入；未启动scope仅恢复编排，费用和额度在实际派发前由原owner重验；失败或未知请求不会自动重发。"}
+
+    def _abandon(self, record):
+        """End only this sequencer after fresh original work/process checks.
+
+        Keep every entry and original work/attempt/answer/fee untouched. This
+        is never a cancellation of an HTTP or permission to retry unknown work.
+        The caller holds the batch kernel lock; also fence product launches.
+        """
+        if record['state'] == 'abandoned':
+            return {'status': 'already_abandoned', 'batch': self._public(record), 'API_requests': 0, 'process_started': False}
+        if record['state'] not in {'paused', 'draining', 'blocked', 'needs_original_inspection'}:
+            raise DashboardBatchError('batch_abandon_pause_required', '先暂停原批次，不能结束活动编排。', 409)
+
+        def stopped():
+            tasks = self._tasks(record['entries'], include_selected=True)
+            evidence = []
+            for entry in record['entries']:
+                matches = [task for task in tasks if task.get('bundle_id') == entry['bundle_id']]
+                if entry.get('run_id'):
+                    matches = [task for task in matches if task.get('run_id') == entry['run_id']]
+                if len(matches) > 1 or (not matches and (entry.get('run_id') or entry.get('launch_requested_at') or entry.get('launch_uncertain'))):
+                    raise DashboardBatchError('batch_abandon_reference_unresolved', '原启动引用仍不明确，不能释放公司编排。', 409)
+                if not matches:
+                    continue
+                task = matches[0]
+                if (task.get('bundle_fingerprint') != entry['bundle_fingerprint'] or task.get('entity_id') != entry['entity_id']
+                    or re.fullmatch(r'run-[a-f0-9]{32}', str(task.get('run_id', ''))) is None
+                    or task.get('process_state') not in {'running', 'starting', 'needs_original_inspection', 'process_exited', 'launch_failed'}):
+                    raise DashboardBatchError('batch_abandon_reference_unresolved', '原启动引用范围不匹配。', 409)
+                if task['run_id'] in getattr(self.execution, '_processes', {}):
+                    raise DashboardBatchError('batch_abandon_process_unresolved', '原执行进程仍在本机运行。', 409)
+                proof = _process_recovery_evidence(task, False)
+                if proof not in {'known_local_exit', 'absent', 'original_pid_reused'}:
+                    raise DashboardBatchError('batch_abandon_process_unresolved', '原进程尚未证明已退出，不能结束编排。', 409)
+                evidence.append({'run_id': task['run_id'], 'evidence': proof})
+            return evidence
+
+        with self.execution._control_lock('batch-abandon'):
+            stopped()
+            inspections = []
+            for entry in record['entries']:
+                preview = self._inspect(entry['bundle_id'], entry)
+                work = preview.get('inspection', {}).get('work_items')
+                work = list(work.values()) if isinstance(work, dict) else work
+                if (not isinstance(work, list) or not work or any(not isinstance(item, dict)
+                    or item.get('status') not in {'pending', 'failed', 'result_ready', 'delivered'} for item in work)):
+                    raise DashboardBatchError('batch_abandon_work_unresolved', '原工作仍有leased/uncertain或检查不完整，不能释放编排。', 409)
+                inspections.append({'bundle_id': entry['bundle_id'], 'inspection_sha256': preview['inspection_sha256']})
+            process_evidence = stopped()  # Recheck after potentially slow original I/O.
+            record.update(state='abandoned', abandoned_at=_now(), abandonment_evidence={
+                'selection_sha256': record['selection_sha256'], 'processes': process_evidence, 'inspections': inspections,
+                'original_work_preserved': True, 'dispatch_authority': False})
+            self._save(record)
+        return {'status': 'abandoned', 'batch': self._public(record), 'API_requests': 0, 'process_started': False,
+                'notice': '仅结束本次编排；原工作、结果、费用与历史保留。新准备仍由原owner复用或拒绝原工作，不会重置未知请求。'}
 
     def close(self):
         """Stop this sequencer only. Native child processes and their HTTP continue."""

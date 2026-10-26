@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import threading
+from contextlib import nullcontext
 
 import pytest
 
@@ -35,6 +36,9 @@ class FakeExecution:
         self.registration_calls.append(bundle_id)
         return {"bundle_id": bundle_id, "entity_id": value["entity_id"], "bundle_fingerprint": fingerprint(value["version"]),
             **{name: value.get(name) for name in ("company_preparation_id", "scope", "scope_id", "security_id", "expected_scope_bindings")}}
+
+    def _control_lock(self, action):
+        return nullcontext()
 
     def preview(self, payload):
         with self.lock:
@@ -1231,3 +1235,81 @@ def test_all_original_inspection_paths_persist_only_necessary_status_not_scope_i
     gateway._step(second)
     restored = gateway.get(second)["entries"][0]
     assert restored["state"] == "owner_ready" and set(restored["last_inspection"]) == required
+
+
+def retirement_fixture(gateway, execution):
+    original_preview = execution.preview
+    def checked(payload):
+        value = original_preview(payload)
+        value['inspection'] = {'work_items': {'Q1': {'status': 'leased' if execution.bundles[payload['bundle_id']]['unknown'] else 'pending'}}}
+        return value
+    execution.preview = checked
+    batch_id = start(gateway, ('a',))
+    gateway._step(batch_id)
+    execution.finish('a', ready=False, exit_code=1)
+    gateway.control(batch_id, 'pause')
+    return batch_id
+
+
+def test_abandon_stopped_batch_preserves_work_and_allows_fresh_same_entity(setup):
+    gateway, execution = setup
+    batch_id = retirement_fixture(gateway, execution)
+    before = json.loads(gateway._path(batch_id).read_text())
+    started = list(execution.started)
+    result = gateway.control(batch_id, 'abandon')
+    saved = json.loads(gateway._path(batch_id).read_text())
+    assert result['batch']['state'] == 'abandoned'
+    assert saved['entries'] == before['entries']
+    assert saved['selection_sha256'] == before['selection_sha256']
+    assert result['API_requests'] == 0 and execution.started == started
+    assert result['batch']['allowed_actions'] == []
+    execution.bundles['b']['entity_id'] = 'ENT_a'
+    fresh = start(gateway, ('b',))
+    assert fresh != batch_id and execution.started == started
+    assert gateway.control(batch_id, 'abandon')['status'] == 'already_abandoned'
+    with pytest.raises(DashboardBatchError):
+        gateway.control(batch_id, 'resume')
+
+
+@pytest.mark.parametrize('evidence', ['present', 'present_exited', 'unknown'])
+def test_abandon_never_releases_unknown_or_extant_process(setup, monkeypatch, evidence):
+    gateway, execution = setup
+    batch_id = retirement_fixture(gateway, execution)
+    next(iter(execution.runs.values())).update(process_state='needs_original_inspection', pid=12345)
+    monkeypatch.setattr(dashboard_batches, '_process_recovery_evidence', lambda *_: evidence)
+    before = gateway._path(batch_id).read_bytes()
+    with pytest.raises(DashboardBatchError) as raised:
+        gateway.control(batch_id, 'abandon')
+    assert raised.value.code == 'batch_abandon_process_unresolved'
+    assert gateway._path(batch_id).read_bytes() == before
+
+
+def test_abandon_absent_process_still_refuses_original_unknown_work(setup, monkeypatch):
+    gateway, execution = setup
+    batch_id = retirement_fixture(gateway, execution)
+    next(iter(execution.runs.values())).update(process_state='needs_original_inspection', pid=12345)
+    monkeypatch.setattr(dashboard_batches, '_process_recovery_evidence', lambda *_: 'absent')
+    execution.bundles['a']['unknown'] = True
+    before = gateway._path(batch_id).read_bytes()
+    with pytest.raises(DashboardBatchError) as raised:
+        gateway.control(batch_id, 'abandon')
+    assert raised.value.code == 'batch_abandon_work_unresolved'
+    assert gateway._path(batch_id).read_bytes() == before
+
+
+def test_abandon_requires_pause_and_complete_original_reference(setup):
+    gateway, execution = setup
+    batch_id = start(gateway, ('a',))
+    before = gateway._path(batch_id).read_bytes()
+    with pytest.raises(DashboardBatchError) as raised:
+        gateway.control(batch_id, 'abandon')
+    assert raised.value.code == 'batch_abandon_pause_required'
+    assert gateway._path(batch_id).read_bytes() == before
+    gateway._step(batch_id)
+    gateway.control(batch_id, 'pause')
+    execution.runs.clear()
+    before = gateway._path(batch_id).read_bytes()
+    with pytest.raises(DashboardBatchError) as raised:
+        gateway.control(batch_id, 'abandon')
+    assert raised.value.code == 'batch_abandon_reference_unresolved'
+    assert gateway._path(batch_id).read_bytes() == before

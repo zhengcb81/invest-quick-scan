@@ -57,9 +57,22 @@ class LLMConfig:
   self._validate_quick_scan_policy(policy)
   data=json.loads(self.path.read_text());data["quick_scan_model_policy"]=policy;self.path.write_text(json.dumps(data))
 ''', encoding="utf-8")
+    (source / "src/utils/quick_scan_refresh_admission.py").write_text('''
+import json, pathlib
+class RefreshAdmissionService:
+ def __init__(self, path): self.path=pathlib.Path(path)
+ def read_registered(self, confirmation_id):
+  data=json.loads(self.path.read_text())
+  if data.get("permission_error"):
+   error=ValueError("synthetic native permission refusal")
+   error.reason=data["permission_error"]
+   raise error
+  assert confirmation_id == "rc2_" + "a"*64
+  return {"confirmation":{"confirmation_id":confirmation_id}}, {}, {}
+''', encoding="utf-8")
     llm = put(runtime / "llm_apis.json", {"providers": {"test": {"api_key": "never-return-this"}}, "quick_scan_model_policy": {"models": ["first", "second"]}})
     ledger, policy = put(tmp_path / "ledger.sqlite", {}), put(tmp_path / "policy.json", {})
-    bundle = {"entity_id": "ENT_TEST", "company": "Test Corporation", "provider": "test", "confirmation_id": "confirm-1"}
+    bundle = {"entity_id": "ENT_TEST", "company": "Test Corporation", "provider": "test", "confirmation_id": "rc2_" + "a"*64}
     for key in ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "spend_authorization", "inspection_request"):
         bundle[key] = put(bundle_dir / (key + ".json"), {"entity_id": "ENT_TEST"} if key in {"identity_snapshot", "inspection_request"} else {})
     bundle["admission_config"] = put(bundle_dir / "admission.json", {"work_store": ledger, "budget_policy_file": policy})
@@ -343,6 +356,129 @@ def test_preview_calls_only_original_inspector_and_keeps_ledger_bytes(deployment
     assert not Path(config["state_root"]).exists()
 
 
+@pytest.mark.parametrize('reason,action', [
+    ('delegation_expired_or_future','fresh_same_scope_owner_preparation'),
+    ('delegation_revoked','fresh_same_scope_owner_preparation'),
+    ('refresh_consent_native_rejected','inspect_original_owner_permissions'),
+    ('refresh_execution_registered_action_required','inspect_original_owner_permissions'),
+    ('refresh_admission_ledger_busy','inspect_original_owner_permissions'),
+    ('refresh_admission_idempotency_conflict','inspect_original_owner_permissions'),
+    ('refresh_admission_explicit_setup_required','inspect_original_owner_permissions'),
+    ('refresh_admission_ledger_invalid','inspect_original_owner_permissions')])
+def test_original_permissions_refusal_blocks_budget_ready_preview_without_dispatch(deployment, reason, action):
+    config, runtime, bundle = deployment
+    admission = Path(bundle['admission_config'])
+    data = json.loads(admission.read_text())
+    data['permission_error'] = reason
+    put(admission, data)
+    ledger = Path(data['work_store'])
+    before = ledger.read_bytes()
+    gateway = ExecutionGateway(config)
+    preview = gateway.preview({'bundle_id':'test'})
+    assert preview['can_start'] is False and preview['status'] == 'blocked'
+    assert reason in preview['blocked_reasons']
+    assert preview['permissions_check']['status'] == 'blocked'
+    assert preview['required_action'] == action
+    assert preview['API_requests'] == 0 and preview['database_writes'] == 0
+    assert ledger.read_bytes() == before and not (runtime/'calls.txt').exists()
+    with pytest.raises(DashboardExecutionError):
+        gateway.start({'bundle_id':'test','preview_id':preview['preview_id']})
+    assert not (runtime/'calls.txt').exists()
+
+
+def test_permissions_are_rechecked_after_valid_preview_before_original_start(deployment):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    preview = gateway.preview({'bundle_id':'test'})
+    assert preview['permissions_check']['status'] == 'passed'
+    native = Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_admission.py'
+    original = native.read_text(encoding='utf-8')
+    native.write_text(original.replace('if data.get("permission_error"):', 'if True:')
+        .replace('error.reason=data["permission_error"]', 'error.reason="delegation_expired_or_future"'), encoding='utf-8')
+    with pytest.raises(DashboardExecutionError) as raised:
+        gateway.start({'bundle_id':'test','preview_id':preview['preview_id']})
+    assert raised.value.code == 'execution_not_ready'
+    assert not (runtime/'calls.txt').exists()
+
+
+def test_permissions_are_rechecked_on_same_run_resume_without_relaunch(deployment):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    run_id = start(gateway)['run']['run_id']
+    wait_done(gateway,run_id)
+    gateway.control(run_id,'pause')
+    native = Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_admission.py'
+    original = native.read_text(encoding='utf-8')
+    native.write_text(original.replace('if data.get("permission_error"):', 'if True:')
+        .replace('error.reason=data["permission_error"]', 'error.reason="delegation_expired_or_future"'), encoding='utf-8')
+    before = (runtime/'calls.txt').read_bytes()
+    with pytest.raises(DashboardExecutionError):
+        gateway.control(run_id,'resume')
+    assert (runtime/'calls.txt').read_bytes() == before
+
+
+@pytest.mark.parametrize('shape', ['wrong_id', 'not_authenticated', 'missing', 'true_counter'])
+def test_permissions_helper_contract_is_fail_closed(deployment,monkeypatch,shape):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    actual = gateway._call
+    def response(command,*args,**kwargs):
+        if '-c' not in command:
+            return actual(command,*args,**kwargs)
+        value={'protocol':'iqs.dashboard_registered_permissions/1.0.0', 'status':'passed',
+            'confirmation_id':bundle['confirmation_id'],'API_requests':0,
+            'permission_authenticated':True}
+        if shape=='wrong_id': value['confirmation_id']='rc2_'+'b'*64
+        elif shape=='not_authenticated': value['permission_authenticated']=False
+        elif shape=='true_counter': value['API_requests']=False
+        else: value.pop('permission_authenticated')
+        return value
+    monkeypatch.setattr(gateway,'_call',response)
+    preview=gateway.preview({'bundle_id':'test'})
+    assert preview['can_start'] is False
+    assert 'owner_permissions_contract_invalid' in preview['blocked_reasons']
+    assert not (runtime/'calls.txt').exists()
+
+
+def test_permissions_helper_unavailable_blocks_without_inventing_authority(deployment):
+    config, runtime, _ = deployment
+    (Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_admission.py').unlink()
+    preview = ExecutionGateway(config).preview({'bundle_id':'test'})
+    assert preview['can_start'] is False
+    assert 'owner_confirmation_permissions_rejected' in preview['blocked_reasons']
+    assert preview['required_action'] == 'inspect_original_owner_permissions'
+    assert not (runtime/'calls.txt').exists()
+
+
+def test_permissions_transport_timeout_is_not_a_model_retry_or_new_preparation(deployment,monkeypatch):
+    config, runtime, _ = deployment
+    actual = gateway_module.subprocess.run
+    def timeout(command,*args,**kwargs):
+        if '-c' in command:
+            raise gateway_module.subprocess.TimeoutExpired(command,130)
+        return actual(command,*args,**kwargs)
+    monkeypatch.setattr(gateway_module.subprocess,'run',timeout)
+    preview = ExecutionGateway(config).preview({'bundle_id':'test'})
+    assert preview['can_start'] is False
+    assert preview['blocked_reasons'] == ['owner_transport_unavailable']
+    assert preview['required_action'] == 'inspect_original_owner_permissions'
+    assert not (runtime/'calls.txt').exists()
+
+
+@pytest.mark.parametrize('work_status',['result_ready','delivered'])
+def test_readonly_recovery_cannot_bypass_current_native_permissions(deployment,work_status):
+    config, runtime, bundle = deployment
+    put(Path(bundle['inspection_request']), {'entity_id':'ENT_TEST','available':False,
+        'work_items':[{'question_id':'IQS_05','status':work_status}]})
+    data=json.loads(Path(bundle['admission_config']).read_text())
+    data['permission_error']='delegation_expired_or_future'
+    put(Path(bundle['admission_config']),data)
+    preview=ExecutionGateway(config).preview({'bundle_id':'test'})
+    assert preview['readonly_recovery'] is True and preview['can_start'] is False
+    assert preview['blocked_reasons']==['delegation_expired_or_future']
+    assert not (runtime/'calls.txt').exists()
+
+
 @pytest.mark.parametrize("payload", [{"bundle_id": "test", "command": "anything"}, {"bundle_id": "../test"}, {"bundle_id": "test", "entity_id": "ENT_OTHER"}])
 def test_browser_cannot_supply_commands_paths_or_other_entity(deployment, payload):
     config, runtime, _ = deployment
@@ -572,7 +708,9 @@ def test_native_keyed_work_items_and_g2b_envelope_do_not_require_fixture_flat_sh
     gateway=ExecutionGateway(config)
     native={'protocol':'stockqa.refresh_inspection/1.0.0','reservation_created':False,'API_requests':0,
         'quote':{'budget_available':False},'work_items':{'IQS_05':{'work_item_id':'WORK_original','status':'result_ready'}}}
-    monkeypatch.setattr(gateway,'_call',lambda *args,**kwargs:native)
+    actual = gateway._call
+    monkeypatch.setattr(gateway,'_call',lambda command,*args,**kwargs:
+        actual(command,*args,**kwargs) if '-c' in command else native)
     preview=gateway.preview({'bundle_id':'test'})
     assert preview['readonly_recovery'] is True and preview['inspection'] is native
     assert preview['inspection']['work_items']=={'IQS_05':{'work_item_id':'WORK_original','status':'result_ready'}}
@@ -649,3 +787,25 @@ def test_process_log_is_redacted_and_visible_while_child_is_still_running(tmp_pa
     assert secret not in final and 'after-cap-must-not-be-written' not in final
     assert run_id not in gateway._processes
     assert json.loads(path.read_text(encoding='utf8'))['process_state'] == 'process_exited'
+
+
+@pytest.mark.parametrize('created_after,expected', [(True, 'original_pid_reused'), (False, 'present'), (None, 'present')])
+def test_pid_reuse_requires_creation_strictly_after_same_launch_observation(monkeypatch, created_after, expected):
+    from scripts import dashboard_execution as mod
+    monkeypatch.setattr(mod, '_probe_process', lambda pid: 'present')
+    monkeypatch.setattr(mod, '_process_created_after', lambda pid, cutoff: created_after)
+    value = {'pid': 25008, 'process_state': 'needs_original_inspection', 'started_at': '2026-10-25T22:06:09Z', 'pause_requested_at': '2026-10-25T22:16:09Z'}
+    assert mod._process_recovery_evidence(value, False) == expected
+    assert mod._process_recovery_evidence({**value, 'resumed_at': '2026-10-26T08:05:00Z'}, False) == 'present'
+    for bad in [None, '', '2026-10-25', 'not-a-timeZ']:
+        assert mod._process_recovery_evidence({**value, 'pause_requested_at': bad}, False) == 'present'
+
+
+@pytest.mark.skipif(__import__('sys').platform != 'win32', reason='actual Windows readonly API')
+def test_actual_windows_process_time_probe_does_not_signal_current_process():
+    import os
+    from scripts import dashboard_execution as mod
+    assert mod._process_created_after(os.getpid(), '2000-01-01T00:00:00Z') is True
+    assert mod._process_created_after(os.getpid(), '2100-01-01T00:00:00Z') is False
+    assert mod._process_created_after(os.getpid(), 'invalidZ') is None
+    assert mod._process_created_after(True, '2000-01-01T00:00:00Z') is None

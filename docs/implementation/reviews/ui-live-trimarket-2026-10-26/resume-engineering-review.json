@@ -1,0 +1,64 @@
+{
+  "gateway": {
+    "sha256": "d3866ff6a74f88804f32a003be855ccd1882cc8d5f9def8e838cbf162c38483b",
+    "report": "runs\\resume-ui-live-2026-10-26\\gateway-review\\review.json",
+    "review": {
+      "reviewer": "/root/resume_gateway_review",
+      "author": "/root/review_live_deployment",
+      "status": "passed",
+      "open_findings": [],
+      "source_sha256": {
+        "scripts/dashboard_execution.py": "dbe857b936a68dd0f4373f0b3a2c5821c619c90a8601e2df86804aed34224f2b",
+        "tests/test_dashboard_execution.py": "68a4944460993929b503ef73ad040ee5150c289c86d962d157387f8c0b463366"
+      },
+      "reviewed_scope": [
+        "scripts/dashboard_execution.py",
+        "tests/test_dashboard_execution.py"
+      ],
+      "completed_at": "2026-10-26T08:02:42.428551+00:00",
+      "tests": {
+        "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONDONTWRITEBYTECODE=1 C:/Miniconda/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider tests/test_dashboard_execution.py runs/resume-ui-live-2026-10-26/gateway-review/test_independent.py -k \"orphaned or process_probe or explicit_pause or original_owner_rechecked or alive_owned or unsupported_platform or os_api_exception or readonly_projection\" --basetemp runs/resume-ui-live-2026-10-26/gateway-review/test-temp --junitxml runs/resume-ui-live-2026-10-26/gateway-review/tests.xml",
+        "passed": 35,
+        "independent_new_cases": 8,
+        "deselected": 32,
+        "seconds": 9.13,
+        "xml_sha256": "f9d529738d6f93ee377c3e24fd0ca890b54e88dba1351f169fe5b3981802775c"
+      },
+      "checks": [
+        "Only positive strict DWORD PID and OpenProcess ERROR_INVALID_PARAMETER87 can prove absence; no signal/termination rights.",
+        "Extant/reused/exited handle, access denial, read/close/API errors and unsupported platform remain nonauthorizing.",
+        "Both projection and actual control share predicate; control freshly previews original owner then probes inside cross-process control lock.",
+        "Explicit pause, local child exclusion, original input fingerprint, same run and launch-attempt increment retained.",
+        "Original unknown/leased work and unavailable budget cannot be overridden by absent PID.",
+        "Readonly checkpoint path retains existing compatibility and is not proof of business or financial completion."
+      ],
+      "cleanup": {
+        "owned_test_temp_removed": true,
+        "source_files_modified_by_reviewer": [],
+        "production_database_writes": 0,
+        "production_process_control": 0,
+        "paid_api_calls": 0
+      },
+      "limits": [
+        "No real resume, paid provider call, import/ACK or financial validation performed.",
+        "This is focused source/control-layer review, not new qualification of all SDK/owner functions."
+      ]
+    }
+  },
+  "prompt": {
+    "sha256": "fcd6b536f6bc106cc808d7d5b7a1a11f9b9032ab66e326fe7a4264b689ce5cf5",
+    "report": "runs\\resume-ui-live-2026-10-26\\prompt-review\\final.json",
+    "review": {
+      "status": "passed",
+      "reviewer": "/root/base_prompt_verify",
+      "open_findings": [],
+      "source": "StockQAbyLLM/src/providers/base_llm_provider.py",
+      "source_sha256": "b63f0c6fd0be8671afe7f101eb3f56b9816b9ddd2560a702586ae67fbb187407",
+      "tests_passed": 95,
+      "duration_seconds": 4.45,
+      "network_attempts": 0,
+      "isolated_temp_removed": true,
+      "production_or_financial_qualification": false
+    }
+  }
+}

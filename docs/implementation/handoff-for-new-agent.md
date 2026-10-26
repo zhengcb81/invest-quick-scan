@@ -1,3 +1,29 @@
+## 2026-10-26 — 恢复控制已独审，真实接续另暴露绑定缺口
+
+旧双公司编排已通过原UI显式结束（batch-0d8eca7295c04e6fb2530161c64104a8=abandoned），原entry/work/result/费用保留；实际旧Tencent PID25008被Chrome复用，只读创建时间证明原进程已退出，不曾杀Chrome。PID/abandon/权限预检同节点最终独审passed，原73P/33P、batch81P/21P、PID38P均标重叠不相加；详runs/resume-ui-live-2026-10-26/consent-preflight-independent/final.json。
+
+新原UI批batch-b750f87b4e224b998579cb79d4627b39启动了同work的微软run-b768a989d7b3410da3e021e1fe6a1d5e及腾讯run-87834193acbf4f858d354b2734491ee5。两者均在POST前被原registered_scope拒绝refresh_execution_registered_work_binding_mismatch，未派发模型；费用仍原3笔USD0.097105，0在途。这是fresh确认复用已有immutable ORF的真实边界，正在逐字段定位，不放宽原manifest/身份/主体检查或手改work。另CATL已known-response原owner预览拒subject_contract_output_invalid，正核原子CLI实际输出；尚未记真实resolution。
+
+有限work决议委托工程已独审并发布StockWiki8c5aef1（无remote）、StockQA b092085（已推origin）；原公共CLI隔离1P513.48s验证known/retry/幂等/撤权/8原物理表不变。正常hook仅格式变化经独立完整AST相同+32P复核，不冒称raw SHA未变。真实CATL处理仍待上述实例根因关闭，不能把工程通过当已恢复或金融通过。
+
+### Next Step
+
+根修真实attach绑定与CATL原subject验证两处实例边界，再同原work从UI继续完整36题/原StockWiki入库/exactACK。无需重跑小时全套、不再发整改卡或重复询问权限。
+
+---
+
+## 2026-10-26 — 用户恢复，接续三市场真实UI验收
+
+用户已明确继续，暂停指令解除。现场亲查：三个原执行进程及8766服务均已退出；原work状态与暂停时完全相同，预算仍3笔settled、97105微USD、in_flight=0。MSFT/Tencent仍各36 pending，CATL8 failed/2 leased/2 ready/24 pending，没有新发包。原run/batch/ledger保留，不另建重复任务。先完成PID恢复与既有答案格式提示的定向独审，再从UI恢复同run；L2/L3仍进行中，原入库/exact ACK与金融抽检未完成。
+
+现场薄快照：`runs/resume-ui-live-2026-10-26/resume-state.json`。外仓读取需沙箱提权已按既有授权执行；不新增权限询问。CodeGraph本次返回历史runs符号未命中目标，改用已知精确文件读，不将其当当前源码上下文。
+
+### Next Step
+
+两处遗留修改已独审并发布（IQS85eff72/StockQA c854087）。原同run试恢复0HTTP被过期delegation拒绝，不能沿用昨晚grant；现走原UI fresh准备，固定相同entity/2026-10-25截止/ASJ/model/ledger，原admission必须attach已有work（不是盲重建）。微软prepare_1562eced0ed049e3b6032dfb544d5f92、腾讯prepare_c6cf46c6bf2248aa9e98a17a488ecb1a正在原登记；只对合法当前确认的原work派发。同步修UI current_permissions预检，再真实入库/ACK。
+
+---
+
 ## 2026-10-25T22:27Z — 用户明确暂停（当前接续入口）
 
 本轮停止进一步实施、测试、审查与模型调用；下次用户明确继续后再执行。不要把下方早先“进行中”描述当活跃派发，也不要把工程通过当三市场真实入库完成。

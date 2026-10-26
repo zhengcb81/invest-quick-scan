@@ -79,7 +79,57 @@ def _process_recovery_evidence(record, readonly_recovery):
         return 'known_local_exit'
     if readonly_recovery is True:
         return 'original_checkpoints_only'
-    return _probe_process(record.get('pid'))
+    evidence = _probe_process(record.get('pid'))
+    if evidence in {'present', 'present_exited'}:
+        # A pause record was persisted only after observing that launch's PID.
+        # A process created later cannot be the original process. Never use an
+        # old pause from before a subsequent resume as an observation boundary.
+        try:
+            launch = record.get('resumed_at') or record['started_at']
+            observed = record['pause_requested_at']
+            if (isinstance(launch, str) and launch.endswith('Z') and isinstance(observed, str) and observed.endswith('Z')
+                and datetime.fromisoformat(observed.replace('Z', '+00:00')) >= datetime.fromisoformat(launch.replace('Z', '+00:00'))
+                and _process_created_after(record.get('pid'), observed) is True):
+                return 'original_pid_reused'
+        except (KeyError, TypeError, ValueError, OverflowError):
+            pass
+    return evidence
+
+
+def _process_created_after(pid, observed_at):
+    """Read process creation FILETIME on one Win32 handle; no process mutation."""
+    if type(pid) is not int or not 1 <= pid <= 0xffffffff or sys.platform != 'win32':
+        return None
+    try:
+        if not isinstance(observed_at, str) or not observed_at.endswith('Z'):
+            return None
+        observed = datetime.fromisoformat(observed_at.replace('Z', '+00:00'))
+        delta = observed - datetime(1601, 1, 1, tzinfo=timezone.utc)
+        ticks = (delta.days * 86400 + delta.seconds) * 10000000 + delta.microseconds * 10
+        import ctypes
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+        kernel.OpenProcess.restype = wintypes.HANDLE
+        kernel.GetProcessTimes.argtypes = [wintypes.HANDLE] + [ctypes.POINTER(wintypes.FILETIME)] * 4
+        kernel.GetProcessTimes.restype = wintypes.BOOL
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        kernel.CloseHandle.restype = wintypes.BOOL
+        handle = kernel.OpenProcess(0x1000, False, pid)
+        if not handle:
+            return None
+        result = None
+        try:
+            created, exited, kernel_time, user_time = [wintypes.FILETIME() for _ in range(4)]
+            if kernel.GetProcessTimes(handle, ctypes.byref(created), ctypes.byref(exited), ctypes.byref(kernel_time), ctypes.byref(user_time)):
+                actual = (created.dwHighDateTime << 32) | created.dwLowDateTime
+                result = actual > ticks
+        finally:
+            if not kernel.CloseHandle(handle):
+                result = None
+        return result
+    except Exception:
+        return None
 
 
 def _read(path):
@@ -153,6 +203,32 @@ try:
 except Exception as error:
     print(json.dumps({"error_code": "settings_changed" if str(error) == "settings_changed" else "owner_policy_rejected"}))
     raise SystemExit(2)
+'''
+
+
+_REGISTERED_PERMISSIONS_HELPER = r'''
+import contextlib, json, sys
+source, config_path, confirmation_id = sys.argv[1:]
+sys.path.insert(0, source)
+try:
+    with contextlib.redirect_stdout(sys.stderr):
+        from src.utils.quick_scan_refresh_admission import RefreshAdmissionService
+        proof, _, _ = RefreshAdmissionService(config_path).read_registered(confirmation_id)
+        if proof["confirmation"]["confirmation_id"] != confirmation_id:
+            raise ValueError("original_confirmation_mismatch")
+    result = {"protocol": "iqs.dashboard_registered_permissions/1.0.0",
+        "status": "passed", "confirmation_id": confirmation_id,
+        "permission_authenticated": True, "API_requests": 0}
+    code = 0
+except Exception as error:
+    reason = getattr(error, "reason", "owner_confirmation_permissions_rejected")
+    import re
+    if not isinstance(reason, str) or re.fullmatch(r"[a-z][a-z0-9_]{0,159}", reason) is None:
+        reason = "owner_confirmation_permissions_rejected"
+    result = {"error_code": reason, "API_requests": 0}
+    code = 2
+print(json.dumps(result, ensure_ascii=False, allow_nan=False))
+raise SystemExit(code)
 '''
 
 
@@ -302,6 +378,29 @@ class ExecutionGateway:
             return value  # Historical transport fixtures; never rewrite native bytes.
         raise DashboardExecutionError('owner_inspection_contract_invalid','原执行检查缺少逐题映射。',409)
 
+    def _registered_permissions(self, bundle, root, runtime):
+        """Read original registered consent/current authority, never admit new work.
+
+        The original reader owns receipt/deployment/input checks. It may create
+        and clean temporary validation copies in its configured runs directory;
+        this is not a claim of zero filesystem activity.
+        """
+        command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8",
+                   "-c", _REGISTERED_PERMISSIONS_HELPER, str(root),
+                   bundle["admission_config"], bundle["confirmation_id"]]
+        try:
+            result = self._call(command, root, runtime)
+        except DashboardExecutionError as error:
+            return {"status": "blocked", "reason": error.code}
+        if (result.get("protocol") != "iqs.dashboard_registered_permissions/1.0.0"
+            or result.get("status") != "passed"
+            or result.get("confirmation_id") != bundle["confirmation_id"]
+            or result.get("permission_authenticated") is not True
+            or type(result.get("API_requests")) is not int or result["API_requests"] != 0):
+            return {"status": "blocked", "reason": "owner_permissions_contract_invalid"}
+        return {"status": "passed", "confirmation_id": bundle["confirmation_id"],
+                "inspection_mode": "current_permissions", "registered_action_checked": True}
+
     def preview(self, payload):
         key, bundle = self._select(payload)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
@@ -325,18 +424,29 @@ class ExecutionGateway:
         work = self.inspection_work_items(inspection)
         unknown = any(row.get("status") in {"uncertain", "leased"} for row in work)
         readonly = bool(work) and all(row.get("status") in {"result_ready", "delivered"} for row in work)
-        ready = not unknown and (quote.get("budget_available") is True or readonly)
+        permissions = self._registered_permissions(bundle, root, runtime)
+        ready = not unknown and (quote.get("budget_available") is True or readonly) and permissions['status'] == 'passed'
         preview_id = "preview-" + uuid.uuid4().hex
         self._previews[preview_id] = {"bundle_id": key, "bundle_fingerprint": self._fingerprint(bundle), "inspection_sha256": _digest(inspection)}
         while len(self._previews) > 128:
             self._previews.pop(next(iter(self._previews)))
-        blocked = [] if ready else ["owner_work_unknown" if unknown else "owner_budget_or_original_work_blocked"]
+        blocked = []
+        if unknown:
+            blocked.append("owner_work_unknown")
+        elif quote.get("budget_available") is not True and not readonly:
+            blocked.append("owner_budget_or_original_work_blocked")
+        if permissions['status'] != 'passed':
+            blocked.append(permissions['reason'])
         return {**grouping, "bundle_id": key, "entity_id": bundle["entity_id"], "status": "ready" if ready else "blocked",
                 "bundle_fingerprint": self._previews[preview_id]['bundle_fingerprint'],
                 "preview_id": preview_id, "inspection_sha256": _digest(inspection), "readonly_recovery": readonly,
-                "can_start": ready, "missing": [] if ready else ["owner_budget_or_original_work_blocked"],
+                "can_start": ready, "missing": blocked,
                 "blocked_reasons": blocked, "inspection": inspection, "API_requests": 0, "database_writes": 0,
-                "notice": "预览不预留费用；执行前由原owner重新校验身份、scope、费用与缓存"}
+                "permissions_check": permissions,
+                "required_action": ("fresh_same_scope_owner_preparation" if permissions.get('reason') in {
+                    'delegation_expired_or_future', 'delegation_revoked'}
+                    else "inspect_original_owner_permissions") if permissions['status'] != 'passed' else None,
+                "notice": "预览不预留费用；原owner同时检查已登记确认的当前权限。权限失效须重新准备同一scope，不能扩预算或重发旧任务。执行前仍会再次核验。"}
 
     def _records(self):
         if not self.state_root.is_dir():
@@ -405,7 +515,7 @@ class ExecutionGateway:
                     and preview["can_start"]):
                     evidence = _process_recovery_evidence(value, preview.get('readonly_recovery'))
                     value['process_recovery_evidence'] = evidence
-                    if evidence in {'known_local_exit', 'original_checkpoints_only', 'absent'}:
+                    if evidence in {'known_local_exit', 'original_checkpoints_only', 'absent', 'original_pid_reused'}:
                         actions.append("resume")
             except DashboardExecutionError as error:
                 value.update(inspection_status="unavailable", inspection_error=error.code)
@@ -546,13 +656,13 @@ class ExecutionGateway:
                 # The UI's earlier projection is never authority: re-probe
                 # under the original control lock after fresh owner checks.
                 evidence = _process_recovery_evidence(record, preview.get('readonly_recovery'))
-                if evidence not in {'known_local_exit', 'original_checkpoints_only', 'absent'}:
+                if evidence not in {'known_local_exit', 'original_checkpoints_only', 'absent', 'original_pid_reused'}:
                     raise DashboardExecutionError("original_process_unknown", "未能确认原进程已不存在；仅允许原检查点的只读恢复", 409)
                 root, runtime, _, _ = self._deployment(bundle)
                 attempt = record.get("launch_attempt", 1) + 1
-                if evidence == 'absent':
+                if evidence in {'absent', 'original_pid_reused'}:
                     record['recovered_process_observation'] = {'pid': record['pid'],
-                        'state': 'absent', 'observed_at': _now(), 'source': 'win32_readonly_probe'}
+                        'state': evidence, 'observed_at': _now(), 'source': 'win32_readonly_probe'}
                 record.update(launch_attempt=attempt, result_path=str(self.state_root / run_id / f"result-{attempt}.json"),
                               log_path=str(self.state_root / run_id / f"process-{attempt}.log"), process_state="starting",
                               launcher_state="running", resumed_at=_now())

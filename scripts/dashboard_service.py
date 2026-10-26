@@ -533,7 +533,7 @@ class DashboardService:
                 return self._batches().registration_preview(body)
             if path == 'batches/start':
                 return self._batches().start(body)
-            match = re.fullmatch(r'batches/([A-Za-z0-9_.-]{1,128})/(pause|resume)', path)
+            match = re.fullmatch(r'batches/([A-Za-z0-9_.-]{1,128})/(pause|resume|abandon)', path)
             if match:
                 if body: raise ProductError('invalid_body','批任务控制无需额外参数。')
                 return self._batches().control(*match.groups())
