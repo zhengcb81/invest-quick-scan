@@ -1,3 +1,17 @@
+## 2026-10-26 — 原工作跨版本与已答缓存恢复已发布，三市场UI实跑继续
+
+StockQA620d405正常钩子全部通过并推送origin，3源最终SHA亲核与独审锁一致；作者59P22.88s、非作者最终38P（23新增，含原状态补充；与早先34重叠不相加），mypy2源通过。只在真实ApprovedRefreshSession和fresh原权限/原record/spec/ORF一致下接受单调增加的current anchor epoch，旧binding不改；CATL原IQS10/12以旧checkpoint/context/standard answer/receipt/outbox恢复，0claim/0HTTP、原账本字节不变。两旧pkg早已ready，不需重新seal。薄证据见reviews/ui-live-trimarket-2026-10-26/anchor-ready-final-review.json及actual-catl-*。
+
+IQSebf4793已推送/UI13e4087已本地提交（UI无remote）。实际UI旧Tencent启动引用已retired，新准备TTL14400已保存；新MSFT prepare_53c5153c155e45e1a0cbea1bb24d11bf和Tencent prepare_ca7280906307487ebcb0f50abf862c61已registered，CATL prepare_24a25d855b2346e5961731dbc47491d9仍在原登记。均原2026-10-25/ASJ/证券/模型，CATLquick其余full，原题库36；等全部结束后统一UI批次启动。工程签收不代替真实收费请求/全36题/入库/ACK/金融通过。
+
+已知另一个既有CLI缺口：--seal-deliveries无合法参数选本次admission_config.work_store，普通入口会派生quick_scan_work.sqlite；当前原pkg均已封存，不用该入口、不新建别名库。若后续需未封检查点恢复，须按原admission membership+真实ledger逐work修复封存入口，不能全共享库seal或换新authority。已只读留档seal-path-read-only方案，不改本次终审冻结源。
+
+### Next Step
+
+完成CATL原登记及三市场108题/6个新grant的只读绑定核对，再从UI启动最新三个完整组。核实际模型账本增长、完整回答、原StockWiki导入与exact ACK和重启缓存0新HTTP。
+
+---
+
 ## 2026-10-26T19:12Z — 真实UI旧引用归档与新确认时长完成，继续原扫描
 
 同一恢复节点已独审通过：新确认时长14P+原API21P/独审35P；UI原33P及独立10P；启动引用归档作者55P/独审30P（重叠不相加）。实际从8766 UI核原状态并归档旧腾讯run-14f3feca62cd4d9f8859c72f44549bf9，原PID复用证据、33pending均保留，仅本地引用observed_stopped/retired；随后UI原CAS成功保存新准备14400秒。旧grant不延长，原预算仍3笔settled/97105微USD/0在途。
