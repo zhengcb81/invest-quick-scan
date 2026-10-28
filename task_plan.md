@@ -1,3 +1,19 @@
+## 2026-10-28T11:34Z — 两真实恢复已原ACK2/2，普通三市场完整扫描推进中
+
+微软原run-164a…显式resume成功，完整标准/原封存pkg_dd0918…已保存；原UI deliveryjob_97291f8729794d5720299e6444e97729 completed，原ACK2/2（宁德原ACK幂等复用），两个新target均delivered。原账本13settled/345083微USD估计/0在途。该结果仅关闭两故障题，绝非三公司36题已完成。
+
+返回普通策略时root漏同步qa.quote_schema_version：v5顶层1.1/quote1.2被原纯policy validator拒绝，通用继承wrapper错误名subject_contract_output_invalid并非第二主体算法缺陷。已保留失败记录，以新v6同时quote1.1通过原validator及原固定CLI，独立ordinary-policy-contract-diagnosis确认；TTL24不变。UI CAS删除两refs成功。旧MSFT c2f3准备已原核阶段/明确abandon保留记录，过期/变更预览重新生成，未自动重做不明确认。无额外付费。
+
+完整36题（33entity+3security）普通组：Tencent prepare_dbe2672a8c184bd7867c6895a01004b0已registered；MSFT prepare_bcd239c7b60d4863b5b7b146699dc3f2已registered；CATL prepare_d9e50ca77983450493b3405621d5873d仍原preparing。原截止25日/原主体及证券不变。Tencent已原UI选完整组→预览1公司2scope→启动batch-c55dd97f18f64b8188c891bf1ffaddd4；因并行准备写原账本，readonly准入refresh_admission_ledger_busy在派发前保守blocked/run_id空，无新增HTTP。待准备安全结束原UI明确恢复，不重prepare或新建工作。
+
+同时根修正常移除refs令旧delivery全列表409的问题：新稳定delivery fingerprint profile1.1仅排prepare.refs，其余原部署仍pin；旧不可逆hash不篡改，仅合法completed/all-delivered/计数自洽历史可读，目标或冻结bundle改变均historical_read_only/current_target_verified=false/actions[]，不参与当前完成推荐。原_run/control保持strict；坏文件/stat竞态逐项诊断，unknown active保守。独审剩余同target假completed/列表stat/同hash bundle变更均已补长期反例并修复。最终独审delivery-history-final.json passed/open[]，11P2.172s；作者短根57P9.56s（含实际UI38）、随后最终backend16P1.59s分轮披露；最初长临时路径3失败已改短owned根，非产品500漏洞；旧3红其中首项测试导入路径错误不冒充业务红。临时根全部清/API0。UI ed43804已本地提交，无remote。新delivery源码尚未重载live，不能提前称现场列表已修；当前server launcher22884，活动准备不可打断。
+
+### Next Step
+
+提交推送IQS历史交付根修/证据/PWF；待CATL准备安全结束再核原进程后重载8766，实看历史只读列表，然后原UI恢复Tencent并启动MSFT/CATL完整组，跑完三市场36题、原封存/import/exactACK与缓存重启恢复。有效期观察复用/过期刷新已有原生隔离工程验收，真实历史日期的检查点恢复必须单独标记，不能称今日新鲜缓存。继续执行不暂停。
+
+---
+
 ## 2026-10-28T10:55Z — 并发/过期接续根修独审关闭并发布，正在UI恢复微软
 
 StockQA2db4ce0已normal全部hooks通过并push origin/master。当前schema改严格query_only一致读快照，不占唯一writer槽；迁移仍原BEGIN IMMEDIATE锁后重读版本；仅20处now改为取得原写锁后取值，120秒有界等待，DELETE/FULL不变。独审发现incoming事务可能被回滚，也已保护并补query_only0/1未提交marker反例。非作者11P（9P5.499s+2P3.299s）、final13P12.429s/posthook13P11.272s、原148P1F（子进程cwd写共享日志）后修隔离两焦点2P3.492s，分轮披露，不冒充149同轮绿。旧source新增反例9F1P17.621s；首次应用脚本以21误计实际20，断言保护未写源码，误起旧cohort留作失败记录。CodeGraph上下文超时中止，已在已知源文件定位，不虚报索引结果。

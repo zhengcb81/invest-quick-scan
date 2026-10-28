@@ -1,0 +1,56 @@
+{
+  "status": "root_cause_confirmed",
+  "reviewer": "/root/review_recovery_resume",
+  "scope": "Only pure original request/policy validators and original fixed contract CLI against owned temp; no owner CLI preview/grant/apply or database access",
+  "original_request_validated": true,
+  "original_request_field_count": 33,
+  "prior_actual_v5_bytes_sha256_verified": "0ed79f5304ce4022866a32bbbae0e9eca7b6758ed41406effc523bb7acc9544e",
+  "prior_v5_byte_proof_boundary": "Prior exact policy serialized with the original retained serializer after reversing only declared version/quote changes; resulting byte SHA equals original ordinary-policy-switch after_sha256. No original authorization body persisted in this report.",
+  "prior_policy_dialect": "stockwiki.refresh_owner_policy/1.1.0",
+  "prior_quote_dialect": "1.2.0",
+  "direct_original_validation_error": "refresh_document_invalid",
+  "original_inherited_wrapper_error": "ObservationImportError:subject_contract_output_invalid",
+  "trace": [
+    {
+      "protocol": "iqs.refresh_validation/1.0.0",
+      "operation": "request",
+      "status": "validated",
+      "error_code": null,
+      "API_requests": 0,
+      "database_writes": 0,
+      "returncode": 0
+    },
+    {
+      "protocol": "iqs.refresh_validation/1.0.0",
+      "operation": "policy",
+      "status": "rejected",
+      "error_code": "refresh_contract_rejected",
+      "API_requests": 0,
+      "database_writes": 0,
+      "returncode": 2
+    },
+    {
+      "protocol": "iqs.refresh_validation/1.0.0",
+      "operation": "policy",
+      "status": "validated",
+      "error_code": null,
+      "API_requests": 0,
+      "database_writes": 0,
+      "returncode": 0
+    }
+  ],
+  "candidate_v6_validated": true,
+  "current_real_policy_equals_exact_validated_candidate_v6": true,
+  "current_policy_version": 6,
+  "current_quote_version": "1.1.0",
+  "current_real_TTL_hours": 24,
+  "current_policy_sha256": "5b210d063c279652f1b0f21a912ad5e007d94b70cc87ecf64a09343043b5d95f",
+  "two_concerns_same_root_cause": "IqsRefreshContract inherits the generic IqsSubjectContract._call. Actual operationpolicy rejects the1.1 policy with quote1.2 and the inherited wrapper reports subject_contract_output_invalid. No separate execution-profile/identity defect established.",
+  "old_failed_work_relevance": "No dependency on old failed rows was needed to reproduce. Failure occurs in pure policy shape validation before executor work/lease inspection. Existing guards must remain.",
+  "minimum_prevention": "For every ordinary/recovery switch, build whole candidate, validate it with the existing original policy validator before CAS/atomic write; increment policy version and align nested qa.quote_schema_version. Read back exact candidate hash and preserve rejected old policy evidence; no new schema/StockWiki changes needed.",
+  "API_requests": 0,
+  "real_database_access": 0,
+  "source_or_policy_writes": 0,
+  "answer_or_authorization_bodies_exported": false,
+  "owned_runtime_removed": true
+}

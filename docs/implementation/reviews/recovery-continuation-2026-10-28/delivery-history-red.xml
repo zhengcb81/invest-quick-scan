@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="4.399" timestamp="2026-10-28T11:20:35.183986+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_dashboard_delivery_jobs" name="test_normal_recovery_reference_removal_preserves_delivery_target_identity" time="1.091"><failure message="ModuleNotFoundError: No module named 'dashboard_locks'">def test_normal_recovery_reference_removal_preserves_delivery_target_identity():
+&gt;       from scripts.dashboard_service import delivery_deployment_fingerprint
+
+tests\test_dashboard_delivery_jobs.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    """Local product control plane over the existing two owners.
+    
+    No model client, question queue, scoring formula, or private database access.
+    """
+    from __future__ import annotations
+    
+    import hashlib
+    import json
+    import os
+    from pathlib import Path
+    import re
+    import secrets
+    import threading
+    import time
+    from urllib.parse import parse_qs, urlsplit
+&gt;   from dashboard_locks import control_lock, ControlBusyError
+E   ModuleNotFoundError: No module named 'dashboard_locks'
+
+scripts\dashboard_service.py:16: ModuleNotFoundError</failure></testcase><testcase classname="tests.test_dashboard_delivery_jobs" name="test_completed_legacy_deployment_change_is_readonly_history_not_replay_authority" time="0.098"><failure message="scripts.dashboard_delivery_jobs.DeliveryJobError: 交付引用损坏或目标已变，先核原状态。">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/delivery-red-temp/test_completed_legacy_deployme0')
+
+    def test_completed_legacy_deployment_change_is_readonly_history_not_replay_authority(tmp_path):
+        execution=Execution();calls=[]
+        original=DeliveryJobs(execution,tmp_path,'a'*64,lambda bundle:calls.append(bundle) or {'status':'delivered'},lambda _:None)
+        jid=original.submit({'bundle_id':'A'})['job']['job_id'];settled(original,jid)
+        path=original._path(jid);before=path.read_bytes()
+        current=DeliveryJobs(execution,tmp_path,'b'*64,lambda bundle:calls.append(bundle),lambda _:None)
+&gt;       history=current.get(jid)
+                ^^^^^^^^^^^^^^^^
+
+tests\test_dashboard_delivery_jobs.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\dashboard_delivery_jobs.py:151: in get
+    record=self._read(self._path(job_id));thread=self._threads.get(job_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;scripts.dashboard_delivery_jobs.DeliveryJobs object at 0x000001571A9B6D50&gt;
+path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/delivery-red-temp/test_completed_legacy_deployme0/deliveryjob_937aedee7448bf185f525adb45184d30.json')
+
+    def _read(self,path):
+        for attempt in range(8):
+            try:
+                raw=path.read_bytes()
+                if len(raw)&gt;16*1024*1024: raise ValueError('large')
+                value=json.loads(raw.decode('utf8'))
+                if (value.get('protocol')!='iqs.delivery_job/1.0.0' or value.get('job_id')!=path.stem
+                    or value.get('deployment_sha256')!=self.deployment_sha256
+                    or not isinstance(value.get('entries'),list) or not value['entries']):
+                    raise ValueError('invalid')
+                return value
+            except PermissionError:
+                if attempt&lt;7: time.sleep(.01);continue
+                raise DeliveryJobError('delivery_reference_busy','交付记录暂不可读；不会按空任务重做。') from None
+            except FileNotFoundError:
+                raise DeliveryJobError('delivery_job_unknown','没有该交付任务。',404) from None
+            except (OSError,ValueError,TypeError,AttributeError):
+&gt;               raise DeliveryJobError('delivery_reference_invalid','交付引用损坏或目标已变，先核原状态。') from None
+E               scripts.dashboard_delivery_jobs.DeliveryJobError: 交付引用损坏或目标已变，先核原状态。
+
+scripts\dashboard_delivery_jobs.py:61: DeliveryJobError</failure></testcase><testcase classname="tests.test_dashboard_delivery_jobs" name="test_unfinished_foreign_deployment_is_blocked_and_bad_record_does_not_hide_good_history" time="0.078"><failure message="scripts.dashboard_delivery_jobs.DeliveryJobError: 交付引用损坏或目标已变，先核原状态。">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/delivery-red-temp/test_unfinished_foreign_deploy0')
+
+    def test_unfinished_foreign_deployment_is_blocked_and_bad_record_does_not_hide_good_history(tmp_path):
+        execution=Execution()
+        old=DeliveryJobs(execution,tmp_path,'e'*64,lambda _:{'status':'partial'},lambda _:None)
+        jid=old.submit({'bundle_id':'A'})['job']['job_id'];settled(old,jid)
+        current=DeliveryJobs(execution,tmp_path,'f'*64,lambda _:pytest.fail('no import'),lambda _:None)
+        with pytest.raises(DeliveryJobError):current.get(jid)
+&gt;       assert current.active() is True
+               ^^^^^^^^^^^^^^^^
+
+tests\test_dashboard_delivery_jobs.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\dashboard_delivery_jobs.py:164: in active
+    return any(self.get(path.stem)['state'] in {'running','partial','needs_original_inspection'} for path in self.state_root.glob('deliveryjob_*.json')) if self.state_root.exists() else False
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\dashboard_delivery_jobs.py:164: in &lt;genexpr&gt;
+    return any(self.get(path.stem)['state'] in {'running','partial','needs_original_inspection'} for path in self.state_root.glob('deliveryjob_*.json')) if self.state_root.exists() else False
+               ^^^^^^^^^^^^^^^^^^^
+scripts\dashboard_delivery_jobs.py:151: in get
+    record=self._read(self._path(job_id));thread=self._threads.get(job_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;scripts.dashboard_delivery_jobs.DeliveryJobs object at 0x000001571AB71A70&gt;
+path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/delivery-red-temp/test_unfinished_foreign_deploy0/deliveryjob_a9b88d68d0987704dea4cce70f4d0115.json')
+
+    def _read(self,path):
+        for attempt in range(8):
+            try:
+                raw=path.read_bytes()
+                if len(raw)&gt;16*1024*1024: raise ValueError('large')
+                value=json.loads(raw.decode('utf8'))
+                if (value.get('protocol')!='iqs.delivery_job/1.0.0' or value.get('job_id')!=path.stem
+                    or value.get('deployment_sha256')!=self.deployment_sha256
+                    or not isinstance(value.get('entries'),list) or not value['entries']):
+                    raise ValueError('invalid')
+                return value
+            except PermissionError:
+                if attempt&lt;7: time.sleep(.01);continue
+                raise DeliveryJobError('delivery_reference_busy','交付记录暂不可读；不会按空任务重做。') from None
+            except FileNotFoundError:
+                raise DeliveryJobError('delivery_job_unknown','没有该交付任务。',404) from None
+            except (OSError,ValueError,TypeError,AttributeError):
+&gt;               raise DeliveryJobError('delivery_reference_invalid','交付引用损坏或目标已变，先核原状态。') from None
+E               scripts.dashboard_delivery_jobs.DeliveryJobError: 交付引用损坏或目标已变，先核原状态。
+
+scripts\dashboard_delivery_jobs.py:61: DeliveryJobError</failure></testcase></testsuite></testsuites>

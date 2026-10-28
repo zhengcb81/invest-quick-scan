@@ -244,11 +244,11 @@ class DashboardService:
 
     def _delivery_jobs(self):
         if self._delivery is None:
-            from dashboard_delivery_jobs import DeliveryJobs
-            frozen={k:v for k,v in self.config.items() if k not in {'execution_bundles','import_bundles'}}
-            digest=hashlib.sha256(json.dumps(frozen,sort_keys=True,ensure_ascii=False).encode('utf8')).hexdigest()
+            from dashboard_delivery_jobs import DeliveryJobs, delivery_deployment_fingerprint, STABLE_DEPLOYMENT_PROFILE
+            digest=delivery_deployment_fingerprint(self.config)
             self._delivery=DeliveryJobs(self._gateway('execution'),Path(self.config['state_root'])/'delivery-jobs',digest,
-                lambda bundle_id:self._deliver_scope(bundle_id),lambda batch_id:self._batches().get(batch_id))
+                lambda bundle_id:self._deliver_scope(bundle_id),lambda batch_id:self._batches().get(batch_id),
+                fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
         return self._delivery
 
     def _deliver_scope(self, bundle_id):

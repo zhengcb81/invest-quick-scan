@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="0.958" timestamp="2026-10-28T11:27:12.201902+00:00" hostname="DESKTOP-156V213"><testcase classname="runs.resume-recovery-2026-10-28.independent.test_delivery_history_adversarial" name="test_same_target_false_completed_stays_invalid_and_active_failclosed[pending_entry]" time="0.214"><failure message="Failed: DID NOT RAISE DeliveryJobError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/independent/independent-history-adversarial-fesc411l/pytest-temp/test_same_target_false_complet0')
+fault = 'pending_entry'
+
+    @pytest.mark.parametrize('fault',['pending_entry','invalid_summary'])
+    def test_same_target_false_completed_stays_invalid_and_active_failclosed(tmp_path,fault):
+        j=jobs(tmp_path);jid='deliveryjob_'+'1'*32;r=record(jid)
+        if fault=='pending_entry':r['entries'][0]['state']='pending'
+        else:r['entries'][0]['outcome']['delivered_packages']=0
+        j._write(j._path(jid),r);before=j._path(jid).read_bytes()
+&gt;       with pytest.raises(DeliveryJobError):j.get(jid)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DeliveryJobError
+
+..\test_delivery_history_adversarial.py:20: Failed</failure></testcase><testcase classname="runs.resume-recovery-2026-10-28.independent.test_delivery_history_adversarial" name="test_same_target_false_completed_stays_invalid_and_active_failclosed[invalid_summary]" time="0.027"><failure message="Failed: DID NOT RAISE DeliveryJobError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/independent/independent-history-adversarial-fesc411l/pytest-temp/test_same_target_false_complet1')
+fault = 'invalid_summary'
+
+    @pytest.mark.parametrize('fault',['pending_entry','invalid_summary'])
+    def test_same_target_false_completed_stays_invalid_and_active_failclosed(tmp_path,fault):
+        j=jobs(tmp_path);jid='deliveryjob_'+'1'*32;r=record(jid)
+        if fault=='pending_entry':r['entries'][0]['state']='pending'
+        else:r['entries'][0]['outcome']['delivered_packages']=0
+        j._write(j._path(jid),r);before=j._path(jid).read_bytes()
+&gt;       with pytest.raises(DeliveryJobError):j.get(jid)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE DeliveryJobError
+
+..\test_delivery_history_adversarial.py:20: Failed</failure></testcase><testcase classname="runs.resume-recovery-2026-10-28.independent.test_delivery_history_adversarial" name="test_one_metadata_unreadable_reference_does_not_break_whole_list" time="0.010"><failure message="FileNotFoundError: synthetic reference disappeared after glob">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/independent/independent-history-adversarial-fesc411l/pytest-temp/test_one_metadata_unreadable_r0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018B4D0FA8B0&gt;
+
+    def test_one_metadata_unreadable_reference_does_not_break_whole_list(tmp_path,monkeypatch):
+        j=jobs(tmp_path);jid='deliveryjob_'+'2'*32;r=record(jid);j._write(j._path(jid),r)
+        bad=tmp_path/('deliveryjob_'+'3'*32+'.json');bad.write_text('{bad',encoding='utf-8')
+        original=Path.stat
+        def stat(self,*args,**kwargs):
+            if self==bad:raise FileNotFoundError('synthetic reference disappeared after glob')
+            return original(self,*args,**kwargs)
+        with monkeypatch.context() as patch:
+            patch.setattr(Path,'stat',stat)
+&gt;           page=j.list()
+                 ^^^^^^^^
+
+..\test_delivery_history_adversarial.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\scripts\dashboard_delivery_jobs.py:222: in list
+    paths=sorted(self.state_root.glob('deliveryjob_*.json'),key=lambda p:p.stat().st_mtime,reverse=True) if self.state_root.exists() else []
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\scripts\dashboard_delivery_jobs.py:222: in &lt;lambda&gt;
+    paths=sorted(self.state_root.glob('deliveryjob_*.json'),key=lambda p:p.stat().st_mtime,reverse=True) if self.state_root.exists() else []
+                                                                         ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/independent/independent-history-adversarial-fesc411l/pytest-temp/test_one_metadata_unreadable_r0/deliveryjob_33333333333333333333333333333333.json')
+args = (), kwargs = {}
+
+    def stat(self,*args,**kwargs):
+&gt;       if self==bad:raise FileNotFoundError('synthetic reference disappeared after glob')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: synthetic reference disappeared after glob
+
+..\test_delivery_history_adversarial.py:31: FileNotFoundError</failure></testcase></testsuite></testsuites>

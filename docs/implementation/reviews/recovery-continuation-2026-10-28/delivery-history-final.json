@@ -1,0 +1,108 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewer": "/root/review_recovery_resume",
+  "checked_at": "2026-10-28T11:33:22.315992+00:00",
+  "scope": "Frozen delivery-job completed-history compatibility, explicit stable fingerprint profile, read/write separation and actual ESM display. Not a claim that the active server has reloaded or native ACKs were re-imported/revalidated.",
+  "source_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\dashboard_delivery_jobs.py": "b9b3c27d4221a7f9428159f836c183999977186e6b5e2daec16b9f6c08ec8de1",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\dashboard_service.py": "fc3884abb4e1f7ff2d732205d2bb276ab04b3c93573be2be317b008f8f5d516b",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_dashboard_delivery_jobs.py": "626b0a9f17baf36af5a9692187aec0c895d8dcb67be652546daf8a65daeb324c",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product_core.js": "4f2aa524d0c189ea89e179e9eefa9b60652d81ca7113b1041027e26f20fb7947",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product.js": "f59d29167889d8c1f7161534d3458d3986256584a774d61e5a5648eadc2f9f97",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_product_ui.py": "5a48ca1453dcb3de0f7d0d211a9d6b6d516c0532aaed25b9531ba17a92ad25ac"
+  },
+  "Python_AST_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\dashboard_delivery_jobs.py": "45e71e0635ee8e7233fdfcdc7d9ec40850be5f771c093b76b7ffc1b0c3e4293e",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\dashboard_service.py": "16aea05b77e6fc5f3dd1e9d04447598a71f56e6226b1b711587d431f8bcb6e04",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_dashboard_delivery_jobs.py": "1ddc17235b2adf81a64a582b0faf815c44297f35a6acb448923c75fa34f21529",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_product_ui.py": "e33cb633635358136bf7a6320e9d52022cdc113583847a2cfcfa19f77034946f"
+  },
+  "actual_original_root_cause": "delivery-config-revision-diagnosis.json: restoring only the removed prepare recovery refs in memory exactly reproduces both original job deployment digests. No actual target change was established by that old digest mismatch.",
+  "independent_tests": {
+    "tests": "11",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "2.172"
+  },
+  "independent_original_red": {
+    "tests": "3",
+    "errors": "0",
+    "failures": "3",
+    "skipped": "0",
+    "time": "0.958"
+  },
+  "independent_runtime_cleanup": true,
+  "resolved_adversarial_findings": [
+    {
+      "finding": "Same-target falsecompleted record bypassed completed-summary validation and could be treated inactive",
+      "fixed": "All completed records now require all entries delivered and original summary integer counts consistent before current/history classification",
+      "independent_cases": "pending_entry and invalid_summary; both original reds now pass with get rejecting, list explicit invalid, active conservative and bytes unchanged"
+    },
+    {
+      "finding": "One stat failure during sorting escaped the per-record error handler and broke entire page",
+      "fixed": "Metadata timestamps read independently with per-path OSError capture; failing item remains explicit unreadable while healthy job stays visible",
+      "independent_case": "Path.stat raises FileNotFoundError for one synthetic discovered reference; original red now green"
+    },
+    {
+      "finding": "Same-config completed record with changed frozen bundle inputs could still certify current completion",
+      "fixed": "All completed records now compare pure current bundle-registration fingerprints; drift/missing reference yields history-only/current_target_verifiedfalse; strict read refuses writes",
+      "independent_case": "same-target changed bundle now history-only/noactions and original job bytes unchanged"
+    }
+  ],
+  "source_review": [
+    "Stable profile explicitly excludes only prepare.recovery_work_decision_refs after deep copy; all other original non-bundle config fields remain fingerprinted and original per-entry input-byte fingerprint remains decisive.",
+    "Absent profile remains legacy semantics; only named legacy/stable profiles accepted. Legacy opaque digest is never rewritten or inverted into new authority.",
+    "Only structurally valid complete/all-delivered/self-consistent records can use historical fallback. Historic state is explicit historical_read_only, persisted_state retained, current_target_verifiedfalse/noactions, original stored record unchanged. Other mismatched states remain failclosed.",
+    "_run and control retain original strict _read with no relaxed history flag. Original partial resume checks frozen bundle and skips already delivered scopes. No import/launch on get/list.",
+    "Per-record parse/metadata errors remain visible with noactions, not silent omission or a pagewide failure. active stays conservative for unknown/corrupt/unfinished mismatch, while valid completed history does not block daily setup.",
+    "UI shows historical ACK summary and current-unverified warning, disables original actions, and excludes history/current_target_verifiedfalse from current completion recommendation. Real ESM scenario passed.",
+    "Historical job summary and matching bundle references are not native owner ACK proof. No owner serializer, original ledger/source answer, permission, fee or importer semantics were changed."
+  ],
+  "author_evidence": {
+    "delivery-history-red.xml": {
+      "tests": "3",
+      "errors": "0",
+      "failures": "3",
+      "skipped": "0",
+      "time": "4.399"
+    },
+    "delivery-history-green.xml": {
+      "tests": "12",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "2.805"
+    },
+    "delivery-history-final-cohort.xml": {
+      "tests": "57",
+      "errors": "0",
+      "failures": "3",
+      "skipped": "0",
+      "time": "15.164"
+    },
+    "delivery-history-final-short.xml": {
+      "tests": "57",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "9.557"
+    },
+    "delivery-history-final16.xml": {
+      "tests": "16",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "1.596"
+    }
+  },
+  "author_count_boundary": "The first3-red includes one importpath harness failure and two reported business failures; not represented as three independent business defects. The57-case long-path run had54pass/3temporary-path failures; short-root57 passed. Later four backend cases run as final16, not falsely claimed as the earlier57 final test pin. Independent11 is separately executed on the current frozen payload.",
+  "history_guard_scope": "Completed legacy history only; no claim of relaxed read/resume for unfinished or arbitrary other mismatched terminal states. No permission inferred from summaries.",
+  "live_deployment_boundary": "Parent reports original full preparations still active and live server not yet reloaded at review time. This report accepts source/isolated behavior, not production reload or interruption of those operations.",
+  "real_database_access_during_final_tests": 0,
+  "owner_CLI_or_model_calls": 0,
+  "source_or_real_job_writes": 0,
+  "answer_or_authorization_bodies_exported": false,
+  "next": "Parent may publish these scoped changes, wait for active native preparation/scan safe boundaries, then reload and verify ordinary UI historical GET without reimport. Preserve actual prior native ACKs and stored legacy job bytes."
+}

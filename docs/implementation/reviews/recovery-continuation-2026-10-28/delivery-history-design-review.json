@@ -1,0 +1,36 @@
+{
+  "status": "implemented_and_passed_source_review",
+  "reviewer": "/root/review_recovery_resume",
+  "checked_at": "2026-10-28T11:19:57.399907+00:00",
+  "scope": "Minimal delivery history compatibility plan only; no source implementation accepted yet",
+  "actual_evidence": "delivery-config-revision-diagnosis.json",
+  "chosen_plan": [
+    "New fingerprint_profile removes only prepare.recovery_work_decision_refs from a deep copy of original normalized frozen config. All other current config and original frozen bundle/input checks remain.",
+    "Profile absent means original legacy full-config fingerprint; recognize only explicitly supported new profile, never guess inverse target identity from a legacy digest.",
+    "get/list may produce explicit read_only_history/deployment_matchesfalse/persisted_state views. History has no resume/import actions and does not count as completion in the current owner scope. Preserve old record bytes/hash; no migration or rewriting.",
+    "control/_run retain original strict target checks and original bundle/current owner checks; the relaxed read path must not be called from write paths.",
+    "Per-record list failure becomes explicit unreadable/reference_invalid with actionsnone, not a global page error or silent omission. active remains failclosed for unfinished/unknown/corrupt records and ignores legitimate completed historical metadata.",
+    "For retained complete history, check current bundle references/fingerprints via original read-only registration where available and label missing/changed integrity clearly. Historical summary does not become revalidated native ACK; no owner import/export/POST during read."
+  ],
+  "minimal_regression_set": [
+    "New-profile exact refs removal changes neither target matching nor immutable bundle check; no new action/launch during GET",
+    "Legacy completed same stored selection shows old1/1 or2/2 metadata as explicit history under changed fullconfig, untouched bytes, noactions/currentcompletion",
+    "Legacy/current unfinished target mismatch refuses control/resume/_run even if a prior get displayed history",
+    "Different workspace/owner/ledger or changed bundle input does not match new stable target or pass current write checks; only refs excluded",
+    "One malformed/tampered/unknown-profile record is visible as invalid but does not hide healthy jobs; active failsclosed for uncertainty",
+    "Current exact partial job explicit resume still skips already delivered scopes and rechecks original frozen bundle; no automatic reimport"
+  ],
+  "not_needed_in_this_node": [
+    "WAL/runtime changes",
+    "new native owner permission or ACK serializer",
+    "guessing/replacing olddeployment hash",
+    "broad exclusion of unrelated config fields",
+    "copying original answer/ACK bodies into UI job records"
+  ],
+  "source_edits": 0,
+  "real_database_access": 0,
+  "API_requests": 0,
+  "next": "Parent implements narrow changes and grouped tests, then independent concentrated source and isolated API/ESM review",
+  "open_findings": [],
+  "final_evidence": "delivery-history-final.json"
+}

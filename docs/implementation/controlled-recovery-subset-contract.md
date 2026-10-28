@@ -59,3 +59,17 @@ prepared result也携带`recovery_subset`、execution IDs/count、`full_bank_que
 ## 并行所有权
 
 原协议/Store投影/纯contract/schema与Dashboard恢复子集后端由原owner能力线负责；前端仅UI仓product.js、product_core.js和既有实际ESM测试由独立UI线负责；runner严格标准入口另线负责。共享PWF、发布、原实际配置与实际两工作控制只有root负责。源码冻结后统一独审和正常提交，不在活动writer期间触发autostash。
+
+## 恢复结束后返回普通扫描
+
+先确认本次所有恢复范围已收到原StockWiki ACK，并且原StockQA状态为delivered。有限恢复的1题或数题完成不能代替原完整公司题库。
+
+返回普通1.1策略时，生成新的policy_version，并将顶层protocol和qa.quote_schema_version一起调整为1.1.0。整份候选必须先通过原scripts/refresh_contract.py的validate_policy，再以预期旧文件hash做CAS、原子写入并回读核对；这项纯校验本身不产生owner许可。保留真实TTL、旧授权、答案和费用，不通过延长TTL或改历史信息日期制造新鲜缓存。2026-10-28实际曾漏改嵌套quote版本，已保留v5失败证据并以合法v6修正，不能重写旧版本伪称成功。
+
+使用UI最新连接JSON及原revision保存，只删除已完成的prepare.recovery_work_decision_refs，保留其余已知和未知字段。配置变更使未提交预览失效时，应重新预览；原准备已失败或状态未知时，先查看实际阶段，只按原开放动作核对、接续登记或结束旧编排，不能自动重做确认或准入。
+
+新交付任务使用iqs.delivery-deployment/1.1.0指纹，仅排除准备阶段的recovery_work_decision_refs，其他部署配置及每个冻结bundle输入仍核验。无此字段的原任务按legacy1.0处理。旧hash不可逆，不改写旧任务或猜测目标相同：合法completed记录在部署或冻结输入变化后只展示为historical_read_only，保留历史摘要、关闭所有动作，并明确当前部署未重验原ACK；该摘要不参与当前完成推荐。原控制和导入仍走严格目标校验，未知profile或损坏记录不产生恢复权限。
+
+完整扫描须选择同一company_preparation_id的全部entity/security范围。若准备过程正在写原账本，原只读准入可能暂时报busy；等待写入结束，再明确恢复同一未派发批次，不重复建工作或盲重发。Store的120秒有界写等待不代表所有只读接口也等待120秒。
+
+验收时分别记录两种复用：原任务检查点恢复不新增模型请求，以及有效期内原观察缓存复用。历史截止日已超TTL的回答不能称为今日有效缓存；过期刷新保留旧代际、时间、模型及费用，再由原准入创建合法新代际。
