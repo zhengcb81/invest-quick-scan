@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewed_at": "2026-10-28T16:51:31.477192+00:00",
+  "source_pins_before": {
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product.js": "4f586595b1d9cd817997ef40d3bcbd198c5a9022198a9912fd9c2808f6798c4c",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_product_ui.py": "95c87275a9df07a7acc99118af72f8b09895f4078cbc1f11e1ecdd7a40b28182"
+  },
+  "source_pins_after": {
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product.js": "4f586595b1d9cd817997ef40d3bcbd198c5a9022198a9912fd9c2808f6798c4c",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_product_ui.py": "95c87275a9df07a7acc99118af72f8b09895f4078cbc1f11e1ecdd7a40b28182"
+  },
+  "source_stable": true,
+  "command": "C:/Miniconda/python.exe runs/resume-recovery-2026-10-28/independent/review_ui_answer_dates.py",
+  "tests": [
+    {
+      "scenario": "independent-dates",
+      "exit_code": 0,
+      "seconds": 0.344
+    },
+    {
+      "scenario": "answer-metadata",
+      "exit_code": 0,
+      "seconds": 0.169
+    },
+    {
+      "scenario": "core",
+      "exit_code": 0,
+      "seconds": 0.162
+    },
+    {
+      "scenario": "pages",
+      "exit_code": 0,
+      "seconds": 0.32
+    },
+    {
+      "scenario": "remediation-history",
+      "exit_code": 0,
+      "seconds": 0.195
+    },
+    {
+      "scenario": "remediation-results",
+      "exit_code": 0,
+      "seconds": 0.169
+    }
+  ],
+  "seconds": 1.366,
+  "isolation": {
+    "temporary_directory_removed": true,
+    "actual_esm_no_source_copy": true,
+    "api_fixture_only": true,
+    "real_database_read_or_write": false,
+    "paid_calls": 0,
+    "process_control": false,
+    "source_or_pwf_edits": false,
+    "browser_control": false
+  },
+  "verified_boundaries": [
+    "Original nested information_as_of null overrides stale flat information_as_of and does not use collection cutoff.",
+    "Explicit cutoff null overrides stale nested collection cutoff.",
+    "0 coverage and confidence and [] missing_fields survive; they remain distinct from absent metadata.",
+    "Legacy flat rows and absent nested fields retain their original metadata; missing values remain unprovided.",
+    "Results, history and facts cards share separated date labels and original coverage/confidence/missing_fields.",
+    "Malformed/hostile metadata remains inert text; innerHTML sink throws and no SVG/image/script nodes appear.",
+    "Original rows, scores/null, metadata and owner action permissions are not mutated."
+  ],
+  "limitations": [
+    "No rendered live-browser pixel review or production API calls.",
+    "This is UI expression validation, not financial qualification or certification of source timestamps."
+  ]
+}

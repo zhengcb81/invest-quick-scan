@@ -1,3 +1,29 @@
+## 2026-10-28T17:05Z — 三家全108已从原UI启动；保留55原CP、只补53待问，新3600参数已核实际worker
+
+M47976、T9d8f69、Cbc311三个新prepare已真正registered（各33entity+3security）；root先静止41预算完成全部登记，再UI清空旧选择、精确选三个新完整组，原preview显示3公司/6scope，明确启动batch-b8fd47343ffe463a9d325e040eda069f，17:01:56 running。M原entity新run-6b5cf00ba8d144a79db454e3b7f7c9b9/PID13964于17:02:58启动，原日志已实际hydrate IQS01并继续IQS02；CIM薄证核原main_with_llm argv显式3600/thinking，未复制全命令。其余公司按原串行scope/全局原准入锁启动，不能因慢或UI超时重复POST或重启。
+
+独立审过的有限只读auditor（最终SHA1dedb5…、open[]）按6原confirmation receipt与spec完整tuple锁108 work，不用entity/qid latest；输入8类真实文件前后SHA锁，原标准/封存/权限认证仍由实际原UI/native负责，统计工具不替代guard/金融审核。首次actual只读snapshot recorded：M17CP+19pending，T27CP+9pending，C11CP+25pending，55原CP保留、53待补，41HTTP/1003976微USD估计/0inflight；所有108标准/封存/ACK尚未齐全，不能把recorded称passed。原全局物理零增量比较只在全worker静止冷恢复窗口做，ACK后另取delivered基线。私有raw元数据不推送，只归档薄摘要。
+
+UI两文件日期修复5dd93d3本地提交（无remote），已重新加载实际页面；微软历史IQS04卡片亲见取证截止25、答案日期未提供、medium和原missing_fields，原分数7未改；截图ui-answer-date-real-msft-before-full.jpg留本地，含真实答文不推Git。作者47P13.37s+不同agent6P1.366s/open[]，正常commit前pin稳定。README/搜索实操已同步原任务恢复、普通fresh和迟到收件界线，完整真实验收仍在进行。
+
+### Next Step
+
+保持原batch-b8fd运行，核新claim实际时长并完成六scope的108原有效标准/封存；若真实失败先按原证据根修，不能重发unknown。全部原进程静止后、ACK前原个体run pause→核原状态→allowed_actions resume，新进程完整CP冷恢复、原work/attempt/包/费零增量；随后UI全108导入/exactACK，再安全服务重启/历史读与原交付同payload附着幂等，旧25普通过期预览负例。最后不同agent实际完成度审查、修尽发现、更新README/PWF/搜索规范并精确提交推送，不提前交接为全通过。
+
+---
+
+## 2026-10-28T16:48Z — 三家公司新准备均已从UI提交；M两scope已登记，等T/C原串行准入后统一启动
+
+原batch837实际已于16:33:56 abandoned（原work/结果/费保留）。新准备M47976fb90e724fcbb757e885fa21e1b0已registered、33entity+3security，亲核实际execution_bundles均3600秒/pack2/thinkingtrue/tokens32768；applied summaries不是完整bundle，已按实际配置纠正薄证投影。T9d8f69c9fb844f55aa7d2f9cf85e964a和Cbc31143f27cf4ed1a3c1298240da687a已正式提交preparing；原preparerRLock/固定install OS锁必须串行，先等三家全部登记再发付费模型，当前仍41HTTP。C原冻结是quick，首次选full被exact-bank守卫拒绝；已改回原quick并重新预览显式SEC，仍完整基础36，不覆盖绑定。M/T原full不变，三家原cutoff25、ASJ@1、安全security与预算不变。一次只读诊断误取applied摘要字段为null和误把execution_bundles字典当列表均已纠正，只写私有薄证，无原状态影响。
+
+独立真实内容只读预检16:41:37：57sealed=55ready+2delivered，32scored+25insufficient/null，0schema/主体绑定/题号/已填写日期越界/分数状态冲突，所有57仍unreviewed。16答案自身信息日期空，部分scored；172证据43无日期，不能自动补日期/清分或称金融事实已核源。发现UI只展示取证cutoff掩盖答案日期空，已由不同作者仅product.js/tests最小修，实际有效红→47P13.37s；另一独立agent源码/DOM+6定向ESM1.366s/open[]，含nested null、0与缺省、旧row、三页面、XSS反例。root核两pin稳定后UI正常本地提交5dd93d3（该仓无远端），无重启/不碰当前准备；真实页面加载与最终完整流程验收待后续。README已纠正两家公司历史单题签收口径；搜索规范新增三种时长及分层缓存规则，待最终节点审查提交。
+
+### Next Step
+
+等原T/C登记齐全，UI精确选三个新完整组（六scope）启动。之后满108原result_ready，ACK前个体任务合法pause→核原状态→resume进行同run原CP冷恢复（batch owner_ready不可resume冒充）；原allowed_actions/准入/指纹及无在途才操作。随后108入库/exactACK、ACK后完整历史读/幂等0HTTP与旧25日普通过期负例；最终完成度独审/PWF/README/搜索规范精确提交推送。目前未完成真实全量验收，不停止。
+
+---
+
 ## 2026-10-28T16:33Z — 四项真实迟到收件控制全部完成；完整缓存验收区分原任务恢复与新鲜度
 
 Root已核apply61715 exit0及四原*-apply：M18/M19/T-Porter02/03原owner逐项recorded，原generation1/epoch1不变、uncertain→failed，8physical表/费用均未变，59份ready或delivered材料与其他work均保持、固定install已CAS恢复、0API/0重放/0新代。实际SSOT没有leased/uncertain，41HTTP全settled、1003976微USD估计、0在途。received-late-four/thin-final-proof.json为薄证；helper已完成有apply marker，严禁重apply。R7及新prepare3600秒/43200秒配置已生效，无需重启；原UI结束paused837编排操作已发起，等待原结果，不能因前端未更新重复POST。

@@ -1,0 +1,107 @@
+{
+  "checked_at": "2026-10-28T16:59:15.920357+00:00",
+  "status": "passed",
+  "script_sha256": "e43c2b4d9021ce071807783a37c02dda90adc355aa45e1a49d9049642d3c8e1d",
+  "read_only_review": true,
+  "real_snapshot_executed": false,
+  "API_requests": 0,
+  "database_writes": 0,
+  "real_data_read": [
+    "dashboard.local execution_bundles selected IDs/keys only",
+    "SQLite PRAGMA table_info only"
+  ],
+  "schema_check": "All referenced current columns/tables present. Config company_preparation_id actual values confirmed for selected M/T; CATL not yet registered at inspection, so original_six_scopes_not_registered is correct premature-run refusal.",
+  "confirmed_good": [
+    "SQLite mode=ro plus query_only, explicit short read transaction, no constructor/CLI/API",
+    "No selected _json bodies or lease_token returned by metadata_columns; receipt.items is metadata",
+    "Original receipt work tuple and selected scope checked; 108 exact unique work IDs required",
+    "Baseline compares selected CP/std/context/ORF/delivery metadata and all physical tables/fee totals, so zero growth is strict when all scopes quiescent",
+    "No-check status recorded rather than passed; unknown scope count or registration missing fail closed; output overwrite disallowed"
+  ],
+  "limits": [
+    "Global physical metadata comparison requires all other workers quiescent; otherwise unrelated legitimate traffic gives false failure.",
+    "Fixed33entity+3security is explicit finite pilot assumption; mismatch correctly stops, not general-purpose bank support.",
+    "No model/financial accuracy or actual cold recovery proved.",
+    "Native journal read_record uses SELECT * work and thus consumes lease_token internally; not suitable under this strict metadata-only no-lease reading constraint.",
+    "Final approval is for this finite metadata witness implementation, not actual full108 complete/cold-resume/delivery/financial acceptance.",
+    "Input file bytes are locally hashed only; no original authorization contents are exported. The tool does not independently authenticate original standard answer bodies, receipt bodies, context content, package content, or ACK contents."
+  ],
+  "actual_structural_metadata": {
+    "admission_input_top_keys": [
+      "action",
+      "references",
+      "run_id",
+      "scan_id",
+      "specifications"
+    ],
+    "spec_keys": [
+      "entity_id",
+      "generation",
+      "identity_revision",
+      "identity_snapshot_sha256",
+      "identity_state",
+      "owner_refresh_binding",
+      "question_fingerprint",
+      "question_id",
+      "routing_fingerprint",
+      "scope",
+      "scope_id",
+      "source_binding_ref",
+      "source_binding_refs",
+      "source_binding_version"
+    ],
+    "spec_owner_refresh_binding_keys": [
+      "anchor_version",
+      "decision_id",
+      "entity_id",
+      "identity_revision",
+      "information_cutoff",
+      "manifest_raw_sha256",
+      "model",
+      "perimeter_sha256",
+      "protocol",
+      "provider",
+      "question_id",
+      "request_identity_key",
+      "scope",
+      "scope_id",
+      "subject_context_schema",
+      "subject_key",
+      "target_generation"
+    ],
+    "receipt_item_keys": [
+      "entity_id",
+      "generation",
+      "question_id",
+      "scope",
+      "scope_id",
+      "work_item_id"
+    ],
+    "read_method": "SQL json_each keys only for the selected original Microsoft entity confirmation; no values/body/lease tokens selected"
+  },
+  "previous_reviewed_sha256": "e43c2b4d9021ce071807783a37c02dda90adc355aa45e1a49d9049642d3c8e1d",
+  "reviewed_sha256": "1dedb5cd12aeee5ed91e457755bc142d34abcbf2926a48f86944a47e7c9be3d8",
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "AUDIT-01",
+      "severity": "medium",
+      "summary": "Selection hash binds path-valued bundle dictionary but not referenced input file contents or exact C06/context/ORF metadata. Same-path changes may leave selection_sha256 identical.",
+      "fix": "Lock hashes of referenced immutable inputs and non-secret C06/registration/ORF identity-scope-authority metadata; select original six confirmation IDs and exact original receipt/spec work tuple. Do not call Store constructors or read lease tokens/answer bodies."
+    },
+    {
+      "id": "AUDIT-02",
+      "severity": "medium",
+      "summary": "require_complete currently proves presence of CP/std/context/binding rows and package_id, not integrity of standard/context/package or exact ACK. A nonempty package_id alone satisfies sealed; acknowledged count checks only state+ack_sha.",
+      "fix": "Name completeness as metadata presence unless supported by prior native standard/seal/exactACK validation; require expected metadata hashes/IDs/consumer for claimed delivery completeness. Do not independently parse answers merely for this thin witness."
+    }
+  ],
+  "final_review_at": "2026-10-28T17:01:22.418519+00:00",
+  "final_review": {
+    "AUDIT-01": "Eight referenced file bytes are hashed before the short database snapshot and pinned again after closing; file pins enter selection_sha256. Receipt items pair to original admission specifications by full entity/question/generation/scope tuple, then original identity/source/version/question/routing metadata match exact work rows. Admitted owner binding hash is separate from original persisted CP binding/context.",
+    "AUDIT-02": "The tool now expressly defines metadata-only native_validation_boundary and authority_or_financial_accuracy_proven=false. Presence/completeness counts are acceptable within that limited boundary; complete standard/context/seal/exactACK authentication remains original UI/native evidence, never this metadata count alone.",
+    "physical": "Explicit terminal_outcome/physical_outcome/members_uncertain/member_count added. Existing physical ID/hash/count and budget aggregates remain compared, and no _json or lease_token is selected by rows().",
+    "no_operation": "Source/AST review and previously recorded schema keys only. No snapshot(), real CLI/UI control, new database query, paid API, or production mutation executed in this final pass.",
+    "freshness_and_stage": "ACK-before cold recovery compares one metadata baseline. ACK-after history comparison must use a new delivered baseline; changing delivery state is not cold-replay preservation failure."
+  }
+}

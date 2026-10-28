@@ -1,0 +1,98 @@
+{
+  "status": "complete_pending_independent_review",
+  "ui_root": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab",
+  "before_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product.js": "2dc575e45ddf006dd4bf568ceea03eec20c9f810f0d86c3e8fae442d883aec7c",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_product_ui.py": "0578a3f3b4638105614393373b0c4c5b17a9ed529ba4b14aa778ae3e197e3a0d",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product_core.js": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d"
+  },
+  "allowed_changed_files": [
+    "src/app/ui/product.js",
+    "tests/test_product_ui.py"
+  ],
+  "product_core_change_required": false,
+  "browser_service_database_model_actions": false,
+  "red_test": {
+    "command": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_product_ui.py::ProductUITests::test_answer_dates_and_original_quality_metadata_are_explicit_and_never_backfilled"
+    ],
+    "exit_code": 1,
+    "stdout": "F                                                                        [100%]\n================================== FAILURES ===================================\n_ ProductUITests.test_answer_dates_and_original_quality_metadata_are_explicit_and_never_backfilled _\n\nself = <tests.test_product_ui.ProductUITests testMethod=test_answer_dates_and_original_quality_metadata_are_explicit_and_never_backfilled>\n\n>   def test_answer_dates_and_original_quality_metadata_are_explicit_and_never_backfilled(self): self.run_node('answer-metadata')\n                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\test_product_ui.py:561: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\ntests\\test_product_ui.py:527: in run_node\n    self.assertEqual(result.returncode, 0, result.stderr)\nE   AssertionError: 1 != 0 : node:internal/modules/run_main:107\nE       triggerUncaughtException(\nE       ^\nE   \nE   AssertionError [ERR_ASSERTION]: Card must distinguish collection cutoff from the original answer information date\nE       at file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/iqs-question-bank-ui-lab/[eval1]:158:11 {\nE     generatedMessage: false,\nE     code: 'ERR_ASSERTION',\nE     actual: undefined,\nE     expected: true,\nE     operator: '==',\nE     diff: 'simple'\nE   }\nE   \nE   Node.js v24.11.0\n=========================== short test summary info ===========================\nFAILED tests/test_product_ui.py::ProductUITests::test_answer_dates_and_original_quality_metadata_are_explicit_and_never_backfilled\n1 failed in 1.04s\n",
+    "stderr": "",
+    "production_source_still_unmodified": true
+  },
+  "green_test": {
+    "command": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_product_ui.py"
+    ],
+    "exit_code": 0,
+    "stdout": "...............................................                          [100%]\n47 passed in 13.37s\n",
+    "stderr": "",
+    "scope": "Only the existing isolated UI ESM test file; mocked API, no live service/browser."
+  },
+  "git_head": "bd5595863110c5e79e9d30a5432a712fb90e14eb",
+  "after_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product.js": "4f586595b1d9cd817997ef40d3bcbd198c5a9022198a9912fd9c2808f6798c4c",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_product_ui.py": "95c87275a9df07a7acc99118af72f8b09895f4078cbc1f11e1ecdd7a40b28182",
+    "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product_core.js": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d"
+  },
+  "product_core_unchanged": true,
+  "diff": {
+    "exit_code": 0,
+    "stdout": "diff --git a/src/app/ui/product.js b/src/app/ui/product.js\nindex 6480322..12fa792 100644\n--- a/src/app/ui/product.js\n+++ b/src/app/ui/product.js\n@@ -64,12 +64,18 @@ function showEvidence(items = []) {\n export function presentationRow(row) {\n   const payload = row.payload || {};\n   const answer = payload.answer || {};\n+  const answerValue = key => Object.hasOwn(answer,key) ? answer[key] : row[key];\n   return {...row,\n     question_id:row.question_id || answer.question_id || payload.question_id || row.field_id,\n     status:row.status || row.answer_status || answer.status || 'missing',\n     score:row.reported_score ?? row.score ?? answer.score ?? null,\n     summary:row.summary || answer.summary || '',\n     response_kind:row.response_kind || answer.response_kind,\n+    information_cutoff:Object.hasOwn(row,'information_cutoff') ? row.information_cutoff : payload.information_cutoff,\n+    information_as_of:answerValue('information_as_of'),\n+    coverage:answerValue('coverage'),\n+    confidence:answerValue('confidence'),\n+    missing_fields:answerValue('missing_fields'),\n     evidence:row.evidence || answer.evidence || [],\n     items:row.items || answer.items || [],\n     versions:row.versions || {question_version:payload.question_version,module_package_id:payload.module_package_id,module_release_id:payload.module_release_id,template_version:payload.template_version,method_id:payload.method_id},\n@@ -77,6 +83,7 @@ export function presentationRow(row) {\n     model_revision:row.model_revision || payload.execution?.model_revision,\n   };\n }\n+function originalMetadataText(value) { return value === null || value === undefined ? '未提供' : typeof value === 'string' ? value : JSON.stringify(value); }\n function answerTable(rows) {\n   return el('div',{class:'answer-records'},rows.map(raw=>{\n     const row=presentationRow(raw),qid=row.question_id||row.field_id||'未记录';\n@@ -86,6 +93,7 @@ function answerTable(rows) {\n     if(!row.subject?.analysis_subject_id&&!row.analysis_subject_id)qualification.push('分析主体未记录');\n     if(!row.model_revision)qualification.push('模型修订未记录');\n     if(row.gaps?.length)qualification.push(...row.gaps);\n+    const metadata=[['取证截止',row.information_cutoff],['答案信息日期',row.information_as_of],['原 coverage',row.coverage],['原 confidence',row.confidence],['原 missing_fields',row.missing_fields]].map(([label,value])=>[label,originalMetadataText(value)]);\n     return el('article',{class:'answer-record','data-testid':'production-answer','data-qid':qid,'data-observation-id':observationIdentity(row)},[\n       el('div',{class:'answer-record-head'},[\n         el('div',{},[question?el('a',{href,text:`${qid} · ${question.question}`}):el('strong',{text:qid}),el('div',{class:'metadata',text:row.field_id||''})]),\n@@ -93,10 +101,12 @@ function answerTable(rows) {\n         el('div',{class:'nowrap'},[el('div',{text:modelLabel(row)}),el('time',{class:'metadata',title:timeLabel(row),text:compactTime(row)})]),\n       ]),\n       el('div',{class:'qualification',text:qualification.join('；')}),\n-      el('p',{class:'metadata',text:`信息截至 ${row.information_cutoff||row.information_as_of||'未记录'} · 题义版本 ${row.versions?.question_version||'未记录'}`}),\n+      el('p',{class:'metadata',text:`取证截止：${metadata[0][1]} · 答案信息日期：${metadata[1][1]} · 题义版本 ${row.versions?.question_version||'未记录'}`}),\n+      el('p',{class:'metadata',text:metadata.slice(2).map(([label,value])=>`${label}：${value}`).join(' · ')}),\n       el('p',{class:'answer-summary',text:row.summary?row.summary.slice(0,180)+(row.summary.length>180?'…':''):'无理由文本'}),\n       el('details',{class:'record-details'},[\n         el('summary',{text:'完整理由、来源与记录'}),\n+        kv(metadata),\n         el('div',{class:'answer-full',text:row.summary||'无理由文本'}),\n         row.items?.length?rawCard('原始结构化信息',row.items):null,\n         showEvidence(row.evidence),\ndiff --git a/tests/test_product_ui.py b/tests/test_product_ui.py\nindex 537a995..d03e76e 100644\n--- a/tests/test_product_ui.py\n+++ b/tests/test_product_ui.py\n@@ -150,7 +150,34 @@ if(scenario==='recovery-core'){\n  const wait=()=>new Promise(resolve=>setTimeout(resolve,15));\n  function flat(n){return[n,...n.children.flatMap(flat)];}\n  const find=(page,predicate)=>flat(page).find(predicate);\n- if(scenario==='pages'){\n+ if(scenario==='answer-metadata'){\n+  const hostile='<img src=x onerror=\"globalThis.metadataXSS=true\">';\n+  const rows=[\n+   {...observation,observation_id:'answer-date-null',information_cutoff:'2026-10-25',information_as_of:'2026-10-25',coverage:'flattened-coverage',confidence:'flattened-confidence',missing_fields:['flattened-missing'],payload:{...observation.payload,answer:{...observation.payload.answer,information_as_of:null,coverage:'partial',confidence:0,missing_fields:['source_date',hostile]}}},\n+   {question_id:'IQS_02',observation_id:'answer-date-flat',status:'scored',score:null,information_cutoff:'2026-10-24',information_as_of:'2025-12-31',coverage:{source_count:2,note:hostile},confidence:'low',missing_fields:[]},\n+   {question_id:'IQS_03',observation_id:'answer-date-missing',status:'scored',score:7,information_cutoff:'2026-10-23'},\n+   {...observation,question_id:'IQS_04',observation_id:'answer-date-nested',payload:{...observation.payload,information_cutoff:'2026-10-22',answer:{...observation.payload.answer,information_as_of:'2026-09-30',coverage:null,confidence:null,missing_fields:null}}},\n+  ];\n+  const before=JSON.stringify(rows);data.entity={...data.entity,groups:[{key:'common',fields:rows}]};\n+  const page=ui.renderResults({query:{id:entity}});await wait();\n+  const cards=flat(page).filter(n=>n.attributes['data-testid']==='production-answer');assert.equal(cards.length,4);\n+  const expected=[['2026-10-25','未提供','partial','0',JSON.stringify(['source_date',hostile])],['2026-10-24','2025-12-31',JSON.stringify({source_count:2,note:hostile}),'low','[]'],['2026-10-23','未提供','未提供','未提供','未提供'],['2026-10-22','2026-09-30','未提供','未提供','未提供']];\n+  for(const [index,card]of cards.entries()){\n+   const [cutoff,asOf,coverage,confidence,missing]=expected[index];\n+   const dates=find(card,n=>n.tag==='p'&&n.textContent.startsWith('取证截止：'));\n+   assert.ok(dates,'Card must distinguish collection cutoff from the original answer information date');\n+   assert.ok(dates.textContent.includes(`取证截止：${cutoff}`));assert.ok(dates.textContent.includes(`答案信息日期：${asOf}`));\n+   const quality=find(card,n=>n.tag==='p'&&n.textContent.startsWith('原 coverage：'));assert.ok(quality);assert.equal(quality.textContent,`原 coverage：${coverage} · 原 confidence：${confidence} · 原 missing_fields：${missing}`);\n+   const detail=find(card,n=>n.tag==='details'&&n.className==='record-details');const metadata=find(detail,n=>n.tag==='dl'&&n.className==='kv');assert.ok(metadata,'Expanded answer details must label original metadata explicitly');\n+   assert.deepEqual(metadata.children.filter(n=>n.tag==='dt').map(n=>n.textContent),['取证截止','答案信息日期','原 coverage','原 confidence','原 missing_fields']);\n+   assert.deepEqual(metadata.children.filter(n=>n.tag==='dd').map(n=>n.textContent),expected[index]);\n+   assert.equal(flat(card).some(n=>Object.hasOwn(n,'innerHTML')),false,'Original metadata must be text, never HTML');\n+   assert.equal(flat(card).some(n=>['img','script','svg'].includes(n.tag)),false);\n+  }\n+  assert.equal(find(cards[0],n=>n.className==='score-pill').textContent,'8');assert.equal(find(cards[1],n=>n.className==='score-pill').textContent,'—');\n+  assert.equal(ui.presentationRow(rows[0]).information_as_of,null);assert.equal(ui.presentationRow(rows[0]).confidence,0);assert.deepEqual(ui.presentationRow(rows[1]).missing_fields,[]);\n+  assert.equal(JSON.stringify(rows),before,'Display must preserve original scored/null values and metadata');assert.equal(calls.some(c=>c.method!=='GET'),false);\n+ }else if(scenario==='pages'){\n   const cases=[['renderDashboard',{},'公司快速扫描工作台'],['renderResults',{query:{}},'生产结果库'],['renderResults',{query:{id:entity}},'C06 已校验'],['renderHistory',{query:{id:entity}},'全部历史记录'],['renderFacts',{query:{id:entity}},'尚未提供结构化关系'],['renderUniverse',{query:{}},'实际成员与版本'],['renderSettings',{},'校验并保存设置'],['renderDoctor',{},'owner_not_registered']];\n   for(const[name,route,text]of cases){ui.disposeProductPage();const page=ui[name](route);await wait();assert.ok(page.textContent.includes(text),name+': '+page.textContent);}\n   const {renderBankOverview}=await import(moduleURL('ui/bank_overview.js'));assert.ok(renderBankOverview().textContent.includes('信息类题库'));const bank=renderBankOverview({query:{fact:'FACT_01'}});assert.ok(flat(bank).some(n=>n.attributes.id==='fact-FACT_01'&&'open'in n.attributes));\n@@ -531,6 +558,7 @@ class ProductUITests(unittest.TestCase):\n     def test_both_settings_sections_lock_all_edits_during_pending_save(self): self.run_node('remediation-inflight')\n     def test_settings_conflict_explains_reread_without_automatic_retry(self): self.run_node('remediation-conflict')\n     def test_result_return_preserves_snapshot_and_answer_provenance(self): self.run_node('remediation-results')\n+    def test_answer_dates_and_original_quality_metadata_are_explicit_and_never_backfilled(self): self.run_node('answer-metadata')\n     def test_original_scope_progress_map_and_unknown_render_without_authority(self): self.run_node('task-progress')\n     def test_metadata_missing_unknown_scores_unsafe_links_and_variants(self): self.run_node('core')\n     def test_client_requires_csrf_preserves_errors_and_never_retries_writes(self): self.run_node('api')\n",
+    "stderr": "warning: in the working copy of 'src/app/ui/product.js', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_product_ui.py', LF will be replaced by CRLF the next time Git touches it\n"
+  },
+  "diff_sha256": "7627ac4146080e380c03ce27fa5c4c7be9b81d1da14ffed1d3b3e4aa6dc8bc29",
+  "diff_check": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "warning: in the working copy of 'src/app/ui/product.js', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/test_product_ui.py', LF will be replaced by CRLF the next time Git touches it\n"
+  },
+  "worktree_status": {
+    "exit_code": 0,
+    "stdout": " M src/app/ui/product.js\n M tests/test_product_ui.py\n?? .codegraph/\n",
+    "stderr": ""
+  },
+  "scope": {
+    "changed_tracked_files": [
+      "src/app/ui/product.js",
+      "tests/test_product_ui.py"
+    ],
+    "product_core_changed": false,
+    "score_or_null_status_logic_changed": false,
+    "browser_control": false,
+    "service_or_process_control": false,
+    "configuration_change": false,
+    "real_database_or_model_calls": false,
+    "commit_or_push": false
+  },
+  "behavior": {
+    "cutoff_label": "取证截止",
+    "answer_date_label": "答案信息日期",
+    "missing_value_label": "未提供",
+    "nested_explicit_null_preserved": true,
+    "flat_row_fields_supported": true,
+    "coverage_confidence_missing_fields_raw_values_only": true,
+    "cutoff_never_used_as_answer_date": true,
+    "rendering": "textContent / existing safe kv text nodes"
+  },
+  "unicode_checks": {
+    "product_labels_utf8_correct": true,
+    "test_labels_utf8_correct": true,
+    "recorded_diff_labels_utf8_correct": true
+  }
+}
