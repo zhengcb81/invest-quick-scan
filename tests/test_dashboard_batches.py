@@ -1401,3 +1401,59 @@ def test_legacy_deferred_proof_retains_original_reason_until_later_explicit_resu
         assert recovered['launch_uncertain'] is False and recovered['state']=='selected'
         assert execution.started==[]
     finally:g.close()
+
+
+@pytest.mark.parametrize('fault',[None,'nonce','unknown_code','profile','bool_api','new_process','uncertain','owner_leased'])
+def test_abandon_proven_prelaunch_only_preserves_all_original_work(tmp_path,fault):
+    from scripts.dashboard_execution import ExecutionGateway,DashboardExecutionError
+    class OriginalRefusal(FakeExecution):
+        prelaunch_refusal=staticmethod(ExecutionGateway.prelaunch_refusal)
+        def preview(self,payload):
+            value=super().preview(payload)
+            value['inspection']={'work_items':{'Q1':{'status':'leased' if self.bundles[payload['bundle_id']]['unknown'] else 'pending'}}}
+            return value
+        def start(self,payload):
+            raise DashboardExecutionError('execution_not_ready','known before original reference',409,self.preview(payload),prelaunch_not_started=True)
+    execution=OriginalRefusal();gateway=BatchGateway(execution,tmp_path/'batches',autostart=False)
+    try:
+        bid=start(gateway,('a',));gateway._step(bid);gateway.control(bid,'pause')
+        record=gateway._record(bid);entry=record['entries'][0]
+        assert entry['launch_uncertain'] is False and not entry['run_id'] and execution.started==[]
+        if fault=='nonce':entry['prelaunch_refusal']['launch_attempt_id']='d'*32
+        if fault=='unknown_code':entry['prelaunch_refusal']['code']='some_other_failure'
+        if fault=='profile':entry.pop('launch_intent_profile')
+        if fault=='bool_api':entry['prelaunch_refusal']['API_requests']=False
+        if fault=='new_process':entry['prelaunch_refusal']['new_process_started']=0
+        if fault=='uncertain':entry['launch_uncertain']=True
+        if fault=='owner_leased':execution.bundles['a']['unknown']=True
+        gateway._save(record);before=gateway._path(bid).read_bytes()
+        if fault is None:
+            result=gateway.control(bid,'abandon');saved=gateway._record(bid)
+            assert result['status']=='abandoned' and result['API_requests']==0
+            assert saved['entries']==record['entries'] and saved['selection_sha256']==record['selection_sha256']
+        else:
+            with pytest.raises(DashboardBatchError) as raised:gateway.control(bid,'abandon')
+            assert raised.value.code==('batch_abandon_work_unresolved' if fault=='owner_leased' else 'batch_abandon_reference_unresolved')
+            assert gateway._path(bid).read_bytes()==before
+        assert execution.started==[] and execution.runs=={}
+    finally:gateway.close()
+
+
+def test_generic_error_without_code_cannot_borrow_typed_prelaunch_proof(tmp_path):
+    from scripts.dashboard_execution import ExecutionGateway,DashboardExecutionError
+    class MisclassifyingAdapter(FakeExecution):
+        def start(self,payload):raise RuntimeError('unclassified failure')
+        @staticmethod
+        def prelaunch_refusal(error,registration):
+            proof=ExecutionGateway.prelaunch_refusal(
+                DashboardExecutionError('execution_not_ready','unrelated typed error',
+                    details={'bundle_id':registration['bundle_id'],'bundle_fingerprint':registration['bundle_fingerprint']},
+                    prelaunch_not_started=True),registration)
+            assert proof is not None
+            return proof
+    execution=MisclassifyingAdapter();gateway=BatchGateway(execution,tmp_path/'batches',autostart=False)
+    try:
+        bid=start(gateway,('a',));gateway._step(bid)
+        assert row(gateway,bid)['entries'][0]['launch_uncertain'] is True
+        assert execution.started==[]
+    finally:gateway.close()

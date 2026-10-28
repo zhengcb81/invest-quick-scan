@@ -551,6 +551,23 @@ class BatchGateway:
         entry.update(state="blocked", blocked_reasons=[getattr(error, "code", "original_owner_unavailable")])
 
     @staticmethod
+    def _proved_prelaunch_refusal(entry, proof, code=None):
+        """A bound original no-start proof is control evidence, never dispatch authority."""
+        return (isinstance(proof, dict)
+            and proof.get('protocol') == 'iqs.prelaunch_refusal/1.0.0'
+            and proof.get('phase') == 'before_process_reference'
+            and proof.get('new_process_started') is False
+            and proof.get('code') in {'preview_required', 'execution_not_ready', 'preview_changed'}
+            and (code is None or proof['code'] == code)
+            and entry.get('launch_intent_profile') == 'iqs.dashboard_launch_intent/1.1.0'
+            and proof.get('bundle_id') == entry.get('bundle_id')
+            and proof.get('bundle_fingerprint') == entry.get('bundle_fingerprint')
+            and re.fullmatch('[a-f0-9]{32}', str(proof.get('launch_attempt_id', ''))) is not None
+            and proof['launch_attempt_id'] == entry.get('launch_attempt_id')
+            and type(proof.get('API_requests')) is int and proof['API_requests'] == 0
+            and type(proof.get('database_writes')) is int and proof['database_writes'] == 0)
+
+    @staticmethod
     def _uncertain(entry):
         return bool(entry.get("launch_uncertain") and entry["state"] != "owner_ready" or
             set(entry.get("blocked_reasons") or []) & {"launch_reference_unknown", "original_process_unknown",
@@ -658,16 +675,8 @@ class BatchGateway:
                     self._failure(entry, error)
                     classifier=getattr(self.execution,'prelaunch_refusal',None)
                     proof=classifier(error,entry) if classifier is not None else None
-                    if (isinstance(proof,dict) and proof.get('protocol')=='iqs.prelaunch_refusal/1.0.0'
-                        and proof.get('phase')=='before_process_reference'
-                        and proof.get('new_process_started') is False
-                        and proof.get('code')==getattr(error,'code',None)
-                        and proof.get('bundle_id')==entry['bundle_id']
-                        and proof.get('bundle_fingerprint')==entry['bundle_fingerprint']
-                        and re.fullmatch('[a-f0-9]{32}',str(proof.get('launch_attempt_id',''))) is not None
-                        and proof['launch_attempt_id']==entry.get('launch_attempt_id')
-                        and type(proof.get('API_requests')) is int and proof['API_requests']==0
-                        and type(proof.get('database_writes')) is int and proof['database_writes']==0):
+                    if (isinstance(getattr(error,'code',None), str)
+                        and self._proved_prelaunch_refusal(entry, proof, code=error.code)):
                         entry.update(prelaunch_refusal=proof,launch_uncertain=False)
                         entry['blocked_reasons']=list(dict.fromkeys([getattr(error,'code','original_owner_unavailable')]
                             +proof.get('blocked_reasons',[])))
@@ -839,7 +848,9 @@ class BatchGateway:
                 matches = [task for task in tasks if task.get('bundle_id') == entry['bundle_id']]
                 if entry.get('run_id'):
                     matches = [task for task in matches if task.get('run_id') == entry['run_id']]
-                if len(matches) > 1 or (not matches and (entry.get('run_id') or entry.get('launch_requested_at') or entry.get('launch_uncertain'))):
+                no_start_proved = (not entry.get('run_id') and entry.get('launch_uncertain') is False
+                    and self._proved_prelaunch_refusal(entry, entry.get('prelaunch_refusal')))
+                if len(matches) > 1 or (not matches and (entry.get('run_id') or entry.get('launch_requested_at') or entry.get('launch_uncertain')) and not no_start_proved):
                     raise DashboardBatchError('batch_abandon_reference_unresolved', '原启动引用仍不明确，不能释放公司编排。', 409)
                 if not matches:
                     continue
