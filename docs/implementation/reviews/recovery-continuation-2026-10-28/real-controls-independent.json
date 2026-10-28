@@ -1,0 +1,122 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewer": "/root/review_recovery_resume",
+  "checked_at": "2026-10-28T08:13:18.657662+00:00",
+  "scope": "Actual original two finite controls only; not new-generation admission, scan, financial approval or final model output",
+  "read_mode": "sqlite URI mode=ro, PRAGMA query_only, one read transaction; original readers on __new__ adapters with same borrowed readonly connection; no constructors/migrations/CLI",
+  "exact_items": [
+    {
+      "company": "MSFT",
+      "work_item_id": "WORK_f7ecd387f1f04dfe96d1b261995becaa",
+      "question_id": "IQS_04",
+      "source_generation": 1,
+      "target_generation_requested": 2,
+      "decision_protocol": "stockqa.owner_work_decision/1.2.0",
+      "decision_id": "owd1_eb7ca0055f629b2b552c65a675b37bc3a9ee39126bc0b67379bad05f7377efe1",
+      "confirmation_id": "rc1_b9f6ef4afc3f73b2e5686ce1320f0d9a48c301fc76beaf9e3fb169f8cab6b8ce",
+      "grant_protocol": "stockwiki.work_delegation/1.1.0",
+      "grant_record_sha256": "519c1f570508cbba4dc4ce1232ea31b35bf62890813073e2b65f2085988ef30a",
+      "canonical_native_decision_and_persisted_owner_grant_verified": true,
+      "old_checkpoint_preserved": true,
+      "standard_answer_still_absent": true,
+      "old_outbox_still_blocked": true
+    },
+    {
+      "company": "CATL",
+      "work_item_id": "WORK_69fd8442fcef4d4faeabbb8e4a5b9537",
+      "question_id": "IQS_04",
+      "source_generation": 2,
+      "target_generation_requested": 3,
+      "decision_protocol": "stockqa.owner_work_decision/1.2.0",
+      "decision_id": "owd1_1e26336a3381fc132117e29117c913a7e74460752e478549bb9c60cc1a5c2b1e",
+      "confirmation_id": "rc1_18a25504347e8413f327423132f652d142701d7e8c02ff3f8f6126338ed08201",
+      "grant_protocol": "stockwiki.work_delegation/1.1.0",
+      "grant_record_sha256": "6154eb6a2a4f498363db3ef23861fc88207bf56c91770aaa5b730a420ac63b3f",
+      "canonical_native_decision_and_persisted_owner_grant_verified": true,
+      "old_checkpoint_preserved": true,
+      "standard_answer_still_absent": true,
+      "old_outbox_still_blocked": true
+    }
+  ],
+  "budget": [
+    {
+      "status": "settled",
+      "count": 9,
+      "cost_micros": 267751,
+      "in_flight": 0
+    }
+  ],
+  "raw_work_rows": 118,
+  "all_eight_original_physical_tables_equal_26_oct_baseline": true,
+  "physical_tables": {
+    "attempt": {
+      "rows": 36,
+      "sha256": "fea03120ad216d728b597972ea25bd3af66ab1f7c4f4193464b8380e438c0f47"
+    },
+    "quick_scan_attempt_response": {
+      "rows": 45,
+      "sha256": "424d39eabc29326906f0f932f973064a02b9aeb45a5cce15a798b583b65e6b74"
+    },
+    "quick_scan_budget_attempt": {
+      "rows": 9,
+      "sha256": "8f158403c7d5cece026862f0e0c563fd90b1fd9bf715b8e58cca733c075aced8"
+    },
+    "quick_scan_budget_terminal": {
+      "rows": 9,
+      "sha256": "ea7c2ea382ac76f69035b6e09cc35b4a3711c6db614641b364128b3b765a2939"
+    },
+    "quick_scan_question_pack": {
+      "rows": 9,
+      "sha256": "c3a90d82952f9ae54fe0315cd053d3f381b2b12828d3d233fd7f69fba990bca5"
+    },
+    "quick_scan_question_pack_member": {
+      "rows": 36,
+      "sha256": "50119fecf87ab60c5eca18ba56a6c8379d58883bd91cf8b4c9278504d6aed6a7"
+    },
+    "quick_scan_question_pack_outcome": {
+      "rows": 9,
+      "sha256": "f77137d5c8d8c6a4b5df9d99f64dec9675cb2169e0c8c57f7d457a69ae1367df"
+    },
+    "quick_scan_subject_send_receipt": {
+      "rows": 36,
+      "sha256": "24f57885110b77e3a672a2314d96828caf0f1b0188d58ca3557d3575e70ffb36"
+    }
+  },
+  "all_seventeen_original_material_and_work_hashes_equal_26_oct_baseline": true,
+  "ready_material_count": 17,
+  "complete_standard_count": 15,
+  "standard_absent_note": "Both absent standards remain absent; unchanged None hash does not certify an answer or qualify a compact checkpoint",
+  "no_new_generations_observed": "raw118 unchanged; exact source generation1/2 and17 old work material hashes retained; apply-source and receipt contain only controls, not admission",
+  "full_118_work_row_unchanged_evidence_boundary": "Root script compared every original work row inside original locks before/after; no independently persisted full118-row before-table digest exists, so reviewer independently confirms118 count, two source rows,17 hashed work rows, eight tables and control fingerprints rather than claiming an independent full118-row byte comparison",
+  "fixed_install_recorded_before": {
+    "exists": false,
+    "sha256": null
+  },
+  "fixed_install_current": {
+    "exists": false,
+    "sha256": null
+  },
+  "fixed_install_restored_to_recorded_baseline": true,
+  "fixed_install_baseline_boundary": "Persisted root before hash/existence artifact plus independently observed current equality; reviewer did not personally observe the earlier live baseline",
+  "audit_fixture_correction": "First read-only audit compared the embedded grant record hash to the installation whole-grant hash; corrected to original WorkDecisionDelegation.install canonical whole-grant semantics, no product or owner data changed",
+  "policy_transition": {
+    "from": "stockwiki.refresh_owner_policy/1.1.0",
+    "from_version": 3,
+    "to": "stockwiki.refresh_owner_policy/1.2.0",
+    "to_version": 4,
+    "TTL_hours": 24,
+    "other_policy_fields_unchanged": true
+  },
+  "ledger_sha256_before": "ade88d48b42a76ca97dc4adaae35d441a46824fd8de14c9da3d6c6956dfd7ab1",
+  "ledger_sha256_after": "ade88d48b42a76ca97dc4adaae35d441a46824fd8de14c9da3d6c6956dfd7ab1",
+  "ledger_unchanged_during_review": true,
+  "original_owner_or_ledger_writes": 0,
+  "native_CLI_repeated": false,
+  "model_API_calls": 0,
+  "owned_runtime_removed": true,
+  "baseline_summary_sha256": "f8b96c81e202a1ff75cc45657c2096443ed14d751aeccbcbde9ec6ce0ce08c31",
+  "apply_summary_sha256": "ea7113ee51bf525a6a9828c05bb14c053163d513fba6dc9476f22ff2f3343d01",
+  "UI_saved_recovery_refs_exactly_equal_recorded_native_decisions": true,
+  "answer_bodies_written_or_exported": false
+}

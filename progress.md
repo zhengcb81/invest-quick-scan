@@ -1,3 +1,27 @@
+## 2026-10-28T08:29Z — UI两恢复组已登记并启动原真实批次
+
+微软prepare_8bdcd88fef0744b4a33cf23158dbe166、宁德prepare_acc0d3c8931d45248682083f9a61d271均原registered；UI明确各执行IQS04一题/原36题，不冒充整公司完成。原batch-2dfa已经原UI安全结束编排，保留原工作/结果/费用。选择两新组→UI预览→明确开始，实际新batch-8c74f6fb77ee486eac4a04e9466b9898 running，微软run-f25cdd3abe3e46bd982b7c7521ffd367已启动，宁德原编排selected等待准入。原截至25日/主体/证券/原账本均保留；模型HTTP、完整答案、入库/exactACK尚待实际结果，不提前报通过。
+
+补齐测试环境清理：_native合成input/reply改放各fixture父根，结束自动清；新增两独立临时根/输入不串用例。作者2P2.31s、非作者2P1.05s，AST与077a063除路径/新快例外相同，原25min语义链不变无需重跑。初次裸pytest因sandbox默认tmp权限2setupE未跑测试体，已改owned basetemp。旧69个自有runtime文件约72MB、两份已审合成产物已精确清；薄报告/XML保留。未删真实库、旧答案、费用或不明cache/其他writer文件。
+
+### Next Step
+
+继续原UI两题真实联网回答→完整标准→封存/入库/exactACK，再显式普通1.1新版本/移除refs接续三市场36题和合法有效期内缓存/过期刷新验收。持续执行，不重复询问权限。
+
+---
+
+## 2026-10-28T08:20Z — 两项真实控制独审通过，UI开始恢复子集登记
+
+原两项retry_unusable_checkpoint均recorded/API0。独立real-controls-independent.json passed/open[]，同一只读事务核2原决议/confirmation/grant canonical链、8物理表及17原材料均与26日baseline一致，仍118原work/9settled/267751微USD/0在途；完整118逐行before比较仅root锁内自检，独审不夸大该边界。真实TTL24不变，policy显式1.2/v4，fixedinstall before absent/after absent。原UI CAS已保存两精确恢复refs。
+
+UI已亲核微软和宁德预览为原36题仅执行IQS04的1题子集，分别原g1→2/g2→3；保持原25日信息截止、原分析主体与证券、原模型及同一账本。微软已提交prepjob_8bdcd88fef0744b4a33cf23158dbe166正在原登记；宁德预览已核、待确认登记。不把登记、1题恢复或工程通过当作整公司完成，尚无本轮新模型请求/新入库ACK。原旧batch仍blocked，后续须原UI安全结束其编排后选择新组，不盲resume过期授权。
+
+### Next Step
+
+完成这两UI子集原登记与真实扫描/标准封存/入库/exactACK；再显式切普通1.1新版本并移除恢复refs，补齐三市场原完整题库、正常过期刷新和缓存重启验收，最后金融质量复核。用户继续授权有效，不暂停、不重复询问。
+
+---
+
 ## 2026-10-28T08:03Z — 过期完整接续工程已独审关闭，开始真实两项控制
 
 StockQA0ec5879正常全部钩子通过并推送origin/master；两源与一测试，修复只读投影/写发送守卫对旧不可变legacy source处理不一致。63作者回归127.305s、18独立65.963s/open[]；normal Black仅布局，四源AST亲核相同。唯一新完整原生1P1541.604s：36→1.2原有限控制→1/36准入/prepare_execution→原标准封存/import/exactACK→普通1.1 exact观察复用→私有TTL24过期后IQS04gen3/IQS03gen2正常登记且原send guard通过。旧CP/outbox/包全保留，临时根已清。详docs/implementation/reviews/recovery-continuation-2026-10-28/。

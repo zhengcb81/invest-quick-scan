@@ -139,12 +139,9 @@ def _native(config, kind, module, args):
     try:
         result = p._native_cli(config, kind, module, args)
         if "--work-decision-request" in args:
-            # Synthetic native inputs/reply retained only for non-author local inspection.
-            # No genuine company answer, key, model HTTP or production database here.
-            out = (
-                ROOT
-                / "runs/resume-ui-live-2026-10-26/unusable-checkpoint-capability/native-public-artifacts"
-            )
+            # Keep synthetic inputs/reply inside the owned fixture, whose cleanup
+            # removes them; repeated tests must not overwrite shared run artifacts.
+            out = Path(config["workspace_root"]).parent / "native-public-artifacts"
             out.mkdir(exist_ok=True)
             (out / "work-decision-input.json").write_bytes(
                 Path(args[args.index("--work-decision-request") + 1]).read_bytes()
@@ -159,6 +156,31 @@ def _native(config, kind, module, args):
             details=error.details,
         )
         raise
+
+
+def test_native_control_artifacts_are_owned_by_each_temporary_fixture(tmp_path, monkeypatch):
+    import tempfile
+
+    monkeypatch.setattr(p, "_native_cli", lambda *args: {"status": "recorded"})
+    owned_roots = []
+    for index in range(2):
+        with tempfile.TemporaryDirectory(dir=tmp_path) as directory:
+            base = Path(directory)
+            owned_roots.append(base)
+            request = base / "request.json"
+            _write(request, {"synthetic_input": index})
+            result = _native(
+                {"workspace_root": str(base / "workspace")},
+                "stockwiki", "synthetic", ["--work-decision-request", str(request)],
+            )
+            artifacts = base / "native-public-artifacts"
+            assert result == {"status": "recorded"}
+            assert json.loads((artifacts / "work-decision-input.json").read_text()) == {
+                "synthetic_input": index
+            }
+            assert json.loads((artifacts / "work-decision-reply.json").read_text()) == result
+        assert not base.exists()
+    assert owned_roots[0] != owned_roots[1]
 
 
 def _apply_recording_refusal(gateway, preview, base, stage):
