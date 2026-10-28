@@ -8,7 +8,11 @@
 2. root通过原public CLI为精确源work创建新的有限确认。purpose为`retry_unusable_checkpoint`，旧purpose和旧grant不扩权。
 3. 原只读control projection校验trusted `prepare.recovery_work_decision_refs`，只为所选实体/主体/证券/模型/截止日匹配的控制字段准备执行子集。无匹配不能回落为全题或空任务成功。
 4. 原deriver选择N+1，原admission分配target work ID。原source work/checkpoint/context/outbox/response/费用保留。
-5. 原扫描、标准封存、StockWiki导入与exact ACK完成后，显式复位普通1.1配置，移除专用refs。普通完整题库通过原query复用已交付观测，不重问已保存合法答案。此最后一段必须实际验收，不能只以derive通过代替。
+5. 原扫描、标准封存、StockWiki导入与exact ACK完成后，显式复位普通1.1配置，移除专用refs。仍在有效期内且期间、题义、主体和模型匹配的观测，经原query按exact observation ID复用；已过期则走原普通下一代刷新。两条路径必须分别验收，不能以derive或仅warm通过代替。
+
+旧source永远保留。普通下一代的写入及发送守卫，只能在同一原生事务里核实原决议、准确后继ORF、原封包、消费者绑定和exact ACK之后，忽略这一条已由后继解决的历史阻塞；新代际须严格晚于该后继。单有`delivered`标签、未封包、缺ACK、错决议/确认或另一未决工作仍不得放行。当前权限、预算与有效期继续按原系统核验。
+
+信息日期不会因重新导入而获得新有效期。缓存验收记录信息截止日、信息日期、TTL、观测/校验时间与实际新HTTP数；已过期结果保留历史用途，但不得算有效缓存。禁止为关闭验收而延长真实TTL、改写历史答案日期或删除旧检查点。
 
 ## 锁定的展示接口
 

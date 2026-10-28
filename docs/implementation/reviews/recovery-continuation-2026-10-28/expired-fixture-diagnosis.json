@@ -1,0 +1,36 @@
+{
+  "status": "confirmed_fixture_expired_before_reuse_assertions",
+  "scope": "two pure original functions only; does not identify the missing inner native refusal code",
+  "results": [
+    {
+      "now": "2026-10-26T22:08:00Z",
+      "valid_until": "2026-10-26T00:00:00Z",
+      "freshness": "stale",
+      "decision": "dispatch_new_work",
+      "reasons": [
+        "ttl_expired"
+      ],
+      "reuse_observation_id": null
+    },
+    {
+      "now": "2026-10-28T07:00:00Z",
+      "valid_until": "2026-10-26T00:00:00Z",
+      "freshness": "stale",
+      "decision": "dispatch_new_work",
+      "reasons": [
+        "ttl_expired"
+      ],
+      "reuse_observation_id": null
+    }
+  ],
+  "network_calls": 0,
+  "database_access": 0,
+  "source_edits": 0,
+  "production_policy_relaxation_recommended": false,
+  "source_refs": {
+    "ttl_fixture": "tests/test_dashboard_prepare.py:189",
+    "information_date_fixture": "tests/test_dashboard_unusable_recovery.py:265",
+    "capped_validity": "StockWiki/stockwiki/quick_scan_module_refresh.py:186",
+    "reuse_assertions": "tests/test_dashboard_unusable_recovery.py:574"
+  }
+}

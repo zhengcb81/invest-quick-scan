@@ -1,0 +1,52 @@
+{
+  "reviewer": "/root/review_recovery_resume",
+  "reviewed_at": "2026-10-28T07:33:07.113491+00:00",
+  "status": "source_security_and_focused_tests_passed_native_expiry_pending",
+  "source_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_owner_refresh_journal.py": "3ef9e31f10531c2ebaa14d3d7fa03fa5985a3a241b4c0a2d6587d375ca50a6e5",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_store.py": "80c4452d712f7e9810dd5bfab5c401994d34a73679dc126152e62149e6258364",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_unusable_checkpoint_retry.py": "ba4921c014f1797a6e109829fe9df96714176c8458e17318c81ff76ca939b078",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_dashboard_unusable_recovery.py": "b6567e350dd1d974a6a0ae43fadedefd63f26cc5fc3e89c79c7a4c0cebdf93c2"
+  },
+  "frozen_pin_match": true,
+  "independent_tests": {
+    "cases": 18,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": "65.963",
+    "evidence": "final-successor.xml",
+    "boundary": "original real synthetic SQLite/control/source/ORF; deliberately explicit validated-delivery READER seam for positive case; not native consumer ACK proof"
+  },
+  "author_evidence_reviewed": {
+    "cases": 63,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": "127.305",
+    "not_independently_rerun": true
+  },
+  "verified_source_boundaries": [
+    "checkpoint_successor uses exact same-entity/question/scope/scope_id target generation and validates original immutable decision and ORF native control",
+    "Exact source/target generation, decision ID/document hash, confirmation and new purpose must match; unrelated/foreign controls never retire source",
+    "delivered_checkpoint_successor requires actual target delivered, original outbox exists and original _result_delivery_record validates canonical package, consumer binding, exact ACK hash/identity/status",
+    "Plain delivered status, missing ACK/consumer/package/outbox, invalid reader and earlier/equal generation all refuse",
+    "New skip only ordinary binding1/2 with strictly later generation; missing current binding and any other unresolved work remain conservative",
+    "Owner permission/freshness/budget checks stay outside this helper and still run; old checkpoint/outbox/physical history never rewritten",
+    "Shared read projection still selects exact original successor; no generation manufactured",
+    "IQS native fixture uses yesterday shared cutoff/72h warm then only disposable policy24h expiry; old source preserved and gen3 normal send guard asserted; no production TTL/date/source changed"
+  ],
+  "open_findings": [],
+  "remaining_evidence": [
+    "Root sole original native-expiry run must pass real seal/import/exact ACK, ordinary warm exact refs, then TTL24 normal generation3/2 and send guard",
+    "Final root normal-hook changes require exact pin/equivalence check before publication"
+  ],
+  "real_database_access": 0,
+  "real_model_API_calls": 0,
+  "source_edits": 0,
+  "cleanup": {
+    "owned_runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\resume-recovery-2026-10-28\\independent\\final-review-runtime-2ovj5svy",
+    "exists_after": false,
+    "production_paths_touched": false
+  }
+}

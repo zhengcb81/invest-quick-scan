@@ -1,6 +1,7 @@
 """Explicit unusable-checkpoint subset; synthetic owned native state, no HTTP."""
 
 import copy
+from contextlib import closing
 import hashlib
 import json
 import os
@@ -160,6 +161,17 @@ def _native(config, kind, module, args):
         raise
 
 
+def _apply_recording_refusal(gateway, preview, base, stage):
+    """Keep bounded native diagnostics before the owned fixture is cleaned."""
+    try:
+        return gateway.apply({key: preview[key] for key in ("preview_id", "preview_token")})
+    except p.DashboardPrepareError as error:
+        _stage(base, stage, code=error.code, status=error.status, details=error.details)
+        raise AssertionError(
+            f"{stage}: {error.code}; {json.dumps(error.details, sort_keys=True)}"
+        ) from error
+
+
 def _synthetic_response(store, bundle, qid, *, compact=False):
     """Original lifecycle APIs; known HTTP is a synthetic receipt, zero sockets."""
     from src.utils import quick_scan_subject_journal as sj
@@ -262,7 +274,10 @@ def _synthetic_response(store, bundle, qid, *, compact=False):
         cost_source_ref="synthetic-zero-HTTP-bookkeeping",
     )
     body = content()
-    body.update(question_id=qid, information_as_of="2026-10-25")
+    body.update(
+        question_id=qid,
+        information_as_of=context["questions"][qid]["metadata"]["information_cutoff"],
+    )
     body["summary"] = "Synthetic supported fixture; no financial conclusion."
     body["evidence"][0]["url"] = "https://example.org/source"
     store.save_answer_checkpoint(
@@ -338,9 +353,18 @@ def test_native_control_subset_admission_ack_then_normal_11_reuses_full_bank(ori
     from stockwiki.paths import WorkspacePaths
 
     gateway, base, config = original
-    preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+    # One original workspace proves both warm reuse and normal expiry. A
+    # yesterday cutoff is fresh under the fixture's72h policy, then stale
+    # under24h; no production clock, answer, history or policy is rewritten.
+    as_of = (datetime.now(timezone.utc) - timedelta(days=1)).date().isoformat()
+    policy_path = base / "owner/config/quick_scan_refresh.json"
+    policy = json.loads(policy_path.read_bytes())
+    policy["ttl_hours"] = 72  # Synthetic fixture only; never a production policy.
+    _write(policy_path, policy)
+    gateway = p.PrepareGateway(config)
+    preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": as_of})
     _stage(base, "initial_preview")
-    initial = gateway.apply({k: preview[k] for k in ("preview_id", "preview_token")})
+    initial = _apply_recording_refusal(gateway, preview, base, "initial_apply_refusal")
     _stage(base, "initial_native_36_registered")
     bundle = next(
         x["execution_bundle"]
@@ -357,7 +381,6 @@ def test_native_control_subset_admission_ack_then_normal_11_reuses_full_bank(ori
     original_checkpoint = copy.deepcopy(store.get_answer_checkpoint(old))
     original_delivery = copy.deepcopy(store.get_result_delivery(old))
     _stage(base, "known_settled_compact_and_prior_delivered")
-    policy_path = base / "owner/config/quick_scan_refresh.json"
     policy = json.loads(policy_path.read_bytes())
     policy["protocol"] = "stockwiki.refresh_owner_policy/1.2.0"
     policy["qa"]["quote_schema_version"] = "1.2.0"
@@ -489,7 +512,7 @@ def test_native_control_subset_admission_ack_then_normal_11_reuses_full_bank(ori
     gateway = p.PrepareGateway(
         config
     )  # Explicit trusted configuration reload; the old gateway remains immutable.
-    recovery = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+    recovery = gateway.bank_preview({"entity_id": ENTITY, "as_of": as_of})
     assert (
         recovery["question_count"] == 36
         and len(recovery["questions"]) == 36
@@ -497,7 +520,7 @@ def test_native_control_subset_admission_ack_then_normal_11_reuses_full_bank(ori
         and recovery["execution_question_count"] == 1
     )
     _stage(base, "controlled_preview_1_of_36")
-    result = gateway.apply({k: recovery[k] for k in ("preview_id", "preview_token")})
+    result = _apply_recording_refusal(gateway, recovery, base, "recovery_apply_refusal")
     assert (
         result["question_count_total"] == 1
         and len(result["execution_bundles"]) == 1
@@ -556,11 +579,11 @@ def test_native_control_subset_admission_ack_then_normal_11_reuses_full_bank(ori
     _write(policy_path, policy)
     config["prepare"].pop("recovery_work_decision_refs")
     gateway = p.PrepareGateway(config)
-    normal = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+    normal = gateway.bank_preview({"entity_id": ENTITY, "as_of": as_of})
     assert (
         normal["recovery_subset"] is None and normal["execution_question_count"] == 36
     )
-    ordinary = gateway.apply({k: normal[k] for k in ("preview_id", "preview_token")})
+    ordinary = _apply_recording_refusal(gateway, normal, base, "ordinary_apply_refusal")
     entity = next(
         x
         for x in ordinary["execution_bundles"]
@@ -594,3 +617,29 @@ def test_native_control_subset_admission_ack_then_normal_11_reuses_full_bank(ori
         "ordinary_11_full_bank_reuses_delivered_recovery",
         registration=registration,
     )
+    # A normal owner policy can later require a refresh. The source remains
+    # immutable; exact acknowledged successor lineage must not deadlock it.
+    policy["ttl_hours"] = 24
+    _write(policy_path, policy)
+    gateway = p.PrepareGateway(config)
+    expired = gateway.bank_preview({"entity_id": ENTITY, "as_of": as_of})
+    refreshed = _apply_recording_refusal(gateway, expired, base, "expired_ordinary_apply_refusal")
+    entity_refresh = next(
+        row for row in refreshed["execution_bundles"] if row["subject_ref"]["scope"] == "entity"
+    )
+    refreshed_registration = entity_refresh["admission"]["registration"]
+    items = {row["question_id"]: row for row in refreshed_registration["items"]}
+    assert items["IQS_04"]["generation"] == 3
+    assert items["IQS_03"]["generation"] == 2
+    assert not {"IQS_03", "IQS_04"} & {
+        row["question_id"] for row in refreshed_registration["observation_references"]
+    }
+    from src.utils.quick_scan_owner_refresh_journal import guard_send
+
+    with closing(store._connect()) as connection:
+        guard_send(connection, store.get_item(items["IQS_04"]["work_item_id"]))
+    assert store.get_answer_checkpoint(old) == original_checkpoint
+    assert store.get_result_delivery(old) == original_delivery
+    assert store.get_result_delivery(fresh)["package_sha256"] == new_package
+    assert store.get_result_delivery(fresh)["state"] == "delivered"
+    _stage(base, "ordinary_11_expired_successor_refreshes_normally", registration=refreshed_registration)

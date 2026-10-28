@@ -1,3 +1,33 @@
+## 2026-10-28T08:03Z — 过期完整接续工程已独审关闭，开始真实两项控制
+
+StockQA0ec5879正常全部钩子通过并推送origin/master；两源与一测试，修复只读投影/写发送守卫对旧不可变legacy source处理不一致。63作者回归127.305s、18独立65.963s/open[]；normal Black仅布局，四源AST亲核相同。唯一新完整原生1P1541.604s：36→1.2原有限控制→1/36准入/prepare_execution→原标准封存/import/exactACK→普通1.1 exact观察复用→私有TTL24过期后IQS04gen3/IQS03gen2正常登记且原send guard通过。旧CP/outbox/包全保留，临时根已清。详docs/implementation/reviews/recovery-continuation-2026-10-28/。
+
+非作者final-acceptance.json已status=passed/open[]，并只读核root真实两项控制脚本与精确源。root现执行61751会话，仅原微软IQS04g1→2与宁德IQS04g2→3两项retry_unusable_checkpoint控制。原owner协议已显式1.1/v3→1.2/v4，真实TTL24、日期、预算不改；微软已原preview/grant/confirm，apply及宁德仍在执行。没有在PWF提前宣称2/2已完成；没有新模型请求/新work代际，脚本会校8物理表、17原材料和全部work行，并记录fixedinstall独立beforehash+CAS/finally，partial禁止盲重跑。
+
+原8766工作台已恢复，启动PID25356（此为当时记录，后续须核命令防复用），仅--no-refresh/无模型；UI实际原名单215含腾讯已核。浏览器控制会话发生兼容性错误，按文档重置后已恢复原标签，无配置或业务写入。旧三市场batch仍blocked，不能盲resume旧过期授权。
+
+### Next Step
+
+核实两项真实控制完成并保持原费用/材料；通过UI保存精确恢复refs，按原公司/主体/证券/截止25/模型准备两恢复子集、真实扫描/入库/exactACK，再显式普通1.1接续三市场完整题库和缓存恢复。金融正确性、真实完整扫描与原ACK仍需实际验收，工程通过不代替。继续按用户授权执行，不重复请求权限。
+
+---
+
+## 2026-10-28T07:28Z — 有效期内原生链已通过，过期接续根修正在集中验收
+
+独立原函数确证上轮fixture信息日25/TTL24在26日晚已stale，不能要求warm复用。已把私有工程fixture改为动态同一截止日；第一次单warm原生1P939.00s（runner总945.65s），确证36→原有限1.2控制→1/36准入/prepare_execution→原标准封存/import/exactACK→普通1.1复用exact原观察。不能据此称金融或真实生产已过。另sandbox debug失败已精确trace为原不可变hardlink WinError5；原保护不改，当前原生在获批隔离环境运行，原临时目录已精确清理。
+
+新发现并复现真实write/send守卫缺口：只读投影能跳过有确切后继的旧不可变legacy CP，但普通binding2新一代仍被旧ready source阻塞。根修只在StockQA两源提取共享checkpoint_successor原decision+ORF验证，写/发送另必须原已封包+消费者绑定+exact ACK且新代际严格大于已交付后继；其他pending/uncertain/未ACK/错绑定照拒。作者当前63定向回归通过127.33s（pytest试写源仓cache被拒，未写入；后续runner已/将固定cache到自有runtime，无需重跑整集）。单元delivery读取边界替身明确披露，不冒充真实ACK。
+
+新一次完整原生用同一私有workspace同时证明：昨日截止+72h在窗内reuse，再私有owner策略24h使其过期，原普通1.1应正常登记IQS04gen3/IQS03gen2并通过原send guard，旧CP/outbox/包/费用保留。session20216，结果native-expiry.xml；只此一次新覆盖，不重复整套。独立agent review_recovery_resume已接受4文件最终集中审查，无真实策略或库改动，无新付费调用。
+
+真实7:06Z只读仍9settled/267751微USD估计/0在途、82pending/17CP/9failed，hash与26日一致；原真实TTL24与asof25在今天28日确实过期，真实后续不能靠伸长TTL或改历史日期绕门。8766原UI当前不在监听，待工程与独审关闭后用原配置重新启动并继续用户明确要求的三市场UI扫描/入库/缓存恢复。
+
+### Next Step
+
+关闭过期普通新代的原生集成与独审并发布；随后保留原工作区和账本，经原policy1.2精确两项有限控制/原UI恢复，再普通1.1补完三市场、原入库/exactACK及有合法有效期前提的缓存验收。已答但过期的结果如实标过期；不可将其算有效缓存，也不删除旧历史/费用。
+
+---
+
 ## 2026-10-28 接续 — 已核实上轮native4失败点，不再沿用pending
 
 用户明确“继续”，撤销上一条条件暂停，继续原PWF主线。最新亲查IQS6089c6d、StockQA83fec12、StockWiki1799d3a、UIc6944ab；IQS上一轮PWF/薄证据尚未完成提交，保留其他writer的2026-10-10施工包README四行改动。原目标工具仍显示paused但不具备resume接口；以本次用户继续为执行依据，不误设complete/blocked。
