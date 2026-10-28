@@ -93,6 +93,34 @@ def start(gateway):
     return gateway.start({"bundle_id": "test", "preview_id": preview["preview_id"]})
 
 
+def test_explicit_work_lease_reaches_only_new_native_process_without_rewriting_legacy(deployment):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    legacy = gateway._command(bundle, Path(config['stockqa_root']), runtime/'legacy-output.json')
+    assert '--work-lease-seconds' not in legacy
+    old_fingerprint = gateway.bundle_registration('test')['bundle_fingerprint']
+    bundle['work_lease_seconds'] = 3600
+    gateway = ExecutionGateway(config)
+    assert gateway.bundle_registration('test')['bundle_fingerprint'] != old_fingerprint
+    run = start(gateway)['run']
+    wait_done(gateway, run['run_id'])
+    argv = json.loads(Path(run['result_path']).read_text(encoding='utf-8'))['argv']
+    assert argv[argv.index('--work-lease-seconds') + 1] == '3600'
+    assert '--work-lease-seconds' not in legacy
+    assert (runtime/'calls.txt').read_text().splitlines() == ['1']
+
+
+@pytest.mark.parametrize('bad', [True, False, 0, -1, 86401, 600.0, '3600', None, float('inf'), float('nan')])
+def test_invalid_work_lease_never_reaches_native_launch(deployment, monkeypatch, bad):
+    config, runtime, bundle = deployment
+    bundle['work_lease_seconds'] = bad
+    gateway = ExecutionGateway(config)
+    monkeypatch.setattr(gateway_module.subprocess, 'Popen', lambda *a, **kw: pytest.fail('invalid resource control launched'))
+    with pytest.raises(DashboardExecutionError):
+        start(gateway)
+    assert not (runtime/'calls.txt').exists()
+
+
 @pytest.mark.parametrize('code',['preview_required','execution_not_ready','preview_changed'])
 def test_original_prewrite_refusal_has_positive_proof_and_never_creates_run(deployment,monkeypatch,code):
     config,runtime,bundle=deployment

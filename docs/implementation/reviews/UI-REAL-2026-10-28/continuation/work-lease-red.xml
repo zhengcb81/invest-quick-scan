@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="2.027" timestamp="2026-10-28T15:20:17.740914+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_dashboard_execution" name="test_explicit_work_lease_reaches_only_new_native_process_without_rewriting_legacy" time="1.129"><failure message="ValueError: '--work-lease-seconds' is not in list">deployment = ({'stockqa_root': 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ls28-bl14wzw6\\p\\test_explicit_work_lease_reach...', 'provider': 'test', 'confirmation_id': 'rc2_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', ...})
+
+    def test_explicit_work_lease_reaches_only_new_native_process_without_rewriting_legacy(deployment):
+        config, runtime, bundle = deployment
+        gateway = ExecutionGateway(config)
+        legacy = gateway._command(bundle, Path(config['stockqa_root']), runtime/'legacy-output.json')
+        assert '--work-lease-seconds' not in legacy
+        old_fingerprint = gateway.bundle_registration('test')['bundle_fingerprint']
+        bundle['work_lease_seconds'] = 3600
+        gateway = ExecutionGateway(config)
+        assert gateway.bundle_registration('test')['bundle_fingerprint'] != old_fingerprint
+        run = start(gateway)['run']
+        wait_done(gateway, run['run_id'])
+        argv = json.loads(Path(run['result_path']).read_text(encoding='utf-8'))['argv']
+&gt;       assert argv[argv.index('--work-lease-seconds') + 1] == '3600'
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: '--work-lease-seconds' is not in list
+
+..\..\tests\test_dashboard_execution.py:108: ValueError</failure></testcase><testcase classname="tests.test_dashboard_grant_duration" name="test_future_work_lease_is_separate_from_existing_grants_and_preparation_timeout" time="0.014"><failure message="dashboard_service.ProductError: 公司准备配置包含未知字段。">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/ls28-bl14wzw6/p/test_future_work_lease_is_sepa0')
+
+    def test_future_work_lease_is_separate_from_existing_grants_and_preparation_timeout(tmp_path):
+&gt;       config = validate_config({'prepare': {'work_lease_seconds': 3600, 'delegation_ttl_seconds': 43200}}, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\tests\test_dashboard_grant_duration.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'prepare': {'work_lease_seconds': 3600, 'delegation_ttl_seconds': 43200}}
+root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/ls28-bl14wzw6/p/test_future_work_lease_is_sepa0')
+
+    def validate_config(value, root):
+        if not isinstance(value, dict) or set(value)-CONFIG_KEYS:
+            raise ProductError('invalid_config', '连接配置必须是模板中声明的字段。')
+        _reject_credentials(value)
+        result = {**defaults(root), **value}
+        if result['schema_version'] != '1.0.0':
+            raise ProductError('unsupported_config_version', '不支持该连接配置版本。')
+        for key in PATH_KEYS:
+            item = result.get(key)
+            if item is None:
+                continue
+            if not isinstance(item, str) or '\0' in item or len(item)&gt;4096 or '://' in item:
+                raise ProductError('invalid_path', f'{key}必须为本机路径。')
+            if item:
+                path = Path(item)
+                result[key] = str((Path(root)/path if not path.is_absolute() else path).resolve())
+        for kind in ('execution_bundles', 'import_bundles'):
+            if not isinstance(result[kind], dict) or len(result[kind]) &gt; 5000:
+                raise ProductError('invalid_bundles', '注册输入必须是以bundle_id为键的对象。')
+            normalized = {}
+            for name, bundle in result[kind].items():
+                if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,95}', name):
+                    raise ProductError('invalid_bundle_id', '输入包ID格式无效。')
+                if not isinstance(bundle, dict) or set(bundle)-BUNDLE_KEYS:
+                    raise ProductError('invalid_bundle', '输入包包含未知字段，不能提交命令或脚本。')
+                normalized[name] = dict(bundle)
+                for key in BUNDLE_PATHS &amp; bundle.keys():
+                    item = bundle[key]
+                    if not isinstance(item, str) or not item or '\0' in item or '://' in item:
+                        raise ProductError('invalid_bundle_path', f'{name}.{key}须为本机文件引用。')
+                    path = Path(item)
+                    normalized[name][key] = str((Path(root)/path if not path.is_absolute() else path).resolve())
+            result[kind] = normalized
+        if type(result['timeout_seconds']) not in (int, float) or not 1 &lt;= result['timeout_seconds'] &lt;= 600:
+            raise ProductError('invalid_timeout', '超时范围为1至600秒。')
+        for key in ('universe_id', 'workspace_kind', 'workspace_label'):
+            if not isinstance(result[key], str) or not result[key] or len(result[key]) &gt; 256:
+                raise ProductError('invalid_config', f'{key}必须是非空短文本。')
+        options = result['prepare']
+        if not isinstance(options, dict) or set(options)-PREPARE_KEYS:
+&gt;           raise ProductError('invalid_prepare_config', '公司准备配置包含未知字段。')
+E           dashboard_service.ProductError: 公司准备配置包含未知字段。
+
+..\..\scripts\dashboard_service.py:121: ProductError</failure></testcase></testsuite></testsuites>

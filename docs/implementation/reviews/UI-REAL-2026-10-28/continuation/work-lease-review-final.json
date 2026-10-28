@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Finite future-work-claim lease configuration from IQS preparation/frozen bundle through StockQA CLI/runner/lifecycle, with original default and expired-lease fences preserved. Engineering-only acceptance.",
+  "author_of_reviewed_changes": false,
+  "final_source_sha256": {
+    "IQS": {
+      "scripts/dashboard_execution.py": "561d96c040d96350ce7b63a124ae0d842c021b62b825c48641c93fd95fd43bae",
+      "scripts/dashboard_prepare.py": "90553ad29511befcce487e2bc6d552d1abd9bbe0daa11f21c81d1e0b6c7437af",
+      "scripts/dashboard_service.py": "87baa2a4d67a5c115b50c6c25a918b878443ed8d42029913c054491ef04860a1",
+      "tests/test_dashboard_execution.py": "fd200fc488d76f0f65279209331685f635a914d3a6b99e3d841237c08cf74e0f",
+      "tests/test_dashboard_grant_duration.py": "68bb930cb3462ce8c5803122c3f60985cdead9be46393fde90f66577639bc710",
+      "tests/test_dashboard_prepare.py": "fbc4232cf01d4f46a169fb86bbb45112adc4d21d41aab9816d5ec01f0f96e093",
+      "README.md": "ccfc147e798c2a5eb126544316ceef4cbd16f83961196deabeb2cf39ba9e492b",
+      "docs/implementation/dashboard-product-contract.md": "465bc16885c8c15a027ab326222d758c3eb5088e4cc9cdbd6087aab5fd6e50f7"
+    },
+    "StockQA": {
+      "main_with_llm.py": "34732f29a3ed3903d4a2115a965a032ccec7d10c6024886833c5a963ffbd5884",
+      "src/runners/llm_runner.py": "4f3f984532b13853f1c500a026a27c4ffbc9eea637fa5eacab57721bbf1a3c52",
+      "tests/integration/test_work_lease_cli.py": "23e933233243739ee24d2790c2bdea553431cbec162b38d617c37911c68e8171"
+    }
+  },
+  "source_stable_during_execution": true,
+  "independent_validation": {
+    "tests": 11,
+    "failures": 0,
+    "seconds": 6.491,
+    "xml": "work-lease-review-focused.xml",
+    "private_cases": 5,
+    "selected_author_cases_reproduced_independently": 6,
+    "coverage": [
+      "Explicit value changes both original preparation binding and whole-bundle fingerprint, reaches one command flag; legacy argv remains exactly unchanged.",
+      "Real isolated original Store/lifecycle: a live 600-second lease keeps its token/epoch/expiry/status under another lifecycle configured3600; only a distinct new claim receives3600.",
+      "NaN and infinity produce typed UI/config errors before bundle hashing or native interfaces, and are rejected by the shared SDK guard.",
+      "SDK retains positive finite fractional seconds <=86400; UI deliberately restricts1..86400 integer seconds.",
+      "Public CLI no-flag default omits new runner kwarg, explicit3600 forwards it, and nan is rejected before runner construction.",
+      "Actual original SDK+isolated SQLite with synthetic delay:600/650 yields uncertain+settled fee/noCP;1800/650 yields original standard CP;1800/1900 still yields uncertain+settled/noCP. Re-execution sends zero additional HTTP in all3 cases."
+    ]
+  },
+  "source_review": [
+    "IQS service allowlists and validates prepare/bundle duration, PrepareGateway validates before original preparation, and ExecutionGateway validates before fingerprint/launch. Booleans, non-finite, non-integer UI values and out-of-range values are rejected.",
+    "Preparation binding includes all relevant options, including lease, and new scope execution bundle freezes the explicit field. Execution fingerprint includes the entire registration; changing a bundle lease cannot silently resume an older run fingerprint.",
+    "Only explicit registered bundle values append --work-lease-seconds. Missing values preserve old argv and StockQA600.0 default.",
+    "StockQA validates public CLI arguments before constructing the runner; runner and private single-company path and lifecycle constructor share one bounded numeric guard. Only non-default values are forwarded, preserving legacy mocks and default argument shapes.",
+    "Non-default runner value requires one identity-bound search company and rejects unsupported batch/seal paths rather than silently ignoring it. Actual lifecycle receives the parameter for ordinary and registered question-pack claim paths.",
+    "All old store claim/save/known-outcome/settlement/owner-permission mechanisms are unchanged. No renew, clock extension, loosened CP acceptance, unknown resend or new financial permission is introduced.",
+    "README and product contract distinguish delegation lifetime, future claim lease, preparation worker/native timeouts and HTTP read timeout. They explicitly state new-only control and no old lease/grant extension.",
+    "Unrelated import line wrapping in runner is formatting-only; no additional recovery/journal/fee logic changed."
+  ],
+  "scope_boundaries": {
+    "native_full36_prepare_executed_by_reviewer": false,
+    "native_full36_owner_preview_failure": "Separate existing mainline failure remains under independent diagnosis; not counted as a lease-green end-to-end acceptance.",
+    "real_UI_future_claim3600_accepted": false,
+    "real_active_T_C_work_touched": false,
+    "strict_late_reply_recovery_capability": "Separate known-outcome/journal task; not widened or declared complete by this patch."
+  },
+  "author_evidence_separate": [
+    "Root reported154 passing IQS unit/temporary fake-owner cases.",
+    "StockQA author reported41 passing selected CLI/SDK cases and mypy success. These are separate author results, not claimed as an independent full cohort."
+  ],
+  "private_runner_setup_correction": "First private collection lacked IQS/scripts on sys.path and raised ModuleNotFoundError before tests. Corrected the private runner only; final11case execution passed. No product change or product-red claim.",
+  "runtime_removed": true,
+  "real_API_requests": 0,
+  "real_database_access": false,
+  "source_writes": 0,
+  "deploy_reload_or_native_CLI_operations": false,
+  "clock_boundary": "No production or wall clock changed; only selected pre-existing author SDK tests inject synchronized integer clocks inside temporary isolated fixtures."
+}

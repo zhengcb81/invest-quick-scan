@@ -178,6 +178,10 @@ def _delegation_ttl_seconds(config):
 def _timeouts(config):
     _delegation_ttl_seconds(config)
     options = config.get("prepare", {})
+    if 'work_lease_seconds' in options and (type(options['work_lease_seconds']) is not int
+            or not 1 <= options['work_lease_seconds'] <= 86400):
+        raise DashboardPrepareError('preparation_work_lease_invalid',
+            'New work leases require 1–86400 integer seconds; existing leases are never renewed', 503)
     worker = options.get("worker_timeout_seconds", 900)
     native = options.get("native_timeout_seconds", 300)
     if (type(worker) is not int or not 60 <= worker <= 3600 or
@@ -1060,6 +1064,8 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
         bundle.update(recovery_subset=copy.deepcopy(recovery), execution_question_ids=[q["id"] for q in selected_questions], execution_question_count=len(selected_questions))
     if options.get("search_policy"):
         bundle["search_policy"] = options["search_policy"]
+    if 'work_lease_seconds' in options:
+        bundle['work_lease_seconds'] = options['work_lease_seconds']
     if subject_ref["scope"] == "security":
         bundle["security_scope_id"] = subject_ref["security_id"]
     return {"bundle_id": run_id, "execution_bundle": bundle, "subject_ref": subject_ref, "question_count": len(selected_questions), "confirmation_id": confirmation["confirmation_id"], "admission": admitted}

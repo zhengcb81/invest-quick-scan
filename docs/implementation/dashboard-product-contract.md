@@ -64,6 +64,8 @@ Host只允许当前端口127.0.0.1/localhost；Origin如存在须为本机同源
     "pack_size": 1,
     "thinking": true,
     "max_output_tokens": 8192,
+    "work_lease_seconds": 3600,
+    "delegation_ttl_seconds": 43200,
     "worker_timeout_seconds": 900,
     "native_timeout_seconds": 300,
     "routing_profiles": {}
@@ -73,6 +75,8 @@ Host只允许当前端口127.0.0.1/localhost；Origin如存在须为本机同源
 ```
 
 `admission_config`继续指向原StockQA work_store/budget_policy_file和原StockWiki工作区；它们必须已存在。准备器只派生每次准备独有的不可变输入目录，不创建第二预算或覆盖旧manifest。新原范围必须由原部署提供；不能给已耗尽的r25六次请求补额度。**自动准备当前支持原owner policy 1.0/1.1**；1.2及以上在预览中明确返回`native_prepare_owner_dialect_not_supported`，不先写原路由、不降级策略。已登记的高级原包仍走执行器对应的原1.2–1.5检查与控制，此能力不等于自动准备已支持它们。
+
+`prepare.work_lease_seconds`是新工作每次claim的有限处理时长，允许1–86400整秒；省略时保留原StockQA默认600秒。显式值随新执行包冻结，并由`--work-lease-seconds`传给原CLI，不修改旧包、旧代次或已有租约。联网搜索可能持续发送心跳，因此HTTP的`timeout`不是总耗时上限；本轮真实MiMo请求曾耗时633秒。长搜索可明确选3600秒，并为新准备单独设置足够的`delegation_ttl_seconds`（例43200秒），二者都不是自动续期，也不增加费用预算。设置须等原工作安全退出；旧grant或lease过期后仍走原核验/恢复，未知HTTP不重发。`worker_timeout_seconds`和`native_timeout_seconds`仅限制准备流程，不能当作模型请求总超时。
 
 默认模块包采用已发布router2.5：所有公司基础36题，可信`routing_profiles`按实体登记`verified_facts`/`user_policy`后追加行业、阶段、属性模块。profile标签改名不使输入失效；真实事实或策略变化使旧预览失效。分类未知保留基础，不猜行业；本自动准备路径当前为评分题，61道信息题面和已存信息记录可查，但不能宣称信息题已自动采集。
 

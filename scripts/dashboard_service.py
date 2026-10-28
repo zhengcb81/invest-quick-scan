@@ -24,13 +24,13 @@ BUNDLE_PATHS = {'questions', 'manifest', 'identity_snapshot', 'c06_authority', '
                 'admission_config', 'spend_authorization', 'inspection_request', 'search_policy',
                 'runtime_dir', 'package', 'release', 'work_store'}
 BUNDLE_KEYS = BUNDLE_PATHS | {'entity_id', 'company', 'provider', 'confirmation_id',
-    'inspection_schema_version', 'pack_size', 'thinking', 'max_output_tokens', 'security_scope_id',
+    'inspection_schema_version', 'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'security_scope_id',
     'package_sha256', 'release_sha256', 'work_item_ids', 'company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings', 'recovery_subset', 'execution_question_ids', 'execution_question_count'}
 CONFIG_KEYS = PATH_KEYS | {'schema_version', 'universe_id', 'execution_bundles', 'import_bundles',
                           'timeout_seconds', 'workspace_kind', 'workspace_label', 'prepare', 'batch'}
 PREPARE_KEYS = {'state_root', 'admission_config', 'module_package_id', 'producer',
     'authorization_reference', 'agent', 'runtime_dir', 'spend_authorization', 'search_policy',
-    'pack_size', 'thinking', 'max_output_tokens', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs'}
+    'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs'}
 PREPARE_PATHS = {'state_root', 'admission_config', 'runtime_dir', 'spend_authorization', 'search_policy'}
 
 
@@ -104,6 +104,9 @@ def validate_config(value, root):
             if not isinstance(bundle, dict) or set(bundle)-BUNDLE_KEYS:
                 raise ProductError('invalid_bundle', '输入包包含未知字段，不能提交命令或脚本。')
             normalized[name] = dict(bundle)
+            if 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
+                    or not 1 <= bundle['work_lease_seconds'] <= 86400):
+                raise ProductError('invalid_work_lease', '新工作租约须为1至86400整秒；不更新已有租约。')
             for key in BUNDLE_PATHS & bundle.keys():
                 item = bundle[key]
                 if not isinstance(item, str) or not item or '\0' in item or '://' in item:
@@ -119,6 +122,9 @@ def validate_config(value, root):
     options = result['prepare']
     if not isinstance(options, dict) or set(options)-PREPARE_KEYS:
         raise ProductError('invalid_prepare_config', '公司准备配置包含未知字段。')
+    if 'work_lease_seconds' in options and (type(options['work_lease_seconds']) is not int
+            or not 1 <= options['work_lease_seconds'] <= 86400):
+        raise ProductError('invalid_work_lease', '新工作租约须为1至86400整秒；不更新已有租约。')
     if 'delegation_ttl_seconds' in options and (type(options['delegation_ttl_seconds']) is not int
             or not 900 <= options['delegation_ttl_seconds'] <= 86400):
         raise ProductError('invalid_prepare_config', '新原执行确认有效期须为900至86400秒；不更新已有确认。')

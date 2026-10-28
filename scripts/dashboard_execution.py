@@ -287,6 +287,9 @@ class ExecutionGateway:
         bundle = self.bundles[bundle_id]
         if not isinstance(bundle, dict) or payload.get("entity_id", bundle.get("entity_id")) != bundle.get("entity_id"):
             raise DashboardExecutionError("entity_mismatch", "公司身份与执行包不一致", 409)
+        if 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
+                or not 1 <= bundle['work_lease_seconds'] <= 86400):
+            raise DashboardExecutionError('invalid_work_lease', '新工作租约须为1至86400整秒；不更新已有租约。')
         return bundle_id, bundle
 
     def _deployment(self, bundle):
@@ -313,6 +316,9 @@ class ExecutionGateway:
         pack, tokens = bundle.get("pack_size", 1), bundle.get("max_output_tokens", 8192)
         if type(pack) is not int or not 1 <= pack <= 30 or type(tokens) is not int or not 1 <= tokens <= 32768 or type(bundle.get("thinking", True)) is not bool:
             missing.append("generation_controls")
+        if 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
+                or not 1 <= bundle['work_lease_seconds'] <= 86400):
+            missing.append('work_lease_controls')
         admission = None
         if "admission_config" not in missing:
             try:
@@ -647,6 +653,8 @@ class ExecutionGateway:
             command.extend(["--" + flag, str(bundle[field])])
         command.extend(["--require-search", "--output", str(output), "--question-pack-size", str(bundle.get("pack_size", 1)),
                         "--thinking-enabled", str(bundle.get("thinking", True)).lower(), "--max-output-tokens", str(bundle.get("max_output_tokens", 8192))])
+        if 'work_lease_seconds' in bundle:
+            command.extend(['--work-lease-seconds', str(bundle['work_lease_seconds'])])
         if bundle.get("search_policy"):
             command.extend(["--search-policy", str(bundle["search_policy"])])
         if bundle.get("security_scope_id"):

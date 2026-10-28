@@ -454,6 +454,7 @@ def test_preview_route_anchor_preserves_non_identity_refusals_and_never_grants_e
 
 def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_replays_exact_result(original):
     gateway, base, _ = original
+    gateway.options['work_lease_seconds'] = 3600
     preview_started = time.perf_counter()
     preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
     preview_seconds = time.perf_counter() - preview_started
@@ -474,6 +475,8 @@ def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_
     for item in result["execution_bundles"]:
         bundle = item["execution_bundle"]
         command = ExecutionGateway({"stockqa_python": sys.executable})._command(bundle, QA, base / "not-dispatched-output")
+        assert bundle['work_lease_seconds'] == 3600
+        assert command[command.index('--work-lease-seconds') + 1] == '3600'
         if bundle["scope"] == "security":
             assert command[command.index("--security-scope-id") + 1] == bundle["security_id"]
         else:

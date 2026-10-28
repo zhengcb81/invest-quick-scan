@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="33.201" timestamp="2026-10-28T15:21:15.997803+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_dashboard_prepare" name="test_native_fresh_prepare_registers_36_original_work_items_without_http_and_replays_exact_result" time="32.363"><failure message="Failed: Original prepare refused: refresh_owner_preview_rejected; {'exception_type': 'DashboardPrepareError', 'native_module': 'stockwiki.quick_scan_refresh_owner_cli', 'native_selectors': ['--request'], 'timeout_seconds': 300, 'native_returncode': 2, 'native_error_code': 'refresh_owner_preview_rejected', 'completed_phases': ['scope-1-entity/query.json', 'scope-1-entity/capture.json', 'scope-1-entity/refresh.json']}">original = (&lt;scripts.dashboard_prepare.PrepareGateway object at 0x00000268FEEDABA0&gt;, WindowsPath('C:/Users/郑曾波/Projects/invest-qu...-scan', 'stockwiki_root': 'C:\\Users\\郑曾波\\Projects\\StockWiki', 'stockwiki_python': 'C:\\Miniconda\\python.exe', ...})
+
+    def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_replays_exact_result(original):
+        gateway, base, _ = original
+        gateway.options['work_lease_seconds'] = 3600
+        preview_started = time.perf_counter()
+        preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+        preview_seconds = time.perf_counter() - preview_started
+        apply_started = time.perf_counter()
+        try:
+&gt;           result = gateway.apply({key: preview[key] for key in ("preview_id", "preview_token")})
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\tests\test_dashboard_prepare.py:463: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\scripts\dashboard_prepare.py:661: in apply
+    result = self._worker("apply", {"directory": str(directory)})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;scripts.dashboard_prepare.PrepareGateway object at 0x00000268FEEDABA0&gt;
+operation = 'apply'
+payload = {'directory': 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\dashboard-prepare-test-kywr_fgm\\preparation\\candidates\\prepare_21519aa3ddc84ed8b62d3354e63694e7'}
+
+    def _worker(self, operation, payload):
+        self._deployment()
+        interpreter = self.config.get("stockwiki_python") or sys.executable
+        timeout = 60 if operation == "snapshot" else _timeouts(self.config)[0]
+        try:
+            completed = subprocess.run([interpreter, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--worker"],
+                cwd=self.config["stockwiki_root"], env=_env(), input=_bytes({"operation": operation,
+                "config": self.config, "payload": payload}), capture_output=True, timeout=timeout,
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        except subprocess.TimeoutExpired:
+            raise DashboardPrepareError("preparation_timeout_unknown" if operation == "apply" else "owner_snapshot_timeout",
+                "Original operation timed out; inspect its immutable journal before retrying", 504,
+                {"operation": operation, "exception_type": "TimeoutExpired", "timeout_seconds": timeout,
+                 "outcome_unknown": operation == "apply", "automatic_retry_allowed": False}) from None
+        except OSError as error:
+            raise DashboardPrepareError("owner_process_unavailable", "Original preparation process could not be started", 503,
+                {"operation": operation, "exception_type": type(error).__name__}) from None
+        if len(completed.stdout) &gt; MAX_BYTES:
+            raise DashboardPrepareError("owner_response_invalid", "Original owner response exceeds its limit", 502)
+        try:
+            response = json.loads(completed.stdout.decode("utf-8"))
+        except (UnicodeError, ValueError) as error:
+            raise DashboardPrepareError("owner_response_invalid", "Original owner did not return its preparation envelope", 502) from error
+        if not response.get("ok"):
+            error = response.get("error", {})
+&gt;           raise DashboardPrepareError(error.get("code", "owner_preparation_rejected"), error.get("message", "Original owner refused preparation"), error.get("status", 409), error.get("details"))
+E           scripts.dashboard_prepare.DashboardPrepareError: Original native command refused preparation
+
+..\..\scripts\dashboard_prepare.py:420: DashboardPrepareError
+
+During handling of the above exception, another exception occurred:
+
+original = (&lt;scripts.dashboard_prepare.PrepareGateway object at 0x00000268FEEDABA0&gt;, WindowsPath('C:/Users/郑曾波/Projects/invest-qu...-scan', 'stockwiki_root': 'C:\\Users\\郑曾波\\Projects\\StockWiki', 'stockwiki_python': 'C:\\Miniconda\\python.exe', ...})
+
+    def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_replays_exact_result(original):
+        gateway, base, _ = original
+        gateway.options['work_lease_seconds'] = 3600
+        preview_started = time.perf_counter()
+        preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
+        preview_seconds = time.perf_counter() - preview_started
+        apply_started = time.perf_counter()
+        try:
+            result = gateway.apply({key: preview[key] for key in ("preview_id", "preview_token")})
+        except DashboardPrepareError as error:
+&gt;           pytest.fail(f"Original prepare refused: {error.code}; {error.details}")
+E           Failed: Original prepare refused: refresh_owner_preview_rejected; {'exception_type': 'DashboardPrepareError', 'native_module': 'stockwiki.quick_scan_refresh_owner_cli', 'native_selectors': ['--request'], 'timeout_seconds': 300, 'native_returncode': 2, 'native_error_code': 'refresh_owner_preview_rejected', 'completed_phases': ['scope-1-entity/query.json', 'scope-1-entity/capture.json', 'scope-1-entity/refresh.json']}
+
+..\..\tests\test_dashboard_prepare.py:465: Failed</failure></testcase></testsuite></testsuites>

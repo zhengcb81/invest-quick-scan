@@ -1,3 +1,31 @@
+## 2026-10-28T15:43Z — 新claim时长工程验收完成并已发布StockQA；原native36已在沙箱外完整通过
+
+StockQA67433c8/master正常hooks已推origin；CLI --work-lease-seconds→run/single→既有constructor，默认600保持，只有未来claim显式3600，旧lease/owner/CP严格门不动。作者41P4.43s（原CLI18+新23/0skip）；root同一IQS6源/测试154P56.90s；跨两仓不同agent集中11P6.49s/open[]、原source pin稳定，正常hooks后QA3 AST与独审等价。IQS6源+README/产品契约已由该审查覆盖，正正常提交推送。不能据此说已部署新3600真实任务，R6在途腾讯仍旧source/600。
+
+原native36 testcase初次sandbox在原immutable os.link(stage,preview)报WinError5，独立A/B相同owned普通/extended短路径在sandbox均拒、escalated均成功；不是合约/时长或历史fixture问题，未改os.link、不用copy降级。独立第2次加trace超240s，不算pytestpass，原synthetic worker后来自然完成prepared33+3且清理0本人残留；root另无trace require_escalated原单例完整1P266.23s，0API/原33+3登记/新lease投影到bundle与argv/重放幂等/数据库只读执行preview/fixture自动清理全部通过，work-lease-native-final.xml留档。另0_jhemau是10/27旧namespace，非本次创建，不删他人遗留。
+
+MSFT两迟到原public derive CLI纯读各exit2/API0 DB0，原attempt phase send_intent但有完整late_receipt、原physical HTTP200/632.934s/fee settled；known journal原早期phase门漏该合法载体，正最小补强late正证以便原owner处置，不改attempt/receipt/fee、不造CP/默认重发。CATL原grant15:31:37自然到期后两个已claim但仅prepared未send工作15/16于15:41:10/16自然到期；root亲核原process4972退出、原唯一prepared attempt/无预算或CP后，显式原QuickScanWorkStore.recover_expired两项→pending、原attempt→abandoned_unsent，0API/不续租不建代不变费。所有真实已成功答案保留。腾讯仍在杜邦后半段继续，未中断。
+
+### Next Step
+
+等late receipt仅强正证的journal根修集中独审/提交；等原腾讯安全结束和0inflight，有限MSFT18/19原owner控制close已知回执（静态helper准备中，不先apply）。所有原未知清后，安全原服务重载新源码，用UI设置新prepare claim3600/确认43200，原预算静止一次性三家公司full36准备，再启动原所需新代/待办。目标仍为108题真实原入库/exactACK、完整结果重启/有效期缓存复用0HTTP；最终实际完成度独审/PWF/README提交推送，未完成前不交接为全通过。
+
+---
+
+## 2026-10-28T15:25Z — 两条接续入口真实生效；发现并根修新长搜索claim时长，旧迟到费用/回执完整保留
+
+Tencent原UI attempt3/PID4964已越过旧16/17失败并开始20/21；CATL attempt3/PID4972已越过旧04/05失败，06真实新答已sealed，现08/09请求。证明ad13d57旧FAILED只读跳过入口已用于真任务，旧失败未重问。原MSFT run68第18/19包实际send15:04:38、response15:15:11，约633秒；两600秒lease提前15:13:51/57到期，原native正确保settled HTTP200费用并标两逻辑work uncertain，拒CP/后续发包。现17ready、2真正late、14未派发；不把16error说成16新失败请求，不改旧lease/时钟、不直接重发。此根因是新任务固定600秒，与grant过期不同。requests timeout300只限idle，心跳可让总耗时超633秒，不能冒充wall-time总超时。
+
+最小未来专用修正：StockQA公开CLI新增可选 --work-lease-seconds/runner传既有constructor，默认600向后兼容，严格正有限≤86400；正在由原作者实现3文件并交不同agent集中审。IQS新prepare与bundle可显式work_lease_seconds（1–86400整秒），随新包指纹冻结并传CLI；旧包未声明时原argv完全不变。root已改3源/3test，2原红保留，首次154例中152绿/2非有限数因指纹JSON先抛通用ValueError，已在_select提前typed拒绝，最终154P56.90s。原native新36题prepare案例scope1 owner preview通用拒绝（不是lease阶段），独立诊断仍在隔离临时fixture查明，不遮盖失败。未部署新配置/重启，T/C原600进程保持。
+
+Grant独立诊断：CATL旧dg1_450…确15:31:37.344873Z到期，原native挡新POST；已有效发送请求的费用/CP保存路径不重查grant，只须lease/receipt/答案仍有效。因此不能将late lease归因grant。原无grant renew；新12h=43200合法，但当前active守卫不允许非追加部署热改，须原所有worker安全退出/静止后更新新prepare配置。下一quiet边界拟明确新claim3600/新grant43200，不动旧授权；真实unknown/late仍须原控制证明后新准备。
+
+### Next Step
+
+完成有限新lease CLI/接线TDD+同节点独审，查清native隔离preview失败；等原T/C安全退出，原known-receipt控制处置MSFT18/19（如CATL也late同样先证明，不从retained正文造CP），8物理表/历史材料/费用保持。随后原服务安全部署新已审版本，静止预算先一次性准备三家full36，再派发所需新代/原pending，完成全部原入库/exactACK和完整缓存重启0HTTP。当前仍未108题验收通过，继续推进不暂停；PWF15:08的MSFT继续已被此真实结果更新。
+
+---
+
 ## 2026-10-28T15:08Z — 旧FAILED入口根修已独审/发布；原UI正恢复Tencent/CATL，MSFT已推进到18/19
 
 StockQA ad13d57/master 已正常hooks提交并推origin。可选 assert_question_skip_terminal 仅以原native只读正证核验旧FAILED精确工作/代际/绑定/真实known2xx/共享physical所有成员终态/原费用settled/无CP/同scope无未知；保留error/null，只跳过旧失败而继续已授权pending，既不重发旧failed也不修改旧状态。独审发现初稿_owner_work会recover另一新代expired lease的真反例，已移除该调用，改纯owner.existing_work+原binding/Approved-anchor核验；原红1F3.19s保留，最终独审5P6.03s/open[]，旧错误报告另存更正。作者12P22.99s；root正常hooks后3 AST与审查pin等价，最终定向cohort139P121.56s（0API/临时库自动清理），没有重跑小时套。
