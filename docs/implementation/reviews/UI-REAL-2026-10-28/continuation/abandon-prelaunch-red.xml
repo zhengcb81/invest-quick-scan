@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.472" timestamp="2026-10-28T14:16:23.340589+00:00" hostname="DESKTOP-156V213"><testcase classname="runs.resume-recovery-2026-10-28.independent.test_abandon_prelaunch_independent" name="test_positive_typed_no_start_proof_can_end_only_local_paused_batch" time="0.276"><failure message="scripts.dashboard_batches.DashboardBatchError: 原启动引用仍不明确，不能释放公司编排。">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/ab28-waluyqfh/p/test_positive_typed_no_start_p0')
+
+    def test_positive_typed_no_start_proof_can_end_only_local_paused_batch(tmp_path):
+        gateway, execution, batch = arrange(tmp_path)
+        try:
+            entries = copy.deepcopy(gateway._record(batch)['entries'])
+&gt;           result = gateway.control(batch, 'abandon')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\resume-recovery-2026-10-28\independent\test_abandon_prelaunch_independent.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\scripts\dashboard_batches.py:726: in control
+    return self._abandon(record)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\..\scripts\dashboard_batches.py:860: in _abandon
+    stopped()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def stopped():
+        tasks = self._tasks(record['entries'], include_selected=True)
+        evidence = []
+        for entry in record['entries']:
+            matches = [task for task in tasks if task.get('bundle_id') == entry['bundle_id']]
+            if entry.get('run_id'):
+                matches = [task for task in matches if task.get('run_id') == entry['run_id']]
+            if len(matches) &gt; 1 or (not matches and (entry.get('run_id') or entry.get('launch_requested_at') or entry.get('launch_uncertain'))):
+&gt;               raise DashboardBatchError('batch_abandon_reference_unresolved', '原启动引用仍不明确，不能释放公司编排。', 409)
+E               scripts.dashboard_batches.DashboardBatchError: 原启动引用仍不明确，不能释放公司编排。
+
+..\..\scripts\dashboard_batches.py:843: DashboardBatchError</failure></testcase></testsuite></testsuites>

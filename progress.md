@@ -1,3 +1,52 @@
+## 2026-10-28T14:52Z — 更正原任务恢复入口判断；MSFT继续，Tencent/CATL须待同根因小补丁，勿重复旧恢复
+
+R6原UI e427结束已成功abandoned(14:28:17)，4原scope检查、entries保留；8物理表及34份ready+delivered材料对CATLpair结束后hash全等，0API。断连/重启r6 witness也确认原19CP/41ctx/17std+包/13旧费全部保留，现34CP/62ctx/32std及包/25settled费。
+
+原UI14:37启动MSFT独立batch-837595efb9ed400d8241c5af30fe097d，原e955准备，run-68b8cb27a0ff4d8398898c5b2a365f61 正常running、已开始原真实请求（第26笔），使用QA09。Tencent run9e299…/CATL runa341…各明确resume到attempt2，随后原existing FAILED claim拒绝导致全后续pending早停，两者无新增HTTP。CATL当前原快照6ready/25pending/2failed；Tencent15ready/16pending/2failed。此前“原resume会跳failed继续pending”的静态结论漏看qa_engine work_claim_refused无条件stop；已单独errata，不改旧原报告，不把早停说成模型拒绝或新收费。
+
+同节点小补丁正在StockQA由review_full_scan_answers实现：before_question拒绝只能在可信C06原native getter只读正证确认为原registered精确FAILED + 原已知2xx/settled/无CP/无scope未决、owner当前仍允许时，保留本题error/null且不重问而继续其余已授权pending；其他一律原stop，不能仅按reason文字。不是放宽fail claim/派发，不新授权、不补score/字段。需覆盖preexisting failure prefix的真实SDK反例，并由不同agent审完、正常hooks提交推送后才再次恢复T/C。不要再按QA09原样重复点击，既有MSFT在途进程保持QA09，不kill/restart它。
+
+### Next Step
+
+等上述最小source补丁原红→原SDK/未知反例绿→独审/正常提交推送；再原UI inspect+resume T/C attempt3（现源未生效不先点）。MSFT新scope没有历史failed，不受该入口影响，仍继续。第一波把原授权pending问完后，预算静止时一次性新full36准备补失败/过期及证券3题，所有准备完成后再派发，避免immutable budget quote漂移。三市场完整108题/入库/exactACK/最终全结果重启cache0HTTP还没完成，持续推进不暂停。PWF14:28第2步已被本更正覆盖。
+
+---
+
+## 2026-10-28T14:28Z — 全部根修已审并发布，R6真实断连/重连零HTTP通过，正在原UI释放旧编排
+
+当前代码：IQS f9357b8（已推origin，最新源码只2文件修abandon）；StockQA09b51ba（已推origin，known pack continuation）；UI bd55958（本地已提交，无remote）。QA正常全部hooks过，四文件AST与独审pin等价；最后129P107.04s的定向边界cohort过，没有跑小时全套。UI最终46P8.76s与不同agent原3对抗全绿/open[]均归档。
+
+CATL pair原控制已完整2/2 recorded，8物理表hash完全不变、原34份ready+delivered原材料不变、0API/不新代/不重放/不新评分/固定install恢复。全部真实25请求settled/589388微USD估计/0在途；原partial190已通过UI明确abandoned，原已写scope1/失败scope2记录均留。旧batch-e427暂停后UI结束编排又遇同根因遗留：有current typed no-start证明、launch_uncertain=false但无run，_abandon仍按launch_requested_at一律拒绝，导致MSFT占位无法释放。已共享strict正证据checker，只有当前intent1.1+nonce+三code/绑定/strict0匹配、literalfalse且无任何run引用才可越过本地无引用分支；原全scope native已知状态及前后原process namespace检查完全保留。独立原红单独留，9对抗绿；root最后补generic无code不可借typed proof守卫，完善测试非空真实proof后独立集中2P1.478s/open[]；原作者focus25P2.77s为测试完善前pin，后续2项final单列，不冒充全25最终重跑。
+
+R5原服务父子6540/9260亲核后于0在途安全停止，真实浏览器马上验证四列表保留旧表+陈旧时间，run9e299…五旧操作全disabled；ui-real-disconnect-stale-1425.jpg私有留档。同一工作区8766 R6 launcher22860已启动：IQSf935/QA09/UIbd，no-refresh/no-test/no-build，整页重连后旧batch/run仍在，未触发新模型。旧snapshot计数重启后需原inspect重新核，不虚称重启后已有当前授权。原UI已在R6再次明确结束e427，后端四scope原预检仍可能较慢，先查原记录是否abandoned，不重POST未知响应。
+
+### Next Step（仍持续，不暂停）
+
+1. 等R6原UI e427结束结果（paused→abandoned，保留entries/work/fees）；预算当前静止，所有原模型worker已退出。亲核原0未决后推进，不问权限。
+2. 为节省不必要的重复登记，先尝试原UI接续尚在有效期的同scope待办：Tencent run9e299…（原eea5授权，15ready/2failed/16pending，failed不重问）；CATL runa341…（原d9e授权，原04/05已closed失败，其余pending继续）；MSFT已有新完整e955准备registered/未执行，可原UI独立公司批启动。所有恢复仍须原native重新核权限/输入/缓存/预算；若原scope已过期/被替代则按原结果新准备，禁止强行复用。先不重建相同selection已abandoned批；原任务/已登记单scope仍由原UI允许动作控制，不能手改JSON。
+3. 本轮成功/knowninvalid后安全续已授权pending已根修，任何wholeparser/未知/DB仍停。第一波结束后预算静止，再一次性为需要补failed/过期/证券3题的公司新full36准备，保留旧有效CP，仅按原规划生成所需新代；所有准备完成再并行，不在模型正改预算时install新immutable owner quote。此调整减少每个漏字段都重新准备整公司，不放宽授权。
+4. 最终必须完成三公司36题原实际结果入库/exactACK、完整结果后的重启/有效期缓存复用0新HTTP和过期原正常刷新核验；当前仅工程及部分真实案例通过，不宣称108题或金融复核完成。独立实际完成度审查、更新PWF/README并提交推送后才交接。
+
+---
+
+## 2026-10-28T14:00Z — UI已独审提交部署；真实腾讯15题保存后缺字段早停，正在修安全续问且清宁德2个已知收件状态
+
+UI仓bd55958已正常本地commit（无remote），三文件最终46实际ESM通过；root独跑46P8.76s，不同agent最终3对抗全绿/open[]，此前prepare/status旧连接覆盖红已根修，终pins对齐。原8766只做整页reload读src（no-store），未重启服务或中断worker。现场亲见原batch-e427 paused、Tencent run-9e299…原快照已保存15/待问16/失败2，时间13:39:15明确显示，未冒充整公司通过；真实画面ui-partial-current-1359.jpg已私有保存。
+
+腾讯新source1e1535d已成功将IQS06/07等新10题完整standard→原native seal（原5题复用）。第16/17题原retained final确缺coverage/missing_fields，strict拒绝正确，原lifecycle已把两题durable failed；其余16题因当前engine“一题包失败就全停”保持pending、未收费。当前33entity回答：6 scored/9 insufficient_evidence/18 error（2真invalid+16未派发），不是18次已付费失败。原总25HTTP全部settled/589388微USD估计/0在途。
+
+正在根修上述过强早停：review_full_scan_answers改StockQA qa_engine.py/llm_runner.py/base_llm_provider.py+独立新测试，可选可信原lifecycle只读重验本pack精确attempt/lease/receipt/失败event或有效CP/本pack共享budget settled completed；仅合法结构化complete/partial且明确终态才继续剩余已获授权pending，不重问failed/不补body，最终仍partial。generic/旧native无hook继续旧stop；未知/DB/finalizer/绑定或whole-parser拒绝仍stop。其他公司合法在途不混作unknown。作者原stop红已固定，新8例初绿12.3s，正补最后反例并由不同agent独审；source未提交，不能声称最终通过/已用于真调用。[MiMo官方结构化输出](https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/text-generation/structured-output)目前仅json_object语法保证、不能保证schema；本轮实际漏键不能靠填默认值伪造修复，prompt只加强模型完整性自检、不把18设成硬上限。
+
+另宁德04/05实际是前次early raw来源过、later CP receipt canonical '=' mismatch而ProcessingError，不是deterministic member-invalid；两原known2xx work仍leased且真实过期13:00:53/13:00:59。readonly亲核后独立agent只准备received-catl-pair helper/plan；root完整diff审并已显式原apply（会话8234仍执行，须查apply-summary再决定下一步，绝不重apply）。精确WORK1c4a…g5/IQS04、WORK270d…g3/IQS05，原final206b…retainedtrue且无CP；plan bda07223e651c4e167b3932669310f57b20c83e08a6c705d944bfa1d11d4e1d7、helper29ee…；只close known无CP→failed，原34份ready+delivered/8物理表/固定install/策略v6/TTL24/费用应保持；不重放旧正文、不新评分、不造新代。原agent绝对路径已传，root权限已获，不需再问。
+
+CATL prepare190b… scope1已prepared、scope2原install-delegation拒subject_contract_output_invalid，whole applied.json不存在、scope2原grant文件不存在。独立报告表明此code两层抹因；最吻合候选是13:17:23 preview至13:18:20失败之间13:18:05另一native预算reserve变化，导致原immutable owner_state/quote重检不等。不是原失败reason已复原，不宣称主体错或预算不足；readonly busy另走不同code。原reconcile不能续partial scope，不重POST。原预算静止后核partial→原abandon(保留已有admission/work/费用)→新完整准备，全部新准备完成再开始并行，保留strict snapshot。
+
+### Next Step
+
+先等8234/received-catl-pair原apply结束并亲核薄摘要；随后原UI结束已停e427编排、原abandon partial190（不删任何work/CP/fee），在0在途预算静止时重新准备Tencent完整36题和CATL完整36题；MSFT e955…原36题registered/ASJ1/原证券且尚未调用，可复用未过期原grant（须原native重核，勿新建重复）。旧Tencent eea5…已15ready+2failed+16pending，新prepare应复用成功、给两失败新代、保留原pending；不复用旧failed原授权直接重发。等continuation根修独审/正常hooks/commit/push后安全重载仅UI原服务（当前模型全停），原UI以三家公司各完整2scope启动并行。完成真正108题原结果入库/exactACK、缓存重启0新HTTP和过期原正常刷新，再做独立实际完成度审查并更新PWF/提交推送。当前仍未三市场全通过；继续实施，不以此文档作为停止点。
+
+---
+
 ## 2026-10-28T13:19Z — 来源规范化根修已发布；腾讯新全扫描已启动，微软待原ledger空闲，宁德新准备中
 
 QA1e1535d已正常hooks提交/推origin，原0839694对象codec保留。CATL新direct对象实际known2xx/complete JSON/内外date一致，但两题在early strict证据绑定被拒，原run-a341已退出，原19请求settled/470433微USD估计/0在途（新腾讯派发前）。本地完整final确已留，可纯SDK诊断，未下载文档或导出答案。根因独立确证为本地URL身份不对称：原receipt canonicalizer parse_qsl→urlencode会把?stamp变?stamp=；原完整body校验逐字比较。原vendor源URL未留，不能声称LLM删了等号。04共7证据3alias、05共5证据2alias，其余/日期原规则均过。

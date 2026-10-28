@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "scope": "UI snapshot, stale actions, connection boundaries and late async callbacks; engineering source/actual-ESM only",
+  "author_of_reviewed_UI_changes": false,
+  "baseline": "ed43804",
+  "final_source_sha256": {
+    "src/app/ui/product.js": "2dc575e45ddf006dd4bf568ceea03eec20c9f810f0d86c3e8fae442d883aec7c",
+    "src/app/ui/product_core.js": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d",
+    "tests/test_product_ui.py": "0578a3f3b4638105614393373b0c4c5b17a9ed529ba4b14aa778ae3e197e3a0d"
+  },
+  "closed_findings": [
+    {
+      "id": "UI-SNAPSHOT-CONNECTION-01",
+      "original_fixed_counterexample": "Old connection prepare/status overwrote new connection route profiles.",
+      "resolution": "Local result is published only with original page/connection and current statusSerial; invalidation clears configuration, selected subject/security and company options, then reads current configuration and roster. Roster reads use a separate connection/serial guard and no stale finally unlock.",
+      "independent_red_to_green": "independent-prepare-config-boundary now passes against the same previously failing scenario."
+    }
+  ],
+  "independent_results": {
+    "passed": 3,
+    "failed": 0,
+    "scenarios": [
+      "independent-newest-read",
+      "independent-stale-over-old-success",
+      "independent-prepare-config-boundary"
+    ]
+  },
+  "source_review": [
+    "Four last-good tables remain visible only within their connection; stale errors disable old buttons and action entrances check fresh current connection.",
+    "Per-read serial rejects older successes and older errors; stale read states prevent completion recommendations.",
+    "POST success/error/finally callbacks check current page generation and exact status object; reconnect invalidates previews and busy state without accepting old callbacks.",
+    "Preparation configuration and roster now reject late cross-connection responses and same-connection obsolete configuration responses; current roster replaces rather than appends old member options.",
+    "Task capabilities read current product.status rather than the original execution closure.",
+    "Backend owner capabilities, grants, receipts, retry and delivery policies are unchanged; UI state never grants authority."
+  ],
+  "author_reported_validation": "46 actual ESM cases passed; not repeated by this independent agent. Parent owns any final cohort and release.",
+  "runtime_removed": true,
+  "real_API_requests": 0,
+  "database_writes": 0,
+  "source_writes": 0,
+  "build_or_reload_performed": false,
+  "limits": [
+    "Does not prove current live service has loaded these source changes.",
+    "Does not certify full scans, actual ACK, financial accuracy or production gate completion."
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "scope": "actual ESM UI snapshot regression; not production financial accuracy or live UI acceptance",
+  "command": "C:/Miniconda/python.exe -m unittest test_product_ui",
+  "cwd": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests",
+  "exit_code": 0,
+  "elapsed_seconds": 12.946,
+  "tests": 46,
+  "original_tests": 38,
+  "new_scenarios": [
+    "snapshot-retention",
+    "snapshot-first-failure",
+    "snapshot-boundary",
+    "snapshot-write-timeout",
+    "snapshot-write-reconnect",
+    "snapshot-current-capabilities",
+    "snapshot-prepare-reads-reconnect",
+    "snapshot-prepare-status-newest"
+  ],
+  "source_sha256": {
+    "src/app/ui/product.js": "2dc575e45ddf006dd4bf568ceea03eec20c9f810f0d86c3e8fae442d883aec7c",
+    "src/app/ui/product_core.js": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d",
+    "tests/test_product_ui.py": "0578a3f3b4638105614393373b0c4c5b17a9ed529ba4b14aa778ae3e197e3a0d"
+  },
+  "cleanup": "No temporary downloads or workspaces created; bytecode disabled. No build/reload/commit/server/DB operations.",
+  "network": "Node fetch is replaced by the existing fake fetch harness; no real API or HTTP calls.",
+  "independent_review": "pending root; this agent authored the UI patch"
+}

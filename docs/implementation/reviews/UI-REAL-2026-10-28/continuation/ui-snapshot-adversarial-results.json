@@ -1,0 +1,32 @@
+{
+  "mode": "private_adversarial_ESM_only",
+  "files": {
+    "src/app/ui/product.js": "2dc575e45ddf006dd4bf568ceea03eec20c9f810f0d86c3e8fae442d883aec7c",
+    "src/app/ui/product_core.js": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d",
+    "tests/test_product_ui.py": "0578a3f3b4638105614393373b0c4c5b17a9ed529ba4b14aa778ae3e197e3a0d"
+  },
+  "results": [
+    {
+      "scenario": "independent-newest-read",
+      "exit_code": 0,
+      "stdout": "{\"scenario\":\"independent-newest-read\",\"passed\":true,\"calls\":[{\"endpoint\":\"status\",\"method\":\"GET\"},{\"endpoint\":\"delivery/jobs\",\"method\":\"GET\"},{\"endpoint\":\"batches\",\"method\":\"GET\"},{\"endpoint\":\"prepare/status\",\"method\":\"GET\"},{\"endpoint\":\"universe\",\"method\":\"GET\"},{\"endpoint\":\"prepare/jobs\",\"method\":\"GET\"},{\"endpoint\":\"tasks\",\"method\":\"GET\"},{\"endpoint\":\"batches\",\"method\":\"GET\"}]}",
+      "stderr": ""
+    },
+    {
+      "scenario": "independent-stale-over-old-success",
+      "exit_code": 0,
+      "stdout": "{\"scenario\":\"independent-stale-over-old-success\",\"passed\":true,\"calls\":[{\"endpoint\":\"status\",\"method\":\"GET\"},{\"endpoint\":\"delivery/jobs\",\"method\":\"GET\"},{\"endpoint\":\"batches\",\"method\":\"GET\"},{\"endpoint\":\"prepare/status\",\"method\":\"GET\"},{\"endpoint\":\"universe\",\"method\":\"GET\"},{\"endpoint\":\"prepare/jobs\",\"method\":\"GET\"},{\"endpoint\":\"tasks\",\"method\":\"GET\"}]}",
+      "stderr": ""
+    },
+    {
+      "scenario": "independent-prepare-config-boundary",
+      "exit_code": 0,
+      "stdout": "{\"scenario\":\"independent-prepare-config-boundary\",\"passed\":true,\"calls\":[{\"endpoint\":\"status\",\"method\":\"GET\"},{\"endpoint\":\"delivery/jobs\",\"method\":\"GET\"},{\"endpoint\":\"batches\",\"method\":\"GET\"},{\"endpoint\":\"universe\",\"method\":\"GET\"},{\"endpoint\":\"prepare/jobs\",\"method\":\"GET\"},{\"endpoint\":\"tasks\",\"method\":\"GET\"},{\"endpoint\":\"status\",\"method\":\"GET\"},{\"endpoint\":\"prepare/status\",\"method\":\"GET\"},{\"endpoint\":\"universe\",\"method\":\"GET\"},{\"endpoint\":\"prepare/status\",\"method\":\"GET\"}]}",
+      "stderr": ""
+    }
+  ],
+  "runtime_removed": true,
+  "real_API_requests": 0,
+  "source_writes": 0,
+  "database_writes": 0
+}

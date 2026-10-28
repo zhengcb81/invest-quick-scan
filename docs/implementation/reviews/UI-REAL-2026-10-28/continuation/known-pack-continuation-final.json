@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Known durably finalized pack-member failures may continue later separately admitted pending questions, without retrying failed members. Engineering-only source and isolated actual engine/SDK/SQLite proof.",
+  "baseline": "1e1535d",
+  "author_of_reviewed_changes": false,
+  "final_source_sha256": {
+    "src/core/qa_engine.py": "9f6096ca63383e73b60b1f4251d22833d1833614e2a5433cc8a88d49e248b674",
+    "src/runners/llm_runner.py": "d04dfef964fb365b0f5443fa967b522708f7bf64c97c78da5e599b66bc9c47fd",
+    "src/providers/base_llm_provider.py": "9ba6f3a0b33cc2b51a6bd825cb7c213e8fb51f4f46d9175812552f8e0a3e2fae",
+    "tests/unit/test_known_pack_continuation.py": "d03eef34475fab7ca9397fec62ce9ea76fa57c6b4186c10066c29020ade43e41"
+  },
+  "independent_tests": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 5.695,
+    "cases": [
+      "A truthy non-True opt-in result cannot clear the stop reason.",
+      "Generic member-processing exceptions never call terminal proof, even with a positive fake hook.",
+      "An original SQLite durable failure event cannot be relabelled with another allowed reason.",
+      "Original APIs create an uncertain legacy neighbouring work in the same owner scope; native terminal proof blocks the next HTTP while preserving the neighbour."
+    ]
+  },
+  "source_review": [
+    "Engine uses opt-in literal True only after all known member finalizers succeed and no generic processing exception occurred. Whole rejected/unverified/transport outcomes cannot enter this continuation path.",
+    "Native proof rereads one consistent SQLite snapshot with original validated pack membership, latest member attempts and lease handles, original response hashes, executed 2xx receipt, completed settled physical fee with no in-flight flag, exact failed events and absent CP, and valid sibling checkpoints.",
+    "Same entity/scope unknown work blocks continuation; unrelated companies permitted in-flight requests do not create a global serialization lock. Original owner/context checks and every later normal POST guard remain active.",
+    "No scores, missing fields, checkpoints, failures or receipts are synthesized/repaired. Failed members remain error/null in partial output and are not reasked under the continuation.",
+    "Base provider change is prompt-only completeness/self-check guidance.",
+    "Final typing.cast(str,question.question_id) on already verified IDs is an identity operation; no new runtime branch or value transformation."
+  ],
+  "author_reported_evidence": "56 original+new tests passed before the later three native scenarios; 46 new+provider focused tests passed after them. These are separate author cohorts, not independently repeated here.",
+  "private_setup_attempts_not_product_failures": [
+    "First neighbouring-unknown setup omitted required REQ_ cache-key prefix.",
+    "Second tried a controlled future item without its required C06 send context; corrected to an intentionally conservative legacy neighbour via original public APIs."
+  ],
+  "runtime_removed": true,
+  "API_requests": 0,
+  "real_database_access": false,
+  "source_writes": 0,
+  "commit_or_reload_performed": false,
+  "limits": [
+    "Synthetic SDK HTTP responses and isolated SQLite, not new real company/financial/ACK acceptance.",
+    "Production binding supplied by original owner interfaces; this local proof does not grant future model requests by itself."
+  ]
+}

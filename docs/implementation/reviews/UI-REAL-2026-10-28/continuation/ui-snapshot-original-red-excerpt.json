@@ -1,0 +1,24 @@
+{
+  "record_kind": "transcribed_from_original_independent_tool_output",
+  "original_result_file_retained_separately": false,
+  "disclosure": "The initial ui-snapshot-adversarial-results.json was overwritten by the final focused rerun. This thin excerpt transcribes the actual initial tool output; it is not represented as an original immutable log or independently hashed original result file.",
+  "command": "C:/Miniconda/python.exe -B C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/independent/review_ui_snapshot_final.py",
+  "original_source_sha256": {
+    "src/app/ui/product.js": "a80c74847d7ddbcce843f9bbcc3f59561bb97e4a1ca9152c240df09cc899cbf6",
+    "src/app/ui/product_core.js": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d",
+    "tests/test_product_ui.py": "19cc7e0da0cd5b8b84225b0b883352c6eb7c2a015e95635bb7430961d2b3cc10"
+  },
+  "original_scenarios": [
+    {"scenario": "independent-newest-read", "exit_code": 0},
+    {"scenario": "independent-stale-over-old-success", "exit_code": 0},
+    {
+      "scenario": "independent-prepare-config-boundary",
+      "exit_code": 1,
+      "error": "AssertionError [ERR_ASSERTION]: Previous connection prepare/status overwrote new connection profiles",
+      "actual": true,
+      "expected": false
+    }
+  ],
+  "first_notification": "The independent reviewer notified root and the author before the author fixed source. The report was needs_fix with UI-SNAPSHOT-CONNECTION-01 at that point.",
+  "final_resolution": "The unchanged private failing scenario passed after the author fixed page/connection/serial guards. Current final results are in ui-snapshot-adversarial-results.json and ui-snapshot-final-review.json."
+}

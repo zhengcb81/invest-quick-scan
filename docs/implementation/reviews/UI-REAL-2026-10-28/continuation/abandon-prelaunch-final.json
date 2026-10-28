@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Typed first-party prelaunch refusal may release only a paused local sequencer after original native work and process-reference checks.",
+  "author_of_reviewed_changes": false,
+  "final_source_sha256": {
+    "scripts/dashboard_batches.py": "dc68b5c3b4334ceb7ee005ae01326bfd9183fe7a6572698537d63ba0bb2ba156",
+    "tests/test_dashboard_batches.py": "8ac35db9c972c312f7e216568127ad048f6ccbc7e201b8bbd6a64d016e9c792d"
+  },
+  "red_evidence": {
+    "tests": 1,
+    "failures": 1,
+    "original_error": "batch_abandon_reference_unresolved",
+    "source_sha256": "808428466052f691a0e4c33f213e067afa66c89be0315c3dc65c75e9212e79e2",
+    "xml": "abandon-prelaunch-red.xml",
+    "separately_preserved_not_overwritten": true
+  },
+  "green_evidence": {
+    "tests": 9,
+    "failures": 0,
+    "seconds": 1.475,
+    "xml": "abandon-prelaunch-green.xml",
+    "source_stable_during_execution": true,
+    "negative_cases": [
+      "wrong current launch nonce",
+      "launch_uncertain numeric zero rather than literal False",
+      "boolean API counter rather than integer zero",
+      "unrecognized proof code",
+      "missing current intent profile",
+      "original same-bundle process reference exists",
+      "same-bundle process reference appears during native inspection",
+      "original native work remains leased"
+    ]
+  },
+  "source_review": [
+    "Shared predicate preserves all prior typed envelope/bundle/fingerprint/attempt/zero-write gates and adds exact current intent profile and original three-code whitelist. The initial receiver still also matches actual raised error code.",
+    "Abandon exception applies only to no run_id, literal launch_uncertain False, complete exact current no-start proof, and no original matching references. It cannot replace process evidence when a reference exists.",
+    "Original full selected namespace reads occur before and after native work inspection while holding original start/control lock.",
+    "Every original scope must still contain nonempty known work states limited to pending/failed/result_ready/delivered. Unknown/leased/incomplete work does not release the batch.",
+    "Old proof is still cleared before a later new launch intent. Abandon preserves entries, work, receipts, fees and failed results, grants no dispatch authority, and does not retry any HTTP.",
+    "Current blocked reasons need not equal historical prelaunch code because later read-only native inspections may legitimately change those reasons without another launch. Exact nonce/profile remain the original source binding.",
+    "Final _step receiver requires an actual string error.code before passing it to the shared predicate. The predicate None default remains an intentional omission only for reading persisted no-start control evidence during abandonment."
+  ],
+  "author_reported_validation": "Prior relevant author cohort24P; later code-less receiver closure author25P. Separate pins/cohorts, not a claimed combined final run.",
+  "runtime_removed": true,
+  "API_requests": 0,
+  "real_database_access": false,
+  "source_writes": 0,
+  "build_or_reload_performed": false,
+  "limits": [
+    "Original executor process/native work inspection is a deterministic isolated fake; this is engineering acceptance of gateway boundaries, not a claim that the real paused batch has been abandoned.",
+    "No real fees, company answers, database rows, owner controls or running services were changed."
+  ],
+  "previous_9_case_pin": {
+    "scripts/dashboard_batches.py": "703d0a93cc5b155f2fb448b805a9bdeed2737c3ec1b7494723cbec5546d9385a",
+    "tests/test_dashboard_batches.py": "997d489f406e0be4340a83a030133f615eca5b96263c7437462e5d589a65d114"
+  },
+  "final_closeout_evidence": {
+    "tests": 2,
+    "failures": 0,
+    "deselected": 8,
+    "seconds": 1.478,
+    "xml": "abandon-prelaunch-final.xml",
+    "runtime_removed": true,
+    "source_stable_during_execution": true,
+    "cases": [
+      "Original genuine positive typed no-start proof still permits only local batch abandonment.",
+      "A code-less generic error cannot borrow a complete positive typed proof from another error; proof is asserted non-null and exact nonce-bound before consumer rejection."
+    ]
+  },
+  "closed_findings": [
+    {
+      "id": "ABANDON-CODELESS-CONSUMER-01",
+      "resolution": "Initial consumer requires actual string error.code, so optional code=None cannot skip actual raised-code matching."
+    },
+    {
+      "id": "ABANDON-CODELESS-TEST-PROOF-01",
+      "resolution": "Reviewer found the first new permanent counterexample accidentally produced None for missing details. Author supplied exact bundle/fingerprint and asserted proof is non-null; final private test independently verifies the same complete-proof rejection."
+    }
+  ]
+}
