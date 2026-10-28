@@ -1,0 +1,79 @@
+{
+  "reviewer": "/root/review_recovery_resume",
+  "checked_at": "2026-10-28T08:46:48.801273+00:00",
+  "status": "root_cause_confirmed_without_writes",
+  "root_cause": "0ec5879 original LLMIntegration finish overwrites physical group execution with first member execution; work_transport.work_attempt_id changes from PACK_BUDGET to member ATTEMPT, so original second projector correctly refuses before full standard validation/persistence",
+  "negative_replay_scope": "Original finish AST plus original durable physical receipts and exact actual pack membership; only negative projector replay, no fabricated positive/adoption/save/claim/lease change",
+  "source_version": "0ec5879",
+  "items": [
+    {
+      "work_item_id": "WORK_9f06465bf1254924b129ade74e0800f1",
+      "question_id": "IQS_04",
+      "final_artifact": "runs\\u25-live\\runtime\\final-answer-diagnostics\\92fdc194104480e4477c3c123d2ccf401b5b50be965ac6589750cbd86fe7a463.final.json",
+      "parser_artifact": "runs\\u25-live\\runtime\\final-answer-diagnostics\\92fdc194104480e4477c3c123d2ccf401b5b50be965ac6589750cbd86fe7a463.parser.json",
+      "final_body_retained": true,
+      "final_body_bytes": 5139,
+      "body_sha_selfcheck": true,
+      "actual_durable_response_hash_and_ID_match": true,
+      "durable_receipt_independent_visible_body_sha_present": false,
+      "parser_status": "complete",
+      "parser_rejections": [],
+      "typed_standard_gate_passed": true,
+      "typed_gate_error": null,
+      "original_final_marked_replay_authorized": false,
+      "original_group_budget_attempt_id": "PACK_BUDGET_2b4bb431d2ff4ed59c21af6f43432a98",
+      "first_member_attempt_id": "ATTEMPT_f92452190d8747918a724d9801a1eb5f",
+      "old_finish_changed_group_attempt_to_member": true,
+      "negative_projection_exception_chain": [
+        {
+          "type": "QuickScanWorkPersistenceError",
+          "message": "question pack response projection could not verify its owner"
+        },
+        {
+          "type": "ValueError",
+          "message": "question pack metadata differs from its actual physical response"
+        }
+      ],
+      "checkpoint_exists": false
+    },
+    {
+      "work_item_id": "WORK_caeceb7b31b8417481b9cfa8659403bf",
+      "question_id": "IQS_04",
+      "final_artifact": "runs\\u25-live\\runtime\\final-answer-diagnostics\\f5fe9d6c3d1af3dc4694d3cc4c60fc23c7e5e9db429750c71e05a05f89b093ff.final.json",
+      "parser_artifact": "runs\\u25-live\\runtime\\final-answer-diagnostics\\f5fe9d6c3d1af3dc4694d3cc4c60fc23c7e5e9db429750c71e05a05f89b093ff.parser.json",
+      "final_body_retained": true,
+      "final_body_bytes": 8338,
+      "body_sha_selfcheck": true,
+      "actual_durable_response_hash_and_ID_match": true,
+      "durable_receipt_independent_visible_body_sha_present": false,
+      "parser_status": "complete",
+      "parser_rejections": [],
+      "typed_standard_gate_passed": true,
+      "typed_gate_error": null,
+      "original_final_marked_replay_authorized": false,
+      "original_group_budget_attempt_id": "PACK_BUDGET_c97ebab81e374c6d93edc3703669e7d3",
+      "first_member_attempt_id": "ATTEMPT_a92a49286fb54834af807c5b74ab9457",
+      "old_finish_changed_group_attempt_to_member": true,
+      "negative_projection_exception_chain": [
+        {
+          "type": "QuickScanWorkPersistenceError",
+          "message": "question pack response projection could not verify its owner"
+        },
+        {
+          "type": "ValueError",
+          "message": "question pack metadata differs from its actual physical response"
+        }
+      ],
+      "checkpoint_exists": false
+    }
+  ],
+  "known_response_honest_reason": "known_response_no_accepted_answer with same diagnostic.code and exact original physical response hash/artifact hash; active lease refuses until expiry; it is failure disposition only, not authorization to replay saved body",
+  "current_checkpoint_restore_capability": "No public expired-known-response/no-CP retained-native-final adoption path found. save_answer_checkpoint requires active original lease; recover_expired sends known response_available to uncertain; diagnostic replay_or_delivery_authorized=false; seal-deliveries requires existing CP. Do not directly extend lease, handwrite checkpoint, or mislabel valid output as invalid_question. Native owner-controlled adoption capability would need explicit engineering, not a template flag.",
+  "body_authenticity_boundary": "Retained diagnostic self-hash and actual durable response hash/ID association verified. Neither is automatic saved-answer replay authority; report notes whether independent visible body SHA existed in durable receipt.",
+  "source_edits": 0,
+  "real_database_writes": 0,
+  "native_CLI_or_paid_API_calls": 0,
+  "answer_or_reasoning_body_written_or_exported": false,
+  "owned_runtime_removed": true,
+  "audit_adapter_note": "Original public get_question_pack requests a writer transaction, so a preliminary read-only probe refused before mutation; final audit uses its exact pure _read on the same query_only connection instead."
+}

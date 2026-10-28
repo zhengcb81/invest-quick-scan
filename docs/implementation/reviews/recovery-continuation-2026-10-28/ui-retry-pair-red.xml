@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="3.746" timestamp="2026-10-28T09:04:20.798383+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_dashboard_unusable_recovery" name="test_explicit_recovery_refs_closed_and_native_projection_is_read_only[retry_unusable_checkpoint-result_ready]" time="0.923" /><testcase classname="tests.test_dashboard_unusable_recovery" name="test_explicit_recovery_refs_closed_and_native_projection_is_read_only[retry_unusable_answer-failed]" time="0.019"><failure message="scripts.dashboard_prepare.DashboardPrepareError: An exact original unusable checkpoint decision no longer matches">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/ui-pair-red-x5f6bedv/pytest/test_explicit_recovery_refs_cl1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018E4AF6F820&gt;
+purpose = 'retry_unusable_answer', status = 'failed'
+
+    @pytest.mark.parametrize("purpose,status", [
+        ("retry_unusable_checkpoint", "result_ready"),
+        ("retry_unusable_answer", "failed"),
+    ])
+    def test_explicit_recovery_refs_closed_and_native_projection_is_read_only(
+        tmp_path, monkeypatch, purpose, status
+    ):
+        ref = {"work_item_id": "WORK_" + "a" * 32, "decision_id": "owd1_" + "b" * 64}
+        config = {
+            "prepare": {
+                "recovery_work_decision_refs": [ref],
+                "admission_config": str(tmp_path / "admission.json"),
+            }
+        }
+        (tmp_path / "admission.json").write_text(
+            json.dumps(
+                {
+                    "work_store": "original.sqlite",
+                    "budget_policy_file": "original-policy.json",
+                }
+            )
+        )
+        manifest = {
+            "questions": [
+                {"id": "IQS_04", "scope": "entity"},
+                {"id": "IQS_27", "scope": "security"},
+            ]
+        }
+        native = {
+            "binding": {"entity_id": "ENT_FIX"},
+            "selected_listing": {"security_id": "SEC_FIX"},
+        }
+        row = {
+            "work_item_id": ref["work_item_id"],
+            "generation": 2,
+            "status": status,
+            "retry_decision_id": ref["decision_id"],
+            "retry_purpose": purpose,
+            "target_generation": 3,
+            "delivery_required": False,
+        }
+        calls = []
+    
+        def invoke(*args):
+            calls.append(args)
+            return {
+                "protocol": "stockqa.owner_control_projection/1.0.0",
+                "entity_id": "ENT_FIX",
+                "rows": {"IQS_04": copy.deepcopy(row)},
+                "authority": "original_journal_read_not_permission",
+                "API_requests": 0,
+                "database_writes": 0,
+            }
+    
+        monkeypatch.setattr(p, "_native_cli", invoke)
+        policy = {"protocol": "stockwiki.refresh_owner_policy/1.2.0"}
+&gt;       out = p._recovery_subset(config, tmp_path, manifest, native, policy)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_dashboard_unusable_recovery.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = {'prepare': {'recovery_work_decision_refs': [{'work_item_id': 'WORK_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'decision_id': ...can\\runs\\resume-recovery-2026-10-28\\ui-pair-red-x5f6bedv\\pytest\\test_explicit_recovery_refs_cl1\\admission.json'}}
+directory = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/ui-pair-red-x5f6bedv/pytest/test_explicit_recovery_refs_cl1')
+manifest = {'questions': [{'id': 'IQS_04', 'scope': 'entity'}, {'id': 'IQS_27', 'scope': 'security'}]}
+native = {'binding': {'entity_id': 'ENT_FIX'}, 'selected_listing': {'security_id': 'SEC_FIX'}}
+policy = {'protocol': 'stockwiki.refresh_owner_policy/1.2.0'}
+
+    def _recovery_subset(config, directory, manifest, native, policy):
+        refs = _recovery_refs(config)
+        dialect = policy["protocol"].split("/")[-1]
+        if refs is None and dialect in {"1.0.0", "1.1.0"}:
+            return None
+        if refs is None or dialect != "1.2.0":
+            raise DashboardPrepareError("recovery_policy_refs_required", "Explicit policy 1.2 and original unusable-checkpoint references must be selected together", 409)
+        admission = _read(config["prepare"]["admission_config"])
+        entity = native["binding"]["entity_id"]
+        selected = native["selected_listing"]["security_id"]
+        scopes = {q["id"]: {"scope": q["scope"], "scope_id": selected if q["scope"] == "security" else entity} for q in manifest["questions"]}
+        query = {"entity_id": entity, "question_ids": list(scopes), "scope_bindings": scopes}
+        path = directory / "recovery-projection-request.json"
+        _new(path, query)
+        projection = _native_cli(config, "qa", "src.utils.quick_scan_work_decision_inspect_cli", [
+            "--ledger", admission["work_store"], "--policy", admission["budget_policy_file"], "--owner-controls", str(path)])
+        if (projection.get("protocol") != "stockqa.owner_control_projection/1.0.0"
+            or projection.get("entity_id") != entity or projection.get("authority") != "original_journal_read_not_permission"
+            or type(projection.get("API_requests")) is not int or projection["API_requests"] != 0
+            or type(projection.get("database_writes")) is not int or projection["database_writes"] != 0
+            or not isinstance(projection.get("rows"), dict)):
+            raise DashboardPrepareError("recovery_projection_invalid", "Original read-only recovery projection is unavailable", 409)
+        by_work = {row["work_item_id"]: (qid, row) for qid, row in projection["rows"].items() if isinstance(row, dict) and isinstance(row.get("work_item_id"), str)}
+        items = []
+        for ref in refs:
+            match = by_work.get(ref["work_item_id"])
+            if match is None:
+                continue  # Explicit global references may include another company.
+            qid, row = match
+            if (qid not in scopes or row.get("retry_decision_id") != ref["decision_id"]
+                or row.get("retry_purpose") != "retry_unusable_checkpoint" or row.get("status") != "result_ready"
+                or type(row.get("generation")) is not int or row.get("target_generation") != row["generation"] + 1
+                or row.get("delivery_required") is not False):
+&gt;               raise DashboardPrepareError("recovery_source_changed", "An exact original unusable checkpoint decision no longer matches", 409)
+E               scripts.dashboard_prepare.DashboardPrepareError: An exact original unusable checkpoint decision no longer matches
+
+scripts\dashboard_prepare.py:149: DashboardPrepareError</failure></testcase></testsuite></testsuites>

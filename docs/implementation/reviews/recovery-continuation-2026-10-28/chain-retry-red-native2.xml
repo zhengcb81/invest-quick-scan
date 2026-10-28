@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="12.034" timestamp="2026-10-28T08:56:01.884392+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_unusable_checkpoint_retry" name="test_exact_received_failure_retry_chain_can_admit_and_send_without_rewriting_ancestors" time="7.730"><failure message="src.utils.quick_scan_work_store.WorkConflictError: owner_refresh_prior_work_unresolved">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/chain-check-red-native2-k3rxfby7/pytest-temp/test_exact_received_failure_re0')
+
+    def test_exact_received_failure_retry_chain_can_admit_and_send_without_rewriting_ancestors(tmp_path):
+        from src.utils.quick_scan_owner_refresh_journal import guard_send
+        store, clock, old, failed, binding, spec = chained_failed_successor_fixture(tmp_path)
+        materials = immutable(store)
+        checkpoint = store.get_answer_checkpoint(old["work_item_id"])
+&gt;       target = store.create_or_attach(
+            **spec, owner_refresh_binding=binding, run_id="SECOND_RETRY", scan_id="SECOND_RETRY"
+        )
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_unusable_checkpoint_retry.py:832: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\StockQAbyLLM\src\utils\quick_scan_work_store.py:3139: in create_or_attach
+    bind_owner_refresh(
+..\..\..\..\StockQAbyLLM\src\utils\quick_scan_owner_refresh_journal.py:362: in bind
+    guard_unresolved(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = &lt;sqlite3.Connection object at 0x000002AAC65717B0&gt;
+item = {'work_item_id': 'WORK_304f9b1530534ea681a1d27b4306755b', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'CROSS_BORDER_01', 'generation': 3, ...}
+exclude_work_id = 'WORK_304f9b1530534ea681a1d27b4306755b'
+binding = {'protocol': 'stockqa.owner_refresh_binding/3.0.0', 'subject_key': 'ASJ_11111111-1111-4111-8111-111111111111@1', 'peri...ddddddddddddddddddddddd', 'decision_id': 'route_dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', ...}
+now = 1800000121.0
+
+    def guard_unresolved(
+        connection: sqlite3.Connection,
+        item: dict,
+        *,
+        exclude_work_id: str | None = None,
+        binding: dict | None = None,
+        now=None,
+    ) -&gt; None:
+        # No LIMIT and no dependency on a read-only planner or current generation.
+        # Legacy rows have no subject attestation: conservatively reconcile them
+        # rather than guessing they belong to another reporting perimeter.
+        comparison_source = None
+        if binding is not None and binding["protocol"] in {
+            "stockqa.owner_refresh_binding/3.0.0",
+            "stockqa.owner_refresh_binding/4.0.0",
+        }:
+            source = native_control(connection, item, binding, now=now, require_ready=True)
+            if binding["owner_control"]["purpose"] in {"comparison", "retry_unusable_checkpoint"}:
+                comparison_source = source["work_item_id"]
+        rows = connection.execute(
+            "SELECT * FROM work_item WHERE entity_id=? AND question_id=? AND scope=? AND scope_id=? "
+            "AND status IN ('pending','leased','uncertain','result_ready') AND (? IS NULL OR work_item_id!=?)",
+            (
+                item["entity_id"],
+                item["question_id"],
+                item["scope"],
+                item["scope_id"],
+                exclude_work_id,
+                exclude_work_id,
+            ),
+        ).fetchall()
+        for row in rows:
+            if row["work_item_id"] == comparison_source and row["status"] == "result_ready":
+                continue
+            if binding is not None and binding["protocol"] in {
+                "stockqa.owner_refresh_binding/1.0.0",
+                "stockqa.owner_refresh_binding/2.0.0",
+            }:
+                successor = delivered_checkpoint_successor(connection, row)
+                if successor is not None and item["generation"] &gt; successor["generation"]:
+                    # Preserve the source forever; its exact, genuinely ACKed native
+                    # successor resolved this one historical block. Current owner
+                    # consent, freshness, budgets and all other work still apply.
+                    continue
+            from src.utils.quick_scan_work_store import WorkConflictError
+    
+&gt;           raise WorkConflictError("owner_refresh_prior_work_unresolved")
+E           src.utils.quick_scan_work_store.WorkConflictError: owner_refresh_prior_work_unresolved
+
+..\..\..\..\StockQAbyLLM\src\utils\quick_scan_owner_refresh_journal.py:340: WorkConflictError</failure></testcase></testsuite></testsuites>

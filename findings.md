@@ -1,3 +1,31 @@
+## 2026-10-28T09:17Z — 回执覆盖与连续恢复已独审发布，真实两项原生处置执行中
+
+StockQA95ac7f4（整包/首成员回执隔离）与6d27e5e（逐代原生重试链）均正常全钩子通过并推送。UI03ba12c本地提交（无remote），subset1.1严格显示有限answer重试，旧checkpoint-only仍原1.0格式。IQS backend同closed purpose/state对、精确ref/N+1/正整数校验已独审，待随本条PWF提交。改动无金融口径/权限门降级。
+
+作者组回执131P98.982s，后补4焦点16.098s；连续链72P295.641s，后将独审3对抗例提升长期unit并3P47.96s（不是伪称75项同一轮），包含连续失败两次到第4代；backend新旧pair/非法输入3P1.92s、UI实际ESM37P13.64s。非作者同大节点14P（7P60.182s +7P4.417s）passed/open[]；各原delivery reader替身与更早真实native ACK证据边界分别披露。正常hook只布局/换行/测试导入排序，group posthook4原SQLite投影例已再验；新chain源审查hash稳定，必要posthook差异随实际原控制继续核。未重复25min原生或1h全套。
+
+真实两新final仍原目录保留且完整typed校验通过，parser完整，但没有独立durable public-body hash授予expired/noCP收回；不伪clock/延lease/SQL补CP。原只读known-response预检2项通过，8物理表、17旧材料、11settled/306568微USD/0在途均保留，计划a1a417e9…精确pin。root现12771经原public CLI有限preview/grant/confirm/apply，诚实原因known_response_no_accepted_answer（本地group投影失败，不是假称模型格式错），仅目标MSFTg2/CATLg3，不产生新代/模型请求；尚未提前宣称2/2 recorded，完成后核原summary/fixed-install-before+CAS/finally。随后才创建两原retry_unusable_answer确认并从UI接续。
+
+### Next Step
+
+完成两received处置/两精确重试决议，安全重载原8766部署并用UI新refs准备/真实扫描/入库/exactACK；之后普通1.1新版本、移除refs、接续三市场36题和合法缓存/过期刷新验收。实际HTTP两笔均计费，不能标缓存；真实完整入库与金融签收仍待完成。持续执行不暂停。
+
+---
+
+## 2026-10-28T08:47Z — UI真实两题发现组/成员回执混淆，根修已131项回归通过
+
+原UI恢复batch-8c74…当前blocked。两新请求均MiMoPro/开启思考/native search executed/HTTP200/原parser complete且rejections[]，原账本11settled/306568微USD估计/0在途；本轮新增2笔/38817微USD。两target仍leased且无CP，不称已入库。独审只读发现并由root原SQLite反例复现：OrderedSearchProviderCascade.finish将首成员execution覆盖group，PACK_BUDGET误变ATTEMPT，engine二次物理回执投影正确拒绝；这是本地拼接错误，不能归咎模型格式，也不删除费用或盲重发。
+
+StockQA根修仅llm_integration.py将cross-boundary透传限定为5项路由注释，所有原physical字段保留；原投影校验不变。新增test_quick_scan_question_pack_transport.py原SQLite/原owner回执/二次投影，red-proof两项真实反例失败在明确ID覆盖；修复后131P99s。第一轮红跑漏router必填参数只到构造错误，另保留且不冒充根因反例；Python logger占用测试文件导致首临时清理失败，后runner关闭日志后清，未动真实环境。额外错误group hash两负例在同4variant焦点运行，非重复整套，最终独审中。
+
+两新最终公开回答都实际保留（无思考留档），与旧两legacy hash-only不同。现在需只读核原artifact/回执绑定及完整标准，并确定原lease已到期时合法既有收回/恢复路径；不能假时钟、改lease、伪failed或直接SQL补CP。若需补能力须原机制根修/隔离反例/集中独审，再真实恢复。准确性和真实入库/exactACK尚未通过。
+
+### Next Step
+
+关闭本组回执根修独审/正常提交；验证可保留回答的原生安全接续路径，在真实原owner恢复两target/入库/exactACK，再普通1.1接续三市场36题和缓存恢复。持续推进，不暂停、不重复询问权限。
+
+---
+
 ## 2026-10-28T08:29Z — UI两恢复组已登记并启动原真实批次
 
 微软prepare_8bdcd88fef0744b4a33cf23158dbe166、宁德prepare_acc0d3c8931d45248682083f9a61d271均原registered；UI明确各执行IQS04一题/原36题，不冒充整公司完成。原batch-2dfa已经原UI安全结束编排，保留原工作/结果/费用。选择两新组→UI预览→明确开始，实际新batch-8c74f6fb77ee486eac4a04e9466b9898 running，微软run-f25cdd3abe3e46bd982b7c7521ffd367已启动，宁德原编排selected等待准入。原截至25日/主体/证券/原账本均保留；模型HTTP、完整答案、入库/exactACK尚待实际结果，不提前报通过。

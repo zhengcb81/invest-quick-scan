@@ -119,7 +119,7 @@ def _recovery_subset(config, directory, manifest, native, policy):
     if refs is None and dialect in {"1.0.0", "1.1.0"}:
         return None
     if refs is None or dialect != "1.2.0":
-        raise DashboardPrepareError("recovery_policy_refs_required", "Explicit policy 1.2 and original unusable-checkpoint references must be selected together", 409)
+        raise DashboardPrepareError("recovery_policy_refs_required", "Explicit policy 1.2 and original finite retry references must be selected together", 409)
     admission = _read(config["prepare"]["admission_config"])
     entity = native["binding"]["entity_id"]
     selected = native["selected_listing"]["security_id"]
@@ -137,21 +137,31 @@ def _recovery_subset(config, directory, manifest, native, policy):
         raise DashboardPrepareError("recovery_projection_invalid", "Original read-only recovery projection is unavailable", 409)
     by_work = {row["work_item_id"]: (qid, row) for qid, row in projection["rows"].items() if isinstance(row, dict) and isinstance(row.get("work_item_id"), str)}
     items = []
+    purposes = set()
+    eligible_states = {"retry_unusable_checkpoint": "result_ready", "retry_unusable_answer": "failed"}
     for ref in refs:
         match = by_work.get(ref["work_item_id"])
         if match is None:
             continue  # Explicit global references may include another company.
         qid, row = match
         if (qid not in scopes or row.get("retry_decision_id") != ref["decision_id"]
-            or row.get("retry_purpose") != "retry_unusable_checkpoint" or row.get("status") != "result_ready"
-            or type(row.get("generation")) is not int or row.get("target_generation") != row["generation"] + 1
+            or not isinstance(row.get("retry_purpose"), str) or row.get("retry_purpose") not in eligible_states
+            or row.get("status") != eligible_states.get(row.get("retry_purpose"))
+            or type(row.get("generation")) is not int or row["generation"] < 1
+            or type(row.get("target_generation")) is not int or row["target_generation"] != row["generation"] + 1
             or row.get("delivery_required") is not False):
-            raise DashboardPrepareError("recovery_source_changed", "An exact original unusable checkpoint decision no longer matches", 409)
-        items.append({"question_id": qid, **ref, "source_generation": row["generation"], "target_generation": row["target_generation"]})
+            raise DashboardPrepareError("recovery_source_changed", "An exact original finite retry decision no longer matches", 409)
+        purposes.add(row["retry_purpose"])
+        items.append({"question_id": qid, **ref, "source_generation": row["generation"], "target_generation": row["target_generation"], "purpose": row["retry_purpose"]})
     if not items:
         raise DashboardPrepareError("recovery_source_missing", "No selected original recovery decision belongs to this exact company and bank", 409)
     items.sort(key=lambda row: row["question_id"])
-    return {"protocol": "iqs.dashboard-recovery-subset/1.0.0", "purpose": "retry_unusable_checkpoint",
+    legacy = purposes == {"retry_unusable_checkpoint"}
+    if legacy:
+        for item in items:
+            item.pop("purpose")
+    return {"protocol": "iqs.dashboard-recovery-subset/" + ("1.0.0" if legacy else "1.1.0"),
+        "purpose": "retry_unusable_checkpoint" if legacy else "native_controlled_retry",
         "execution_question_ids": [row["question_id"] for row in items], "execution_question_count": len(items),
         "full_bank_question_count": len(manifest["questions"]), "items": items}
 

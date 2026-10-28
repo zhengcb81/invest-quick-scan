@@ -20,8 +20,12 @@ from dashboard_service import validate_config, ProductError
 from test_dashboard_prepare import original, ENTITY, tree
 
 
+@pytest.mark.parametrize("purpose,status", [
+    ("retry_unusable_checkpoint", "result_ready"),
+    ("retry_unusable_answer", "failed"),
+])
 def test_explicit_recovery_refs_closed_and_native_projection_is_read_only(
-    tmp_path, monkeypatch
+    tmp_path, monkeypatch, purpose, status
 ):
     ref = {"work_item_id": "WORK_" + "a" * 32, "decision_id": "owd1_" + "b" * 64}
     config = {
@@ -51,9 +55,9 @@ def test_explicit_recovery_refs_closed_and_native_projection_is_read_only(
     row = {
         "work_item_id": ref["work_item_id"],
         "generation": 2,
-        "status": "result_ready",
+        "status": status,
         "retry_decision_id": ref["decision_id"],
-        "retry_purpose": "retry_unusable_checkpoint",
+        "retry_purpose": purpose,
         "target_generation": 3,
         "delivery_required": False,
     }
@@ -79,10 +83,22 @@ def test_explicit_recovery_refs_closed_and_native_projection_is_read_only(
         and out["full_bank_question_count"] == 2
     )
     assert calls[0][1:3] == ("qa", "src.utils.quick_scan_work_decision_inspect_cli")
+    if purpose == "retry_unusable_answer":
+        assert out["protocol"] == "iqs.dashboard-recovery-subset/1.1.0"
+        assert out["purpose"] == "native_controlled_retry"
+        assert out["items"][0]["purpose"] == purpose
+    else:
+        assert out["protocol"] == "iqs.dashboard-recovery-subset/1.0.0"
+        assert "purpose" not in out["items"][0]
     for field, value in [
-        ("status", "failed"),
+        ("status", "failed" if status == "result_ready" else "result_ready"),
         ("retry_purpose", "comparison"),
+        ("retry_purpose", []),
+        ("retry_purpose", None),
+        ("generation", 0),
+        ("generation", True),
         ("target_generation", 4),
+        ("target_generation", 3.0),
         ("retry_decision_id", "owd1_" + "c" * 64),
         ("delivery_required", True),
     ]:
