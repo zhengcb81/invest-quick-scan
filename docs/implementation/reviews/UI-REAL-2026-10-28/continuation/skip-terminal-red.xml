@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.187" timestamp="2026-10-28T15:01:52.329215+00:00" hostname="DESKTOP-156V213"><testcase classname="runs.resume-recovery-2026-10-28.independent.test_skip_terminal_independent" name="test_old_failed_handle_cannot_reconcile_a_newer_projected_expired_lease" time="1.813"><failure message="AssertionError: Terminal read assertion changed another generation through _owner_work/recover_expired&#10;assert b'SQLite form...0\x00\x01\x15' == b'SQLite form...0\x00\x01\x15'&#10;  &#10;  At index 27 diff: b'\x13' != b'\x12'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sk28-hug4dru5/p/test_old_failed_handle_cannot_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F5623E5810&gt;
+
+    def test_old_failed_handle_cannot_reconcile_a_newer_projected_expired_lease(tmp_path, monkeypatch):
+        store, provider, lifecycle, questions, session, policy = fixture(tmp_path, monkeypatch, 'all_invalid')
+        with standard_answer_transport(True), transport.bind_quick_scan_budget(store, policy, cost_resolver=lambda _: {'actual_cost': .03, 'pricing_ref': 'fixture-price', 'source_ref': 'synthetic-rate'}):
+            QAEngine(provider, progress_reporter=Mock(), work_item_lifecycle=lifecycle).process_questions(questions[:2], question_pack_size=2)
+        question = questions[0]
+        old = store.find_work_items(entity_id=lifecycle._entity_id, question_ids=[question.question_id])[question.question_id][0]
+        assert old['status'] == 'failed'
+        owner = lifecycle._owner_refresh
+        owner.fields[question.question_id].update(decision='dispatch_new_generation', generation=2)
+        current = store.create_or_attach(**lifecycle._identity, question_id=question.question_id, generation=2, scope=old['scope'], scope_id=old['scope_id'], question_fingerprint=old['question_fingerprint'], routing_fingerprint=routing_fingerprints(owner)[question.question_id], run_id='RUN_NEW_GENERATION', scan_id='SCAN_NEW_GENERATION', owner_refresh_binding=owner.binding(question.question_id))
+        store.claim(current['work_item_id'], lease_seconds=120)
+        owner.fields[question.question_id]['decision'] = 'resume_existing_work'
+        owner.projection[question.question_id] = {'work_item_id': current['work_item_id']}
+        lifecycle._generation_by_question[question.question_id] = 2
+        stamp = store._now() + 121
+        monkeypatch.setattr(store, 'clock', lambda: stamp)
+        before = store.path.read_bytes()
+        current_before = copy.deepcopy(store.get_item(current['work_item_id']))
+        with pytest.raises(Exception):
+            lifecycle.assert_question_skip_terminal(question, {'claimed': False, 'work_item_id': old['work_item_id'], 'reason': 'old_terminal_handle'})
+&gt;       assert store.path.read_bytes() == before, 'Terminal read assertion changed another generation through _owner_work/recover_expired'
+E       AssertionError: Terminal read assertion changed another generation through _owner_work/recover_expired
+E       assert b'SQLite form...0\x00\x01\x15' == b'SQLite form...0\x00\x01\x15'
+E         
+E         At index 27 diff: b'\x13' != b'\x12'
+E         Use -v to get more diff
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\resume-recovery-2026-10-28\independent\test_skip_terminal_independent.py:45: AssertionError</failure></testcase></testsuite></testsuites>

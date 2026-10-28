@@ -1,3 +1,15 @@
+## 2026-10-28T15:08Z — 旧FAILED入口根修已独审/发布；原UI正恢复Tencent/CATL，MSFT已推进到18/19
+
+StockQA ad13d57/master 已正常hooks提交并推origin。可选 assert_question_skip_terminal 仅以原native只读正证核验旧FAILED精确工作/代际/绑定/真实known2xx/共享physical所有成员终态/原费用settled/无CP/同scope无未知；保留error/null，只跳过旧失败而继续已授权pending，既不重发旧failed也不修改旧状态。独审发现初稿_owner_work会recover另一新代expired lease的真反例，已移除该调用，改纯owner.existing_work+原binding/Approved-anchor核验；原红1F3.19s保留，最终独审5P6.03s/open[]，旧错误报告另存更正。作者12P22.99s；root正常hooks后3 AST与审查pin等价，最终定向cohort139P121.56s（0API/临时库自动清理），没有重跑小时套。
+
+原UI15:06–07已各核T/C原状态，15:08各明确恢复一次；原后端仍可能较慢，等待真实launch_attempt=3/原PID/结果，不因UI30秒超时重复POST。MSFT run68b…原09在途进程保持，现q18/19；19原CP/41上下文/17标准及包/13旧settled费历史子集亲核全部保留，当前40CP/70ctx/38std及包/29HTTP其中1在途，成本662821微USD估计（15:02只读快照）。尚未完成三市场36×3入库/exactACK/最终缓存重启验收，继续推进。
+
+### Next Step
+
+核原T/C attempt3确由ad13启动并越过旧failed后开始新pending；不要重复原恢复POST或重启在途服务。第一波全部pending结束后，在原预算静止时一次性新full36准备失败/过期及证券3题，再派发原所需新代。完成108题原入库/exactACK后，原UI安全重启/有效期内完整复用0新HTTP，连同既有真实时钟隔离过期正常刷新证据做最终独立实际完成度审查。PWF/原SDK提交已同步，不把模型thinking/JSON语法当金融准确性保证。
+
+---
+
 ## 2026-10-28T14:52Z — 更正原任务恢复入口判断；MSFT继续，Tencent/CATL须待同根因小补丁，勿重复旧恢复
 
 R6原UI e427结束已成功abandoned(14:28:17)，4原scope检查、entries保留；8物理表及34份ready+delivered材料对CATLpair结束后hash全等，0API。断连/重启r6 witness也确认原19CP/41ctx/17std+包/13旧费全部保留，现34CP/62ctx/32std及包/25settled费。

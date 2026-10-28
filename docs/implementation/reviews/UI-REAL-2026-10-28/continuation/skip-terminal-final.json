@@ -1,0 +1,67 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Skip only exact original fully FAILED C06 pack work during approved continuation; preserve its error/null and immutable work, then permit later separately admitted pending questions through original guards.",
+  "author_of_reviewed_changes": false,
+  "final_source_sha256": {
+    "src/core/qa_engine.py": "ea46bf4327b1c55ab02767011ce2ad9823473e4dcefadc2287e691b0b8529c8e",
+    "src/runners/llm_runner.py": "041f7d1dd510d8e6ed1b9a633e004c3bae6039d3d32167dadbad6be97b1d2415",
+    "tests/unit/test_known_pack_continuation.py": "fd4b8a3d914877b9e61a0f8b620222d8502844d4f5c882f6db473126af213d66"
+  },
+  "source_stable_during_focused_execution": true,
+  "independent_evidence": {
+    "tests": 5,
+    "failures": 0,
+    "seconds": 6.027,
+    "xml": "skip-terminal-green.xml",
+    "four_boundary_groups": [
+      {
+        "boundary": "Non-positive or absent opt-in cannot skip",
+        "tests": 2,
+        "evidence": "Private literal-True gate with truthy integer1 and no hook; neither reaches provider HTTP nor finalizes the failed item."
+      },
+      {
+        "boundary": "Skip proof is a pure read even for foreign/old generation handle",
+        "tests": 1,
+        "evidence": "Private original APIs construct old failed generation1 and current projected generation2 unsent expired lease. Rejected assertion preserves full SQLite bytes and current item exactly."
+      },
+      {
+        "boundary": "Earlier fatal pending-pack flush cannot be cleared",
+        "tests": 1,
+        "evidence": "Reproduced permanent generic fatal-before-refusal case; skip hook not invoked and later questions not sent."
+      },
+      {
+        "boundary": "Original owner-close of both members sharing physical request is skipped without reasking them",
+        "tests": 1,
+        "evidence": "Reproduced permanent original native owner resolution scenario with isolated injected store/provider clocks. Original failed work and attempts remain unchanged; only next pending question sends one new synthetic SDK HTTP and obtains checkpoint."
+      }
+    ]
+  },
+  "closed_findings": [
+    {
+      "id": "SKIP-READONLY-LEASE-01",
+      "severity": "P1",
+      "original_bug": "Initial failed-handle check called _owner_work before matching selected source. A stale failed handle could cause another projected generation expired lease to be recovered before the assertion rejected.",
+      "fixed_original_API_counterexample": "skip-terminal-red.xml:1F3.19s, original SQLite bytes changed while both source pin snapshots were stable. This is retained separately from final green.",
+      "original_runner_sha256": "b7446f6bffa03b6ea4b2c625a9f651039cf791a72d22a6647707f0f5ee0de087",
+      "resolution": "Removed all _owner_work calls from skip assertion; native owner.existing_work performs pure exact selected-work matching. Read-only original binding and approved-anchor guards authenticate scope before physical proof. No lease recovery or renewal occurs."
+    }
+  ],
+  "source_review": [
+    "Engine flushes pending pack first and accepts skip only when no earlier stop exists and optional native hook returns literal True. No rejected claim gets after_question_failed; original error/null and work ID remain visible.",
+    "Native supports only original strict C06 authority and frozen subject context. Exact selected failed work, generation, full identity/source-binding refs, fingerprint, current original owner and subject binding are checked.",
+    "Original native _physical re-derives receipt, exact shared physical request, settled fee, source subject receipt and last attempt; target has no CP. Shared siblings must have exact original latest attempt and either failed/noCP or validated ready/delivered CP.",
+    "Same original scope unknown work blocks; active/unknown/foreign/new-generation and unbound work cannot be skipped. Original owner authority is rechecked at both boundaries and every future POST keeps its native guard.",
+    "No model-produced claim, new lease, lease extension, score default, body repair, new generation or retry of failed work is introduced."
+  ],
+  "setup_attempt_not_a_product_red": "Earlier isolated test setup requested routing_fingerprint from a projection that intentionally omits it. It was corrected to the original routing_fingerprints(owner) helper before the retained true side-effect red was produced.",
+  "runtime_removed": true,
+  "real_API_requests": 0,
+  "real_database_access": false,
+  "source_writes": 0,
+  "commit_reload_or_service_operations": false,
+  "limits": [
+    "Native SDK responses and company data are synthetic in an owned temporary SQLite workspace.",
+    "This engineering acceptance does not claim real scans/ACK/financial accuracy or alter active production work."
+  ]
+}
