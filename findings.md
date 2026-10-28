@@ -1,3 +1,35 @@
+## 2026-10-28T13:19Z — 来源规范化根修已发布；腾讯新全扫描已启动，微软待原ledger空闲，宁德新准备中
+
+QA1e1535d已正常hooks提交/推origin，原0839694对象codec保留。CATL新direct对象实际known2xx/complete JSON/内外date一致，但两题在early strict证据绑定被拒，原run-a341已退出，原19请求settled/470433微USD估计/0在途（新腾讯派发前）。本地完整final确已留，可纯SDK诊断，未下载文档或导出答案。根因独立确证为本地URL身份不对称：原receipt canonicalizer parse_qsl→urlencode会把?stamp变?stamp=；原完整body校验逐字比较。原vendor源URL未留，不能声称LLM删了等号。04共7证据3alias、05共5证据2alias，其余/日期原规则均过。
+
+局部根修只用原firstparty canonicalizer做安全身份比较，先拒敏感query（大小写/编码）及userinfo，不放宽不同host/path/query值/次序。不改原标准答案/CP/receipt；validate仍deepcopy，build_observation仅把派生副本evidence URL投影为原receipt精确拼写，原outbox/shared严格逐字来源guard完全未改，旧exact投影/obs不变。作者44新+55旧99P；root actual provider→原SQLite CP→build_observation→原strict checkpoint_binding两格式2红后26P30.95s，直接核DB raw标准==原supplied；hooks后三文件AST全等、125P32.97s，独立非作者101P5.27s/open[]，已归档。正常hook格式修后重提，mypy/secret等全过，不跳hook。
+
+原UI：Tencent eea5…、MSFT e955…新36题准备均registered，原ASJ@1/原security/33entity+3security亲核保持。batch-e427885362a1494a871f5edf180c3d6e在R5UI明确启动，Tencent run-9e299a38d8e64965b1f0792dd73c3308已running/新模型在途；MSFT prelaunch拒绝execution_not_ready+refresh_admission_ledger_busy（已知未派发，不是假未知）。待宁德新prepare_190b14f7583f4258920faab1ff826765原安全准备完成后明确resume可继续；不要重POST已在途腾讯。宁德当前已1/2 scope prepared，仍须原job完整登记。原3市场共36题完整入库尚未达成，不能把running/prepared认作完成。
+
+UI还在同节点根修读超时时误清空表格的体验：作者三文件保留last-good表/陈旧时间/关闭旧动作，并补旧POST跨连接与旧capabilities守卫，44ESM通过，root独跑44P10.43s；不同agent终审又复现旧prepare/status迟到覆盖新target profile一红（另两乱序绿），正直接修status/名单读取connection+latest序号及重连清旧选项，未部署UI。serve.py实际直接serve src/app且no-store，浏览器现驻旧模块；无需build/restart原扫描服务，终审通过后整页reload即可，不打断worker。该准确部署信息替代“必须build”的旧假设。
+
+### Next Step
+
+完成UI最后独审红转绿/三文件正常本地commit（UI无remote），安全刷新页面加载新JS；新腾讯/微软同batch按原状态/预算持续，待宁德registered再原UI另启动。根因若新发现直接修，不绕native权限/未知HTTP/来源guard。完成三公司36题原入库/exactACK、有效期内重启复用0新HTTP与过期后原正常刷新；独立实际完成度审查后更新PWF/提交推送。当前仍在真实执行，不暂停。
+
+---
+
+## 2026-10-28T12:55Z — 宁德原假未知已现场恢复启动；腾讯/微软通过UI新准备，继续保留成功答案
+
+已安全部署R5 IQSf8efec5/QA0839694/UIed43804；源码/PWF证据ad1a597均推origin（UI无remote）。StockQA正常hooks+posthook24P30s完成，独立6P/open[]及4生产AST等价均归档，不重跑小时全套。
+
+MSFT Q10原known_response_resolution已单项recorded，physical8表hash完全不变、24份ready+delivered材料不变、0API/不建新代/固定install已恢复、policy1.1v6/TTL24未动。第一次root传relative agent路径在隔离cwd下FileNotFound，发生原owner/标记前；核无apply-marker后以绝对路径执行同一pin一次成功，非owner授权拒绝。原始回复未留，不造正文、不归因vendor。全扫描历史subset witness也通过：原19CP/41contexts/17standards/17revision+packages/13旧settledfee全保留，现24CP/48contexts/22standard与packages/18settled/440864微USD估计/0在途（启动新请求前的快照）。
+
+原UI明确batch46 resume后，CATL历史execution_not_ready假未知由严格原classifier核对后恢复，原run-a341be1cf7464e5ea0b8efce757884de已running，有newintent1.1/新attempt、launch_uncertain=false，并已新模型HTTP in_flight。浏览器30秒batch control timeout并不等于原执行停：后端原多次native预检可各130秒且持锁；已经核原child/磁盘后刷新UI观察running，未重复POST/kill。该慢控制期间GET排队导致UI临时空列表/timeout，是当前使用体验待优化项；不当作真实请求失败或0HTTP历史证明。
+
+独立源码研究确认原run resume只继续pending，failed不新建generation；fresh普通准备可在原规划器/权限/预算下field_missing→N+1，定向retry也可，不能说只能定向retry。因此没有对旧失败工作盲重发：原UI新腾讯prepare_eea5f572e00c4087bd40ddb0e53e6de3、新微软prepare_e955bf5e58124be084dbed34b792d531均已受理preparing，原截止25/现full36题/显式原security ID/原既有唯一主体；待实际prepared scopes核实ASJ不漂移。旧成功CP继续复用，旧批次/费用/原失败均保留。宁德已先走原普通组entity33，security3后续。
+
+### Next Step
+
+盯原3组真实进程/准备完成，若已知失败走新原授权，若未知则先inspect而不重POST。完成三家36题的原入库与exactACK、重启复用0新HTTP及真实过期正常刷新证据，独立审查最终实际完成度。当前仍非三公司全通过、仍持续执行。慢控制UI可在不打断模型的安全边界修改善，不扩大为新审查流程。
+
+---
+
 ## 2026-10-28T12:40Z — 两根修已独审通过并提交推送，正在安全部署后继续真实全扫描
 
 IQS f8efec5/master已推origin：明确原启动前typed拒绝不再误作未知；旧CATL假未知仅原UI显式resume、原锁/完整run namespace/冻结scope/当前native预检联合证明才能清本地marker，绝不修改原work/费用。新unknown带profile+attempt防降级，defer保留原reason等待下次显式resume。独审28P2.602s/open[]，原200P是早期pin，最终长期提升deferred例后focus10P1.40s(193deselected)，不冒充final全套203已跑。
