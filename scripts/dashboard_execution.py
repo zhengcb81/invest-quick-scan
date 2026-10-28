@@ -26,10 +26,11 @@ except ImportError:
 
 
 class DashboardExecutionError(ValueError):
-    def __init__(self, code, message, status=400, details=None):
+    def __init__(self, code, message, status=400, details=None, *, prelaunch_not_started=False):
         super().__init__(message)
         self.code, self.message, self.status = code, message, status
         self.details = details or {}
+        self.prelaunch_not_started = prelaunch_not_started is True
 
 
 def _now():
@@ -652,6 +653,62 @@ class ExecutionGateway:
             command.extend(["--security-scope-id", str(bundle["security_scope_id"])])
         return command
 
+    @staticmethod
+    def prelaunch_refusal(error, registration):
+        """Positive first-party classification; error strings are not evidence."""
+        if (not isinstance(error,DashboardExecutionError) or not error.prelaunch_not_started
+            or error.code not in {'preview_required','execution_not_ready','preview_changed'}
+            or error.details.get('bundle_id')!=registration.get('bundle_id')
+            or error.details.get('bundle_fingerprint')!=registration.get('bundle_fingerprint')):
+            return None
+        return {'protocol':'iqs.prelaunch_refusal/1.0.0','code':error.code,
+            'bundle_id':registration['bundle_id'],'bundle_fingerprint':registration['bundle_fingerprint'],
+            'launch_attempt_id':registration.get('launch_attempt_id'),
+            'phase':'before_process_reference','new_process_started':False,
+            'blocked_reasons':list(error.details.get('blocked_reasons') or []),
+            'API_requests':0,'database_writes':0}
+
+    def inspect_legacy_prelaunch(self, entry):
+        """Explicit local reconciliation only; never asserts no historical HTTP.
+
+        The three original codes were emitted before any run reference/Popen.
+        Legacy compatibility additionally requires the whole original process
+        namespace, unchanged frozen scope and fresh native readiness. Unknown
+        or missing evidence remains non-authorizing.
+        """
+        reasons=entry.get('blocked_reasons')
+        if (not entry.get('launch_uncertain') or entry.get('run_id')
+            or 'launch_intent_profile' in entry or 'launch_attempt_id' in entry
+            or not isinstance(entry.get('launch_requested_at'),str)
+            or reasons not in [['preview_required'],['execution_not_ready'],['preview_changed']]):
+            return None
+        try:
+            requested=datetime.fromisoformat(entry['launch_requested_at'].replace('Z','+00:00'))
+            if requested.tzinfo is None or requested>datetime.now(timezone.utc):return None
+        except ValueError:
+            return None
+        with self._lock,self._control_lock('start'):
+            current=self.bundle_registration(entry['bundle_id'])
+            fields=('bundle_id','entity_id','bundle_fingerprint','company_preparation_id',
+                'scope','scope_id','security_id','expected_scope_bindings')
+            if any(current.get(key)!=entry.get(key) for key in fields):return None
+            if any(row['bundle_id']==entry['bundle_id'] for row in self._records()):return None
+            preview=self.preview({'bundle_id':entry['bundle_id']})
+            if (preview.get('can_start') is not True
+                or type(preview.get('API_requests')) is not int or preview['API_requests']!=0
+                or type(preview.get('database_writes')) is not int or preview['database_writes']!=0
+                or preview.get('permissions_check',{}).get('status')!='passed'
+                or preview.get('bundle_fingerprint')!=current['bundle_fingerprint']
+                or any(row.get('status') in {'leased','uncertain'}
+                    for row in self.inspection_work_items(preview.get('inspection',{})))):
+                return None
+            if any(row['bundle_id']==entry['bundle_id'] for row in self._records()):return None
+            return {'protocol':'iqs.prelaunch_reconciliation/1.0.0','status':'local_refusal_reconciled',
+                'bundle_id':current['bundle_id'],'bundle_fingerprint':current['bundle_fingerprint'],
+                'recorded_code':reasons[0],'launch_requested_at':entry['launch_requested_at'],
+                'original_references_absent':True,'current_preflight_sha256':_digest(preview),
+                'past_HTTP_history_attested':False,'API_requests':0,'database_writes':0}
+
     def start(self, payload):
         key, bundle = self._select(payload, launching=True)
         with self._lock:
@@ -669,12 +726,13 @@ class ExecutionGateway:
                     return {"status": "attached", "run": record, "process_started": False, "paid_dispatch_started": None}
                 selected = self._previews.get(payload.get("preview_id"))
                 if not selected or selected["bundle_id"] != key or selected["bundle_fingerprint"] != self._fingerprint(bundle):
-                    raise DashboardExecutionError("preview_required", "请先预览当前公司执行计划", 409)
+                    raise DashboardExecutionError("preview_required", "请先预览当前公司执行计划", 409,
+                        {'bundle_id':key,'bundle_fingerprint':self._fingerprint(bundle)},prelaunch_not_started=True)
                 preview = self.preview({"bundle_id": key})
                 if not preview["can_start"]:
-                    raise DashboardExecutionError("execution_not_ready", "执行前置未满足", 409, preview)
+                    raise DashboardExecutionError("execution_not_ready", "执行前置未满足", 409, preview,prelaunch_not_started=True)
                 if selected["inspection_sha256"] != preview["inspection_sha256"]:
-                    raise DashboardExecutionError("preview_changed", "原任务或费用状态已变化；请查看更新后的预览", 409, preview)
+                    raise DashboardExecutionError("preview_changed", "原任务或费用状态已变化；请查看更新后的预览", 409, preview,prelaunch_not_started=True)
                 root, runtime, _, _ = self._deployment(bundle)
                 run_id = "run-" + uuid.uuid4().hex
                 folder = self.state_root / run_id

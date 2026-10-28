@@ -93,6 +93,55 @@ def start(gateway):
     return gateway.start({"bundle_id": "test", "preview_id": preview["preview_id"]})
 
 
+@pytest.mark.parametrize('code',['preview_required','execution_not_ready','preview_changed'])
+def test_original_prewrite_refusal_has_positive_proof_and_never_creates_run(deployment,monkeypatch,code):
+    config,runtime,bundle=deployment
+    gateway=ExecutionGateway(config);registration=gateway.bundle_registration('test')
+    if code!='preview_required':
+        gateway._previews['frozen']={'bundle_id':'test','bundle_fingerprint':registration['bundle_fingerprint'],
+            'inspection_sha256':'a'*64}
+    preview={**registration,'can_start':code!='execution_not_ready','inspection_sha256':'b'*64,
+        'blocked_reasons':['owner_budget_or_original_work_blocked'] if code=='execution_not_ready' else [],
+        'API_requests':0,'database_writes':0}
+    monkeypatch.setattr(gateway,'preview',lambda _:preview)
+    monkeypatch.setattr(gateway_module.subprocess,'Popen',lambda *a,**k:pytest.fail('preflight cannot launch'))
+    with pytest.raises(DashboardExecutionError) as caught:
+        gateway.start({'bundle_id':'test','preview_id':'frozen'})
+    assert caught.value.code==code
+    proof=gateway.prelaunch_refusal(caught.value,registration)
+    assert proof['phase']=='before_process_reference' and proof['new_process_started'] is False
+    assert proof['API_requests']==proof['database_writes']==0
+    assert not list(gateway.state_root.glob('run-*')) and not (runtime/'calls.txt').exists()
+    generic=DashboardExecutionError(code,'same code is not positive proof',409,preview)
+    assert gateway.prelaunch_refusal(generic,registration) is None
+
+
+@pytest.mark.parametrize('fault',[None,'prior_ref','unknown_work','permission','changed_scope','bad_time','generic_reason','new_intent','boolean_counter'])
+def test_explicit_legacy_prelaunch_uses_original_namespace_scope_and_current_native_guard(deployment,monkeypatch,fault):
+    config,runtime,bundle=deployment
+    gateway=ExecutionGateway(config);registration=gateway.bundle_registration('test')
+    entry={**registration,'launch_uncertain':True,'run_id':None,
+        'launch_requested_at':'2026-10-27T00:00:00Z','blocked_reasons':['execution_not_ready']}
+    preview={**registration,'can_start':True,'API_requests':0,'database_writes':0,
+        'permissions_check':{'status':'passed'},'inspection':{'work_items':[]}}
+    if fault=='prior_ref':monkeypatch.setattr(gateway,'_records',lambda:[{'bundle_id':'test'}])
+    if fault=='unknown_work':preview['inspection']['work_items']=[{'status':'leased'}]
+    if fault=='permission':preview['permissions_check']['status']='rejected'
+    if fault=='changed_scope':entry['scope_id']='unrelated-scope'
+    if fault=='bad_time':entry['launch_requested_at']='not-a-time'
+    if fault=='generic_reason':entry['blocked_reasons']=['launch_reference_unknown']
+    if fault=='new_intent':entry['launch_intent_profile']='iqs.dashboard_launch_intent/1.1.0'
+    if fault=='boolean_counter':preview['API_requests']=False
+    monkeypatch.setattr(gateway,'preview',lambda _:preview)
+    monkeypatch.setattr(gateway_module.subprocess,'Popen',lambda *a,**k:pytest.fail('classification cannot launch'))
+    proof=gateway.inspect_legacy_prelaunch(entry)
+    if fault is None:
+        assert proof['status']=='local_refusal_reconciled' and proof['original_references_absent'] is True
+        assert proof['past_HTTP_history_attested'] is False and proof['API_requests']==0
+    else:assert proof is None
+    assert not list(gateway.state_root.glob('run-*')) and not (runtime/'calls.txt').exists()
+
+
 def test_unconfigured_status_and_read_do_not_create_state(tmp_path):
     gateway = ExecutionGateway({"state_root": str(tmp_path / "state")})
     assert gateway.status()["configured"] is False

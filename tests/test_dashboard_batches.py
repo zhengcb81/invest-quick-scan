@@ -95,6 +95,71 @@ class FakeExecution:
         raise AssertionError("Batch must not kill/pause native in-flight execution")
 
 
+def test_positive_original_preflight_refusal_does_not_turn_into_unknown_launch(tmp_path):
+    from scripts.dashboard_execution import ExecutionGateway,DashboardExecutionError
+    class KnownPreflight(FakeExecution):
+        prelaunch_refusal=staticmethod(ExecutionGateway.prelaunch_refusal)
+        refusal=True
+        def start(self,payload):
+            if payload['bundle_id']=='a' and self.refusal:
+                self.refusal=False
+                detail=self.preview(payload)
+                detail['blocked_reasons']=['owner_budget_or_original_work_blocked']
+                raise DashboardExecutionError('execution_not_ready','before any process reference',409,detail,
+                    prelaunch_not_started=True)
+            return super().start(payload)
+    execution=KnownPreflight();gateway=BatchGateway(execution,tmp_path/'batches',autostart=False)
+    try:
+        bid=start(gateway);gateway._step(bid)
+        stored=row(gateway,bid);first=stored['entries'][0]
+        assert first['state']=='blocked' and first['launch_uncertain'] is False
+        assert first['prelaunch_refusal']['phase']=='before_process_reference'
+        assert execution.started==['b'] and stored['state']=='running'
+        with pytest.raises(DashboardBatchError) as running:gateway.control(bid,'resume')
+        assert running.value.code=='batch_still_draining'
+        execution.finish('b');gateway.control(bid,'resume');gateway._step(bid)
+        assert execution.started==['b','a']
+        assert 'prelaunch_refusal' not in row(gateway,bid)['entries'][0]
+    finally:gateway.close()
+
+
+def test_generic_same_preflight_error_code_is_still_unknown(tmp_path):
+    from scripts.dashboard_execution import ExecutionGateway,DashboardExecutionError
+    class UnknownPreflight(FakeExecution):
+        prelaunch_refusal=staticmethod(ExecutionGateway.prelaunch_refusal)
+        def start(self,payload):
+            raise DashboardExecutionError('execution_not_ready','not positively classified',409,self.preview(payload))
+    execution=UnknownPreflight();gateway=BatchGateway(execution,tmp_path/'batches',autostart=False)
+    try:
+        bid=start(gateway);gateway._step(bid)
+        assert row(gateway,bid)['entries'][0]['launch_uncertain'] is True
+        assert execution.started==[]
+    finally:gateway.close()
+
+
+def test_old_not_started_proof_is_cleared_before_a_later_lost_launch_response(tmp_path):
+    from scripts.dashboard_execution import ExecutionGateway,DashboardExecutionError
+    class Twice(FakeExecution):
+        prelaunch_refusal=staticmethod(ExecutionGateway.prelaunch_refusal)
+        first=True
+        def start(self,payload):
+            if self.first:
+                self.first=False
+                raise DashboardExecutionError('preview_changed','before reference',409,self.preview(payload),
+                    prelaunch_not_started=True)
+            self.crash='after'
+            return super().start(payload)
+    execution=Twice();gateway=BatchGateway(execution,tmp_path/'batches',autostart=False)
+    try:
+        bid=start(gateway,('a',));gateway._step(bid)
+        assert row(gateway,bid)['entries'][0]['prelaunch_refusal']['phase']=='before_process_reference'
+        gateway.control(bid,'resume');gateway._step(bid)
+        entry=row(gateway,bid)['entries'][0]
+        assert execution.started==['a'] and entry['launch_uncertain'] is True
+        assert 'prelaunch_refusal' not in entry
+    finally:gateway.close()
+
+
 @pytest.fixture
 def setup(tmp_path):
     execution = FakeExecution()
@@ -1313,3 +1378,26 @@ def test_abandon_requires_pause_and_complete_original_reference(setup):
         gateway.control(batch_id, 'abandon')
     assert raised.value.code == 'batch_abandon_reference_unresolved'
     assert gateway._path(batch_id).read_bytes() == before
+
+
+def test_legacy_deferred_proof_retains_original_reason_until_later_explicit_resume(tmp_path):
+    class DeferredLegacy(FakeExecution):
+        def inspect_legacy_prelaunch(self,entry):
+            if entry['blocked_reasons']!=['execution_not_ready'] or not self.bundles['a']['budget']:return None
+            return {'protocol':'iqs.prelaunch_reconciliation/1.0.0','status':'local_refusal_reconciled','bundle_id':entry['bundle_id'],'bundle_fingerprint':entry['bundle_fingerprint'],'launch_requested_at':entry['launch_requested_at'],'recorded_code':'execution_not_ready','current_preflight_sha256':'e'*64,'original_references_absent':True,'past_HTTP_history_attested':False,'API_requests':0,'database_writes':0}
+    execution=DeferredLegacy();g=BatchGateway(execution,tmp_path/'batches',autostart=False)
+    try:
+        bid=start(g,('a',));r=g._record(bid);entry=r['entries'][0]
+        entry.update(state='blocked',run_id=None,launch_uncertain=True,launch_requested_at='2026-10-27T00:00:00Z',blocked_reasons=['execution_not_ready'])
+        r['state']='blocked';g._save(r)
+        execution.bundles['a']['budget']=False
+        g.control(bid,'resume')
+        pending=row(g,bid)['entries'][0]
+        assert pending['launch_uncertain'] is True and pending['blocked_reasons']==['execution_not_ready']
+        assert execution.started==[]
+        execution.bundles['a']['budget']=True
+        g.control(bid,'resume')
+        recovered=row(g,bid)['entries'][0]
+        assert recovered['launch_uncertain'] is False and recovered['state']=='selected'
+        assert execution.started==[]
+    finally:g.close()

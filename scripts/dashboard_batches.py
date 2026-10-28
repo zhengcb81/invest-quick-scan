@@ -639,7 +639,14 @@ class BatchGateway:
                         record["state"] = "paused"
                         self._save(record)
                         return False
-                    entry.update(state="launching", launch_requested_at=_now())
+                    # A prior negative launch proof cannot authorize a later
+                    # crash window. Clear it BEFORE persisting this new intent.
+                    entry.pop('prelaunch_refusal',None)
+                    entry.pop('launch_preflight_reconciliation',None)
+                    entry.pop('legacy_prelaunch_reconciliation_deferred',None)
+                    entry.update(state="launching", launch_requested_at=_now(),
+                        launch_intent_profile='iqs.dashboard_launch_intent/1.1.0',
+                        launch_attempt_id=uuid.uuid4().hex)
                     self._save(record)  # Crash on either side of start is an unknown, never an automatic re-send.
                     result = self.execution.start({"bundle_id": entry["bundle_id"], "preview_id": fresh["preview_id"]})
                     run = result.get("run") if isinstance(result, dict) else None
@@ -649,8 +656,23 @@ class BatchGateway:
                     active += entry["state"] in self._ACTIVE
                 except Exception as error:
                     self._failure(entry, error)
+                    classifier=getattr(self.execution,'prelaunch_refusal',None)
+                    proof=classifier(error,entry) if classifier is not None else None
+                    if (isinstance(proof,dict) and proof.get('protocol')=='iqs.prelaunch_refusal/1.0.0'
+                        and proof.get('phase')=='before_process_reference'
+                        and proof.get('new_process_started') is False
+                        and proof.get('code')==getattr(error,'code',None)
+                        and proof.get('bundle_id')==entry['bundle_id']
+                        and proof.get('bundle_fingerprint')==entry['bundle_fingerprint']
+                        and re.fullmatch('[a-f0-9]{32}',str(proof.get('launch_attempt_id',''))) is not None
+                        and proof['launch_attempt_id']==entry.get('launch_attempt_id')
+                        and type(proof.get('API_requests')) is int and proof['API_requests']==0
+                        and type(proof.get('database_writes')) is int and proof['database_writes']==0):
+                        entry.update(prelaunch_refusal=proof,launch_uncertain=False)
+                        entry['blocked_reasons']=list(dict.fromkeys([getattr(error,'code','original_owner_unavailable')]
+                            +proof.get('blocked_reasons',[])))
                     # If launch was attempted but its response was lost, retain an explicit uncertainty marker.
-                    if entry.get("launch_requested_at") and not entry.get("run_id"):
+                    elif entry.get("launch_requested_at") and not entry.get("run_id"):
                         entry["launch_uncertain"] = True
                 self._save(record)
                 if self._uncertain(entry):
@@ -745,6 +767,33 @@ class BatchGateway:
             for entry, inspected in zip(record["entries"], fresh):
                 if entry["state"] == "owner_ready" or entry["bundle_id"] in registration_only:
                     continue
+                if (entry.get('launch_uncertain') and not entry.get('run_id')
+                    and entry['bundle_id'] not in task_bundles):
+                    legacy_candidate=('launch_intent_profile' not in entry
+                        and 'launch_attempt_id' not in entry
+                        and entry.get('blocked_reasons') in [['preview_required'],['execution_not_ready'],['preview_changed']])
+                    reconcile=getattr(self.execution,'inspect_legacy_prelaunch',None)
+                    proof=reconcile(dict(entry)) if reconcile is not None else None
+                    if (legacy_candidate and isinstance(proof,dict) and proof.get('protocol')=='iqs.prelaunch_reconciliation/1.0.0'
+                        and proof.get('status')=='local_refusal_reconciled'
+                        and proof.get('bundle_id')==entry['bundle_id']
+                        and proof.get('bundle_fingerprint')==entry['bundle_fingerprint']
+                        and proof.get('launch_requested_at')==entry.get('launch_requested_at')
+                        and entry.get('blocked_reasons')==[proof.get('recorded_code')]
+                        and re.fullmatch('[a-f0-9]{64}',str(proof.get('current_preflight_sha256',''))) is not None
+                        and proof.get('original_references_absent') is True
+                        and proof.get('past_HTTP_history_attested') is False
+                        and type(proof.get('API_requests')) is int and proof['API_requests']==0
+                        and type(proof.get('database_writes')) is int and proof['database_writes']==0):
+                        entry.pop('legacy_prelaunch_reconciliation_deferred',None)
+                        entry.update(launch_uncertain=False,launch_preflight_reconciliation=proof)
+                    elif legacy_candidate:
+                        # A deferred original proof is still unknown. Preserve
+                        # its original prewrite reason for a later EXPLICIT
+                        # reconciliation; never turn a refusal into permission.
+                        entry['last_inspection']=self._inspection_summary(inspected)
+                        entry['legacy_prelaunch_reconciliation_deferred']=True
+                        continue
                 if entry.get("run_id") or entry["state"] in self._ACTIVE or entry.get("launch_uncertain") or entry["bundle_id"] in task_bundles:
                     if self._attach(entry, tasks) is None:
                         if self._ready(inspected):
