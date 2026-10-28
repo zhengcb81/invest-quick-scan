@@ -1,3 +1,31 @@
+## 2026-10-28T16:33Z — 四项真实迟到收件控制全部完成；完整缓存验收区分原任务恢复与新鲜度
+
+Root已核apply61715 exit0及四原*-apply：M18/M19/T-Porter02/03原owner逐项recorded，原generation1/epoch1不变、uncertain→failed，8physical表/费用均未变，59份ready或delivered材料与其他work均保持、固定install已CAS恢复、0API/0重放/0新代。实际SSOT没有leased/uncertain，41HTTP全settled、1003976微USD估计、0在途。received-late-four/thin-final-proof.json为薄证；helper已完成有apply marker，严禁重apply。R7及新prepare3600秒/43200秒配置已生效，无需重启；原UI结束paused837编排操作已发起，等待原结果，不能因前端未更新重复POST。
+
+独立只读时间核查发现57sealed包41stale/16missing_date、0fresh；最新55份为40stale/15missing_date。全部observed_at保留原response_completed_at，不是seal/import时间。原TTL=min(observed_at+24h, information_as_of日UTC00:00+24h)，原cutoff2026-10-25在28日不能宣称普通新鲜命中；不改日期/TTL/时间戳求绿。接续验收顺序具体化：全108 result_ready后、ACK前，原最终registered范围完整冷CP恢复0HTTP；随后全108入库/exactACK；ACK后重启验证历史结果/包/ACK幂等0HTTP，不把delivered+stale deferred冒称完整fresh SDK hydrate。另同旧日期普通预览验证expired/missing_date负例，不无限付费重问；有效期内→自然过期→正常刷新隔离真实时钟1541.604秒原native测试已通过，不重复25分钟全程。
+
+### Next Step
+
+核原batch837结束后，静止预算下从UI为M/T/C各用原entity/ASJ@1/security、2026-10-25、full36登记新准备（全部登记前不派发）；再显式选择六scope同批扫描。完成108有效标准答案、上述分层缓存/原导入ACK与最终独立完成度审查，更新README/搜索规范/PWF，精确提交推送。当前未全108完成，不交接为已通过。
+
+---
+
+## 2026-10-28T16:14Z — R7已安全部署、新时长已从UI保存；四项原owner收件控制正在执行，勿重复apply
+
+原三模型进程均已亲核退出，41HTTP全部settled、1003976微USD估计、0在途。Tencent最终27ready/2旧failed/2新uncertain/2未问（entity33）；M17ready/2uncertain/14未问；CATL11ready/2旧failed/20未问。T末包PORTER02/03实际HTTP521.365s，但claim+preflight已占约80秒，回复时首member已到期，第二仍有效，原pack一致传播unknown：T02 phase send_intent+late，T03 phase uncertain+正常receipt，不能说两个都是late槽，也不能说模型没返回。真实只读metadata已固定，代码修复覆盖该强正证而未改任何旧物理数据。
+
+StockQA cea4579/master已正常hooks提交并推origin，late journal生产源与独审pin7f1b完全相同；测试isort改了导入顺序导致测试AST不等，未把该断言误写成通过。root随后最终commit版本20P23.44s、前后pin稳定、0API/临时目录已清，独立10P20.975s/open[]另列；原physical预算证明到return字段AST不变。首次AST断言失败后同一编排仍进行了后续git提交；该验证缺口已由最终版本重跑补齐，后续依赖动作先检查上一exit_code再继续。相同原M2公开derive intents原先exit2，最终源各exit0/API0 DB0（late-msft-green/thin-report.json），未读答文/未apply。
+
+Root16:01在0模型worker/0inflight时严格核原UI父子22860/24600命令行后关闭，只重启同工作区8766为R7：launcher28324，IQSea92564/QAcea4579/UIbd55958。preservation-pre-r7与r7-restart证明19原CP/41ctx/17std+包/13旧费子集完整保留，当前59CP/94ctx/57std+包/41费，重启0新HTTP。这仅partial数据重启证据，最终完整108缓存门仍未关。随后原UI设置已保存新prepare.work_lease_seconds3600、新delegation43200（12h），thinkingtrue/pack2/tokens32768/预算policy6aca37…/owner v6 TTL24全不变；36个旧bundle均未添加租约字段，旧确认/旧租约不续。
+
+真实T2新增同类已知收件后，原M2静态helper保持不变，另精确4白名单received-late-four/control_received_late_four.py已root完整差异审：M18/M19/T-P02/T-P03，逐项保自己的原full33 source_query、原phase/receipt、原entity/原generation1；没有自动发现或扩到其他work。原只读derive完整4/4通过，原8physical表及59ready+delivered材料hash不变，plan SHA bf6d640062588cb0ade3afe6a8d0eae68c884c2a528c1f84ccfc7562a2bb94a5，helper8a17758a…、每项权限仅score.iqs18/19或score.porter02/03。Root已显式--mode apply（session61715，apply-started.json已存在）按原preview/install/confirm/apply运行；16:12首项preview/grant/confirmation已成功、apply仍等待。严禁重跑整个helper；先poll会话/读各*-apply.json与apply-summary.json，partial须核原owner不能擦marker。固定install会finally CAS恢复，所有费用/物理表/ready材料应保持。
+
+### Next Step
+
+等待61715四项原apply结束并核summary+真实状态（四uncertain→failed，0API/不改物理费/不建代/59材料保持）；失败先读原项/marker，绝不重apply。R7与新UI配置已就绪，无需再重启。成功后原UI结束paused batch837占位（仅本地编排，不删work），在41预算静止时为M/T/C各显式原subject/security、cutoff2026-10-25准备full36，所有准备全登记完成才启动三公司批（6scope）。完成真实108题入库/exactACK、全数据最后安全重启/有效期复用0HTTP、独立实际完成度审查/PWF/README提交推送后交接。目前仍未全部完成，持续推进。
+
+---
+
 ## 2026-10-28T15:43Z — 新claim时长工程验收完成并已发布StockQA；原native36已在沙箱外完整通过
 
 StockQA67433c8/master正常hooks已推origin；CLI --work-lease-seconds→run/single→既有constructor，默认600保持，只有未来claim显式3600，旧lease/owner/CP严格门不动。作者41P4.43s（原CLI18+新23/0skip）；root同一IQS6源/测试154P56.90s；跨两仓不同agent集中11P6.49s/open[]、原source pin稳定，正常hooks后QA3 AST与独审等价。IQS6源+README/产品契约已由该审查覆盖，正正常提交推送。不能据此说已部署新3600真实任务，R6在途腾讯仍旧source/600。

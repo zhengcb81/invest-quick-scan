@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Original known-response owner-control evidence for late shared-pack replies whose logical attempt remains send_intent; no checkpoint/retry/lease policy change.",
+  "author_of_reviewed_changes": false,
+  "final_source_sha256": {
+    "src/utils/quick_scan_known_outcome_journal.py": "7f1b5d97b6c9b13d720670100fa2ca3c04bcad605c70ccbcc9470f4cda8db528",
+    "tests/unit/test_late_pack_known_outcome.py": "0c58cce73393ff27c08b743c233699fc3700330e70d64fb414024736825c5424"
+  },
+  "source_stable_during_execution": true,
+  "independent_validation": {
+    "tests": 10,
+    "failures": 0,
+    "seconds": 20.975,
+    "xml": "late-pack-independent.xml",
+    "private_adversarial_cases": 3,
+    "author_native_cases_reproduced_independently": 7,
+    "private_cases": [
+      "An original late_receipt event before the original pack intent cannot bind.",
+      "A late_receipt event with non-null from_status cannot bind.",
+      "A late_receipt event with non-null to_status cannot bind."
+    ],
+    "native_cases": [
+      "Actual original SDK650-second late shared pack persists send_intent+lateSHA, read-only derives, closes via trusted fixture authority, reopens/idempotently resolves and then permits a separately authorized new generation without another physical call.",
+      "Missing/foreign late hash, missing/foreign event and unknown response are rejected.",
+      "A singleton send_intent remains rejected even with an attached known receipt."
+    ]
+  },
+  "compatibility_proof": {
+    "baseline": "StockQA HEAD before uncommitted late fix",
+    "original_sha256": "8c073e8cda3cd09aa187c363ac75d477bcc61451aa7978b9aa328fc612295d81",
+    "current_sha256": "7f1b5d97b6c9b13d720670100fa2ca3c04bcad605c70ccbcc9470f4cda8db528",
+    "all_original_physical_downstream_budget_proof_and_return_fields_AST_equal": true,
+    "new_late_case_only_before_original_tail": true
+  },
+  "source_review": [
+    "Phase send_intent is additionally considered only after original immutable pack membership is found. Singleton path does not inherit the new exception.",
+    "The original pack must already have physical outcome response_available; logical late SHA must be nonempty and exactly equal the original shared receipt SHA; any primary receipt SHA must be absent or exactly that same SHA.",
+    "Original immutable late_receipt event must bind work ID, attempt ID and lease epoch, have both status fields null, and occur at or after original pack intent.",
+    "All downstream original _physical code is AST-identical, including latest attempt, durable logical and physical receipts, request/prompt/model/hash binding, 2xx check, settled completed physical fee/no inflight, original C06 subject receipt and fingerprint fences. Output fields remain identical.",
+    "No data, receipt, phase, fee, score, checkpoint or lease is rewritten by the new proof. Only existing explicit owner resolution can act after original authority; no automatic retry and no expired checkpoint adoption is introduced.",
+    "Current uncertain work is never promoted to answered/scored by receipt presence; known physical outcome evidence serves original owner control only."
+  ],
+  "real_incident_evidence_read": [
+    "../late-msft-red/red-report.json shows original read-only derive rejection for IQS18/19 with phase send_intent,API0/database0.",
+    "../msft-18-19-late-metadata.json shows the same original late receipt SHA, no checkpoints, one settled200 physical fee and632.93seconds. Metadata only; no answer bodies read."
+  ],
+  "author_evidence_separate": "Author reported20 passing final focused native/normal/singleton tests and journal mypy success; this reviewer ran only the listed10 focused tests.",
+  "operational_reason_boundary": "For a real reply rejected only by the lease window, use the existing honest known_response_no_accepted_answer reason and matching diagnostic rather than attributing standard_answer_invalid to the model without evidence. Synthetic validation fixtures are not real-company diagnosis.",
+  "test_fixture_boundary": "Negative event cases alter inputs only at the original append callback before insertion; immutable triggers remain intact. No immutable records are deleted/edited to manufacture positive evidence.",
+  "runtime_removed": true,
+  "real_API_requests": 0,
+  "real_database_access": false,
+  "source_writes": 0,
+  "commit_reload_or_control_actions": false,
+  "limits": [
+    "Original nativeSDK wire and authority are synthetic isolated fixtures. This does not assert that real Microsoft owner controls have now been recorded.",
+    "Real all-company full scan/financial accuracy/ACK acceptance remain separate mainline gates."
+  ]
+}
