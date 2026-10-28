@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewer": "/root/review_recovery_resume",
+  "checked_at": "2026-10-28T10:50:55.126744+00:00",
+  "commit": "2db4ce0e082f9dd102a44256c915dc3a6f77515c",
+  "scope": "Concentrated original Store concurrency/root-clock repair and final test isolation only. No actual pending Microsoft scan/delivery or project-wide completion is accepted by this report.",
+  "source_sha256": {
+    "src/utils/quick_scan_work_store.py": "eaab7f0020ce25fab3b65a122188b461e293a0355717c6ef2be36c215484f111",
+    "tests/unit/test_quick_scan_work_store.py": "912c7f88b68ea1b20d6314c351ec91f3fd42eeb1d726749204e604d9ec68068c",
+    "tests/unit/test_quick_scan_store_concurrency.py": "2bf39f3bf8d8c0b4d32f49b1494d1f43c64e7d0f34b511e2b3f578a9b2f16fee"
+  },
+  "independent_final_tests": {
+    "original_expired_CP_and_migration_race_and_released_atomicity_boundaries": {
+      "tests": "9",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "5.499"
+    },
+    "incoming_active_transaction_guard_after_independent_finding": {
+      "tests": "2",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "3.299"
+    }
+  },
+  "independent_count_total": 11,
+  "author_evidence": {
+    "concurrency-red.xml": {
+      "tests": "10",
+      "errors": "0",
+      "failures": "9",
+      "skipped": "0",
+      "time": "17.621"
+    },
+    "concurrency-cohort.xml": {
+      "tests": "149",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "time": "89.773"
+    },
+    "concurrency-child-isolation.xml": {
+      "tests": "2",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "3.492"
+    },
+    "concurrency-final-focused.xml": {
+      "tests": "13",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "12.429"
+    },
+    "concurrency-posthook.xml": {
+      "tests": "13",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "11.272"
+    }
+  },
+  "author_evidence_boundary": "The149-case cohort is148 passed+1 subprocess cwd/sandbox failure, not149 passed. Two child-isolation cases reran after moving only test subprocess cwd into owned temp directories; final expanded13 cases and posthook13 separately passed. Earlier accidental old-source cohort is not green proof. No counts are represented as one combined clean149 invocation.",
+  "source_completeness_proof": "concurrency-intended-delta-equivalence.json: reversing only the new current-snapshot helper/entry path,5→120 busy timeout and20 direct clock moves reproduces original released Store AST exactly. All original full schema/data/hash validators, migration logic, budget/permission/lease fencing and nested SAVEPOINT code remain.",
+  "clock_moves_exact_count": 20,
+  "resolved_findings": [
+    {
+      "finding": "Pre-write-lock clock samples could permit original CP save after lease expiry while waiting for writer",
+      "original_red_proof": "stale-checkpoint-clock-probe.json",
+      "resolution": "All20 direct pretransaction samples now occur first inside their original transaction; independent same-boundary expiredCP rejects with no CP/material/work changes."
+    },
+    {
+      "finding": "New readonly snapshot helper could rollback an incoming caller transaction on nested BEGIN error",
+      "original_red_proof": "snapshot-incoming-transaction-probe.json",
+      "resolution": "Guard connection.in_transaction before PRAGMA/BEGIN; original OperationalError leaves original active txn/query_only and uncommitted marker untouched for flags0/1. Two final independent cases passed."
+    }
+  ],
+  "concurrency_boundaries": [
+    "Latest schema uses one query_only read snapshot for unchanged full original validation, always rolls back its own snapshot and restores original query_only. It does not reserve sole writer slot. Unknown/corrupt schemas fail closed.",
+    "Create/migrate retains BEGIN IMMEDIATE and rereads version under acquired writer lock; independent two legacy constructors each first observev1, then both succeed without duplicate migrations and preserve original row fields/current full validation.",
+    "Busy timeout120000ms and connection timeout120 agree; DELETE and synchronousFULL remain. A reader held beyond old5s can finish before bounded timeout; persistent contention still fails through original rollback and explicit pending resume. Infinite contention is not guaranteed to succeed.",
+    "All lease-relevant clock sampling in this file occurs after write lock; original question-pack/known-outcome delegates already sample inside transaction. Original nested all-or-none rollback, middle lease fencing and prePOST recheck passed independently.",
+    "ReadOnlyWorkView timeout5 and sidecar busy rejection remain unchanged. Store120s waiting is not a promise that every readonly request waits120s or never reports transientbusy.",
+    "No WAL activation, database journal policy change, global runtime/SQLite replacement, lease extension, permission broadening or automatic HTTP resend."
+  ],
+  "posthook_equivalence": {
+    "production_Store_source_byte_hash_same_as_independent_final": true,
+    "released_test_work_store_AST_same_as_final_prehook": true,
+    "new_test_AST_difference_only_import_alias_order": "concurrency-test-hook-ast-equivalence.json",
+    "posthook13_cases": {
+      "tests": "13",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "11.272"
+    }
+  },
+  "subprocess_test_isolation": "Only two cwd values in original test_work_store changed from source REPO_ROOT to DB parent/tmp_path; existing explicit PYTHONPATH preserved. Source logger no longer writes shared repository logs for these tests.",
+  "independent_migration_case_promoted": "Independent test_concurrency_final_review.py::test_two_legacy_constructors_reread_version_under_writer_lock was promoted verbatim in AST into permanent test_quick_scan_store_concurrency.py. Author final13/posthook13 cover the promoted case; no claim the earlier10/149 had that later test pin.",
+  "real_database_access": 0,
+  "source_or_deployment_edits": 0,
+  "API_requests": 0,
+  "answer_bodies_exported": false,
+  "owned_runtimes_removed": true,
+  "SQLite_runtime_version_unchanged": "3.51.0",
+  "next": "Parent may push accepted normal-hook commit and explicitly resume original pending UI scope; retain original ready/delivered scopes, fees and existing finite controls. Actual new model output/import/exactACK is a separate real outcome to verify.",
+  "promoted_migration_case_function_AST_independently_equal": true
+}

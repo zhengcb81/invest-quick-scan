@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="10" time="17.621" timestamp="2026-10-28T10:40:46.429080+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_expired_lease_during_write_wait_cannot_advance_attempt[prepare]" time="0.372"><failure message="AssertionError: {'value': {'attempt_id': 'ATTEMPT_1ab47fce1d0648588463793a589be379', 'work_item_id': 'WORK_84a9b7b42b7f4cfb914b8ba239af100f', 'lease_epoch': 1, 'lease_token': '1c9b00f8766446cb8b08a5aa4f515fb7', ...}}&#10;assert False&#10; +  where False = isinstance(None, LeaseFencedError)&#10; +    where None = &lt;built-in method get of dict object at 0x0000015B483D3980&gt;('error')&#10; +      where &lt;built-in method get of dict object at 0x0000015B483D3980&gt; = {'value': {'attempt_id': 'ATTEMPT_1ab47fce1d0648588463793a589be379', 'work_item_id': 'WORK_84a9b7b42b7f4cfb914b8ba239af100f', 'lease_epoch': 1, 'lease_token': '1c9b00f8766446cb8b08a5aa4f515fb7', ...}}.get">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_expired_lease_during_writ0')
+operation = 'prepare'
+
+    @pytest.mark.parametrize('operation', ['prepare', 'send', 'outcome'])
+    def test_expired_lease_during_write_wait_cannot_advance_attempt(tmp_path, operation):
+        clock = [1800000000.0]
+        store = _store(tmp_path, clock)
+        item = _created(store)
+        wid = item['work_item_id']
+        lease = store.claim(wid, lease_seconds=60)
+        if operation == 'prepare':
+            action = lambda: _prepared(store, wid, lease)
+        else:
+            attempt = _prepared(store, wid, lease)
+            if operation == 'send':
+                action = lambda: store.mark_send_intent(wid, lease, attempt['attempt_id'])
+            else:
+                store.mark_send_intent(wid, lease, attempt['attempt_id'])
+                action = lambda: store.record_attempt_outcome(
+                    wid, lease, attempt['attempt_id'], outcome='unknown'
+                )
+        before = immutable(store)
+        old_item = store.get_item(wid)
+        result = _wait_for_writer(store, action, lambda: clock.__setitem__(0, old_item['lease_expires_at'] + 1))
+&gt;       assert isinstance(result.get('error'), LeaseFencedError), result
+E       AssertionError: {'value': {'attempt_id': 'ATTEMPT_1ab47fce1d0648588463793a589be379', 'work_item_id': 'WORK_84a9b7b42b7f4cfb914b8ba239af100f', 'lease_epoch': 1, 'lease_token': '1c9b00f8766446cb8b08a5aa4f515fb7', ...}}
+E       assert False
+E        +  where False = isinstance(None, LeaseFencedError)
+E        +    where None = &lt;built-in method get of dict object at 0x0000015B483D3980&gt;('error')
+E        +      where &lt;built-in method get of dict object at 0x0000015B483D3980&gt; = {'value': {'attempt_id': 'ATTEMPT_1ab47fce1d0648588463793a589be379', 'work_item_id': 'WORK_84a9b7b42b7f4cfb914b8ba239af100f', 'lease_epoch': 1, 'lease_token': '1c9b00f8766446cb8b08a5aa4f515fb7', ...}}.get
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:74: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_expired_lease_during_write_wait_cannot_advance_attempt[send]" time="0.116"><failure message="AssertionError: {'value': SendPermit(attempt_id='ATTEMPT_532fd46be11f42da85c8f816ec6c021e', committed_at=1800000000.0, lease_epoch=1)}&#10;assert False&#10; +  where False = isinstance(None, LeaseFencedError)&#10; +    where None = &lt;built-in method get of dict object at 0x0000015B4839EE40&gt;('error')&#10; +      where &lt;built-in method get of dict object at 0x0000015B4839EE40&gt; = {'value': SendPermit(attempt_id='ATTEMPT_532fd46be11f42da85c8f816ec6c021e', committed_at=1800000000.0, lease_epoch=1)}.get">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_expired_lease_during_writ1')
+operation = 'send'
+
+    @pytest.mark.parametrize('operation', ['prepare', 'send', 'outcome'])
+    def test_expired_lease_during_write_wait_cannot_advance_attempt(tmp_path, operation):
+        clock = [1800000000.0]
+        store = _store(tmp_path, clock)
+        item = _created(store)
+        wid = item['work_item_id']
+        lease = store.claim(wid, lease_seconds=60)
+        if operation == 'prepare':
+            action = lambda: _prepared(store, wid, lease)
+        else:
+            attempt = _prepared(store, wid, lease)
+            if operation == 'send':
+                action = lambda: store.mark_send_intent(wid, lease, attempt['attempt_id'])
+            else:
+                store.mark_send_intent(wid, lease, attempt['attempt_id'])
+                action = lambda: store.record_attempt_outcome(
+                    wid, lease, attempt['attempt_id'], outcome='unknown'
+                )
+        before = immutable(store)
+        old_item = store.get_item(wid)
+        result = _wait_for_writer(store, action, lambda: clock.__setitem__(0, old_item['lease_expires_at'] + 1))
+&gt;       assert isinstance(result.get('error'), LeaseFencedError), result
+E       AssertionError: {'value': SendPermit(attempt_id='ATTEMPT_532fd46be11f42da85c8f816ec6c021e', committed_at=1800000000.0, lease_epoch=1)}
+E       assert False
+E        +  where False = isinstance(None, LeaseFencedError)
+E        +    where None = &lt;built-in method get of dict object at 0x0000015B4839EE40&gt;('error')
+E        +      where &lt;built-in method get of dict object at 0x0000015B4839EE40&gt; = {'value': SendPermit(attempt_id='ATTEMPT_532fd46be11f42da85c8f816ec6c021e', committed_at=1800000000.0, lease_epoch=1)}.get
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:74: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_expired_lease_during_write_wait_cannot_advance_attempt[outcome]" time="0.141"><failure message="AssertionError: {'value': None}&#10;assert False&#10; +  where False = isinstance(None, LeaseFencedError)&#10; +    where None = &lt;built-in method get of dict object at 0x0000015B46052B00&gt;('error')&#10; +      where &lt;built-in method get of dict object at 0x0000015B46052B00&gt; = {'value': None}.get">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_expired_lease_during_writ2')
+operation = 'outcome'
+
+    @pytest.mark.parametrize('operation', ['prepare', 'send', 'outcome'])
+    def test_expired_lease_during_write_wait_cannot_advance_attempt(tmp_path, operation):
+        clock = [1800000000.0]
+        store = _store(tmp_path, clock)
+        item = _created(store)
+        wid = item['work_item_id']
+        lease = store.claim(wid, lease_seconds=60)
+        if operation == 'prepare':
+            action = lambda: _prepared(store, wid, lease)
+        else:
+            attempt = _prepared(store, wid, lease)
+            if operation == 'send':
+                action = lambda: store.mark_send_intent(wid, lease, attempt['attempt_id'])
+            else:
+                store.mark_send_intent(wid, lease, attempt['attempt_id'])
+                action = lambda: store.record_attempt_outcome(
+                    wid, lease, attempt['attempt_id'], outcome='unknown'
+                )
+        before = immutable(store)
+        old_item = store.get_item(wid)
+        result = _wait_for_writer(store, action, lambda: clock.__setitem__(0, old_item['lease_expires_at'] + 1))
+&gt;       assert isinstance(result.get('error'), LeaseFencedError), result
+E       AssertionError: {'value': None}
+E       assert False
+E        +  where False = isinstance(None, LeaseFencedError)
+E        +    where None = &lt;built-in method get of dict object at 0x0000015B46052B00&gt;('error')
+E        +      where &lt;built-in method get of dict object at 0x0000015B46052B00&gt; = {'value': None}.get
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:74: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_expired_settled_pack_cannot_save_checkpoint_or_context_after_wait[checkpoint]" time="1.193"><failure message="AssertionError: {'value': {'checkpoint_id': 'CHECKPOINT_1d737aa15ec844ee8df4bc1e066b95b7', 'work_item_id': 'WORK_42357fccf394423fb8704061b544a92e', 'attempt_id': 'ATTEMPT_0cdf51af20f14253ae91978c1cbf170b', 'checkpoint_schema_version': 1, ...}}&#10;assert False&#10; +  where False = isinstance(None, LeaseFencedError)&#10; +    where None = &lt;built-in method get of dict object at 0x0000015B47752780&gt;('error')&#10; +      where &lt;built-in method get of dict object at 0x0000015B47752780&gt; = {'value': {'checkpoint_id': 'CHECKPOINT_1d737aa15ec844ee8df4bc1e066b95b7', 'work_item_id': 'WORK_42357fccf394423fb8704061b544a92e', 'attempt_id': 'ATTEMPT_0cdf51af20f14253ae91978c1cbf170b', 'checkpoint_schema_version': 1, ...}}.get">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_expired_settled_pack_cann0')
+operation = 'checkpoint'
+
+    @pytest.mark.parametrize('operation', ['checkpoint', 'freeze'])
+    def test_expired_settled_pack_cannot_save_checkpoint_or_context_after_wait(tmp_path, operation):
+        store, clock, members, pack, receipt, policy, context = fixture(tmp_path, response_status='completed')
+        member = members[0]
+        wid = member['work_item_id']
+        old_item = store.get_item(wid)
+        before = immutable(store)
+        if operation == 'freeze':
+            action = lambda: store.freeze_observation_context_before_send(wid, member['lease'], context)
+        else:
+            action = lambda: store.save_answer_checkpoint(
+                wid, member['lease'], pack['members'][0]['attempt_id'],
+                answer={'entity_id': old_item['entity_id'], 'question_id': old_item['question_id'],
+                        'status': 'scored', 'score': 6, 'description': 'Synthetic checkpoint'},
+                execution_receipt=receipt, observation_context=context,
+            )
+        result = _wait_for_writer(store, action, lambda: clock.__setitem__(0, old_item['lease_expires_at'] + 1))
+&gt;       assert isinstance(result.get('error'), LeaseFencedError), result
+E       AssertionError: {'value': {'checkpoint_id': 'CHECKPOINT_1d737aa15ec844ee8df4bc1e066b95b7', 'work_item_id': 'WORK_42357fccf394423fb8704061b544a92e', 'attempt_id': 'ATTEMPT_0cdf51af20f14253ae91978c1cbf170b', 'checkpoint_schema_version': 1, ...}}
+E       assert False
+E        +  where False = isinstance(None, LeaseFencedError)
+E        +    where None = &lt;built-in method get of dict object at 0x0000015B47752780&gt;('error')
+E        +      where &lt;built-in method get of dict object at 0x0000015B47752780&gt; = {'value': {'checkpoint_id': 'CHECKPOINT_1d737aa15ec844ee8df4bc1e066b95b7', 'work_item_id': 'WORK_42357fccf394423fb8704061b544a92e', 'attempt_id': 'ATTEMPT_0cdf51af20f14253ae91978c1cbf170b', 'checkpoint_schema_version': 1, ...}}.get
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:96: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_expired_settled_pack_cannot_save_checkpoint_or_context_after_wait[freeze]" time="1.153"><failure message="AssertionError: {'value': {'context_sha256': '33bfe80ffc2926869714ec95b6a720cff9249b285cfeae33df05b16e279c6136'}}&#10;assert False&#10; +  where False = isinstance(None, LeaseFencedError)&#10; +    where None = &lt;built-in method get of dict object at 0x0000015B48318D40&gt;('error')&#10; +      where &lt;built-in method get of dict object at 0x0000015B48318D40&gt; = {'value': {'context_sha256': '33bfe80ffc2926869714ec95b6a720cff9249b285cfeae33df05b16e279c6136'}}.get">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_expired_settled_pack_cann1')
+operation = 'freeze'
+
+    @pytest.mark.parametrize('operation', ['checkpoint', 'freeze'])
+    def test_expired_settled_pack_cannot_save_checkpoint_or_context_after_wait(tmp_path, operation):
+        store, clock, members, pack, receipt, policy, context = fixture(tmp_path, response_status='completed')
+        member = members[0]
+        wid = member['work_item_id']
+        old_item = store.get_item(wid)
+        before = immutable(store)
+        if operation == 'freeze':
+            action = lambda: store.freeze_observation_context_before_send(wid, member['lease'], context)
+        else:
+            action = lambda: store.save_answer_checkpoint(
+                wid, member['lease'], pack['members'][0]['attempt_id'],
+                answer={'entity_id': old_item['entity_id'], 'question_id': old_item['question_id'],
+                        'status': 'scored', 'score': 6, 'description': 'Synthetic checkpoint'},
+                execution_receipt=receipt, observation_context=context,
+            )
+        result = _wait_for_writer(store, action, lambda: clock.__setitem__(0, old_item['lease_expires_at'] + 1))
+&gt;       assert isinstance(result.get('error'), LeaseFencedError), result
+E       AssertionError: {'value': {'context_sha256': '33bfe80ffc2926869714ec95b6a720cff9249b285cfeae33df05b16e279c6136'}}
+E       assert False
+E        +  where False = isinstance(None, LeaseFencedError)
+E        +    where None = &lt;built-in method get of dict object at 0x0000015B48318D40&gt;('error')
+E        +      where &lt;built-in method get of dict object at 0x0000015B48318D40&gt; = {'value': {'context_sha256': '33bfe80ffc2926869714ec95b6a720cff9249b285cfeae33df05b16e279c6136'}}.get
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:96: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_claim_starts_lease_after_transient_lock_released" time="0.079"><failure message="assert 1800000060.0 == (1800000150.0 + 60)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_claim_starts_lease_after_0')
+
+    def test_claim_starts_lease_after_transient_lock_released(tmp_path):
+        clock = [1800000000.0]
+        store = _store(tmp_path, clock)
+        wid = _created(store)['work_item_id']
+        result = _wait_for_writer(
+            store, lambda: store.claim(wid, lease_seconds=60),
+            lambda: clock.__setitem__(0, clock[0] + 150),
+        )
+        assert 'error' not in result, result
+        assert result['value'] is not None
+&gt;       assert store.get_item(wid)['lease_expires_at'] == clock[0] + 60
+E       assert 1800000060.0 == (1800000150.0 + 60)
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:112: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_current_constructor_validates_without_reserving_writer_slot" time="5.571"><failure message="sqlite3.OperationalError: database is locked">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_current_constructor_valid0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015B476EE9E0&gt;
+
+    def test_current_constructor_validates_without_reserving_writer_slot(tmp_path, monkeypatch):
+        clock = [1800000000.0]
+        store = _store(tmp_path, clock)
+        before = store.path.read_bytes()
+        statements = []
+        original = QuickScanWorkStore._connect
+    
+        def connect(self):
+            connection = original(self)
+            connection.set_trace_callback(statements.append)
+            return connection
+    
+        monkeypatch.setattr(QuickScanWorkStore, '_connect', connect)
+        with closing(original(store)) as writer:
+            writer.execute('BEGIN IMMEDIATE')
+            try:
+&gt;               QuickScanWorkStore(store.path)
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\StockQAbyLLM\src\utils\quick_scan_work_store.py:1213: in __init__
+    self._initialize(connection)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x0000015B48432C50&gt;
+
+    @classmethod
+    def _initialize(cls, connection: sqlite3.Connection) -&gt; None:
+&gt;       connection.execute("BEGIN IMMEDIATE")
+E       sqlite3.OperationalError: database is locked
+
+..\..\..\..\StockQAbyLLM\src\utils\quick_scan_work_store.py:1226: OperationalError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_current_snapshot_rejects_corruption_and_restores_query_only" time="0.069"><failure message="sqlite3.OperationalError: attempt to write a readonly database">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_current_snapshot_rejects_0')
+
+    def test_current_snapshot_rejects_corruption_and_restores_query_only(tmp_path):
+        clock = [1800000000.0]
+        store = _store(tmp_path, clock)
+        with closing(store._connect()) as connection:
+            connection.execute('CREATE TABLE unrecognized(data TEXT)')
+            for initial in (0, 1):
+                connection.execute(f'PRAGMA query_only={initial}')
+                with pytest.raises(ValueError, match='schema'):
+&gt;                   QuickScanWorkStore._initialize(connection)
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x0000015B48433100&gt;
+
+    @classmethod
+    def _initialize(cls, connection: sqlite3.Connection) -&gt; None:
+&gt;       connection.execute("BEGIN IMMEDIATE")
+E       sqlite3.OperationalError: attempt to write a readonly database
+
+..\..\..\..\StockQAbyLLM\src\utils\quick_scan_work_store.py:1226: OperationalError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_reader_longer_than_old_timeout_does_not_abort_writer_commit" time="6.359"><failure message="AssertionError: {'error': OperationalError('database is locked')}&#10;assert 'error' not in {'error': OperationalError('database is locked')}">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/resume-recovery-2026-10-28/concurrency-red-se6ilzp_/pytest-temp/test_reader_longer_than_old_ti0')
+
+    def test_reader_longer_than_old_timeout_does_not_abort_writer_commit(tmp_path):
+        clock = [1800000000.0]
+        store = _store(tmp_path, clock)
+        wid = _created(store)['work_item_id']
+        original = store._connect
+        committing = threading.Event()
+        outcome = {}
+    
+        def connect():
+            connection = original()
+            if threading.current_thread().name == 'commit-writer':
+                connection.set_trace_callback(lambda sql: committing.set() if sql.upper() == 'COMMIT' else None)
+            return connection
+    
+        def claim():
+            try:
+                outcome['lease'] = store.claim(wid, lease_seconds=60)
+            except BaseException as error:
+                outcome['error'] = error
+    
+        store._connect = connect
+        thread = threading.Thread(target=claim, name='commit-writer')
+        try:
+            with closing(original()) as reader:
+                reader.execute('BEGIN')
+                reader.execute('SELECT * FROM work_item').fetchall()
+                try:
+                    thread.start()
+                    assert committing.wait(10)
+                    time.sleep(6.25)
+                finally:
+                    reader.rollback()
+                    thread.join(20)
+            assert not thread.is_alive()
+&gt;           assert 'error' not in outcome, outcome
+E           AssertionError: {'error': OperationalError('database is locked')}
+E           assert 'error' not in {'error': OperationalError('database is locked')}
+
+..\..\..\..\StockQAbyLLM\tests\unit\test_quick_scan_store_concurrency.py:192: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_store_concurrency" name="test_permanent_contention_rolls_back_without_attempt_or_fee_then_explicit_retry" time="0.345" /></testsuite></testsuites>

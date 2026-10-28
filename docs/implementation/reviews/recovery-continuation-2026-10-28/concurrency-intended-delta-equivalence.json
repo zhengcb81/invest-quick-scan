@@ -1,0 +1,35 @@
+{
+  "source_sha256": "eaab7f0020ce25fab3b65a122188b461e293a0355717c6ef2be36c215484f111",
+  "AST_equals_released_original_after_only_reversing_intended_delta": true,
+  "clock_samples_moved": 20,
+  "exact_methods": [
+    "record_budget_outcome",
+    "reconcile_budget_attempt",
+    "create_or_attach",
+    "claim",
+    "prepare_attempt",
+    "mark_send_intent",
+    "record_attempt_outcome",
+    "recover_expired",
+    "note_late_receipt",
+    "save_answer_checkpoint",
+    "freeze_observation_context_before_send",
+    "persist_subject_dispatch_receipt",
+    "mark_result_delivery_blocked",
+    "prepare_result_delivery",
+    "supersede_result_delivery",
+    "bind_result_delivery_consumer",
+    "begin_result_delivery",
+    "confirm_result_delivery_not_sent",
+    "apply_result_delivery_ack",
+    "cancel_pending"
+  ],
+  "reversed_only": [
+    "new strict read-only current snapshot helper (with incoming-active-txn guard)",
+    "_initialize new snapshot fast-path condition",
+    "connect timeout5→120 and busy_timeout5000→120000",
+    "20 direct now samples from before transaction to first instruction within it"
+  ],
+  "root_original_source_sha256": "80c4452d712f7e9810dd5bfab5c401994d34a73679dc126152e62149e6258364",
+  "no_source_modified": true
+}

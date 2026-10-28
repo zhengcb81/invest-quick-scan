@@ -1,3 +1,27 @@
+## 2026-10-28T10:55Z — 并发/过期接续根修独审关闭并发布，正在UI恢复微软
+
+StockQA2db4ce0已normal全部hooks通过并push origin/master。当前schema改严格query_only一致读快照，不占唯一writer槽；迁移仍原BEGIN IMMEDIATE锁后重读版本；仅20处now改为取得原写锁后取值，120秒有界等待，DELETE/FULL不变。独审发现incoming事务可能被回滚，也已保护并补query_only0/1未提交marker反例。非作者11P（9P5.499s+2P3.299s）、final13P12.429s/posthook13P11.272s、原148P1F（子进程cwd写共享日志）后修隔离两焦点2P3.492s，分轮披露，不冒充149同轮绿。旧source新增反例9F1P17.621s；首次应用脚本以21误计实际20，断言保护未写源码，误起旧cohort留作失败记录。CodeGraph上下文超时中止，已在已知源文件定位，不虚报索引结果。
+
+最终独审concurrency-final.json passed/open[]，绑定commit；反向AST证明除预定delta外与released原Store完全相同。所有私有临时库清理/API0；两子进程测试cwd改各自tmp并保留PYTHONPATH，不改生产logger。原8766仅核身份后停止child24756，launcher22884重载（后续重新核PID命令），真实库/配置/历史工作保留。原UI batch resume只重新核状态、未自动重发失败wrapper；微软g3仍pending/attempt0，现从原单任务核原状态后明确恢复。宁德g4 deliveryjob_ad997…原ACK1/1已保存UI薄证据，不能冒充整公司36题完成。
+
+### Next Step
+
+用原UI显式恢复微软既有pending工作并真实入库/exactACK，随后显式普通1.1策略新版本、移除有限refs，接续A/H/US三市场完整36题与真实缓存恢复/过期刷新验收。尚未新增微软请求，不能虚报已完成；持续执行不暂停。
+
+---
+
+## 2026-10-28T10:42Z — 宁德恢复已真实入库，正根修并发锁等待
+
+StockQA cf4fd11 已正常钩子提交推送：已登记的 answer-retry 必须绑定原精确 ORF/代际/控制回执才可通过只读检查；新增反例红1F3P、绿6P59.698s，独审3P35.669s/open[]，格式后AST等价。真实 UI batch-268f65d29aa64d7db74fa5f0684221bd：宁德 g4 完整标准/封存成功，deliveryjob_ad997cd3861b907c5e1351234bb472c1 completed，原 ACK scope1/1；仅代表恢复的一题，不是36题全公司签收。微软 g3 WORK_0c6e8de16324448b8180ee8e23aa6533 pending，claim 因 database locked 退出，未生成 attempt/费用。原账本12 settled/329334微USD估计/0在途。
+
+独立实际SQLite反例确认当前构造函数即使schema25也BEGIN IMMEDIATE全量校验，5秒锁等待不足；等锁前采样now又会允许已过期lease写CP。保留DELETE/FULL及全量严格校验，不切WAL、不改真实lease/时钟。root实施当前schema query_only一致读快照、120秒有界等待，20处时间采样移入原事务获得写锁后；正补长期真实SQLite barrier回归与同节点独审。测试均私有临时库/禁联网，无收费API。
+
+### Next Step
+
+完成并发修复、隔离回归、独审及正常提交推送；从原UI恢复现有微软g3组（宁德已ACK跳过），然后显式普通策略新版本/移除有限恢复refs，完成三市场原36题、入库/exactACK和合法缓存/重启/过期刷新验收。原截止25日不改，不能把过期旧回答称今日有效缓存。持续执行。
+
+---
+
 ## 2026-10-28T09:48Z — 真实两处置/两重试已闭合独核，UI新子集准备中
 
 原known_response_no_accepted_answer两项recorded，再原retry_unusable_answer两项recorded/API0；独立actual-received-retry-controls.json passed/open[]，从原持久preview/grant/confirmation与决议canonical链亲核，8physical/17旧材料及workhash与received-before一致，11settled/306568微USD/0在途；source现原failed无CP，N+1精确微软g3/宁德g4。真实policy1.2/v4、TTL24、固定install before/after absent与UI refs匹配，未凭诊断重放答文或伪clock。
