@@ -229,3 +229,10 @@ Alphabet/12题/MiMo Pro/开启思考/9条既有短来源/0新搜索：新增一�
 缓存验收分三件事：(1)同一个已登记范围恢复其已接受检查点，比较实际新增模型HTTP；(2)导入ACK后原结果、封存包与ACK历史重启仍可读及幂等；(3)普通新任务按原owner规则判断来源是否仍新鲜。三者不可混称供应商token cache。原observed_at保留模型回复完成时间，不能在seal、import或重启时刷新；当前24小时规则还受答案information_as_of日期限制，缺日期仍为missing_date。旧信息日的数据可以作历史研究结果，但不能宣称普通fresh命中。对过期预览验证正常刷新路径，不无限收费重问直到界面变绿。
 
 本轮独立工程、真实迟到控制及新鲜度核查见[接续验收证据](../docs/implementation/reviews/UI-REAL-2026-10-28/continuation/)。三市场完整108题、全量原导入ACK和最终冷恢复仍以PWF的实际结果为准；本节配置不授予金融准确性资格。
+
+
+### standard-1 题包的真实输出边界（2026-10-28）
+
+顶层期间用于截至信息截止日已知的证据或财务覆盖期，无法确定填null；information_as_of与顶层period_end仍不能晚于cutoff。未来预测窗口放在basis=forward的指标独立期间，或写进定性summary；没有数值证据时不要为了表达窗口捏造指标。字段语义不因模型把basis写成forward就改变，历史标准仍按原验证器判断。
+
+每个原question_id须有独立完整对象，不能合并或漏答。缺资料用insufficient_evidence，业务确不适用才用not_applicable，实际搜索不可用才用search_unavailable，均不编分；知识未知不是合法status=unknown。合法basis=not_applicable与status不是一回事。coverage和missing_fields等必需键不能因缺资料省略；本standard-1的summary最多800字符、coverage.reason最多350字符，题面schema更严时从严。旧回复漏字段、漏题、期间冲突或超限时，保留原拒绝和真实费用，不补日期、截断文本或填默认值来伪造合格答案；另经原明确准入补问。

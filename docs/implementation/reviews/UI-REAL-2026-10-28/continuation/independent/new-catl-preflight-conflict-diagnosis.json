@@ -1,0 +1,200 @@
+{
+  "status": "confirmed_original_context_refreeze_conflict_by_real_metadata_and_source_path",
+  "snapshot_utc": "2026-10-28T17:31:26.755866+00:00",
+  "run_id": "run-02474de15f11463ca9d95bae9e475bad",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "runref": {
+    "bundle_id": "dashboard-bc31143f27cf4ed1a3c1298240da687a-1",
+    "process_state": "process_exited",
+    "launcher_state": "paused",
+    "exit_code": 1,
+    "finished_at": "2026-10-28T17:21:20.083158Z",
+    "result_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\dashboard-runtime\\run-02474de15f11463ca9d95bae9e475bad\\result.json"
+  },
+  "result_summary": {
+    "requested_question_count": 33,
+    "answered_question_count": 14,
+    "error_question_count": 19,
+    "requested_scope_answered": false,
+    "whole_manifest_answered": false
+  },
+  "corrected_member_attribution": {
+    "direct_WorkConflictError": [
+      "IQS_15",
+      "IQS_16"
+    ],
+    "subsequent_not_dispatched_starts_at": "IQS_17",
+    "note": "The first source progress hint of IQS_15 is not success. Original result explicitly reports it as error/null."
+  },
+  "work_snapshot": [
+    {
+      "work_item_id": "WORK_6f40d9387a0742a1bfa97e7b435b2582",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_15",
+      "generation": 1,
+      "scope": "entity",
+      "scope_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "status": "leased",
+      "lease_epoch": 2,
+      "attempts": [
+        {
+          "attempt_id": "ATTEMPT_3aa6b3a9faa24d58937d812f0d360f5e",
+          "lease_epoch": 1,
+          "ordinal": 1,
+          "phase": "abandoned_unsent",
+          "prepared_at": 1793201493.854659,
+          "send_intent_at": null,
+          "completed_at": 1793202155.5927763,
+          "http_status_code": null
+        }
+      ],
+      "packs": [
+        {
+          "pack_id": "PACK_00682555046048a99f29bff94c0bd7ba",
+          "attempt_id": "ATTEMPT_3aa6b3a9faa24d58937d812f0d360f5e",
+          "lease_epoch": 1,
+          "intent_time": null,
+          "physical_outcome": null,
+          "budget_status": null,
+          "in_flight": null,
+          "request_counted": null
+        }
+      ],
+      "checkpoint_exists": false
+    },
+    {
+      "work_item_id": "WORK_92236907ccd0461c862a768cccdb0b5f",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_16",
+      "generation": 1,
+      "scope": "entity",
+      "scope_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "status": "leased",
+      "lease_epoch": 2,
+      "attempts": [
+        {
+          "attempt_id": "ATTEMPT_0f5250def5774876a0ad9c93b360e439",
+          "lease_epoch": 1,
+          "ordinal": 1,
+          "phase": "abandoned_unsent",
+          "prepared_at": 1793201493.8568668,
+          "send_intent_at": null,
+          "completed_at": 1793202155.6183507,
+          "http_status_code": null
+        }
+      ],
+      "packs": [
+        {
+          "pack_id": "PACK_00682555046048a99f29bff94c0bd7ba",
+          "attempt_id": "ATTEMPT_0f5250def5774876a0ad9c93b360e439",
+          "lease_epoch": 1,
+          "intent_time": null,
+          "physical_outcome": null,
+          "budget_status": null,
+          "in_flight": null,
+          "request_counted": null
+        }
+      ],
+      "checkpoint_exists": false
+    },
+    {
+      "work_item_id": "WORK_69aba7ae34e24ccd9fe404c1a89cd9cb",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_17",
+      "generation": 1,
+      "scope": "entity",
+      "scope_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "status": "pending",
+      "lease_epoch": 0,
+      "attempts": [],
+      "packs": [],
+      "checkpoint_exists": false
+    }
+  ],
+  "physical_no_send_evidence": {
+    "old_shared_pack_id": "PACK_00682555046048a99f29bff94c0bd7ba",
+    "pack_send_row_absent": true,
+    "outcome_absent": true,
+    "linked_pack_budget_absent": true,
+    "new_lease_epoch_2_attempt_count": 0,
+    "IQS_17_attempt_count": 0,
+    "scope_note": "Only these work/pack records are described. Other companies remain active and were not controlled."
+  },
+  "frozen_context_comparison": {
+    "original_sha256": "fedcc040fda2e650576aefdc1f30acd5c1e370eacb6e0c3deafa68b793d45e01",
+    "current_bundle_context_sha256": "d143b8172087d7a7a70e1bb1f78468bef66af38317ec73570c17ad810618970f",
+    "old_run_id": "dashboard-d9e50ca77983450493b3405621d5873d",
+    "current_run_id": "dashboard-bc31143f27cf4ed1a3c1298240da687a",
+    "member_changed_paths": {
+      "IQS_15": [
+        "/metadata/inputset_id",
+        "/metadata/run_id",
+        "/metadata/scan_id"
+      ],
+      "IQS_16": [
+        "/metadata/inputset_id",
+        "/metadata/run_id",
+        "/metadata/scan_id"
+      ]
+    },
+    "non_question_top_level_changed_paths": [],
+    "full_context_or_prompt_archived": false
+  },
+  "root_cause": {
+    "lifecycle": "src/runners/llm_runner.py:846 dispatch_question_pack_context unconditionally freezes self._observation_context after claim.",
+    "store": "src/utils/quick_scan_work_store.py:4550 _store_side_tables refuses a different immutable work context.",
+    "inferred_exact_guard_message": "task already bound to a different observation context",
+    "evidence_precision": "Original public result/log retains WorkConflictError type only, not its message or traceback. Exact guard is determined by the original stored hash mismatch and current dispatch-before-search source path; no real replay was executed.",
+    "why_no_new_attempt": "context_factory executes before search_pack and transport.prepare_question_pack; failure leaves a newly claimed lease but no epoch2 attempt/HTTP."
+  },
+  "minimal_fix_design": [
+    "Resolve an effective original context for each exact selected work, retaining an existing frozen original document after proving same stable contract/subject/information/schema/registry inputs and current owner authorization. Never overwrite or delete immutable original context.",
+    "Apply the same resolved context consistently in pre-send freeze, subject transport binding, standard validation and checkpoint sealing; patching the pre-send call alone will leave the later _standard_transport/_save_transport_checkpoint conflict.",
+    "When mixing original resumed work with never-frozen pending work in one legal pack, select each original context independently rather than replacing the entire lifecycle context with one member document.",
+    "Do not turn unknown/sent/late states into replay permission; do not manually alter leases, recover expired time, change failed work scores, or classify a generic WorkConflictError as deterministic model invalidity."
+  ],
+  "tdd_suggestions": [
+    {
+      "case": "original_immutable_unsent_context_new_runids",
+      "sequence": "Actual SDK temp SQLite old context2 frozen; prepare original pack without send; synthetic clock expires old lease; recover_expired makes abandoned_unsent; new owner attachment with same stable inputs but different run/scan/inputset claims; stub native HTTP is sent once and strict checkpoint seals under original context.",
+      "red": "Existing lifecycle context factory raises WorkConflictError before HTTP.",
+      "green": "One new physical HTTP, old attempt/pack/context/fee bytes unchanged, original new epoch checkpoint legal."
+    },
+    {
+      "case": "stable_input_change_rejected",
+      "mutations": [
+        "information_cutoff",
+        "subject/perimeter/security",
+        "question prompt or semantic contract",
+        "answer schema digest",
+        "metric registry digest",
+        "identity/source binding"
+      ],
+      "expected": "Zero HTTP, immutable contexts and old work untouched."
+    },
+    {
+      "case": "mixed_original_and_never_frozen_members",
+      "expected": "Original member retains its document, fresh member freezes current document; both exact bound questions can share physical pack only under existing subject/owner rules; checkpoints use respective originals."
+    },
+    {
+      "case": "unknown_or_prior_send_not_replayed",
+      "expected": "send_intent/uncertain/late or unresolved owner-scope remains stopped with zero unauthorized resend."
+    }
+  ],
+  "source_sha256": {
+    "C:/Users/郑曾波/Projects/StockQAbyLLM/src/runners/llm_runner.py": "4e4e858e027c14c9217af1058d3b01c2037d58db8e782b1ac1d437ad7e783382",
+    "C:/Users/郑曾波/Projects/StockQAbyLLM/src/utils/quick_scan_work_store.py": "eaab7f0020ce25fab3b65a122188b461e293a0355717c6ef2be36c215484f111",
+    "C:/Users/郑曾波/Projects/StockQAbyLLM/src/core/qa_engine.py": "ea46bf4327b1c55ab02767011ce2ad9823473e4dcefadc2287e691b0b8529c8e"
+  },
+  "isolation": {
+    "sqlite_mode": "ro/query_only/short_transaction_rollback_closed",
+    "store_constructed": false,
+    "source_changed": false,
+    "real_database_changed": false,
+    "http_calls": 0,
+    "private_thinking_or_key_read": false,
+    "answer_or_context_body_archived": false,
+    "process_or_UI_control": false,
+    "codegraph": "Context attempt produced no response and was terminated; reads limited to known source files."
+  }
+}

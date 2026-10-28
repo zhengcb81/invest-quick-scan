@@ -1,3 +1,31 @@
+## 2026-10-28T17:57Z — 独审阻止CP-only误签；补真正C06完整封存门，提示枚举歧义已修
+
+集中独审确认原context修的9P只证明CP/standard，完整authority原sealer还因原storedctxhash与本次authorityctxhash不同阻断，不能声称已封存成功。已保留changes_requested证据，作者扩为4文件：runner、共享context兼容helper、原delivery_seal、同newintegrationtest；不改authority对象/文件/authority_sha/schema_sha/caps/contracts/producer，不用改hash投影。exacthash旧分支保持，只有完整验证两原ctx/hash、仅3runtime标签不同才允许以原storedctx构包；所有其他稳定字段/原currentowner/原runrefs/receipt/standard/immutable guards继续。最终必须actual loaded完整v3authority+原SDK+原complete sealer真的sealed断言，不能fixture blocked当正例，后交不同agent差异集中独审。
+
+Prompt独审指出status=unknown歧义，作者已明确standard允许insufficient_evidence/not_applicable/search_unavailable与score=null（业务/搜索原因须真实），知识unknown不能输出成status。合法basis not_applicable不改。最新9P0.80s及有效红保留，等整节点最终6文件pins再提交。原M/T/C模型仍全退出、53fee settled/0inflight，真实库/旧答/租约未动。
+
+重要策略修正（未改真实配置）：QAEngine仅pack_size>1才走本轮原native题包协议与新selfcheck；pack_size=1会换为旧single路径，不能为减少漏题反而绕开新规则。本轮保留已审pack2，重问只针对4个原known失败/原未问；不改旧bank或强造单题子集。17:48 Next Step的pack1建议作废。两原C未send claim到期18:21:08/14后再原recover，期间可完成源码独审发布和M/T新准备；所有新准备预算静止齐备后才真实派发。
+
+### Next Step
+
+等实际完整sealer新红→绿与独立open[]；root精确提交推送StockQA6文件（按最终真实文件清单）/正常hooks后pin与最小定向验证，原R7若需安全重载先做全数据静止保留薄证。保持pack2，M/T新full36准备齐备后启动；C到期后originalrecover并原UI恢复，保留71成功/费用。最终108原标准封存→ACK前原run冷恢复0HTTP→全导入exactACK→静止重启/历史幂等与过期负例，独审与PWF/README实操提交推送，未完成前持续推进。
+
+---
+
+## 2026-10-28T17:48Z — 首轮静止后71/108已封存；两类根修已TDD交独审，未改旧答或时间守卫
+
+原batch-b8fd已blocked，四原模型run均process_exited；root原CIM核13964/16284/20684/32468无对应main_with_llm进程，53physical全settled、1259844微USD估计、0inflight。精确六confirmation元数据：M22ready/3failed/11pending；T35ready/1failed；C14ready/20pending/2leased。总71有CP+标准+封存，4known格式拒绝，31pending、2未发送claim。不是全108完成。T entity run162396原ready，security run5ab96c93dcc9493091277fc167dcb8c5仅q22失败；M run6b5、C024部分保存。新实际claims3600秒已由4条原claim事件证明，旧未改；原19CP/41ctx/17标准+包/13旧费子集17:12亲核仍全保持。
+
+C根因已只读精确固定：旧15/16原context fedcc040…与新context d143b817…仅每题metadata.run_id/scan_id/inputset_id不同，runner pre-send无条件freeze新ctx触原immutable guard。原15/16当前epoch2没有attempt/pack-send/fee；lease真实到期分别18:21:08.230138Z / 18:21:14.160963Z，原SDK无安全提前release公开入口，保持不动，届时原recover_expired。不同作者正在仅runner+新增integrationtest根修：按work复用旧frozenctx，send/standard校验/封存同用，稳定字段差异仍0HTTP拒，原owner准入不绕。有效实际SDK红保留；新9P6.28s、原相关4P3.60s，已冻结交不同agent集中独审。
+
+另4条真实拒绝已用仅final诊断+纯validator确认（无答文/思考归档、无重放）：M19 topforwardperiod到2031超过原cutoff；M D03漏coverage/missing_fields，原双题回复漏D04；T22 summary957>800、coverage.reason399>350。basis not_applicable原enum合法，不误改。两仓validator当前都严禁topperiod_end晚于cutoff、仅metric forward期间允许未来；本轮不改变协议/守卫/旧答。另一作者仅provider+新test对fullstandard追加期间语义、逐qid完整必需键和长度自查，generic/single/nonstandard原样；原75为追加前历史，最终8P0.80s及有效新红另列。两个补丁路径不重叠、原模型已静止，现由第三agent一次集中独审，未commit。
+
+### Next Step
+
+集中独审open[]并root最小兼容复核后精确提交推送StockQA，再从原UI仅改未来prepare.pack_size=1（模型策略上限2/旧C bundle pack2不改，3600与12h保持）。静止预算先新准备M/T完整36，保留已成功22/35、只补失败/待办，全部新准备齐后启动；C原bc311委托仍有效，18:21:14后root亲核原状态/无发送且originalrecover_expired两work，再从原UI核状态恢复C024（14CP保留/按原ctx继续待办）。若新最终scope向量变化，有限auditor需显式更新目标prepare常量并记录新source pin，不按latest拼凑。全108ready后才做原任务冷恢复0HTTP→导入exactACK→静止重启历史/幂等读及旧日过期负例，最终实际完成度独审/PWF/README/搜索规范提交推送。维持原R7/8766，不重复POST/不盲重发未知，不提前交接。
+
+---
+
 ## 2026-10-28T17:05Z — 三家全108已从原UI启动；保留55原CP、只补53待问，新3600参数已核实际worker
 
 M47976、T9d8f69、Cbc311三个新prepare已真正registered（各33entity+3security）；root先静止41预算完成全部登记，再UI清空旧选择、精确选三个新完整组，原preview显示3公司/6scope，明确启动batch-b8fd47343ffe463a9d325e040eda069f，17:01:56 running。M原entity新run-6b5cf00ba8d144a79db454e3b7f7c9b9/PID13964于17:02:58启动，原日志已实际hydrate IQS01并继续IQS02；CIM薄证核原main_with_llm argv显式3600/thinking，未复制全命令。其余公司按原串行scope/全局原准入锁启动，不能因慢或UI超时重复POST或重启。
