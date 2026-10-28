@@ -1,0 +1,37 @@
+{
+  "status": "changes_required",
+  "reviewer": "/root/review_full_scan_answers",
+  "checked_at": "2026-10-28T12:33:29.204640+00:00",
+  "independent_tests": {
+    "total": 6,
+    "passed": 3,
+    "failed": 3,
+    "time_seconds": 11.58,
+    "XML": "c06-codec-first.xml"
+  },
+  "open_findings": [
+    {
+      "code": "outer_body_information_date_conflict",
+      "cases": 2,
+      "scope": "explicit C06 direct object and old string",
+      "effect": "future outer information_as_of can reach SearchResult metadata while validated full body information_as_of is null",
+      "minimum_fix": "Compare actual normalized outer information date to supplied full body under explicit C06; reject conflict, retain generic compatibility and null honesty."
+    },
+    {
+      "code": "vacuous_standard_diagnostics_complete",
+      "cases": 1,
+      "scope": "all members fail syntax/nested conflict before body validation",
+      "effect": "question_pack_standard_diagnostics says complete even with zero usable members",
+      "minimum_fix": "Derive full-profile completeness from original syntax missing/invalid plus standard-invalid membership, without modifying physical receipt or original syntax diagnostics."
+    }
+  ],
+  "positive_boundaries": [
+    "Both direct-object and original complete JSON-string body reach original generator, runner standard parser/preflight, original SQLite checkpoint+standard unchanged, with exactly one synthetic physical budget request.",
+    "Model-returned mode flag cannot enable object grammar in generic mode."
+  ],
+  "actual_HTTP_requests": 0,
+  "real_database_access": 0,
+  "source_edits": 0,
+  "owned_runtime_removed": true,
+  "production_or_financial_acceptance": false
+}

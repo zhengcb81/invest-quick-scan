@@ -1,0 +1,139 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewer": "/root/review_full_scan_answers",
+  "checked_at": "2026-10-28T12:39:02.057670+00:00",
+  "scope": "Frozen explicit-C06 question-pack object codec, pre-result full standard validation, and its permanent tests only; not real company, financial, production import or ACK acceptance.",
+  "source_pins": {
+    "src/providers/base_llm_provider.py": {
+      "sha256": "9580600f7cd7b9f28904f70fe9ac32a7c9cea2ad1eeb2731a1f3112d22f7769f",
+      "AST_sha256": "71c7c195325b844aeb75cc58eafcc00b9e4f5d15024e22e8975a1b8137fe24fa"
+    },
+    "src/providers/llm_response_parser.py": {
+      "sha256": "842f9763fa85e3a4cf008d73e97f8233f323601a4b9b9f81873d861f2103459c",
+      "AST_sha256": "62d385621f198ba314afbafd6801633f55933a00081ff1c4d1e922bbd57ce18a"
+    },
+    "src/providers/llm_provider.py": {
+      "sha256": "96adaa81c75fce3454b1ffe0fcbf782f503dca916243c88e5b940c6cd269d7a1",
+      "AST_sha256": "ab4355150c311ed8f2ca2227900b91ed36183ace5cc03890d3575ef1eda7a204"
+    },
+    "src/utils/quick_scan_work_transport.py": {
+      "sha256": "560336c90eef90efad57eb7d5d0218352f244b2b46c3d32e3d0fea2f36c0b3cd",
+      "AST_sha256": "4ca0ccb11d444947aad7398ea802c4b246d083b14582417fd20a53e731e12567"
+    },
+    "tests/unit/test_c06_question_pack_objects.py": {
+      "sha256": "6ee8c4264d3e48927d99e203048d3a0d2af047ff4b3c8a59941fb76808fd97d6",
+      "AST_sha256": "a4a07443e10698e0a92560312170baba9c97477f85fbe8183d1687b02b371cc4"
+    }
+  },
+  "independent_final_tests": {
+    "tests": "6",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "13.623"
+  },
+  "independent_first_round": {
+    "tests": "6",
+    "errors": "0",
+    "failures": "3",
+    "skipped": "0",
+    "time": "11.577"
+  },
+  "author_tests": {
+    "c06-object-cohort.xml": {
+      "tests": "187",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "60.585"
+    },
+    "c06-object-corrected-final.xml": {
+      "tests": "24",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "32.515"
+    },
+    "c06-object-corrected.xml": {
+      "tests": "17",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "18.285"
+    },
+    "c06-object-first.xml": {
+      "tests": "17",
+      "errors": "0",
+      "failures": "9",
+      "skipped": "0",
+      "time": "28.380"
+    }
+  },
+  "test_count_boundary": "The187-case author cohort predates final date/diagnostic corrections. Final author24 and independent6 are distinct final focused runs; no claim187 final-pin cases reran as a single clean cohort. Earlier author17 first run8P9F was a bound-context indexing error subsequently corrected; old independent6 first run3F3P established the two real review findings.",
+  "resolved_findings": [
+    {
+      "code": "outer_body_information_date_conflict",
+      "resolution": "Only explicit C06 object-codec mode checks raw outer information_as_of format before generic normalization; actual parsed date is carried to original full validator, which requires equality with the supplied body and retains original cutoff checks. Both direct object and old full string conflict probes now reject without invented dates."
+    },
+    {
+      "code": "vacuous_standard_diagnostics_complete",
+      "resolution": "Full-standard diagnostic completeness merges original syntax invalid/missing IDs and full-validation invalid IDs; zero valid members is rejected, partial membership is partial. Original syntax diagnostic and physical receipt are not overwritten."
+    }
+  ],
+  "completeness_checks": [
+    "Trusted mode comes only from existing runner-bound standard_answer_transport ContextVar captured before dispatch; model-returned flags do not enable it.",
+    "Prompt/example use direct standard objects in explicit C06 mode and instruct exact outer/inner question_id/status/score/information_as_of equality, including null dates; generic prompt grammar stays legacy.",
+    "Parser opt-in is keyword-only and strict boolean. Default generic object descriptions stay invalid; old complete standard JSON strings remain readable. Member copying and deterministic json.dumps preserve actual supplied JSON data without added defaults or mutation.",
+    "Original root duplicate-key/ID, identity, finite-number and inner/outer score/status checks remain; new C06 malformed raw date handling is not applied to generic callers.",
+    "Original active physical-pack projector and original bound context2 are re-read before original full standard validator; source URLs are checked against the actually bound physical metadata, not model search claims. Binding/receipt failures remain technical transport failures, not an invalid-answer alias.",
+    "Full schema, question/subject identity, nullable score, information cutoff, metric/evidence and source constraints are checked before returning a C06 SearchResult. Valid siblings retain original member mapping/shared physical usage.",
+    "Original generator, runner _standard_transport/_preflight_standard_answer, atomic checkpoint/standard storage and one-request budget path passed in independent synthetic original-SQLite roundtrips for new objects and old strings, including scored and null insufficient-evidence members.",
+    "Runner/store standard and authority gates are unchanged. No incomplete old answer is repaired, reconstructed, authorized or backfilled. Actual Tencent missing final bytes remain unavailable; actual MSFT old outer status/body remain unknown."
+  ],
+  "independent_evidence": [
+    "test_c06_object_codec_adversarial.py",
+    "run_c06_codec_review.py",
+    "c06-codec-first.xml",
+    "c06-codec-final.xml",
+    "c06-codec-final-execution.json"
+  ],
+  "source_edits": 0,
+  "real_database_access": 0,
+  "model_API_requests": 0,
+  "private_reasoning_read_or_saved": false,
+  "actual_company_answer_bodies_exported": false,
+  "owned_runtime_removed": true,
+  "normal_hook_boundary": "Independent6 tests ran before normal formatting hooks. The following current pins were read after parent reported mixedline/Black/isort changes; production4 AST equality to the frozen prehook pin is independently recorded. Test import ordering requires parent equivalence/posthook targeted check; no extra cohort or live acceptance is asserted.",
+  "next": "Parent may publish through normal hooks and original finite recovery controls, then test a small real explicit-C06 object pack before continuing all remaining company questions. Verify actual standard/checkpoint/import/ACK and cache separately.",
+  "tested_pre_normal_hook_source_pins": {
+    "src/providers/base_llm_provider.py": {
+      "sha256": "836fde58be0a1a46412a86a88d5ee02d241cd5391f743a5c6d9ee3941e1e4465",
+      "AST": "71c7c195325b844aeb75cc58eafcc00b9e4f5d15024e22e8975a1b8137fe24fa"
+    },
+    "src/providers/llm_response_parser.py": {
+      "sha256": "e12ddd567df68204fd706dd102cc67a906666a7a7f44ff638d5ac5583eb6e676",
+      "AST": "62d385621f198ba314afbafd6801633f55933a00081ff1c4d1e922bbd57ce18a"
+    },
+    "src/providers/llm_provider.py": {
+      "sha256": "10c2991e68d561df2b738552a89552ad5817cddaa150efaa692c29d90ab8d688",
+      "AST": "ab4355150c311ed8f2ca2227900b91ed36183ace5cc03890d3575ef1eda7a204"
+    },
+    "src/utils/quick_scan_work_transport.py": {
+      "sha256": "c26949468bf454d393ec2bc7250a6d2ed69ad31894dc28c5503452f3cda2f45c",
+      "AST": "4ca0ccb11d444947aad7398ea802c4b246d083b14582417fd20a53e731e12567"
+    },
+    "tests/unit/test_c06_question_pack_objects.py": {
+      "sha256": "7c2a4fc03f53fd309e773223c6b1b5b300b403647e66daafb072e6de6b4a15d3",
+      "AST": "4a1302136a8af49e876ff1011cc7c3449c367f717629a392261553b6d13fa4dd"
+    }
+  },
+  "source_pin_time": "2026-10-28T12:39:43.780117+00:00",
+  "production_posthook_AST_equal_to_tested_prehook": {
+    "src/providers/base_llm_provider.py": true,
+    "src/providers/llm_response_parser.py": true,
+    "src/providers/llm_provider.py": true,
+    "src/utils/quick_scan_work_transport.py": true
+  },
+  "test_posthook_AST_equal_to_tested_prehook": false
+}

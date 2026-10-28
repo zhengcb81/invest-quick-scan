@@ -1,3 +1,33 @@
+## 2026-10-28T12:40Z — 两根修已独审通过并提交推送，正在安全部署后继续真实全扫描
+
+IQS f8efec5/master已推origin：明确原启动前typed拒绝不再误作未知；旧CATL假未知仅原UI显式resume、原锁/完整run namespace/冻结scope/当前native预检联合证明才能清本地marker，绝不修改原work/费用。新unknown带profile+attempt防降级，defer保留原reason等待下次显式resume。独审28P2.602s/open[]，原200P是早期pin，最终长期提升deferred例后focus10P1.40s(193deselected)，不冒充final全套203已跑。
+
+StockQA 0839694/master已推origin：只在可信C06完整transport下description支持直接完整标准对象，并兼容旧string；仍原strict parser+原owner context/receipt/source URLs/标准schema。逐成员提前拒绝缺完整body，保留valid siblings，不补分/补字段/假正文。独审3F3P发现内外日期冲突及0valid误报complete，均根修，独立6P13.62s/open[]，c06-codec-final.json已归档；prompt已明确日期/null一致。作者修前187P60.59s，修后24P32.52s；正常hooks Black/isort后四生产AST等价、测试imports重排，正常mypy/secret等全过，posthook24P30.00s已过。源码版本与真实现象区分记录，不冒充腾讯真实invalid_json因果已确定（原正文未保留）。
+
+真实旧两题恢复/exactACK2/2保留；普通全36题三市场仍未完成。当前真实18请求全部settled/440864微USD估计/0在途。两full worker已退出；MSFT IQS10 gen2已知2xx无接受CP，原lease真实过期，须原known-response有限处置（只一项、保持原33题source_query，permission仅score.iqs_10），无需切现1.1v6策略。独立agent仅准备readonly derive/精确helper，root后审再原CLI应用，不直接SQL修改、不伪造答案/时钟/lease。CATL原batch假未知仍保持原码待安全加载新source后原UI显式恢复；不在旧R4点resume。
+
+### Next Step
+
+独审final/posthook已归档，核原扫描worker0后安全重载8766 R5/launcher6540：IQSf8efec5/QA0839694/UIed43804。先原有限Q10 known-response处置后原UI恢复full batches/任务、补齐entity33+security3三家公司；原入库/exactACK、重启缓存0HTTP、有效期复用和真实过期分开验收。旧cutoff25日保留，不将历史回答称28日新资料。未完成不暂停。
+
+---
+
+## 2026-10-28T12:08+00:00 — 三完整准备已登记，真实首轮早停，正根修两新边界
+
+R4原UI已安全重载：IQS ba92e99/UI ed43804/QA2db4ce0；launcher22492（后续须亲核子进程命令防PID复用）。旧两job现场正常显示历史只读、ACK摘要2/2与1/1，无新POST；history-live-ui-proof.json与history-ui-live.jpg已保存。三个普通v6完整36题组全registered：Tencent dbe2672…、MSFT bcd239…、CATL d9e50…，每组entity33/security3。
+
+真实启动：Tencent batch-c55dd97f18f64b8188c891bf1ffaddd4/run-768e8268facc4bafbc87f014cef2acbd；MSFT+CATL batch-46c26d995447454987e1bd68d7ecccb3，其中MSFT run-fc52dc3d3edc4f819302ccb3f00a45ee。两原entity run现均process_exited/部分成功，非全公司通过：Tencent IQS06/07 invalid_json/invalid_question后多数未派发；MSFT IQS10 C06 full standard missing/ProcessingError后多数未派发。真实累计18请求已settled、估计440864微USD、0在途；费用保留。不得把33题中的28/24个失败都说成已付费模型答错，大多数为保护性未派发。
+
+独立review_full_scan_answers确认：现C06题包prompt要求description为完整JSON对象STRING，模型要双重编码；generic pack parser接受普通description，不能代表C06完整。旧真实q10正文未保留，不能假称本地unknown分支丢了body或用hash复原。拟根修为可信complete-transport profile下description直接标准对象→原single parser确定性json.dumps兼容投影，provider原context/receipt/source URLs逐成员完整标准校验；旧string可读、generic默认不放宽、缺字段不补。Tencent invalid_json无公开body，原因归属保持未知，原failed/received状态需原生合法恢复。
+
+另CATL尚无run/无本次请求：Batch把原Execution.start在run-folder/reference/Popen之前的execution_not_ready误标launch_uncertain，形成永久假未知；同preview_required/preview_changed也受影响。原readonly preflight现在ready/permissionspassed/no unknown，catl-full-original-preflight.json为0API0写，只证明当前可预检，不宣称历史HTTP0。独立prelaunch-marker-original-proof/design-review已固定反例和安全方案。root正在改scripts/dashboard_execution.py/dashboard_batches.py及对应两unit：默认unknown，仅原typed positive before-write拒绝有not_started证明，下一次launching前清旧证明；legacy仅明确resume时在原start锁核完整原run namespace、冻结scope与当前native/no unknown，不能仅按code清marker，也不改SSOT/费用。现新增焦点14P1.8s（并非200全跑），更多legacy/batch adversarial与最终独审尚待，源未提交、live未重载此修复。
+
+### Next Step
+
+先完成prelaunch根修/完整针对性测试和独审；实施C06对象题包codec+原完整标准提前校验并独审。亲核当前原leased/received状态，必要走原有限known-response处置，不假clock/改lease/造CP。完成提交推送后在安全边界重载UI，原显式恢复CATL假未知并继续三市场剩余题，保留已成功CP/原18费用；最后原入库/exactACK、缓存重启复用和正常过期刷新核验。仍未三市场全通过，持续执行不暂停。
+
+---
+
 ## 2026-10-28T11:34Z — 两真实恢复已原ACK2/2，普通三市场完整扫描推进中
 
 微软原run-164a…显式resume成功，完整标准/原封存pkg_dd0918…已保存；原UI deliveryjob_97291f8729794d5720299e6444e97729 completed，原ACK2/2（宁德原ACK幂等复用），两个新target均delivered。原账本13settled/345083微USD估计/0在途。该结果仅关闭两故障题，绝非三公司36题已完成。
