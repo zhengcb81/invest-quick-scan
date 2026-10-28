@@ -1,0 +1,50 @@
+{
+  "checked_at": "2026-10-28T18:20:27.188676+00:00",
+  "status": "passed",
+  "red_source_pins": {
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\runners\\llm_runner.py": "1114ff3832a482cf348ce0699e6f9e924b7af293037f6dc08ab47e4dd82db1e5",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\providers\\llm_provider.py": "3030c3fe1b34fe119ddf0aa914e545841dfa7b016a168a98759567bd093af269",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_observation_context.py": "9acdf577f29a94218c6910ba015e55dafc60617f3de03cd9d31d417e499b74a0",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_delivery_seal.py": "3672ad5a18881be02cb590b3dadaba952f0fcb549cd601fb4b6a9757d672160b",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\integration\\test_resume_frozen_observation_context.py": "a18b0518218dc7e46b18ac2f4b9bf1fd3c6b06b2b450f551634711f706ff89f3",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_standard_pack_period_prompt.py": "05a956668be1c284306a673493c43dba0a6600d534feee1d0d00b435225b1335"
+  },
+  "test_case": "test_post_response_permission_boundary.py",
+  "boundary": {
+    "real_API_requests": 0,
+    "real_database_writes": 0,
+    "real_services_controlled": 0,
+    "temporary_directory_removed": true,
+    "source_stable": true
+  },
+  "claim": "This is a real synthetic product counterexample, distinct from the earlier reviewer pure-adapter test setup error. Prior30 green did not cover permission revocation after authorized send.",
+  "closed_findings": [
+    {
+      "id": "R1-POST-RESPONSE-PERMISSION",
+      "severity": "high",
+      "finding": "Runtime-label compatibility helper calls assert_question_pack_ready/current owner again during received-response checkpoint save. Authorized actual SDK send returns2xx while original lease remains valid; only subsequent owner.check rejection prevents both CP and complete standard persistence.",
+      "evidence": "post-response-permission-red.xml/output/execution.json; independent actual SDK SQLite + truly loaded synthetic v3 authority + fake HTTP, 1F5.05s; context hash and scope unchanged except allowed run labels.",
+      "minimal_fix": "Keep data compatibility helper pure. Remove its final redundant assert_question_pack_ready owner check, retain original before-dispatch and every-POST checks; do not add caller bypass flag or weaken actual-send permission/lease/receipt/standard validation.",
+      "resolution": "Removed only the pure context compatibility helper final redundant assert_question_pack_ready/owner.check. Exact document/hash/context/work/subject bindings unchanged; original pre-dispatch/every-POST permission checks retained without bypass flags."
+    }
+  ],
+  "open_findings": [],
+  "green": {
+    "result": "3P8.57s",
+    "scope": "Independent original red test + permanent port + original presend current-owner denial",
+    "execution": "post-response-permission-green-execution.json",
+    "junit": "post-response-permission-green.xml",
+    "pins": {
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\runners\\llm_runner.py": "fd9fc78302b2ce389cdd2a60dbe54c24880b4f0227e4cadfbdd975a6907460ca",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\providers\\llm_provider.py": "3030c3fe1b34fe119ddf0aa914e545841dfa7b016a168a98759567bd093af269",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_observation_context.py": "9acdf577f29a94218c6910ba015e55dafc60617f3de03cd9d31d417e499b74a0",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_delivery_seal.py": "3672ad5a18881be02cb590b3dadaba952f0fcb549cd601fb4b6a9757d672160b",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\integration\\test_resume_frozen_observation_context.py": "f5e97cc1908eb4d3bde7b8fc6a3ce408ce2c04433b3ebb34ed9b432cfb3a7a35",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_standard_pack_period_prompt.py": "05a956668be1c284306a673493c43dba0a6600d534feee1d0d00b435225b1335"
+    },
+    "stable": true,
+    "temporary_root_removed": true
+  },
+  "updated_at": "2026-10-28T18:24:20.109719+00:00",
+  "final_boundary": "Authorized 2xx may persist CP/std and seal under still-valid original lease after later permission refusal. A future original POST still fails current permission with zero added fake HTTP. No expiry/receipt/standard validator relaxed."
+}

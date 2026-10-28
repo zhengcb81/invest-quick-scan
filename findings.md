@@ -1,3 +1,19 @@
+## 2026-10-28T18:43Z — StockQA 接续根修已发布；C 原到期工作已恢复；新独立施工包编制中
+
+StockQA 已按正常 hooks 提交并推送 86f5171 和 fac42f6。原冻结 observation context 仅容许 run_id/scan_id/inputset_id 三运行标签变化，其余稳定字段与原 hash 校验不放宽；实际 loaded v3 authority + 原 SDK + 完整 sealer 正例已通过。集中独审 30P22.29s，正常 hooks 后 root 同组 30P24.57s；另独立发现“已授权2xx后权限变化阻止保存”真实反例，最小纯 context helper 修复后 3P8.57s/open_findings=[]，原下一次 POST 权限拒绝仍零发送。最后正常 hooks 后六文件 AST 等价证据保留，不以旧30P冒称覆盖该后续反例。
+
+C 原 IQS15/16 epoch2 在真实时钟过期后，于18:23:51经 QuickScanWorkStore.recover_expired 原API恢复 pending；原 generation/epoch、已有 attempt/费用不变，零新 HTTP/不延长租约。M 新 prepare_e29c4e2114d442cb9cfae7b884433990 已 registered。T 新 prepare_74da2302b1a646fbb53e03eab7ab0b97 未登记：33 entity 均 result_ready，原 preview 合法报价0/0，却被 StockWiki 委托 positive-only 守卫拒绝。已固定原协议“无付费工作必须零报价”的矛盾；独立作者只改原 delegation 及定向测试，严格原缓存/权限/当前态证明，不伪造报价、不改旧结果、不手工拼执行包。
+
+当前真实完整目标仍71/108已封存、53模型HTTP全部settled、1259844微USD估计、0在途。模型发送保持静止，待T零费用原委托修复并完成新准备再启动；不能称108或入库/完整缓存验收通过。R7/8766保持，原policy6/TTL24、cutoff25、pack2/thinking/新claim3600/新grant43200不变。此前17:57待提交和18:21等待事项由本条实际证据替代。
+
+用户新要求三份互不冲突的独立施工包；仅在 docs/implementation/parallel-lanes/packages/2026-10-28-independent-support/ 编制，独立Lab，源仓只读、离线、无生产写入；每包交接前真实不同agent全面审查、发现全部修复且passed/open[]，不增加小节点复审。选题先核既有包避免重复，卡本身也交不同agent集中审查。尚未派发，不视为已施工。
+
+### Next Step
+
+完成T原0/0委托的最小TDD与独立审查后原UI新登记，保留已成功答案完成三家108、ACK前原run冷恢复零HTTP、全入库exactACK、重启历史幂等及过期负例；并完成三份新卡集中审查、发布链接。最终证据和PWF/README实操按实际通过结果提交推送；主线未完成不交接为已完成。
+
+---
+
 ## 2026-10-28T17:57Z — 独审阻止CP-only误签；补真正C06完整封存门，提示枚举歧义已修
 
 集中独审确认原context修的9P只证明CP/standard，完整authority原sealer还因原storedctxhash与本次authorityctxhash不同阻断，不能声称已封存成功。已保留changes_requested证据，作者扩为4文件：runner、共享context兼容helper、原delivery_seal、同newintegrationtest；不改authority对象/文件/authority_sha/schema_sha/caps/contracts/producer，不用改hash投影。exacthash旧分支保持，只有完整验证两原ctx/hash、仅3runtime标签不同才允许以原storedctx构包；所有其他稳定字段/原currentowner/原runrefs/receipt/standard/immutable guards继续。最终必须actual loaded完整v3authority+原SDK+原complete sealer真的sealed断言，不能fixture blocked当正例，后交不同agent差异集中独审。

@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "checked_at": "2026-10-28T18:23:51.166568+00:00",
+  "original_api": "QuickScanWorkStore.recover_expired(work_item_id), real default clock, no clock argument",
+  "before": [
+    {
+      "work_item_id": "WORK_6f40d9387a0742a1bfa97e7b435b2582",
+      "question_id": "IQS_15",
+      "generation": 1,
+      "status": "leased",
+      "lease_epoch": 2,
+      "lease_expires_at": 1793211668.2301378
+    },
+    {
+      "work_item_id": "WORK_92236907ccd0461c862a768cccdb0b5f",
+      "question_id": "IQS_16",
+      "generation": 1,
+      "status": "leased",
+      "lease_epoch": 2,
+      "lease_expires_at": 1793211674.1609633
+    }
+  ],
+  "after": [
+    {
+      "work_item_id": "WORK_6f40d9387a0742a1bfa97e7b435b2582",
+      "question_id": "IQS_15",
+      "generation": 1,
+      "status": "pending",
+      "lease_epoch": 2,
+      "lease_expires_at": null
+    },
+    {
+      "work_item_id": "WORK_92236907ccd0461c862a768cccdb0b5f",
+      "question_id": "IQS_16",
+      "generation": 1,
+      "status": "pending",
+      "lease_epoch": 2,
+      "lease_expires_at": null
+    }
+  ],
+  "results": [
+    {
+      "work_item_id": "WORK_6f40d9387a0742a1bfa97e7b435b2582",
+      "native_result": "pending"
+    },
+    {
+      "work_item_id": "WORK_92236907ccd0461c862a768cccdb0b5f",
+      "native_result": "pending"
+    }
+  ],
+  "original_physical_metadata_unchanged": true,
+  "budget_before_and_after": [
+    53,
+    53,
+    1259844,
+    0
+  ],
+  "existing_attempts_or_fees_changed": false,
+  "lease_extended": false,
+  "new_generations_created": false,
+  "API_requests": 0,
+  "lease_tokens_read_or_exported": false
+}

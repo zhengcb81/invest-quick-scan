@@ -1,0 +1,113 @@
+{
+  "checked_at": "2026-10-28T18:24:20.122139+00:00",
+  "status": "passed",
+  "open_findings": [],
+  "reviewed_pins": {
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\runners\\llm_runner.py": "de9256cfe36e5073a869e6fea415b5cafc0d083d2e936f63af0d5e2d5b313957",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\providers\\llm_provider.py": "eb18bef012da377f0bd034dddb85c60b37521dfe3ba3e921e406ddf50ffa4a8d",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_observation_context.py": "b536d1d9009a64c391de6c080ccaee937c7d7f57d6c4b85b760b33929949ff71",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_delivery_seal.py": "c33647aba1ff5ed23a061875577a956d355be3fc7f8c2b297c331969c8b840ba",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\integration\\test_resume_frozen_observation_context.py": "ce1d2731ca1a21bc07660c240e1b8ad53b1a170b347836f9a93d54c3e83b35f1",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_standard_pack_period_prompt.py": "1ef64f3f9fa70a7368b9d2014c43494c6c12a932175c7e8c24af907f29228294"
+  },
+  "independent_tests": {
+    "final": "30 passed in 22.29s: final context15 + final prompt9 + independent6",
+    "execution": "round1-continuation-final-execution.json",
+    "junit": "round1-continuation-final.xml",
+    "output": "round1-continuation-final-output.txt",
+    "source_stable": true,
+    "network": "audit denied",
+    "temporary_directory_removed": true,
+    "independent_cases": [
+      "Three no-complete-C06 opt-in refusals",
+      "Same-work unknown cannot resend through changed run labels",
+      "Actual CP -> observation -> checkpoint binding -> original complete-store rebuild accepted; changed observation cutoff rejected",
+      "Original exact-hash loaded v2 authority seals and reattaches idempotently; CP/std/context/authority bytes preserved"
+    ]
+  },
+  "boundary": {
+    "real_API_requests": 0,
+    "real_database_writes": 0,
+    "production_CLI_UI_service_or_worker_operations": 0,
+    "real_keys_read": false,
+    "source_modified_by_reviewer": false,
+    "temporary_roots_removed": true,
+    "full_authority_seal_proven": "Synthetic truly loaded complete C06 v3/v2 with original SDK/SQLite/sealer; not real production import.",
+    "not_proven": [
+      "Real-company full108 completion",
+      "Real StockWiki import/exactACK after this patch",
+      "Financial accuracy/current freshness",
+      "Real lease release/extension/retry"
+    ]
+  },
+  "closed_findings": [
+    {
+      "id": "R1-CONTEXT-SEAL",
+      "severity": "high",
+      "finding": "Resumed old-context work saves CP using original context, but _seal_delivery still passes current new-context C06 authority; original _complete_package exact context digest gate rejects c06_observation_context_conflict.",
+      "evidence": "Original strict sealer source plus synthetic actual SDK output logs. Author fixture C06 contains only schema_version and does not assert successful original authority sealing.",
+      "required": "A proved per-work complete-authority adapter preserving original contract/capability/producer with native current-owner and exact stable-context proof; original strict sealer must remain unchanged. Add actual complete authority + original sealer success/immutable old context regression.",
+      "resolution": "Shared validate_resumed_context_compatibility validates both complete documents against their own actual hashes. Only questions.*.metadata.run_id/scan_id/inputset_id are removed from deep copies, then exact canonical hashes compared. Runner retains native current-owner/subject/work guards. Sealer exact-hash branch unchanged; mismatched context hash allowed only after this same pure proof, with stored context and original authority object/hash/file untouched. Original run mappings, CP/standard/receipt/adapter/outbox guards remain.",
+      "final_proof": "Actually loaded complete v3 authority + actual SDK/fake HTTP seals ready, repeat already_sealed; source authority object/file, old context/pack unchanged. V2 runtime-only compatibility and independent old exact-hash seal/idempotency pass; false digest/stable cutoff drift/unmapped original run refs still reject."
+    },
+    {
+      "id": "R1-PROMPT-UNKNOWN",
+      "severity": "low",
+      "finding": "New full-standard self-check says unknown/insufficient_evidence answers and unknown answers although full standard status enum has no unknown.",
+      "required": "Unambiguously instruct insufficient_evidence/not_applicable/search_unavailable as appropriate; do not emit status=unknown, keep coverage.status=unknown separate.",
+      "resolution": "Prompt now explicitly requires status=insufficient_evidence for missing evidence, genuine not_applicable or actual search_unavailable as appropriate, all score=null; never emit status=unknown. Full per-question keys, NA basis and all length/date rules retained."
+    },
+    {
+      "id": "R1-POST-RESPONSE-PERMISSION",
+      "severity": "high",
+      "finding": "Runtime-label compatibility helper calls assert_question_pack_ready/current owner again during received-response checkpoint save. Authorized actual SDK send returns2xx while original lease remains valid; only subsequent owner.check rejection prevents both CP and complete standard persistence.",
+      "evidence": "post-response-permission-red.xml/output/execution.json; independent actual SDK SQLite + truly loaded synthetic v3 authority + fake HTTP, 1F5.05s; context hash and scope unchanged except allowed run labels.",
+      "minimal_fix": "Keep data compatibility helper pure. Remove its final redundant assert_question_pack_ready owner check, retain original before-dispatch and every-POST checks; do not add caller bypass flag or weaken actual-send permission/lease/receipt/standard validation.",
+      "resolution": "Removed only the pure context compatibility helper final redundant assert_question_pack_ready/owner.check. Exact document/hash/context/work/subject bindings unchanged; original pre-dispatch/every-POST permission checks retained without bypass flags."
+    }
+  ],
+  "review_scope": [
+    "src/runners/llm_runner.py",
+    "src/utils/quick_scan_observation_context.py",
+    "src/utils/quick_scan_delivery_seal.py",
+    "tests/integration/test_resume_frozen_observation_context.py",
+    "src/providers/llm_provider.py",
+    "tests/unit/test_standard_pack_period_prompt.py"
+  ],
+  "prior_runs": {
+    "old_pin_corrected": "22P13.62s retained round1-continuation-boundary-corrected.xml, not claimed final six-file coverage",
+    "reviewer_wrong_expectation": "round1-continuation-independent.xml/output retains21P1F16.73s. Reviewer incorrectly expected pure build_observation to read stored context; corrected to original durable store gate. Not a product red.",
+    "true_sealer_red": "catl-context-seal-red.xml = one actual loaded-authority c06_observation_context_conflict. Separate from reviewer fixture error.",
+    "author_claims": "Initial9 CP/std-only; earlier prompt75 predates final self-check/status. Author context15 was before equivalent explicit input-type guard; independent final30 executed exact final six pins."
+  },
+  "source_review": [
+    "Only three runtime labels may differ, no schema/subject/cutoff/prompt/metric/other stable changes; canonical comparison distinguishes integer/float JSON values.",
+    "Current native owner/session/store and scope/question checks retained. No expired lease extension, unknown resend, original context rewrite or receipt/fee change.",
+    "Sealer authority object/file/hash unchanged. Shared helper is data-compatibility proof, grants no execution/publication permission.",
+    "Original exact-hash branch remains; mismatch only after full two-document/hash validation. False digest, missing original run refs, standard or durable receipt keep original refusal.",
+    "Standard answer schema/time cutoff/forward metric validation unchanged. Prompt only affects future full-standard packs; single/nonstandard inherits original bytes.",
+    "Malformed current context/hash types in mismatch branch fail closed."
+  ],
+  "handoff": "Root may normal-hook/commit/push and resume controlled UI mainline; bind post-hook equivalent source to these six pins. No repeated hour suite requested.",
+  "post_response_permission_addendum": {
+    "status": "passed",
+    "open_findings": [],
+    "report": "post-response-permission-review.json",
+    "red": "1F5.05s actual synthetic authorized response then owner denial/no CP, separate true product red",
+    "green": "3P8.57s final focused run only; not a rerun of prior30",
+    "final_two_changed_files": {
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\runners\\llm_runner.py": "fd9fc78302b2ce389cdd2a60dbe54c24880b4f0227e4cadfbdd975a6907460ca",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\integration\\test_resume_frozen_observation_context.py": "f5e97cc1908eb4d3bde7b8fc6a3ce408ce2c04433b3ebb34ed9b432cfb3a7a35"
+    },
+    "final_six_recorded_pins": {
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\runners\\llm_runner.py": "fd9fc78302b2ce389cdd2a60dbe54c24880b4f0227e4cadfbdd975a6907460ca",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\providers\\llm_provider.py": "3030c3fe1b34fe119ddf0aa914e545841dfa7b016a168a98759567bd093af269",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_observation_context.py": "9acdf577f29a94218c6910ba015e55dafc60617f3de03cd9d31d417e499b74a0",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_delivery_seal.py": "3672ad5a18881be02cb590b3dadaba952f0fcb549cd601fb4b6a9757d672160b",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\integration\\test_resume_frozen_observation_context.py": "f5e97cc1908eb4d3bde7b8fc6a3ce408ce2c04433b3ebb34ed9b432cfb3a7a35",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_standard_pack_period_prompt.py": "05a956668be1c284306a673493c43dba0a6600d534feee1d0d00b435225b1335"
+    },
+    "closure": "Removed only the pure context compatibility helper final redundant assert_question_pack_ready/owner.check. Exact document/hash/context/work/subject bindings unchanged; original pre-dispatch/every-POST permission checks retained without bypass flags.",
+    "scope_note": "Prior six-file30 coverage remains historical at its exact pins. Root normal-hooked/pushed86f before this follow-up; this final source review diff has only runner+integration test changes. Other four pins are recorded from the follow-up run, not asserted to be another30-test execution."
+  }
+}
