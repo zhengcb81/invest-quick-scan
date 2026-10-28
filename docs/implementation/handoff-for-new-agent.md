@@ -1,3 +1,15 @@
+## 2026-10-28T09:48Z — 真实两处置/两重试已闭合独核，UI新子集准备中
+
+原known_response_no_accepted_answer两项recorded，再原retry_unusable_answer两项recorded/API0；独立actual-received-retry-controls.json passed/open[]，从原持久preview/grant/confirmation与决议canonical链亲核，8physical/17旧材料及workhash与received-before一致，11settled/306568微USD/0在途；source现原failed无CP，N+1精确微软g3/宁德g4。真实policy1.2/v4、TTL24、固定install before/after absent与UI refs匹配，未凭诊断重放答文或伪clock。
+
+原8766部署已安全重载，仅核过的UI child14584停、新launcher23576（后续须再核命令防PID复用），不动控制CLI/账本/任务。IQS3e8abfe/QA6d27e5e/UI03ba12c；生产chain源与独审源仅换行不同有字节归一证明。原UI CAS保存两新refs，结束旧blocked batch-8c74编排保留全部历史。实际新subset1.1预览均正确显示1题/原36题、原source和精确代际，仍原截止25/主体/挂牌/模型/账本。微软prepjob_8a2a46d52e344da497491d65ab06c25d与宁德prepjob_4c1ef79c3bed414b9ad86f7d2b596b2a已受理准备，尚未新付费扫描或新ACK。
+
+### Next Step
+
+待两原UI登记完成，选这两个新prepare组启动真实恢复，核完整标准保存/原封存/StockWiki导入/exact ACK；然后显式普通1.1新版本、移除refs，接续三市场完整36题与缓存重启/过期刷新验收。保留历史信息日期，不把过期答案说成今日有效缓存。继续执行不暂停。
+
+---
+
 ## 2026-10-28T09:17Z — 回执覆盖与连续恢复已独审发布，真实两项原生处置执行中
 
 StockQA95ac7f4（整包/首成员回执隔离）与6d27e5e（逐代原生重试链）均正常全钩子通过并推送。UI03ba12c本地提交（无remote），subset1.1严格显示有限answer重试，旧checkpoint-only仍原1.0格式。IQS backend同closed purpose/state对、精确ref/N+1/正整数校验已独审，待随本条PWF提交。改动无金融口径/权限门降级。
