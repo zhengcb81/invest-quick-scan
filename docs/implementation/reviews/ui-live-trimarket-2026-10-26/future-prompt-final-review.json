@@ -1,0 +1,52 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "author": "/root/base_prompt_verify",
+  "status": "passed",
+  "open_findings": [],
+  "same_product_node": true,
+  "final_source_sha256": {
+    "src/providers/base_llm_provider.py": "573b72bed4176f3785c5c64eeed3996ac277cd9c40ae8a013023aad8e55039a0",
+    "tests/unit/test_analysis_subject_prompt_scope.py": "8db2aed5865c0f2f59df5d0c5d4dc8eb54aef5b433e6ed387e8b4a82a2332df2"
+  },
+  "tests": {
+    "artifact": "authority-final.xml",
+    "passed": 21,
+    "independent": 9,
+    "existing": 12,
+    "seconds": "1.614",
+    "prior_runs_not_additive": true
+  },
+  "additional_finding_closed": {
+    "id": "PROMPT-IDENTITY-01",
+    "real_trigger": "NewMSFT09-12 returned foreign entity_id, rejected by original parser; no old answer was edited.",
+    "compatibility": "Original outer entity_id/company_name must exist and match; missing identity invalidates members and foreign supplied identity rejects whole pack. Dropping outer fields would break compatibility.",
+    "fix": "Outer identity/qid copied exactly from provided target, no inference/renaming/replacement. Inner standardanswer contains no model-supplied owner authority. Research information_as_of/period/evidence dates remain required.",
+    "independent_proof": "Actual single and4-member final request payloads contain clarified rule; pack example outer exactidentity and inner excludes authority fields while retains research dates. Original parser3case exact accepts/missing invalid/foreign whole-pack reject all pass."
+  },
+  "confirmed_boundaries": [
+    "Both thinking enabled and32768output limit preserved.4-question vendorJSON mode preserved; single original vendorJSON-mode absence explicitly documented, JSON-final prompt/parser maintained.",
+    "Exact4selected qids/question texts preserved, spoofed metadata cannot override entity/qid, owner subject foreign mismatch refuses.",
+    "Distinct custom segment IDs accepted by unchanged validator; duplicate/wrong-unit/unregistered/nonfinite metrics continue refused.",
+    "Prior unit-economics/date/primary-evidence/trend corrections survive final body construction.",
+    "Intercepted at original pre-send control boundary before attempt/HTTP; no real claim or owner authentication asserted."
+  ],
+  "does_not_certify": [
+    "Compliance of future actual model answers",
+    "Financial correctness of prior3-market samples, whose content warnings remain",
+    "Whole company completeness or exact importACK"
+  ],
+  "historical_prompt_report": "review.json covers previous1178df57/dcb4e14a freeze with18selected tests; this final.json supersedes its source pins and test scope for publication. Not39tests.",
+  "paid_API_requests": 0,
+  "real_database_writes": 0,
+  "source_writes_by_reviewer": 0,
+  "PWF_writes": 0,
+  "source_commit_by_reviewer": false,
+  "cleanup": {
+    "test-temp_absent": true,
+    "final-temp_absent": true,
+    "validator-temp_absent": true,
+    "identity-temp_absent": true,
+    "authority-final-temp_absent": true
+  },
+  "updated_at": "2026-10-26T19:57:23.606202+00:00"
+}

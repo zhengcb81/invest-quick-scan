@@ -1,0 +1,40 @@
+{
+  "reviewer": "/root/review_consent_preflight",
+  "author": "/root/base_prompt_verify",
+  "status": "passed",
+  "open_findings": [],
+  "same_product_node": true,
+  "scope": "Minimal future prompt required-metric-key/currency-null addendum only",
+  "final_source_sha256": {
+    "src/providers/base_llm_provider.py": "f180e356e323e8360936dbefa4c2895f2ebd1fa11f99707b41901b02ca3a3a64",
+    "tests/unit/test_analysis_subject_prompt_scope.py": "a7c902ef0c2b117e94b5f37a5d84304896d99abc7dce63bc25ed350a510edf24"
+  },
+  "tests": {
+    "artifact": "currency-addendum.xml",
+    "passed": 4,
+    "independent": 4,
+    "seconds": "0.523",
+    "previous21_not_rerun_or_claimed_for_new_words": true
+  },
+  "real_trigger_reported_by_parent": "CATL newIQS05 metrics2/3, IQS06metrics2/3 andIQS08metrics0..2 omitted schema-required currency key; old invalidmembers remain refused. Reviewer does not export/read those raw failed bodies.",
+  "independent_checks": [
+    "Original standard validator accepts percent metric with currency:null and refuses same metric with currency key omitted. No synthetic payload was repaired.",
+    "Actual original LLMProvider->LLMClient single and4question finalbody includes Every metric MUST retain ALL schema-required fields, noncurrencyunits currency:null, and no omitting null-valued required keys.",
+    "Same actual payload interception also retains earlier thinking32768, packvendorJSON, selectedqid/text, ownerperimeter, outeridentity exactcopy/innerauthority boundary and previousgeneric rules; still stops before attempt/HTTP."
+  ],
+  "previous_review": "final.json remains the historical21case broader review for573b72be/8db2aed5. This currency-final.json supersedes source pins for the tiny addendum. No84/full21 suite rerun and no claim those old21 alone cover the new words.",
+  "unchanged": [
+    "original parser/schema/validator",
+    "old answers and invalid bodies",
+    "permissions/budget/work states",
+    "current workers"
+  ],
+  "financial_quality_passed": false,
+  "future_real_accuracy_proven": false,
+  "paid_API_requests": 0,
+  "source_or_real_database_writes_by_reviewer": 0,
+  "cleanup": {
+    "currency-temp_absent": true
+  },
+  "updated_at": "2026-10-26T20:01:37.201446+00:00"
+}

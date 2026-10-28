@@ -1,0 +1,73 @@
+{
+  "status": "source_security_review_passed_native_integration_pending",
+  "reviewer": "/root/base_prompt_verify",
+  "author": "/root/review_consent_preflight",
+  "reviewed_at": "2026-10-26T21:58:51.645844+00:00",
+  "source_sha256": {
+    "IQS": {
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\refresh_contract.py": "79ac10b6637790b24f1830be90c439c4f3e9cca4c7f16143cb3dbe9b61eee8fc",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\schemas\\quick_scan\\refresh-v1.2.schema.json": "05d23f4799e6a41e7bf4269ad9fca6c1a1d3cc06dcd4ad7f28ac2d4c9bd89cba",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\dashboard_prepare.py": "4aadf90471e8c274c1832a03d15a45eca0103d2b35e07414b073e778b6df5fe8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\dashboard_service.py": "d6dd1f8689c0ada6186e3fe10a1a3e8f638fd9f9992def0ff04a339f47505929",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_unusable_checkpoint_refresh_contract.py": "dd163b039e66b5066907ff412cdd965a999232096bf2960c711d595e15ad398a",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_dashboard_prepare.py": "e72cc03efbddc14d7438bc178f675b603cfc768e566d9383eaf62083ff333cee",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_dashboard_unusable_recovery.py": "7689db2cecbc6e6ac5b5b86056d66eed05e2e09c10a86a16888b559d1f6569cd"
+    },
+    "StockQA": {
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_known_outcome_journal.py": "c5d8d44854f4f32aebc440e854f877f78a695a0171f055a84d6550ae981cfa3d",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_decision_inspect.py": "91b96c1bc134d245300b15733c62a53124c1f9111f6bacfaa6fb9dae80d87b68",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_decision_authority.py": "7b3fe2a6d2e64bafbfc4662461ad945ce3afb7c8050c207f0216fe4b09c0302e",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_control.py": "2ec8749789a4d64a162ca5470eb92058455c6d191ea845f299f7d7adef7721f4",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_store.py": "83538aa4d4a1debc205abebe6ed7cb090ed44ff90de626db2aaa2ca2ab08cac8",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_decision_inspect_cli.py": "c9d8fd9392e14a7d2ffe676eff088ee02ae99c5573edf0a5aa716b137db28048",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_owner_refresh_journal.py": "e7543267582d014f57c426c119958cff039802fc02ff017ea95f94c7ec2b131a",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_refresh_inspect.py": "033d73bc8473ea487cd065978c5d9083e0a4b924d715922b1af61651d1a9d8c9",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_unusable_checkpoint_retry.py": "e14566695f2e1babefecbac66031ed02515ac6ef73937d80832159bc3d0ec8cd"
+    },
+    "StockWiki": {
+      "C:\\Users\\郑曾波\\Projects\\StockWiki\\stockwiki\\quick_scan_work_decision_owner.py": "9f2f97ad801d1ce6504faa1fa5fbec305b613a2549d7ed4f11dc65fb1662a1fc",
+      "C:\\Users\\郑曾波\\Projects\\StockWiki\\stockwiki\\quick_scan_work_delegation.py": "7b17c65f55832d18f560072cdb59aaea9b799324673b355133249bab1b1f7446",
+      "C:\\Users\\郑曾波\\Projects\\StockWiki\\tests\\test_unusable_checkpoint_retry.py": "00bde4bb02fb1a2121490e1b7aaf834738d047a1b2e2524d9630490d7e67b398"
+    }
+  },
+  "source_pin_mismatches": [],
+  "type_annotation_delta": {
+    "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_known_outcome_journal.py",
+    "tested_sha256": "2d292cbd276d4a9169cbd1b44c343ae9b1f357bae5923a4dbbf2666f39a3514f",
+    "final_sha256": "c5d8d44854f4f32aebc440e854f877f78a695a0171f055a84d6550ae981cfa3d",
+    "exact_reverse_to_tested_pin": true,
+    "change": "typing.NoReturn import and reject return annotation only; postponed annotations; original raise unchanged"
+  },
+  "open_findings": [],
+  "independent_tests": {
+    "total_passed": 31,
+    "QA_proof": "qa-final.xml:11P30.63s",
+    "QA_exact_successor": "qa-successor.xml:4P8.94s/11deselected",
+    "StockWiki": "StockWiki.xml:8P0.79s",
+    "IQS_subset": "iqs-final.xml:8P0.45s",
+    "collection_issue": "Initial QA1skip/exit5 was missing copied IQS pure-contract runtime, not product failure; fixed owned test environment and retained initial evidence; no skip counted as pass."
+  },
+  "verified_boundaries": [
+    "New work-decision request1.2 / decision1.2 / delegation1.1 pairs only with retry_unusable_checkpoint; old protocols/purposes remain strict.",
+    "Original transaction re-derives paid response, settled budget, result_ready/latest CP, absent full standard, blocked outbox with exact code/no package or ACK; canonical CP/context/outbox/event proof is never caller authority.",
+    "Foreign proof hashes, extra proof, changed model/purpose/target/prior-delivery rejected without changing original SQLite bytes; a valid full standard remains ineligible.",
+    "Exact registered successor can replace source in read projection; foreign source/confirmation bindings refuse; an unbound delivered item cannot hide original compact source; original CP/outbox unchanged.",
+    "New policy1.2 and explicit exact refs required together; native projection wrong entity/protocol/weak API count/changed decision or generation/missing work refuses.",
+    "Original full manifest/context/questions remain complete; only original authenticated execution subset is selected; backend controls still use original native journal and owner.",
+    "Native inspect verifies registered target actual ORF owner_control equal to current projected control; source guard exempts only exact original source, not unrelated unresolved work."
+  ],
+  "preserved_query_probe": {
+    "evidence": "../unusable-checkpoint-capability/preserved-query-preview.json",
+    "result": "author original-public synthetic preview ready; top permission1/sourcequery33, unchanged hash bf646e41aef5218d9017c8a582df600de6c35587e0adf48bf710cfc1db533895; no install/confirm/apply/API",
+    "limit": "This thin author probe does not substitute native4 end-to-end success; prior raw inputs already cleaned. Final native4 input/reply hashes await author artifacts."
+  },
+  "native_integration": "Pending the author last bounded native4 chain: ordinary36 -> exact1.2 retry subset -> new original standard seal/import/exactACK -> ordinary1.1 full bank reuse. No repeated cold chain by independent reviewer; no claim of engineering end-to-end, financial, live, or production acceptance.",
+  "safety": {
+    "real_api_calls": 0,
+    "real_owner_or_db_reads": 0,
+    "real_owner_or_db_writes": 0,
+    "source_edits": 0,
+    "author_active_native_tree_touched": false
+  },
+  "cleanup": "cleanup.json will record self-owned disposable source/SQLite/test directories absent; thin tests/XML/pins only retained."
+}

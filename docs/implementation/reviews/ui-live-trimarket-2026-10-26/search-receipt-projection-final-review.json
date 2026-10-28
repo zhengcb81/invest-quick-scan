@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "reviewer": "/root/base_prompt_verify",
+  "author": "/root/resume_gateway_review",
+  "source_sha256": {
+    "src/core/qa_engine.py": "98c5138abd5d05581605611d36d96bdb2f1fc2440d0d9f80c339c8fcc6c93a8e",
+    "tests/unit/test_qa_question_pack.py": "128408c5ebc383b79c639d50e00b54cfa5fd4a43fd41dfa56c25e783c9155054"
+  },
+  "source_pin_match": true,
+  "independent_tests": {
+    "tests": 18,
+    "first_pass": "final.xml:18P10.68s",
+    "final_isolated_pass": "isolated-final.xml:18P, see XML actual duration",
+    "script": "test_independent.py",
+    "source_copy": "copied-pins.json",
+    "scope": "15 forged/missing/weak-type/negative-state cases plus actual original SDK 2 tampered physical-owner proofs and1 post-response standard-save refusal"
+  },
+  "findings_fixed_by_author_in_scope": [],
+  "covered": [
+    "Executed search/model/request/response IDs appear only after current original pack proof reread with equal final receipt and original active context",
+    "Actual SQLite/vendor-stub bad final_receipt model and foreign pack membership rejected, no checkpoint or numeric answer fabricated",
+    "Actual completed native SDK response followed by standard-contract save refusal retains executed/search/model/HTTP200 fact while answer stays error/scoreNone/URLs empty/check_level unverified_model_output/no checkpoint",
+    "Unverified/unavailable/not_attempted remain negative, nested claimed executed or weak types never promote actual model or response",
+    "Next un-dispatched question remains not_attempted; no extra vendor call, checkpoint or sourceURLs"
+  ],
+  "isolation": {
+    "source": "Read-only external src/tests copied to self-owned SDK, no .env/root runtime config/real ledger copied",
+    "first_invocation_note": "First invocation used IQS cwd; original logger may append sanitized synthetic test logs to the pre-existing shared IQS log. It was not truncated/deleted because other writers may use it. No production database/source/API was changed. Final repeat starts from isolated SDK cwd so all test logging stays in owned tree.",
+    "cleanup": "Own SDK and both pytest temp trees deleted after final results; XML/test/review/pins retained",
+    "real_owner_or_financial_acceptance": false
+  },
+  "operations": {
+    "source_writes": 0,
+    "real_database_reads": 0,
+    "real_database_writes": 0,
+    "paid_API_requests": 0,
+    "worker_restarts": 0,
+    "PWF_writes": 0
+  },
+  "publication_delta": "publication-delta.json",
+  "publication_source_sha256": {
+    "src/core/qa_engine.py": "005649533cf495f11893058bcd2a3e3025a8fa6bc487ae8fcf723e2eb62bd502",
+    "tests/unit/test_qa_question_pack.py": "ffb2d3e9a188032c38cc11efb129d9c04dad2e2b072ce613f019a7ae4028e859"
+  },
+  "publication_semantics_identical": true
+}

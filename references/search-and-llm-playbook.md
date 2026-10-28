@@ -1,3 +1,15 @@
+## 2026-10-26 真实UI先导样本：联网成功不等于答案合格
+
+本轮MiMo mimo-v2.6-pro、thinking开启、每包最多4题，6笔原物理回执均HTTP200/completed，原usage均search_tool_calls=2。24个题目成员中15个形成checkpoint，保存率62.5%；其中仅13条具有完整standard并封存可交付（13/24=54.17%）。另2个legacycompact检查点标准体缺失且outbox被阻断，不能计为合法答案；这些比率都不是金融正确率。余项有同期间不同分部复用metric_id、非货币metric省略必填currency、outer entity_id被模型改写。不得通过放宽validator、替换模型身份、补写历史currency或重问已保存答案消除失败。原回复/费用保留，按原known-response决议与原planner处理失败工作。
+
+三个市场各一条新增单位经济题的独立事实抽查未获金融签收：集团利润不能替代题面要求的产品/客户/项目全成本，浅搜索摘要漏取不代表官方未披露，ROE/期间/趋势须逐口径核查。无相应粒度证据时采用insufficient_evidence/null，缺资料不能强给中间分；schema通过不能用于宣称自动白名单可用。
+
+本轮归一化收据cached_input_tokens均为0，不能用“共用agent沙盒/公司上下文”推断缓存收益；还须区分供应商是否提供原缓存计数字段和真实前缀命中。这里只证明原收据报告值，不证明共享上下文必然零缓存。原私有思考文本不保存，只保留reasoning token数。
+
+后续请求已补generic输出契约与证据规则；本机UI下一轮实际prepare.pack_size改为2（policy每包上限仍4、预算不变），4小时新确认只作用新准备。已有17检查点保留，其中15条含旧2条为完整可交付，2条待原受控恢复。提示词和包大小同时改变，因此后续差异属于联合操作方案，不能归因为包大小或称其最优。2026-10-26收尾暂停后，用户于10月28日要求继续；先关闭隔离恢复链的普通扫描复用缺口，再继续真实入库/exact ACK、缓存恢复及事实抽查后下生产结论。来源为本地原物理回执元数据与独立金融报告：docs/implementation/reviews/ui-live-trimarket-2026-10-26/financial-first-sample-review.json；运行元数据runs/resume-ui-live-2026-10-26/model-round1-metadata.json（无答文/思考）。
+
+---
+
 # 联网搜索与LLM统一使用规范
 
 规范版本：1.6.0；日期：2026-10-18。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。

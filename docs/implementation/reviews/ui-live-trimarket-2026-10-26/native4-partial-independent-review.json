@@ -1,0 +1,88 @@
+{
+  "reviewer": "/root/review_recovery_resume",
+  "reviewed_at": "2026-10-28T06:54:15.247341+00:00",
+  "status": "partial_native_chain_failed_on_return_to_ordinary_1_1",
+  "source_edits": 0,
+  "real_API": 0,
+  "real_database_access": 0,
+  "native_tests_run": 0,
+  "source_security_review_is_distinct": {
+    "prior_independent_cases": 31,
+    "prior_status": "source_security_review_passed_native_integration_pending",
+    "does_not_imply_E2E_or_financial_acceptance": true
+  },
+  "native4": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 882.709,
+    "failure_site": "tests/test_dashboard_unusable_recovery.py:563 ordinary=gateway.apply(...)",
+    "error_visible": "DashboardPrepareError: Original native command refused preparation",
+    "exact_inner_native_code_retained": false,
+    "why_code_not_retained": "gateway.apply worker failure is outside test _native helper exception recorder; temporary candidate/job output auto-cleaned; XML only generic outer exception"
+  },
+  "proven_stages": [
+    "initial_preview",
+    "initial_native_36_registered",
+    "known_settled_compact_and_prior_delivered",
+    "controlled_preview_1_of_36",
+    "controlled_native_admission_and_prepare_execution",
+    "controlled_original_package_import_exact_ack"
+  ],
+  "proven_scope": "synthetic owned native-public chain, not real companies/paid LLM/financial accuracy",
+  "assertions_before_last_success_stage": [
+    "Original source result_ready/checkpoint/outbox retained unchanged after target exactACK",
+    "Previously delivered peer package hash unchanged",
+    "Target generation equals old+1",
+    "Target and peer native observation IDs recorded"
+  ],
+  "not_proven": [
+    "Returning ordinary1.1 full36 prepare/apply succeeds",
+    "Exact delivered target/peer observation refs reused in ordinary admission",
+    "No new work item generated for delivered fields under ordinary plan",
+    "End-to-end UI recovery on real owner workspace",
+    "Financial quality"
+  ],
+  "preserved_query_input": {
+    "input_sha256": "af185bfe1fa3b2f1f68dded49a71bae5a27053835abdf9ab38432b3c35ddc80a",
+    "reply_sha256": "db66c278a19424b39bf132a3683f792ea24de83e953f4444ef66ee1eb1335437",
+    "permission_field_count": 1,
+    "source_query_field_count": 33,
+    "owner_preview_status": "ready",
+    "raw_synthetic_documents_copied_to_report": false,
+    "source_query_snapshot_id_nonempty": true
+  },
+  "cleanup": {
+    "last_native_owner_temp_root_exists": false,
+    "native4_failure_original_fixture": "tempfile.TemporaryDirectory finally removes entire owner/ledger/runtime tree",
+    "remaining_author_dirs": [
+      "guard-attestations",
+      "native-public-artifacts"
+    ],
+    "native_public_artifacts": [
+      "work-decision-input.json",
+      "work-decision-reply.json"
+    ],
+    "final_cleanup_receipt_after_native4_missing": true
+  },
+  "documentation_drift": [
+    "author-status still native4_pending after XML final failure",
+    "source-review correctly passes security but native_integration text pending is stale",
+    "PWF top still says native last stage in progress, no native4 failure recorded"
+  ],
+  "recommendations": [
+    "Record outer DashboardPrepareError code/status and sanitized details before test tree finally cleanup; retain exact module/argv class/step/native error code without private bodies",
+    "Use existing direct original WorkStore/control/owner fixtures for cheap red regression of ordinary1.1 projection; do not rerun 36 registration while diagnosing each predicate",
+    "Run fast unit + original component integration cohorts first, then one full native36-to1-toACK-to1.1 chain at the major node",
+    "If full native chain fails, retain a sanitized step diagnostic before cleanup; never cache/copy a production DB or mutate signed binding to avoid expensive setup",
+    "Optionally keep one session-scoped owned original native fixture within a single explicit integration invocation; snapshot/restore only unsent disposable state under exact same bound namespace, and always finally remove; do not claim independent trials if state is shared"
+  ],
+  "evidence_sha256": {
+    "runs\\resume-ui-live-2026-10-26\\unusable-checkpoint-capability\\native4.xml": "1deabfe75acaaed6889e5825c66e4dc0b12de4073a4bb91f017a8ee134cc0d01",
+    "runs\\resume-ui-live-2026-10-26\\unusable-checkpoint-capability\\native-stages.jsonl": "0a200bb79b524c54593b4922c85d01b7856446be343b095a20b913e272b8eb0b",
+    "runs\\resume-ui-live-2026-10-26\\unusable-checkpoint-capability\\author-status.json": "f091f63db1e0163af817ad396b1da61a133e477da01026234807603ee60f5732",
+    "runs\\resume-ui-live-2026-10-26\\unusable-checkpoint-independent\\source-review.json": "3be2283a0dd48f4647a85ac00e210b1c0fa13feb6233b6784e3771180d3a6be3",
+    "tests\\test_dashboard_unusable_recovery.py": "7689db2cecbc6e6ac5b5b86056d66eed05e2e09c10a86a16888b559d1f6569cd"
+  }
+}

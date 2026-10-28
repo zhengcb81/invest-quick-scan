@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "method": "Independent exact reconstruction: converting current LF bytes to CRLF in memory reproduces each originally tested SHA exactly. No source writes, Git mutation, broad history scan or test rerun.",
+  "files": [
+    {
+      "file": "src/core/qa_engine.py",
+      "reviewed_raw_sha256": "98c5138abd5d05581605611d36d96bdb2f1fc2440d0d9f80c339c8fcc6c93a8e",
+      "published_raw_sha256": "005649533cf495f11893058bcd2a3e3025a8fa6bc487ae8fcf723e2eb62bd502",
+      "reviewed_bytes_reconstructed_by_current_LF_to_CRLF_sha_matches": true,
+      "only_CRLF_to_LF": true,
+      "AST_identical": true
+    },
+    {
+      "file": "tests/unit/test_qa_question_pack.py",
+      "reviewed_raw_sha256": "128408c5ebc383b79c639d50e00b54cfa5fd4a43fd41dfa56c25e783c9155054",
+      "published_raw_sha256": "ffb2d3e9a188032c38cc11efb129d9c04dad2e2b072ce613f019a7ae4028e859",
+      "reviewed_bytes_reconstructed_by_current_LF_to_CRLF_sha_matches": true,
+      "only_CRLF_to_LF": true,
+      "AST_identical": true
+    }
+  ]
+}

@@ -1,3 +1,45 @@
+## 2026-10-28 接续 — 已核实上轮native4失败点，不再沿用pending
+
+用户明确“继续”，撤销上一条条件暂停，继续原PWF主线。最新亲查IQS6089c6d、StockQA83fec12、StockWiki1799d3a、UIc6944ab；IQS上一轮PWF/薄证据尚未完成提交，保留其他writer的2026-10-10施工包README四行改动。原目标工具仍显示paused但不具备resume接口；以本次用户继续为执行依据，不误设complete/blocked。
+
+native4.xml真实1F/0E/0skip、882.709s。已证普通36题原登记→明确1.2新有限控制→仅IQS04的1/36原准入/prepare_execution→新标准包原封存/导入/exact ACK，原旧checkpoint/outbox不变；失败在tests/test_dashboard_unusable_recovery.py:563：切回普通1.1后gateway.apply被原CLI拒。尚未证明普通全题库复用恢复观测，不能宣称全链通过。上轮author-status/source-review和PWF“pending”均已过时，本条覆盖；不回写或美化原失败XML。原fixture已自动删除，拒绝的inner模块/code未留存，属于可观测性缺口；目前只留通用错误与阶段薄证据。
+
+### Next Step
+
+先补测试失败诊断与同一隔离工作区内的阶段复用，使普通1.1收尾的根因可低成本精确复现；用原校验修复，集中定向测试和非作者审查后发布，再恢复两真实阻塞、三市场完整扫描、原入库/exact ACK和warm缓存验收。原真实配置/库/费用不重置；当前未发新付费请求，不以合成集成代替金融准确性。
+
+---
+
+## 2026-10-26T21:50Z — 用户要求当前收尾后暂停，禁止新扫描
+
+本轮只完成已经在手的U1完整标准答案入口、U2原受控恢复协议与必要Dashboard恢复子集接线，以及同节点独立审查/提交/PWF。不开真实owner1.2部署，不为两legacy检查点创建真实新控制，不启动付费扫描或下一轮搜索实验。goal查询已为paused，不能以原总目标持续实施覆盖当前暂停要求。
+
+U1作者112项18.426s+单公开CLI1项17.966s、非作者10项7.95s通过/open[]；UI恢复子集作者37项10.146s、非作者15项0.6s通过/open[]，full-count别名冲突/null与合法部分scope展示两根因已修；UI三个冻结文件已本地提交c6944ab（无remote）。U2当前仍在隔离原生链最后阶段，尚未最终签收，不能把前段seal/import/ACK说成全部恢复链已过。两writer均冻结后再提交StockQA，避免normalhook影响活动writer。
+
+真实原ledger21:50Z只读核9settled、267751微USD用量估计/0在途；当前108项82pending、17检查点、9failed；检查前后库文件SHA一致。17检查点仅15完整可交付（含旧2），另2缺标准体；本轮24成员仅13新完整standard=54.17%，15checkpoint=62.5%仅保存率，不是金融准确率。对应旧记录及搜索规范已纠正。原真实policy仍1.1，原batch blocked，原费用/历史不重置。
+
+### Next Step
+
+仅关闭当前U2必要修复/集成/独审与正常发布，更新暂停交接后停止。下一次用户明确继续后再按controlled-recovery-subset-contract.md：原policy显式1.2→两项新purpose有限确认→原N+1受控子集扫描/入库/exact ACK→显式恢复普通1.1并query复用→补完三市场完整题库/缓存/金融验收。旧确认可能到期，应重新亲核；禁止直接盲resume旧batch。
+
+---
+
+## 2026-10-26 — 已核正17检查点仅15可交付；两条原受控恢复能力施工中
+
+五个已收但校验失败的leased成员，root已逐原CLI确认/apply完成5/5 recorded/API0；独立原库核5都failed且gen不变、9settled累计267751微USD/0在途、8物理表与17已有材料hash全不变。固定install当前不存在，原finally自检恢复true；未记录执行前独立存在性/hash基线，报告保留该证据边界，不补造before。
+
+更正：17result_ready只是checkpoint数。亲核15有standard+sealed outboxready；MSFT IQS04gen1、CATL IQS04gen2只有legacycompact、标准体缺失，outboxblocked/c06_standard_answer_unavailable。两原final均hash-only，无原文可重建；旧6路公开retry预检全部拒，不能删checkpoint/伪failed/补字段绕过。此前“17条合法回答”表述已向用户明确更正为17检查点/15可交付。只读边界薄证据legacy-checkpoint-actual-boundary.json。
+
+新schema/prompt增补StockQA227702f已正常钩子推送；搜索失败回执真实transport保真StockQA a35ef7a已推送（174作者/18独立，normalhook仅CRLF→LF；独立内存LF→CRLF精确复原旧审SHA，不重跑大集、不冒称rawhash没变）。新公有错误仍无分数/空URL/无checkpoint，不因搜索执行而提升答案资格。原UI已安全重载9637035/UI7987b8c，实际显示微软8保存/21待问/4失败/共33和核实缓存时间；UI原CAS已保存future prepare.pack_size2、TTL14400，旧包/预算不变。
+
+本产品节点两条不重叠线：U1 resume agent只runner+既有q07/publictest，完整C06 authority2/3在checkpoint保存前必须有完整合法standard，generic旧QA兼容；112unit+1原publicstub已过，base终审中。U2 consent agent写原QA journal/decision+SW owner/grant+IQS纯contract/schema，显式新purpose retry_unusable_checkpoint，wire/storeddecision1.2与新workgrant1.1，旧协议/旧retry门原封；只许latest result_ready+checkpoint+无standard+精确blocked且无package/ACK/send+原known2xx/预算settled，追加原retry journal，旧材料/费用不动，只原planner选N+1。目前施工/测试中，无真库/API写。root待两线冻结、非作者审后一起正常提交，避免hook影响活动writer。
+
+### Next Step
+
+先关闭U1/U2并由root经新原公开机制处理2真实legacy阻塞，再三市场UI准备/扫描2题包接续。已证cachedlegacy会触发整个后续packbarrier，不能假设先跑其余91题；不换日期/模型/身份逃门。完整108题、原入库/exactACK、warm0新请求及金融签收仍未完成。
+
+---
+
 ## 2026-10-26 — 原scope进度展示已独审；真实回答根因修复继续
 
 UI7987b8c已本地提交（无remote）：不再显示{}，按原inspect qid映射显示scope保存/在途/待问/失败，保留缓存/核实时间；显式unknown不回填旧counts，aggregate键/非work状态/坏时间不伪装进度。后端作者44P/非作者23P，UI17非作者/原3快ESM通过，6个真实反例永久化，薄报告已归档progress-*-final-review。原权限/派发/资格不变，待安全重载原8766后以实际UI核验。
@@ -14,7 +56,7 @@ UI7987b8c已本地提交（无remote）：不再显示{}，按原inspect qid映�
 
 ## 2026-10-26T19:46Z — 首轮真实返回已完成，保留部分答案并根修质量问题
 
-当前真实批batch-2dfa…blocked，0在途，原9笔settled累计267751微USD（原usage价格表估计，不冒称最终invoice）；本轮新增6次HTTP200，共24个题目提交，15条新合法ready，加旧2条共17ready。该15/24只是契约接收率，不是金融正确率。当前MSFT24pending/8ready/4failed（第三包外层foreign_entity_id原parser全包拒），Tencent32pending/2ready/2leased（01/04 duplicate metric ID），CATL26pending/7ready/3leased（05/06/08仍需原validator逐题诊断）。所有响应与费用保留，不盲重发5leased或重问17ready。新standard保存不等于已有原StockWiki ACK。
+当前真实批batch-2dfa…blocked，0在途，原9笔settled累计267751微USD（原usage价格表估计，不冒称最终invoice）；本轮新增6次HTTP200，共24个题目提交，15个新检查点，加旧2个共17检查点；经后续核正，新完整standard为13条（13/24=54.17%），含旧2条共15可交付。15/24=62.5%仅是checkpoint保存率，不是完整契约接收率，更不是金融正确率。当前MSFT24pending/8ready/4failed（第三包外层foreign_entity_id原parser全包拒），Tencent32pending/2ready/2leased（01/04 duplicate metric ID），CATL26pending/7ready/3leased（05/06/08仍需原validator逐题诊断）。所有响应与费用保留，不盲重发5leased或重问17ready。新standard保存不等于已有原StockWiki ACK。
 
 独立金融抽查三市场各一条新增IQS03已完成，financial_quality_passed=false：同题对集团盈利代理与产品/客户/项目全成本的门槛不一致，浅snippet漏取官方数据，日期、趋势及ROE定义有明确问题；部分核心数字获官方短页支持。详reviews/ui-live-trimarket-2026-10-26/financial-first-sample-review.json；不下载文件、不保存思考或答文全文。
 

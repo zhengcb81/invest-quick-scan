@@ -1,0 +1,26 @@
+{
+  "reviewer": "/root/base_prompt_verify",
+  "cleanup": {
+    "pytest_temp_exists": false,
+    "sdk_exists": false
+  },
+  "independent_tests": {
+    "count": 10,
+    "evidence": "independent.xml",
+    "scope": "Original received SQLite/store and engine; foreign qid/missing summary/boolean score/prose rejected under authority2/3; unchanged valid standard accepted; physical receipt and old checkpoint identical",
+    "result": "10 passed in 7.95s"
+  },
+  "source_sha256": {
+    "src/runners/llm_runner.py": "35f18b61703fb79c89e6468ffbfca4982fa20ffebe63a4e65005a003254607e0",
+    "tests/unit/test_q07_checkpoint.py": "ada7a99079e126b715dc9fc617583001fbc23882978ec78d17f9304cbe764183",
+    "tests/integration/test_qa_c06_02_subprocess_cli.py": "9aac69bd6dbff18819cfa5348d5ec4b0675fc022972676b915d9f3cc498875c2"
+  },
+  "status": "passed",
+  "open_findings": [],
+  "author_evidence": {
+    "public": "1P17.966s, separately covers third test-only delta; original 31 synthetic HTTP stubs once each, 0 network, bad item no CP/standard/delivery and 30 healthy ready",
+    "unit": "112P18.426s, first two source pins"
+  },
+  "author": "/root/resume_gateway_review",
+  "limits": "No production API, DB read/write, real recovery or historical checkpoint modification; generic compact compatibility remains author regression evidence, not an independently repeated full suite."
+}

@@ -1,0 +1,37 @@
+{
+  "reviewer": "/root/base_prompt_verify",
+  "author": "/root/resume_gateway_review",
+  "final": "15 independent cases passed; final.json",
+  "source_pin_match": true,
+  "cleanup": {
+    "core_copy_removed": true,
+    "only_thin_script_results_retained": true
+  },
+  "safety": {
+    "production_db_reads": 0,
+    "deployment": 0,
+    "production_db_writes": 0,
+    "source_edits": 0,
+    "api_calls": 0
+  },
+  "author_final": "37 actual ESM/DOM/API scenarios passed in10.146s, separately evidenced by author",
+  "red": "11 cases:5 failures/6passes on original frozen helper; red.json",
+  "status": "passed",
+  "covered": [
+    "alias conflicts/null/weak types; generations",
+    "explicit metadata, no bundle-name inference",
+    "complete versus incomplete/duplicate/mixed group",
+    "partial scope delivery remains readable without company completion",
+    "read-only source delta confirms permissions/control bodies unchanged"
+  ],
+  "source_sha256": {
+    "src/app/ui/product.js": "19aafda0d04e351ac6930ca960eb2610568844f34cd55e6fe2dfe56a857faa8b",
+    "tests/test_product_ui.py": "147cf2d3daecde648735b7be2a60885c8bd71f42e79a94fd2d3cd3d3e3ea0fad",
+    "src/app/ui/product_core.js": "35e7025783f9e3bfd5ed41b37a09b867315871607e8893cc842394799ce467e8"
+  },
+  "open_findings": [],
+  "findings_fixed": [
+    "UI-01: every declared full-bank count alias now independently validates safe positive integer and equality, including explicit null; no first-non-null hiding",
+    "UI-02: legitimate partial delivery scope retains finite scope/company/full-bank annotation; recoveryGroupInfo full selection remains strict"
+  ]
+}
