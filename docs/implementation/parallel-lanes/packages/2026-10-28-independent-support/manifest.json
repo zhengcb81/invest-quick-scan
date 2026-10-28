@@ -1,0 +1,155 @@
+{
+  "protocol": "iqs.support_product_component_wave/1.0.0",
+  "created_at_utc": "2026-10-28T19:05:23.576921+00:00",
+  "catalog_role": "Original parallel_handoff_cli catalog; source product components only, no owner or spend authority",
+  "packages": [
+    {
+      "id": "UI-COMPARE-28",
+      "lane_id": "iqs",
+      "task_ids": [],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-comparison-view-lab",
+      "readiness": "unique_writer_preflight_required",
+      "card": "UI-COMPARE-28.md",
+      "branch": "codex/ui-compare-28",
+      "module": "iqs_compare_view_tools",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/",
+        "schemas/",
+        "fixtures/",
+        "tests/",
+        "tools/",
+        "demo/",
+        "integration/",
+        "vendor/",
+        ".tmp/",
+        "docs/"
+      ],
+      "read_only_repositories": [
+        "iqs",
+        "ui",
+        "stockwiki"
+      ],
+      "input_file_ids": [
+        "iqs:docs/implementation/contracts/scoring.md",
+        "iqs:docs/implementation/parallel-lanes/handoff.schema.json",
+        "iqs:questions/catalog.json",
+        "iqs:questions/common.json",
+        "iqs:questions/diagnostics/dupont.json",
+        "iqs:questions/diagnostics/porter.json",
+        "iqs:schemas/answer-content.schema.json",
+        "iqs:schemas/observation-v1.2.schema.json",
+        "iqs:scripts/dashboard_owner.py",
+        "iqs:scripts/handoff_reference_check.py",
+        "iqs:scripts/parallel_handoff_cli.py",
+        "ui:src/app/constants.js",
+        "ui:src/app/product_api.js",
+        "ui:src/app/ui/dom.js",
+        "ui:src/app/ui/product.js",
+        "ui:src/app/ui/product_core.js"
+      ],
+      "network_scope": "loopback_only",
+      "loopback_host": "127.0.0.1",
+      "demo_port": 18771,
+      "source_repository_execution_allowed": false,
+      "production_ready": false,
+      "financial_qualification_granted": false,
+      "root_integration_required": true,
+      "workers_dispatched": false
+    },
+    {
+      "id": "UI-UNIVERSE-28",
+      "lane_id": "iqs",
+      "task_ids": [],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-universe-import-ui-lab",
+      "readiness": "unique_writer_preflight_required",
+      "card": "UI-UNIVERSE-28.md",
+      "branch": "codex/ui-universe-28",
+      "module": "iqs_universe_import_ui_tools",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/",
+        "schemas/",
+        "fixtures/",
+        "tests/",
+        "tools/",
+        "demo/",
+        "integration/",
+        "vendor/",
+        ".tmp/",
+        "docs/"
+      ],
+      "read_only_repositories": [
+        "iqs",
+        "ui",
+        "stockwiki"
+      ],
+      "input_file_ids": [
+        "iqs:docs/implementation/parallel-lanes/handoff.schema.json",
+        "iqs:schemas/quick_scan/identity-mapping-dto.schema.json",
+        "iqs:scripts/dashboard_owner.py",
+        "iqs:scripts/handoff_reference_check.py",
+        "iqs:scripts/parallel_handoff_cli.py",
+        "stockwiki:stockwiki/cli_parsers/quick_scan.py",
+        "stockwiki:stockwiki/quick_scan_candidate_import.py",
+        "stockwiki:stockwiki/quick_scan_identity.py",
+        "stockwiki:stockwiki/quick_scan_universe.py",
+        "ui:src/app/constants.js",
+        "ui:src/app/product_api.js",
+        "ui:src/app/ui/dom.js",
+        "ui:src/app/ui/product.js",
+        "ui:src/app/ui/product_core.js"
+      ],
+      "network_scope": "loopback_only",
+      "loopback_host": "127.0.0.1",
+      "demo_port": 18772,
+      "source_repository_execution_allowed": false,
+      "production_ready": false,
+      "financial_qualification_granted": false,
+      "root_integration_required": true,
+      "workers_dispatched": false
+    }
+  ],
+  "input_lock": {
+    "path": "inputs.lock.json",
+    "bytes": 14523,
+    "raw_sha256": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad"
+  },
+  "documents": [
+    {
+      "path": "README.md",
+      "bytes": 4251,
+      "raw_sha256": "b9d6d5d545b4623bc22841cabd25c3c870211e4eadf233c1f1a1a7ed3f321b67"
+    },
+    {
+      "path": "handoff-rules.md",
+      "bytes": 10416,
+      "raw_sha256": "0da7cd0c521c50252b08a7b68ab08b81b9f7caf1ff85af2614bf65e91f49917f"
+    },
+    {
+      "path": "UI-COMPARE-28.md",
+      "bytes": 9388,
+      "raw_sha256": "9c753a3386b278819f8d633e7a23d5b8eeb276a59eade109b1aedf0575811c75"
+    },
+    {
+      "path": "UI-UNIVERSE-28.md",
+      "bytes": 10094,
+      "raw_sha256": "53d3e81f1a0b1527b65a43600d81b899d87db75064111742910b219a6f463f24"
+    }
+  ],
+  "handoff_profile": {
+    "schema_version": "1.0.0",
+    "source_lock_id": "iqs:docs/implementation/parallel-lanes/handoff.schema.json",
+    "extended_review_evidence": "external review/artifact files; never new fields in old handoff envelope"
+  },
+  "status_scope": "Design package, not implementation/production/financial acceptance; manual dispatch by user after card review",
+  "excluded_candidates": [
+    "COMPARE-PLAN-28 offline planner",
+    "UNIVERSE-DESK-28 duplicate offline ledger",
+    "TEST-SLICE-28 test-lane duplicate"
+  ]
+}

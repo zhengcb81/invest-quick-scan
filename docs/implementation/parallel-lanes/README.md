@@ -1,3 +1,9 @@
+## 2026-10-28 最新可派发清单（两个独立产品包）
+
+见 [本轮总入口](packages/2026-10-28-independent-support/README.md)：[UI-COMPARE-28](packages/2026-10-28-independent-support/UI-COMPARE-28.md) 和 [UI-UNIVERSE-28](packages/2026-10-28-independent-support/UI-UNIVERSE-28.md)。两包独占不同新Lab，原仓只读；卡、21文件输入锁、接口、隔离测试、最终真实独审及交接规则已齐并通过独立卡审。未代用户派发。总控后续统一接原UI/gateway；本批不关闭生产/金融门。前三个泛工具草案已撤销，不要另行实施。以下旧条目保留历史语境，实时主线以根PWF最新首条为准。
+
+---
+
 # Invest Quick Scan 跨 Harness 并行施工总控
 
 **当前占用更新：** 用户已确认QA-C06-02、SW-REPAIR-02、EVID-LAB-01均已开工；三个源仓writer分别归外包harness，总控只写IQS。波次2是不可变分派起点，里面workers_dispatched=false为制作时观察，不是今天的实时状态。IQS正在正式交付[authority上游](../contracts/iqs-authority-producer-2026-10-07.md)，QA接收其同SHA上游，联合验收仍由总控回收后执行。

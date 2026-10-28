@@ -1,3 +1,37 @@
+## 2026-10-28T19:13Z — 按用户要求安全暂停；本轮只有两个可独立派发的产品施工包
+
+**状态：paused，按用户明确要求暂停；完整三市场108题验收尚未完成。** 用户要求暂停前列齐新施工包。真正保留的是 UI-COMPARE-28（多公司×动态题目/模型/日期的正式结果视图组件）和 UI-UNIVERSE-28（用户TXT/CSV名单批导、人工消歧与原单entity确认组件）。新目录 `docs/implementation/parallel-lanes/packages/2026-10-28-independent-support/` 六份文档已齐；两Lab分别为 `C:/Users/郑曾波/Projects/iqs-comparison-view-lab` 与 `C:/Users/郑曾波/Projects/iqs-universe-import-ui-lab`，编卡/独审时均不存在。两个唯一写根互不重叠，可交不同harness；当前workers_dispatched=false，未代用户派发。
+
+这次独立卡审由不同agent实际完成，三文案问题同轮全修（pair owner verdict不能由row flags合成、允许普通运行环境但禁凭据、锁外main/router留给总控），最终passed/open_findings=[]。root实际核21输入raw工作树字节及冻结commit/blob/OID/SHA，reviewer独立核raw字节和六文档manifest一致。两卡均要求将来实现交付前真实不同agent全面检查、全部问题修复、最终payload/input-lock/file-pins绑定且passed/open[]；只在一个完整功能大节点集中审，不新增小节点审批。原COMPARE-PLAN/UNIVERSE-DESK/TEST-SLICE三个泛工具候选撤销，未建Lab/未派发，不列作新包。总控唯一负责未来接原UI/gateway，组件mock通过不是生产/金融准入。
+
+**当前主线原件状态：** 原六scope向量只读重新记录：M22ready/3failed/11pending，T35ready/1failed，C14ready/22pending；合计71/108有CP+标准+封存，当前这一完整向量delivered=0（两个更早的历史单题ACK仍保留，不混计）。53模型HTTP均settled，1259844微USD为估计，0inflight；原CP/context/standard/package及旧费用子集全保留。C15/16 epoch2已在真实到期后原recover为pending，不可重复apply。root亲核无main_with_llm进程，暂停后不新增收费调用；原UI R7/8766保留。
+
+StockQA86f5171/fac42f6已推原origin：原context兼容/完整sealer/收到授权2xx后保存等根修及定向独审证据均归档。StockWiki8a5ac1c已本地正常提交（无remote），最终2pins与独审一致；零0缓存委托修复通过作者50P及最终独立22P。真实T33个原result_ready/CP/standard/context/package和9张物理元数据均保持；新 `prepare_fb1f5a7c4a5245a3a7b691a9ef77726d` 的原0/0委托**confirmed**，但随后StockQA原SDK admission于18:56:50拒绝，`refresh_admission_native_or_producer_rejected`，registered_with_executor=false。不能说完整36登记/108验收通过，也不能把generic猜成另一个>0预算守卫。实际producer纯loader和consumer proof纯validator通过，均不等于native准入通过。
+
+**精确暂停点：原确认通过，SDK admission unknowninner待隔离复现。** 外层 `StockQAbyLLM/src/utils/quick_scan_refresh_admission.py:516–519`隐藏底层异常；剩余owner.prepare/current+work_projection、existing binding、register_refresh_action/原事务attach尚无当次触发证据。最小下一实验在原 `tests/integration/test_c06_refresh_admission.py` 的单合成题 setup_admission 上先完成真实CP，再建立新零报价确认，调用原admit捕获__cause__，只按真实raise根修；不要重建整36/反复真实POST来猜。两次纯读诊断的一次全局inputs路径假设和一次witness把physical摘要误比raw rows已分别纠正，原失败保留，未改真实数据库或冒称产品失败。
+
+当前准备：M `prepare_e29c4e2114d442cb9cfae7b884433990` registered；T fb1f needs_original_inspection，旧T74da仅本地编排已abandoned、原件保留；C原 `prepare_bc31143f27cf4ed1a3c1298240da687a` registered/原run暂停。保持原policy6/TTL24、cutoff2026-10-25、pack2/thinking；旧grant/lease不续。下次继续先核真实当前权限/有效期与原状态，不直接POST旧失败准备；所有53费用和71成功保留。
+
+### Next Step
+
+**等待用户明确继续。** 届时先做上述单题native零缓存准入隔离复现/根修，集中独审后原UI登记；再完成37条失败/待问题的原真实接续→全108原标准封存→ACK前原个体run冷恢复0HTTP→全入库exactACK→重启历史幂等/过期负例。不要用已通过的动态TTL1541秒隔离用例或中间0/0确认代替这些未完成门。外包两卡如用户已交出，视为活动writer，只消费最终交接，不接管其Lab。
+
+---
+
+## 2026-10-28T18:52Z — 原缓存零报价委托修复已发布；新T准备已从UI提交；按用户要求收尾后暂停
+
+StockWiki8a5ac1c本地正常commit（无remote），仅delegation.py/原对应tests两文件；正常static hook passed，提交后两raw SHA与独审完全相同。有效原SDK红→作者50P9.14s；最终不同agent22P4.88s/0skip/open[]，临时根已清，0API。严格同0整数且原非空cache-only/budget_available=True才新增，正报价旧分支/原currentowner/state/TTL/revoke/record binding未放宽；原同0/同正外的报价仍拒。33个合成metadata不是33真实CP，测试不冒称实际consumer admission。
+
+Root从原UI放弃failed T74da本地编排，保留原state；18:51:22显式原T ASJ@1/SEHK00700/security/full36/cutoff25提交新prepare_fb1f5a7c4a5245a3a7b691a9ef77726d，当前preparing，不重复POST。M新e29已registered/C旧bc311仍保留。53HTTP settled/0inflight静止；全108/原入库ACK与冷恢复仍待完成。
+
+用户指出长期每次恰好3包为不合理模板惯性。只读复核后撤销尚未落盘的三个离线工具选题：比较、名单审阅、测试分层已有产品对应能力。不能为了凑数另建Lab。仅按实际源码缺口重新判断可嵌入产品的独立交付，数量不固定；未发布/未派发。用户最新要求发完合适的包后，将此前当前工作收尾、记录提交推送，再暂停，不开启更多新工作。最终是否暂停以root实际当前节点完成/证据记录为准，不以“修了源码”等同全108完成。
+
+### Next Step
+
+核新T原委托/SDK实际登记成功；必要时按原owner失败证据修尽，保留71CP/全部费用。完成当前完整真实验收或明确记录无法收尾的具体缺口；施工包只发有明确价值且互不覆盖的版本，卡前不同agent集中审。最终更新PWF/交接、精确提交推送，然后按用户要求暂停。
+
+---
+
 ## 2026-10-28T18:43Z — StockQA 接续根修已发布；C 原到期工作已恢复；新独立施工包编制中
 
 StockQA 已按正常 hooks 提交并推送 86f5171 和 fac42f6。原冻结 observation context 仅容许 run_id/scan_id/inputset_id 三运行标签变化，其余稳定字段与原 hash 校验不放宽；实际 loaded v3 authority + 原 SDK + 完整 sealer 正例已通过。集中独审 30P22.29s，正常 hooks 后 root 同组 30P24.57s；另独立发现“已授权2xx后权限变化阻止保存”真实反例，最小纯 context helper 修复后 3P8.57s/open_findings=[]，原下一次 POST 权限拒绝仍零发送。最后正常 hooks 后六文件 AST 等价证据保留，不以旧30P冒称覆盖该后续反例。
@@ -6,7 +40,7 @@ C 原 IQS15/16 epoch2 在真实时钟过期后，于18:23:51经 QuickScanWorkSto
 
 当前真实完整目标仍71/108已封存、53模型HTTP全部settled、1259844微USD估计、0在途。模型发送保持静止，待T零费用原委托修复并完成新准备再启动；不能称108或入库/完整缓存验收通过。R7/8766保持，原policy6/TTL24、cutoff25、pack2/thinking/新claim3600/新grant43200不变。此前17:57待提交和18:21等待事项由本条实际证据替代。
 
-用户新要求三份互不冲突的独立施工包；仅在 docs/implementation/parallel-lanes/packages/2026-10-28-independent-support/ 编制，独立Lab，源仓只读、离线、无生产写入；每包交接前真实不同agent全面审查、发现全部修复且passed/open[]，不增加小节点复审。选题先核既有包避免重复，卡本身也交不同agent集中审查。尚未派发，不视为已施工。
+用户新要求几个互不冲突的独立施工包，root当时按习惯初拟三份；仅在 docs/implementation/parallel-lanes/packages/2026-10-28-independent-support/ 编制，独立Lab，源仓只读、离线、无生产写入；每包交接前真实不同agent全面审查、发现全部修复且passed/open[]，不增加小节点复审。选题先核既有包避免重复，卡本身也交不同agent集中审查。尚未派发，不视为已施工。
 
 ### Next Step
 
