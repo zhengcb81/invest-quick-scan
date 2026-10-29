@@ -1,3 +1,33 @@
+## 2026-10-29T23:07Z — 两R1重验完成：主要功能转绿，仍需有限补交02；主线暂停
+
+COMPARE实际HEAD61982a72f35fd3250bc1710bc1a9cc3bf2455424/C9bb640d30c6a3c64d472bd07cab634d6b819d096：上次4业务反例4P、兄弟前缀cleanup stub1P、正确dispose控制1P；交付完整范围182通过（97unit+82integration+1perf+2真实Chrome mock）。初integration1F是验收PATH漏WindowsPowerShell，纠正后CLI22通过，原其他60已过，合计82唯一覆盖不双算。剩余两组：launch在返回session前start失败不close，安全stub1F/profile残留（0真实失败Chrome，不宣称实测进程泄漏）；handoff缺必需scope.out_of_scope_writes使原公共CLI exit2、final缺4个必需ref且临时移走tests/fixes后本LabCLI仍valid。outer C/reviewer/manifest/evidence/有效round与实际SHA已对齐，不沿用上轮全旧绑定结论。
+
+UNIVERSE实际HEADbe7e1ee07b6366d31e1b7eae60942b8d00f58be8/C1a6d345017c0f6bf5d006eb5a26e9470f0903b83：上次5反例5P，完整166unit+82Python+6真实DOM/browser=254通过/0skip；额外5控制不加分母。仍有2个同根因相邻业务红：preview哈希await期间改选，旧A仍挂新B；迟到resolve清unknown，save→新machine恢复后inspect0再POST。实际CLI7项5符合预期、2错误接受（final reviewer错绑、checkout-sibling前缀逃出Lab）。outer final/invocation指新C而有效引用round02.primary C仍5ff13480；src/schema tree确实同，validator实际19行及对应测试12行变，不能混称validator不变。旧调用不改签，须真正最终C/delta复核。仅合成组件问题，不指控伪造或真实owner错写。
+
+**两包仍needs_changes，暂不集成生产。** 两个不同agent已在独立Git/owned临时环境复验，源业务/test/旧交接零修改，原UI8766/真实库/名单/预算/收费模型均未动。本人Chrome/Node/Python/profile/temp/cache/端口均已finally清理，冻结副本/日志明确留作审计输入。原71/108仍上次暂停记录，本轮未重新核主线状态。
+
+有限补交卡在 `docs/implementation/parallel-lanes/packages/2026-10-29-ui28-r1-closeout-02/`：COMPARE-R1-CLOSEOUT-02与UNIVERSE-R1-CLOSEOUT-02。正式R1 package_id、原Lab/remediation-01现行路径、已实现CLI和iqs.ui28_remediation_inputs/1.0都保持；不另起-R2协议或新Lab。新ee31aa47…锁只更新mutable目标基线61982/be7和目标pins，原21与additional只读源不变，最终review绑定新锁；旧Git/round/invocation原件保留，新增真实复核回执并由当前final引用。只做三个大节点，不重做已修四/五业务设计，不加微审查门。
+
+两补交卡已不同agent集中审查passed/open[]，18项manifest和6主文档pins/链接/新锁兼容核过。root再次执行发布反例startup1F+async2F，均有效行为断言红，0真实browser/owner/model，probe临时根已清；startup反例新增finally仅删自己刚创建且已核resolved-parent的根，断言不变。文档打包两处小错误（漏json import、读取review的pins键名误用files）已纠正，发生在业务/源写入前，不算源缺陷。报告/命令/证据/新反例在本批evidence，正式状态及卡审在 `docs/implementation/reviews/UI28-R1-REACCEPT-2026-10-29/`。
+
+### Next Step
+
+把两份R1补交02交回原harness在原目录并行收口，等同R1现行handoff/新C/真实最终独审再验；用户尚未报告补交开工，总控未代外发。其Lab视为潜在活动writer，不能同时接管。真实108/SDK和生产接线继续暂停，只有用户明确继续才恢复。
+
+---
+
+## 2026-10-29T22:48Z — 两个R1已正式交回，启动总控重新验收；主线仍暂停
+
+新目录均真实存在：COMPARE remediation-01声称C9bb640d30c6a3c64d472bd07cab634d6b819d096；UNIVERSE声称C1a6d345017c0f6bf5d006eb5a26e9470f0903b83。两final/invocation表面已对齐新C/reviewer/R1锁042326，但须核引用round、实际Git blob/时间线与工具真校验，不能据字符串相同签收。两个不同agent各自只读冻结原Lab，在owned独立Git/临时副本复跑前次反例、相关整体功能组、真实browsermock和R1双锁/newhandoff负例，浏览器串行避免端口冲突。只验证组件原范围，不扩大生产资格/新功能，不把已校准C28-05再当bug。
+
+本轮业务源码/旧交接均不接管写入，先给真实验收结论和必要修复范围；原21输入及R1基线锁保持。所有环境/日志/cache/profile/子进程仅owned，剥离keys/拒远端，原UI8766/实际owner/真实库/名单/模型费用与108题主线均不动。上轮71/108是暂停记录，不在本轮冒称复核或完成。总控写共享PWF/归档，最后精确提交推送，保留无关旧README改动。
+
+### Next Step
+
+完成新C下已修缺口与边界的独立复验、实际CLI目标/双锁校验与最终独审证据链审计，依实证签收或明确仍需修复；更新PWF/交接与包状态。真实主线仍等待用户明确继续，验收不隐式启动生产接线。
+
+---
+
 ## 2026-10-29T17:38Z — 两个UI包完成总控验收：均需返修；已形成两张R1，主线继续暂停
 
 本次“外包都做好请查收”仅恢复这两个包的验收，未恢复收费扫描/SDK主线。实际HEAD：COMPARE dd99431d3abda7920cb0a6b0377dae01bc7b53ef；UNIVERSE154afd936c7d1ae84f974eb6c0a689225fa883dd。两正式handoff均通过原CLI shape/reference预检，但最终审查调用仍绑定旧C/旧reviewer，COMPARE还存在文字/null hash和handoff C错位；这些不证明欺诈，也不能据passed字符串签收。原业务/src/test/helper/旧交接未改；仅授权CodeGraph初始化各生成2个未跟踪配置，保留未混入payload。

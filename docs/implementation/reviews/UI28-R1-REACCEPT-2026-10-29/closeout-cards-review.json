@@ -1,0 +1,68 @@
+{
+  "protocol": "iqs.independent_closeout_card_review/1.0.0",
+  "reviewed_at_utc": "2026-10-29T23:05:37.844204+00:00",
+  "reviewer": "/root/accept_compare28",
+  "author": "/root",
+  "status": "passed",
+  "open_findings": [],
+  "scope": "One concentrated independent document review only; no source changes, implementation test execution, production calls or commits.",
+  "six_document_pins": {
+    "README.md": {
+      "bytes": 2171,
+      "sha256": "095c0c1ee1a33879a8cd44593e852933f502d30974ca3c984016328022056f3d"
+    },
+    "handoff-rules.md": {
+      "bytes": 5874,
+      "sha256": "202ed2d0d4e5fe1e6be328f268a851001abb596369d6ac2369c6895344cdc21f"
+    },
+    "inputs.lock.json": {
+      "bytes": 16531,
+      "sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6"
+    },
+    "COMPARE-R1-CLOSEOUT-02.md": {
+      "bytes": 3615,
+      "sha256": "5e9d5a54e4a800ccd5a40b0d2f50fdc48825d1d8f4817a3e3a922cedc1ee7822"
+    },
+    "UNIVERSE-R1-CLOSEOUT-02.md": {
+      "bytes": 4447,
+      "sha256": "64118bfe11df0be362b820f7a3768280651c012ca69bb6797cba7d9f902047d7"
+    },
+    "manifest.json": {
+      "bytes": 4245,
+      "sha256": "07f869ead81e77278458ba9d0d295425c5010ab94fa9cb1d1468cc52e851eb53"
+    }
+  },
+  "verified": {
+    "manifest_documents": 18,
+    "manifest_file_hashes_and_lengths_match": true,
+    "local_markdown_links_resolve": true,
+    "formal_package_ids_unchanged": [
+      "UI-COMPARE-28-R1",
+      "UI-UNIVERSE-28-R1"
+    ],
+    "handoff_paths_remain_remediation_01": true,
+    "protocol": "iqs.ui28_remediation_inputs/1.0.0",
+    "new_lock_raw_sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6",
+    "original21_and_additional_read_only_source_structures_unchanged_from_previous_R1_lock": true,
+    "baselines": [
+      "61982a72f35fd3250bc1710bc1a9cc3bf2455424",
+      "be7e1ee07b6366d31e1b7eae60942b8d00f58be8"
+    ],
+    "mutable_target_files_per_delivery": [
+      11,
+      15
+    ],
+    "current_R1_consumers_statically_accept_new_lock_shape": true,
+    "new_lock_requires_no_new_selector_or_protocol": true,
+    "original_business_182_and_254_successes_kept_separate_from_new_counterexamples": true,
+    "compare_remaining_matches_independent_observation": "Startup rejection cleanup and required handoff/evidence validation only; unsupported config reassignment excluded.",
+    "universe_remaining_traceable": "Two async ownership assertions, reviewer mismatch and sibling-prefix CLI acceptance, effective final-round binding; no real owner error claim.",
+    "portable_tests": "Source inspected; imports select IQS_R1_COMPONENT_ROOT, gates preserve true computation. Startup probe finally verifies real parent before deleting only its own unique root. Published execution JSON separately records root reruns, not represented as this review executing tests.",
+    "review_provenance": "Requires actual new review/delta invocation for finalC; retains old Git/invocation/round bytes and distinguishes historical rounds from effective final round.",
+    "ownership_and_safety": "Two disjoint originalLab write roots; no otherLab/IQS/owner edits, paid calls, real DB/pool/UI writes; independent local clone/index, loopback, owned cleanup; three large review milestones only."
+  },
+  "limitations": [
+    "Static compatibility check of current lock consumers; no implementation test executed during this document review.",
+    "Passed cards do not sign off source R1 fixes or production/financial qualification."
+  ]
+}

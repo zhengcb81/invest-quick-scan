@@ -1,0 +1,578 @@
+{
+  "checked_at": "2026-10-29T22:59:36.914518+00:00",
+  "package_id": "UI-UNIVERSE-28-R1",
+  "verdict": "changes_requested",
+  "source_repository": "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab",
+  "branch": "codex/ui-universe-28",
+  "M": "be7e1ee07b6366d31e1b7eae60942b8d00f58be8",
+  "C": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83",
+  "source_status": "",
+  "source_pins": {
+    "src/iqs-universe-import/adapter.js": "dd17b0ecac5756001723b7b5ac89120606a588750747fce23a1e2b833bd436b6",
+    "src/iqs-universe-import/index.js": "282f311584f257e1f4592bc1fa835860f448913bdc73122b1be916fd4303b296",
+    "src/iqs-universe-import/machine.js": "cea01067d5c5ced6c301301b51cbe4d9edf1f8fe81d4b2795c7bed43264adb79",
+    "src/iqs-universe-import/mount.js": "24b2f32396ca34d6449703dc76f27936984bdc3e50820e08b9f6e52301402be1",
+    "src/iqs-universe-import/parse.js": "8edcad29e7279d35d5d567c5680dab63ce4d16dad8b053c0e9de901d4fec399c",
+    "src/iqs-universe-import/shared.js": "72b7caccdbab50b32c748c92dab83fbb785476b61e759afaba779ef23bc3484d",
+    "src/iqs-universe-import/universe-import.css": "deef97212cca5f8f410e3430b5b9dba2940c54457e9fd6818be7a82fc63e90ac"
+  },
+  "source_business_test_helper_or_handoff_mutations": false,
+  "original_five_findings": "closed: all five published controller assertions now pass",
+  "original_delivery_history": "Original docs/handoff/UI-UNIVERSE-28 files preserved; only remediation-01 added",
+  "tests": {
+    "published-five": {
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\evidence\\universe-product.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+      "exit_code": 0,
+      "started_at": "2026-10-29T22:50:12.290708+00:00",
+      "finished_at": "2026-10-29T22:50:12.906620+00:00",
+      "seconds": 0.6159384999991744,
+      "environment": "plain-runtime allow-list, no credentials/production API variables",
+      "stdout_tail": "✔ ACCEPT-U01: omitted sole security must not bypass expired listing check (11.6629ms)\n✔ ACCEPT-U02: distinct rows must not dispatch concurrent writes (25.7504ms)\n✔ ACCEPT-U03: a new upload cannot discard a pending mutation draft (5.2516ms)\n✔ ACCEPT-U04: unknown result cannot be reset and re-POSTed before original inspect (5.0903ms)\n✔ ACCEPT-U05: stale preview cannot attach old candidate token to new selection (1.5651ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 503.7226\n",
+      "stdout_sha256": "0461273221b16ec38d3aedfa22a49687fdc5a81211fa3c8506f3845c2514699b"
+    },
+    "delivered-unit": {
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "tests/js/unit/*.test.js"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+      "exit_code": 0,
+      "started_at": "2026-10-29T22:50:12.908342+00:00",
+      "finished_at": "2026-10-29T22:50:13.796297+00:00",
+      "seconds": 0.8879801000002772,
+      "environment": "plain-runtime allow-list, no credentials/production API variables",
+      "stdout_tail": "ritten (2.0529ms)\n✔ shared: malformed JSON is refused with a named error (0.5561ms)\n✔ shipped adapter: a draft it produced can be reloaded by a fresh machine (9.8127ms)\n✔ shipped adapter: a full select/preview/apply draft round-trips (19.9133ms)\n✔ shipped adapter: source_ref is closed, so an injected key is still refused (1.8711ms)\n✔ shipped adapter: an empty universe_id is refused, matching what the adapter emits (1.1064ms)\n✔ shipped adapter: an absent universe_id is still accepted (1.1722ms)\nℹ tests 166\nℹ suites 0\nℹ pass 166\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 772.3903\n",
+      "stdout_sha256": "126e25cd667f972e51feab346d8e3ac64db51a050da83a0e058841f373290ebf"
+    },
+    "independent-async-adjacency": {
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\async-adjacency.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+      "exit_code": 1,
+      "started_at": "2026-10-29T22:50:13.797376+00:00",
+      "finished_at": "2026-10-29T22:50:14.139427+00:00",
+      "seconds": 0.3420750000004773,
+      "environment": "plain-runtime allow-list, no credentials/production API variables",
+      "stdout_tail": "ionError [ERR_ASSERTION]: stale read must not launder unknown attribution and enable a second POST before inspection\n  \n  1 !== 0\n  \n      at TestContext.<anonymous> (file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/reaccept-ui28-r1-2026-10-29/universe/async-adjacency.test.mjs:29:9)\n      at async Test.run (node:internal/test_runner/test:1113:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: 1,\n    expected: 0,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+      "stdout_sha256": "948d5aac9cc838253a66727966805a4b76380327253a90ab2d617f73f0c0d1d9"
+    },
+    "delivered-python": {
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "tests/python",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\runtime-nonbrowser\\pytest"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+      "exit_code": 0,
+      "started_at": "2026-10-29T22:50:14.140211+00:00",
+      "finished_at": "2026-10-29T22:51:01.061869+00:00",
+      "seconds": 46.921687800000655,
+      "environment": "plain-runtime allow-list, no credentials/production API variables",
+      "stdout_tail": "........................................................................ [ 87%]\n..........                                                               [100%]\n",
+      "stdout_sha256": "d3fb1d03a95fd8d5e498aee42ec71731ae8eb81c6a92b993ade59279cbfb4a41"
+    },
+    "browser": {
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "tests/js/integration/*.test.js",
+        "tests/js/e2e/*.test.js"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+      "started_at": "2026-10-29T22:56:08.812130+00:00",
+      "finished_at": "2026-10-29T22:57:18.782159+00:00",
+      "seconds": 69.97003969999787,
+      "exit_code": 0,
+      "stdout_sha256": "d50bd6a0f944f9cdc61f88e5dad664c4d6f51491f52269ddd356804ff343946e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "helper_modified_in_checkout": false,
+      "protection": "Delivered deny-DNS MAP-all with explicit127.0.0.1/localhost exclusions; own unique browser profile; credential-free allow-list; no production targets",
+      "stdout_tail": "irm -> timeout -> inspect -> export (29658.3998ms)\n✔ integration (real DOM): upload -> resolve -> select -> preview -> confirm (14076.0651ms)\n✔ integration (real DOM): XSS payload renders as text, never as markup (13946.5919ms)\n✔ integration (real DOM): keyboard navigation selects a row and keeps focus there (13838.9261ms)\n✔ integration (real DOM): the batch dialog lists included AND excluded rows (14031.6528ms)\n✔ integration (real DOM): 1000 rows paginate without losing the total (13885.4346ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 69907.1051\n"
+    }
+  },
+  "distinct_delivered_functional_suite_actual": {
+    "unit": 166,
+    "python": 82,
+    "real_DOM_and_browser": 6,
+    "total": 254,
+    "failed": 0,
+    "skipped": 0
+  },
+  "separate_original_counterexample_witness": {
+    "passed": 5,
+    "failed": 0,
+    "not_added_twice_to_distinct_suite": true
+  },
+  "new_adjacent_behavior_tests": {
+    "passed": 0,
+    "failed": 2,
+    "reason": "same R1 lifecycle roots, original requirements not new functionality"
+  },
+  "new_cli_probes": {
+    "total": 7,
+    "expected_outcomes": 5,
+    "unexpected_acceptances": 2,
+    "actual_full_cli_called": true,
+    "cases": [
+      {
+        "name": "cli-r1-positive",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "iqs_universe_import_ui_tools",
+          "validate-delivery",
+          "--lab-root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+          "--lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+          "--handoff",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+          "--package-id",
+          "UI-UNIVERSE-28-R1",
+          "--out",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\.tmp\\root-cli-probes\\cli-r1-positive",
+          "--remediation-lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\inputs.lock.json"
+        ],
+        "exit_code": 0,
+        "expected_exit": 0,
+        "assertion_passed": true,
+        "seconds": 1.3936972000010428,
+        "payload": {
+          "command": "validate-delivery",
+          "status": "valid",
+          "problem_count": 0,
+          "problems": [],
+          "lock_status": null,
+          "schemas": null,
+          "vendor_files": null,
+          "handoff_status": null,
+          "payload_commit": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83"
+        }
+      },
+      {
+        "name": "cli-r1-reject-old-target",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "iqs_universe_import_ui_tools",
+          "validate-delivery",
+          "--lab-root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+          "--lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+          "--handoff",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\docs\\handoff\\UI-UNIVERSE-28\\handoff.json",
+          "--package-id",
+          "UI-UNIVERSE-28-R1",
+          "--out",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\.tmp\\root-cli-probes\\cli-r1-reject-old-target",
+          "--remediation-lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\inputs.lock.json"
+        ],
+        "exit_code": 2,
+        "expected_exit": 2,
+        "assertion_passed": true,
+        "seconds": 1.425394400001096,
+        "payload": {
+          "command": "validate-delivery",
+          "status": "invalid",
+          "problem_count": 13,
+          "problems": [
+            {
+              "kind": "r1_handoff_wrong_directory",
+              "path": "C:/Users/郑曾波/Projects/invest-quick-scan/runs/reaccept-ui28-r1-2026-10-29/universe/checkout/docs/handoff/UI-UNIVERSE-28/handoff.json"
+            },
+            {
+              "kind": "r1_package_id_mismatch",
+              "declared": "UI-UNIVERSE-28"
+            },
+            {
+              "kind": "r1_final_input_lock_mismatch",
+              "value": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad"
+            },
+            {
+              "kind": "r1_final_manifest_sha_mismatch",
+              "value": "52bbc997d02cd9cd278285777e66a24b9e03fa7788aecd09acc1837c62c04198",
+              "actual": "80eecc37676eedf44d07d4aacc219b460ed7407ed6df45239f06b4184f04ff10"
+            },
+            {
+              "kind": "r1_reviewed_hash_mismatch",
+              "file": "src/iqs-universe-import/machine.js",
+              "actual": "cea01067d5c5ced6c301301b51cbe4d9edf1f8fe81d4b2795c7bed43264adb79"
+            },
+            {
+              "kind": "r1_reviewed_hash_mismatch",
+              "file": "tools/iqs_universe_import_ui_tools/cli.py",
+              "actual": "a62c9c503d1629deff573801d7ae16f4d0477175098bb64304d5fb778a31cf10"
+            },
+            {
+              "kind": "r1_final_test_ref_missing",
+              "ref": "tests/js/unit/*.test.js"
+            },
+            {
+              "kind": "r1_final_test_ref_missing",
+              "ref": "tests/js/integration/*.test.js"
+            },
+            {
+              "kind": "r1_final_test_ref_missing",
+              "ref": "tests/js/e2e/*.test.js"
+            },
+            {
+              "kind": "r1_final_test_ref_missing",
+              "ref": "tests/python/*.py"
+            },
+            {
+              "kind": "r1_invocation_payload_commit_mismatch",
+              "value": "147500d55e582a234d9ad4144e3c07419060b1f2"
+            },
+            {
+              "kind": "r1_invocation_input_lock_mismatch",
+              "value": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad"
+            },
+            {
+              "kind": "r1_invocation_evidence_sha_mismatch",
+              "ref": "docs/handoff/UI-UNIVERSE-28/review/round-01-requirements.json",
+              "actual": "e8d0edc451d16bbb191ddaa49f158056711f2432ae32afde4fb895a815d262e8"
+            }
+          ],
+          "lock_status": null,
+          "schemas": null,
+          "vendor_files": null,
+          "handoff_status": null,
+          "payload_commit": "3fdbba0f4402942c72b5ef22731df96329f039a2"
+        }
+      },
+      {
+        "name": "cli-r1-reject-old-package",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "iqs_universe_import_ui_tools",
+          "validate-delivery",
+          "--lab-root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+          "--lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+          "--handoff",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+          "--package-id",
+          "UI-UNIVERSE-28",
+          "--out",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\.tmp\\root-cli-probes\\cli-r1-reject-old-package",
+          "--remediation-lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\inputs.lock.json"
+        ],
+        "exit_code": 2,
+        "expected_exit": 2,
+        "assertion_passed": true,
+        "seconds": 0.3531883000032394,
+        "payload": {
+          "command": "validate-delivery",
+          "status": "invalid",
+          "problem_count": 3,
+          "problems": [
+            {
+              "kind": "delivery_entry_missing",
+              "package_id": "UI-UNIVERSE-28"
+            },
+            {
+              "kind": "r1_package_id_mismatch",
+              "declared": "UI-UNIVERSE-28-R1"
+            },
+            {
+              "kind": "r1_package_id_missing_suffix",
+              "declared": "UI-UNIVERSE-28"
+            }
+          ],
+          "lock_status": null,
+          "schemas": null,
+          "vendor_files": null,
+          "handoff_status": null,
+          "payload_commit": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83"
+        }
+      },
+      {
+        "name": "cli-r1-reject-swapped-lock",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "iqs_universe_import_ui_tools",
+          "validate-delivery",
+          "--lab-root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+          "--lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+          "--handoff",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+          "--package-id",
+          "UI-UNIVERSE-28-R1",
+          "--out",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\.tmp\\root-cli-probes\\cli-r1-reject-swapped-lock",
+          "--remediation-lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json"
+        ],
+        "exit_code": 2,
+        "expected_exit": 2,
+        "assertion_passed": true,
+        "seconds": 0.1690396999983932,
+        "payload": {
+          "command": "validate-delivery",
+          "status": "invalid",
+          "problem_count": 1,
+          "problems": [
+            {
+              "kind": "r1_lock_invalid",
+              "detail": "unknown remediation lock protocol: 'iqs.support_ui_input_lock/1.0.0' (expected iqs.ui28_remediation_inputs/1.0.0)"
+            }
+          ],
+          "lock_status": null,
+          "schemas": null,
+          "vendor_files": null,
+          "handoff_status": null,
+          "payload_commit": null
+        }
+      },
+      {
+        "name": "cli-r1-reject-missing-remediation-lock",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "iqs_universe_import_ui_tools",
+          "validate-delivery",
+          "--lab-root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+          "--lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+          "--handoff",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+          "--package-id",
+          "UI-UNIVERSE-28-R1",
+          "--out",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\.tmp\\root-cli-probes\\cli-r1-reject-missing-remediation-lock"
+        ],
+        "exit_code": 2,
+        "expected_exit": 2,
+        "assertion_passed": true,
+        "seconds": 0.16465669999888632,
+        "payload": {
+          "status": "error",
+          "command": "validate-delivery",
+          "error": {
+            "code": "incomplete_r1_arguments",
+            "message": "--handoff and --remediation-lock must be supplied together (R1 mode)"
+          }
+        }
+      },
+      {
+        "name": "cli-r1-reject-final-invocation-reviewer-mismatch",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "iqs_universe_import_ui_tools",
+          "validate-delivery",
+          "--lab-root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+          "--lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+          "--handoff",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+          "--package-id",
+          "UI-UNIVERSE-28-R1",
+          "--out",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\.tmp\\root-cli-probes\\cli-r1-reject-final-invocation-reviewer-mismatch",
+          "--remediation-lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\inputs.lock.json"
+        ],
+        "exit_code": 0,
+        "expected_exit": 2,
+        "assertion_passed": false,
+        "seconds": 1.2498093999965931,
+        "payload": {
+          "command": "validate-delivery",
+          "status": "valid",
+          "problem_count": 0,
+          "problems": [],
+          "lock_status": null,
+          "schemas": null,
+          "vendor_files": null,
+          "handoff_status": null,
+          "payload_commit": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83"
+        }
+      },
+      {
+        "name": "cli-r1-reject-sibling-prefix-target",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "iqs_universe_import_ui_tools",
+          "validate-delivery",
+          "--lab-root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout",
+          "--lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+          "--handoff",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout-sibling\\remediation-01\\handoff.json",
+          "--package-id",
+          "UI-UNIVERSE-28-R1",
+          "--out",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\universe\\checkout\\.tmp\\root-cli-probes\\cli-r1-reject-sibling-prefix-target",
+          "--remediation-lock",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\inputs.lock.json"
+        ],
+        "exit_code": 0,
+        "expected_exit": 3,
+        "assertion_passed": false,
+        "seconds": 1.438033300000825,
+        "payload": {
+          "command": "validate-delivery",
+          "status": "valid",
+          "problem_count": 0,
+          "problems": [],
+          "lock_status": null,
+          "schemas": null,
+          "vendor_files": null,
+          "handoff_status": null,
+          "payload_commit": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83"
+        }
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "UNIV-R2-ASYNC-DIGEST",
+      "severity": "high",
+      "root_group": "U-C async reply commit guard",
+      "source": "src/iqs-universe-import/machine.js:488-562",
+      "effective_test": "async-adjacency.test.mjs::R1-ADJ-01",
+      "observed": "R1 checks selection epoch after preview response, then awaits real canonical SHA256. A selection change during that digest still receives the old A preview/token on selected B. The digest is only gated and then performs its real hash, not replaced by a constant.",
+      "expected": "Build/hash the result before the final current-draft/row/selection/connection guard, and commit atomically only when still current; safe rejection or discard acceptable.",
+      "limitation": "Component binding defect only. No real owner was called, and no incorrect real-owner membership write is claimed."
+    },
+    {
+      "id": "UNIV-R2-STALE-RESOLVE-UNKNOWN",
+      "severity": "high",
+      "root_group": "U-B/U-C late read must preserve uncertain write ownership",
+      "source": "src/iqs-universe-import/machine.js:316-385",
+      "effective_test": "async-adjacency.test.mjs::R1-ADJ-02",
+      "observed": "A resolve started while row was preview_ready returns after an apply times out. It overwrites unknown state and owner_result. Saving and loading this draft into a new machine then allows a second apply with zero inspect calls. Existing in-memory pin does not preserve the record across remount because row state was erased.",
+      "expected": "Revalidate current row/draft and uncertain write state before every success/error async resolve commit; never erase unknown ownership. Preserve the inspect-first invariant through draft save/load.",
+      "limitation": "Transport stub only; actual parser/machine/draft loader executed."
+    },
+    {
+      "id": "UNIV-R2-REVIEWER-CROSS-BINDING",
+      "severity": "high",
+      "root_group": "R1 validator integrity",
+      "source": "tools/iqs_universe_import_ui_tools/remediation.py:258-398",
+      "effective_test": "cli-probes.py::cli-r1-reject-final-invocation-reviewer-mismatch",
+      "observed": "Changing only final.reviewer_agent_id to a foreign non-author reviewer distinct from the actual invocation leaves the actual new R1 CLI returning exit0/status valid. Both documents are checked individually, but not tied together.",
+      "expected": "Cross-check the effective final, its actual invocation and referenced final round for exact reviewer/author, C, lock, manifest and corresponding evidence hashes; preserve prior historical rounds separately."
+    },
+    {
+      "id": "UNIV-R2-SIBLING-HANDOFF",
+      "severity": "high",
+      "root_group": "R1 validator path ownership",
+      "source": "tools/iqs_universe_import_ui_tools/cli.py:147",
+      "effective_test": "cli-probes.py::cli-r1-reject-sibling-prefix-target",
+      "observed": "An otherwise identical handoff in checkout-sibling/remediation-01 is accepted by the actual R1 CLI with exit0 because str.startswith treats the sibling prefix as inside checkout. Probe files were exclusively owned and removed afterward.",
+      "expected": "Use resolved path-component containment and reject sibling/junction/symlink escapes before reading the handoff. Do not turn this into a second owner or authentication layer.",
+      "limitation": "This proves wrong-scope handoff acceptance, not real data leakage or an owner bypass."
+    },
+    {
+      "id": "UNIV-R2-FINAL-REVIEW-DELTA",
+      "severity": "high",
+      "root_group": "Final review evidence closure",
+      "source": "docs/handoff/UI-UNIVERSE-28/remediation-01/review/{final,invocation-evidence,round-02}.json",
+      "effective_test": "review-chain-check.json plus actual reviewed-to-final Git diff",
+      "observed": "Final/invocation point to C1a6d345, but the actual referenced round02 payload is5ff13480. Source/schema trees are equal, but remediation.py changed19lines and Python validator tests12lines. The round validator SHA720d... differs from final2d356..., so delta_note claiming unchanged validator is insufficient to prove the final validator was independently reviewed.",
+      "expected": "Keep the older invocation/round factual; after fixes freeze the actual final C and obtain a real independent final or delta review of all changed source/tests/tools. Tie its actual return and hashes to the final metadata, without relabelling old evidence as a new call.",
+      "limitation": "No fraud is alleged; an earlier invocation time alone does not prove absence of a later review. The demonstrated defect is the missing coherent final effective review record and genuinely changed validator."
+    }
+  ],
+  "review_chain": {
+    "current_C": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83",
+    "invocation_C": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83",
+    "actual_referenced_round_C": "5ff134803cf1c8b33e3cbf8511731314e635778a",
+    "invocation_time": "2026-10-29T19:57:00Z",
+    "current_C_commit_time": "2026-10-29T20:38:29Z",
+    "invocation_evidence_sha_matches": true,
+    "reviewer_ids_match": true,
+    "round_validator_sha": "720d103cd6a0570be49e6a391e5624563916f285a8272a20ec207c20c885ff1e",
+    "final_validator_sha": "2d35617795505deef319d6e2b031ba202a68b15fcb382ff6b8d08c1a7cd60441",
+    "same_source_schema_tree": true,
+    "original_lock": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad",
+    "r1_lock": "042326af82d6d321942abcc1622abcc2f3d73ecd29cfd9ac13d478f4ee8a5473",
+    "source_writes": false,
+    "src_tree_equal": true,
+    "schema_tree_equal": true,
+    "validator_file_sha_equal": false
+  },
+  "cleanup": {
+    "owned_process_cleanup_exit": 0,
+    "owned_process_cleanup_stdout": "[]",
+    "source_mutations": false,
+    "real_owner_or_paid_calls": 0,
+    "runtime-browser_removed": true,
+    "runtime-nonbrowser_removed": true,
+    "checkout\\.tmp_removed": true,
+    "checkout\\.pytest_cache_removed": true,
+    "port18772_free_after": true,
+    "source_helper_equal_checkout": true,
+    "frozen_checkout_retained_as_audit_input": true
+  },
+  "repair_scope": "Single R1 supplemental closeout02, keeping package_id=UI-UNIVERSE-28-R1 and remediation-01 paths/CLI semantics: machine async commit/unknown preservation, CLI path containment, cross-document validator coherence, corresponding tests and truthful new final review. Do not alter StockWiki/StockQA/real UI or old evidence.",
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "real_owner_calls": 0,
+    "paid_calls": 0,
+    "mainline_resumed": false
+  },
+  "source_helper_raw_sha256": "cf520a6d799012eebdc141c793ff96962957281792e308cbf48983723ed09da4",
+  "closeout_handoff_rule": {
+    "formal_package_id": "UI-UNIVERSE-28-R1",
+    "directory": "docs/handoff/UI-UNIVERSE-28/remediation-01/",
+    "label": "R1补交02",
+    "protocol": "Retain existing CLI and iqs.ui28_remediation_inputs/1.0.0. Update mutable delivery baseline/final lock by coordinator; preserve actual old rounds/invocations and add a genuine new effective review.",
+    "finding_ids": "UNIV-R2-* are internal finding identifiers from this acceptance, not a new package or protocol."
+  }
+}

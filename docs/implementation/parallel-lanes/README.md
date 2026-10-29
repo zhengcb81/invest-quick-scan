@@ -1,3 +1,9 @@
+## 2026-10-29 R1重验后最新状态
+
+两R1已实测：COMPARE182交付测试、UNIVERSE254通过；上次主要反例转绿，仍有启动失败清理/异步窗口及交接校验收口，暂不接生产。[R1补交02](packages/2026-10-29-ui28-r1-closeout-02/README.md)可分别交回原harness，正式R1 ID/原Lab/remediation-01/CLI保持；补交卡独审通过，不新增-R2协议或小门。[正式重验摘要](../reviews/UI28-R1-REACCEPT-2026-10-29/acceptance-status.json)记录已修/未修/实跑边界。原波次manifest保持冻结设计，当前状态以本条/根PWF首条为准，真实108主线仍暂停。
+
+---
+
 ## 2026-10-29 最新验收与返修状态
 
 原UI-COMPARE-28/UI-UNIVERSE-28已实际交回，独立验收均为changes_requested，暂不接生产。可交回原harness的 [本轮两份R1](packages/2026-10-29-ui28-remediation/README.md) 已通过独立卡审，包含实际反例/输入与基线锁/新交接目录/最终真实独审要求；两原Lab互不重叠，可并行修。正式 [验收摘要](../reviews/UI28-ACCEPTANCE-2026-10-29/acceptance-status.json) 记录已跑和未跑范围。10-28原包manifest是冻结设计，不是当前派发/验收状态；最新状态以此处和根PWF首条为准。总控未接管源修，主线真实扫描仍暂停。

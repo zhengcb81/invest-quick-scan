@@ -1,0 +1,156 @@
+{
+  "protocol": "iqs.controller_ui_compare_r1_reaccept/1.0.0",
+  "status": "needs_changes",
+  "checked_at_utc": "2026-10-29T22:56:23.881310+00:00",
+  "source_repository": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab",
+  "source_head": "61982a72f35fd3250bc1710bc1a9cc3bf2455424",
+  "payload_commit": "9bb640d30c6a3c64d472bd07cab634d6b819d096",
+  "source_status_before_after": [
+    "?? .codegraph/.gitignore",
+    "?? .codegraph/config.json"
+  ],
+  "source_business_writes": 0,
+  "source_pins": {
+    "src/compare_client.js": "a8554f7ac5d0453a358997f94dfc9397c83f7612a137b111018068f1effd2426",
+    "src/compare_view.js": "5616a76212ec1750c15cd0b9175524d53d1f97d30746f52c7779f63eff3cfa2b",
+    "tests/browser/cdp.mjs": "b8d071c3a734d4fdff56d1c3820edda0b914fa1f0729d19a85e0a8fe9047de58",
+    "tests/browser/e2e.test.mjs": "c90772c27d01fee3b93f3638988c63af96439e3dc3a4596a0959d42e04ad1dfd",
+    "tests/lib/safe-remove.mjs": "a6bd1de9cee443da0a3f5989d30dbcc9b952d116f6e75acaa4026c90d6fcb11e",
+    "tools/iqs_compare_view_tools/validate_delivery.py": "82a2b5aa619754a3badfa756cb2abbfd05f777dc859a075f8ddb414ad03802e3",
+    "docs/handoff/UI-COMPARE-28/remediation-01/handoff.json": "1a23ca032c3cedd426d22eff93910d4a867f0699ed12db2aea963758c2fe0435",
+    "docs/handoff/UI-COMPARE-28/remediation-01/review/final.json": "d8b18e2f1ec7f2f3a5df2a4224cca7afdab24d148e33e0192e610d0d6ab0be5e",
+    "docs/handoff/UI-COMPARE-28/remediation-01/review/invocation-evidence.json": "2c9952381aa7f176451630daa98d126aa5cf7bd2c2f2c371ee6cee9561c6292f"
+  },
+  "scope": {
+    "production_wired": false,
+    "real_owner_answers_read": false,
+    "production_database_writes": 0,
+    "paid_calls": 0,
+    "upstream_scripts_run_in_source": false,
+    "frozen_execution_repository": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\compare\\isolated-checkout",
+    "index": "independent local --no-hardlinks clone; no upstream/index/global mutation",
+    "test_network": "Node remote network denied; real Chrome proxy and host-resolver guard appended at acceptance layer; only loopback mock",
+    "keys": "whitelist-only environment; no secret variables forwarded"
+  },
+  "functional_outcome": {
+    "original_four_product_regressions": "4 passed",
+    "sibling_prefix_cleanup": "1 passed safe stub; actual destructive calls 0",
+    "dispose_remount_control": "1 passed; unsupported external config reassignment is not a defect",
+    "new_product_defects_found": 0
+  },
+  "independent_execution": {
+    "unique_shipped_tests": {
+      "unit": {
+        "passed": 97,
+        "failed": 0
+      },
+      "integration": {
+        "passed": 82,
+        "failed": 0,
+        "method": "full integration 81P/1F in environment missing PowerShell path; corrected PATH rerun CLI22P covers all22 CLI cases; other60 passed in fullrun; 82 unique, no double count"
+      },
+      "perf": {
+        "passed": 1,
+        "failed": 0,
+        "dataset": "2000 companies,12 columns,137 dynamic questions"
+      },
+      "real_chrome_mock_e2e": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 19.9223949
+      },
+      "total_passed": 182
+    },
+    "additional_controller_controls": {
+      "passed": 6,
+      "failed": 0
+    },
+    "effective_new_counterexamples": {
+      "launch_start_rejection": {
+        "passed": 0,
+        "failed": 1,
+        "actual_browser_processes_spawned": 0,
+        "close_calls": 0,
+        "profile_leftover_observed": true,
+        "log": "execution/launch-failure.log",
+        "test": "execution/launch-failure.test.mjs"
+      },
+      "missing_required_evidence": {
+        "assertions_failed": 1,
+        "actual_public_local_cli_exit_code": 0,
+        "expected_exit_code": 2,
+        "evidence": "required-refs-negative.json",
+        "removed_in_owned_copy_only": [
+          "review/fixes.json",
+          "tests.json"
+        ],
+        "files_restored": true
+      }
+    }
+  },
+  "open_findings": [
+    {
+      "id": "C28-R1-REMAIN-01",
+      "severity": "P2",
+      "path": "tests/browser/cdp.mjs",
+      "line": 54,
+      "reason": "BrowserSession.launch creates profile and awaits start outside cleanup try/catch; start rejection prevents caller from receiving session. Safe stub observed close_calls0 and profile persists. withBrowser also calls launch before its try/finally (line320).",
+      "evidence": [
+        "execution/launch-failure.test.mjs",
+        "execution/launch-failure.log",
+        "launch-failure-result.json"
+      ],
+      "observational_limit": "No real failed Chrome was launched; no actual browser process leak is claimed. Normal2 browser E2E passed.",
+      "minimum_fix_scope": [
+        "tests/browser/cdp.mjs",
+        "focused startup-failure cleanup regression"
+      ],
+      "acceptance": "On start rejection close partially-started session, preserve original error, remove owned profile; test with safe start-rejection stub, normal browser2 still pass."
+    },
+    {
+      "id": "C28-R1-REMAIN-02",
+      "severity": "P2",
+      "path": "tools/iqs_compare_view_tools/validate_delivery.py",
+      "line": 430,
+      "reason": "R1 evidence validator requires only invocation and final; delivered final omits original contract-required invocation_ref/round_refs/fixes_ref/test_refs. Removing actual fixes.json and tests.json in owned copy still lets public R1 validate-delivery exit0 with all sectionsok. R1 path also only locally checks handoff subset; parent public schema audit independently rejected missing scope.out_of_scope_writes.",
+      "evidence": [
+        "required-refs-negative.json",
+        "execution/check_evidence_refs.py"
+      ],
+      "existing_evidence_credit": "Current final/invocation/round02 already agree on reviewer/C/R1lock and declared file hashes match C/current manifest per parent independent audit; do not reopen old binding defect or call these fabricated.",
+      "minimum_fix_scope": [
+        "tools/iqs_compare_view_tools/validate_delivery.py",
+        "focused required-evidence/schema regressions",
+        "docs/handoff/UI-COMPARE-28/remediation-01 metadata or subsequent fresh remediation delivery"
+      ],
+      "acceptance": "Require/check four explicit final references and actual round/fix/test evidence; reject missing required referenced files; make new handoff satisfy unchanged canonical1.0 schema including scope.out_of_scope_writes; keep original21/newR1 locks distinct and record fresh genuine review as needed."
+    }
+  ],
+  "environment_issues_not_product_bugs": [
+    "Initial clone applied CRLF filters: exact Git archive overlay restored business bytes and clone-only autocrlf=false. Some isolated git status M entries persist despite matching HEAD raw bytes; source remains unchanged.",
+    "Initial integration cleanup false failure arose from acceptance PATH omitting WindowsPowerShell/v1.0; corrected CLI22P. Initial browser --import absolute Windows path changed to valid file URL before real tests ran."
+  ],
+  "review_handoff_authenticity": {
+    "claimed_payload_C": "9bb640d30c6a3c64d472bd07cab634d6b819d096",
+    "claimed_reviewer": "50c27ba1-859e-4ab3-b072-bfc5656dc063",
+    "input_lock": "042326af82d6d321942abcc1622abcc2f3d73ecd29cfd9ac13d478f4ee8a5473",
+    "current_bindings": "Surface C/reviewer/lock/manifest align; exact Git/blob/platform evidence audited by parent separately; no original report rewritten.",
+    "remaining": "Final required references missing; shipped validator accepts missing evidence, independently reproduced. This is engineering handoff incompleteness, not a claim of fabricated review."
+  },
+  "cleanup": {
+    "source_business_writes": 0,
+    "processes_matching_own_root": 0,
+    "loopback18771_listeners": 0,
+    "owned_temp_children": 0,
+    "owned_cli_output_children": 0,
+    "evidence": "cleanup-observed.json",
+    "post_counterexample_additional_cleanup": "Second safe launch-failure profile removed with native PowerShell strict resolved descendant check; temp childcount0.",
+    "retained": [
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\compare\\isolated-checkout",
+      "logs, synthetic browser screenshots and metadata evidence only"
+    ],
+    "browser_slot": "released to parent/UNIVERSE"
+  },
+  "testing_qualification": "182 shipped tests+6 controller controls passing prove bounded component behavior in synthetic environment. No production host integration, financial correctness or owner-positive golden qualification granted."
+}

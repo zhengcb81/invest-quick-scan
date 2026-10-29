@@ -1,0 +1,39 @@
+{
+  "kind": "negative_required_evidence_removed_in_owned_copy",
+  "argv": [
+    "C:/Miniconda/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "iqs_compare_view_tools",
+    "validate-delivery",
+    "--lab-root",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reaccept-ui28-r1-2026-10-29\\compare\\isolated-checkout",
+    "--package-id",
+    "UI-COMPARE-28-R1",
+    "--handoff",
+    "docs\\handoff\\UI-COMPARE-28\\remediation-01\\handoff.json",
+    "--lock",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+    "--remediation-lock",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\inputs.lock.json",
+    "--out",
+    ".tmp/controller-required-refs-negative"
+  ],
+  "missing_final_required_refs": [
+    "invocation_ref",
+    "round_refs",
+    "fixes_ref",
+    "test_refs"
+  ],
+  "removed_owned_files": [
+    "docs\\handoff\\UI-COMPARE-28\\remediation-01\\review\\fixes.json",
+    "docs\\handoff\\UI-COMPARE-28\\remediation-01\\tests.json"
+  ],
+  "actual_exit_code": 0,
+  "expected_exit_code": 2,
+  "stdout": "{\n  \"protocol\": \"iqs.compare_view.validate_delivery/1.1.0\",\n  \"mode\": \"remediation\",\n  \"ok\": true,\n  \"sections\": {\n    \"remediation_lock\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"original_input_lock\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"schemas\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"handoff\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"review\": {\n      \"ok\": true,\n      \"findings\": []\n    }\n  },\n  \"output\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\reaccept-ui28-r1-2026-10-29\\\\compare\\\\isolated-checkout\\\\.tmp\\\\controller-required-refs-negative\\\\validate-delivery.json\"\n}\n",
+  "stderr": "",
+  "source_writes": 0
+}

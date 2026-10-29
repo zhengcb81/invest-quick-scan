@@ -1,0 +1,120 @@
+{
+  "recorded_at": "2026-10-29T22:52:41.259772+00:00",
+  "package_id": "UI-UNIVERSE-28-R1",
+  "HEAD": "be7e1ee07b6366d31e1b7eae60942b8d00f58be8",
+  "payload_C": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83",
+  "metadata_changed_paths_since_C": [
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/artifacts.json",
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/handoff.json",
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/report.md",
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/review/final.json",
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/review/invocation-evidence.json",
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/review/round-01.json",
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/review/round-02.json",
+    "docs/handoff/UI-UNIVERSE-28/remediation-01/tests.json",
+    "tools/bind_r1_review.py"
+  ],
+  "outer_Cs_match": true,
+  "outer_reviewer_matches": true,
+  "manifest_sha_matches": true,
+  "invocation_evidence_sha_matches": true,
+  "evidence_round_payload_commit": "5ff134803cf1c8b33e3cbf8511731314e635778a",
+  "round_final_payload_commit_alias": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83",
+  "round_primary_C_matches": false,
+  "final_reference_fields_present": {
+    "invocation_ref": true,
+    "round_refs": true,
+    "fixes_ref": true,
+    "test_refs": true
+  },
+  "reviewed_file_hash_checks": {
+    "src/iqs-universe-import/index.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "src/iqs-universe-import/parse.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "src/iqs-universe-import/adapter.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "src/iqs-universe-import/machine.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "src/iqs-universe-import/mount.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "src/iqs-universe-import/shared.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "schemas/universe-upload-1.0.0.schema.json": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "schemas/universe-import-draft-1.0.0.schema.json": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "schemas/universe-import-proposal-1.0.0.schema.json": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/js/unit/acceptance-r1.test.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/js/unit/adjacency-r1.test.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/js/unit/regression-r1r.test.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/js/e2e/flow.test.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/js/helpers/cdp.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/python/test_r1_remediation.py": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tools/iqs_universe_import_ui_tools/remediation.py": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tools/iqs_universe_import_ui_tools/cli.py": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    }
+  },
+  "public_precheck": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-Xutf8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+      "--input",
+      "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+      "--package-id",
+      "UI-UNIVERSE-28-R1",
+      "--catalog",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\manifest.json",
+      "--verify-references"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"status\":\"valid\",\"package_id\":\"UI-UNIVERSE-28-R1\",\"validation_scope\":\"handoff_shape_and_declared_scope_only\",\"errors\":[]}\r\n"
+  },
+  "source_writes": 0,
+  "real_owner_model_search_calls": 0,
+  "conclusion_scope": "Metadata consistency only; not functional or actual independent invocation authentication"
+}

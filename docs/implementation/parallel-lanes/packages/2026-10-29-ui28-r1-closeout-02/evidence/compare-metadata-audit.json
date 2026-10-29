@@ -1,0 +1,118 @@
+{
+  "recorded_at": "2026-10-29T22:52:38.433118+00:00",
+  "package_id": "UI-COMPARE-28-R1",
+  "HEAD": "61982a72f35fd3250bc1710bc1a9cc3bf2455424",
+  "payload_C": "9bb640d30c6a3c64d472bd07cab634d6b819d096",
+  "metadata_changed_paths_since_C": [
+    "docs/handoff/UI-COMPARE-28/remediation-01/artifacts.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/cleanup.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/handoff.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/report.md",
+    "docs/handoff/UI-COMPARE-28/remediation-01/review/final.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/review/fixes.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/review/invocation-evidence.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/review/round-01.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/review/round-02.json",
+    "docs/handoff/UI-COMPARE-28/remediation-01/tests.json",
+    "docs/payload-manifest.json"
+  ],
+  "outer_Cs_match": true,
+  "outer_reviewer_matches": true,
+  "manifest_sha_matches": true,
+  "invocation_evidence_sha_matches": true,
+  "evidence_round_payload_commit": "9bb640d30c6a3c64d472bd07cab634d6b819d096",
+  "round_final_payload_commit_alias": null,
+  "round_primary_C_matches": true,
+  "final_reference_fields_present": {
+    "invocation_ref": false,
+    "round_refs": false,
+    "fixes_ref": false,
+    "test_refs": false
+  },
+  "reviewed_file_hash_checks": {
+    "schemas/matrix-model.schema.json": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "src/compare_client.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "src/compare_view.js": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/browser/cdp.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/browser/e2e.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/integration/cli.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/integration/r1-originals.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/integration/security.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/integration/view.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/lib/safe-remove.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/unit/matrix.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/unit/r1-cleanup-containment.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tests/unit/r1-regressions.test.mjs": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tools/iqs_compare_view_tools/__main__.py": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "tools/iqs_compare_view_tools/validate_delivery.py": {
+      "matches_C_blob": true,
+      "matches_delivered_worktree": true
+    },
+    "docs/payload-manifest.json": {
+      "matches_C_blob": false,
+      "matches_delivered_worktree": true
+    }
+  },
+  "public_precheck": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-Xutf8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+      "--input",
+      "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\handoff.json",
+      "--package-id",
+      "UI-COMPARE-28-R1",
+      "--catalog",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-remediation\\manifest.json",
+      "--verify-references"
+    ],
+    "exit_code": 2,
+    "stdout": "{\"status\":\"invalid\",\"package_id\":\"UI-COMPARE-28-R1\",\"validation_scope\":\"handoff_shape_and_declared_scope_only\",\"errors\":[{\"code\":\"schema_invalid\"}]}\r\n"
+  },
+  "source_writes": 0,
+  "real_owner_model_search_calls": 0,
+  "conclusion_scope": "Metadata consistency only; not functional or actual independent invocation authentication"
+}

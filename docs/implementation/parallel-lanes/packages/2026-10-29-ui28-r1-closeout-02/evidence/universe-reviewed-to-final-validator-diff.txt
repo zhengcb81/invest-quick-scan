@@ -1,0 +1,45 @@
+diff --git a/tools/iqs_universe_import_ui_tools/remediation.py b/tools/iqs_universe_import_ui_tools/remediation.py
+index 4947182..0eee3a5 100644
+--- a/tools/iqs_universe_import_ui_tools/remediation.py
++++ b/tools/iqs_universe_import_ui_tools/remediation.py
+@@ -231,20 +231,24 @@ def check_final_review(
+     if findings != []:
+         problems.append({"kind": "r1_review_findings_not_empty", "value": findings})
+ 
+-    handoff_dir = handoff_path.parent
+-    for name in REVIEW_FILES:
+-        if not (handoff_dir / name).is_file():
++    # The review set lives in a review/ sub-directory beside handoff.json; the
++    # fixes record may sit at the handoff level (card §6 allows either).
++    review_dir = handoff_path.parent / "review"
++    for name in ("invocation-evidence.json", "final.json"):
++        if not (review_dir / name).is_file():
+             problems.append({"kind": "r1_review_file_missing", "name": name})
+-    rounds = sorted(p.name for p in handoff_dir.glob("round-*.json"))
++    if not (review_dir / "fixes.json").is_file() and not (handoff_path.parent / "fixes.json").is_file():
++        problems.append({"kind": "r1_review_file_missing", "name": "fixes.json"})
++    rounds = sorted(p.name for p in review_dir.glob("round-*.json")) if review_dir.is_dir() else []
+     if not rounds:
+         problems.append({"kind": "r1_review_rounds_missing"})
+ 
+-    final_path = handoff_dir / "final.json"
++    final_path = review_dir / "final.json"
+     if final_path.is_file():
+         problems.extend(
+             _check_final(final_path, payload_commit, r1_lock_sha, package_id, lab_root)
+         )
+-    invocation_path = handoff_dir / "invocation-evidence.json"
++    invocation_path = review_dir / "invocation-evidence.json"
+     if invocation_path.is_file():
+         problems.extend(_check_invocation(invocation_path, payload_commit, r1_lock_sha, lab_root))
+ 
+@@ -421,7 +425,8 @@ def validate_remediation(
+     problems.extend({"kind": "original_" + p["kind"], **p} for p in original["problems"])
+ 
+     payload_commit = None
+-    final_path = handoff_path.parent / "final.json" if handoff_path.is_file() else None
++    # The review set lives in a review/ sub-directory beside handoff.json.
++    final_path = handoff_path.parent / "review" / "final.json" if handoff_path.is_file() else None
+     if final_path is not None and final_path.is_file():
+         try:
+             payload_commit = json.loads(final_path.read_text(encoding="utf-8")).get("payload_commit")

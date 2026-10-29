@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-10-29T23:07:54.581328+00:00",
+  "scope": "R1 reacceptance completed, source unchanged; mainline paused",
+  "packages": [
+    {
+      "id": "UI-COMPARE-28-R1",
+      "HEAD": "61982a72f35fd3250bc1710bc1a9cc3bf2455424",
+      "payload_C": "9bb640d30c6a3c64d472bd07cab634d6b819d096",
+      "verdict": "needs_changes",
+      "shipped_unique_passed": 182,
+      "additional_controller_passed": 6,
+      "original_four_business_cases": "passed",
+      "remaining": [
+        "startup reject cleanup",
+        "standard handoff required scope field, explicit review/test/fixes references and rejection checks"
+      ],
+      "followup_card": "../../parallel-lanes/packages/2026-10-29-ui28-r1-closeout-02/COMPARE-R1-CLOSEOUT-02.md"
+    },
+    {
+      "id": "UI-UNIVERSE-28-R1",
+      "HEAD": "be7e1ee07b6366d31e1b7eae60942b8d00f58be8",
+      "payload_C": "1a6d345017c0f6bf5d006eb5a26e9470f0903b83",
+      "verdict": "needs_changes",
+      "shipped_unique_passed": 254,
+      "original_five_business_cases": "passed separately; not added twice to denominator",
+      "remaining": [
+        "two async adjacency failures",
+        "two CLI false accepts in seven probes",
+        "referenced final round does not cover changed validator"
+      ],
+      "followup_card": "../../parallel-lanes/packages/2026-10-29-ui28-r1-closeout-02/UNIVERSE-R1-CLOSEOUT-02.md"
+    }
+  ],
+  "source_business_or_history_writes": 0,
+  "real_owner_model_or_search_calls": 0,
+  "published_regression_probe": "startup1F + async2F; valid assertion failures; owned probe temp removed",
+  "followup_contract": "R1 formalIDs/remediation-01/CLI/protocol unchanged, new mutable baselines and lock, real final review; no R2 platform",
+  "followup_cards_review": {
+    "status": "passed",
+    "open_findings": []
+  },
+  "mainline": "Paused; last71/108 historical record not retested here",
+  "cleanup": "All owned process/profile/runtime/cache/ports cleaned; frozen input snapshots and logs intentionally retained",
+  "user_dispatch_of_followup": "not reported; controller did not message external harness"
+}
