@@ -1,0 +1,127 @@
+{
+  "checked_at": "2026-10-29T17:23:01.184588+00:00",
+  "package_id": "UI-UNIVERSE-28",
+  "verdict": "changes_requested",
+  "source_repository": "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab",
+  "branch": "codex/ui-universe-28",
+  "head_commit": "154afd936c7d1ae84f974eb6c0a689225fa883dd",
+  "claimed_payload_commit": "3fdbba0f4402942c72b5ef22731df96329f039a2",
+  "source_pins": {
+    "src/iqs-universe-import/adapter.js": "dd17b0ecac5756001723b7b5ac89120606a588750747fce23a1e2b833bd436b6",
+    "src/iqs-universe-import/index.js": "282f311584f257e1f4592bc1fa835860f448913bdc73122b1be916fd4303b296",
+    "src/iqs-universe-import/machine.js": "ccfef6539f712de0aa5e2000b2f80242627e21154f683144cf5c4dbb3050fec3",
+    "src/iqs-universe-import/mount.js": "24b2f32396ca34d6449703dc76f27936984bdc3e50820e08b9f6e52301402be1",
+    "src/iqs-universe-import/parse.js": "8edcad29e7279d35d5d567c5680dab63ce4d16dad8b053c0e9de901d4fec399c",
+    "src/iqs-universe-import/shared.js": "72b7caccdbab50b32c748c92dab83fbb785476b61e759afaba779ef23bc3484d",
+    "src/iqs-universe-import/universe-import.css": "deef97212cca5f8f410e3430b5b9dba2940c54457e9fd6818be7a82fc63e90ac"
+  },
+  "source_business_or_test_files_modified": false,
+  "source_tracked_diff": "",
+  "codegraph_initialized_by_user_authorization": true,
+  "source_status_after_acceptance": "?? .codegraph/.gitignore\n?? .codegraph/config.json\n",
+  "findings": [
+    {
+      "id": "ACCEPT-U01",
+      "group": "listing_validity",
+      "severity": "high",
+      "source": "src/iqs-universe-import/machine.js:315-371",
+      "title": "Implicit sole-security selection bypasses the listing validity check",
+      "observed": "Explicit security_id goes through listingActiveAt; omitted/null with exactly one security automatically assigns it after that check. A retired listing with valid_to2021 was selected at2026-10-28.",
+      "expected": "Explicit and implicit selections use the same effective-security validity check; any clear refusal is acceptable.",
+      "proof_test": "ACCEPT-U01",
+      "usual_UI_reachable": true
+    },
+    {
+      "id": "ACCEPT-U02",
+      "group": "draft_write_ownership_and_unknown",
+      "severity": "high",
+      "source": "src/iqs-universe-import/machine.js:465-496",
+      "title": "Different rows dispatch concurrent mutations despite global inFlightRowId",
+      "observed": "A deferred first apply was positively entered; invoking confirm on another row called the transport a second time before releasing the first. The second row overwrote the global inFlightRowId.",
+      "expected": "Global serialization/refusal or safe queueing across all rows, not only same-row double-click.",
+      "proof_test": "ACCEPT-U02",
+      "usual_UI_reachable": "Normal mount event guard prevents the common path; exported machine and getMachine host surface remain vulnerable."
+    },
+    {
+      "id": "ACCEPT-U03",
+      "group": "draft_write_ownership_and_unknown",
+      "severity": "high",
+      "source": "src/iqs-universe-import/machine.js:182-237",
+      "title": "A new upload replaces the draft while its prior mutation is still pending",
+      "observed": "During a positively-entered deferred apply, loadUpload returned and changed the source file hash before the old apply was released; its ACK ownership was detached from the current draft.",
+      "expected": "Refuse or safely queue replacement until pending mutation ownership is settled; no forced error-code vocabulary. Adjacent host loadDraft/dispose cases also need regression coverage.",
+      "proof_test": "ACCEPT-U03",
+      "usual_UI_reachable": "Common file-input path has view.busy guard; exported machine/host surface still needs the invariant."
+    },
+    {
+      "id": "ACCEPT-U04",
+      "group": "draft_write_ownership_and_unknown",
+      "severity": "high",
+      "source": "src/iqs-universe-import/machine.js:239-310,315-379,381-463",
+      "title": "unknown can be reset and re-POSTed without inspecting original state",
+      "observed": "First apply timed out and produced unknown; resolveRow then select/preview/confirm issued a second apply while inspectMember call count remained0.",
+      "expected": "Keep uncertain write ownership across resolve/reselect/repreview and stop further writes until original state reconciliation, without automatic or reset-mediated retry.",
+      "proof_test": "ACCEPT-U04",
+      "usual_UI_reachable": true
+    },
+    {
+      "id": "ACCEPT-U05",
+      "group": "async_selection_epoch",
+      "severity": "high",
+      "source": "src/iqs-universe-import/machine.js:381-436",
+      "title": "A delayed preview for candidateA attaches to selected candidateB",
+      "observed": "While A preview was deferred, selection changed to B. A reply then set preview_ready on the same row with A preview request/token while selected_entity_id stayed B.",
+      "expected": "Bind async replies to draft/row/selection epoch, discard stale replies or reject conflicting edits. This proves UI token/selection mismatch only, not an incorrect real-owner write.",
+      "proof_test": "ACCEPT-U05",
+      "usual_UI_reachable": "Ordinary guarded UI events serialize; direct exported machine/host surface exposes the race."
+    }
+  ],
+  "grouping": "Three repair roots: shared effective listing selection; whole-draft write ownership/uncertainty; async draft/row/selection epoch. One consolidated R1, not five cards.",
+  "tests": {
+    "delivered_unit_suite": "145passed/0failed/0skipped, actual original source in frozen archive",
+    "initial_independent_counterexamples": "5failed, actual behavior not import/environment failure",
+    "strengthened_independent_counterexamples": "5failed, deterministic entered-gate and event-loop turn, no15ms sleep or fixed error-code requirement; refusal or safe queue accepted",
+    "initial_python": "52passed/1failed; one delivery-validator test inherited the ancestor IQS Git index in a Git-less archive, an acceptance setup error",
+    "corrected_python_target": "1passed: the sole setup-affected delivery test after local isolated Git HEAD/index materialization, no source changes",
+    "initial_browser": "0passed/6failed with own overly restrictive DNS mapping; not treated as product failures",
+    "corrected_browser_target": "1passed31.2589s/0skip, actual browser E2E after explicitly excluding127.0.0.1; integration5 not rerun, not claimed green",
+    "author_204_claim_independently_reproduced_as_one_run": false
+  },
+  "handoff_evidence_findings": [
+    {
+      "id": "REVIEW-INVOCATION-BINDING",
+      "severity": "high",
+      "finding": "final.json binds payload3fdbba0 and reviewerf2ca..., but its invocation_ref points to sole invocation-evidence.json binding old147500d5, old manifest and reviewer570b...; round07 self-report does not repair that actual invocation reference.",
+      "resolution_required": "Preserve old evidence truthfully. After repair, actual independent reviewer invocation must bind the final payload/input lock/final file hashes and be referenced from final.json; do not edit old invocation into a made-up new call."
+    },
+    {
+      "id": "RED-EVIDENCE-LABEL",
+      "severity": "medium",
+      "finding": "Author report calls running tests with missing src an initialRED, but the evidenced failures are module/import absence rather than target behavior.",
+      "resolution_required": "Retain scaffold failure as such, stop claiming it demonstrates behavior TDD; use the independent valid behavior counterexamples as explicit new repair RED."
+    },
+    {
+      "id": "REPORT-COUNT",
+      "severity": "low",
+      "finding": "report.md section1 still states86tests while section7 and actual final claim are204.",
+      "resolution_required": "Report actual scope/count consistently; do not substitute author counts for root execution."
+    }
+  ],
+  "acceptance_harness_only_changes": "Only owned archive tests/js/helpers/cdp.js changed: loopback-safe external proxy/DNS deny, explicit navigation errors, startup-failure finally. Original source helper untouched. See browser-harness-only-differences.json and setup-corrections.json.",
+  "cleanup": {
+    "source_old_files_and_main_production_preserved": true,
+    "runtime_removed": true,
+    "checkout_tmp_removed": true,
+    "owned_process_cleanup_last_stdout": "[]",
+    "mock_port18772_currently_free": true,
+    "external_owner_or_paid_API_calls": 0,
+    "retained_evidence": "Frozen owned archive and logs/counterexamples retained as acceptance evidence, not live tmp/profile/server."
+  },
+  "scope_limitations": [
+    "No mainline resumed; no actual companies/owner DB/universe changed.",
+    "Component mock browser pass is not production integration or financial qualification.",
+    "No original private reviewer platform transcript was accessed; reference mismatch is demonstrable, reviewer fraud is not alleged.",
+    "Whole-source repository remains on its delivered HEAD; only .codegraph initialization metadata untracked."
+  ],
+  "acceptance_harness_final_sha256": "d5a2462d420ac735738b9fd1490a129e28a1608509455cba754b221a52343056"
+}

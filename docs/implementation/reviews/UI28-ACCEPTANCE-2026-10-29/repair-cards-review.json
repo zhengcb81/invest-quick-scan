@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "R1-CARD-VALIDATOR-TARGET",
+      "severity": "major",
+      "path": "handoff-rules.md §4–5 and two cards delivery instructions",
+      "problem": "Existing --lock parsers accept original21 schema, not new R1 remediation lock; comparison package-id also filters original lock; universe validate_delivery/check_handoff is hardcoded to old directory/ID with no public --handoff. Current card lacks explicit requirement for selecting new remediation handoff and validating two distinct lock roles, risking old-valid handoff being mistaken for R1 validation.",
+      "requested_change": "Clarify original verify-inputs/demo use original21 lock/base package ID; require explicit new-R1 handoff/package selection and separate remediation baseline/extra-source checks with compatible CLI extension/mode. Require actual commands in new report and a negative test proving old delivery alone cannot satisfy R1. No new microgate or owner/production feature.",
+      "status": "closed",
+      "resolution": "Shared rules new§5 explicitly distinguishes original21 versus remediation lock/IDs, new handoff target and compatible CLI extension with real final help/argv. Requires R1-specific negatives; immutable references versus mutable initial target baseline clarified in lock_semantics; final review binds remediation lock rawSHA. No new production API or microgate."
+    }
+  ],
+  "reviewer_agent_id": "/root/accept_compare28",
+  "author_agent_id": "/root",
+  "reviewer_is_author": false,
+  "reviewed_at": "2026-10-29T17:36:27.261017+00:00",
+  "review_scope": "Two R1 construction cards and evidence interface completeness only, NOT implementation/production/financial acceptance",
+  "files": {
+    "README.md": {
+      "bytes": 3299,
+      "sha256": "48cfff805b9bdf366c427698231f7c097ea7cac99002d5b821db1c3df400d3fa"
+    },
+    "handoff-rules.md": {
+      "bytes": 10837,
+      "sha256": "3e8382eab0f2129eb9997c95a53467d3600fceea90e97e172a7eb58888f89e69"
+    },
+    "inputs.lock.json": {
+      "bytes": 11512,
+      "sha256": "042326af82d6d321942abcc1622abcc2f3d73ecd29cfd9ac13d478f4ee8a5473"
+    },
+    "UI-COMPARE-28-R1.md": {
+      "bytes": 5556,
+      "sha256": "f0a60234c3c8cbeba7f9b16fd95ece74527f2d31e8e2606a604e5c0e34b57d39"
+    },
+    "UI-UNIVERSE-28-R1.md": {
+      "bytes": 6521,
+      "sha256": "ac9614756d6304e6ca05c39811df7030bf6013182238f8de785529c478cc990d"
+    },
+    "manifest.json": {
+      "bytes": 4513,
+      "sha256": "351daf017ca4ca8375ae834ba05162a65056fbc88071796ed6bdf3db09058845"
+    }
+  },
+  "input_lock_sha256": "042326af82d6d321942abcc1622abcc2f3d73ecd29cfd9ac13d478f4ee8a5473",
+  "checks": {
+    "manifest_document_entries_verified": 19,
+    "manifest_hash_bytes_errors": [],
+    "local_markdown_links_verified": 20,
+    "source_commit_blob_40hex_SHA256_64hex": true,
+    "two_write_roots_unique_nonoverlapping": true,
+    "original21_lock_unchanged_reference": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad",
+    "serializer_extra_sources": 4,
+    "target_baseline_mutable_semantics_explicit": true,
+    "CLI_new_R1_handoff_and_two_lock_roles_explicit": true,
+    "original_cli_compatibility_preserved": true,
+    "unsupported_new_CLI_args_marked_not_yet_implemented": true,
+    "compare_supported_product_counterexamples": 4,
+    "compare_cleanup_safe_stub_counterexamples": 1,
+    "compare_connection_lifecycle_positive_control": 1,
+    "unsupported_config_reassignment_excluded_from_blockers": true,
+    "universe_product_counterexamples": 5,
+    "universe_public_machine_versus_view_busy_boundaries_explicit": true,
+    "independent_final_agent_evidence_C_M_no_self_reference": true,
+    "source_or_database_writes": 0,
+    "implementation_tests_executed_in_card_review": 0,
+    "model_or_search_API_requests": 0
+  },
+  "important_limits": [
+    "Root actual portable execution evidence inspected, not rerun by reviewer. Design review cannot grant component completion.",
+    "No accusation of real owner wrong-write or fraudulent previous review; only proved behavior/evidence binding gaps.",
+    "Real UI/gateway integration and main108 scan remain coordinator responsibilities/paused.",
+    "One combined repair batch per Lab with three large nodes; no per-function review gates."
+  ]
+}

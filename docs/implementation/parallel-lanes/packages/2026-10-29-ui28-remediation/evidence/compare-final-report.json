@@ -1,0 +1,191 @@
+{
+  "package_id": "UI-COMPARE-28",
+  "status": "changes_requested",
+  "checked_at": "2026-10-29T17:20:36.333560+00:00",
+  "source_head": "dd99431d3abda7920cb0a6b0377dae01bc7b53ef",
+  "source_business_files_modified": false,
+  "source_business_pins": {
+    "src/compare_client.js": {
+      "bytes": 5356,
+      "sha256": "86e499db1259bc7b71992f879c273ce02cf85329447e65eb99c272cd5f8d17bd"
+    },
+    "src/compare_view.css": {
+      "bytes": 10419,
+      "sha256": "06d0abfe58345423510ff4c9f77c2c4f1d74298fbbe31b783fc8df0ae7bcc1ef"
+    },
+    "src/compare_view.js": {
+      "bytes": 89831,
+      "sha256": "0cad889900659908b30e6fbf5aef64a1c3eb64f9d0454de8b8864f11d3129590"
+    }
+  },
+  "source_status_after": [
+    "?? .codegraph/.gitignore",
+    "?? .codegraph/config.json"
+  ],
+  "authorized_codegraph_generated_only": true,
+  "frozen_archive": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-ui28-2026-10-29\\compare\\frozen-dd99431",
+  "frozen_source_pins": {
+    "src/compare_client.js": "86e499db1259bc7b71992f879c273ce02cf85329447e65eb99c272cd5f8d17bd",
+    "src/compare_view.css": "06d0abfe58345423510ff4c9f77c2c4f1d74298fbbe31b783fc8df0ae7bcc1ef",
+    "src/compare_view.js": "0cad889900659908b30e6fbf5aef64a1c3eb64f9d0454de8b8864f11d3129590"
+  },
+  "tested_scope": {
+    "unit_passed": 88,
+    "safe_integration_passed": 58,
+    "perf_passed": 1,
+    "total_positive": 147,
+    "skipped": 0,
+    "counterexample_product_failures": 4,
+    "safe_stub_cleanup_failures": 1,
+    "CLI21_not_executed": "Unsafe destructive cleanup code; no helper patch in source or claim of original-suite pass",
+    "browser2_not_executed": "Root explicitly stopped reruns after proved cleanup safety failure; E2E second port overlaps Universe; no real browser launched",
+    "counterexample_diagnostic_failures_not_counted": 1,
+    "total_confirmed_effective_failures": 5,
+    "connection_dispose_remount_control_passed": 1,
+    "total_positive_with_control": 148,
+    "calibration": "Original baseline147P plus1 controller dispose/remount control; only4 of original5 counterexample tests establish product failures. C28-05 is unproven contract expectation, excluded from blockers."
+  },
+  "counterexample_file": "controller-counterexamples.test.mjs",
+  "counterexample_log": "execution/controller-counterexamples.log",
+  "cleanup_counterexample_file": "cleanup-containment-counterexample.test.mjs",
+  "cleanup_observed": "cleanup-counterexample-observed.json",
+  "public_owner_source_lock": "public-owner-source-evidence.json",
+  "source_anchors": {
+    "src/compare_view.js": {
+      "export function projectRecordWithIssues": 176,
+      "export function projectHistory": 323,
+      "let connectionIdentity": 1453,
+      "function current(ticket)": 1559,
+      "function readEntity(entityId)": 2003,
+      "let candidates = scoped.filter": 1270,
+      "const modelKey =": 1224,
+      "const original = cell.record_ref": 1916
+    },
+    "src/compare_client.js": {
+      "const projected = projectEntity": 127,
+      "const projected = projectHistory": 142
+    },
+    "tests/browser/cdp.mjs": {
+      "export async function removeDirWithRetry": 309,
+      "if (!path.startsWith(tempRoot))": 312,
+      "await runQuiet('cmd'": 316
+    },
+    "tests/browser/e2e.test.mjs": {
+      "const PORT_BASE": 23,
+      "portCursor += 1": 34
+    }
+  },
+  "findings": [
+    {
+      "id": "C28-01",
+      "severity": "high",
+      "scope": "src/compare_view.js projection + tests and optionally compare_client seam",
+      "source_refs": [
+        "src/compare_view.js:178-285",
+        "src/compare_view.js:323-354",
+        "src/compare_client.js:159-172"
+      ],
+      "problem": "Actual original history rows contain reported_score/answer_status plus nested payload.answer/execution/versions. The delivered flat-only projector drops score8 and known as-of/version/model revision/coverage into null. Synthetic demo already uses flattened rows, masking the real shape.",
+      "reproduction": "controller-counterexamples.test.mjs C28-01; observed deepEqual fails on seven original metadata fields",
+      "expected_fix": "Normalize both original public entity/detail and history observation shapes, preserve explicit inner null/missing distinctions and exact scope/date/model, no SQL or authority changes. Add fixture labelled synthetic public serializer shape and actual client-chain regression."
+    },
+    {
+      "id": "C28-02",
+      "severity": "high",
+      "scope": "src/compare_client.js + src/compare_view.js raw-detail in-memory plumbing",
+      "source_refs": [
+        "src/compare_client.js:146-147",
+        "src/compare_view.js:2002-2035",
+        "src/compare_view.js:1929-1941"
+      ],
+      "problem": "The shipped createComparisonClient returns projected records and removes raw groups. mount tries payload.groups to save original summaries, so even flat valid owner rows lose expandable original reasons through the actual shipped client->mount chain.",
+      "reproduction": "controller-counterexamples.test.mjs C28-02 actual component/client, original summary unique token absent after clicking cell",
+      "expected_fix": "Keep a bounded in-memory raw-original lookup or explicitly injected original resolver through the client/view seam; use exact source pointers/observation refs, render summary/evidence safely; never place bodies in exportViewState/log/metadata store."
+    },
+    {
+      "id": "C28-03",
+      "severity": "high",
+      "scope": "src/compare_view.js discoverQuestionRows/buildMatrixModel/explicit observation selection",
+      "source_refs": [
+        "src/compare_view.js:520-592",
+        "src/compare_view.js:1261-1284"
+      ],
+      "problem": "For the same stable qid across old/new module packages, the first package seeds the single row, candidates are reduced to that package before observation_choices. Explicitly choosing new OBS_NEW yields missing/score null although the selected original observation exists.",
+      "reproduction": "controller-counterexamples.test.mjs C28-03 old score3 pkg_old + new score9 pkg_new, select only OBS_NEW; actual state missing/[] vs required single/9/OBS_NEW",
+      "expected_fix": "Ensure explicit original observation selection stays reachable across module releases; do not silently first-package-select or recalculate score; retain per-record package/version/perimeter diagnostics and honest original values."
+    },
+    {
+      "id": "C28-04",
+      "severity": "major",
+      "scope": "src/compare_view.js model-axis key/filter + tests",
+      "source_refs": [
+        "src/compare_view.js:1221-1240",
+        "src/compare_view.js:1283-1284"
+      ],
+      "problem": "Model-axis grouping keys only entity+model_resolved and uses provider from the first record. Two distinct providers exposing the same model string collapse into one multiple cell, preventing side-by-side model-source comparison.",
+      "reproduction": "controller-counterexamples.test.mjs C28-04 providersP1/P2 same-model-name -> actual1 column expected2",
+      "expected_fix": "Use complete declared model identity dimensions (provider+model, and known revision as appropriate) for model columns/filter/labels; unknown revision remains unknown; do not change financial qualification."
+    },
+    {
+      "id": "C28-06",
+      "severity": "high",
+      "scope": "tests/browser/cdp.mjs + tests/integration/cli.test.mjs cleanup helpers",
+      "source_refs": [
+        "tests/browser/cdp.mjs:301-321",
+        "tests/integration/cli.test.mjs:82-101",
+        "tests/browser/e2e.test.mjs:27-40"
+      ],
+      "problem": "Cleanup checks only startsWith(tmpdir), allowing sibling-prefix escape, then invokes destructive cmd/rmdir and rmSync. CLI tests similarly invoke cmd/rmdir without strict resolved owner containment. E2E sequential ports18771/18772 also overlap the other package default18772.",
+      "reproduction": "cleanup-containment-counterexample.test.mjs C28-06 fully intercepted filesystem/process calls; virtual temp-sibling path reaches both destructive APIs, actual spawn/delete0. Browser not run.",
+      "expected_fix": "Single native Node/PowerShell file mechanism; strict resolved descendant of unique caller-owned root, reject root/sibling/junction escape, verify PID/profile exact ownership. Avoid other package default port and record finally cleanup on success/failure/timeout."
+    },
+    {
+      "id": "C28-07",
+      "severity": "high",
+      "scope": "docs/payload-manifest.json + final handoff/review metadata and test evidence",
+      "source_refs": [
+        "docs/handoff/UI-COMPARE-28/handoff.json",
+        "docs/handoff/UI-COMPARE-28/review/final.json",
+        "docs/handoff/UI-COMPARE-28/review/invocation-evidence.json"
+      ],
+      "problem": "Handoff result/review commit be2ce169 differs from final-review payload ab2f486. Final reviewer is reviewer6, invocation points to reviewer2/01d8af8; evidence_sha256=null. reviewed_file_hashes are prose, not SHA256. This cannot authenticate a final different-agent review bound to the delivered payload.",
+      "reproduction": "Read-only field comparison, no assertion of fabrication. Original records preserved.",
+      "expected_fix": "Preserve history; deliver a new exact content payload with real final different-agent invocation/round/final hash evidence, align final commit/inputlock/payload manifest/file pins and handoff pointers; metadata-only commit separate. Never fabricate previous calls or self-sign."
+    }
+  ],
+  "cleanup": {
+    "temporary_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-ui28-2026-10-29\\compare\\execution\\tmp",
+    "entries_after": [],
+    "browser_processes_created": 0,
+    "servers_listening_created": 0,
+    "owned_test_child_processes_completed": true,
+    "frozen_archive_and_logs_intentionally_retained": true,
+    "production_DB_or_API_calls": 0,
+    "source_Lab_business_writes": 0,
+    "outside_cleanup_processes_or_files_deleted": 0
+  },
+  "financial_or_production_qualification": false,
+  "independent_evidence_authenticity": "Insufficient final binding, not asserted forged. Existing history read-only preserved.",
+  "nonblocking_observations": [
+    {
+      "id": "C28-05",
+      "severity": "nonblocking_contract_clarification",
+      "scope": "src/compare_view.js connection lifecycle + integration contract/tests",
+      "source_refs": [
+        "src/compare_view.js:1453",
+        "src/compare_view.js:1552-1560"
+      ],
+      "problem": "Caller reassigning config.connectionIdentity was not a declared observable update API, so the previous diagnostic does not establish an implementation bug. Host proposal describes dispose on route exit but should explicitly say dispose/remount on connection change. Declared dispose/remount control passed and rejects old pending records.",
+      "reproduction": "Earlier C28-05 diagnostic failed under an unspecified update expectation; separate connection-lifecycle-control.test.mjs original dispose/remount API 1P0.585s, old host empty/new host only9.",
+      "expected_fix": "Document and test the host connection-change dispose/remount requirement, or deliberately add an explicit setter/callback only if desired. No magic config-assignment observation required, no actual production leakage claim."
+    }
+  ],
+  "connection_control": {
+    "test": "connection-lifecycle-control.test.mjs",
+    "execution": "connection-lifecycle-control.json",
+    "log": "execution/connection-lifecycle-control.log",
+    "exit_code": 0,
+    "passed": 1
+  },
+  "updated_at": "2026-10-29T17:22:04.062779+00:00"
+}

@@ -1,3 +1,35 @@
+## 2026-10-29T17:38Z — 两个UI包完成总控验收：均需返修；已形成两张R1，主线继续暂停
+
+本次“外包都做好请查收”仅恢复这两个包的验收，未恢复收费扫描/SDK主线。实际HEAD：COMPARE dd99431d3abda7920cb0a6b0377dae01bc7b53ef；UNIVERSE154afd936c7d1ae84f974eb6c0a689225fa883dd。两正式handoff均通过原CLI shape/reference预检，但最终审查调用仍绑定旧C/旧reviewer，COMPARE还存在文字/null hash和handoff C错位；这些不证明欺诈，也不能据passed字符串签收。原业务/src/test/helper/旧交接未改；仅授权CodeGraph初始化各生成2个未跟踪配置，保留未混入payload。
+
+**实际结论两包changes_requested，暂不集成原UI。** COMPARE原88unit+58安全integration+1perf通过；另正确dispose/remount控制1P。4个确定产品红（实际history形状掉分/字段、交付client→view理由丢失、跨package指定观察漏选、同名不同provider混列）及1个全拦截cleanup越界红。原CLI21/browser2因危险cmd/rmdir及路径守卫未跑，未冒称绿色；外部重赋config未声明更新API的旧诊断已排除，连接控制1P证明正确销毁重挂可用，不把它列功能阻断。
+
+UNIVERSE原unit145通过，稳定5个真实行为红：单挂牌自动填值绕有效期；跨row写并发；在途loadUpload换draft；unknown绕原核对重发；旧A预览迟到挂到新B选择。U01/U04普通UI可触达，U02/03/05在exported machine/getMachine面复现，普通页面已有部分view.busy保护，不能泛称所有问题由普通点击触发。U05仅证组件绑定错，未宣称真实owner错写。Python初52P1验收环境F（无独立Git index读到祖先IQS）；修隔离环境后单例1P。浏览器初DNS错误屏蔽自身loopback不算产品F，修环境后单真实E2E1P31.26s，另5DOM未重跑，不宣称204整组复现。有效反例使用entered gate，不绑错误码/不靠15ms固定sleep。
+
+用户提出可让原harness继续改进，总控因此停止接管源修，按原包各一份合并返修卡：`docs/implementation/parallel-lanes/packages/2026-10-29-ui28-remediation/UI-COMPARE-28-R1.md` 与 `UI-UNIVERSE-28-R1.md`，写根仍各自原Lab、互不重叠，旧原件保留，新交回各自docs/handoff/原包ID/remediation-01/。只要求3个大节点，不对每个问题增审查门。根补锁4个真实公共serializer/owner参考及实际基线，原21锁不改；锁清楚区分可修改目标开工基线/只读上游/最终新C。工具R1校验要显式指新handoff/R1 ID、区分旧21锁与新R1锁，不能验证旧目录冒称R1通过；不预言旧CLI已有新增参数。
+
+两卡已由不同agent集中审查，同轮CLI/双锁交接目标歧义已补，最终passed/open[]。19项manifest、6主文档pin/本地链接闭合。总控重跑发布的可移植反例：比较4F、cleanup stub1F、名单5F；正确连接控制1P，均有效目标红/合成数据，0真实删除/owner/模型/搜索。正式摘要和卡审见 `docs/implementation/reviews/UI28-ACCEPTANCE-2026-10-29/`，具体报告/反例在本批evidence；未来harness需移入自己Lab永久回归，所有问题修尽后真正不同agent审最终payload C/实际invocation/hash，metadata M不改C，不能修饰旧审查原件。
+
+所有测试均owned隔离副本/临时环境；本人进程/profile/temp/cache已清，冻结源码副本和日志作为审计输入有意保留。原UI8766/真实Store/名单/预算/公司答案未触碰，不下载资料、不读取keys。原71/108及SDK故障仍是上次暂停记录，本次没有重新核主线实时库，不据此宣称主线已完成。用户尚未报告R1开工，总控未代派发。
+
+### Next Step
+
+等待用户将两张R1交回原harness及新的remediation-01正式交接，再按新catalog/新C/真实独审复验；源码按活动writer保留，勿同时接管修改。原真实108题/SDK准入继续暂停，只有用户明确继续后才恢复；不得因本次收包隐式启动收费或生产集成。
+
+---
+
+## 2026-10-29T17:09Z — 两个UI外包包已交回，开始总控隔离验收；真实扫描主线继续暂停
+
+用户仅授权查收本轮 UI-COMPARE-28 / UI-UNIVERSE-28，不据此恢复收费扫描或StockQA SDK主线。已读原卡/共同规则/21文件锁及两源正式handoff/report/tests/cleanup/review。COMPARE实际HEAD由独立reviewer核为dd99431，handoff指be2ce169、review final指ab2f486且reviewed_file_hashes为文字，invocation仍旧reviewer2/旧01d8af8、evidence_sha256=null，不能按自报passed直接签收。UNIVERSE声称HEAD154afd9/payload3fdbba0，原invocation也指旧147500d5，须核最终round真实绑定；其原RED是无src探测，不能当有效产品行为红。
+
+实施边界：两个不同agent分别负责两个Lab的代码/接口/测试/原独审证据验收，仅在owned git archive副本/临时环境运行；屏蔽keys/远端网络，只准本Lab loopback mock，不碰原UI8766/生产Store/名单/模型。用户原授权CodeGraph初始化与直接根修继续有效；如需修源码，先核实际HEAD/pins及无writer冲突，再最小TDD修自己Lab，保留旧交付/历史独审原件，最终交不同agent复审。总控唯一写共享PWF和验收归档，两个writer不互写。所有测试/缓存/profile/子进程及temp必须清理，缺实际浏览器/环境如实记录，不以0测试或import错误算通过。仅在完整功能节点集中审，不跑小时级全仓。
+
+### Next Step
+
+完成两包隔离源/接口与真实交互复验、记录有效反例并直接修尽，补齐绑定最终payload的真实独立审查；然后更新交接/包状态、精确提交推送IQS与有remote的已授权仓。原真实108题/SDK准入仍待用户继续，保持暂停，不把组件通过称生产接通。
+
+---
+
 ## 2026-10-28T19:13Z — 按用户要求安全暂停；本轮只有两个可独立派发的产品施工包
 
 **状态：paused，按用户明确要求暂停；完整三市场108题验收尚未完成。** 用户要求暂停前列齐新施工包。真正保留的是 UI-COMPARE-28（多公司×动态题目/模型/日期的正式结果视图组件）和 UI-UNIVERSE-28（用户TXT/CSV名单批导、人工消歧与原单entity确认组件）。新目录 `docs/implementation/parallel-lanes/packages/2026-10-28-independent-support/` 六份文档已齐；两Lab分别为 `C:/Users/郑曾波/Projects/iqs-comparison-view-lab` 与 `C:/Users/郑曾波/Projects/iqs-universe-import-ui-lab`，编卡/独审时均不存在。两个唯一写根互不重叠，可交不同harness；当前workers_dispatched=false，未代用户派发。

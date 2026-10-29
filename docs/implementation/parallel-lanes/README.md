@@ -1,3 +1,9 @@
+## 2026-10-29 最新验收与返修状态
+
+原UI-COMPARE-28/UI-UNIVERSE-28已实际交回，独立验收均为changes_requested，暂不接生产。可交回原harness的 [本轮两份R1](packages/2026-10-29-ui28-remediation/README.md) 已通过独立卡审，包含实际反例/输入与基线锁/新交接目录/最终真实独审要求；两原Lab互不重叠，可并行修。正式 [验收摘要](../reviews/UI28-ACCEPTANCE-2026-10-29/acceptance-status.json) 记录已跑和未跑范围。10-28原包manifest是冻结设计，不是当前派发/验收状态；最新状态以此处和根PWF首条为准。总控未接管源修，主线真实扫描仍暂停。
+
+---
+
 ## 2026-10-28 最新可派发清单（两个独立产品包）
 
 见 [本轮总入口](packages/2026-10-28-independent-support/README.md)：[UI-COMPARE-28](packages/2026-10-28-independent-support/UI-COMPARE-28.md) 和 [UI-UNIVERSE-28](packages/2026-10-28-independent-support/UI-UNIVERSE-28.md)。两包独占不同新Lab，原仓只读；卡、21文件输入锁、接口、隔离测试、最终真实独审及交接规则已齐并通过独立卡审。未代用户派发。总控后续统一接原UI/gateway；本批不关闭生产/金融门。前三个泛工具草案已撤销，不要另行实施。以下旧条目保留历史语境，实时主线以根PWF最新首条为准。

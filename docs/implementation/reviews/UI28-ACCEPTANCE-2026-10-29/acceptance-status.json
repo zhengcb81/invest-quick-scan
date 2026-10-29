@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-10-29T17:38:22.927678+00:00",
+  "scope": "Original two UI component handoffs assessed; mainline remains paused.",
+  "packages": [
+    {
+      "id": "UI-COMPARE-28",
+      "head": "dd99431d3abda7920cb0a6b0377dae01bc7b53ef",
+      "verdict": "changes_requested",
+      "delivered_received": true,
+      "product_counterexamples": 4,
+      "safe_cleanup_counterexamples": 1,
+      "positive_scope": "unit88 + safe integration58 + perf1 + connection lifecycle control1",
+      "not_executed": "original unsafe CLI21/browser2",
+      "source_business_writes": 0,
+      "remediation_card": "../../parallel-lanes/packages/2026-10-29-ui28-remediation/UI-COMPARE-28-R1.md"
+    },
+    {
+      "id": "UI-UNIVERSE-28",
+      "head": "154afd936c7d1ae84f974eb6c0a689225fa883dd",
+      "verdict": "changes_requested",
+      "delivered_received": true,
+      "product_counterexamples": 5,
+      "positive_scope": "original unit145; Python52 initial + corrected environment single test1; corrected loopback single real-browser E2E1",
+      "not_executed": "other5 DOM integrations not rerun; author204 not independently reproduced as one run",
+      "source_business_writes": 0,
+      "remediation_card": "../../parallel-lanes/packages/2026-10-29-ui28-remediation/UI-UNIVERSE-28-R1.md"
+    }
+  ],
+  "original_handoff_cli_precheck": "Both valid, shape_and_declared_scope_only; does not authenticate final review",
+  "independent_review_evidence": "Both stale/mismatched final invocation references; history retained, no claim of fraud",
+  "r1_design_review": {
+    "status": "passed",
+    "open_findings": [],
+    "input_lock_sha256": "042326af82d6d321942abcc1622abcc2f3d73ecd29cfd9ac13d478f4ee8a5473",
+    "user_dispatch": "not yet reported; controller did not dispatch"
+  },
+  "source_changes": "Only authorized CodeGraph .codegraph/.gitignore and config.json generated as untracked in eachLab; no business/test/old handoff modified.",
+  "cleanup": "All owned live profiles/processes/runtime/.tmp/cache removed; frozen input snapshots/logs intentionally retained as audit inputs.",
+  "production_owner_model_search_calls": 0,
+  "production_ready": false,
+  "mainline_status": "paused; no production UI/gateway/DB/universe operation performed. Last71/108 is historical pause record, not retested in this acceptance."
+}

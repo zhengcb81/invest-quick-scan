@@ -1,0 +1,8 @@
+// Synthetic controller regression. Original assertions retained; imports rebased.
+import {resolve as r1Resolve} from 'node:path';
+import {pathToFileURL as r1URL} from 'node:url';
+const R1_ROOT = process.env.IQS_R1_COMPONENT_ROOT || "C:/Users/郑曾波/Projects/iqs-comparison-view-lab";
+import {test} from 'node:test';import assert from 'node:assert/strict';
+const {createComparisonClient} = await import(r1URL(r1Resolve(R1_ROOT, "src/compare_client.js")).href);const {mountComparison} = await import(r1URL(r1Resolve(R1_ROOT, "src/compare_view.js")).href);const {installDom,mountHost} = await import(r1URL(r1Resolve(R1_ROOT, "tests/lib/dom-shim.mjs")).href);
+const settle=async()=>{for(let i=0;i<30;i++)await new Promise(r=>setTimeout(r,0));};const response=score=>({entity:{entity_id:'E1'},groups:[{key:'common',fields:[{observation_id:'OBS_'+score,entity_id:'E1',question_id:'Q1',status:'scored',score}]}]});
+test('C28-05-control documented dispose and new mount reject the old pending read',async()=>{const dom=installDom(),oldHost=mountHost(dom.document),newHost=mountHost(dom.document);let resolve;const pending=new Promise(r=>{resolve=r});const old=mountComparison(oldHost,{client:createComparisonClient(async()=>pending),connectionIdentity:{id:'A'},options:{initialSelection:{entity_ids:['E1']}}});old.dispose();const fresh=mountComparison(newHost,{client:createComparisonClient(async()=>response(9)),connectionIdentity:{id:'B'},options:{initialSelection:{entity_ids:['E1']}}});try{resolve(response(8));await settle();assert.equal(oldHost.children.length,0);assert.deepEqual([...newHost.querySelectorAll('.iqs-compare__cell-score')].map(n=>n.textContent),['9']);}finally{fresh.dispose();old.dispose();dom.restore();}});
