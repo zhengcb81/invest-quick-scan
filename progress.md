@@ -1,3 +1,17 @@
+## 2026-10-30T16:32:15Z 过期25单题真实刷新已ACK；新cutoff30仅一题准入中
+
+本轮原UI集成/三市场108有效槽/冷重启零HTTP成果已在IQS dc3d36a提交并推送。有效槽仍为原105+真实替代3，原3failed保留，非原108全部成功。
+
+TTL-A已完成：腾讯IQS24原cutoff25通过正常policy1.1/version8原query/preview/新委托/确认/准入、原UI run-5b62ef3741c3437f83c2100412026775、原deliveryjob_71ce7107b824f456327bfae738ccdd64完成ACK1/1。新WORK_eb3decb0fcbf4d0d864f5b01984980e7 generation2，旧观察/ACK元数据不变。实际新增1HTTP/$0.017088，账本累计80HTTP/$1.882481、0在途。新信息日期实际为2026-08-12，故仅证明过期正常刷新，绝不能叫30日fresh。actual-acceptance首版误比附加stored_ack_sha256形状，r2读取真实ACK SHA后同形比较通过；首版原样保留。
+
+StockWiki coverage原值投影最小一行及4项永久nativeSQLite显示回归，经另一agent审查passed后正常commit8527bc7（无remote）。新增4+legacy7共11P；独审4P不重复加分，subject-binding模块未配3仓集成环境为skip，不能宣称25P。正常提交hook发现测试unused import已删除，11P重跑、ruff/static正常hook通过；最终lint后hash补证由同独审核对。未改分数/覆盖度本体/有效期/主体。
+
+当前原UI cutoff30/full/明确原主体证券只做新preview prepare_9ef7c7e2fb2944e3a86f8ba269d8840e，原公开route current→record→activate(CAS)→current实际确认route_c9114e09d33e0c31f06fc8e66ea56a54ee21f1959f58b46958e2fec58fedd1ee；原builders冻结新完整36题，尚不授予执行权。现仅IQS24通过原_scope工具新准入中，尚未新模型调用；不普通apply全36、不造applied/prepared/company_preparation_id。旧25全部先ACK后才切route30。budget/provider/thinking/TTL24/policy8不变。
+
+**Next Step：** 等原1题准入明确成功，从原设置完整config/CAS追加真实manual bundle，再原UI预览/启动/真实回答/交付ACK；只有实际证据日期合格才可做TTL内reuse与0新增HTTP验收，若日期仍旧如实记录并修正计划，不回填今天。最后统一独审、更新README/交接并提交推送。当前原8766同部署继续，不重启或杀其他任务。不触碰其他writer的2026-10-10 README。
+
+---
+
 ## 2026-10-30T15:57:38Z 三市场108有效槽真实签收＋冷重启零HTTP恢复均已独审通过；TTL实测继续
 
 **已完成核心链路：腾讯/微软/宁德时代各36题。口径为原105题成功＋真实N+1替代3题，共108有效槽，绝非原108 work全部ACK。** 原3failed整行SHA保持；105原成功与3精确替代均有CP、standard、context、sealed outbox及同store/package/item/obs/payload/accepted sequence真实两端ACK。独立agent已逐核原6份admission receipt、105+3集合/不可变binding和原始签收。新M run601a...于14:57:26 exit0，C run3732...于15:07:28 exit0；两原security full3 scope可读新gen2+原gen1混合，原UI交付job33c3c518.../ad3168f0...均completed3/3。3题受控补问增3HTTP/$0.058750；累计79 settledHTTP/$1.865393，无在途/uncertain。新prompt余量实际用于新进程，旧failed/旧费用/日期/题库未回写。

@@ -1,0 +1,262 @@
+{
+  "A_scope_actual_cost_micros": 17088,
+  "A_scope_actual_http_requests": 1,
+  "B_same_shape_measurement_recipe": "Use exact real B admission item.work_item_id, work_metadata plus stored_ack_sha256 on every compared side; capture pre-B exact scoped context and accounting, then exact target CP/standard/context/outbox/ACK after B; never choose latest natural key or assume generation. If B information_as_of remains August, declare fresh TTL acceptance not met even when schema/ACK succeed; do not set today, relax TTL or manufacture evidence.",
+  "accounting_at_root_r2": {
+    "attempts": 80,
+    "cost_micros": 1882481,
+    "http_requests": 80,
+    "in_flight": 0
+  },
+  "accounting_before_A": {
+    "active_or_uncertain_work": 0,
+    "attempts": 79,
+    "cost_micros": 1865393,
+    "http_requests": 79,
+    "in_flight": 0,
+    "unsettled_attempts": 0
+  },
+  "accounting_now": {
+    "attempts": 80,
+    "cost_micros": 1882481,
+    "http_requests": 80,
+    "in_flight": 0,
+    "unsettled_attempts": 0
+  },
+  "accuracy_conclusion": "A proves honest expired-result refresh and native ingest, not freshness or financial correctness. A new cutoff merely permits newer facts; it cannot guarantee a model searched current evidence. Old but truthful evidence may remain old and must not be relabelled fresh.",
+  "actual_dates": [
+    {
+      "answer_status": "scored",
+      "freshness_now": "stale",
+      "information_as_of": "2025-04-08",
+      "information_cutoff": "2026-10-25",
+      "observation_id": "obs_ef4b143ec8c28d29d6e709646e5c551ccdf7cc775bb9d2b230b1aa997dc50603",
+      "observed_at": "2026-10-28T17:35:17.649706Z",
+      "valid_until_under_current24h_policy": "2025-04-09T00:00:00Z"
+    },
+    {
+      "answer_status": "scored",
+      "freshness_now": "stale",
+      "information_as_of": "2026-08-12",
+      "information_cutoff": "2026-10-25",
+      "observation_id": "obs_83ef89b291ffb970879ac97314b1c3f3f16a60d9d44b635e7bf99034ce4a734b",
+      "observed_at": "2026-10-30T16:10:41.302121Z",
+      "valid_until_under_current24h_policy": "2026-08-13T00:00:00Z"
+    }
+  ],
+  "actual_target_attempt_metadata": [
+    {
+      "actual_cost_micros": 17088,
+      "attempt_id": "ATTEMPT_e55bd6ed7f91469485c028898ccfa694",
+      "budget_attempt_id": "PACK_BUDGET_92904a3940424831b80bb0be025e871c",
+      "http_status_code": 200,
+      "in_flight": 0,
+      "member_count": 1,
+      "model_requested": "mimo-v2.6-pro",
+      "native_binding_kind": "question_pack_member_to_pack_send",
+      "pack_id": "PACK_92904a3940424831b80bb0be025e871c",
+      "phase": "response_available",
+      "provider": "mimo",
+      "request_counted": 1,
+      "status": "settled",
+      "stored_pack_manifest_sha256": "187e1b3e3198d1819fc85ff004dc9e3bb8b6197057395185fc1de2cbbfafe9c4",
+      "stored_request_payload_sha256": "3d084aacca5b6f294cca482988a0302bf9709995ddd55ae1a7cf61b1d24062df"
+    }
+  ],
+  "checks": {
+    "UI_delivery_original_completed_one": true,
+    "UI_run_original_process_exited_zero": true,
+    "actual_new_delivered_generation2": true,
+    "actual_old_delivered_generation1": true,
+    "actual_single_http_and_cost": true,
+    "full36_input_bytes_unchanged": true,
+    "historical_answers_not_claimed_fresh": true,
+    "historical_cutoff25_retained": true,
+    "native_preview_exact_one_item": true,
+    "old_metadata_same_full_shape": true,
+    "original_registration_exact_single_item": true,
+    "root_r2_new_base_projection_matches": true,
+    "root_r2_old_matches": true
+  },
+  "ended_at": "2026-10-30T16:35:42.011125+00:00",
+  "hash_semantics": "Source frozen files recomputed; original ACK metadata checked by reviewed helper. CP/standard/context/package SHAs are stored metadata only; no answer/CP/package body rehash.",
+  "new_work": {
+    "checkpoint": {
+      "attempt_id": "ATTEMPT_e55bd6ed7f91469485c028898ccfa694",
+      "checkpoint_id": "CHECKPOINT_3fffeccb3b6d46f7a5f4ef950a18bd6b",
+      "checkpointed_at": 1793376641.6870844,
+      "payload_sha256": "3de8fd5108f851132465cc789a67f65fa31bd861a1bba95101a0d385db35ece3"
+    },
+    "complete": true,
+    "context": {
+      "context_sha256": "ebbf285481f7320480d99719728261d639ca9f971f75a66e0c8f298b75370e54"
+    },
+    "delivery": {
+      "ack_id": "ack_26f948a8e9cee09a31d861ac",
+      "ack_status": "accepted",
+      "block_code": null,
+      "exact_native_ack": true,
+      "item_id": "itm_b7924cdf0b55fdbd3fd07875024caef46ae612409b408d56fe784a3bfd6e61d8",
+      "observation_id": "obs_83ef89b291ffb970879ac97314b1c3f3f16a60d9d44b635e7bf99034ce4a734b",
+      "observation_metadata": {
+        "answer_status": "scored",
+        "information_cutoff": "2026-10-25",
+        "model_resolved": "mimo-v2.6-pro",
+        "provider": "mimo"
+      },
+      "original_import_sequence": 112,
+      "package_bytes_sha256": "6b1d5b63c571bebef54518d68db7efa6f2bea11d01261bfcecff65f1061fd347",
+      "package_id": "pkg_5ede954346b13a21eb868cd76ffc1efa9bfe93fde31c98d8c415f9c327db2dc2",
+      "package_sha256": "5ede954346b13a21eb868cd76ffc1efa9bfe93fde31c98d8c415f9c327db2dc2",
+      "payload_sha256": "a260818ad767b09de27e6dd2c65bf82d91b066f321999b0ad20e67b3f1b79b18",
+      "receiver_ack_sequence": 112,
+      "state": "delivered"
+    },
+    "entity_id": "ENT_ce0f5c34-d14e-4687-b6c3-19d58dce38d3",
+    "generation": 2,
+    "question_id": "IQS_24",
+    "scope": "security",
+    "scope_id": "SEC_5eb7d462-28c7-47cd-803c-5fd79ca48256",
+    "standard": {
+      "answer_sha256": "a0323f12a2bea50ce9396998c29bc5af95129c6caec60e17855d5ab4eb21f373",
+      "created_at": 1793376641.6870844
+    },
+    "status": "delivered",
+    "stored_ack_sha256": "5177def00ac7889b2bdc9b23211b87a3baea18e77edc0ab51950aed7f0e86824",
+    "work_item_id": "WORK_eb3decb0fcbf4d0d864f5b01984980e7"
+  },
+  "old_work": {
+    "checkpoint": {
+      "attempt_id": "ATTEMPT_76bc779934194168a1f18b88de21566e",
+      "checkpoint_id": "CHECKPOINT_adc09f4345f34dbcaf6e8316b9320629",
+      "checkpointed_at": 1793208917.9762418,
+      "payload_sha256": "2289f030aed617f7ab33a087362b101d4f9b255f4721b5f6482bc0753db974c4"
+    },
+    "complete": true,
+    "context": {
+      "context_sha256": "f61edacd268349896847ae25dbce19228762505d3342f17bead0c3d611bc3bed"
+    },
+    "delivery": {
+      "ack_id": "ack_52f5c5c209e94c5e81a6e1e7",
+      "ack_status": "accepted",
+      "block_code": null,
+      "exact_native_ack": true,
+      "item_id": "itm_b2f9bff80e930424d363d6495dad52e18eb4a09929ce46b661255fb6878a10b2",
+      "observation_id": "obs_ef4b143ec8c28d29d6e709646e5c551ccdf7cc775bb9d2b230b1aa997dc50603",
+      "observation_metadata": {
+        "answer_status": "scored",
+        "information_cutoff": "2026-10-25",
+        "model_resolved": "mimo-v2.6-pro",
+        "provider": "mimo"
+      },
+      "original_import_sequence": 9,
+      "package_bytes_sha256": "9fb4ce484aace2ebac2dba7a0a2f24f75477d791239561e4c06e1b73805ad832",
+      "package_id": "pkg_51129ab65955d0f3ea08444474b9c628a652e65901a1696323837a3f83961e81",
+      "package_sha256": "51129ab65955d0f3ea08444474b9c628a652e65901a1696323837a3f83961e81",
+      "payload_sha256": "64818379b4f22062d1f5cc2ead76c191148b0b99c420d4fd6020bf292f97a288",
+      "receiver_ack_sequence": 9,
+      "state": "delivered"
+    },
+    "entity_id": "ENT_ce0f5c34-d14e-4687-b6c3-19d58dce38d3",
+    "generation": 1,
+    "question_id": "IQS_24",
+    "scope": "security",
+    "scope_id": "SEC_5eb7d462-28c7-47cd-803c-5fd79ca48256",
+    "standard": {
+      "answer_sha256": "41bb2c2f4d202739d36cbb52db1bb2229746dfaac23d48c91ed140f1c80c2989",
+      "created_at": 1793208917.9762418
+    },
+    "status": "delivered",
+    "stored_ack_sha256": "827deb1168644d668bd207178e0e44b50657f8a0f1746efb3d1810f6afa8830c",
+    "work_item_id": "WORK_7dd65d52cf3f4568918f5fc4be9b8b46"
+  },
+  "open_findings": [],
+  "original_first_false_cause": "Projection shape mismatch: cold measurement contains extra stored_ack_sha256; independently enriched both current sides and compared exact cold baseline. First false report retained, not overwritten.",
+  "original_frozen_input_pins": {
+    "c06_authority": {
+      "actual_sha256": "bbca4fc628416a316e78d7bf545cff40edf4c46699df51d52561748af913c991",
+      "expected_sha256": "bbca4fc628416a316e78d7bf545cff40edf4c46699df51d52561748af913c991",
+      "matches": true,
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\u25-live\\preparation\\candidates\\prepare_73357bd1e056486bbb133e168d34741d\\native-inputs\\subject_1c3a961dcaae1cb4efd1294c2df11a8afb02985bad057ea28c270d5a7d764b34\\authority.json"
+    },
+    "identity_snapshot": {
+      "actual_sha256": "67182409e8a06600bfa6c62224bec9d3edd989da296541b7d5ea6d7a21b66671",
+      "expected_sha256": "67182409e8a06600bfa6c62224bec9d3edd989da296541b7d5ea6d7a21b66671",
+      "matches": true,
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\u25-live\\preparation\\candidates\\prepare_73357bd1e056486bbb133e168d34741d\\native-inputs\\subject_1c3a961dcaae1cb4efd1294c2df11a8afb02985bad057ea28c270d5a7d764b34\\identity.json"
+    },
+    "manifest": {
+      "actual_sha256": "b02353cccb2295c223841f746a235825a8ab86e6e79ff287850e9b403944a6ab",
+      "expected_sha256": "b02353cccb2295c223841f746a235825a8ab86e6e79ff287850e9b403944a6ab",
+      "matches": true,
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\u25-live\\preparation\\candidates\\prepare_73357bd1e056486bbb133e168d34741d\\native-inputs\\subject_1c3a961dcaae1cb4efd1294c2df11a8afb02985bad057ea28c270d5a7d764b34\\manifest.json"
+    },
+    "owner_config": {
+      "actual_sha256": "c79bcde9944aaa42e89c9f3492dbb36af7c56c28bcb183115516e4cec05fe0ee",
+      "expected_sha256": "c79bcde9944aaa42e89c9f3492dbb36af7c56c28bcb183115516e4cec05fe0ee",
+      "matches": true,
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\u25-live\\preparation\\candidates\\prepare_73357bd1e056486bbb133e168d34741d\\native-inputs\\subject_1c3a961dcaae1cb4efd1294c2df11a8afb02985bad057ea28c270d5a7d764b34\\owner-config.json"
+    },
+    "questions": {
+      "actual_sha256": "aa6f6d5e9445bcc78bd2d3e2132913c97dd3cb4de6deea1fb0d3ae97a24a1ef0",
+      "expected_sha256": "aa6f6d5e9445bcc78bd2d3e2132913c97dd3cb4de6deea1fb0d3ae97a24a1ef0",
+      "matches": true,
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\u25-live\\preparation\\candidates\\prepare_73357bd1e056486bbb133e168d34741d\\native-inputs\\subject_1c3a961dcaae1cb4efd1294c2df11a8afb02985bad057ea28c270d5a7d764b34\\questions.json"
+    }
+  },
+  "protocol": "iqs.ttl_a_independent_readonly_review/1.0.0",
+  "read_mode": "QA and Wiki mode=ro/query_only/BEGIN, separate snapshots, metadata-only; no API/UI/owner action or production write",
+  "reviewer": "/root/accept_universe28",
+  "source_pins": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ttl-expired25-native\\actual-acceptance-r2.json",
+      "sha256": "d40d0bc77a0962fd2087f48c45d884db5006890b5b0fc4c56797582e683431fa"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ttl-expired25-native\\actual-acceptance.json",
+      "sha256": "5f4977f2b4805eb8206f263d4a20fa6e171ecf9f254feac290ca567e9dad44bd"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ttl-expired25-native\\admission.json",
+      "sha256": "0ccfef18f9438be8db164451ef659ba73cb8de1fc4180ec1c3033b8c585a18f9"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ttl-expired25-native\\owner-preview.json",
+      "sha256": "0889ac03a5e611742ed6e9d0e6a657ba839e609217ed91fa9a33ae8b0d59f3c2"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ttl-expired25-native\\manual-bundle-entry.json",
+      "sha256": "127161e3e32c34dbb55a48c0329753239f123f0dec6575fc79f8c1e85daa940f"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ttl-expired25-native\\summary.json",
+      "sha256": "50a770c6d297bacca48a5c68ab7cf19627ac32c60654a4fd9860afde8fc54f96"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\recovery-observer\\cold-after.json",
+      "sha256": "5ec625fe74913d156ea13baab27a868f049335ddf95cd5fbbef009128c6fc0b4"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\dashboard-runtime\\run-5b62ef3741c3437f83c2100412026775.json",
+      "sha256": "a7de89e35a4e9578b1e29e813ff331185a6f6c3a8399488854f354ddf44e4b55"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\dashboard-runtime\\delivery-jobs\\deliveryjob_71ce7107b824f456327bfae738ccdd64.json",
+      "sha256": "c17382de5bca841df03d714bdd0e6627d34f40efa1828dcf867f5e9d7dab4eed"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\ttl-final-preparation\\source-and-state-pins.json",
+      "sha256": "49f3f9bfe9031055004c230df92a8ddce429ce85e0477c12275eaeb13afe44f6"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\ttl-final-preparation\\verify_ttl_a.py",
+      "sha256": "be7c3178530410bcbe554767410d92781eb99df9b3e29902c6a1e276dbeb1f2c"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\recovery-observer\\observe_recovery.py",
+      "sha256": "54a739ea7bf67459d4440214f2e3da323e79dcd3f7e4f35c858b0c9b707c161a"
+    }
+  ],
+  "started_at": "2026-10-30T16:35:41.924675+00:00",
+  "verdict": "passed_actual_expired_refresh_not_freshness"
+}

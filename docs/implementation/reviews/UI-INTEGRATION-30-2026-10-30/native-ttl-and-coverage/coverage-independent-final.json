@@ -1,0 +1,43 @@
+{
+  "verdict": "passed",
+  "open_findings": [],
+  "started_at": "2026-10-30T16:29:23.310547+00:00",
+  "ended_at": "2026-10-30T16:29:25.499753+00:00",
+  "argv": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-c",
+    "import sys,importlib.util,platform\nplatform.uname()\ndef deny(event,args):\n if event in {'socket.connect','socket.getaddrinfo','socket.sendto','subprocess.Popen','os.system'}:raise RuntimeError('review_network_process_denied')\nsys.addaudithook(deny)\nsource=sys.argv.pop(1)\nimport stockwiki\nspec=importlib.util.spec_from_file_location('stockwiki.quick_scan_profiles',source)\nmodule=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)\nimport pytest\nraise SystemExit(pytest.main(sys.argv[1:]))\n",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\coverage-projection\\quick_scan_profiles.actual.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\coverage-projection\\actual-final-owned-temp\\pytest",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\coverage-projection\\actual_test_quick_scan_profiles_coverage.py"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "96f43c9dc4915046f00411e63506cb6c0f6ff6fc4e905cd2b40586e4fa435636",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_source_sha256": "ae9ef506f7c2d23ad0763580c06ceb65331effc6c6bf0b56b0ce2b0bd437219a",
+  "actual_permanent_test_sha256": "a8d15749b62046b1b13738a3ffaa06c139c0bf594c34816c5ec60113c643d7fc",
+  "actual_diff": "Exactly one coverage answer.get line after confidence; no other source changes vs frozen red. Candidate order differed without semantic change.",
+  "own_test_count": 4,
+  "own_test_result": "4 passed",
+  "parent_reported_related_validation": "new4+legacy7=11 passed; subject_binding module skipped because explicit three-repository env not supplied. Prior14 baseline not re-counted. This reviewer only re-ran actual new4.",
+  "limits": [
+    "Synthetic original native SQLite import/projection only",
+    "No production DB/config/UI/model operations",
+    "Does not validate real TTL fresh answer or financial accuracy"
+  ],
+  "production_writes": 0,
+  "API_requests": 0,
+  "cleanup": {
+    "owned_temp_absent": true,
+    "child_exited": true,
+    "source_repository_writes": 0,
+    "owned_frozen_sources_logs_retained": true
+  }
+}
