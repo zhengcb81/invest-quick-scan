@@ -1,3 +1,31 @@
+## 2026-10-30T17:00:07Z 本轮原UI接线与三市场真实工程验收收口；fresh真实正例保留pending
+
+| 本轮项目 | 实际状态 |
+|---|---|
+| 比较、名单组件接回原8766 | 完成并独审；比较实际3公司/36题/3列，模型轴与日期轴实测；名单原库215成员、TXT/CSV审阅/去重/身份候选/明确提交入口保留，不自动扩池 |
+| 腾讯/微软/宁德时代各36题真实回答与原ACK | 完成；精确原105+真实替代3=108有效槽，原3failed整行不变，不是原108全部ACK |
+| 原8766冷重启恢复 | 完成并独审；108有效槽原CP/standard/context/outbox/ACK stored元数据一致，79HTTP/$1.865393在该冷节点不变 |
+| 过期cutoff25单题正常刷新A | 完成并独审13/13；真实gen2新答/原ACK，旧gen1不变；1HTTP/$0.017088 |
+| 合法新cutoff30单题研究B | 原准入/运行/入库完成并独审；完整36输入，仅IQS24 gen3新调用1HTTP/$0.020838 |
+| B真实第二进程只读历史恢复 | 完成并独审；同run attempt2、API0、原CP/ACK/费用不变；明确历史deferred、requested_scope_completed=false，不能算新研究完成 |
+| 有效TTL内fresh缓存真实正例、金融内容准确性 | **pending，未签通过。** A实际info08-12、B04-09均旧，原TTL24拒绝reuse正确；新生成/新入库不代表最新资料 |
+
+B真实链：原UIpreview prepare_9ef7c7e2fb2944e3a86f8ba269d8840e（30日/full/原主体证券）→原route record/activate/current CAS route_c9114e09...→原builders冻结新完整36→原_scope精确1item准入WORK_cd2e0f8c10cf4dc8afa801c159dea738/gen3→原UI run-3d4016e1716e42239c36ac1f4a89f67d于16:44:54 exit0→deliveryjob_87846419dded9e027e62609ce7a489e5 completed1/1。独审16项重算新5文件+admission config/budget rawSHA，确与原SDK registered execution_inputs_sha256=13a987…2beb相符；旧gen1/Agen2含stored ACK SHA同形不变。
+
+B原生新鲜度复检为ready预览但规划dispatch_new_work/gen4、reuse_observation_id=null；不是传输失败，也没有准入或派发gen4。随后原UI对同bundle预览readonly_recovery=true；普通再次start只attached原run无Popen。为真正验证恢复，使用原UI pause已退出run→inspect原scope许可→resume：同run launch_attempt2/pid17644于16:53:55.200344–16:54:51.037293真实执行并exit0，原result-2.json为original_references_and_recovery/API0/未reseal、samegen3历史delivered被deferred，requested_scope_completed=false/whole_manifest_scanned=false。不能只看exit0或已签收metadata.complete=true就说新研究完成。前后CP/standard/context/outbox/ACK/费用完全不变；总账**81settledHTTP/$1.903319、0在途/uncertain**，是u25累计而非全归本轮单题。两次TTL共2HTTP/$0.037926。
+
+源码正常提交：StockQA0dc799a（已推origin）；StockWiki8527bc7（原coverage字段显示+4永久nativeSQLite回归，无remote）；UI2f1f450（原启动回执展示修复，无remote，前一bcc5aec比较作用域修复保留）。coverage有效4+legacy7=11P，binding模块因未配3仓环境skip；原14基线不重复算。启动文案严格status+process_started配对，仅attached表示未建进程，started表示建进程但不保证已发模型/已完成；缺字段/矛盾/未知显示未知并保留原回执。实际完整handler8场景独审通过；root新8+比较10由2pytest wrapper通过，不把wrapper与JS或独审重跑重复加分。未改API/权限/预算/状态/重试。 原8766重载后也已实测新文案：原start实际attached/process_started=false、same run/attempt2，显示“本次未创建新进程”；再核CP/ACK和81HTTP/$1.903319不变，薄证据start-receipt-actual-ui.json。总控两次coverage pytest临时目录3399/3400已核所有权/绝对边界并清；其他writer/真实库未碰、没有下载公司文档。
+
+部署仍为原http://127.0.0.1:8766/、config/dashboard.local.json、r25-live/owner-workspace隔离研究库/store qsobs_c2ce64820343a7b1；不是已授金融生产资格。normal owner policy1.1/version8、TTL24、MiMo Pro开启思考、独立u25原预算保持；recovery refs已从原设置移除。T current route已合法更新到cutoff30，旧25输入/历史不改，不再拿旧25准入执行冒充30。原launcher424/child28876仅为本轮冷重启时观察值，未来停进程仍需实际核命令/创建时间，不能盲杀PID。原B第二次resume已停止、无在途模型，不重复重问到出现今天日期。
+
+正式证据 `docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-ttl-and-coverage/`（A13项、B16项、coverage和启动文案独审、薄metadata/日期/费用/恢复限制）；冷108证据相邻native-three-market-recovery。private runs保留原CLI、完整输入/回答及首次测量错误，未推正文/库/密钥/委托。source_raw_sha256和归档LF SHA分开。IQS上批1746d83已推；本摘要/README/薄证据作为同一次正常提交推送，实际最新commit用git log核。其他writer的2026-10-10 README4行和既有untracked仍排除。
+
+本轮诊断工具记录：IQS CodeGraph context未及时返回已中止，UI索引可用但host执行器在IQS；已按不可用回退到已定位scripts/dashboard_execution.py原source核对attached/resume语义，不重建索引。一次PowerShell rg通配路径不兼容改用-g后正确读取，无产品变更。
+
+**Next Step（整个PWF未宣告全完）：** 下一主线先对齐题义的指标期间、来源发布日、结论适用日与真实搜索核查覆盖，解决稳态题被24h信息日规则反复判旧的产品语义；详细讨论已归档freshness-semantics-discussion.md。先读取具体真实回答的来源日期/覆盖，而不是按旧日期直接认定结论错。若引入分字段复核/verified_at须原生证据、明确policy/schema版本、保留旧观察，旧版本仍保守；不从导入时刻补今天、不改旧日期/TTL求绿、不自动派发gen4。拿到有真实当期证据的样本才补fresh reuse正例及金融内容核验；不要重做已签108、外包卡或增加小审查节点。本轮功能已可在原UI试用，2000家吞吐优化与全池扫描未验收，C33导入约19分钟的性能瓶颈仍保留。
+
+---
+
 ## 2026-10-30T16:32:15Z 过期25单题真实刷新已ACK；新cutoff30仅一题准入中
 
 本轮原UI集成/三市场108有效槽/冷重启零HTTP成果已在IQS dc3d36a提交并推送。有效槽仍为原105+真实替代3，原3failed保留，非原108全部成功。

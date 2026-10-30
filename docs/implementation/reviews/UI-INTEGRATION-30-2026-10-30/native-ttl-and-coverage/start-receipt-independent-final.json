@@ -1,0 +1,37 @@
+{
+  "verdict": "passed",
+  "open_findings": [],
+  "started_at": "2026-10-30T16:57:10.658933+00:00",
+  "ended_at": "2026-10-30T16:57:10.750236+00:00",
+  "actual_sourcepins": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product.js",
+      "raw_sha256": "3ff96abc525afe783bcc2ac79bc874f0cca9f9a0774232f2ff01757a2b1458bd"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\js\\start_receipt.mjs",
+      "raw_sha256": "13b3b1462b79c0ce1fbc879e94ee0f5852e773db8db2c999a38c76f1903d0156"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_start_receipt.py",
+      "raw_sha256": "52802345c3b74057c216b926f562d2158635e6a3b683e84fc00f7050585a1b8e"
+    }
+  ],
+  "argv": [
+    "node",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\start-receipt-copy\\actual-ui\\tests\\js\\start_receipt.mjs",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\start-receipt-copy\\actual-ui\\src\\app\\ui\\product.js"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "326d4baf17f573a32de9ccd8c977359c1c31549b0e790ecf901498f28eb2e03d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "unique_JS_cases": 8,
+  "actual_source_equals_independently_tested_candidate": true,
+  "actual_permanent_JS_equals_reviewed8case": true,
+  "wrapper_static_review": "ROOT derives repo parent, Node which or explicit skip, key/token/secret/password environment filter,25second timeout, exitcode asserted. Source only read by Node; code under test uses local explicit API/DOM seams. No synthetic test claims owner positive.",
+  "count_semantics": "Own independent actual8JS passed. Parent wrapper2pytest includes this8 and comparison10; do not add wrapper counts to18JS or prior8 as new unique cases.",
+  "source_delta": "Pure same-file receipt copy helper plus existing start listener captures result and shows original raw receipt; no API/status/retry/timeout changes.",
+  "production_writes": 0,
+  "API_requests": 0,
+  "cleanup": "Node subprocess exited; no profiles/server/DB/temp created. Owned actual-ui frozen sources and logs retained for evidence."
+}
