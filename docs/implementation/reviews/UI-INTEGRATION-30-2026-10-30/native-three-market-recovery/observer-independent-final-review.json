@@ -1,0 +1,39 @@
+{
+  "verdict": "passed",
+  "open_findings": [],
+  "source_sha256": "54a739ea7bf67459d4440214f2e3da323e79dcd3f7e4f35c858b0c9b707c161a",
+  "old_source_sha256": "eaea0351dc5f8d006dd021e2b9f9e9e702bf71219d1d549d369ab9e44e2b8bbc",
+  "fix": "one original accepted error_code equality check; complete delta archived in observer-final.diff",
+  "start_utc": "2026-10-30T14:56:23.281912+00:00",
+  "end_utc": "2026-10-30T14:56:31.654930+00:00",
+  "argv": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-c",
+    "import sys\ndef deny(event,args):\n if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}: raise RuntimeError('review_network_denied')\nsys.addaudithook(deny)\nimport pytest\nraise SystemExit(pytest.main(sys.argv[1:]))",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\recovery-observer-independent\\tmp-final-owned\\pytest",
+    "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\recovery-observer-independent\\test_independent_green.py::test_already_present_original_accepted_ack_error_metadata_must_agree",
+    "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\recovery-observer-independent\\test_independent_green.py::test_synthetic_valid_ack_positive"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "e03084badc07434b4553fc6155d44f0dc126740b0169441e243319061ec8a1a0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "test_count": "28 unique total: original27 pass retained (15author fixtures+12own); failed independent case now passes; additionally2 already/repeat positive retests do not add denominator",
+  "real_recovery_completion": "not assessed; actual new3 executing, no final108 claim",
+  "production_writes": 0,
+  "API_requests": 0,
+  "review_runner_environment_note": "First final-run wrapper lacked its own sys import before spawning; no pytest/DB/CLI ran then. Corrected wrapper used same owned empty temp and finally removed it.",
+  "cleanup": {
+    "owned_temp_absent": true,
+    "key_free_pytest_child_exited": true,
+    "network_denied_by_audit": true,
+    "source_or_production_database_writes": 0,
+    "owned_frozen_reports_retained": true
+  }
+}

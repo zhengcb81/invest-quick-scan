@@ -1,3 +1,31 @@
+## 2026-10-30T15:57:38Z 三市场108有效槽真实签收＋冷重启零HTTP恢复均已独审通过；TTL实测继续
+
+**已完成核心链路：腾讯/微软/宁德时代各36题。口径为原105题成功＋真实N+1替代3题，共108有效槽，绝非原108 work全部ACK。** 原3failed整行SHA保持；105原成功与3精确替代均有CP、standard、context、sealed outbox及同store/package/item/obs/payload/accepted sequence真实两端ACK。独立agent已逐核原6份admission receipt、105+3集合/不可变binding和原始签收。新M run601a...于14:57:26 exit0，C run3732...于15:07:28 exit0；两原security full3 scope可读新gen2+原gen1混合，原UI交付job33c3c518.../ad3168f0...均completed3/3。3题受控补问增3HTTP/$0.058750；累计79 settledHTTP/$1.865393，无在途/uncertain。新prompt余量实际用于新进程，旧failed/旧费用/日期/题库未回写。
+
+**冷恢复已实测而非仅fixture：** 15:25:56Z仅停止本轮已核命令/父子/创建时间的原server32940，经原官方启动器同8766、同config/workspace/budget重开；当前launcher424、child28876（以后仍必须核实实际，不按旧PID盲停）。Windows TCP列表会给2–5个重复且PID0的条目；初次只读守卫拒绝时未停进程，随后以精确原CIM链/创建时间作拥有者证据，停止后真实socket bind probe确认同端口可用；不把重复PID0条目当多个已确认进程，也不杀其他服务。原UI已冷后恢复原isolated_research工作区215成员，C详情38记录含历史版本，不能当38道题。
+
+before/after以同一151404基线逐108 work的checkpoint/standard/context/outbox/ACK标识与stored SHA比较完全相同，3failed行SHA重算不变；79HTTP/1865393micros、0inflight/unsettled/active保持。持久化时间字段也比较，只有测量clock/label排除。没有声称重算全部回答/CP正文；原ACK关系每次由既有原校验器验证。独立agent复核通过。此前C attempt3复用原14 CP的unfinished-task实际接续证据也保留，不能把closed冷读取或fixture当作TTL新研究完成。
+
+临时3 recovery refs已从原UI完整配置保存删除；原policy通过原SHA/控制锁最小改为**normal1.1/单调version8**（raw993f59c81a488253dc677a768dcfb7d080023730b8eb246d992a683235c54d7c），budget/TTL24/provider/model/名单不改。所有旧控制/授权历史保留。当前正用既有original dashboard_prepare._prepare_scope做腾讯IQS24原cutoff25单题真实过期fresh preview/新委托/确认/准入；私有驱动native_ttl_expired25.py只计划与调用原工具，不造applied/prepared标签、不截断原36题输入；随后从UI启动1题/原ACK。再做合法新cutoff30完整新bank但只准入1题、真实date合格才核fresh reuse与0新增HTTP。先25刷新ACK再切30 route，旧25永远不能冒称30日fresh。
+
+实现状态：IQS已推a28b024（此后本批PWF/证据待本次正常提交）；UI bcc5aec本地无remote；StockQA0dc799a已推；StockWiki8cd239e本地无remote。核心UI/比较/名单均接原8766，53相关pytest/独立对抗已通过，三市场真实矩阵实际3公司/36题/3列。观察器accepted原行error_code补严，唯一有效28用例覆盖已独审；作者与重复正例不累加计数。薄证据native-three-market-recovery/，完整前后元数据和CLI/答案仅私有runs。
+
+后续只做两个TTL真实实验与最后统一审查，更新README/PWF并正常提交推送。吞吐瓶颈已有实证：C33 import约19分钟、原强校验多次冷启动/重复preview/status；是后续性能大节点的依据，不能以测试通过宣称2000家已就绪。当前不扩大名单、不下载公司文件、不增加每小步审查门。其他writer的2026-10-10 README及既有untracked仍排除。
+
+---
+
+## 2026-10-30T14:40:11Z 六个真实原控制动作已完成；原UI只登记微软2题、宁德时代1题
+
+原policy v7/1.2下的六条resolution/retry已全部原CLI apply为native_recorded（最后C retry 14:13:03Z）；3个原failed整行SHA均不变，0新增模型HTTP，未创建假target或旧failed→pending。三个真实retry refs已在原设置页保存；初次被10月28日遗留needs_original_inspection准备job fb1f5...挡住，root从原UI读取其实际partial/no-model阶段并用原allowed abandon结束该旧编排，原工作/结果/授权/费用均保留。未直接改状态文件或绕过inactive guard。
+
+微软原UI新准备 `prepare_7e56c50a1eef4a4983e19afb498f69de` 已registered，bundle `dashboard-7e56c50a1eef4a4983e19afb498f69de-1`（注意新scope-1-security），精确IQS22/23、gen1→2；完整36题不裁。实际target `WORK_f8526f035ff844a3a6d3658c87678371` 与 `WORK_6bb1c9eabdf14f9997d78d6232337165` 已由原immutable binding反查到，尚无新答案。C新准备 `prepare_e047952cdb014bdf95f69e8446b76cb6` 在原UI受理/准入中；预览明确只IQS22/gen1→2、原quick/cutoff25。M full/C quick/原主体证券日期不改；先全部准备后再派发，避免同ledger预算/授权快照漂移。
+
+原目标仍105 CP/标准/封存、102 ACK；剩余成功security原3题尚待和新3一起交付。真实三个公司比较已显示36题/3列，无entity_without_records；模型/日期/版本冲突如实显示。已推送IQS `a28b024`；原UI `bcc5aec`本地提交，无remote。发布delta及六动作薄metadata见native-three-market-recovery目录；private runs中的observer只读核验15P，不能把脚本/测试当真实新ACK。
+
+接续：等C原准备registered→原UI对新M2/C1单包预览/明确启动→新JSON严格校验与原ACK，读原security成功1/2题合并完成108有效slot（原105+真实replacement3）。然后无活动时收口refs/normal单调v8，完成冷重启/原CP恢复、真实过期25单题与合法新cutoff30单题fresh复用；先原25刷新ACK再切30 route。不得复用旧过期preview或旧dg1、不得修改旧时间/TTL求绿。最终独审再更新PWF/README、提交推送。当前不要停止或新起8766，原launcher22716/child32940须实际验证后才可安全重启。
+
+---
+
 ## 2026-10-30T13:46:53Z 三市场原102题已签收；3题受控恢复进行中
 
 原8766比较和名单接线已完成。真实C公司层面33题于本轮原UI交付job `deliveryjob_4b77fb539c612e9ddbf842b9497fa585` completed，原33包/33ACK，未重发模型。精确原6receipt向量：105 CP/标准/封存、102 delivered；腾讯36全、微软entity33、宁德entity33。原M security 2failed+1ready、C security 1failed+2ready仍保留，最终应是原105成功+真实replacement3，而不是原108全部成功。76次累计settled HTTP/$1.806643、0在途/uncertain；这是沿用原预算账本累计值，不是本次单轮费用。
