@@ -1,0 +1,89 @@
+{
+  "observed_at_utc": "2026-10-30T12:20:08.082012+00:00",
+  "state": "live_e2e_in_progress",
+  "exact_original_vector": {
+    "requested_scope_count": 6,
+    "work_count": 108,
+    "checkpoint_count": 86,
+    "standard_count": 86,
+    "context_count": 90,
+    "ready_package_count": 17,
+    "delivered_count": 69,
+    "sealed_package_count": 86
+  },
+  "source_commits": {
+    "IQS_prior": "6bf85ed",
+    "StockQA": "b13e082",
+    "StockWiki": "8cd239e",
+    "original_UI": "2473c70"
+  },
+  "software_reviews": {
+    "subject_projection": "21 unique passed",
+    "WAL_readers": "36 unique passed",
+    "terminal_member_recovery": "9 new behavior cases +1 required guard passed; original60 passed +the guard closes original environment failure",
+    "UI_deadline": "47 original product cases passed; independent2 no-retry cases and syntax passed"
+  },
+  "live_limitations": [
+    "Original108 target not fully ACKed; two original Microsoft failures retained until native controlled recovery.",
+    "No native owner resolution/retry apply has been run at this checkpoint.",
+    "Expired scored Tencent IQS24 native planning succeeded with generation2/API0; this is not execution or ACK.",
+    "Historical cutoff25 cannot prove current fresh reuse; needs new legitimate cutoff research, never edited old dates.",
+    "UI/StockWiki repos have no existing remote; only local commits, no invented remote."
+  ],
+  "privacy": "Thin metadata/reviews only: no answers, full contexts, database, API keys or native grant payloads.",
+  "files": [
+    {
+      "archive": "received-answer-review.json",
+      "source": "runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\final-review.json",
+      "source_sha256": "3e0902a784c7cb81a429b3db69b78f4e3e06e4ab9d74198889587726826ceea3",
+      "archive_sha256": "fac768650378247a11bb0215239d365f0a8c714cf87a1ad292be15f3eba80be5"
+    },
+    {
+      "archive": "received-answer-review.md",
+      "source": "runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\final-review.md",
+      "source_sha256": "5aea2d870a3a19f78bedde611968a70ca78bfe0e7651e5cdef5b3b0a0b886360",
+      "archive_sha256": "a7c339c963dc105623ad56a96cd52441e4719b8168318f5244b0d65c8958265b"
+    },
+    {
+      "archive": "native-owner-recovery-steps.md",
+      "source": "runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\owner-control-steps.md",
+      "source_sha256": "dbb469d5976443c71069dda5507338b96055c66908480d2da57a0e157f647194",
+      "archive_sha256": "5b22bb923b0b8285ef70c9242100c21841e761c30e5af278c25368e36946b7d5"
+    },
+    {
+      "archive": "ui-deadline-review.json",
+      "source": "runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\final-review.json",
+      "source_sha256": "bba09b78078df279f12239f0da345c0273a0153d4d1497b6c2ceaf60eced5f32",
+      "archive_sha256": "3f8aa330bb59352dd4e2ce657187ea8ea68d68e1e6c1337dfecfbfec801fa4eb"
+    },
+    {
+      "archive": "ui-deadline-review.md",
+      "source": "runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\final-review.md",
+      "source_sha256": "69482feff8dc3efc577caf174f790da307ae6175614d3cb2ff937efda10212e3",
+      "archive_sha256": "56e9e915a612716f44d9036fed39d0a48fb97bce1d09d8ba7628971589961733"
+    },
+    {
+      "archive": "ttl-refresh-boundaries.md",
+      "source": "runs\\ui-integration-live30-2026-10-30\\ui-review\\ttl-closeout-preparation\\README.md",
+      "source_sha256": "74f343670cb099eb28af5e710004c7706ea0a766abd0ebad3f17036e8ecdc1f7",
+      "archive_sha256": "175379ef67284da03c4f7d067368b31962e14f9a13a343a90ef42c5d66857094"
+    },
+    {
+      "archive": "transaction-contention-diagnostic.md",
+      "source": "runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\lock-diagnostic\\report.md",
+      "source_sha256": "526ed1545dd96498f955c70e1408f08ee0d0dafd9ea7d6d335d9b89a18f5a188",
+      "archive_sha256": "9cc3bbff0f654f4b7dc9bb3177828c3b88fbb6d6cacaec8edc75f19e1aeb3f22"
+    },
+    {
+      "archive": "test-temp-cleanup.json",
+      "source": "runs\\ui-integration-live30-2026-10-30\\root-temp-cleanup.json",
+      "source_sha256": "efa8f33533899eb2467947e2d01caa8759e56e465a3c3586300a2a793f7ec041",
+      "archive_sha256": "6e6289e4c6890719e932151b3e802f11d3e65358fde7c97d3c9d5cebfa3b9cc8"
+    }
+  ],
+  "archived_at_utc": "2026-10-30T12:25:29.891993+00:00",
+  "source_snapshot": {
+    "path": "runs\\ui-integration-live30-2026-10-30\\current-observation-20261030T122008082012Z.json",
+    "sha256": "ad408c7f8adad352c7d169f0dc26d0fb69a62fa0eaeed31c9d33580014443816"
+  }
+}

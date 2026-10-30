@@ -1,3 +1,17 @@
+## 2026-10-30T12:20Z 三项根修及原UI等待修复已独审提交，真实闭环继续
+
+原UI比较/名单接线A已完成；StockWiki主体元数据读取根修8cd239e已本地正常提交（无remote），21唯一用例通过。StockQA正常WAL读取根修4bb11b1已推送，36唯一边界通过。新增M22/23真实失败揭示：模型summary874/841超过原800上限，原validator正确；不得截断回填。原SDK此前把已收200但无有效答的成员置failed后，owner resolution入口又不接failed，造成无法正常登记有限重问的死结。root只补严格原终结事件/同attempt/lease/settled receipt/无CP与outbox的接纳；仍需原owner独立确认、真实resolution→retry→N+1准入，旧failed/work/attempt/费用不改。有效原2F→新9P、特殊原guard1P、原相关60P；永久9再跑通过，正常black/isort/mypy/secret hook后b13e082已推送。
+
+原UI5处等待时间从默认30秒改为合法原预检150–180秒，不改端点/body/权限/重试；47产品测试通过、另一agent复核原不重发场景和精确5行delta通过。UI2473c70本地提交，无remote。本轮根拥有8个测试tmp已安全定向清理；独审自有tmp也清，不停真实模型或原UI。
+
+真实C节点仍in_progress：最新observer按原6receipt/108work精确核对86 CP/标准/封存、69目标ACK，腾讯36及微软entity33全delivered；微软security原2failed+1ready，宁德entity16ready+17未完成（其中2leased），security3未开始。当前只按原预算执行；C的先前两个pre-model退出均无新模型费，WAL存在误拒和后续真实rollback锁分开记录。已等M交付completed后于12:02Z从原UI恢复C同run第3次，原14检查点复用，未换旧cutoff25/quick模式或杀在途请求。证券单包预检会因共享费用状态改变而明确拒绝start，必须刷新原预检，不能把prelaunch拒绝当已派发。
+
+过期真实规划补证：原scored T IQS24 born28日确过24h，原CLI在提权正常保存record后真实返回dispatch_new_work generation2/API0；此前generic已追到records.save的沙箱PermissionError，保留旧异常，不追认之前其它generic唯因。尚未新确认/派发/ACK此刷新。原cutoff25在30日做新回答也不能宣称fresh，真实有效期内复用另需合法新截止日研究；不修改旧日期。原owner仅有精确preview单action委托，旧dg1不能套新单题。合法单题可用原full36输入+新真实confirmation→SDK只执行已登记1题→原setup CAS登记新bundle→原UI预览/启动/交付；待原活动结束才走该配置入口。
+
+下一步：先完成C两scope模型阶段，再串行原同ledger控制/交付避免长事务争锁；M两题按已准备真实诊断intent走原owner四动作（两resolution、两retry）和精确N+1有限重问，保留旧失败。之后完成三家每题真实ACK、原UI冷重启/缓存恢复及真实TTL刷新，集中独审签收；当前不能报告108完成。正式薄证据docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-recovery-and-ui-deadline/。当前state与未完成项以本摘要覆盖旧12:00前记录。其他writer的2026-10-10 README仍不属本轮。
+
+---
+
 ## 2026-10-30T11:43Z 原UI接线完成；真实扫描和原ACK验收进行中
 
 当前主线仍在执行，用户没有暂停。A比较/名单已接原8766并独审通过（UI63f4627，无remote）；B缓存/TTL63唯一用例通过，StockQA测试a8ecb9d/052f3f0已推送；IQS有界preflight修复661658a已推送并于11:31Z安全部署。原批batch-f03eda7de77e4a5ab23fb32c4d89f900从UI明确恢复，未换批/工作区/预算/截止日。

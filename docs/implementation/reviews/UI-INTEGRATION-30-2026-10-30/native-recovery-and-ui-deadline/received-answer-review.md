@@ -1,0 +1,13 @@
+# 微软证券两题：失败根因与原owner接续独立审查
+
+**工程修复通过，open findings为空。最终独立10个唯一case通过（9个业务+1个原强guard），晋升后的永久9题再跑9P但不累计。** 两源与永久test在normal formatter前后AST全部相等；实际导入__file__/SHA证实均为独享完整冻结树，没有借用当前源。
+
+真实IQS22/23均收到HTTP200，原parser完整，没有漏题。模型的summary分别874/841字符，违反冻结schema上限800；两答均insufficient_evidence，不能为了得到分数放宽schema、截断或直接回填CP。现成final诊断只是保留材料，明确不授权replay/delivery。报告没有保存回答正文。
+
+另查出独立软件死结：trusted runner已经把已收但无效的成员置failed且无CP，原owner resolution只允许leased/uncertain，原retry又必须先有resolution。两真实work的原只读derive各得到state_invalid和known_resolution_required。修复让共享严格谓词识别原deterministic received failure，仍保留原physical/receipt/scope/epoch/最新attempt/原event/owner授权与二次检查；已failed只append原决议和event，不改旧work或费用。然后才可原retry_unusable_answer精确指向N+1；本修复不派发、不新建generation、不自动授予重试。
+
+隔离有效红使用真正旧052冻结两源44adf598…/91b96c1b…：9例7P/2F；仅overlay修复两源后9业务+原父子guard1共10P。wrong receipt/lease/未确认caller/其他failed原因/已有CP/无resolution直接重试/错误缺题原因均保持拒绝。特别保留基线误标纠正：首次探测误查带下划线helper，把已含新helper的e967/90fa误当旧；当时9P只记早期candidate绿，不冒充红。原输出均保留。
+
+已创建两个真实resolution intent及安全schema诊断，见resolution-intent-manifest.json；response_sha与原durable receipt刚只读核实。owner-control-steps.md给出原public CLI只读derive→原preview→work delegation/confirm→apply→原retry→原UI重新准入流程。root拥有执行授权；本reviewer没有preview/install/confirm/apply或模型请求。先保留旧失败，再明确原授权纠错重问，费用继续原账本。
+
+所有owned测试临时目录已经清理。完整实际UTC、argv、日志SHA、源pin、导入来源、red/green与formatter/promotion限制在final-review.json。该审查不宣称真实三市场扫描、入库或金融准确性全部通过。

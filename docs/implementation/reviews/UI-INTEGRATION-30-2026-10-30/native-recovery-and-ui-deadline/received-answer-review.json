@@ -1,0 +1,348 @@
+{
+  "protocol": "iqs.terminal_received_failure_independent_review/1.0.0",
+  "reviewer_agent_id": "/root/accept_universe28",
+  "author_agent_id": "/root",
+  "updated_at_utc": "2026-10-30T12:13:48.469379+00:00",
+  "verdict": "passed",
+  "open_findings": [],
+  "source_review_scope": "Only existing owner resolution acceptance for original deterministic failed received member, then unchanged original retry decision. No re-send/score/body repair permission.",
+  "real_model_diagnosis": {
+    "file": "observation.json",
+    "two_original_work_ids": [
+      "WORK_75dea14eec514ac0bbc5915b586ec262",
+      "WORK_9611aebaaf264e0cae9d0bc6fc30373d"
+    ],
+    "model_output_issue": "Both original singleton packs parsed complete; frozen answer schema rejects summary maxLength (874 and841 characters versus800). Unknown/insufficient_evidence remains unknown. Validator is correct. No truncation/backfilled CP permitted.",
+    "all_schema_error_shapes": [
+      {
+        "question_id": "IQS_22",
+        "errors": [
+          {
+            "validator": "maxLength",
+            "path": [
+              "summary"
+            ],
+            "schema_path": [
+              "properties",
+              "summary",
+              "maxLength"
+            ]
+          }
+        ]
+      },
+      {
+        "question_id": "IQS_23",
+        "errors": [
+          {
+            "validator": "maxLength",
+            "path": [
+              "summary"
+            ],
+            "schema_path": [
+              "properties",
+              "summary",
+              "maxLength"
+            ]
+          }
+        ]
+      }
+    ],
+    "durable_receipt_is_not_raw_body": "Q13 attempt/pack outcomes retain immutable physical receipts. Original final-channel diagnostics separately retain final JSON, explicitly replay_or_delivery_authorized=false."
+  },
+  "real_readonly_control_evidence": {
+    "file": "control-preflight.json",
+    "results": "Both real failed items reject original known-response derive(state invalid) and retry_unusable_answer(known resolution required), confirming the prepatch dead-end; no actual owner action or model call performed by reviewer.",
+    "before_patch_source_raw_hash_at_actual_real_probe": null,
+    "qualification": "Actual real probe commands/UTC retained; true old frozen052 source used for isolated red separately. Do not retroactively invent a raw hash for the real read timestamp."
+  },
+  "source_fix_analysis": {
+    "predicate": "Shared terminal_received_failure requires failed/no live lease/no uncertain pointer, matching epoch, response_available, no CP/outbox, latest original to_failed event from leased with same attempt/epoch and exact accepted runner reason whitelist. _physical already enforces latest attempt, original settled receipt/scope/subject/budget bindings.",
+    "reason_integrity": "missing question reason matches only missing_question; validation rejection matches invalid_question/answer_generator_rejected_member; no local transport exception relabeled as model failure.",
+    "mutating_boundary": "Original physical/diagnostic validation and real owner authority/re-authorization/time checks remain. Already-failed branch appends owner decision/event and does not UPDATE historical work, date, status, lease, attempt, response or cost. Retry decision remains original strictN+1, not new generation creation or dispatch.",
+    "readonly_boundary": "Read-only inspector uses same predicate; no initializer/migration/repair needed. Native original owner still authenticates current scope and real consent before apply.",
+    "negative_controls": "Wrong receipt/lease, arbitrary approved dict, unrelated later failed event, existing CP, no-resolution retry/reclaim, and incorrect missing-question relabel all refuse without DB byte changes."
+  },
+  "verification": {
+    "true_behavior_red": {
+      "started_at_utc": "2026-10-30T12:04:19.918184+00:00",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\test_terminal_received_recovery.py",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{7eda28c5-6b9b-4236-b44d-5d739bf22870}\\AC\\Temp\\iqs-terminal30-99rzko9z\\pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\truered-junit.xml"
+      ],
+      "ended_at_utc": "2026-10-30T12:04:32.922776+00:00",
+      "exit_code": 1,
+      "import_origins_sha256": "da4056b3115ced7cd27da18136a7fdb444731668b336ec65b8d3d85c7816c9aa",
+      "stdout_sha256": "5345bd54582b19c22f6451a125efb4075ad4128cbf2cb79d33e6191d8ca57f87",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 9,
+      "failed": 2,
+      "errors": 0,
+      "skipped": 0,
+      "source_known_outcome_sha256": "44adf598fce4ca470938213ca3e11e35410621403a7c5c7180b6218e8da5f2f3",
+      "source_inspect_sha256": "91b96c1bc134d245300b15733c62a53124c1f9111f6bacfaa6fb9dae80d87b68",
+      "cleanup": {
+        "observed_at_utc": "2026-10-30T12:04:33.541027+00:00",
+        "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{7eda28c5-6b9b-4236-b44d-5d739bf22870}\\AC\\Temp\\iqs-terminal30-99rzko9z",
+        "exists_after": false,
+        "exit_code": 0,
+        "actual_database_or_source_writes": 0,
+        "actual_network_requests": 0
+      }
+    },
+    "green_nine_plus_original_guard": {
+      "started_at_utc": "2026-10-30T12:05:48.880675+00:00",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\test_terminal_received_recovery.py",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\complete-qa\\tests\\unit\\test_quick_scan_known_outcome.py::test_guard_prevents_parent_and_child_network_foreign_db_and_file_writes",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\iqs-terminal30-n9yhd8vn\\pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\green-junit.xml"
+      ],
+      "ended_at_utc": "2026-10-30T12:06:03.610045+00:00",
+      "exit_code": 0,
+      "import_origins_sha256": "8dd4d0d8bc44de98b4734504824886aa439c28fcd7872029f1d9ebcbbb7b73b3",
+      "stdout_sha256": "063fafa304567d98d2ed94ee566dcf44c726501647eb37c3a3b313d20e8dc810",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 10,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_known_outcome_sha256": "e12b844b4d8895d199f9a83acef3d1335ee72e15d8296a6862134303bc23b9ee",
+      "source_inspect_sha256": "90fabfe0f10f7a00bdf0319731e634cec032e73a7d43faab8f150191feff2cfd",
+      "cleanup": {
+        "observed_at_utc": "2026-10-30T12:06:04.255728+00:00",
+        "runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\iqs-terminal30-n9yhd8vn",
+        "exists_after": false,
+        "exit_code": 0,
+        "actual_database_or_source_writes": 0,
+        "actual_network_requests": 0
+      }
+    },
+    "permanent_nine_promotion": {
+      "started_at_utc": "2026-10-30T12:10:34.344090+00:00",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\complete-qa\\tests\\unit\\test_terminal_received_recovery.py",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\iqs-terminal30-h7nrz1uf\\pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\promoted-junit.xml"
+      ],
+      "ended_at_utc": "2026-10-30T12:10:55.622158+00:00",
+      "exit_code": 0,
+      "import_origins_sha256": "c11b6378cf42aa1322d12f4bbf015921414c90ac15cbb026816bca4759c4a934",
+      "stdout_sha256": "49279cc23b3a4926ec2cd5cfaeb815657dadf7e7acf746cf906b3de7c2b9fd60",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 9,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_known_outcome_sha256": "0d425d79357514646b28a5b6daaccfc5a73306edcedfd625d3370452da74e317",
+      "source_inspect_sha256": "160e3ab9038ae463f07a98dd8b9e9a041d8d098b2ad2aeb57732b9479b05438a",
+      "cleanup": {
+        "observed_at_utc": "2026-10-30T12:10:57.324695+00:00",
+        "runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\iqs-terminal30-h7nrz1uf",
+        "exists_after": false,
+        "exit_code": 0,
+        "actual_database_or_source_writes": 0,
+        "actual_network_requests": 0
+      }
+    },
+    "final_unique_cases_in_review": 10,
+    "permanent_unique_business_cases": 9,
+    "additional_environment_guard_case": 1,
+    "formatter_and_promotion_AST_delta": {
+      "files": [
+        {
+          "file": "src/utils/quick_scan_known_outcome_journal.py",
+          "pre_format_sha256": "e12b844b4d8895d199f9a83acef3d1335ee72e15d8296a6862134303bc23b9ee",
+          "final_sha256": "0d425d79357514646b28a5b6daaccfc5a73306edcedfd625d3370452da74e317",
+          "ast_equal": true,
+          "source_still_same": true
+        },
+        {
+          "file": "src/utils/quick_scan_work_decision_inspect.py",
+          "pre_format_sha256": "90fabfe0f10f7a00bdf0319731e634cec032e73a7d43faab8f150191feff2cfd",
+          "final_sha256": "160e3ab9038ae463f07a98dd8b9e9a041d8d098b2ad2aeb57732b9479b05438a",
+          "ast_equal": true,
+          "source_still_same": true
+        },
+        {
+          "file": "tests/unit/test_terminal_received_recovery.py",
+          "pre_format_sha256": "2ab46071d647ea58b90c15882bbefa404eeb9b8848b67b125cc112b84f6d806b",
+          "final_sha256": "02b89feb2ef9e4deb245f42025acc95c635703d2a2f2d99af2c9472977f3da97",
+          "ast_equal": true,
+          "source_still_same": true
+        }
+      ],
+      "all_AST_equal": true
+    },
+    "namespace_guards": "conftest.py records actual __file__ and rawSHA of every src module, rejects any foreign prefix; truered/green/promoted-import-origins.json retained. Red/green share complete QA frozen052 base + original WAL fixes; only two affected source overlays differ.",
+    "not_counted": "Root wider61 group is not claimed rerun here. Root60P/1guard environmentF is independent; the exact original guard case was run successfully here using original delegated_guard including childattestation."
+  },
+  "baseline_correction": {
+    "mistake": "Initial before-patch detector searched underscored helper name although controller used nonunderscored terminal_received_failure; e967/90fa were already first-candidate patch bytes. This was an incorrect baseline label, not a product red.",
+    "preservation": "Original red2/red3 9P outputs preserved and classified as early candidate greens; no claimed old red. Initial red module skip due missing pure-contract path is separate environment result. Actual old44ad/91b96 frozen code was then used and gave7P/2F with verified owned module origins."
+  },
+  "source_pins": [
+    {
+      "file": "src/utils/quick_scan_known_outcome_journal.py",
+      "pre_format_sha256": "e12b844b4d8895d199f9a83acef3d1335ee72e15d8296a6862134303bc23b9ee",
+      "final_sha256": "0d425d79357514646b28a5b6daaccfc5a73306edcedfd625d3370452da74e317",
+      "ast_equal": true,
+      "source_still_same": true
+    },
+    {
+      "file": "src/utils/quick_scan_work_decision_inspect.py",
+      "pre_format_sha256": "90fabfe0f10f7a00bdf0319731e634cec032e73a7d43faab8f150191feff2cfd",
+      "final_sha256": "160e3ab9038ae463f07a98dd8b9e9a041d8d098b2ad2aeb57732b9479b05438a",
+      "ast_equal": true,
+      "source_still_same": true
+    },
+    {
+      "file": "tests/unit/test_terminal_received_recovery.py",
+      "pre_format_sha256": "2ab46071d647ea58b90c15882bbefa404eeb9b8848b67b125cc112b84f6d806b",
+      "final_sha256": "02b89feb2ef9e4deb245f42025acc95c635703d2a2f2d99af2c9472977f3da97",
+      "ast_equal": true,
+      "source_still_same": true
+    }
+  ],
+  "prepared_owner_intents": {
+    "protocol": "iqs.readonly_owner_resolution_intent_preparation/1.0.0",
+    "items": [
+      {
+        "question_id": "IQS_22",
+        "intent": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\resolution-intent-IQS_22.json",
+        "intent_sha256": "9b6e496799bb59db37bb7e6482aa13559614ca9c0920365eead3fc58463129f5",
+        "schema_diagnostic": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\MSFT_IQS_22_summary_schema_diagnostic_20261030.json",
+        "diagnostic_sha256": "c09a21ca0e6bd11e09d43c551ca3aa28112af553c972f7d926fe7b5d53c56b8c",
+        "response_hash_matches_original_durable_receipt": true
+      },
+      {
+        "question_id": "IQS_23",
+        "intent": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\resolution-intent-IQS_23.json",
+        "intent_sha256": "961300c1c7fa4066e424628bfbc1698a5f1600610f76b81bc1f04f081ceb96f4",
+        "schema_diagnostic": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\MSFT_IQS_23_summary_schema_diagnostic_20261030.json",
+        "diagnostic_sha256": "1c243726172daf07299f1e5d67eee00eddd5a61e8726c73200b94c1aecfbb61b",
+        "response_hash_matches_original_durable_receipt": true
+      }
+    ],
+    "actual_owner_confirmation_apply_or_http": false,
+    "actual_source_or_db_writes": 0
+  },
+  "owner_execution_steps": "owner-control-steps.md (existing public derive→owner preview/work-delegation/confirm→apply→retry→UI original controlled admission; never executed by reviewer)",
+  "cleanup": {
+    "all_owned_runtime_directories_absent": true,
+    "runs": [
+      {
+        "label": "red",
+        "observed": {
+          "observed_at_utc": "2026-10-30T11:59:01.582784+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{3b0bae48-65b2-4c4c-9b2c-76bc0b98910c}\\AC\\Temp\\iqs-terminal30-6i0ibdd8",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "label": "red2",
+        "observed": {
+          "observed_at_utc": "2026-10-30T11:59:50.236826+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{31e0fdd3-68bd-481d-a86e-f13d8bbf3a04}\\AC\\Temp\\iqs-terminal30-up5d0l7v",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "label": "red3",
+        "observed": {
+          "observed_at_utc": "2026-10-30T12:02:48.751094+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{821c5063-a6b8-4211-a25c-c266129551c5}\\AC\\Temp\\iqs-terminal30-3mj24e01",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "label": "truered",
+        "observed": {
+          "observed_at_utc": "2026-10-30T12:04:33.541027+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{7eda28c5-6b9b-4236-b44d-5d739bf22870}\\AC\\Temp\\iqs-terminal30-99rzko9z",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "label": "green",
+        "observed": {
+          "observed_at_utc": "2026-10-30T12:06:04.255728+00:00",
+          "runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\iqs-terminal30-n9yhd8vn",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "label": "promoted",
+        "observed": {
+          "observed_at_utc": "2026-10-30T12:10:57.324695+00:00",
+          "runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\microsoft-security-diagnostic\\iqs-terminal30-h7nrz1uf",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      }
+    ],
+    "guard": "Existing original tests/fixtures/delegated_guard; key-free allowlist; parent and child deny network, foreign SQLite and foreign file writes; actual childattestation retained in attestations/",
+    "actual_source_or_database_budget_list_writes": 0,
+    "actual_network_model_search_requests": 0,
+    "real_company_answer_bodies_in_report": false,
+    "actual_confirmation_grant_apply_performed": false,
+    "intentional_retention": "Only source/contracts/synthetic fixtures, sanitized real diagnostic shapes/hashes, prepared intents, test logs and guard attestations. No runtime DB or API key retained."
+  },
+  "qualification": "Engineering root-cause/targeted regression review only; no production owner authorization, three-market completion or financial accuracy awarded."
+}

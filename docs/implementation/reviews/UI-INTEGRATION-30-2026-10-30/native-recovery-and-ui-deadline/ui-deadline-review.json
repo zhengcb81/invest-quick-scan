@@ -1,0 +1,115 @@
+{
+  "protocol": "iqs.ui_deadline_independent_review/1.0.0",
+  "author": "/root",
+  "reviewer": "/root/accept_compare28",
+  "reviewed_at_utc": "2026-10-30T12:12:26.330193+00:00",
+  "verdict": "passed",
+  "open_findings": [],
+  "source_pins": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product.js",
+      "sha256": "cb3be3d3640c1a27346fea21e1f3b213090bd68e04f076044ee57e25f40e2bf3",
+      "after_sha256": "cb3be3d3640c1a27346fea21e1f3b213090bd68e04f076044ee57e25f40e2bf3",
+      "stable": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\product_api.js",
+      "sha256": "0ae3caae7a97769064ac8fee21b48d606db5b2a705a2b63b65ebbb0937caea89",
+      "after_sha256": "0ae3caae7a97769064ac8fee21b48d606db5b2a705a2b63b65ebbb0937caea89",
+      "stable": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\tests\\test_product_ui.py",
+      "sha256": "95c87275a9df07a7acc99118af72f8b09895f4078cbc1f11e1ecdd7a40b28182",
+      "after_sha256": "95c87275a9df07a7acc99118af72f8b09895f4078cbc1f11e1ecdd7a40b28182",
+      "stable": true
+    }
+  ],
+  "base_diff": "63f4627",
+  "static_delta": {
+    "base": "63f4627",
+    "changed_file": "src/app/ui/product.js",
+    "paired_changed_lines": 5,
+    "all_non_timeout_bytes_on_changed_lines_equal": true,
+    "changes": [
+      {
+        "change": "batch resume 180s; pause/abandon keep30s",
+        "only_timeout_changed": true
+      },
+      {
+        "change": "task resume 180s",
+        "only_timeout_changed": true
+      },
+      {
+        "change": "task preview150s",
+        "only_timeout_changed": true
+      },
+      {
+        "change": "task start180s",
+        "only_timeout_changed": true
+      },
+      {
+        "change": "import preview120s",
+        "only_timeout_changed": true
+      }
+    ],
+    "diff_sha256": "c560d542ab1d6dbbfcf8625b31690fa325d6fc5a24e6e1c1ade143fc3d7cacb5"
+  },
+  "own_checks": {
+    "node_syntax": 1,
+    "original_no_retry_scenarios": 2,
+    "scenarios": [
+      "api",
+      "snapshot-write-timeout"
+    ],
+    "passed": true
+  },
+  "assertions": [
+    "Exactly five request callsite option changes; removing new timeout expressions reproduces each original removed line byte-for-byte. Endpoint/method/body/authority/state/retry/lifecycle code unchanged.",
+    "product_api.request still uses one fetch, same-origin/CSRF, AbortController and finally clearTimeout. It does not retry mutations.",
+    "Original api scenario confirms preconnect POST denial, native error propagation and one mock POST only; abort maps to timeout.",
+    "Original snapshot-write-timeout scenario confirms one batch resume POST, stale snapshot/control protection after uncertain write and no automatic retry."
+  ],
+  "execution_refs": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\execution.json",
+      "sha256": "be06b7c8fc0f2138704afcb699140fcc8b84e53be157f00a9b086a695e484e81"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\static-delta.json",
+      "sha256": "f4accb81f345389095900380eaae57ff16a90ec29674d42358365f10dd10de0e"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\source.diff",
+      "sha256": "c560d542ab1d6dbbfcf8625b31690fa325d6fc5a24e6e1c1ade143fc3d7cacb5"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\api.stdout.log",
+      "sha256": "9d3af097b97ffd3488d8a9ce169b0269a6036acca50c8ad1ea2c2117ee39f18c"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\snapshot-write-timeout.stdout.log",
+      "sha256": "2900dd8cc26ca708e4a1757ff5fafbcf2c121dc6fa8558aa96867d987a50122e"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\deadline-independent-review\\syntax.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope_limits": [
+    "Only targeted original two scenarios and node syntax were independently run; root provided broader47P evidence separately, not counted as this reviewer execution.",
+    "Node fake-DOM/fetch harness read original source/static test fixtures without copying answers; no real HTTP/owner/UI/browser call or elapsed150/180second server test performed.",
+    "Frontend abort still cannot prove backend mutation was canceled. Timeout remains uncertain and requires explicit native state inspection; increased deadline does not guarantee arbitrarily long backend completion."
+  ],
+  "cleanup": {
+    "source_writes": 0,
+    "real_UI_requests": 0,
+    "API_requests": 0,
+    "servers_started": 0,
+    "profiles_started": 0,
+    "all_owned_test_subprocesses_exited": true,
+    "temporary_DB_or_runtime_created": false,
+    "artifacts_retained": "original harness, network guard, source diff, execution/log evidence in owned review directory"
+  },
+  "ttl_preparation_ref": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\ttl-closeout-preparation\\README.md"
+}
