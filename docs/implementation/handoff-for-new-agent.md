@@ -4,6 +4,8 @@
 
 **10:23Z接手要点**：UI节点A已独审通过，本地UI commit63f4627（23文件，无remote），87P/1 OS symlink skip、11host、wrapper内7生命周期边界。报告docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/。原8766由本轮launcher31184恢复，沿config/dashboard.local.json与原r25 owner/u25预算，留运行给用户。当前真正主线B/C：T新prepare73357完整36已原SDK accepted/applied且0HTTP，M新d3e11准备中，C改回原quick已UI提交。切记C是quick，M/T是full，全部原截止2026-10-25；不能改标签/旧时间。旧108向量基线71CP/53settled/0目标ACK；两历史单题ACK不混算。旧generic在新腾讯授权未复现，诊断helper默认dry，勿对活动或过期grant并发重登记。仍要原UI补剩余题、原ACK逐题、重启零额外HTTP与过期刷新，独立缓存测试正在原scratch隔离跑。其他writer的2026-10-10 README不属本轮，不提交。
 
+**10:57Z最新覆盖以上时间点**：三个prepare全36 native applied；UI新批batch-f03eda7de77e4a5ab23fb32c4d89f900已开、目标73/108CP、T36全齐、0目标ACK，M entity run-a19b4b4e11fc4b11bbeddfd40f72a9aa仍付费运行。用户没有暂停主线；批draining是总控部署修复的安全操作，只等当前M实体结束，勿杀进程/重发。T sec run-8e3904f346654fd9b1667746000f001a原ready；C entity明确preview_changed+bound no-start proof而blocked，无C进程。代码scripts/dashboard_batches.py有12行有界重新预检修复及tests新增，227P+不同agent10P；旧server仍内存旧代码，未部署！先等paused和无原进程/HTTP在途，再重启本轮server31184/3404（须实际PID/命令/端口核对，不按旧PID盲杀），原UI恢复同批。不新建替代批/新预算/新cutoff。B组件63唯一全P、StockQA测试a8ecb9d/052f3f0已正常hook提交推送，SDK生产未改，旧generic仍未复现。每次只读metadata用本轮observe-current.py，snapshot唯一命名不覆盖基线。实ACK/最终冷恢复/过期刷新仍待完成。
+
 三个大节点（不增加小门）：A 原UI比较/批导接线+实际接口/路由销毁/权限隔离验收；B 原StockQA native admission接续缺口根修与有效期/过期缓存测试；C 从UI续跑原三市场公司实际计划向量、正式入库、重启/缓存恢复（有效期内零新模型HTTP、过期后正常刷新），最后独立集中审查并更新PWF/交接/提交推送。样本复用此前已授权的Microsoft/腾讯/宁德时代，身份及题数以实际原计划核实，不自行扩大2000名单。旧71/108与53次HTTP/$1.259844仅暂停历史，必须重新只读核验后再给实时进展。
 
 当前源勘察分工：不同agent只读审原UI接线结构、SDK/Store实时接续证据；总控唯一写源与共享PWF，完成后交非作者独审。CodeGraph结构查询已尝试，但当前服务逾60秒无返回，取消纯只读挂起调用；按已知具体文件读，记录环境问题，不以此虚报源码故障/重建索引。原8766部署先留存快照，孤立测试/真实演练分清，只有确有同进程部署管理需要再安全重启其拥有进程。密钥只由现有执行器读环境，日志不打印；保留其他writer的2026-10-10 README改动。

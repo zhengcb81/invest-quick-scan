@@ -1,0 +1,556 @@
+{
+  "protocol": "iqs.cache_regression_review/1.0.0",
+  "updated_at_utc": "2026-10-30T10:27:53.498129+00:00",
+  "status": "passed_bounded_component_regressions",
+  "unique_case_count": 63,
+  "latest_passed": 63,
+  "latest_failed": 0,
+  "actual_case_executions": 68,
+  "groups": [
+    {
+      "group": "sw-freshness",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\cache-pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\sw\\tests\\test_quick_scan_freshness.py",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{35a13d2a-2137-4d0c-b168-a1543a3d0de8}\\AC\\Temp\\iqs-cache30-6bu3zbz8\\sw-freshness-pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\sw-freshness-junit.xml"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{35a13d2a-2137-4d0c-b168-a1543a3d0de8}\\AC\\Temp\\iqs-cache30-6bu3zbz8\\cwd",
+      "started_at_utc": "2026-10-30T10:22:29.686679+00:00",
+      "ended_at_utc": "2026-10-30T10:22:30.947808+00:00",
+      "exit_code": 0,
+      "tests": 20,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_sha256": "7d1bfc4b56e5e00aecb750b45674dcaba020c6f8b517f1c093279288b9f9f1f2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "junit_sha256": "804f224ed90e1b4a5229532cfe1bc0bfe43554d2e9ed7abaef4b67c50776d352"
+    },
+    {
+      "group": "qa-frozen-owner",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\cache-pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\integration\\test_resume_frozen_observation_context.py",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\unit\\test_w15_owner_refresh.py",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\unit\\test_w15_owner_refresh_transport.py",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{35a13d2a-2137-4d0c-b168-a1543a3d0de8}\\AC\\Temp\\iqs-cache30-6bu3zbz8\\qa-frozen-owner-pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\qa-frozen-owner-junit.xml"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{35a13d2a-2137-4d0c-b168-a1543a3d0de8}\\AC\\Temp\\iqs-cache30-6bu3zbz8\\cwd",
+      "started_at_utc": "2026-10-30T10:22:30.976739+00:00",
+      "ended_at_utc": "2026-10-30T10:23:01.355025+00:00",
+      "exit_code": 1,
+      "tests": 41,
+      "failed": 5,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_sha256": "7853af62cdecc9c0cfe3ef7b061733e8c02c36d7cf65063ae776149404ac49b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "junit_sha256": "316ffafce4a8a11526ad4cc624574b0662c0bd7738796265141e1b5160bd2052"
+    },
+    {
+      "group": "owned-ready-ttl",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\cache-pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\test_ready_checkpoint_ttl_owned.py",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{35a13d2a-2137-4d0c-b168-a1543a3d0de8}\\AC\\Temp\\iqs-cache30-6bu3zbz8\\owned-ready-ttl-pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\owned-ready-ttl-junit.xml"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{35a13d2a-2137-4d0c-b168-a1543a3d0de8}\\AC\\Temp\\iqs-cache30-6bu3zbz8\\cwd",
+      "started_at_utc": "2026-10-30T10:23:01.386314+00:00",
+      "ended_at_utc": "2026-10-30T10:23:04.450313+00:00",
+      "exit_code": 0,
+      "tests": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_sha256": "869f948e8a05844cb5bfd00a3ea26923a41207e546a187b7aa2b22e27b359963",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "junit_sha256": "75594945f3364dc13a22ca2183ede782d689cb2955656bde07109ce6be9b62dd"
+    },
+    {
+      "group": "owner-wire-envfix",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\cache-pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\unit\\test_w15_owner_refresh_transport.py::test_owner_public_wire_refuses_unregistered_versions_or_authority",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{c5209881-eabb-4023-b923-1adbcc65734d}\\AC\\Temp\\iqs-cache30-tuqyhych\\owner-wire-envfix-pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\owner-wire-envfix-junit.xml"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{c5209881-eabb-4023-b923-1adbcc65734d}\\AC\\Temp\\iqs-cache30-tuqyhych\\cwd",
+      "started_at_utc": "2026-10-30T10:25:48.642976+00:00",
+      "ended_at_utc": "2026-10-30T10:25:54.534083+00:00",
+      "exit_code": 0,
+      "tests": 3,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_sha256": "495f366f7256e7e1bb9403a2ca2b5237cabccefa643285f3b8ae4402ca4f7b1d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "junit_sha256": "71a6b1c368b42792ffa0ac2ec8da831f1892d4d75c51f55f0112004a4342ae2b"
+    },
+    {
+      "group": "owner-migration-fixturefix",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\cache-pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\unit\\test_w15_owner_refresh.py::test_owner_binding_is_registered_and_stable_across_schema15_restart",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\unit\\test_w15_owner_refresh.py::test_schema13_migration_is_additive_and_keeps_old_item_bytes",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{4a440ead-4bb5-4d68-919f-36af6b73cf15}\\AC\\Temp\\iqs-cache30-8tnnofd8\\owner-migration-fixturefix-pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\owner-migration-fixturefix-junit.xml"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{4a440ead-4bb5-4d68-919f-36af6b73cf15}\\AC\\Temp\\iqs-cache30-8tnnofd8\\cwd",
+      "started_at_utc": "2026-10-30T10:26:47.022771+00:00",
+      "ended_at_utc": "2026-10-30T10:26:50.128340+00:00",
+      "exit_code": 0,
+      "tests": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stdout_sha256": "3726344aa95cd22c21fb1dee2d3fccc6f7ece312a4ab9989e80211aaafac0e63",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "junit_sha256": "37ef38f0afbc52368d1aa4088ba7a3263347af3b4fa41d41f2d9b2c9e351b4f8"
+    }
+  ],
+  "source_pins": "cache-regression-source-pins.json (309 source .py equal to live); root test-only overlay in cache-fixture-overlay.json",
+  "original_failures_retained": {
+    "count": 5,
+    "source": "qa-frozen-owner-junit.xml",
+    "environment": 3,
+    "obsolete_migration_fixtures": 2,
+    "not_real_sdk_generic_cause": true
+  },
+  "fixes": {
+    "environment": "Only ordinary IQS_ROUTE_TEST_CODE_ROOT set to owned frozen IQS; credential allowlist unchanged; targeted3 pass.",
+    "root_source_test_only": "Root reused existing tests.c06_legacy_fixture.remove_c06_additions(after_version15/13). Static review confirms complete additive removal +old MCP trigger +pre25 V11 checkpoint; targeted2pass. No production schema loosened.",
+    "reviewer_cleanup_runner": "Initial PS -Command argument invocation failed; original failed cleanup record preserved. Updated to single native PS EncodedCommand with exactly verified freshowned literal path; both later runs clean exit0. First path no longer exists on independent later check; do not claim initial cleanup command succeeded."
+  },
+  "coverage": {
+    "existing": "20StockWiki TTL/exact boundary/semantic controls;16SDK frozen-context integration;6W15 owner-binding;19W15 transport cases",
+    "reviewer_owned_new": "2cross-component cases: reopen actual synthetic Q13 CP/outbox, truly expired observation -> original planner resume/zero plannedHTTP, same original work notclaimed, exact CP/attempts/outbox request bytes retained; generation mismatch refuses old-work resume without deleting CP.",
+    "new_test_file": "test_ready_checkpoint_ttl_owned.py",
+    "new_test_sha256": "3e5b094b33458e4321a6142fd877d21fe0c3d3f7405c9ccc907127a9dc93ef5e",
+    "mock_boundaries": "Existing integration substitutes vendor HTTP and typed native-owner transport/fixtures; owned CP/outbox test uses synthetic legacyQ10 package fixture. No native consent or financial accuracy proven."
+  },
+  "production_preparation_update": "Root reports new original UI prepare_73357bd1e056486bbb133e168d34741d applied36 (entity33+security3) native accepted with zero modelHTTP. This reviewer did NOT execute that production action, nor re-run the old-cause script. Original Oct28 generic rejection remains historical unreproduced.",
+  "qualifications": {
+    "production_ui_three_market_acceptance": false,
+    "actual_store_import_ack": false,
+    "financial_accuracy": false,
+    "legacy_generic_root_cause_identified": false,
+    "changes_owned_by_reviewer": "Only tests/harness/evidence inside sdk-review; source repositories remain read-only to reviewer."
+  },
+  "cleanup": {
+    "all_3_runtime_directories_absent_now": true,
+    "runs": [
+      {
+        "source_record": "cache-regression-execution.json",
+        "initial_observation": {
+          "observed_at_utc": "2026-10-30T10:23:05.514869+00:00",
+          "owned_runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{35a13d2a-2137-4d0c-b168-a1543a3d0de8}\\AC\\Temp\\iqs-cache30-6bu3zbz8",
+          "exists_after": true,
+          "cleanup_exit_code": 1,
+          "source_or_actual_db_budget_list_writes": 0,
+          "actual_network_requests": 0,
+          "mechanism": "single PowerShell literal resolved owned path"
+        },
+        "directory_exists_now": false
+      },
+      {
+        "source_record": "cache-envfix-execution.json",
+        "initial_observation": {
+          "observed_at_utc": "2026-10-30T10:25:55.162921+00:00",
+          "owned_runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{c5209881-eabb-4023-b923-1adbcc65734d}\\AC\\Temp\\iqs-cache30-tuqyhych",
+          "exists_after": false,
+          "cleanup_exit_code": 0,
+          "source_or_actual_db_budget_list_writes": 0,
+          "actual_network_requests": 0,
+          "mechanism": "single PowerShell literal resolved owned path"
+        },
+        "directory_exists_now": false
+      },
+      {
+        "source_record": "cache-fixturefix-execution.json",
+        "initial_observation": {
+          "observed_at_utc": "2026-10-30T10:26:50.678836+00:00",
+          "owned_runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{4a440ead-4bb5-4d68-919f-36af6b73cf15}\\AC\\Temp\\iqs-cache30-8tnnofd8",
+          "exists_after": false,
+          "cleanup_exit_code": 0,
+          "source_or_actual_db_budget_list_writes": 0,
+          "actual_network_requests": 0,
+          "mechanism": "single PowerShell literal resolved owned path"
+        },
+        "directory_exists_now": false
+      }
+    ],
+    "actual_network_requests": 0,
+    "actual_model_or_search_requests": 0,
+    "source_or_actual_db_budget_list_writes": 0
+  },
+  "cases_latest": [
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_01_fresh_compatible_reuses_with_zero_api_requests",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_02_valid_until_boundary_is_exact",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_03_old_observation_never_renews_by_review_time",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_04_unknown_cooldown_defers_then_new_generation",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_05_threshold_reuse_and_three_new_todo_keys",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_06_partial_refresh_reasons_and_no_global_reask",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_07_source_publication_cannot_cross_cutoff",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_08_event_early_invalidation_and_missing_date",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_llm_09_request_identity_and_freshness_not_bypassed",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_time_10_gap_plan_over_temp_sqlite_is_idempotent_and_read_only",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f1_generation_mismatch_in_flight_dispatches_instead_of_resume",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f1_matching_generation_still_resumes",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f1_absent_expected_generation_keeps_resume",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f2_incompatible_observation_skips_unknown_cooldown",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f2_compatible_unknown_keeps_cooldown",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f2_in_flight_wins_over_incompatible_observation",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f1_terminal_work_item_generation_mismatch_blocks_reuse",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f1_absent_work_item_keeps_reuse",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f2_incompatible_future_information_date_does_not_abort_plan",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.sw.tests.test_quick_scan_freshness::test_f2_incompatible_unusable_status_keeps_status_attribution",
+      "status": "passed",
+      "latest_junit": "sw-freshness-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_original_unsent_context_resumes_under_new_run_and_seals_without_rewriting",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_mixed_original_and_unfrozen_members_keep_distinct_contexts",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_stable_context_change_is_rejected_before_http[cutoff]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_stable_context_change_is_rejected_before_http[subject]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_stable_context_change_is_rejected_before_http[prompt]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_stable_context_change_is_rejected_before_http[schema]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_stable_context_change_is_rejected_before_http[metric]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_stable_context_change_is_rejected_before_http[other_question]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_current_owner_rejection_still_stops_original_context_resume",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_loaded_complete_v3_authority_really_seals_resumed_original_context",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_loaded_complete_v2_runtime_attribution_remains_compatible",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_complete_sealer_rejects_stable_drift_or_false_context_hash[cutoff]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_complete_sealer_rejects_stable_drift_or_false_context_hash[context_hash]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_runtime_compatibility_never_invents_original_run_scan_mapping",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_shared_compatibility_compares_exact_canonical_stable_values",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.integration.test_resume_frozen_observation_context::test_authorized_response_survives_later_owner_refusal_without_future_post",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh::test_owner_binding_is_registered_and_stable_across_schema15_restart",
+      "status": "passed",
+      "latest_junit": "owner-migration-fixturefix-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh::test_prior_unknown_is_checked_across_all_generations_without_lookup_limit",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh::test_two_refresh_workers_share_exact_work_and_only_one_claims",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh::test_late_legacy_work_cannot_undercut_bound_send_before_intent",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh::test_schema13_migration_is_additive_and_keeps_old_item_bytes",
+      "status": "passed",
+      "latest_junit": "owner-migration-fixturefix-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh::test_v2_owner_refresh_requires_context2_without_promoting_legacy_binding",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_capacity_retry_rechecks_owner_before_reservation[True-True]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_capacity_retry_rechecks_owner_before_reservation[True-False]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_capacity_retry_rechecks_owner_before_reservation[False-True]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_capacity_retry_rechecks_owner_before_reservation[False-False]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_self_resealed_plan_binding_conflict_refused_before_work[provider-P2]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_self_resealed_plan_binding_conflict_refused_before_work[model-M2]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_self_resealed_plan_binding_conflict_refused_before_work[anchor_version-2]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_self_resealed_plan_binding_conflict_refused_before_work[manifest_raw_sha256-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_incomplete_and_duplicate_question_plan_refused",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_json_is_strict_and_never_chooses_last_value[{\"a\":1,\"a\":2}]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_json_is_strict_and_never_chooses_last_value[{\"a\":NaN}]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_json_is_strict_and_never_chooses_last_value[{\"a\":1e400}]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_json_is_strict_and_never_chooses_last_value[[1]]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_json_is_strict_and_never_chooses_last_value[{]",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_public_wire_refuses_unregistered_versions_or_authority[change0]",
+      "status": "passed",
+      "latest_junit": "owner-wire-envfix-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_public_wire_refuses_unregistered_versions_or_authority[change1]",
+      "status": "passed",
+      "latest_junit": "owner-wire-envfix-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_owner_public_wire_refuses_unregistered_versions_or_authority[change2]",
+      "status": "passed",
+      "latest_junit": "owner-wire-envfix-junit.xml"
+    },
+    {
+      "key": "scratch.qa.tests.unit.test_w15_owner_refresh_transport::test_partial_delivery_resume_uses_original_outbox_and_missing_owner_ack_never_reasks",
+      "status": "passed",
+      "latest_junit": "qa-frozen-owner-junit.xml"
+    },
+    {
+      "key": "test_ready_checkpoint_ttl_owned::test_ready_checkpoint_reopened_after_observation_ttl_keeps_exact_work_and_outbox",
+      "status": "passed",
+      "latest_junit": "owned-ready-ttl-junit.xml"
+    },
+    {
+      "key": "test_ready_checkpoint_ttl_owned::test_ready_checkpoint_does_not_mask_generation_change_after_restart",
+      "status": "passed",
+      "latest_junit": "owned-ready-ttl-junit.xml"
+    }
+  ]
+}

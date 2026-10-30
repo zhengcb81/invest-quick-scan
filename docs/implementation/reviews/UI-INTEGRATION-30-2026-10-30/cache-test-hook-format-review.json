@@ -1,0 +1,82 @@
+{
+  "protocol": "iqs.b_cache_formatter_delta_independent_review/1.0.0",
+  "reviewed_at_utc": "2026-10-30T10:40:01.134663+00:00",
+  "author": "/root",
+  "reviewer": "/root/accept_compare28",
+  "verdict": "passed",
+  "open_findings": [],
+  "initial_review_preserved": [
+    "b-cache-final-review.json",
+    "b-cache-final-review.md",
+    "b-cache-final-review-execution.json",
+    "b-cache-final-review-stdout.log",
+    "b-cache-final-review-stderr.log",
+    "b-cache-final-review-junit.xml"
+  ],
+  "initial_source_sha256": "18a88947512c7857041c06a06c1c2a3254119400e55658be8fa2351b5e74b96d",
+  "final_source_sha256": "1c5e8bcaa460c5dc7bfbe09c4ccc236ef670ee7d7d48c74bd184ef14ed33f17b",
+  "whole_module_AST_identical": true,
+  "formatter_only_delta": "test_q10_delivery import expanded fromone line toparenthesized JR2_CONSUMER/JR2_SOURCE/_jr2_ready/_lifecycle/_q; exactnames/order unchanged. No bypasshook orsourceedit byreviewer.",
+  "actual_diff_ref": "b-cache-final-review-formatter.patch",
+  "independent_reexecution": {
+    "source_root": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+    "source_file": "tests/integration/test_ready_checkpoint_freshness.py",
+    "source_sha256": "1c5e8bcaa460c5dc7bfbe09c4ccc236ef670ee7d7d48c74bd184ef14ed33f17b",
+    "owned_overlay": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\integration\\test_ready_checkpoint_freshness.py",
+    "overlay_previous_sha256": "18a88947512c7857041c06a06c1c2a3254119400e55658be8fa2351b5e74b96d",
+    "runtime_pins": {
+      "qa:tests/integration/test_ready_checkpoint_freshness.py": "1c5e8bcaa460c5dc7bfbe09c4ccc236ef670ee7d7d48c74bd184ef14ed33f17b",
+      "qa:src/utils/quick_scan_work_store.py": "eaab7f0020ce25fab3b65a122188b461e293a0355717c6ef2be36c215484f111",
+      "qa:src/runners/llm_runner.py": "f5ec0ce7759a1d4d80d29331df0407b35ae5e8c9b654101ef559e0958184ba2e",
+      "qa:tests/unit/test_q10_delivery.py": "b18df3c5b4d507f0b4deed5ec6808ca95272116628af79b8a5914af32f056007",
+      "qa:tests/unit/test_w15_owner_refresh.py": "f5ef44cfea48b483845ad09a392deacbc62d5a5cb6c178cee25ffe0a5e6256b0",
+      "qa:tests/c06_legacy_fixture.py": "1ec372d0e1ac047e119c70db6eaf8c19906bbd9f5a2f63496b3ffcb2c67169aa",
+      "sw:stockwiki/quick_scan_freshness.py": "4cff8633f4d1e0d6c444177ec37e0fc7eca942bb2178fc93ee164d5464a6a1e9"
+    },
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-c",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-format2-pytest.ini",
+      "-vv",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\integration\\test_ready_checkpoint_freshness.py",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-format2-runtime\\pytest",
+      "--junitxml",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-format2-junit.xml"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-format2-runtime\\cwd",
+    "started_at_utc": "2026-10-30T10:39:24.086654+00:00",
+    "source_writes": 0,
+    "actual_model_owner_or_paid_calls": 0,
+    "isolation": "ordinary OS env only; no credentials; socket audit denyall via existingowned guard; privateTEMP/home/appdata; SQLite onlypytest tmp",
+    "broader_native_or63_suite_run": false,
+    "stdout_sha256": "f4c5bf4a7027ddb774d5f5782cf66595c9d9df47c4983aeb10ae086e1b283854",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exit_code": 0,
+    "ended_at_utc": "2026-10-30T10:39:26.851734+00:00",
+    "counts": {
+      "tests": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "junit_sha256": "69999f8ae4768c21e4e8ec61613cda970ede3788d349b0ac98dee90b4d5d426c",
+    "cleanup": {
+      "observed_at_utc": "2026-10-30T10:39:27.655302+00:00",
+      "owned_runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-format2-runtime",
+      "exists_after": false,
+      "exit_code": 0,
+      "method": "singlePowerShell native Remove-Item; exactresolved direct child ofowned reportroot",
+      "retained": "owned QA copy ofpermanenttest, synthetic source code andthinlogs only; noSQLitedb/runtime"
+    }
+  },
+  "count_note": "Same2 unique scenarios rerun2P afterformat; not4 differenttests. InitialUTC/pins/rawlogs untouched; newformat2names containcurrentactualUTC/argv/logSHA/cleanup.",
+  "source_writes_by_reviewer": 0,
+  "live_api_or_actual_list_db_calls": 0,
+  "review_scope_expanded": false
+}

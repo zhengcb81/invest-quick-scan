@@ -1,0 +1,36 @@
+{
+  "updated_at_utc": "2026-10-30T11:00:37.244625+00:00",
+  "runtime_files": [
+    "scripts/dashboard_batches.py"
+  ],
+  "test_files": [
+    "tests/test_dashboard_batches.py"
+  ],
+  "tests": [
+    {
+      "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\preflight-red.log",
+      "sha256": "5d14ced44c3db694d1cf0ba700e53887931780e7fa8e7ac014169ea9b988bf7f",
+      "result": "2 failed, 94 deselected: intended missing safe refresh",
+      "created_at_from_filesystem": "2026-10-30T10:49:01.289672+00:00",
+      "modified_at_from_filesystem": "2026-10-30T10:49:09.088622+00:00",
+      "time_qualification": "Controller did not wrap exact command start/end UTC; file times are supporting evidence, not invented execution timestamps."
+    },
+    {
+      "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\preflight-green.log",
+      "sha256": "760cc466ba9a647c99e29b7e8d290b6355bf190b462291e15c7ea143f8f6af9b",
+      "result": "227 passed in 60.92s: batch and original execution suites",
+      "created_at_from_filesystem": "2026-10-30T10:49:58.631462+00:00",
+      "modified_at_from_filesystem": "2026-10-30T10:51:14.380280+00:00",
+      "time_qualification": "Controller did not wrap exact command start/end UTC; file times are supporting evidence, not invented execution timestamps."
+    }
+  ],
+  "independent_review_ref": "independent-preflight-review.json",
+  "deployed": false,
+  "deployment_note": "Original paid scope is running; batch safety drain requested from UI before reloading the original server. No process is killed or unknown paid request resent.",
+  "cleanup": {
+    "red_temp_exists": false,
+    "evidence_logs_retained": true,
+    "green_temp_exists": false,
+    "production_model_process_not_touched": true
+  }
+}

@@ -4,6 +4,10 @@
 
 **10:23Z：大节点A已完成。** 原UI本地commit `63f4627a6a377722101df8f2ba67ce7a64d73661`（23文件，无remote）。独审通过/open[]，19运行接线/manifest pins及发布字节delta留档；后加永久生命周期回归/README不改runtime。最终87P/1个OS symlink skip、host11P（7个JS生命周期由1个pytest wrapper覆盖，不重复加分）。原UI已挂比较、TXT/CSV并复用原接口。正式报告 `docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/report.md`。
 
+**10:57Z：B组件回归/永久测试通过；C真实批已运行，正安全部署小修。** 63个唯一缓存/TTL/冻结上下文回归全部通过；初5F（3隔离env漏项、2旧迁移fixture）保留。StockQA仅测试修复a8ecb9d及永久TTL/CP接续测试052f3f0均正常hook提交/推送；后者另一个不同agent对最终格式2P，重复执行不加进63。当前SDK生产源码未改，三份fresh授权原36题均native accepted，旧generic仍历史未复现，不冒认已定位。IQS3073186已推送A证据/PWF。
+
+实际三市场批 `batch-f03eda7de77e4a5ab23fb32c4d89f900` 于10:37:50Z由原UI明确启动3公司/6scope；最新精确向量73/108 CP/标准/封存、0目标ACK（T36已齐、M23entity、C14entity）。55历史+本轮请求settled、1个模型请求在途的快照存runs本轮，金额尚不把在途算已结算。真实并发揭示CATL start在进程引用前被原原生证明preview_changed/0HTTP/0DB拒绝；root已红测2F→为该严格绑定proof且无真实block的情况仅允许下一tick完整预检一次，第二次漂移仍阻断、未知不重发。原批/执行受影响227P（60.92s），不同agent另10P/open[]。该修复尚未部署旧server：已在UI要求安全边界暂停，首次batch_control_busy未认成功；刷新原状态后再次控制已明确受理，批state=draining，只停后续派发，不杀当前M实体进程。**这是部署动作，主线没有暂停。**
+
 三个大节点（不增加小门）：A 原UI比较/批导接线+实际接口/路由销毁/权限隔离验收；B 原StockQA native admission接续缺口根修与有效期/过期缓存测试；C 从UI续跑原三市场公司实际计划向量、正式入库、重启/缓存恢复（有效期内零新模型HTTP、过期后正常刷新），最后独立集中审查并更新PWF/交接/提交推送。样本复用此前已授权的Microsoft/腾讯/宁德时代，身份及题数以实际原计划核实，不自行扩大2000名单。旧71/108与53次HTTP/$1.259844仅暂停历史，必须重新只读核验后再给实时进展。
 
 当前源勘察分工：不同agent只读审原UI接线结构、SDK/Store实时接续证据；总控唯一写源与共享PWF，完成后交非作者独审。CodeGraph结构查询已尝试，但当前服务逾60秒无返回，取消纯只读挂起调用；按已知具体文件读，记录环境问题，不以此虚报源码故障/重建索引。原8766部署先留存快照，孤立测试/真实演练分清，只有确有同进程部署管理需要再安全重启其拥有进程。密钥只由现有执行器读环境，日志不打印；保留其他writer的2026-10-10 README改动。
@@ -12,7 +16,7 @@
 
 ### Next Step
 
-完成M/C新原授权后，从UI选三个最新完整公司组补扫、交付/逐题原ACK，再重启/缓存验收。腾讯73357原33entity+3security已native accepted、applied36，0新HTTP；旧generic未复现，不伪称本轮SDK根修完成。M新prepare_d3e11d841b0d422597149e18e33e2d35正准备，C已改回原quick36（误选full被原冻结绑定正确拒绝，0API），正在新原授权。两者与腾讯同原截止2026-10-25，不能改日期冒新鲜画像。独立agent正在隔离复验已有TTL/原冻结上下文接续测试，结果单列。目标旧71CP/53settled/0ACK基线只读已核；以最新工作向量为准，不把历史2单题或新挂接重复计入。不盲重发、改CP/日期/授权或增预算求绿。
+等原M实体scope安全完成且批paused、所有真实进程/在途HTTP均已结束，再重启本轮拥有的原8766部署（沿config/dashboard.local.json）加载已独审的preflight小修；由UI明确恢复同batch/原scope，接续M证券与C两scope，保留T36和已有CP。不要重建公司批、改旧工作/日期/授权求绿；旧C有原绑定no-start proof，恢复仍原核状态。之后原封存入库逐题ACK、重启/原检查点零额外HTTP、实际过期刷新计划验证及最后独审。有效期内/过期观察TTL组件测试已通过，不能把旧截止25的画像改成当下新鲜结果。原C=quick，M/T=full，三家截止25；新prepare分别8fda/d3e11/73357。新observer runs/ui-integration-live30-2026-10-30/observe-current.py仅以这6个登记receipt的108 work ID读元数据，不混历史两单题ACK。
 
 ---
 

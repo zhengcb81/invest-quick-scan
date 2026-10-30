@@ -1,0 +1,86 @@
+{
+  "protocol": "iqs.independent_targeted_source_review/1.0.0",
+  "reviewer_agent_id": "/root/accept_universe28",
+  "author_agent_id": "/root",
+  "updated_at_utc": "2026-10-30T10:52:37.951281+00:00",
+  "verdict": "passed",
+  "open_findings": [],
+  "scope": "Only dashboard batch single bounded retry after positively proved original prelaunch preview_changed; not a paid resend/recovery policy expansion",
+  "source_binding": "Current root working-tree file hashes, not a new committed payload. Source remains unchanged since reviewer freeze.",
+  "reviewed_file_hashes": [
+    {
+      "file": "scripts/dashboard_batches.py",
+      "raw_sha256": "5b6be880c611d5cfe3ca2ac913beeff85305874c4c44b3575a054245e003cb39",
+      "bytes": 57693,
+      "live_still_same": true
+    },
+    {
+      "file": "scripts/dashboard_execution.py",
+      "raw_sha256": "561d96c040d96350ce7b63a124ae0d842c021b62b825c48641c93fd95fd43bae",
+      "bytes": 63831,
+      "live_still_same": true
+    },
+    {
+      "file": "tests/test_dashboard_batches.py",
+      "raw_sha256": "58af9cac5d2959f1f0cea20510c58114e4d23289e0b9b4266e5312d4dd6375cf",
+      "bytes": 73924,
+      "live_still_same": true
+    }
+  ],
+  "analysis": {
+    "entry_guard": "Requires original classifier proof bound to bundle/fingerprint/launch attempt/profile; explicit before_process_reference/new_process_started=false; strict int API_requests/database_writes0 in existing _proved_prelaunch_refusal. New condition additionally requires preview_changed, exact emptyblocked reasons, no run_id and exact int retrycounter0.",
+    "boundedness": "Set selected and counter1; only later _step revisits; repeated drift cannot satisfy0 and remainsblocked. No in-place .start repeat inside except.",
+    "new_preflight": "Normal next tick re-reads current tasks, attaches any real run, checks prior company scopes/concurrency and fresh original owner inspection. Stop/unavailable/budget/unknown still refuse. New intent removes old proof/reconciliation before persist, creates distinct attempt ID, then invokes original .start.",
+    "uncertainty": "Unclassified same-code or malformed proof counters produce launch_uncertain; original proof cannot be reused for later lost response. Existing newrun response unknown remains blocked; no assumptions based solely on API0.",
+    "deployment": "Reviewer did not restart/stop/alter deployment or any active process. Old running original server must remain until root determines no in-flight paid child, then safely reload.",
+    "limits": "Fake original executor test boundaries only; no real owner/API/DB and no actual concurrent live cost-settlement reenactment. This review signs controller logic and probes, not three-market completion or financial accuracy."
+  },
+  "verification": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-c",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\cache-pytest.ini",
+      "-vv",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\iqs\\tests\\test_dashboard_batches.py::test_proved_preview_drift_refreshes_once_then_launches_with_new_intent",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\iqs\\tests\\test_dashboard_batches.py::test_proved_preview_drift_is_bounded",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\iqs\\tests\\test_dashboard_batches.py::test_preview_drift_never_refreshes_unknown_launch_or_owner_block",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\iqs\\tests\\test_dashboard_batches.py::test_old_not_started_proof_is_cleared_before_a_later_lost_launch_response",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\iqs\\tests\\test_dashboard_batches.py::test_generic_same_preflight_error_code_is_still_unknown",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\test_preflight_retry_owned.py",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{170b88c7-9404-43b3-bdb3-5c1b2e59f1c2}\\AC\\Temp\\iqs-preflight30-3r89u0r_\\pytest",
+      "--junitxml",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\preflight-retry-junit.xml"
+    ],
+    "started_at_utc": "2026-10-30T10:51:50.241444+00:00",
+    "ended_at_utc": "2026-10-30T10:51:52.130441+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "268455b01180c009e9e31d4286707caa9738822a9c148020a24ab1d14c788c02",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests": 10,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cleanup": {
+      "observed_at_utc": "2026-10-30T10:51:53.159428+00:00",
+      "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{170b88c7-9404-43b3-bdb3-5c1b2e59f1c2}\\AC\\Temp\\iqs-preflight30-3r89u0r_",
+      "exists_after": false,
+      "exit_code": 0,
+      "actual_network_or_source_db_writes": 0
+    }
+  },
+  "reviewer_owned_additional_probes": {
+    "file": "test_preflight_retry_owned.py",
+    "sha256": "96db927dfa6d5cc0e7f88fe626a51c8a30f84e397405b8ab9ef071af0ebfa8ec",
+    "cases": 4,
+    "meaning": "Counter booleans False and float0.0 for each API_requests/database_writes must never establish no-launch proof or permit automatic fresh retry."
+  },
+  "source_or_actual_database_budget_list_writes": 0,
+  "actual_network_requests": 0,
+  "root_wider_suites": "Not counted: root independently running batch/execution affected suites. This reviewer ran only 10 cases once."
+}

@@ -1,5 +1,9 @@
 ## 2026-10-30 用户明确恢复主线：两组件接原UI → 三市场真实扫描/入库/缓存恢复
 
+并发实跑新发现：ExecutionGateway正确在两次inspection hash漂移时于进程引用前拒绝；批协调器将确定未启动的preview_changed永久留blocked，后续并发费用结算会触发此情况。不能放宽hash或把错误字符串当没发请求。最小根修只消费原prelaunch_refusal严格proof（同bundle/fingerprint/attempt、严格整数HTTP/DB=0、before_process_reference、没有run/block），下一tick完整走原tasks/owner/scope/并发预检一次，清旧proof后写新intent；二次漂移不循环。227定向+独审10已通过，部署须先drain真实model scope，原UIpause首次busy是明确拒绝，刷新后二次受理。源改不等于老内存server已更新。
+
+迁移回归弱点是测试fixture过时：标v13/v15时只撤DDL19，遗留20–24新表、21替换trigger及25 CHECK。已有tests.c06_legacy_fixture.remove_c06_additions完整处理，直接复用而非改schema守卫。StockQA a8ec/052均已推；永久case断言真实SQLite CP/outbox字节、模型attempt不增和代际反例，跨仓环境缺失明确skip，本次独审2P0skip。所有测试临时DB/缓存已原路径清理，不动实际DB。
+
 后续实核：CATL原bank.mode=quick，M/T为full；虽然当前三者都是36基础题，quick/full仍是冻结上下文组成，不能据题数相同改标签。C最初full UI预览被原existing_work_requires_frozen_bank正确拒绝，改回原quick，不改原题包。腾讯新fresh原授权全36已native applied，说明当前旧generic尚不可复现，不能把单题producer测试通过或旧错误历史推成确定根因；真正0HTTP原33挂接由原admission记录证实。原UI已提交63f4627，vendor10文件匹配签收C与Git filter blob OID；单路径attributes保留旧constants CRLF避免129行重格式，只有2行compare变化。
 
 接线实核：main使用的导航是ui/navigation.js分组而非仅constants；比较组件mount会replaceChildren，host分组须mount后再插。题库object转modules array保留222题；module group不能假造已发布package ID。原主体候选使用analysis_subject_id+analysis_subject_revision，原datalist只认key造成无值；须原id@revision。名单未知操作无精确owner ACK，host不能简单把离页当重新许可；同稳定连接/实际名单/截止日期内保留原未决draft、恢复中防空draft删缓存，重载前明确导出，原vendor约束保持。预览失效事件row_preview_invalidated发生在实际POST前，也要解除host pending，避免永久锁页。实际T新owner33题0/0预算true已复现，SDK cause仍待原调用结束捕链；71CP不是71入库ACK。

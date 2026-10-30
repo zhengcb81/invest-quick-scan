@@ -1,5 +1,9 @@
 ## 2026-10-30 用户明确恢复主线：两组件接原UI → 三市场真实扫描/入库/缓存恢复
 
+10:57Z：C从原UI新批f03eda启动3公司6scope，原71 CP保留，T缺1真实MiMo Pro联网题已补成36；当前73/108封存、0目标ACK，1请求在途，金额在途未结算不当成本完成。真实C并发start因其他scope结算令inspectionSHA变化，在原process-reference之前被正确拒绝（preview_changed，有真实no-start proof，非未知发送）；root补一次有界next-tick完整预检，未知/budgetblock仍拒重发。有效红2F、受影响227P/60.92s、独审10P/open[]；旧server尚未载新代码，不能说已生产修好。已由UI安全pause请求draining等M当前scope结束；首次busy保留、刷新后第二次有明确受理，不kill模型。主线继续，不是用户暂停。
+
+B缓存63唯一全P，初5F保留；两迁移fixture复用既有helper，源码测试a8ec已推；补永久2例052f3f0最终hook/独审2P已推。两个owned新增语义case与promoted重跑同义，不重复加总；0生产SDK源码更改。IQS3073186已推A接线/PWF。待安全部署prefight修复后UI恢复同批，实际ACK/冷恢复仍未完成。
+
 10:23Z：UI节点A完成并本地提交原UI `63f4627a6a377722101df8f2ba67ce7a64d73661`，无remote。实际独审6probe/open[]；永久回归按每例独立module重整为7场景并补比较挂载顺序，原定向最终87P/1 OS symlink skip，host11P。真实UI TXT4行/1重复/原候选解析/明确MSFT原预览通过，未提交成员写。T73357原准入entity33/security3全部accepted/applied36、0模型HTTP；历史generic未复现，不强行补造根因或源码修复。M新d3e11原full准备中；C旧quick模式核实，最初full被正确拒，已沿quick36重新UI提交。当前仍未本轮模型派发/目标入库验收；继续B/C，不停在组件接入。
 
 10:05Z进度：原UI已恢复原config/dashboard.local.json部署8766，COMP/CUSTOM TXT组件复用已签运行文件挂载，原调用器/身份/Store不替换。原UI定向86P/1skip、host10P；实浏览器group清除的挂载顺序问题与原analysis_subject DTO选择框已根修。独审发现预览失效pending和unknown跨路由丢失，同宿主修复/再审中，未改vendor字节。TXT4行/1重复已实测保留出处，未写名单。原实时71/108 CP与53settled核验记录在sdk-review，T新原UI准备73357沿原日期/模型/范围，原owner33 resume/quote0/0/budgettrue；未派发模型、尚无新增目标ACK。原3个旧grant过期需要新的原授权；旧CP可接续与已入库观测TTL三层分开。native确切根因尚未确认，不能把4次synthetic诊断环境/预算前置差异当生产根因。

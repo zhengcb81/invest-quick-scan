@@ -137,6 +137,94 @@ def test_generic_same_preflight_error_code_is_still_unknown(tmp_path):
     finally:gateway.close()
 
 
+def test_proved_preview_drift_refreshes_once_then_launches_with_new_intent(tmp_path):
+    from scripts.dashboard_execution import ExecutionGateway, DashboardExecutionError
+
+    class Drift(FakeExecution):
+        prelaunch_refusal = staticmethod(ExecutionGateway.prelaunch_refusal)
+        calls = 0
+
+        def start(self, payload):
+            self.calls += 1
+            persisted = json.loads((tmp_path / 'batches' / (bid + '.json')).read_text())['entries'][0]
+            assert 'prelaunch_refusal' not in persisted
+            if self.calls == 1:
+                self.first_intent = persisted['launch_attempt_id']
+                raise DashboardExecutionError('preview_changed', 'other scope settled', 409,
+                    self.preview(payload), prelaunch_not_started=True)
+            assert persisted['launch_attempt_id'] != self.first_intent
+            return super().start(payload)
+
+    execution = Drift()
+    gateway = BatchGateway(execution, tmp_path / 'batches', autostart=False)
+    try:
+        bid = start(gateway, ('a',))
+        gateway._step(bid)
+        entry = row(gateway, bid)['entries'][0]
+        assert entry['state'] == 'selected'
+        assert entry['preview_refresh_retries'] == 1
+        assert entry['launch_uncertain'] is False
+        gateway._step(bid)
+        assert execution.started == ['a'] and execution.calls == 2
+    finally:
+        gateway.close()
+
+
+def test_proved_preview_drift_is_bounded(tmp_path):
+    from scripts.dashboard_execution import ExecutionGateway, DashboardExecutionError
+
+    class Drift(FakeExecution):
+        prelaunch_refusal = staticmethod(ExecutionGateway.prelaunch_refusal)
+        calls = 0
+
+        def start(self, payload):
+            self.calls += 1
+            raise DashboardExecutionError('preview_changed', 'still changed', 409,
+                self.preview(payload), prelaunch_not_started=True)
+
+    execution = Drift()
+    gateway = BatchGateway(execution, tmp_path / 'batches', autostart=False)
+    try:
+        bid = start(gateway, ('a',))
+        gateway._step(bid)
+        gateway._step(bid)
+        gateway._step(bid)
+        entry = row(gateway, bid)['entries'][0]
+        assert execution.calls == 2 and not execution.started
+        assert entry['state'] == 'blocked' and entry['launch_uncertain'] is False
+    finally:
+        gateway.close()
+
+
+@pytest.mark.parametrize('classified,blocked', [(False, []), (True, ['owner_budget_blocked'])])
+def test_preview_drift_never_refreshes_unknown_launch_or_owner_block(tmp_path, classified, blocked):
+    from scripts.dashboard_execution import ExecutionGateway, DashboardExecutionError
+
+    class Refused(FakeExecution):
+        prelaunch_refusal = staticmethod(ExecutionGateway.prelaunch_refusal)
+        calls = 0
+
+        def start(self, payload):
+            self.calls += 1
+            detail = self.preview(payload)
+            detail['blocked_reasons'] = blocked
+            raise DashboardExecutionError('preview_changed', 'no implicit permission', 409,
+                detail, prelaunch_not_started=classified)
+
+    execution = Refused()
+    gateway = BatchGateway(execution, tmp_path / 'batches', autostart=False)
+    try:
+        bid = start(gateway, ('a',))
+        gateway._step(bid)
+        gateway._step(bid)
+        assert execution.calls == 1 and not execution.started
+        entry = row(gateway, bid)['entries'][0]
+        assert entry['state'] == 'blocked'
+        assert entry['launch_uncertain'] is (not classified)
+    finally:
+        gateway.close()
+
+
 def test_old_not_started_proof_is_cleared_before_a_later_lost_launch_response(tmp_path):
     from scripts.dashboard_execution import ExecutionGateway,DashboardExecutionError
     class Twice(FakeExecution):
@@ -153,7 +241,7 @@ def test_old_not_started_proof_is_cleared_before_a_later_lost_launch_response(tm
     try:
         bid=start(gateway,('a',));gateway._step(bid)
         assert row(gateway,bid)['entries'][0]['prelaunch_refusal']['phase']=='before_process_reference'
-        gateway.control(bid,'resume');gateway._step(bid)
+        gateway._step(bid)
         entry=row(gateway,bid)['entries'][0]
         assert execution.started==['a'] and entry['launch_uncertain'] is True
         assert 'prelaunch_refusal' not in entry

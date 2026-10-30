@@ -1,0 +1,128 @@
+{
+  "protocol": "iqs.b_cache_boundary_independent_final_review/1.0.0",
+  "reviewed_at_utc": "2026-10-30T10:36:08.804455+00:00",
+  "author": "/root",
+  "reviewer": "/root/accept_compare28",
+  "verdict": "passed",
+  "open_findings": [],
+  "source_head_reviewed": "a8ecb9d88b79bdf42c54c029f21a83580c2c9d45",
+  "permanent_test": {
+    "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\integration\\test_ready_checkpoint_freshness.py",
+    "sha256": "18a88947512c7857041c06a06c1c2a3254119400e55658be8fa2351b5e74b96d",
+    "functions_AST_identical_to_owned_prior_cases": [
+      "_fields",
+      "test_ready_checkpoint_does_not_mask_generation_change_after_restart",
+      "test_ready_checkpoint_reopened_after_observation_ttl_keeps_exact_work_and_outbox"
+    ],
+    "allowed_delta": "Formatting/importordering and explicitpytest.importorskip for optionalcrossrepoStockWiki source; no assertionsweakened."
+  },
+  "fixture_delta": {
+    "commit": "a8ecb9d88b79bdf42c54c029f21a83580c2c9d45",
+    "file": "tests/unit/test_w15_owner_refresh.py",
+    "sha256": "f5ef44cfea48b483845ad09a392deacbc62d5a5cb6c178cee25ffe0a5e6256b0",
+    "affected_tests": [
+      "test_owner_binding_is_registered_and_stable_across_schema15_restart",
+      "test_schema13_migration_is_additive_and_keeps_old_item_bytes"
+    ],
+    "review": "Both now useexistingtests.c06_legacy_fixture.remove_c06_additions instead ofstoppingremoval atv19. Sharedhelper removesalllateradditiveDDL, restoresv21replacedoldtrigger, reconstructspre25checkpointCHECK/table whilepreservingrows. Sameworkitem/binding/currentversion/conflictingbinding/olditemequality assertionsretained. No runtimeguardorproductioncode weakened; sourcefixture reviewonly, not rerunthese2here.",
+    "helper_sha256": "1ec372d0e1ac047e119c70db6eaf8c19906bbd9f5a2f63496b3ffcb2c67169aa"
+  },
+  "quality_findings_closed": [
+    {
+      "area": "TTL trulyexpired",
+      "evidence": "valid_until2026-01-02T00:00:00Z isstrictlybeforeexplicitnow2026-10-30T00:00:00Z; no dates/permissionsrewritten. Workclock1900000000onlysimulatesexecutor restartlater. Durable result_ready isoperationalresumption, notpretendingownerobservationfresh."
+    },
+    {
+      "area": "realstorage/restart",
+      "evidence": "RealQuickScanWorkStore SQLite atpytesttmp_path recreatedasnewstore overthesamefile; productionbuild_gap_plan, QuickScanWorkLifecycle.before_question andoutboxmethodsrundirectly, notmockedreturnvalues."
+    },
+    {
+      "area": "checkpointandrequestbytes",
+      "evidence": "Deepcheckpointobject equality before/afterrestart/lifecycle; exactrequest_bytes/idempotency_key/package_sha256 tuple equality forresumedelivery; exactpackage_bytes unchanged."
+    },
+    {
+      "area": "attempts",
+      "evidence": "list_attempts(wid) strictlyunchanged provesno additional modeldispatchattempt; planmodel_calls_planned/api_requests_planned0 andclaimedfalse samewid. Deliverysend-intent retries areaseparatecounterandarelegitimate here; noHTTPsent, no claimthatdeliveryattemptcounteritselfcannotincrease."
+    },
+    {
+      "area": "generationcounterexample",
+      "evidence": "expectedgeneration+1 mustnotresumeoldwork andplanned_dispatches1; oldCPandolditemgenerationunchanged. Preventsblanketready-always-reuse acceptance."
+    },
+    {
+      "area": "crossrepoavailability",
+      "evidence": "StockWikiisexplicitoptional integrationdependency viaimportorskip; thisactualrun loadedownedStockWiki and2testsexecuted0skip. Missing-environmentskip isnotcountedasfunctionalpass."
+    }
+  ],
+  "independent_execution": {
+    "source_root": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+    "source_file": "tests/integration/test_ready_checkpoint_freshness.py",
+    "source_sha256": "18a88947512c7857041c06a06c1c2a3254119400e55658be8fa2351b5e74b96d",
+    "owned_overlay": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\integration\\test_ready_checkpoint_freshness.py",
+    "overlay_previous_sha256": null,
+    "runtime_pins": {
+      "qa:tests/integration/test_ready_checkpoint_freshness.py": "18a88947512c7857041c06a06c1c2a3254119400e55658be8fa2351b5e74b96d",
+      "qa:src/utils/quick_scan_work_store.py": "eaab7f0020ce25fab3b65a122188b461e293a0355717c6ef2be36c215484f111",
+      "qa:src/runners/llm_runner.py": "f5ec0ce7759a1d4d80d29331df0407b35ae5e8c9b654101ef559e0958184ba2e",
+      "qa:tests/unit/test_q10_delivery.py": "b18df3c5b4d507f0b4deed5ec6808ca95272116628af79b8a5914af32f056007",
+      "qa:tests/unit/test_w15_owner_refresh.py": "f5ef44cfea48b483845ad09a392deacbc62d5a5cb6c178cee25ffe0a5e6256b0",
+      "qa:tests/c06_legacy_fixture.py": "1ec372d0e1ac047e119c70db6eaf8c19906bbd9f5a2f63496b3ffcb2c67169aa",
+      "sw:stockwiki/quick_scan_freshness.py": "4cff8633f4d1e0d6c444177ec37e0fc7eca942bb2178fc93ee164d5464a6a1e9"
+    },
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-c",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-pytest.ini",
+      "-vv",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\scratch\\qa\\tests\\integration\\test_ready_checkpoint_freshness.py",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-runtime\\pytest",
+      "--junitxml",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-junit.xml"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-runtime\\cwd",
+    "started_at_utc": "2026-10-30T10:34:22.707204+00:00",
+    "source_writes": 0,
+    "actual_model_owner_or_paid_calls": 0,
+    "isolation": "ordinary OS env only; no credentials; socket audit denyall via existingowned guard; privateTEMP/home/appdata; SQLite onlypytest tmp",
+    "broader_native_or63_suite_run": false,
+    "stdout_sha256": "f38447f7401329a69d287abbed0ac2ddf374fa9b4e0ddbde862188e50f336c55",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exit_code": 0,
+    "ended_at_utc": "2026-10-30T10:34:25.100537+00:00",
+    "counts": {
+      "tests": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "junit_sha256": "711bc27db111b4ab7e509317eea4e8a15340bfd1180f56a6f463d681451b80c2",
+    "cleanup": {
+      "observed_at_utc": "2026-10-30T10:34:26.234976+00:00",
+      "owned_runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-runtime",
+      "exists_after": false,
+      "exit_code": 0,
+      "method": "singlePowerShell native Remove-Item; exactresolved direct child ofowned reportroot",
+      "retained": "owned QA copy ofpermanenttest, synthetic source code andthinlogs only; noSQLitedb/runtime"
+    }
+  },
+  "source_mutations_by_reviewer": 0,
+  "owned_mutation": "Onlynewpermanenttest overlaid atsdk-review/scratch/qa/tests/integration/test_ready_checkpoint_freshness.py; no otherQA/Wiki/runtimefixture changed bythisreviewer.",
+  "qualification_limits": [
+    "Purefreshnesssyntheticfieldmetadata andQ13readyCP/outbox componenttest, notproductionownerfreshnesspermit/nativeconsent assertion.",
+    "No native/whole63 suite rerun. Existingfixturefix wasread independently anditsoldassertionsretained, not falselycountedasnewexecutedtests.",
+    "No liveUI/realStockWikiworkspace/actualcompanySDK/cacheproduction orfeeAPIexecuted; parentmainlineBclosureconsidersitsseparateactualSDKevidence."
+  ],
+  "cleanup": {
+    "observed_at_utc": "2026-10-30T10:34:26.234976+00:00",
+    "owned_runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\b-cache-final-review-runtime",
+    "exists_after": false,
+    "exit_code": 0,
+    "method": "singlePowerShell native Remove-Item; exactresolved direct child ofowned reportroot",
+    "retained": "owned QA copy ofpermanenttest, synthetic source code andthinlogs only; noSQLitedb/runtime"
+  }
+}

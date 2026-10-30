@@ -680,6 +680,18 @@ class BatchGateway:
                         entry.update(prelaunch_refusal=proof,launch_uncertain=False)
                         entry['blocked_reasons']=list(dict.fromkeys([getattr(error,'code','original_owner_unavailable')]
                             +proof.get('blocked_reasons',[])))
+                        # Another scope may settle/reserve between our two native
+                        # previews. A bound first-party no-start proof permits ONE
+                        # fresh preflight on the next tick, never a paid resend.
+                        # The normal launch path rechecks tasks/scope/permissions
+                        # and clears this proof before persisting a new intent.
+                        refreshes = entry.get('preview_refresh_retries', 0)
+                        if (error.code == 'preview_changed'
+                            and proof.get('blocked_reasons') == []
+                            and not entry.get('run_id')
+                            and type(refreshes) is int and refreshes == 0):
+                            entry.update(state='selected', blocked_reasons=[],
+                                preview_refresh_retries=1)
                     # If launch was attempted but its response was lost, retain an explicit uncertainty marker.
                     elif entry.get("launch_requested_at") and not entry.get("run_id"):
                         entry["launch_uncertain"] = True
