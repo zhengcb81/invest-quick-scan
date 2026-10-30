@@ -1,3 +1,19 @@
+## 2026-10-30T13:46:53Z 三市场原102题已签收；3题受控恢复进行中
+
+原8766比较和名单接线已完成。真实C公司层面33题于本轮原UI交付job `deliveryjob_4b77fb539c612e9ddbf842b9497fa585` completed，原33包/33ACK，未重发模型。精确原6receipt向量：105 CP/标准/封存、102 delivered；腾讯36全、微软entity33、宁德entity33。原M security 2failed+1ready、C security 1failed+2ready仍保留，最终应是原105成功+真实replacement3，而不是原108全部成功。76次累计settled HTTP/$1.806643、0在途/uncertain；这是沿用原预算账本累计值，不是本次单轮费用。
+
+真实比较页复验发现原StockWiki grouped fields只在envelope带公司ID，vendor丢掉该作用域导致已存公司误报无记录。root最小修为仅继承实际且与请求一致的owner envelope ID；无真实envelope不能按请求补身份，child foreign隔离并显示冲突，null保持未知，raw originals原样；顺修非法null行崩溃。10项永久JS（pytest wrapper覆盖，不重复加分）、原UI相关53 pytest通过；非作者独审8对抗+原有效红重跑通过。UI本地正常commit `bcc5aec`，无remote；原vendor来源commit保留为历史，不能把新文件冒充原签payload。真实腾讯比较已显示36题/1列且不再报entity_without_records，三公司矩阵仍待最终复验。
+
+恢复政策顺序已纠正：旧preparation只测immutable journal与permissions，漏了原StockWiki新preview的authorize_projection→confirmation重验policy SHA；v6先apply再v7消费会被正确拒。有效原consumer隔离3P证明须**先v7/1.2，再全部六原生动作，然后3个真实retry refs/新准入/N+1**。旧建议与8P证据留档并标撤回，不放宽守卫。原policy已于13:41:01Z在同controller锁、无在途/交付、原v6 SHA/CAS保护下安装v7；budget/provider/model/TTL24/route/名单不改。第1微软22辅助工具初轮只完成derive/capture即因错误期望query也有API_requests而停，未owner preview/confirm/apply或发模型；原目录保留。已按公开2.6 query六字段/精确request与snapshot契约修正，仅该只读stage例外，其他原CLI仍API0；独审13P，显式r2目录在同v7办理首次原owner动作，非自动付费重发。
+
+StockQA `0dc799a`已正常提交推送，仅新标准prompt增加summary400/coverage200软余量和必填提醒，原hard800/350与strict validator不变；25定向独审通过。旧C实体/证券进程先于此启动，不能声称已热加载该提示；真正新N+1才使用。三原失败原因分别M22/23 summary874/841超800，C22缺coverage/missing_fields，不裁旧答或补造CP。
+
+下一步：完成同v7六真实原生resolution/retry动作；在原settings完整JSON CAS加入实际3 retry refs，原UI仅M2/C1新准入/派发/原ACK，保留原security成功1/2题。随后去refs并以正常单调v8回收策略；冷重启、原检查点零新HTTP恢复和真实TTL过期刷新。旧cutoff25只能证明过期后新generation/ACK，不能当30日fresh；有效TTL内复用须合法新cutoff30完整bank仅准入1题、实际日期合格才可验证。TTL只读10P/模板不等于真实闭环。禁止覆盖旧日期/旧grant，禁止假applied/伪造bundle或ACK，绝不跑2000公司。
+
+薄证据：`docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-three-market-recovery/`；原始CLI/回答/上下文/库仅私有runs，不推送。交付33题约19分钟暴露每包多次worker/preview/status的重复加载成本；源码级诊断已有，先不打断本次或缓存live permission/ACK求快。其他writer的2026-10-10 README仍排除本次提交。
+
+---
+
 ## 2026-10-30T12:20Z 三项根修及原UI等待修复已独审提交，真实闭环继续
 
 原UI比较/名单接线A已完成；StockWiki主体元数据读取根修8cd239e已本地正常提交（无remote），21唯一用例通过。StockQA正常WAL读取根修4bb11b1已推送，36唯一边界通过。新增M22/23真实失败揭示：模型summary874/841超过原800上限，原validator正确；不得截断回填。原SDK此前把已收200但无有效答的成员置failed后，owner resolution入口又不接failed，造成无法正常登记有限重问的死结。root只补严格原终结事件/同attempt/lease/settled receipt/无CP与outbox的接纳；仍需原owner独立确认、真实resolution→retry→N+1准入，旧failed/work/attempt/费用不改。有效原2F→新9P、特殊原guard1P、原相关60P；永久9再跑通过，正常black/isort/mypy/secret hook后b13e082已推送。

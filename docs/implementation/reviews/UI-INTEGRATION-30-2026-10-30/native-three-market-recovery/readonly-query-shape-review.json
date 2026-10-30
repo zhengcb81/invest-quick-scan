@@ -1,0 +1,90 @@
+{
+  "recorded_at_utc": "2026-10-30T13:43:50.230058+00:00",
+  "source_sha256": "86ca837951e18a6e06e08f044c0559b4a6da2ed6eb3b40d75d5f214ac4e1d883",
+  "capture_sha256": "31b1ab91c3e698bdd7f59c1ae293e9504ea6f858a7c0610074d0bdea390fb9a4",
+  "request_sha256": "691c782e9acb150d40283b3e836ad5924ea6e377c9887dff2fa0898af075c28d",
+  "passed": 13,
+  "total": 13,
+  "cases": [
+    {
+      "name": "actual public capture without API counter accepted",
+      "passed": true,
+      "rejected": false
+    },
+    {
+      "name": "unexpected extra API counter rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "wrong operation rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "wrong message type rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "wrong schema rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "wrong request ID rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "wrong snapshot format rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "missing watermark rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "control response zero accepted",
+      "passed": true,
+      "rejected": false
+    },
+    {
+      "name": "control response nonzero rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "control response missing counter rejected",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "capture exception not granted to another module",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "capture exception not granted to another stage",
+      "passed": true,
+      "rejected": true
+    }
+  ],
+  "actual_capture_keys": [
+    "message_type",
+    "operation",
+    "request_id",
+    "response_at",
+    "result",
+    "schema_version"
+  ],
+  "actual_capture_has_API_requests": false,
+  "scope": "Extracted original function only; actual saved capture in memory; no answer body copied into this report.",
+  "static_attempt_tag": "Validated [a-z0-9-]{1,40}; target.mkdir(exist_ok=False) preserves first directory. Tag affects directory only, not original intent idempotency or query/permission request IDs.",
+  "actions_executed": 0,
+  "API_requests": 0,
+  "database_writes": 0,
+  "cleanup": "No subprocess/server/profile/cache/temp created; owned test/report retained."
+}

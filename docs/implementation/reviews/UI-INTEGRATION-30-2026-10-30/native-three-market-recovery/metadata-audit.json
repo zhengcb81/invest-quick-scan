@@ -1,0 +1,170 @@
+{
+  "protocol": "iqs.live30_cross_document_metadata_review/1.0.0",
+  "reviewer": "/root/accept_compare28",
+  "reviewed_at_utc": "2026-10-30T13:19:53.589228+00:00",
+  "verdict": "metadata_consistent_for_dated_snapshot; final_real_E2E_still_pending",
+  "current_required_source_or_pin_fixes": [],
+  "machine_classification": {
+    "direct_consistency_checks_passed": 114,
+    "expected_historical_supersession": 1,
+    "unexplained_mismatches": 0,
+    "qualifier": "These are metadata/file hash checks, not additional unit/integration tests or a new acceptance gate."
+  },
+  "historical_delta_explanation": "A63 product.js Git blob02ebcb... remains equal to the archived A source pin; current product.js cb3be... correctly matches the later UI247 deadline source pin. Never require historical63 bytes to equal intentionally changed247 worktree.",
+  "verified_commits": [
+    {
+      "repo": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan",
+      "ref": "b26f652",
+      "commit": "b26f65268e0e249bddb43c9c7135f27be7a58c2f",
+      "committer_time": "2026-10-30T12:40:40Z"
+    },
+    {
+      "repo": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab",
+      "ref": "63f4627",
+      "commit": "63f4627a6a377722101df8f2ba67ce7a64d73661",
+      "committer_time": "2026-10-30T10:17:49Z"
+    },
+    {
+      "repo": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab",
+      "ref": "2473c70",
+      "commit": "2473c705f2f14de5ffdb3207b24ace66102391f3",
+      "committer_time": "2026-10-30T12:12:51Z"
+    },
+    {
+      "repo": "C:\\Users\\郑曾波\\Projects\\StockWiki",
+      "ref": "8cd239e",
+      "commit": "8cd239e346289a5af5b825bdb03c675ba576d2fa",
+      "committer_time": "2026-10-30T11:44:47Z"
+    },
+    {
+      "repo": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+      "ref": "4bb11b1",
+      "commit": "4bb11b1b97b4d76cd28597fdf75a52412de34e29",
+      "committer_time": "2026-10-30T11:45:50Z"
+    },
+    {
+      "repo": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+      "ref": "b13e082",
+      "commit": "b13e082e94642dd72808a69fe2b9755d7409d397",
+      "committer_time": "2026-10-30T12:13:46Z"
+    },
+    {
+      "repo": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+      "ref": "0dc799a",
+      "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "committer_time": "2026-10-30T12:42:57Z"
+    }
+  ],
+  "verified_evidence": [
+    "16 archive files with declared archive SHA, source raw SHA and CRLF/LF-only archival transformation all match.",
+    "Historical A19 source pins match actual63 Git content including preserved CRLF constants/vendor semantics.",
+    "StockWiki8cd profiles/test promotion2pins match actual raw and Git blobs.",
+    "QA4bb final3raw/LF source pins, QAb13 recovery3source pins and UI2473pins match actual corresponding Git/current bytes.",
+    "QA0dc actual llm_provider.py raw78bcf53e... equals Git blob; commit12:42:57 is after b26 document commit12:40:40 and after its12:20 observation.",
+    "Four PWF/handoff latest12:20 blocks are identical; status explicitly live_e2e_in_progress and no replacement/recovery execution is claimed there.",
+    "All13 relevant actual Markdown local links resolve. Source-archive original bare filename hints are recoverable via status.files mapping; no signed report content was rewritten."
+  ],
+  "test_count_assessment": {
+    "A": "87 includes Python wrapper of7 lifecycle cases; host11 separate metric, no adding wrapper7 again.",
+    "B_cache": "63 unique/63passed versus68 actual executions; reruns are not additional unique tests.",
+    "WAL": "36 unique=6permanent+25oldunit+5independent; final6rerun and elevated2junction repeats excluded.",
+    "subject": "21unique; promotion14 plus skip guard not added.",
+    "terminal_received": "9new behavior+1required old guard; old60 separately listed. Promoted9rerun not added.",
+    "deadline": "47author product tests plus2independent selected scenarios/syntax are distinguished, not summed as49unique product cases.",
+    "private_driver": "18pure safety mocks plus8company delta cases remain separate diagnostics; no production action success inferred."
+  },
+  "original_failed_work_evidence": [
+    {
+      "work_item_id": "WORK_75dea14eec514ac0bbc5915b586ec262",
+      "entity_id": "ENT_0601ba07-7e9c-4fc6-8730-df538050e3e8",
+      "question_id": "IQS_22",
+      "generation": 1,
+      "scope": "security",
+      "scope_id": "SEC_da2ac52f-8e75-4171-9582-1316a3adb6b4",
+      "status": "failed"
+    },
+    {
+      "work_item_id": "WORK_9611aebaaf264e0cae9d0bc6fc30373d",
+      "entity_id": "ENT_0601ba07-7e9c-4fc6-8730-df538050e3e8",
+      "question_id": "IQS_23",
+      "generation": 1,
+      "scope": "security",
+      "scope_id": "SEC_da2ac52f-8e75-4171-9582-1316a3adb6b4",
+      "status": "failed"
+    },
+    {
+      "work_item_id": "WORK_43f36bb8d4314323ad551f0b98c6d0ca",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_22",
+      "generation": 1,
+      "scope": "security",
+      "scope_id": "SEC_989f53e1-55aa-4ac5-b0b2-bf2ba612b380",
+      "status": "failed"
+    }
+  ],
+  "coverage_contract_for_next_real_closeout": {
+    "original_vector_work_ids": 108,
+    "original_failed_slots_to_retain": 3,
+    "max_original_successes_if_remaining_finish": 105,
+    "replacement_successes_needed": 3,
+    "logical_target_coverage": 108,
+    "required_mapping": "Use actual original resolution/retry/new admission receipts to map each failed source work to exact target entity/question/scope/subject/generation/newwork/observation/package/ACK. Do not select arbitrary latest generations or rewrite old failed rows. Existing original108 observer alone cannot certify replacement3."
+  },
+  "process_prompt_timeline": {
+    "new_prompt_commit": "0dc799a",
+    "committed_at_utc": "2026-10-30T12:42:57Z",
+    "C_process_metadata": [
+      {
+        "file": "runs\\dashboard-runtime\\run-73942df8a9d14bb9b2ed19eb897a1a6c.json",
+        "sha256": "3e5397fd2b7b836d55b1edf8a00b8e5d22252bebe9b670931efaa7a843a23ae6",
+        "run_id": "run-73942df8a9d14bb9b2ed19eb897a1a6c",
+        "bundle_id": "dashboard-8fda69293d7a436cb51b55bbd2146e59-1",
+        "started_at": "2026-10-30T11:36:11.154801Z",
+        "resumed_at": "2026-10-30T12:02:37.308200Z",
+        "finished_at": "2026-10-30T13:12:52.395583Z",
+        "launch_attempt": 3,
+        "process_state": "process_exited",
+        "launcher_state": "running"
+      },
+      {
+        "file": "runs\\dashboard-runtime\\run-8dddcf16250540c98ccf223a430f9b25.json",
+        "sha256": "6dc8dab798773c736ae53a3e313f007f3fe13d35fc4f45e32b76c5a480bbc568",
+        "run_id": "run-8dddcf16250540c98ccf223a430f9b25",
+        "bundle_id": "dashboard-8fda69293d7a436cb51b55bbd2146e59-2",
+        "started_at": "2026-10-30T12:26:21.302358Z",
+        "resumed_at": null,
+        "finished_at": "2026-10-30T12:37:22.598159Z",
+        "launch_attempt": 1,
+        "process_state": "process_exited",
+        "launcher_state": "paused"
+      }
+    ],
+    "statement": "C security process started12:26:21 and exited12:37:22; C entity resumed earlier than0dc and keeps module code loaded in that process. Disk update does not hot-patch original prompt into already running child; only new process can load0dc. Do not attribute current old-process outputs to new prompt."
+  },
+  "TTL_boundary": "Native expired preview/generation2/API0 is only a plan, not confirmation/admission/new paid result/ACK/freshness. Old cutoff25 on30 cannot supply current fresh reuse under min(observed+TTL,information_as_of+TTL); legitimate new cutoff research with actual valid output and zero extra request counters is required for fresh reuse.",
+  "next_summary_required_fields": [
+    "Use an explicit observation UTC and original-vector versus replacement-vector counts. Preserve dated12:20 snapshot rather than edit it into current state.",
+    "Record b26 snapshot chronology and later0dc new-process-only effect, plus current native recovery state.",
+    "Before claiming final E2E pass, archive real replacement3 mapping/ACK, original105 ACK, original UI cold restart/recovery request counts, and separate real TTL expiry/new-generation/fresh-reuse evidence or truthful remaining failure."
+  ],
+  "small_nonblocking_documentation_suggestions": [
+    "README.md:31 says current69 signed observations but explicitly defers real-time state to PWF/owner. On the next normal status update, prefix its concrete counts with as-of UTC to avoid ambiguity; no need to rewrite historical PWF sections.",
+    "Archived received-answer-review.md mentions source-only resolution-intent-manifest.json and owner-control-steps.md as bare names. A small index note can map the former to retained runs path and the latter to archived native-owner-recovery-steps.md, while preserving the signed review bytes/source SHA."
+  ],
+  "remaining_evidence_state": "Real tri-market completion, replacement3, UI cold restore and real TTL refresh/fresh reuse are not signed off in this review. No test suite, originalDB query, apply, native stage, model/API or source write was performed.",
+  "evidence_refs": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\final-metadata-review\\machine-checks.json",
+      "sha256": "c99f0fd125bdaa4e7d9574b7a68348929ab0da561298d341586747f1e3685ce5"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\final-metadata-review\\cross-document-checks.json",
+      "sha256": "00f461ea35c71578c5bbc15af7f8ef2bc3371c57915fad6559e6df25a2e77012"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\final-metadata-review\\check_metadata.py",
+      "sha256": "09d9ebee21dd5929db0a79684e9d4ad54bf68e5a412dee0414f70ec7bb83f6c2"
+    }
+  ],
+  "cleanup": "Only own metadata script/reports created; no runtime/server/profile/DB or subprocess remains."
+}

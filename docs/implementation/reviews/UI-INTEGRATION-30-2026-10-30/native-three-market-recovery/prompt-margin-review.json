@@ -1,0 +1,145 @@
+{
+  "protocol": "iqs.prompt_margin_independent_review/1.0.0",
+  "reviewer_agent_id": "/root/accept_universe28",
+  "author_agent_id": "/root",
+  "updated_at_utc": "2026-10-30T12:42:23.350757+00:00",
+  "verdict": "passed",
+  "open_findings": [],
+  "source_pins": {
+    "frozen_at_utc": "2026-10-30T12:38:50.631542+00:00",
+    "files": [
+      {
+        "file": "src/providers/llm_provider.py",
+        "raw_sha256": "78bcf53e2afb990e7d60f022976b27f8c021723d95453b1b5687b8c3fd97920c"
+      },
+      {
+        "file": "tests/unit/test_standard_pack_period_prompt.py",
+        "raw_sha256": "05a956668be1c284306a673493c43dba0a6600d534feee1d0d00b435225b1335"
+      },
+      {
+        "file": "tests/unit/test_c06_question_pack_objects.py",
+        "raw_sha256": "20e61a9f0eef6423f05fe518d1871a4c51728a332898e1b1f99ff0038924a735"
+      },
+      {
+        "file": "tests/unit/test_llm_question_pack_provider.py",
+        "raw_sha256": "ecae9d83c39e78dd5145ab79972cd35142a3abe926101145ce16f010813627ac"
+      }
+    ],
+    "AST_changed_function_or_class_paths": [
+      "LLMProvider",
+      "LLMProvider._build_question_pack_prompt"
+    ],
+    "source_writes": 0,
+    "base": "Complete independent QA frozen052 tree plus previously accepted WAL/terminal overlays, only four explicit current files overlay"
+  },
+  "reviewed_source_sha256": "78bcf53e2afb990e7d60f022976b27f8c021723d95453b1b5687b8c3fd97920c",
+  "live_same_bytes_as_reviewed": true,
+  "unchanged_controls": [
+    {
+      "file": "src/providers/base_llm_provider.py",
+      "frozen_raw_sha256": "b6f8a9badeb71cb83f95d51791a5f3225786947a0a12c95cb6b7ede02f586e70",
+      "live_raw_sha256": "05ecac78ccf65d3b18567e68f0e631e5d8b51ef89261bca4c553dd269fa1f517",
+      "raw_equal": false,
+      "universal_newline_text_equal": true,
+      "AST_or_JSON_equal": true
+    },
+    {
+      "file": "src/config/quick_scan_answer_content.schema.json",
+      "frozen_raw_sha256": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+      "live_raw_sha256": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+      "raw_equal": true,
+      "universal_newline_text_equal": true,
+      "AST_or_JSON_equal": true
+    },
+    {
+      "file": "src/utils/quick_scan_observation_context.py",
+      "frozen_raw_sha256": "b536d1d9009a64c391de6c080ccaee937c7d7f57d6c4b85b760b33929949ff71",
+      "live_raw_sha256": "9acdf577f29a94218c6910ba015e55dafc60617f3de03cd9d31d417e499b74a0",
+      "raw_equal": false,
+      "universal_newline_text_equal": true,
+      "AST_or_JSON_equal": true
+    },
+    {
+      "file": "src/core/qa_engine.py",
+      "frozen_raw_sha256": "f9ece036a462e6c016c930d329b5446f89a866474ba12f75bc2d71897fd7c2d3",
+      "live_raw_sha256": "ea46bf4327b1c55ab02767011ce2ad9823473e4dcefadc2287e691b0b8529c8e",
+      "raw_equal": false,
+      "universal_newline_text_equal": true,
+      "AST_or_JSON_equal": true
+    }
+  ],
+  "source_delta": "Only three instruction strings in standard branch of LLMProvider._build_question_pack_prompt; class AST changes only because its method changes. Base prompt, schemas, validator and engine AST unchanged; frozen Git LF versus live CRLF explicitly distinguished in controls.",
+  "analysis": {
+    "length": "Soft summary400/coverage.reason200 give headroom below original hard800/350; stricter question-schema limit and all other maxLength still apply. Not automatic truncation.",
+    "completeness": "Required missing_fields array and coverage object/status/nonemptyreason retained even when evidence insufficient. Shortness never authorizes omission.",
+    "accuracy": "Unknown means existing insufficient_evidence/other defined status with null score; no invented scores/metrics/facts. Evidence traceability preserved; metrics only for scored per existing standard validation rule.",
+    "compatibility": "Single and nonstandard prompt output remain byte-identical to original base in actual tests. Period/cutoff/evidence protections and thinking/token forwarding unchanged.",
+    "no_repair_or_resend": "No defaults insertion, schema relaxation, automatic format repair, model retry or new send added; original rejected members stay rejected, valid siblings survive."
+  },
+  "verification": {
+    "started_at_utc": "2026-10-30T12:39:42.287104+00:00",
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-c",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\pytest.ini",
+      "-vv",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\qa\\tests\\unit\\test_standard_pack_period_prompt.py",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\qa\\tests\\unit\\test_c06_question_pack_objects.py::test_complete_profile_rejects_incomplete_member_before_result_and_preserves_valid_siblings",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\qa\\tests\\unit\\test_c06_question_pack_objects.py::test_original_provider_generator_checkpoint_standard_roundtrip_and_one_physical_fee",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\qa\\tests\\unit\\test_llm_question_pack_provider.py::test_question_pack_valid_unknown_remains_null",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\qa\\tests\\unit\\test_llm_question_pack_provider.py::test_question_pack_whole_rejection_is_not_repaired",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\qa\\tests\\unit\\test_llm_question_pack_provider.py::test_question_pack_explicit_off_and_tokens_are_forwarded",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\iqs-prompt30-2p4h3tz1\\pytest",
+      "--junitxml",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\final-junit.xml"
+    ],
+    "ended_at_utc": "2026-10-30T12:40:03.191034+00:00",
+    "exit_code": 0,
+    "import_origins_sha256": "c7827f98e1da99ad99aa8e51e5064ed7cd870fea66fdba43bef690fa92ed8a82",
+    "stdout_sha256": "970391f65b3993bfdaa96d37d28d9194a6e24f9fa5dcb3f4d9ab12b22d9f218a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests": 25,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_provider_sha256": "78bcf53e2afb990e7d60f022976b27f8c021723d95453b1b5687b8c3fd97920c",
+    "cleanup": {
+      "observed_at_utc": "2026-10-30T12:40:04.318135+00:00",
+      "runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\iqs-prompt30-2p4h3tz1",
+      "exists_after": false,
+      "exit_code": 0,
+      "actual_database_or_source_writes": 0,
+      "actual_network_requests": 0
+    }
+  },
+  "unique_case_count": 25,
+  "source_import_proof": {
+    "file": "final-import-origins.json",
+    "sha256": "c7827f98e1da99ad99aa8e51e5064ed7cd870fea66fdba43bef690fa92ed8a82",
+    "foreign_src_modules": 0
+  },
+  "limits": {
+    "purpose": "Reduce format/completeness risk only",
+    "actual_new_answer_compliance_guaranteed": false,
+    "financial_accuracy_proven": false,
+    "actual_paid_model_or_search_requests": 0,
+    "real_invalid_answers_repaired": false,
+    "production_UI_or_native_owner_acceptance_awarded": false
+  },
+  "cleanup": {
+    "observed_at_utc": "2026-10-30T12:40:04.318135+00:00",
+    "runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\prompt-margin-review\\iqs-prompt30-2p4h3tz1",
+    "exists_after": false,
+    "exit_code": 0,
+    "actual_database_or_source_writes": 0,
+    "actual_network_requests": 0,
+    "runtime_exists_now": false
+  },
+  "safety": "Complete independent source tree, original delegated_guard, key-free environment allowlist, all network/foreign DB/file writes forbidden. Real source/DB/budget/list writes0. No actual company answers or keys copied."
+}

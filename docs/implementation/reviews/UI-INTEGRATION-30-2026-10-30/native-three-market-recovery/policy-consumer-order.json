@@ -1,0 +1,76 @@
+{
+  "protocol": "iqs.recovery_policy_readonly_preparation/1.0.0",
+  "created_at": "2026-10-30T13:32:49.414735+00:00",
+  "verdict": "corrected_v7_first_preparation_complete_not_authorization",
+  "preferred_sequence": [
+    "Wait active model/import phase safely settled",
+    "CAS v7 dialect1.2 first; no fake refs/no bank prepare during bootstrap",
+    "Fully apply all six native owner actions under same v7 using legitimate original permission1.1 current_permissions path",
+    "Read exact three persisted retry decisions and CAS full latest UI setup plus real refs",
+    "Fresh same-v7 native preparation/permission/admission then N+1",
+    "Original exact delivery and ACK",
+    "Remove refs and new monotonic normal1.1 version"
+  ],
+  "bootstrap_chicken_egg": "No cycle because policy1.2 current_permissions explicitly supports legacy permission1.1 without quote/ref requirement. Immutable v6 journal read alone does not make v7 fresh preview legal: authorize_projection re-inspects original confirmation and requires unchanged original policy SHA.",
+  "tests": {
+    "unique_passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "started_at": "2026-10-30T12:59:16.060549+00:00",
+    "ended_at": "2026-10-30T12:59:16.801123+00:00",
+    "invocation_exit": 0
+  },
+  "unresolved_slots": 3,
+  "real_decisions_fabricated": 0,
+  "actual_policy_changes": 0,
+  "real_database_writes": 0,
+  "owner_confirmation_or_apply": 0,
+  "network_requests": 0,
+  "source_changes": 0,
+  "open_findings": [],
+  "limits": [
+    "Pure contract checks and original-service synthetic permission branch are not real owner or production admission acceptance",
+    "Need actual current original bank.mode; primary task_mode is not quick/full UI mode",
+    "All three real retry decision IDs must come from actual complete apply; template nulls intentionally fail original parser",
+    "Version7/8 candidates require latest-state CAS, cannot overwrite concurrent changes",
+    "No runtime left; permanent evidence intentionally retained"
+  ],
+  "artifact_sha256": {
+    "preparation.md": "08d7f3851e258ab894fe307fddb3ac3f8fd00069b391bd8186b62a7caa3e6ed6",
+    "preparation.withdrawn-v6-first.md": "2825d9c11bc9ff9d7a6d4c32195fe835e5f636cfaf575ecb7f43d662bd298de7",
+    "final-report.withdrawn-v6-first.json": "4315d9473aa122a043d21759dae21fa9ffdf6bba9c0c49772fa7c8b02a7765c6",
+    "verification.json": "666627178cca22563bd719b184f1eebce265223206597de4751d0a50ad26e76e",
+    "invocation.json": "a9bc8d8b46657b5b144fc3a14d1fa0c931656e9af0a3220e2c38525c994f81c1",
+    "test_policy_consumer_order.py": "a2d0ff05ae029bac3a21a6540d84c6f51f0ffe02378edcb6c8c4d1c9532a5173",
+    "consumer-order-invocation.json": "0ab9b83c342df000ec175adfcb640458b6bc39c711cd7832f0163947a0584fec",
+    "consumer-order.stdout.log": "055026749e61c2e44ea6f144295750f357a8a7eae200ebe2da34e204d93de233",
+    "consumer-order.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-order-authorized-invocation.json": "b753f9769ec30dcc0e57d3d30d49e4c1f5beb5dd8779e42f04d8dcada1ef2f0a",
+    "consumer-order-authorized.stdout.log": "e6a531dfe75738c48e6904259e46373ec23bbfc084d68496eec369f9ce0ded95",
+    "consumer-order-authorized.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-order-cleanup.json": "d8a881999195d12bb9c4f6246810a9040e080d18f8a47ed522241b5bc4f65810",
+    "owner-policy-v7.candidate.json": "edea1b2ae5901aab7200b9c1063bdf38bea8f21f36660cf960029df26e2a7fdd",
+    "owner-policy-v8-normal.template.json": "993f59c81a488253dc677a768dcfb7d080023730b8eb246d992a683235c54d7c",
+    "dashboard-prepare-delta.NOT-EXECUTABLE.json": "21efd6d394fc0a3dfce52826f8fe705996ea486d885da0271f370f20d63c3032"
+  },
+  "supersedes": "final-report.withdrawn-v6-first.json; v6-first consumer recommendation withdrawn",
+  "consumer_order_verification": {
+    "unique_passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "started_at": "2026-10-30T13:31:12.347596+00:00",
+    "ended_at": "2026-10-30T13:31:16.120986+00:00",
+    "source": "Actual original WorkDecisionOwnerService.authorize_projection plus original owner fixture ports; synthetic confirmations only in owned temp, not QA journal or real owner",
+    "cases": [
+      "same-v6 original projection passes before flip",
+      "old permission1.1 read passes under v7 but v6 original confirmation consumption rejected work_decision_control_changed",
+      "v7-first original control and consumption pass under same v7"
+    ],
+    "initial_environment_attempt": "consumer-order-invocation.json:3 failed before business assertions due sandbox os.link WinError5; retained; authorized identical tests3P"
+  },
+  "known_limits": [
+    "Initial8 pure/permission checks did not exercise consumer policy binding; initial overall sequence conclusion was wrong and withdrawn",
+    "Actual v7 policy, six real actions, real decision IDs, N+1 dispatch and import/ACK remain Root-owned and not executed here",
+    "Existing policy/source/live DB not modified"
+  ]
+}

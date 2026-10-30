@@ -1,0 +1,62 @@
+{
+  "verdict": "passed",
+  "open_findings": [],
+  "own_tests": "8 independent synthetic-shape tests + original regression probe; root10 tests separately executed, not substituted for own8",
+  "runs": [
+    {
+      "name": "parent-original-probe",
+      "argv": [
+        "node",
+        "runs\\ui-integration-live30-2026-10-30\\ui-review\\compare-parent-identity-probe.mjs"
+      ],
+      "start_utc": "2026-10-30T13:41:17.848687+00:00",
+      "end_utc": "2026-10-30T13:41:17.923618+00:00",
+      "exit_code": 0,
+      "log_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\parent-original-probe.final-green.log",
+      "log_sha256": "ed5096e2b5e39ea217924b454a2c38fa19eb653ef6a23637ed6e4e63255be177"
+    },
+    {
+      "name": "parent-independent8",
+      "argv": [
+        "node",
+        "--test",
+        "runs\\ui-integration-live30-2026-10-30\\ui-review\\compare-parent-scope-independent.mjs"
+      ],
+      "start_utc": "2026-10-30T13:41:17.928277+00:00",
+      "end_utc": "2026-10-30T13:41:18.112407+00:00",
+      "exit_code": 0,
+      "log_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\parent-independent8.final-green.log",
+      "log_sha256": "ac7f40205912c3d0a4c62dddfe863a4f7c4cafd5c1be75232ac178eb76046c39"
+    },
+    {
+      "name": "parent-permanent10",
+      "argv": [
+        "node",
+        "--test",
+        "C:/Users/\u90d1\u66fe\u6ce2/Projects/iqs-question-bank-ui-lab/tests/js/comparison_parent_scope.mjs"
+      ],
+      "start_utc": "2026-10-30T13:41:18.124978+00:00",
+      "end_utc": "2026-10-30T13:41:18.295773+00:00",
+      "exit_code": 0,
+      "log_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\parent-permanent10.final-green.log",
+      "log_sha256": "26d194b3a3b0c19ea8e3707435962d9f0d7916c6200e1435668e3a4575c2fb17"
+    }
+  ],
+  "sourcepins": [
+    {
+      "path": "C:/Users/\u90d1\u66fe\u6ce2/Projects/iqs-question-bank-ui-lab/src/app/vendor/compare/compare_view.js",
+      "raw_sha256": "9908db2e5f7d7e9bb02893afe387342a114502e0f0f69603fbe77eab4e87a994"
+    },
+    {
+      "path": "C:/Users/\u90d1\u66fe\u6ce2/Projects/iqs-question-bank-ui-lab/tests/js/comparison_parent_scope.mjs",
+      "raw_sha256": "21de16662b20f9c4ad815ea823cbfe7e5d67ee9f51fc84205cbcd493f095e109"
+    },
+    {
+      "path": "C:/Users/\u90d1\u66fe\u6ce2/Projects/iqs-question-bank-ui-lab/tests/test_comparison_parent_scope.py",
+      "raw_sha256": "efd26bd7e1173c94f15b5085bb4bcb9e6de6e971a4211d34bafff9409beb4d90"
+    }
+  ],
+  "scope": "Pure projection/matrix only. Actual owner envelope shape verified statically; no production API, model, browser, DB or source writes. Parent alone performs live UI validation.",
+  "cleanup": "No server/profile/temp spawned; Node subprocesses exited. Owned logs/probes retained.",
+  "environment_note": "Earlier review runner printing TAP unicode to GBK failed after probe/8tests succeeded; this final run uses UTF8 Python console and records all3commands. Not a component failure; no duplicate case count."
+}

@@ -1,0 +1,192 @@
+{
+  "protocol": "iqs.catl_security_readonly_diagnostic/1.0.0",
+  "updated_at_utc": "2026-10-30T12:36:53.958154+00:00",
+  "verdict": "original_model_schema_failure_confirmed",
+  "observed_work": "WORK_43f36bb8d4314323ad551f0b98c6d0ca",
+  "original_preparation": "prepare_8fda69293d7a436cb51b55bbd2146e59/scope-2-security/admission.json",
+  "actual_observation": {
+    "protocol": "iqs.readonly_paid_response_shape_diagnostic/1.0.0",
+    "started_at_utc": "2026-10-30T12:33:19.838586+00:00",
+    "ended_at_utc": "2026-10-30T12:33:20.440844+00:00",
+    "rows": [
+      {
+        "work": {
+          "work_item_id": "WORK_43f36bb8d4314323ad551f0b98c6d0ca",
+          "question_id": "IQS_22",
+          "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+          "generation": 1,
+          "status": "failed",
+          "scope": "security",
+          "scope_id": "SEC_989f53e1-55aa-4ac5-b0b2-bf2ba612b380"
+        },
+        "attempt": {
+          "attempt_id": "ATTEMPT_526eab448efe451cbd05697ade630653",
+          "phase": "response_available",
+          "http_status_code": 200,
+          "failure_category": null,
+          "provider_error_code": null
+        },
+        "last_event_types": [
+          "claimed",
+          "attempt_prepared",
+          "send_intent",
+          "response_available",
+          "received_without_answer:invalid_question"
+        ],
+        "pack_id": "PACK_5dfa540dc25d476da3d78e0f6f8c3867",
+        "diagnostic_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\u25-live\\runtime\\final-answer-diagnostics\\f33347e35471ae20211bcda5933474c80a361a448c091fbca15fcf0017b3336e.final.json",
+        "diagnostic_file_sha256": "7fc0b79f82d45f526053e47d22919e1000d49780a9efe1e6b7393f3299925fd8",
+        "retained_final_sha256": "ca25b9f0363f212b3760d54cedef1ef17de53bc49fb4f7fcd95ad88c00832390",
+        "retained_final_bytes": 3032,
+        "parse_diagnostic": {
+          "schema_version": "1.0.0",
+          "status": "complete",
+          "rejections": []
+        },
+        "source_url_count": 6,
+        "native_replay_or_delivery_authorized": false,
+        "all_schema_error_shapes": [
+          {
+            "validator": "required",
+            "path": [],
+            "schema_path": [
+              "required"
+            ]
+          },
+          {
+            "validator": "required",
+            "path": [],
+            "schema_path": [
+              "required"
+            ]
+          }
+        ],
+        "shape": {
+          "summary_characters": 248,
+          "summary_maximum": 800,
+          "coverage_reason_characters": 0,
+          "body_keys": [
+            "basis",
+            "confidence",
+            "counterevidence",
+            "evidence",
+            "information_as_of",
+            "items",
+            "metrics",
+            "period_end",
+            "period_start",
+            "question_id",
+            "response_kind",
+            "score",
+            "status",
+            "summary",
+            "trend",
+            "watch_triggers"
+          ],
+          "status": "insufficient_evidence",
+          "evidence_count": 2,
+          "metrics_count": 0,
+          "outer_body_asof_equal": true,
+          "information_asof_after_cutoff": false,
+          "period_end_after_cutoff": false
+        },
+        "standard_validation": {
+          "status": "rejected",
+          "exception_type": "ValueError",
+          "reason": "value differs from the frozen standard schema",
+          "cause_shape": {
+            "type": "ValidationError",
+            "validator": "required",
+            "path": [],
+            "schema_path": [
+              "required"
+            ],
+            "missing_required_fields": [
+              "missing_fields",
+              "coverage"
+            ]
+          }
+        }
+      }
+    ],
+    "actual_db_writes": 0,
+    "actual_network_model_requests": 0,
+    "answer_values_in_report": false,
+    "qualification": "Original final-channel retained data inspected in memory only; this is neither repair/replay nor financial accuracy validation."
+  },
+  "conclusion": {
+    "parser": "complete, no missing/invalid question from initial parser",
+    "standard_schema": "required missing_fields and coverage omitted; full standard rejected correctly",
+    "different_from_microsoft": "summary248 <=800; not a summary maxLength failure.",
+    "model_status": "insufficient_evidence; keep unknown/null score, do not invent a score or add answer fields to the retained response to backfill a checkpoint.",
+    "recovery": "Use same original explicit native answer_validation_rejected→retry_unusable_answer→N+1 production path after known failed-response fix. Retained material is not replay/delivery authorization."
+  },
+  "prepared_intents": {
+    "items": [
+      {
+        "question_id": "IQS_22",
+        "intent": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\catl-security-diagnostic\\resolution-intent-IQS_22.json",
+        "intent_sha256": "8a377f98b49f6c420cd76c02aa2ceafbfc359f3c70beb69ef0607f386c5208b4",
+        "diagnostic": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\catl-security-diagnostic\\CATL_IQS_22_required_schema_diagnostic_20261030.json",
+        "diagnostic_sha256": "3f162d927a907c51774b4dc05113b302211b83c1e8aaadb84fdf7b05b3e533f2",
+        "response_sha_matches_original_durable_receipt": true
+      }
+    ],
+    "actual_owner_actions_or_http": false,
+    "actual_database_source_writes": 0
+  },
+  "prompt_assessment": {
+    "soft_targets": "Aim summary<=400 and coverage.reason<=200, with original hard limits800/350 and any stricter question limit remaining. A buffer is reasonable for model length-estimation error; it cannot guarantee completeness or accuracy.",
+    "existing_rules": "Current standard pack prompt already requires800/350 and required coverage/missing_fields even for insufficient evidence. C output did not follow the existing instruction. Do not describe the incident as a missing template rule.",
+    "recommended_combined_emission_check": "Retain every required key on every requested question object; explicitly check missing_fields(array) and coverage(status,reason) including unavailable answers; concise target does not permit omitting fields. Numeric/evidence/date/URL constraints and thinking controls remain unchanged.",
+    "quality_boundaries": "Do not truncate retained old summaries or silently insert defaults into an invalid actual answer. Do not convert insufficient evidence into a score to get green. A fresh genuine controlled response must pass existing parser and full standard validator.",
+    "adjacent_regression_groups": [
+      "tests/unit/test_standard_pack_period_prompt.py (full standard controls, legacy and single unchanged, self-check)",
+      "tests/unit/test_c06_question_pack_objects.py::test_complete_profile_rejects_incomplete_member_before_result_and_preserves_valid_siblings (coverage/unknown_field/prose +existing controls)",
+      "tests/unit/test_llm_question_pack_provider.py::test_question_pack_valid_unknown_remains_null",
+      "tests/unit/test_llm_question_pack_provider.py::test_question_pack_whole_rejection_is_not_repaired",
+      "tests/unit/test_llm_question_pack_provider.py::test_question_pack_explicit_off_and_tokens_are_forwarded"
+    ],
+    "review_strategy": "One combined final review of prompt delta and nearby existing groups after controller patch, not another series of tiny gates; no additional paid experiment requested by this reviewer."
+  },
+  "source_pins": [
+    {
+      "file": "src/providers/llm_provider.py",
+      "sha256": "e5e798fab626774628f039924894bcb4d7deaf8b32f5e2d9f23494dc44f50a5b"
+    },
+    {
+      "file": "src/providers/llm_response_parser.py",
+      "sha256": "842f9763fa85e3a4cf008d73e97f8233f323601a4b9b9f81873d861f2103459c"
+    },
+    {
+      "file": "src/utils/quick_scan_observation_context.py",
+      "sha256": "9acdf577f29a94218c6910ba015e55dafc60617f3de03cd9d31d417e499b74a0"
+    },
+    {
+      "file": "src/config/quick_scan_answer_content.schema.json",
+      "sha256": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547"
+    }
+  ],
+  "probe": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\catl-security-diagnostic\\probe.py"
+    ],
+    "file_sha256": "afb51292e82301663400538d5940efaeec44420c4d7912769188279e799e5b58",
+    "exit_code": 0,
+    "raw_answer_values_copied_to_report": false,
+    "qualification": "Pure original parser/schema-validation of retained final channel in memory. This is not an accepted CP or financial verification."
+  },
+  "safety": {
+    "actual_source_or_DB_DML": 0,
+    "actual_model_search_network_requests": 0,
+    "grant_confirmation_apply": false,
+    "other_inflight_work_touched": false,
+    "db_read": "SQLite URI mode=ro, timeout20, query_only, short BEGIN/rollback; no constructor/migration/repair. Active external writer may naturally change ledger; no unchanged-mtime claim.",
+    "owned_runtime_created": false,
+    "cleanup": "Diagnostic Python exited normally; no new temporary DB/profile/native child to remove. Only sanitized reports/intent files retained."
+  }
+}
