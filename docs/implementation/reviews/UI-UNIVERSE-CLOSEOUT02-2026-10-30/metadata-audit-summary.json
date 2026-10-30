@@ -1,0 +1,111 @@
+{
+  "final": {
+    "payload_commit": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+    "metadata_head": "f583785b87e45d6f1397750ebe97e6f9b0c04375",
+    "passed": 484,
+    "failed": 0,
+    "manifest_sha256": "456d78ebdf603ad167a6f496814a656e7e379e5769419987c2cb30c6e407d8c2",
+    "manifest_file_count": 75,
+    "current_invocation_ref": "docs/handoff/UI-UNIVERSE-28/remediation-01/review/invocation-controller-04.json"
+  },
+  "audit_sha256": "c7e01268c803e49e0c1b8377e79bc15a55235c824d94a5f014dfb92f03044940",
+  "public_cli": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-Xutf8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+      "--input",
+      "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+      "--package-id",
+      "UI-UNIVERSE-28-R1",
+      "--catalog",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-r1-closeout-02\\manifest.json",
+      "--verify-references"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan",
+    "exit_code": 0,
+    "stdout": "{\"status\":\"valid\",\"package_id\":\"UI-UNIVERSE-28-R1\",\"validation_scope\":\"handoff_shape_and_declared_scope_only\",\"errors\":[]}\n",
+    "stderr": ""
+  },
+  "lab_cli": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-Xutf8",
+      "-m",
+      "iqs_universe_import_ui_tools",
+      "validate-delivery",
+      "--lab-root",
+      "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab",
+      "--lock",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+      "--handoff",
+      "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+      "--remediation-lock",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-r1-closeout-02\\inputs.lock.json",
+      "--package-id",
+      "UI-UNIVERSE-28-R1"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab",
+    "started_at_utc": "2026-10-30T07:19:16.103756+00:00",
+    "ended_at_utc": "2026-10-30T07:19:17.956421+00:00",
+    "exit_code": 0,
+    "stdout": "{\"command\":\"validate-delivery\",\"status\":\"valid\",\"problem_count\":0,\"problems\":[],\"lock_status\":null,\"schemas\":null,\"vendor_files\":null,\"handoff_status\":null,\"payload_commit\":\"0575c77787c025812b039a4ecdde09bdfa8f7c6d\"}\n",
+    "stderr": "",
+    "scope": "Final clean metadataf583785 and reviewed code0575; exact current invocation/round, LF archive and refreshed producer interface hashes."
+  },
+  "original_classification": {
+    "recorded_at_utc": "2026-10-30T06:29:13.562832+00:00",
+    "raw_audit_passed": 443,
+    "raw_audit_failed": 6,
+    "findings": [
+      {
+        "name": "delivered payload hash tests/python/test_r1_closeout02.py",
+        "passed": false,
+        "actual": "4de98deb8fc335216fd12d047393161e06cdaaedd098ec1182a744ceb4a67ccc",
+        "expected": "3754f554485543e1a5006758ba45b6b3e3097620f75e0583ab597f65332fe16b"
+      },
+      {
+        "name": "artifact actual SHA tests/python/test_r1_closeout02.py",
+        "passed": false,
+        "actual": "4de98deb8fc335216fd12d047393161e06cdaaedd098ec1182a744ceb4a67ccc",
+        "expected": "3754f554485543e1a5006758ba45b6b3e3097620f75e0583ab597f65332fe16b"
+      },
+      {
+        "name": "artifact actual size tests/python/test_r1_closeout02.py",
+        "passed": false,
+        "actual": 9169,
+        "expected": 8964
+      },
+      {
+        "name": "reviewed hash tests/python/test_r1_closeout02.py",
+        "passed": false,
+        "actual": "4de98deb8fc335216fd12d047393161e06cdaaedd098ec1182a744ceb4a67ccc",
+        "expected": "3754f554485543e1a5006758ba45b6b3e3097620f75e0583ab597f65332fe16b"
+      },
+      {
+        "name": "metadata delta excludes functional files",
+        "passed": false,
+        "actual": false,
+        "expected": true
+      },
+      {
+        "name": "tracked worktree clean",
+        "passed": false,
+        "actual": " M tests/python/test_r1_closeout02.py\n",
+        "expected": ""
+      }
+    ],
+    "classification": {
+      "raw_eol": "4 checks refer to the same test_r1_closeout02.py: delivered CRLF differs from committed/declared LF. Both actual raw and Git byte pins are preserved; no semantic failure is inferred.",
+      "clone_status": "Original source status was empty. Byteexact raw overlay in no-autocrlf frozen clone exposes that one CRLF file as modified; not an additional source writer.",
+      "metadata_delta": "Only non-doc delta is tools/bind_closeout_review.py; read in full, it assembles review metadata, is intentionally excluded from runtime payload manifest, and was not run. Old round remains historical; controller will append a real final review instead of re-dating/rebinding it."
+    },
+    "source_original_status": "",
+    "do_not_rewrite_old_review_records": true
+  },
+  "original_review_sha256": "dea444d57619ebfff8d91da12094bbae0dd879f035f4f753df6bd6553b6bae16",
+  "archived_same_json_review_sha256": "c7886071f7c3f94c34deec1bbb6d4d99069e7652e22f3b965cea36d9eba539fe",
+  "evidence_binding_limitation": "Self-described historic harness identities are not authenticated by shape validation. Current final review was performed by a live different collaboration agent on actual C."
+}

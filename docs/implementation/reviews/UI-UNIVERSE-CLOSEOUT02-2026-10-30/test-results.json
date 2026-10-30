@@ -1,0 +1,209 @@
+{
+  "input_lock_sha256": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad",
+  "package_id": "UI-UNIVERSE-28-R1",
+  "payload_commit": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+  "protocol": "iqs.ui_universe_tests/1.0.0",
+  "red": {
+    "argv": [
+      "node",
+      "--test",
+      "tests/js/unit/acceptance-r1.test.js"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab",
+    "exit_code": 1,
+    "failed": 5,
+    "label": "historical R1 business counterexamples (baseline 154afd9)",
+    "log_raw_sha256": "1a43e1a960fd78c8a767fd2835f773cf8544356fb5c55f493d2b1ef404f22f7e",
+    "log_ref": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/acceptance-red.stdout.txt",
+    "note": "Five controller business counterexamples ported into this Lab and confirmed failing against the locked baseline (HEAD 154afd9) before the fix. Every failure was an assertion failure on real behaviour, not a missing module or import error.",
+    "passed": 0,
+    "round": "round-1",
+    "skipped": 0
+  },
+  "red_round": {
+    "argv": [
+      "node",
+      "--test",
+      "tests/js/unit/closeout-r1.test.js"
+    ],
+    "cwd": ".",
+    "exit_code": 1,
+    "failed": 2,
+    "failures": [
+      {
+        "actual": "ent-zw-a",
+        "assertion": "the hash await must not attach candidateA preview to selected candidateB",
+        "expected": "ent-zw-b",
+        "test": "R1-ADJ-01"
+      },
+      {
+        "actual": "ambiguous",
+        "assertion": "a late resolve must not clear the authoritative unknown",
+        "expected": "unknown",
+        "test": "R1-ADJ-02"
+      }
+    ],
+    "label": "closeout-02 async counterexamples (baseline be7e1ee)",
+    "log_raw_sha256": "a701cf55594657c57bc2f3cd064de3bf6a831ca2fcac182c7d4a624a1c20099c",
+    "log_ref": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/closeout-red.stdout.txt",
+    "note": "Both failures are real assertion failures on behaviour, not missing-module or import errors. Only crypto.subtle.digest and the fake adapter transport were gated; the state machine and hash outputs stayed real.",
+    "passed": 0,
+    "round": "closeout-02",
+    "skipped": 0
+  },
+  "remediation_lock_sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6",
+  "checks": [
+    {
+      "name": "green-unit",
+      "command": "C:/Users/郑曾波/nodejs/node.exe --import file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-universe-closeout02-2026-10-30/implementation/runtime-guard.mjs --test --test-concurrency=1 --test-reporter=spec C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\acceptance-r1.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\adapter.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\adjacency-r1.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\closeout-r1.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\controller-closeout.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\identity.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\machine.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\parse.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression-r1r.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression-round2.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression-round3.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\shared.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\shipped-adapter.test.js",
+      "scope": "JavaScript unit/state/component checks",
+      "result": "passed",
+      "passed": 170,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "final-python97",
+      "command": "C:/Miniconda/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\python --basetemp C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\runtime\\tmp\\pytest-final --junitxml C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\final-python-junit.xml",
+      "scope": "Python CLI/identity-lock/review-boundary checks",
+      "result": "passed",
+      "passed": 97,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "final-browser6",
+      "command": "C:/Users/郑曾波/nodejs/node.exe --import file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-universe-closeout02-2026-10-30/implementation/runtime-guard.mjs --test --test-concurrency=1 --test-reporter=spec C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\integration\\dom.test.js C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\e2e\\flow.test.js",
+      "scope": "Real Chromium DOM/UI synthetic-owner flows",
+      "result": "passed",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "green": {
+    "argv": [
+      [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--import",
+        "file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-universe-closeout02-2026-10-30/implementation/runtime-guard.mjs",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\acceptance-r1.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\adapter.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\adjacency-r1.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\closeout-r1.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\controller-closeout.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\identity.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\machine.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\parse.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression-r1r.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression-round2.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression-round3.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\regression.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\shared.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\unit\\shipped-adapter.test.js"
+      ],
+      [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\python",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\runtime\\tmp\\pytest-final",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\final-python-junit.xml"
+      ],
+      [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--import",
+        "file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-universe-closeout02-2026-10-30/implementation/runtime-guard.mjs",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\integration\\dom.test.js",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout\\tests\\js\\e2e\\flow.test.js"
+      ]
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\checkout",
+    "started_utc": "2026-10-30T06:31:33.885404+00:00",
+    "ended_utc": "2026-10-30T06:56:13.748705+00:00",
+    "exit_code": 0,
+    "passed": 273,
+    "failed": 0,
+    "skipped": 0,
+    "logs": [
+      {
+        "suite": "green-unit",
+        "stream": "combined",
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/controller-04/green-unit.log",
+        "bytes": 14774,
+        "sha256": "84e1a5aabd060a5ba2832dd7c22b77f530a41a9010a7aea79c233b691624a6f7",
+        "original_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\green-unit.log",
+        "original_sha256": "84e1a5aabd060a5ba2832dd7c22b77f530a41a9010a7aea79c233b691624a6f7",
+        "archive_transform": "CRLF to LF only, per existing .gitattributes"
+      },
+      {
+        "suite": "final-python97",
+        "stream": "combined",
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/controller-04/final-python97.log",
+        "bytes": 176,
+        "sha256": "d1c417ab76051b090a79fdc448c54ee4485d0c3197a35bb4ab25612bc19c2b3e",
+        "original_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\final-python97.log",
+        "original_sha256": "cc9fd8eb7f75fa96910b7205e0a04f43a527c3e3d705bad652c03fea2ce9e538",
+        "archive_transform": "CRLF to LF only, per existing .gitattributes"
+      },
+      {
+        "suite": "final-browser6",
+        "stream": "combined",
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/controller-04/final-browser6.log",
+        "bytes": 705,
+        "sha256": "63e43fc394234d4f6de3c7e21d56ab27f1764368ce1a0f78b5f494a8176513ca",
+        "original_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\final-browser6.log",
+        "original_sha256": "63e43fc394234d4f6de3c7e21d56ab27f1764368ce1a0f78b5f494a8176513ca",
+        "archive_transform": "CRLF to LF only, per existing .gitattributes"
+      }
+    ],
+    "run_record": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/controller-04/run.json",
+    "run_record_sha256": "411fc11cd46a4d2d1d49dc5a768b4938cfae5502235f6486f153055f2691a4b6"
+  },
+  "count_rule": "273 unique shipped tests =170 JavaScript+97 Python+6 real-browser DOM. Additional probes and independent repeats are not added. Original received tests remain in Git0ef0a9e. Full final Python97 was actually rerun after verdict correction; JavaScript/browser source bytes match final C.",
+  "controller_browser_environment_note": {
+    "initial_full_group_exit": 124,
+    "initial_failures_are_not_product_red": true,
+    "raw_failure_log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\green-browser6.log",
+    "tap_diagnostic_log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\browser-smoke-diagnostic.log",
+    "root_cause": "Outer audit wrapper stripped ordinary LOCALAPPDATA/USERPROFILE before inner run.py could preserve them. Spawn trace confirms empty plain Windows context and Chrome stderr requiring a non-default data dir / unavailable appdata. Owned loopback HTTP200 disproved a network block. Restoring ordinary directory variables at the outer allow-list fixed real DevTools/newPage smoke, then exact same component/helper source passed all6 real browser cases.",
+    "instrumentation": "Node remote-loopback guard plus Chrome loopback proxy/DNS rules and credential-free ordinary Windows context; all --user-data-dir/TEMP remain owned. Node rm is adapted in the audit preload to strict-resolved-descendant native PowerShell cleanup; source helper unchanged.",
+    "extra_diagnostics_not_in_273": true
+  },
+  "controller_source_hashes": {
+    "src/iqs-universe-import/machine.js": {
+      "sha256": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+      "bytes": 76258
+    },
+    "tools/iqs_universe_import_ui_tools/remediation.py": {
+      "sha256": "fd8e0153531dae9a13df3d90261d3bf495ca9d424b8a3f301a3bdd9b27b6ac30",
+      "bytes": 27609
+    },
+    "tests/js/unit/controller-closeout.test.js": {
+      "sha256": "9a6ab55cc3d4a0b378cf95003003b6d8cecdbed908ed14fb8e511f9a79cce02a",
+      "bytes": 3133
+    },
+    "tests/python/test_controller_closeout.py": {
+      "sha256": "6b756511e010ea268d3291a3503bc1c73002739e285d63ecbcd33d7bb43d2d01",
+      "bytes": 2745
+    },
+    "tests/python/test_r1_closeout02.py": {
+      "sha256": "04f4ef84ec6751bcd7fb89122ac938d655a16bbeb5c38e154dcfb7b341289108",
+      "bytes": 9303
+    }
+  }
+}

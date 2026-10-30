@@ -1,0 +1,106 @@
+{
+  "browser_setup": {
+    "initial_full_group_exit": 124,
+    "initial_failures_are_not_product_red": true,
+    "raw_failure_log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\green-browser6.log",
+    "tap_diagnostic_log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\implementation\\browser-smoke-diagnostic.log",
+    "root_cause": "Outer audit wrapper stripped ordinary LOCALAPPDATA/USERPROFILE before inner run.py could preserve them. Spawn trace confirms empty plain Windows context and Chrome stderr requiring a non-default data dir / unavailable appdata. Owned loopback HTTP200 disproved a network block. Restoring ordinary directory variables at the outer allow-list fixed real DevTools/newPage smoke, then exact same component/helper source passed all6 real browser cases.",
+    "instrumentation": "Node remote-loopback guard plus Chrome loopback proxy/DNS rules and credential-free ordinary Windows context; all --user-data-dir/TEMP remain owned. Node rm is adapted in the audit preload to strict-resolved-descendant native PowerShell cleanup; source helper unchanged.",
+    "extra_diagnostics_not_in_273": true
+  },
+  "line_endings": "Original test_r1_closeout02.py CRLF/raw and GitLF distinction preserved in immutable snapshot. The 5-file controller source patch includes its actual synthetic-root/verdict fixture change and normalizes that file toLF; new Gitblob and raw pins now match. No lineending-only mismatch counted as a behavioural failure.",
+  "archive_normalization": {
+    "existing_rule": "* text=auto eol=lf",
+    "new_protocol_or_code_change": false,
+    "preserved_original_review_json_data": true,
+    "transforms": [
+      {
+        "path": "docs/payload-manifest.json",
+        "original_sha256": "ab0b8fe7dd3ba9eed61dc58c6ba406c0617e3e210f2687ebcc9c4d535ad67ba1",
+        "archived_lf_sha256": "456d78ebdf603ad167a6f496814a656e7e379e5769419987c2cb30c6e407d8c2",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/handoff.json",
+        "original_sha256": "66422905d8add6cca959942483022c7d70b27f232c6d7bc99b37db904e250fb3",
+        "archived_lf_sha256": "dfda6db150932488bde3d27850bc946e2d0a4f733f6554703b50d78b504515a5",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/tests.json",
+        "original_sha256": "28654271dbc24e92462224aa6af83611e068ad30557e6df5a83b28586be73899",
+        "archived_lf_sha256": "b2956cb77c497d968398679d196520ca4fb64dad2622ae06f8ecfe6d5b12fb84",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/artifacts.json",
+        "original_sha256": "41470e01b8b1ad535ad114de7ec7fa74a359aa00362d22f810886ec8fca5eff5",
+        "archived_lf_sha256": "56547faa8b6bfa8a13d6e4f181c78c7ed839b385abf4f2024bfef12225ebe63f",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/cleanup.json",
+        "original_sha256": "8067a930969566cc37fae1b265debcd8784e15dc8f04ebbe9ea2c7ebb7594426",
+        "archived_lf_sha256": "27b5e2a642f848ac4f1c39851c62c975e271f3f1f85cd18376f3b9fa7489d950",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/report.md",
+        "original_sha256": "b63a89e9c60b28de3519482c3beae349b2edd374c39258e7df0f7c10853fa417",
+        "archived_lf_sha256": "3fa652628590f7e26384fe9bfa6a07c363c3fc102c9cb8fa91a604ce1638cc93",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/review/final.json",
+        "original_sha256": "11b69fcb23631ee462be14cbc514b090a8673f3962da5f246423dc22c6b88944",
+        "archived_lf_sha256": "b52fb4310e6e45fd45b5e335eefea78fea684efdb3c3c364c4e31383e5eae9ec",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/review/round-controller-04.json",
+        "original_sha256": "dea444d57619ebfff8d91da12094bbae0dd879f035f4f753df6bd6553b6bae16",
+        "archived_lf_sha256": "c7886071f7c3f94c34deec1bbb6d4d99069e7652e22f3b965cea36d9eba539fe",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/review/invocation-controller-04.json",
+        "original_sha256": "8a3cad3998397ee4f172220f8ebf979ba08496b965360f8943c145df0c197fe5",
+        "archived_lf_sha256": "c025b3653551d5852addb44efdacc7a58a4cb0368316a63a51b5ee7fcf9cf107",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/review/fixes-controller-04.json",
+        "original_sha256": "8f8bcc7cb98c2978cadf35382edde7d63010463462df6693f0fa63a957d812c8",
+        "archived_lf_sha256": "c92be95fdc883c23670b1cba39bcd5992aa66fbd7e5ef3021294388398e07e29",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/controller-04/run.json",
+        "original_sha256": "c35ba290ecffb88bb5f958a00a44e741150464a52799bdaf0a5c4da87f9df0b3",
+        "archived_lf_sha256": "973611ad969eae0fc0cf5610b02931f6a72445c6c3a0b0ba5c58ad7ec7114c50",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      },
+      {
+        "path": "docs/handoff/UI-UNIVERSE-28/remediation-01/evidence/controller-04/final-python97.log",
+        "original_sha256": "cc9fd8eb7f75fa96910b7205e0a04f43a527c3e3d705bad652c03fea2ce9e538",
+        "archived_lf_sha256": "d1c417ab76051b090a79fdc448c54ee4485d0c3197a35bb4ab25612bc19c2b3e",
+        "transform": "CRLF to LF only; JSON data values unchanged"
+      }
+    ],
+    "ignored_logs": "Force-add only the three explicitly authorized evidence logs; no ignore/config change."
+  },
+  "interface_refresh": {
+    "classification": "Controller metadata-assembly omission; not a source regression",
+    "changed_interfaces": [
+      "iqs.ui_universe_import_draft/1.0.0",
+      "iqs.ui_universe_import_proposal/1.0.0"
+    ],
+    "from_sha256": "63278d21c594758d2a13d7f84a4ea40ed9e3186e0c717d36525d666abaa9a152",
+    "to_sha256": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+    "actual_code_unchanged": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+    "final_metadata_head": "f583785b87e45d6f1397750ebe97e6f9b0c04375"
+  },
+  "reviewer_probe_cleanup": "A real junction rejection assertion passed, but PowerShell5 nonrecursive Remove-Item failed in the probe finally. Only owned probe cleanup changed to .NET Directory.Delete(link,false); targeted rerun1P closes the unique Python20 without double counting. Source code unchanged.",
+  "git_commit_recovery": "First normal add staged11 docs but refused3 intentionally ignored log files. Exactly those3 authorized logs force-added after LF archival; no ignore/config change, no hook bypass/force-push. All14 staged blobs verified equal actual archive bytes.",
+  "comparison_manifest_readonly_check": "Existing comparison committed manifest equals worktree SHA3860f7...; no cross-package normalization or source changes were necessary."
+}

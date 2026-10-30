@@ -1,0 +1,200 @@
+{
+  "protocol": "iqs.ui_universe_review_round/1.0.0",
+  "round_id": "controller-04",
+  "round_kind": "controller_final_review",
+  "reviewed_at_utc": "2026-10-30T07:02:21.619783+00:00",
+  "author_agent_id": "/root/accept_universe28",
+  "reviewer_agent_id": "/root/accept_compare28",
+  "payload_commit": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+  "input_lock_sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6",
+  "reviewed_file_hashes": {
+    "src/iqs-universe-import/machine.js": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+    "tools/iqs_universe_import_ui_tools/remediation.py": "fd8e0153531dae9a13df3d90261d3bf495ca9d424b8a3f301a3bdd9b27b6ac30",
+    "tests/js/unit/controller-closeout.test.js": "9a6ab55cc3d4a0b378cf95003003b6d8cecdbed908ed14fb8e511f9a79cce02a",
+    "tests/python/test_controller_closeout.py": "6b756511e010ea268d3291a3503bc1c73002739e285d63ecbcd33d7bb43d2d01",
+    "tests/python/test_r1_closeout02.py": "04f4ef84ec6751bcd7fb89122ac938d655a16bbeb5c38e154dcfb7b341289108"
+  },
+  "findings": [],
+  "open_findings": [],
+  "verdict": "passed",
+  "status": "passed",
+  "scope": {
+    "source_repository": "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab",
+    "frozen_checkout": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout",
+    "source_writes": 0,
+    "code_and_test_delta": "five files141 additions38 removals versus0ef0a9e, inspected actual Git diff and surrounding code; no metadata manifest represented as reviewed final C bytes",
+    "explicit_historical_metadata": "Current source handoff/final still oldac733... intentionally awaiting root doc-only M. Historical defaultinvocation not mistaken for effective current record. This review signs true code C0575 and its5 SHA, allowing root append new actual invocation/round afterward.",
+    "no_browser_reexecution": "Author owns browser6/18772. Reviewer did not launch browser, originalUI or owner; parent will separately accept author normal-browser evidence and final public metadata checks.",
+    "no_financial_or_production_qualification": true
+  },
+  "verification": {
+    "unique_tests": 28,
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0,
+    "breakdown": {
+      "shipped_core_js": 4,
+      "independent_js_boundary_cases": 4,
+      "python_source_and_independent_boundary_cases": 20
+    },
+    "count_method": "Python first run19P/1F was entirely an own junction cleanup compatibility error after both product assertions passed. Only that1 test rerun after correcting owned test cleanup to .NETDirectory.Delete:1P/4deselected. Thus20 uniquePythonP, not21; JS8 uniqueP. The old cleanup failure remains explicitly in original log, not rewritten as product RED.",
+    "runs": [
+      {
+        "name": "core-js",
+        "argv": [
+          "C:/Users/郑曾波/nodejs/node.exe",
+          "--import",
+          "file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-universe-closeout02-2026-10-30/final-review/network-guard.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=spec",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout\\tests\\js\\unit\\controller-closeout.test.js",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout\\tests\\js\\unit\\closeout-r1.test.js"
+        ],
+        "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout",
+        "started_at_utc": "2026-10-30T06:57:20.173385+00:00",
+        "ended_at_utc": "2026-10-30T06:57:20.441128+00:00",
+        "seconds": 0.26774049999949057,
+        "exit_code": 0,
+        "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\core-js.log",
+        "log_sha256": "0cfc93a861b5c109e8abcc118a47f52784dbf1eb8bcae8efea620663e405ba1d",
+        "tail": "✔ R1-ADJ-01: preview must revalidate the selection after the asynchronous digest, not only before it (7.5767ms)\n✔ R1-ADJ-02: a resolve response started before the timeout must not erase unknown across save/remount (2.9913ms)\n✔ controller: late failed resolve cannot erase timed-out write unknown across save/remount (9.6995ms)\n✔ controller: preview digest completing after a write timeout preserves unknown and its attribution (1.9934ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 219.3724\n\n--- STDERR ---\n"
+      },
+      {
+        "name": "independent-races",
+        "argv": [
+          "C:/Users/郑曾波/nodejs/node.exe",
+          "--import",
+          "file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-universe-closeout02-2026-10-30/final-review/network-guard.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=spec",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\independent-races.test.mjs"
+        ],
+        "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout",
+        "started_at_utc": "2026-10-30T06:57:20.443694+00:00",
+        "ended_at_utc": "2026-10-30T06:57:20.643524+00:00",
+        "seconds": 0.19983230000070762,
+        "exit_code": 0,
+        "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\independent-races.log",
+        "log_sha256": "3e03850dd0c5b5f54584c623f179cf8e4b1e5b43ec3873285b2a39be1305bcb9",
+        "tail": "✔ independent: late failed read preserves a successful ACK and its payload (9.1856ms)\n✔ independent: a delayed read cannot reset observed-active attribution after inspection (1.8657ms)\n✔ independent: same row_id in a restored draft does not authorize a detached pending read (2.4631ms)\n✔ independent: blocked preview second digest cannot publish over a timed-out write (1.6714ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 146.3647\n\n--- STDERR ---\n"
+      },
+      {
+        "name": "python-boundaries",
+        "argv": [
+          "C:/Miniconda/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "pytest",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout\\tests\\python\\test_controller_closeout.py",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout\\tests\\python\\test_r1_closeout02.py",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\test_independent_review_refs.py",
+          "--basetemp",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\runtime\\tmp\\pytest-final-review"
+        ],
+        "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout",
+        "started_at_utc": "2026-10-30T06:57:20.644258+00:00",
+        "ended_at_utc": "2026-10-30T06:57:22.171672+00:00",
+        "seconds": 1.5274270000081742,
+        "exit_code": 1,
+        "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\python-boundaries.log",
+        "log_sha256": "f29d47cdb2fec266ffa22aac9565ff916d2c8cb8df9dd7ca44ae79bf097ee043",
+        "tail": " and\r\n        stderr. By default, stdout and stderr are not captured, and those attributes\r\n        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,\r\n        or pass capture_output=True to capture both.\r\n    \r\n        If check is True and the exit code was non-zero, it raises a\r\n        CalledProcessError. The CalledProcessError object will have the return code\r\n        in the returncode attribute, and output & stderr attributes if those streams\r\n        were captured.\r\n    \r\n        If timeout (seconds) is given and the process takes too long,\r\n         a TimeoutExpired exception will be raised.\r\n    \r\n        There is an optional argument \"input\", allowing you to\r\n        pass bytes or a string to the subprocess's stdin.  If you use this argument\r\n        you may not also use the Popen constructor's \"stdin\" argument, as\r\n        it will be used internally.\r\n    \r\n        By default, all communication is in bytes, and therefore any \"input\" should\r\n        be bytes, and the stdout and stderr will be bytes. If in text mode, any\r\n        \"input\" should be a string, and stdout and stderr will be strings decoded\r\n        according to locale encoding, or by \"encoding\" if set. Text mode is\r\n        triggered by setting any of text, encoding, errors or universal_newlines.\r\n    \r\n        The other arguments are the same as for the Popen constructor.\r\n        \"\"\"\r\n        if input is not None:\r\n            if kwargs.get('stdin') is not None:\r\n                raise ValueError('stdin and input arguments may not both be used.')\r\n            kwargs['stdin'] = PIPE\r\n    \r\n        if capture_output:\r\n            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:\r\n                raise ValueError('stdout and stderr arguments may not be used '\r\n                                 'with capture_output.')\r\n            kwargs['stdout'] = PIPE\r\n            kwargs['stderr'] = PIPE\r\n    \r\n        with Popen(*popenargs, **kwargs) as process:\r\n            try:\r\n                stdout, stderr = process.communicate(input, timeout=timeout)\r\n            except TimeoutExpired as exc:\r\n                process.kill()\r\n                if _mswindows:\r\n                    # Windows accumulates the output in a single blocking\r\n                    # read() call run on child threads, with the timeout\r\n                    # being done in a join() on those threads.  communicate()\r\n                    # _after_ kill() is required to collect that and add it\r\n                    # to the exception.\r\n                    exc.stdout, exc.stderr = process.communicate()\r\n                else:\r\n                    # POSIX _communicate already populated the output so\r\n                    # far into the TimeoutExpired exception.\r\n                    process.wait()\r\n                raise\r\n            except:  # Including KeyboardInterrupt, communicate handled that.\r\n                process.kill()\r\n                # We don't call process.wait() as .__exit__ does that for us.\r\n                raise\r\n            retcode = process.poll()\r\n            if check and retcode:\r\n>               raise CalledProcessError(retcode, process.args,\r\n                                         output=stdout, stderr=stderr)\r\nE               subprocess.CalledProcessError: Command '['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoProfile', '-NonInteractive', '-Command', \"Remove-Item -LiteralPath 'C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\accept-universe-closeout02-2026-10-30\\\\final-review\\\\runtime\\\\tmp\\\\pytest-final-review\\\\test_junction_escape_resolves_0\\\\lab\\\\owned-junction' -Force -ErrorAction Stop\"]' returned non-zero exit status 1.\r\n\r\nC:\\Miniconda\\Lib\\subprocess.py:577: CalledProcessError\r\n=========================== short test summary info ===========================\r\nFAILED ..\\test_independent_review_refs.py::test_junction_escape_resolves_outside_lab_without_reading_the_target\r\n1 failed, 19 passed in 1.13s\r\n\n--- STDERR ---\n"
+      }
+    ],
+    "environment_correction_rerun": {
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\test_independent_review_refs.py",
+        "-k",
+        "junction",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\runtime\\tmp\\pytest-junction-retry"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\checkout",
+      "started_at_utc": "2026-10-30T06:59:15.130184+00:00",
+      "ended_at_utc": "2026-10-30T06:59:16.088254+00:00",
+      "exit_code": 0,
+      "log": "junction-retry.log",
+      "log_sha256": "b762b617eff6ec512428e38ac42c58ea2aef12ffd296cc47beac09ea103dd331",
+      "note": "Own fixture cleanup changed from PS5 Remove-Item junction nonrecursive failure to .NET Directory.Delete of this newly created link only; runtime source unchanged."
+    },
+    "own_cleanup_environment_issue": "PS5 Remove-Item withoutRecurse could not unlink junction. Changed only own testfinally to native.NETDirectory.Delete on that newlycreated link, never recursive target; source unchanged.",
+    "node_network": "Only whitelist ordinary Windows env, no credentials; Node remote-deny preload.",
+    "python_network": "Inspected Python paths only local synthetic JSON/Git/CLI tests and owned Junction creation/unlink; no remote or paid API code executed.",
+    "public_cli_boundary": "Source closeout Python tests exercise mainCLI on sibling/../outside handoff and reject path exit3; own exactref positive2 protocols and failure cases exercise actual validators. Full new public metadata positive postponed to root after doc-only M; not claimed here."
+  },
+  "review_assertions": [
+    {
+      "area": "async read commit guard",
+      "result": "success/failure both require live exactrowobject, same selectionepoch/state/owner-result/write state. Own probes confirm failedlate resolve preserves successfulACK; successfullate read preserves observed_active attribution; same row_id afterloadDraft is insufficient to authorize detachedreply."
+    },
+    {
+      "area": "preview hash publication",
+      "result": "Both payload and blocked-result hashes finish before finalguard; noawait afterpublishing halfstate. Sourcecases and independent secondhashgate preserve timeoutunknown and owner_result; initialnormalpreviews/confirmstill work, so not blanketreject."
+    },
+    {
+      "area": "unknown resume",
+      "result": "Published late-success case and author late-failure case preserveunknown throughsave/remount/loadDraft and preventsecondapply beforeinspect. Unknown/observedactive state and ownedpayload not replaced by stale reads."
+    },
+    {
+      "area": "actual effective review evidence",
+      "result": "Invocation follows exactref, verifies actualevidence hash/protocol/passedverdict/C/reviewer/lock. Correcthash onnot_passed orotherC/reviewer/lock/protocol fails; current matchingUI andsharedsupportprotocol positives pass. Anothercurrentround cannot sign wrongactualevidence."
+    },
+    {
+      "area": "paths",
+      "result": "Explicit alternatefilename target is used; missingref doesnot fallback to localgoodbasename. ../sibling rejected; live Windows Junction pointingoutsideLab is rejected byresolve andCLI containment, after real normalization. No externaluserpaths used."
+    }
+  ],
+  "test_refs": [
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\execution.json",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\core-js.log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\independent-races.log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\python-boundaries.log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\junction-retry.json",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\junction-retry.log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\independent-races.test.mjs",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\test_independent_review_refs.py",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\cleanup.json"
+  ],
+  "test_evidence_hashes": {
+    "execution.json": "4781f25a04d737c50abb55cfa80b0b2d2e93ec387238553353391e389bcc3857",
+    "core-js.log": "0cfc93a861b5c109e8abcc118a47f52784dbf1eb8bcae8efea620663e405ba1d",
+    "independent-races.log": "3e03850dd0c5b5f54584c623f179cf8e4b1e5b43ec3873285b2a39be1305bcb9",
+    "python-boundaries.log": "f29d47cdb2fec266ffa22aac9565ff916d2c8cb8df9dd7ca44ae79bf097ee043",
+    "junction-retry.json": "7fb49f16fec5b6e7a185ea9dcc990ad700b2a92d5ddf52db4a2cfb50aa82c413",
+    "junction-retry.log": "b762b617eff6ec512428e38ac42c58ea2aef12ffd296cc47beac09ea103dd331",
+    "independent-races.test.mjs": "858c59a78c2dae88397a6b667ea4e13f67d65f83de9383bd4ca737d3e0b7336e",
+    "test_independent_review_refs.py": "1596f76d9e831c294f4fa372266bbf9be2c7f2eedaf2a19cc87fd1710d33b130",
+    "cleanup.json": "8d0da32ed9215f555e63b1dcb660bd5fdfeea9491c8f555bdb8e77e61e05cd50"
+  },
+  "cleanup_ref": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-universe-closeout02-2026-10-30\\final-review\\cleanup.json",
+  "cleanup_summary": {
+    "source_writes": 0,
+    "remaining_processes": 0,
+    "remaining_temp_children": 0,
+    "browser_started": 0,
+    "ports_opened": []
+  },
+  "limitations": [
+    "Bounded final engineering review of current C; not an independent replay of full170JS/97Python/browser6 or realowner end-to-end.",
+    "Root will append this original-byte review as newround and bind exactC/newlock in doc-only metadataM, retaining earlierinvocation/round history; do not retroactively alter oldrecords."
+  ],
+  "production_ready": false,
+  "financial_qualification_granted": false,
+  "real_owner_golden_produced": false
+}

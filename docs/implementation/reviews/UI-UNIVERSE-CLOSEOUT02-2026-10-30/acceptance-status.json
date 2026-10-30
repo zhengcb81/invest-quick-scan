@@ -1,0 +1,101 @@
+{
+  "package_id": "UI-UNIVERSE-28-R1",
+  "status": "accepted_component_only",
+  "recorded_at_utc": "2026-10-30T07:20:54.132822+00:00",
+  "open_findings": [],
+  "received_payload_commit": "ac73318e5c3dd566dfa8f1a6a4aaec668dfdf669",
+  "received_metadata_head": "0ef0a9eb771a21b6c734dd31e510e8d4dec8fcdb",
+  "controller_payload_commit": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+  "controller_metadata_head": "f583785b87e45d6f1397750ebe97e6f9b0c04375",
+  "source_branch": "codex/ui-universe-28",
+  "source_remotes": [],
+  "source_pins": {
+    "src/iqs-universe-import/machine.js": {
+      "sha256": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+      "bytes": 76258
+    },
+    "tools/iqs_universe_import_ui_tools/remediation.py": {
+      "sha256": "fd8e0153531dae9a13df3d90261d3bf495ca9d424b8a3f301a3bdd9b27b6ac30",
+      "bytes": 27609
+    },
+    "tests/js/unit/controller-closeout.test.js": {
+      "sha256": "9a6ab55cc3d4a0b378cf95003003b6d8cecdbed908ed14fb8e511f9a79cce02a",
+      "bytes": 3133
+    },
+    "tests/python/test_controller_closeout.py": {
+      "sha256": "6b756511e010ea268d3291a3503bc1c73002739e285d63ecbcd33d7bb43d2d01",
+      "bytes": 2745
+    },
+    "tests/python/test_r1_closeout02.py": {
+      "sha256": "04f4ef84ec6751bcd7fb89122ac938d655a16bbeb5c38e154dcfb7b341289108",
+      "bytes": 9303
+    }
+  },
+  "lock_sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6",
+  "manifest_sha256": "456d78ebdf603ad167a6f496814a656e7e379e5769419987c2cb30c6e407d8c2",
+  "manifest_file_count": 75,
+  "current_invocation_ref": "docs/handoff/UI-UNIVERSE-28/remediation-01/review/invocation-controller-04.json",
+  "shipped_tests": {
+    "tests": 273,
+    "passed": 273,
+    "failed": 0,
+    "skipped": 0,
+    "breakdown": {
+      "js_unit": 170,
+      "python": 97,
+      "real_browser_dom": 6
+    },
+    "count_rule": "Unique shipped cases; do not add repeated gates/probes/targeted reruns. Original source168JS/89Python; final contains2newJS and8newPython cases. All final Python97 actually rerun after verdict change, not inferred only from96+15."
+  },
+  "independent_review": {
+    "author_agent_id": "/root/accept_universe28",
+    "reviewer_agent_id": "/root/accept_compare28",
+    "payload_commit": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+    "status": "passed",
+    "unique_targeted_tests": 28,
+    "not_added_to_273": true,
+    "breakdown": "4 shipped core JS +4 independent async races +20 Python/refs/containment"
+  },
+  "root_cause_groups": [
+    {
+      "id": "U-CLOSE-01",
+      "status": "closed_verified_in_candidate",
+      "cases": [
+        "late failed resolve after timeout",
+        "preview digest completing after timeout"
+      ],
+      "actual_red": "2F actual assertions: unknown became unresolved / preview_ready. Same synthetic machine, real crypto digest, only external owner transport/gates controlled. No real owner wrong write was observed.",
+      "fix": "Resolve success AND failure check current row object, selection, state and write/result attribution. Preview rechecks at final publication and completes all awaited hashes before any assignment; unknown/newer outcomes cannot be overwritten.",
+      "permanent_regression": "tests/js/unit/controller-closeout.test.js",
+      "green": "Both new cases and published original 2 gates pass; full170 JS pass."
+    },
+    {
+      "id": "U-CLOSE-02/03",
+      "status": "closed_verified_in_candidate",
+      "cases": [
+        "actual invocation cites historical round despite current outer C",
+        "explicit invocation reference shadowed by review-directory basename",
+        "actual current round verdict not_passed with matching recomputed SHA"
+      ],
+      "actual_red": "Each public validate-delivery invocation wrongly exited0/status valid; baseline correct delivery0 and third-party-final negative2 correctly discriminated. Exact argv, UTC, stdout and log SHA preserved.",
+      "fix": "Resolve exact Lab-relative ref with canonical containment and no basename substitution. Actual invocation evidence must be a supported existing round protocol and bind C/reviewer/lock with verdict passed; referenced matching round must passed too. Historical records remain untouched.",
+      "permanent_regression": "tests/python/test_controller_closeout.py plus actual synthetic-root adaptation in test_r1_closeout02.py",
+      "green": "Three real CLI negatives now exit2; candidate fixture positive0, third-party negative2. Final full97Python pass."
+    }
+  ],
+  "final_integrity_checks": {
+    "passed": 484,
+    "failed": 0
+  },
+  "comparison_component": "Still accepted at C2905120/Mb6343cb; no comparison source changes this turn.",
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "real_owner_golden_produced": false,
+    "mainline_or_real_scan_resumed": false,
+    "scope": "Isolated embeddable component and synthetic owner behaviour, not original UI production integration."
+  },
+  "source_git_note": "Normal local code and metadata commits. Source has no remote; none invented.",
+  "mainline_note": "Original UI integration and real-company108/SDK remain paused. Historical71/108 not rechecked.",
+  "evidence_root": "runs/accept-universe-closeout02-2026-10-30/"
+}
