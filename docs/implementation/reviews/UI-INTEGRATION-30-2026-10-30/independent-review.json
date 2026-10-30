@@ -1,0 +1,382 @@
+{
+  "protocol": "iqs.original_ui_component_wiring_independent_review/1.0.0",
+  "reviewer": "/root/accept_compare28",
+  "author": "/root",
+  "reviewed_at_utc": "2026-10-30T10:10:45.200790+00:00",
+  "verdict": "passed",
+  "open_findings": [],
+  "ui_baseline_HEAD": "5dd93d3bb133e2f615fcdb76c04009fd8f63b4b0",
+  "review_bound_to_worktree_pins": true,
+  "source_file_pins": {
+    "src/app/constants.js": {
+      "bytes": 6066,
+      "sha256": "831a40f115fb5a349cb8d18c97a7b39ea55e42b442f146d1641bbce26d68a292"
+    },
+    "src/app/index.html": {
+      "bytes": 676,
+      "sha256": "5c7f2c4801e9972fa365f8e24a53ea05a9f25198371b46606a12f9678c1f7c3a"
+    },
+    "src/app/main.js": {
+      "bytes": 4012,
+      "sha256": "1242a77de1292a550d50c130c1e73464624ff2f32fba87386f7f3135384c5949"
+    },
+    "src/app/ui/navigation.js": {
+      "bytes": 3625,
+      "sha256": "9c03bd4deb943b4e9575ce6fa06436807ddd5ac7777248b19a8857668b30554c"
+    },
+    "src/app/ui/product.js": {
+      "bytes": 91839,
+      "sha256": "02ebcb4536d464f875d8a1297640f5e5eb50fd1872f85d8230875de16b2288ab"
+    },
+    ".gitattributes": {
+      "bytes": 197,
+      "sha256": "beb5bc0546067b6b5182211211a9fd3b3244e7d39643696144dda31e6468f413"
+    },
+    "src/app/ui/product_extensions.js": {
+      "bytes": 12247,
+      "sha256": "625eb78542fbfb91e8771eb8ad601ef76bc0f51fc3217620a19afc098db421ed"
+    },
+    "src/app/vendor/compare/compare_client.js": {
+      "bytes": 5712,
+      "sha256": "a8554f7ac5d0453a358997f94dfc9397c83f7612a137b111018068f1effd2426"
+    },
+    "src/app/vendor/compare/compare_view.css": {
+      "bytes": 10419,
+      "sha256": "06d0abfe58345423510ff4c9f77c2c4f1d74298fbbe31b783fc8df0ae7bcc1ef"
+    },
+    "src/app/vendor/compare/compare_view.js": {
+      "bytes": 104316,
+      "sha256": "5616a76212ec1750c15cd0b9175524d53d1f97d30746f52c7779f63eff3cfa2b"
+    },
+    "src/app/vendor/component-sources.json": {
+      "bytes": 2912,
+      "sha256": "89a95e5eb4075c6842ecddc043b8e58047fc5b4f9ca8f22f506df40727c38c4c"
+    },
+    "src/app/vendor/universe-import/adapter.js": {
+      "bytes": 16960,
+      "sha256": "dd17b0ecac5756001723b7b5ac89120606a588750747fce23a1e2b833bd436b6"
+    },
+    "src/app/vendor/universe-import/index.js": {
+      "bytes": 621,
+      "sha256": "282f311584f257e1f4592bc1fa835860f448913bdc73122b1be916fd4303b296"
+    },
+    "src/app/vendor/universe-import/machine.js": {
+      "bytes": 76258,
+      "sha256": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896"
+    },
+    "src/app/vendor/universe-import/mount.js": {
+      "bytes": 34092,
+      "sha256": "24b2f32396ca34d6449703dc76f27936984bdc3e50820e08b9f6e52301402be1"
+    },
+    "src/app/vendor/universe-import/parse.js": {
+      "bytes": 14549,
+      "sha256": "8edcad29e7279d35d5d567c5680dab63ce4d16dad8b053c0e9de901d4fec399c"
+    },
+    "src/app/vendor/universe-import/shared.js": {
+      "bytes": 10249,
+      "sha256": "72b7caccdbab50b32c748c92dab83fbb785476b61e759afaba779ef23bc3484d"
+    },
+    "src/app/vendor/universe-import/universe-import.css": {
+      "bytes": 3976,
+      "sha256": "deef97212cca5f8f410e3430b5b9dba2940c54457e9fd6818be7a82fc63e90ac"
+    },
+    "tests/js/test_component_host.mjs": {
+      "bytes": 6339,
+      "sha256": "b16817f87f0727590c035c43da3ee701039fb0f9474b6d9e3cded7727fa50899"
+    }
+  },
+  "host_under_test_sha256": "625eb78542fbfb91e8771eb8ad601ef76bc0f51fc3217620a19afc098db421ed",
+  "source_writes_by_reviewer": 0,
+  "scope": "Current19-file root-authored originalUI wiring; no re-review of signedcomponent internals, no original8766 server manipulation, no paid/model/database/list operation by reviewer. Later sourcechanges must be checked against these rawSHA.",
+  "vendor_integrity": {
+    "independently_checked_files": 10,
+    "method": "Each UI worktree file compared to manifestSHA and actual gitshow signedpayloadC:source_path, not just to mutablemanifest itself.",
+    "details": [
+      {
+        "component": "compare",
+        "source_C": "2905120118a42f82e4fff319468c8d3187ec48dc",
+        "path": "src/app/vendor/compare/compare_client.js",
+        "manifest_sha": "a8554f7ac5d0453a358997f94dfc9397c83f7612a137b111018068f1effd2426",
+        "accepted_C_blob_sha": "a8554f7ac5d0453a358997f94dfc9397c83f7612a137b111018068f1effd2426",
+        "ui_worktree_sha": "a8554f7ac5d0453a358997f94dfc9397c83f7612a137b111018068f1effd2426",
+        "match": true
+      },
+      {
+        "component": "compare",
+        "source_C": "2905120118a42f82e4fff319468c8d3187ec48dc",
+        "path": "src/app/vendor/compare/compare_view.js",
+        "manifest_sha": "5616a76212ec1750c15cd0b9175524d53d1f97d30746f52c7779f63eff3cfa2b",
+        "accepted_C_blob_sha": "5616a76212ec1750c15cd0b9175524d53d1f97d30746f52c7779f63eff3cfa2b",
+        "ui_worktree_sha": "5616a76212ec1750c15cd0b9175524d53d1f97d30746f52c7779f63eff3cfa2b",
+        "match": true
+      },
+      {
+        "component": "compare",
+        "source_C": "2905120118a42f82e4fff319468c8d3187ec48dc",
+        "path": "src/app/vendor/compare/compare_view.css",
+        "manifest_sha": "06d0abfe58345423510ff4c9f77c2c4f1d74298fbbe31b783fc8df0ae7bcc1ef",
+        "accepted_C_blob_sha": "06d0abfe58345423510ff4c9f77c2c4f1d74298fbbe31b783fc8df0ae7bcc1ef",
+        "ui_worktree_sha": "06d0abfe58345423510ff4c9f77c2c4f1d74298fbbe31b783fc8df0ae7bcc1ef",
+        "match": true
+      },
+      {
+        "component": "universe",
+        "source_C": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+        "path": "src/app/vendor/universe-import/index.js",
+        "manifest_sha": "282f311584f257e1f4592bc1fa835860f448913bdc73122b1be916fd4303b296",
+        "accepted_C_blob_sha": "282f311584f257e1f4592bc1fa835860f448913bdc73122b1be916fd4303b296",
+        "ui_worktree_sha": "282f311584f257e1f4592bc1fa835860f448913bdc73122b1be916fd4303b296",
+        "match": true
+      },
+      {
+        "component": "universe",
+        "source_C": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+        "path": "src/app/vendor/universe-import/parse.js",
+        "manifest_sha": "8edcad29e7279d35d5d567c5680dab63ce4d16dad8b053c0e9de901d4fec399c",
+        "accepted_C_blob_sha": "8edcad29e7279d35d5d567c5680dab63ce4d16dad8b053c0e9de901d4fec399c",
+        "ui_worktree_sha": "8edcad29e7279d35d5d567c5680dab63ce4d16dad8b053c0e9de901d4fec399c",
+        "match": true
+      },
+      {
+        "component": "universe",
+        "source_C": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+        "path": "src/app/vendor/universe-import/adapter.js",
+        "manifest_sha": "dd17b0ecac5756001723b7b5ac89120606a588750747fce23a1e2b833bd436b6",
+        "accepted_C_blob_sha": "dd17b0ecac5756001723b7b5ac89120606a588750747fce23a1e2b833bd436b6",
+        "ui_worktree_sha": "dd17b0ecac5756001723b7b5ac89120606a588750747fce23a1e2b833bd436b6",
+        "match": true
+      },
+      {
+        "component": "universe",
+        "source_C": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+        "path": "src/app/vendor/universe-import/machine.js",
+        "manifest_sha": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+        "accepted_C_blob_sha": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+        "ui_worktree_sha": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+        "match": true
+      },
+      {
+        "component": "universe",
+        "source_C": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+        "path": "src/app/vendor/universe-import/mount.js",
+        "manifest_sha": "24b2f32396ca34d6449703dc76f27936984bdc3e50820e08b9f6e52301402be1",
+        "accepted_C_blob_sha": "24b2f32396ca34d6449703dc76f27936984bdc3e50820e08b9f6e52301402be1",
+        "ui_worktree_sha": "24b2f32396ca34d6449703dc76f27936984bdc3e50820e08b9f6e52301402be1",
+        "match": true
+      },
+      {
+        "component": "universe",
+        "source_C": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+        "path": "src/app/vendor/universe-import/shared.js",
+        "manifest_sha": "72b7caccdbab50b32c748c92dab83fbb785476b61e759afaba779ef23bc3484d",
+        "accepted_C_blob_sha": "72b7caccdbab50b32c748c92dab83fbb785476b61e759afaba779ef23bc3484d",
+        "ui_worktree_sha": "72b7caccdbab50b32c748c92dab83fbb785476b61e759afaba779ef23bc3484d",
+        "match": true
+      },
+      {
+        "component": "universe",
+        "source_C": "0575c77787c025812b039a4ecdde09bdfa8f7c6d",
+        "path": "src/app/vendor/universe-import/universe-import.css",
+        "manifest_sha": "deef97212cca5f8f410e3430b5b9dba2940c54457e9fd6818be7a82fc63e90ac",
+        "accepted_C_blob_sha": "deef97212cca5f8f410e3430b5b9dba2940c54457e9fd6818be7a82fc63e90ac",
+        "ui_worktree_sha": "deef97212cca5f8f410e3430b5b9dba2940c54457e9fd6818be7a82fc63e90ac",
+        "match": true
+      }
+    ]
+  },
+  "bank_contract": {
+    "modules": 48,
+    "all_scored_questions": 222,
+    "required_questions": 36,
+    "required_module_ids": [
+      "common",
+      "dupont",
+      "porter"
+    ],
+    "hardcoded_limits_added": false
+  },
+  "closed_findings": [
+    {
+      "id": "HOST-COMPARE-SCOPE",
+      "reason": "Appending host question-group selector before mount caused signedcomponent.replaceChildren to removeit.",
+      "resolution": "Root moved scope append aftermount; actualDOM/rootbrowser confirmsvisible; no vendor edit.",
+      "verification": "Reviewed currentsource ordering; root actualbrowser claim is separate from this review6purehost probes."
+    },
+    {
+      "id": "HOST-PREFLIGHT-PENDING",
+      "reason": "Host ignored actualmachine row_preview_invalidated after prePOSTversion failure/change and kept pendingtrue forever.",
+      "resolution": "Host explicitly handles this terminalreleaseevent; no vendor edit.",
+      "verification": "Independent probe uses actualhost listener and source-verified eventsequence row_applying→row_preview_invalidated; nowP."
+    },
+    {
+      "id": "HOST-UNRESOLVED-LIFECYCLE",
+      "reason": "End/dispose could drop unknown attribution, so newmountsame scope looked empty. Restoringcache itself introduced empty-draft-delete race; beforeunload needed to cover cache afterend andoffroute.",
+      "resolution": "In-memory perstableconnection/actualuniverse/asof Map, exactdraft restore; preserve skipsdeleting whiledraftLoadedfalse; mount inertuntilvalidrestore; module-level unloadguard whileMapnonempty. OwnerAPI/vendor unchanged; no automaticPOST.",
+      "verification": "First captured snapshot c32d... had2P1F onend→same-scope reopen. Current6probes pass, including asyncrestoreinterruption and offrouteunload. No new RED asserted for changes alreadyfixed before independentprobe."
+    }
+  ],
+  "independent_execution": {
+    "tests": 6,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "record": {
+      "source_path": "C:\\Users\\郑曾波\\Projects\\iqs-question-bank-ui-lab\\src\\app\\ui\\product_extensions.js",
+      "source_sha256": "625eb78542fbfb91e8771eb8ad601ef76bc0f51fc3217620a19afc098db421ed",
+      "source_unchanged_during_run": true,
+      "test_sha256": "4c7a0031742705e182d435a8fa4855b4650e931e0b7daca69358501031349cbb",
+      "stubs_sha256": "0e41bd2d232e8b7aa62dc04f4b2f4feb69b86480b5838937116c439eda462e4e",
+      "adaptation": "Only vendor mount/client boundary imports replaced with inert per-instance draft and async-load gate; actual host lifecycle/date/identity/cache code and dom helper unchanged. This is a host-event contract test, not realbrowser nor component fulltest.",
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\final-review-probe\\probe.mjs"
+      ],
+      "started_at_utc": "2026-10-30T10:06:46.809152+00:00",
+      "ended_at_utc": "2026-10-30T10:06:47.353763+00:00",
+      "exit_code": 0,
+      "log": "final-probe.log",
+      "log_sha256": "fc00d8162f04568365821d6e2fc50c420c9ced8bda5981cb75597eedeaf0f95d",
+      "source_writes": 0,
+      "network_owner_or_paid_calls": 0
+    },
+    "core_assertions": [
+      "explicitdate required; actualregistereduniverseIDnotdefaultalias",
+      "prePOSTinvalidation releasespendinggate",
+      "same-scope end/reopen restoresunknown draft",
+      "routecleanup duringawaitloadDraft doesnotdeleteunresolvedcache",
+      "ended-review cache stillwarnsbeforeunload",
+      "globalcache warning survives routeleave"
+    ],
+    "test_seam_limit": "Vendor mount/client imports replaced by inert per-instance draft API and async load gate only. Actual host functions/listeners/date/hash/cache code anddom.js executed. This is host-event contract verification, not actualbrowser/fullcomponent/noowner proof. No source testhelper modified.",
+    "reproduce": "C:/Miniconda/python.exe -B runs/ui-integration-live30-2026-10-30/ui-review/final-review-probe/run_probe.py fromIQSroot; frozenprobe Nodeargv/log/UTC/testSHA also recorded.",
+    "initial_diagnostic": {
+      "actual_tests": 3,
+      "passed": 2,
+      "failed": 1,
+      "source_sha": "c32d1f123dba5116db9df9e54e99ba6df7a3ff7a146e2c94866f607ba0375c06",
+      "preserved_log": "final-review-probe/initial-before-map-probe.log",
+      "preserved_record": "final-review-probe/initial-before-map-result.json",
+      "sha256": "9de2e3b9c482645c0d33668645fc642e8fc9cc85c6b1dbb10444f6bbb7aa18a7",
+      "limits": "Original diagnostic source identified bycapturedSHA; source/testfixture later evolved. Treat this as observedinitialfailure evidence, not claim of replaying immutablepre-fix Gitcommit."
+    }
+  },
+  "analysis_subject_projection": {
+    "reviewed_source": "product_extensions.originalSubjectKey andproduct.showPlan datalist optionvalue",
+    "original_contract": "dashboard_prepare identity selection matches analysis_subject_id + @ + str(analysis_subject_revision)",
+    "conclusion": "UIprojects exactregisteredid@positiveintegerrevision whennoexistingkey, andpreservesexistingkeys; missingauthority isnotinferred fromscopekind/label; serverremainsauthoritative. Rootpurecase evidence not counted as this reviewerexecuting it."
+  },
+  "api_lifecycle_checks": {
+    "request": "currentRequest delegatesonce to existingrequest withsameargs/auth/CSRF, fences before/after response usingstatusobject+generation; stale POST resulttreateduncertain, not retried",
+    "routes": "compare in NAV_ITEMS/ROUTES/PAGES andNAV_GROUPS, originalhistory retained; main.render centraldispose calls registeredcomponent cleanup",
+    "identity": "Stablehash fromownerstoreid+normalizedworkspace, explicitactualuniverse+asof. No CSRF/random/time identity. Existingquery capabilities not blindlypassed to5adapterkeys.",
+    "unknown": "SPA cache is volatileandscoped, exportedJSONneeded acrossbrowserrestart; no claim of durableoperationreceipt or exactACK",
+    "facts": "Quant comparison222dynamicquestions only; old#/facts preserved as61infoquestionview, no artificialscore or financialcomparisonqualification"
+  },
+  "observed_parent_validation_not_reexecuted": [
+    "Root reported realbrowser selector48modules/222/all-required36; thisreview independentlyconfirmeddata/source andnohardcodedcap.",
+    "Rootreported affected86P1skip/pure10then11P; thisreview didnotrerun thosegroups or countthem toward6.",
+    "Three-market realmodel scan/ownerACK/cacheexpiry flow remains separate mainlineacceptance, not signedby thishostreview."
+  ],
+  "nonblocking_portability_note": {
+    "status": "closed",
+    "resolution": "Root added vendor-only andconstants -text; actualGitclean-filter blobOIDs match signedC all10. constantsrawCRLF restored, exactoldblobplus2comparelines; no functional runtime change or repeat test needed.",
+    "evidence": "final-review-publish-delta.json"
+  },
+  "cleanup": {
+    "source_writes": 0,
+    "servers_started": 0,
+    "ports_opened": [],
+    "browser_profiles_created": 0,
+    "model_or_network_calls": 0,
+    "real_universe_or_db_writes": 0,
+    "probe_process": "Node childexited0 withno backgroundtasks",
+    "retained": "ownedsource/DOMsnapshot,inertstubs,probe cases/rawlogs/metadata only; no productionanswers or credentials copied"
+  },
+  "production_ready_claim": false,
+  "financial_qualification_granted": false,
+  "publication_delta_confirmed": {
+    "observed_at_utc": "2026-10-30T10:13:12.985117+00:00",
+    "changed_paths": [
+      ".gitattributes",
+      "src/app/constants.js"
+    ],
+    "attribute_rules": [
+      "src/app/vendor/** -text",
+      "src/app/constants.js -text"
+    ],
+    "constants_original_CRLF_lines": 129,
+    "constants_current_CRLF_lines": 131,
+    "constants_semantic_added_lines": [
+      "{ hash: '#/compare', label: '公司对比' },",
+      "{ test: /^\\/compare$/, page: 'compare' },"
+    ],
+    "only_two_compare_lines_added": true,
+    "vendor_Git_filter_blob_checks": [
+      {
+        "path": "src/app/vendor/compare/compare_client.js",
+        "git_clean_filter_blob_oid": "1cace761466b4585d1aac06d25ead02a29850c1d",
+        "accepted_C_blob_oid": "1cace761466b4585d1aac06d25ead02a29850c1d",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/compare/compare_view.js",
+        "git_clean_filter_blob_oid": "ebf77efa3f534aad04c946aaa49fcd4f8257d6fb",
+        "accepted_C_blob_oid": "ebf77efa3f534aad04c946aaa49fcd4f8257d6fb",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/compare/compare_view.css",
+        "git_clean_filter_blob_oid": "a4353ed654a8ff0bae523515cac27f40887b63ea",
+        "accepted_C_blob_oid": "a4353ed654a8ff0bae523515cac27f40887b63ea",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/universe-import/index.js",
+        "git_clean_filter_blob_oid": "580192258bacd326115e3cbbf750784c9941eb27",
+        "accepted_C_blob_oid": "580192258bacd326115e3cbbf750784c9941eb27",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/universe-import/parse.js",
+        "git_clean_filter_blob_oid": "7f82b6c7c27aa894caed717d0b8ee19c6c30323e",
+        "accepted_C_blob_oid": "7f82b6c7c27aa894caed717d0b8ee19c6c30323e",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/universe-import/adapter.js",
+        "git_clean_filter_blob_oid": "de213fb0fb825f3db134c7c7fa319659a668b1ec",
+        "accepted_C_blob_oid": "de213fb0fb825f3db134c7c7fa319659a668b1ec",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/universe-import/machine.js",
+        "git_clean_filter_blob_oid": "a5e210d77d07c25aa79abfc51730f668e2b03a72",
+        "accepted_C_blob_oid": "a5e210d77d07c25aa79abfc51730f668e2b03a72",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/universe-import/mount.js",
+        "git_clean_filter_blob_oid": "675304418f08bd79281b2bcb125cc713fb27b610",
+        "accepted_C_blob_oid": "675304418f08bd79281b2bcb125cc713fb27b610",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/universe-import/shared.js",
+        "git_clean_filter_blob_oid": "7cc1875d7ba2c976ce148b1e4cfc36bf2dd93327",
+        "accepted_C_blob_oid": "7cc1875d7ba2c976ce148b1e4cfc36bf2dd93327",
+        "match": true
+      },
+      {
+        "path": "src/app/vendor/universe-import/universe-import.css",
+        "git_clean_filter_blob_oid": "da1b8dc5cd4d6d478720119b01de145cc7d86045",
+        "accepted_C_blob_oid": "da1b8dc5cd4d6d478720119b01de145cc7d86045",
+        "match": true
+      }
+    ],
+    "note": "Read-only git hash-object with --path confirms current attributes preserve same10raw blobs as signed C; no -w/source index/checkout/global config writes. No fresh checkout performed.",
+    "host_source_hash_unchanged": true
+  }
+}

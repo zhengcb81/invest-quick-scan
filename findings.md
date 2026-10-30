@@ -1,3 +1,23 @@
+## 2026-10-30 用户明确恢复主线：两组件接原UI → 三市场真实扫描/入库/缓存恢复
+
+后续实核：CATL原bank.mode=quick，M/T为full；虽然当前三者都是36基础题，quick/full仍是冻结上下文组成，不能据题数相同改标签。C最初full UI预览被原existing_work_requires_frozen_bank正确拒绝，改回原quick，不改原题包。腾讯新fresh原授权全36已native applied，说明当前旧generic尚不可复现，不能把单题producer测试通过或旧错误历史推成确定根因；真正0HTTP原33挂接由原admission记录证实。原UI已提交63f4627，vendor10文件匹配签收C与Git filter blob OID；单路径attributes保留旧constants CRLF避免129行重格式，只有2行compare变化。
+
+接线实核：main使用的导航是ui/navigation.js分组而非仅constants；比较组件mount会replaceChildren，host分组须mount后再插。题库object转modules array保留222题；module group不能假造已发布package ID。原主体候选使用analysis_subject_id+analysis_subject_revision，原datalist只认key造成无值；须原id@revision。名单未知操作无精确owner ACK，host不能简单把离页当重新许可；同稳定连接/实际名单/截止日期内保留原未决draft、恢复中防空draft删缓存，重载前明确导出，原vendor约束保持。预览失效事件row_preview_invalidated发生在实际POST前，也要解除host pending，避免永久锁页。实际T新owner33题0/0预算true已复现，SDK cause仍待原调用结束捕链；71CP不是71入库ACK。
+
+**状态：in_progress，用户本次“继续”已撤销此前暂停。** 不再以旧暂停阻止已授权的生产接线/真实小样本；仍保留旧费用/答案/元数据原件，不盲重发或改TTL/日期求绿。两个组件已完成独立签收：COMPARE C2905120/Mb6343cb，UNIVERSE C0575c77/Mf583785；先核当日HEAD/dirty/其他writer，再复用现成组件挂载原UI/gateway，不重新实现组件或第二套owner。
+
+三个大节点（不增加小门）：A 原UI比较/批导接线+实际接口/路由销毁/权限隔离验收；B 原StockQA native admission接续缺口根修与有效期/过期缓存测试；C 从UI续跑原三市场公司实际计划向量、正式入库、重启/缓存恢复（有效期内零新模型HTTP、过期后正常刷新），最后独立集中审查并更新PWF/交接/提交推送。样本复用此前已授权的Microsoft/腾讯/宁德时代，身份及题数以实际原计划核实，不自行扩大2000名单。旧71/108与53次HTTP/$1.259844仅暂停历史，必须重新只读核验后再给实时进展。
+
+当前源勘察分工：不同agent只读审原UI接线结构、SDK/Store实时接续证据；总控唯一写源与共享PWF，完成后交非作者独审。CodeGraph结构查询已尝试，但当前服务逾60秒无返回，取消纯只读挂起调用；按已知具体文件读，记录环境问题，不以此虚报源码故障/重建索引。原8766部署先留存快照，孤立测试/真实演练分清，只有确有同进程部署管理需要再安全重启其拥有进程。密钥只由现有执行器读环境，日志不打印；保留其他writer的2026-10-10 README改动。
+
+证据根 runs/ui-integration-live30-2026-10-30/。费用沿用用户后续全授权；仍通过原预算账本/审批工具登记，不绕native权限、不直接伪造授权/CP、真实ACK只针对检查过的精确向量。
+
+### Next Step
+
+完成当前仓/运行态核验和原UI最小挂载，先原接口隔离E2E再独立复核；并从实际SDK准入错误链定位原零quote接续缺口，不用重复真实付费POST作诊断。
+
+---
+
 ## 2026-10-30 UNIVERSE补交02正式签收；两个UI组件均已通过
 
 名单卡已通过验收并直接修尽相邻小问题。异步成功/异常/二次hash最后提交都复核当前draft、row、选择和权威写结果，避免迟到解析或预览覆盖unknown。交接校验严格跟随显式ref，实际证据round必须绑定最终C、同reviewer/原锁且verdict=passed，不能由旧round或同名替身签收。保留原协议版本/原R1路径，无新业务端点或名单库。
