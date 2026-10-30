@@ -1,0 +1,71 @@
+{
+  "original": {
+    "payload_commit": "8b694107037f0ebfcae70ea2a4bf6c4aa77555c0",
+    "metadata_head": "a99e373c59994dadc30644e31143f0c8928aa62d",
+    "passed": 308,
+    "failed": 0,
+    "current_invocation_ref": "docs/handoff/UI-COMPARE-28/remediation-01/review/invocation-evidence-closeout-02b.json"
+  },
+  "final": {
+    "payload_commit": "2905120118a42f82e4fff319468c8d3187ec48dc",
+    "metadata_head": "b6343cbbc469aa552a27255abc151b4c469f6bf6",
+    "passed": 310,
+    "failed": 0,
+    "current_invocation_ref": "docs/handoff/UI-COMPARE-28/remediation-01/review/invocation-evidence-controller-05.json",
+    "manifest_sha256": "3860f7ba1c840c5e8e5989f881b6e72bb4181061f049eef6b88f7b25271c9638",
+    "lock_sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6"
+  },
+  "audit_sha256": "9b7081cdf5ad8dd371471e828783730f1ebf45b632eec9c42bd918bee62a24f9",
+  "original_audit_sha256": "92d6285cd1c69ed08bc093a58d91369c64c45c9857165b8b711156d1bdb160e8",
+  "public_cli": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-Xutf8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+      "--input",
+      "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\handoff.json",
+      "--package-id",
+      "UI-COMPARE-28-R1",
+      "--catalog",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-r1-closeout-02\\manifest.json",
+      "--verify-references"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan",
+    "exit_code": 0,
+    "stdout": "{\"status\":\"valid\",\"package_id\":\"UI-COMPARE-28-R1\",\"validation_scope\":\"handoff_shape_and_declared_scope_only\",\"errors\":[]}\n",
+    "stderr": ""
+  },
+  "lab_cli": {
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-Xutf8",
+      "-m",
+      "iqs_compare_view_tools",
+      "validate-delivery",
+      "--lab-root",
+      "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab",
+      "--lock",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-28-independent-support\\inputs.lock.json",
+      "--out",
+      "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\.tmp\\controller-final-2026-10-30",
+      "--handoff",
+      "docs/handoff/UI-COMPARE-28/remediation-01/handoff.json",
+      "--package-id",
+      "UI-COMPARE-28-R1",
+      "--remediation-lock",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-29-ui28-r1-closeout-02\\inputs.lock.json"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab",
+    "started_at_utc": "2026-10-30T00:28:32.866862+00:00",
+    "ended_at_utc": "2026-10-30T00:28:40.049974+00:00",
+    "exit_code": 0,
+    "stdout": "{\n  \"protocol\": \"iqs.compare_view.validate_delivery/1.1.0\",\n  \"mode\": \"remediation\",\n  \"ok\": true,\n  \"sections\": {\n    \"remediation_lock\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"original_input_lock\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"schemas\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"handoff\": {\n      \"ok\": true,\n      \"findings\": []\n    },\n    \"review\": {\n      \"ok\": true,\n      \"findings\": []\n    }\n  },\n  \"output\": \"C:\\\\Users\\\\郑曾波\\\\Projects\\\\iqs-comparison-view-lab\\\\.tmp\\\\controller-final-2026-10-30\\\\validate-delivery.json\"\n}\n",
+    "stderr": "",
+    "scope": "Final explicit controller round05 on current C; no network or credentials.",
+    "retained_output_ref": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-cli-output\\validate-delivery.json",
+    "owned_cli_output_cleaned": true
+  },
+  "limitation": "Evidence binding audit does not independently authenticate another harness agent identity or grant production qualification."
+}

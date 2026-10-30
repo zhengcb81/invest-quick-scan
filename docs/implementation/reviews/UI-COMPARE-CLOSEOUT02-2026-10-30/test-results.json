@@ -1,0 +1,275 @@
+{
+  "protocol": "iqs.compare_view.tests/1.0.0",
+  "package_id": "UI-COMPARE-28-R1",
+  "payload_commit": "2905120118a42f82e4fff319468c8d3187ec48dc",
+  "note": "202 unique shipped cases; 3 additional controls overlap the same invariants and are counted separately. Unit/integration/perf ran before browser-only helper final delta; their own implementation/dependencies did not change. Final affected startup/browser/control groups bind final exact source hashes and actual UTC. Earlier group UTC was not captured and remains null with observed log filesystem mtime; no dates invented. All original logs are retained with exact SHA.",
+  "runs": [
+    {
+      "name": "unit",
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-reporter=spec",
+        "tests/unit/*.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 0.45467260000441456,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\unit.log",
+      "log_sha256": "363cca03ddc5bb622c063301572c54b085173bed053488cb4a3e37bf4ebc4175",
+      "log_bytes": 7916,
+      "counts": {
+        "tests": 97,
+        "pass": 97,
+        "fail": 0,
+        "skipped": 0
+      },
+      "started_at_utc": null,
+      "ended_at_utc": null,
+      "utc_limitation": "Original first runner did not capture wall-clock start/end. No timestamp reconstructed or invented.",
+      "log_filesystem_mtime_utc": "2026-10-30T00:14:25.031566+00:00",
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\unit.log",
+      "kind": "shipped",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/unit.log",
+      "passed": 97,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "integration",
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-reporter=spec",
+        "tests/integration/*.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 110.82341559999622,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\integration.log",
+      "log_sha256": "91ad5066eb8662407b6ae69dd19892085358ca8f0e7c3dc3d80ae2b1e2f7bc8c",
+      "log_bytes": 7646,
+      "counts": {
+        "tests": 94,
+        "pass": 94,
+        "fail": 0,
+        "skipped": 0
+      },
+      "started_at_utc": null,
+      "ended_at_utc": null,
+      "utc_limitation": "Original first runner did not capture wall-clock start/end. No timestamp reconstructed or invented.",
+      "log_filesystem_mtime_utc": "2026-10-30T00:17:24.628302+00:00",
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\integration.log",
+      "kind": "shipped",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/integration.log",
+      "passed": 94,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "perf",
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-reporter=spec",
+        "tests/perf/*.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 0.44358199999987846,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\perf.log",
+      "log_sha256": "718c1a203f21b9f6a03399bbcb1f11b4753eed8759bb1037d27f5d4091a52328",
+      "log_bytes": 195,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "started_at_utc": null,
+      "ended_at_utc": null,
+      "utc_limitation": "Original first runner did not capture wall-clock start/end. No timestamp reconstructed or invented.",
+      "log_filesystem_mtime_utc": "2026-10-30T00:14:25.476211+00:00",
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\perf.log",
+      "kind": "shipped",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/perf.log",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "startup",
+      "started_at_utc": "2026-10-30T00:18:15.163949+00:00",
+      "ended_at_utc": "2026-10-30T00:18:32.219890+00:00",
+      "source_pins_at_start": {
+        "tests/browser/cdp.mjs": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8",
+        "tests/browser/startup-failure.test.mjs": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00"
+      },
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-reporter=spec",
+        "tests/browser/startup-failure.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 17.055980400000408,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\startup.log",
+      "log_sha256": "fa63b24f2064899670f141aba8557605a228e3b9b03b4a80f93808012a28951a",
+      "log_bytes": 868,
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      },
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\startup.log",
+      "kind": "shipped",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/startup.log",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "browser",
+      "started_at_utc": "2026-10-30T00:18:32.221275+00:00",
+      "ended_at_utc": "2026-10-30T00:18:54.635665+00:00",
+      "source_pins_at_start": {
+        "tests/browser/cdp.mjs": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8",
+        "tests/browser/startup-failure.test.mjs": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00"
+      },
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--import",
+        "file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-compare-closeout02-2026-10-30/implementation/execution/browser-network-guard.mjs",
+        "--test",
+        "--test-reporter=spec",
+        "tests/browser/e2e.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 22.414423800000804,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\browser.log",
+      "log_sha256": "aee56b483f4fb8268fcf6dd856c9c2dbfdab210d7a2f92f5a332cd5a885f3388",
+      "log_bytes": 269,
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      },
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\browser.log",
+      "kind": "shipped",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/browser.log",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "cleanup-error",
+      "started_at_utc": "2026-10-30T00:18:54.636638+00:00",
+      "ended_at_utc": "2026-10-30T00:18:58.089352+00:00",
+      "source_pins_at_start": {
+        "tests/browser/cdp.mjs": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8",
+        "tests/browser/startup-failure.test.mjs": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00"
+      },
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-reporter=spec",
+        "../execution/cleanup-error.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 3.4527455999996164,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\cleanup-error.log",
+      "log_sha256": "8a01226b08e9a8c490cca4f2654cad374eea3a14cb164f493a07631d380125d6",
+      "log_bytes": 681,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\cleanup-error.log",
+      "kind": "control",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/cleanup-error.log",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "stale-pid",
+      "started_at_utc": "2026-10-30T00:18:58.090581+00:00",
+      "ended_at_utc": "2026-10-30T00:19:01.402815+00:00",
+      "source_pins_at_start": {
+        "tests/browser/cdp.mjs": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8",
+        "tests/browser/startup-failure.test.mjs": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00"
+      },
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-reporter=spec",
+        "../execution/stale-pid.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 3.3122740000035265,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\stale-pid.log",
+      "log_sha256": "82e3b4874e5bc3d7eee0006058682984fb5e1a6799d7389488f466717e76954d",
+      "log_bytes": 219,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\stale-pid.log",
+      "kind": "control",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/stale-pid.log",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "controller-startup",
+      "started_at_utc": "2026-10-30T00:19:01.403917+00:00",
+      "ended_at_utc": "2026-10-30T00:19:02.568192+00:00",
+      "source_pins_at_start": {
+        "tests/browser/cdp.mjs": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8",
+        "tests/browser/startup-failure.test.mjs": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00"
+      },
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--test",
+        "--test-reporter=spec",
+        "C:/Users/郑曾波/Projects/invest-quick-scan/docs/implementation/parallel-lanes/packages/2026-10-29-ui28-r1-closeout-02/evidence/compare-startup.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\checkout",
+      "exit_code": 0,
+      "seconds": 1.164307999999437,
+      "log": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\logs\\controller-05\\controller-startup.log",
+      "log_sha256": "c5a11846e691d4c0c43d7b9c958b2553b525bd69711569eed44293a1448b1d7a",
+      "log_bytes": 500,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "original_log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\implementation\\execution\\controller-startup.log",
+      "kind": "control",
+      "log_ref": "docs/handoff/UI-COMPARE-28/remediation-01/logs/controller-05/controller-startup.log",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "totals": {
+    "unique_current_tests": 202,
+    "passed": 202,
+    "failed": 0,
+    "skipped": 0,
+    "additional_controls": 3
+  }
+}

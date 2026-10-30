@@ -1,0 +1,76 @@
+{
+  "package_id": "UI-COMPARE-28-R1",
+  "recorded_at_utc": "2026-10-30T00:29:32.130403+00:00",
+  "status": "accepted_component_only",
+  "open_findings": [],
+  "received_payload_commit": "8b694107037f0ebfcae70ea2a4bf6c4aa77555c0",
+  "received_metadata_head": "a99e373c59994dadc30644e31143f0c8928aa62d",
+  "controller_payload_commit": "2905120118a42f82e4fff319468c8d3187ec48dc",
+  "controller_metadata_head": "b6343cbbc469aa552a27255abc151b4c469f6bf6",
+  "branch": "codex/ui-compare-28",
+  "source_remote": [],
+  "source_pins": {
+    "tests/browser/cdp.mjs": {
+      "bytes": 14142,
+      "sha256": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8"
+    },
+    "tests/browser/startup-failure.test.mjs": {
+      "bytes": 8750,
+      "sha256": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00"
+    }
+  },
+  "lock_sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6",
+  "manifest_sha256": "3860f7ba1c840c5e8e5989f881b6e72bb4181061f049eef6b88f7b25271c9638",
+  "current_invocation_ref": "docs/handoff/UI-COMPARE-28/remediation-01/review/invocation-evidence-controller-05.json",
+  "original_metadata_checks": {
+    "passed": 308,
+    "failed": 0
+  },
+  "final_metadata_checks": {
+    "passed": 310,
+    "failed": 0
+  },
+  "shipped_tests": {
+    "passed": 202,
+    "failed": 0,
+    "skipped": 0,
+    "breakdown": "97 unit +94 integration +1 perf +8 startup +2 realChrome mock"
+  },
+  "additional_controller_controls": {
+    "passed": 3,
+    "counted_in_shipped_202": false
+  },
+  "independent_review": {
+    "reviewer_agent_id": "/root/accept_universe28",
+    "payload_commit": "2905120118a42f82e4fff319468c8d3187ec48dc",
+    "status": "passed",
+    "targeted_verification": "8 startup + 3 independent boundary cases; overlaps above, not added to 202"
+  },
+  "fixes": [
+    {
+      "root_cause": "Real close ignored removeOwnedDir=false and swallowed refusal/error, so a failed startup cleanup looked successful and closed=true blocked retry.",
+      "effective_red": "Inert deletion-process boundary,6 real removal retries, profile remained, original startup error retained but cleanup_error absent. 0 actual browser/deletion processes.",
+      "fix": "Throw on exhausted/refused profile removal, mark close retryable, let existing launch catch preserve original error and attach cleanup_error.",
+      "permanent_test": "C-CLOSE-01g"
+    },
+    {
+      "root_cause": "An exited ChildProcess keeps its PID. A later close retry could signal/probe an already-retired PID.",
+      "effective_red": "Safe PID boundary intercepted3 calls with exitCode0; no PID was really signalled.",
+      "fix": "Read owned child handle exitCode/signalCode before PID operation; skip retired PID while retaining cleanup scoped to unique owned profile.",
+      "permanent_test": "C-CLOSE-01h"
+    }
+  ],
+  "limits": [
+    "Component is not integrated into original UI; production_ready=false.",
+    "UNIVERSE closeout02 still pending; original 108-question scan/SDK mainline remains paused.",
+    "Original paused 71/108 is historical, not rechecked in this acceptance.",
+    "Earlier unit/integration/perf runner did not capture start/end UTC; retained null and actual log mtime/SHA. Final affected startup/browser/controls captured UTC and final source hashes.",
+    "Original source Lab has no remote. Both source commits remain local; no remote invented."
+  ],
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "real_owner_golden_produced": false
+  },
+  "retained_local_evidence_root": "runs/accept-compare-closeout02-2026-10-30/"
+}

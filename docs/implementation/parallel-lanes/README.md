@@ -1,3 +1,9 @@
+## 2026-10-30 最新状态：COMPARE补交02已签收；UNIVERSE仍待交
+
+COMPARE组件通过总控独立复验并直接修尽小问题（202交付测试+3额外控制；不同agent最终C复审通过，不重复计数）。[正式签收摘要](../reviews/UI-COMPARE-CLOSEOUT02-2026-10-30/acceptance-status.json)记录真实C/M、命令、清理与资格边界。源Lab无remote，功能与元数据均本地提交；总控PWF和薄证据按既有IQS origin提交推送。UNIVERSE补交02仍待正式报告，原UI集成及真实108主线保持暂停。旧波次manifest/旧审查保留历史，不据此重复施工。
+
+---
+
 ## 2026-10-29 R1重验后最新状态
 
 两R1已实测：COMPARE182交付测试、UNIVERSE254通过；上次主要反例转绿，仍有启动失败清理/异步窗口及交接校验收口，暂不接生产。[R1补交02](packages/2026-10-29-ui28-r1-closeout-02/README.md)可分别交回原harness，正式R1 ID/原Lab/remediation-01/CLI保持；补交卡独审通过，不新增-R2协议或小门。[正式重验摘要](../reviews/UI28-R1-REACCEPT-2026-10-29/acceptance-status.json)记录已修/未修/实跑边界。原波次manifest保持冻结设计，当前状态以本条/根PWF首条为准，真实108主线仍暂停。

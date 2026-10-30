@@ -1,0 +1,175 @@
+{
+  "protocol": "iqs.support_independent_round/1.0.0",
+  "round": 5,
+  "reviewer_agent_id": "/root/accept_universe28",
+  "author_agent_id": "/root/accept_compare28",
+  "payload_commit": "2905120118a42f82e4fff319468c8d3187ec48dc",
+  "input_lock_sha256": "ee31aa47ef4b5416b4822f2f44ad71a76c1850df089c469f43a57712cf6969f6",
+  "reviewed_at_utc": "2026-10-30T00:26:16.806513+00:00",
+  "independence": "Independent reviewer agent; did not author the source fixes. Separate local no-hardlink Git clone and index, exact C bytes, own tests/probes and logs. No source business/metadata write, commit or push by this reviewer.",
+  "reviewed_file_hashes": {
+    "tests/browser/cdp.mjs": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8",
+    "tests/browser/startup-failure.test.mjs": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00",
+    "tests/lib/safe-remove.mjs": "a6bd1de9cee443da0a3f5989d30dbcc9b952d116f6e75acaa4026c90d6fcb11e",
+    "tests/browser/e2e.test.mjs": "c90772c27d01fee3b93f3638988c63af96439e3dc3a4596a0959d42e04ad1dfd"
+  },
+  "received_payload_commit": "8b694107037f0ebfcae70ea2a4bf6c4aa77555c0",
+  "received_metadata_head": "a99e373c59994dadc30644e31143f0c8928aa62d",
+  "controller_fix_parent": "a99e373c59994dadc30644e31143f0c8928aa62d",
+  "delta_files": [
+    "tests/browser/cdp.mjs",
+    "tests/browser/startup-failure.test.mjs"
+  ],
+  "delta_patch_sha256": "11c294e7f47c1cceaec95aedfb57edc8fd249088f2d8e882cf789ee11228eb02",
+  "findings": [
+    {
+      "id": "CLOSE-CONTROLLER-01",
+      "severity": "minor",
+      "status": "closed_verified",
+      "area": "tests/browser/cdp.mjs:257-272",
+      "root_cause": "Profile cleanup false/refusal had been swallowed, so startup lacked cleanup_error and closed=true prevented retry.",
+      "verification": "Shipped01g and independent Error-object identity probe exercise actual six removal retries with an inert deletion-process boundary; original Error survives, cleanup_error is present, profile remains observable and closed=false. Restoring the real PowerShell deletion then removes the owned profile; successful repeated close performs no further native actions."
+    },
+    {
+      "id": "CLOSE-CONTROLLER-02",
+      "severity": "minor",
+      "status": "closed_verified",
+      "area": "tests/browser/cdp.mjs:213-219,251-253",
+      "root_cause": "A retained ChildProcess can carry a retired PID during cleanup retry.",
+      "verification": "Shipped01h and independent exitCode/signalCode variants intercept all process.kill calls for a fictitious PID and observe zero calls (also zero taskkill) through failed-cleanup and successful retry. Exited handle is cleared. Cleanup remains scoped to the unique owned profile; no real fabricated PID is signalled."
+    }
+  ],
+  "verification": [
+    {
+      "name": "startup8",
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--import",
+        "file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-compare-closeout02-2026-10-30/final-review/loopback-guard.mjs",
+        "--test",
+        "--test-concurrency=1",
+        "tests/browser/startup-failure.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-review\\checkout",
+      "started_at": "2026-10-30T00:23:38.324886+00:00",
+      "finished_at": "2026-10-30T00:24:02.633809+00:00",
+      "seconds": 24.309,
+      "exit_code": 0,
+      "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-review\\startup8.log",
+      "log_sha256": "2d2988b0dbd2d713faf3b279f3881f101b6f8b23a5390780b7fb2bdc69781bfc",
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "independent3",
+      "argv": [
+        "C:/Users/郑曾波/nodejs/node.exe",
+        "--import",
+        "file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/accept-compare-closeout02-2026-10-30/final-review/loopback-guard.mjs",
+        "--test",
+        "--test-concurrency=1",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-review\\controller-boundary.test.mjs"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-review",
+      "started_at": "2026-10-30T00:24:43.951344+00:00",
+      "finished_at": "2026-10-30T00:24:55.714313+00:00",
+      "seconds": 11.763,
+      "exit_code": 0,
+      "log": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-review\\independent3.log",
+      "log_sha256": "a570ce0bb43ee7df0b0a8c5c40c5625fb1d5f4b21359eee5069469d6ba228f31",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    }
+  ],
+  "totals": {
+    "independent_tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "shipped_startup": 8,
+    "additional_reviewer_cases": 3,
+    "do_not_add_to_author_unique_suite_count": true
+  },
+  "normal_browser_compatibility": {
+    "reviewed_helper_and_e2e_source": true,
+    "own_browser_rerun": false,
+    "rationale": "Parent limited this final review to the two helper/regression hunks and targeted failure/PID checks; author separately ran final-source-SHA-bound real Chrome2. That evidence is contextual, not counted as reviewer execution. No full CLI/mainline rerun."
+  },
+  "historical_metadata": {
+    "final_metadata_still_historical_on_purpose": true,
+    "snapshot_final_payload_commit": "8b694107037f0ebfcae70ea2a4bf6c4aa77555c0",
+    "actual_invocation_ref": "docs/handoff/UI-COMPARE-28/remediation-01/review/invocation-evidence-closeout-02b.json",
+    "actual_round_ref": "docs/handoff/UI-COMPARE-28/remediation-01/review/round-04.json",
+    "actual_round_sha256": "75ddbcefdca59490469e0e512819d6b76a051e7965d7583c6bab5f024c480859",
+    "ref_closure_verified": true,
+    "note": "Original round1-4/default invocation remain history. This round5 binds real new C2905120 and unchanged raw lock. Root will append its actual invocation/final/manifest after this review; no claim that old metadata already signs new C."
+  },
+  "isolation": {
+    "snapshot": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-review\\snapshot.json",
+    "separate_git_index": true,
+    "raw_git_blobs_exact": true,
+    "environment": "Explicit Windows/Node/PowerShell allow-list, owned TEMP/TMP/home/appdata; no credentials forwarded or read.",
+    "guard": {
+      "file": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-compare-closeout02-2026-10-30\\final-review\\loopback-guard.mjs",
+      "sha256": "5792426ef837e124dbe2b12bbea275b6787aa50443677651370efa676215e041",
+      "effect": "Review-only loopback gate for Node fetch/WebSocket/socket; browser spawn would add loopback proxy and DNS deny flags. This review spawned no real browser. Source helper bytes unchanged."
+    },
+    "forbidden_ports_not_bound": [
+      8766,
+      18772
+    ],
+    "network_requests_to_real_owner_search_model": 0,
+    "source_business_or_metadata_writes": 0,
+    "mainline_resumed": false
+  },
+  "cleanup": {
+    "checked_at": "2026-10-30T00:24:55.716426+00:00",
+    "runtime_temp_remaining": [],
+    "process_snapshot": {
+      "exit_code": 0,
+      "processes": []
+    },
+    "source_writes": false,
+    "retained": "Frozen checkout, test/log/probe evidence and empty runtime directories intentionally retained; no source writes."
+  },
+  "post_source_check": {
+    "head": "2905120118a42f82e4fff319468c8d3187ec48dc",
+    "branch": "codex/ui-compare-28",
+    "status": "?? .codegraph/.gitignore\n?? .codegraph/config.json",
+    "source_pins_unchanged": true
+  },
+  "setup_notes": [
+    "Initial independent checkout had CRLF filters; exact archive restoration corrected only owned copy before any test.",
+    "First runner finished startup8 exit0 and retained complete raw log, then GBK console printing raised UnicodeEncodeError. Corrected only owned runner ASCII display and continued just independent3; no test failure or source fix was inferred from that orchestration issue."
+  ],
+  "evidence_files": {
+    "prepare.py": "0569ca2e096e85048ed89c3a5d473836fe1fe5657f11247fbe2ed517b8ad0ad0",
+    "snapshot.json": "6b809913bebab414496299f03d5d600a4efd49ed1008761815ca233a8be239fc",
+    "run.py": "6c85ccbd6aad6ee19343a43e095d8d4076a470d443d4eaca8b7f5fdeee410002",
+    "controller-boundary.test.mjs": "0d2c25c4779494b337f99a97a4a353e269f778c49f3ac3af649f858672a259dc",
+    "loopback-guard.mjs": "5792426ef837e124dbe2b12bbea275b6787aa50443677651370efa676215e041",
+    "startup8.log": "2d2988b0dbd2d713faf3b279f3881f101b6f8b23a5390780b7fb2bdc69781bfc",
+    "independent3.log": "a570ce0bb43ee7df0b0a8c5c40c5625fb1d5f4b21359eee5069469d6ba228f31",
+    "verification.json": "b3af28a21b945cbc2b31c47461ddb0b0bd260804d3f12bd37f96b01392983a32",
+    "cleanup.json": "872cf8b1792a761bf626373ae8bc6ad676c44c964036d6dcdaf7daac1c29c074",
+    "reviewed-source-delta.patch": "11c294e7f47c1cceaec95aedfb57edc8fd249088f2d8e882cf789ee11228eb02"
+  },
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "real_owner_golden_produced": false,
+    "scope": "Final component helper cleanup review only; does not wire original production UI or SDK scan."
+  },
+  "verdict": "passed",
+  "open_findings": []
+}
