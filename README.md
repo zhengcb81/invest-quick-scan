@@ -81,6 +81,10 @@ python scripts/thin_scan.py --company "宁德时代" --out runs/basic-dry-run --
 
 `examples/profile.json`是演示配置，需要替换为经核实的公司分类与时间。`main_questions.json`和旧24题清单仅作历史兼容；新完整基础模板是 `basic_questions.json`。冻结路由、新旧版本兼容和标准答案命令见[SKILL.md](SKILL.md)。薄草稿不等于StockWiki正式观察或金融准确性验收。
 
+## 当前可并行施工包
+
+[2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)包含时间语义、真实回答审计、原入库性能、结果可信度UI四条独立线；各用自己的Lab，附固定源码锁、接口、TDD/隔离清理、真实独审与交接要求。已完成编卡并独审，尚未自动派发；不授权worker修改原项目或使用原模型预算。
+
 ## 项目分工与配置
 
 | 项目 | 职责 |

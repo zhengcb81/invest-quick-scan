@@ -1,3 +1,26 @@
+## 2026-10-30T20:04:44Z 新四包可并行派发；只发布施工说明，未自动开工
+
+本批总入口：[2026-10-30 mainline-next](parallel-lanes/packages/2026-10-30-mainline-next/README.md)。四张独立施工卡、共享接口/独审交接规则、manifest、输入锁和32答索引均已完成并通过真实独立agent审查，open_findings=[]。仅施工文档质量通过，不代表四包已实现/主线fresh或金融门关闭。
+
+| 包 | 唯一工作目录（C:/Users/郑曾波/Projects/下） | 增量 |
+|---|---|---|
+| TIME-SEMANTICS-30 | iqs-time-semantics-lab | 按题义拆时钟、版本化复用候选及原legacy差分；不改生产24h |
+| ANSWER-AUDIT-30 | iqs-answer-audit-lab | 真实32答的来源/数字/范围/时点/原rubric审计；不是新scorer |
+| IMPORT-PERF-30 | iqs-import-performance-lab | 原入库链临时合成库剖析、语义等价候选与可复现实测 |
+| RESULT-TRUST-30 | iqs-result-trust-ui-lab | 只读结果可信度/日期/签收/历史状态展示，不能自己算fresh/金融资格 |
+
+四根于编卡/独审观察时不存在，不是目录预约；harness开工仍须核唯一writer。主IQS、StockQA、StockWiki、原UI、8766及原库/名单/预算均不许worker写。四包无互相等待依赖，不能读对方未交付内容；总控负责跨仓集成。现源仓可能继续变化，但只消费固定Git对象而非latest，41个显式文件及13个允许传递依赖树已锁定；工作树raw与Git blob SHA分别记录。不因无关HEAD变化不停重锁/停工。
+
+固定源码：IQS092b1a2、StockWiki8527bc7、StockQA0dc799a、UI2f1f450，完整40位/OID/bytes/SHA见inputs.lock。输入锁SHA d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab。真实32答按精确已签work/obs导出（三公司各10+腾讯IQS24刷新两版本），包含各自原题目/subject绑定。原回答830297 bytes只在忽略的runs/package-inputs-2026-10-30-mainline-next/live-answers-32.json；公开仅索引/路径/hash，不推答案/context正文。只有ANSWER可读私有副本；其余只冻结源码/合成数据。首个导出预检误猜work_context有context_json，PRAGMA确认原工作表只存SHA，已按真实context映射JOIN读取选中题目，无迁移/库写。
+
+统一节奏只有输入/写根确认→TDD实现及相关unit/integration/E2E→最终不同agent集中全面审查，发现问题作者全修、重审最终payload C后交metadata M。不逐小节点增审，不重跑上游小时级全套。原handoff1.0不扩顶层；真实调用/round/fixes/final、测试/清理/产物hash/本地B-C-M均有具体要求。缺独审/关键浏览器/来源则partial，不伪造完成；无真实证据的金融项保留not_assessable。TIME/RESULT不造verified_at或新鲜资格，PERF不缓存可变权限/预算/身份/ACK。
+
+本批发布预检已真实核41 blob/4根隔离/32原题目metadata与主体引用；原parallel_handoff_cli以明确无效schema探针对四个包均返回schema_invalid而非unknown/catalog错误，只证明目录识别，不伪造有效handoff或owner golden。独立审查另核13树/32索引/私有文件size/hash（未解析答案）。证据在本批publication-evidence/。0收费API、0原库写，未运行三市场新扫描、不使用原81/$1.903319账本余额（该数只为17:00历史基线）。
+
+**Next Step：** 用户可将四张卡分别交四个harness；当前状态是ready-to-dispatch而非已派发。总控不自动启动/发消息，不写其Lab。继续主线时保留上一节点108有效槽/原105+3、冷恢复、A/B/历史deferred与fresh正例pending的真实口径；收到各包后按既有公开CLI和真实独审/测试证据统一验收，按实际owner接口整合。不要重复旧比较/名单包、旧参考案例或已签108题，不新增回执系统。
+
+---
+
 ## 2026-10-30T17:00:07Z 本轮原UI接线与三市场真实工程验收收口；fresh真实正例保留pending
 
 | 本轮项目 | 实际状态 |

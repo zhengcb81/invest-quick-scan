@@ -1,0 +1,989 @@
+{
+  "protocol": "iqs.mainline_support_input_lock/1.0.0",
+  "created_at_utc": "2026-10-30T19:57:05.293926+00:00",
+  "repositories": {
+    "iqs": {
+      "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "branch": "master"
+    },
+    "stockwiki": {
+      "root": "C:/Users/郑曾波/Projects/StockWiki",
+      "commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "branch": "master"
+    },
+    "stockqa": {
+      "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "branch": "master"
+    },
+    "ui": {
+      "root": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab",
+      "commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "branch": "master"
+    }
+  },
+  "files": [
+    {
+      "id": "iqs:docs/implementation/parallel-lanes/handoff.schema.json",
+      "repository": "iqs",
+      "path": "docs/implementation/parallel-lanes/handoff.schema.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "6d77c9c960f3d790f0251f6c0e365cb3db0f0313",
+      "git_blob_bytes": 5598,
+      "git_blob_raw_sha256": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e",
+      "worktree_bytes": 5598,
+      "worktree_raw_sha256": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:scripts/parallel_handoff_cli.py",
+      "repository": "iqs",
+      "path": "scripts/parallel_handoff_cli.py",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "af8972cdafa29b0c726eb3a0eccdc6f10d367207",
+      "git_blob_bytes": 8036,
+      "git_blob_raw_sha256": "b0ffd32de22e304d413cd566c0d489fecdac1dbc1468fcbcd13938cdcef60044",
+      "worktree_bytes": 8036,
+      "worktree_raw_sha256": "b0ffd32de22e304d413cd566c0d489fecdac1dbc1468fcbcd13938cdcef60044",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:scripts/handoff_reference_check.py",
+      "repository": "iqs",
+      "path": "scripts/handoff_reference_check.py",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "bf1130e8ea2460a1aab70d2840b71875e8e67f70",
+      "git_blob_bytes": 17033,
+      "git_blob_raw_sha256": "f2fcac3b75694b2dc959c418ee83d52f81a5879f4ba8b7c713e0ab36e9d58e4c",
+      "worktree_bytes": 17448,
+      "worktree_raw_sha256": "a6692f28b376d7fb76dea568967829fe447a92b67bb2df03bf698ad5aaee8fad",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:scripts/dashboard_delivery.py",
+      "repository": "iqs",
+      "path": "scripts/dashboard_delivery.py",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "744af0f5b740af174fd4e5fd2ba806183cb3011c",
+      "git_blob_bytes": 7285,
+      "git_blob_raw_sha256": "f24008ba6b37a1eb65c3a0b9910ea088a10d291e1abab5c722f077fe257c0c2b",
+      "worktree_bytes": 7285,
+      "worktree_raw_sha256": "f24008ba6b37a1eb65c3a0b9910ea088a10d291e1abab5c722f077fe257c0c2b",
+      "packages": [
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "iqs:scripts/dashboard_delivery_jobs.py",
+      "repository": "iqs",
+      "path": "scripts/dashboard_delivery_jobs.py",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "bc2bf8c839dc7cb3aa008f9ba0a76b086eec2e5d",
+      "git_blob_bytes": 15819,
+      "git_blob_raw_sha256": "b9b3c27d4221a7f9428159f836c183999977186e6b5e2daec16b9f6c08ec8de1",
+      "worktree_bytes": 15819,
+      "worktree_raw_sha256": "b9b3c27d4221a7f9428159f836c183999977186e6b5e2daec16b9f6c08ec8de1",
+      "packages": [
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "iqs:scripts/dashboard_execution.py",
+      "repository": "iqs",
+      "path": "scripts/dashboard_execution.py",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "2cb1a95ceccf762743b3f02cf91b7b6e884dac61",
+      "git_blob_bytes": 63831,
+      "git_blob_raw_sha256": "561d96c040d96350ce7b63a124ae0d842c021b62b825c48641c93fd95fd43bae",
+      "worktree_bytes": 63831,
+      "worktree_raw_sha256": "561d96c040d96350ce7b63a124ae0d842c021b62b825c48641c93fd95fd43bae",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:scripts/refresh_contract.py",
+      "repository": "iqs",
+      "path": "scripts/refresh_contract.py",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "c633729fa289fa3c501b30ed4162b3352c063d11",
+      "git_blob_bytes": 18279,
+      "git_blob_raw_sha256": "79ac10b6637790b24f1830be90c439c4f3e9cca4c7f16143cb3dbe9b61eee8fc",
+      "worktree_bytes": 18279,
+      "worktree_raw_sha256": "79ac10b6637790b24f1830be90c439c4f3e9cca4c7f16143cb3dbe9b61eee8fc",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:docs/implementation/contracts/freshness-and-jobs.md",
+      "repository": "iqs",
+      "path": "docs/implementation/contracts/freshness-and-jobs.md",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "914e013fe4d05a447874ea5b21ca244d9dc29c26",
+      "git_blob_bytes": 12041,
+      "git_blob_raw_sha256": "46984b26e86f6088149b2e0b6039bd83111a9533318b8850575b37c8cd6001d8",
+      "worktree_bytes": 12143,
+      "worktree_raw_sha256": "2d8f6d4be7ae05ef996e7cdb71f58dff355bf3229de4241b6a0dc8acbeee3f93",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:docs/implementation/contracts/scoring.md",
+      "repository": "iqs",
+      "path": "docs/implementation/contracts/scoring.md",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "178da7179206b6b464690337537be9200b0dd1c1",
+      "git_blob_bytes": 5602,
+      "git_blob_raw_sha256": "b42825295bc1449c38a7d56094aac681750781420a5aebccc33f201c3f7af0a7",
+      "worktree_bytes": 5602,
+      "worktree_raw_sha256": "b42825295bc1449c38a7d56094aac681750781420a5aebccc33f201c3f7af0a7",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:questions/catalog.json",
+      "repository": "iqs",
+      "path": "questions/catalog.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "c24b7be852961f0b6328735cb38a8b28852524e4",
+      "git_blob_bytes": 14749,
+      "git_blob_raw_sha256": "266f7ce9823e8f4f7f49042f9332f288aff64031e52838705837bec20730867f",
+      "worktree_bytes": 15139,
+      "worktree_raw_sha256": "3e145130ffa1a6f9f19126c28a3cd521b72ef3eeefd8de368810e040e14f91d1",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30"
+      ]
+    },
+    {
+      "id": "iqs:questions/common.json",
+      "repository": "iqs",
+      "path": "questions/common.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "58344c6b140bafb4f71e1fa3fbdd49d9b1c38311",
+      "git_blob_bytes": 21242,
+      "git_blob_raw_sha256": "24c1917f3be362c590c0e6da3e15d1dd9a38710a1cbb770c6c0793690fb3d9d6",
+      "worktree_bytes": 21803,
+      "worktree_raw_sha256": "6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30"
+      ]
+    },
+    {
+      "id": "iqs:questions/diagnostics/dupont.json",
+      "repository": "iqs",
+      "path": "questions/diagnostics/dupont.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "8b12273f62fe18deaeb2f4ae312ff8af8de332f4",
+      "git_blob_bytes": 6288,
+      "git_blob_raw_sha256": "7699186a1d2689790e30921cd0b9eed30ad47c35368e5f5417f07b0fd49c1b7f",
+      "worktree_bytes": 6288,
+      "worktree_raw_sha256": "7699186a1d2689790e30921cd0b9eed30ad47c35368e5f5417f07b0fd49c1b7f",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30"
+      ]
+    },
+    {
+      "id": "iqs:questions/diagnostics/porter.json",
+      "repository": "iqs",
+      "path": "questions/diagnostics/porter.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "2fe215ab0559f65b7458549af9252613ee6103ca",
+      "git_blob_bytes": 4657,
+      "git_blob_raw_sha256": "b8bae5ffc6d6df4610f1128e2831a73e9151d1197d5d7ac94a0a2d0d08c82a76",
+      "worktree_bytes": 4657,
+      "worktree_raw_sha256": "b8bae5ffc6d6df4610f1128e2831a73e9151d1197d5d7ac94a0a2d0d08c82a76",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30"
+      ]
+    },
+    {
+      "id": "iqs:schemas/answer-content.schema.json",
+      "repository": "iqs",
+      "path": "schemas/answer-content.schema.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "a7e1ba08bacc30020be88a87b479b434eeede6e2",
+      "git_blob_bytes": 13544,
+      "git_blob_raw_sha256": "14800653a0690ff64813025b603068dd3325e99308242860b7ce2cfa8aebbad0",
+      "worktree_bytes": 14152,
+      "worktree_raw_sha256": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:schemas/observation-v1.2.schema.json",
+      "repository": "iqs",
+      "path": "schemas/observation-v1.2.schema.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "574d06d794a20f7e1d62b3e8b8b4109e9fc4f61b",
+      "git_blob_bytes": 7803,
+      "git_blob_raw_sha256": "09079ded0a16ada01676d1b87bc905dbb71e6c2e353de0545155868c13a02ef3",
+      "worktree_bytes": 8175,
+      "worktree_raw_sha256": "a119a11496d13d657809afcd8143813a416e7b6d2b4a7caec74e173b2037c44a",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-ttl-and-coverage/freshness-semantics-discussion.md",
+      "repository": "iqs",
+      "path": "docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-ttl-and-coverage/freshness-semantics-discussion.md",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "b1e4f3bacdd67ec4ab9e354cd6188b5004bfc877",
+      "git_blob_bytes": 3869,
+      "git_blob_raw_sha256": "0b40c1a5ed5317d66ccfaa9aa8ab6d60c9e1c80944fb53a87563ef8b0e6c2d7d",
+      "worktree_bytes": 3869,
+      "worktree_raw_sha256": "0b40c1a5ed5317d66ccfaa9aa8ab6d60c9e1c80944fb53a87563ef8b0e6c2d7d",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "iqs:questions/facts.json",
+      "repository": "iqs",
+      "path": "questions/facts.json",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "git_blob_oid": "6f3257a4a79760ae9901a7d66350d6e957e44085",
+      "git_blob_bytes": 26206,
+      "git_blob_raw_sha256": "f37992446409e01e0ac3f7c4df801b4237b331ffd99e31ab29f462d27c19dd29",
+      "worktree_bytes": 27137,
+      "worktree_raw_sha256": "82008fa98e81978079aabfac8754c53450545f81adb5e90e3b20616d1b41f432",
+      "packages": [
+        "TIME-SEMANTICS-30"
+      ]
+    },
+    {
+      "id": "stockwiki:stockwiki/quick_scan_module_refresh.py",
+      "repository": "stockwiki",
+      "path": "stockwiki/quick_scan_module_refresh.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "f3013a98c386bbea16a9999f488350d38e343a82",
+      "git_blob_bytes": 16377,
+      "git_blob_raw_sha256": "29d6b87b0b2fbec4b9a242652d478c27ddeabceb562cb056ac75dde625ecae48",
+      "worktree_bytes": 16377,
+      "worktree_raw_sha256": "29d6b87b0b2fbec4b9a242652d478c27ddeabceb562cb056ac75dde625ecae48",
+      "packages": [
+        "TIME-SEMANTICS-30"
+      ]
+    },
+    {
+      "id": "stockwiki:stockwiki/quick_scan_import.py",
+      "repository": "stockwiki",
+      "path": "stockwiki/quick_scan_import.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "546a1b5dd55074e87ef1ad8ad259c02290f683b2",
+      "git_blob_bytes": 28967,
+      "git_blob_raw_sha256": "46202674cd7fa3f4628a7f1049c6b02ac4651878c14891e6ae2da1ad0a9ab0b4",
+      "worktree_bytes": 29696,
+      "worktree_raw_sha256": "55748ae5115bedf2d1e9583c78ff812aebaed767034ce053300b1956b880043a",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "stockwiki:stockwiki/quick_scan_observations.py",
+      "repository": "stockwiki",
+      "path": "stockwiki/quick_scan_observations.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "48a1d93ec2807a619d6de7fada2b1b627ce13dd8",
+      "git_blob_bytes": 34977,
+      "git_blob_raw_sha256": "d643a192da40dc0e125373f2451431d0172de2485c7bcfbf50c7486b2ebcde5b",
+      "worktree_bytes": 34977,
+      "worktree_raw_sha256": "d643a192da40dc0e125373f2451431d0172de2485c7bcfbf50c7486b2ebcde5b",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "stockwiki:stockwiki/quick_scan_profiles.py",
+      "repository": "stockwiki",
+      "path": "stockwiki/quick_scan_profiles.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "3e520e626496808d17fa62a3426491c7067ece1e",
+      "git_blob_bytes": 31029,
+      "git_blob_raw_sha256": "ae9ef506f7c2d23ad0763580c06ceb65331effc6c6bf0b56b0ce2b0bd437219a",
+      "worktree_bytes": 31029,
+      "worktree_raw_sha256": "ae9ef506f7c2d23ad0763580c06ceb65331effc6c6bf0b56b0ce2b0bd437219a",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "stockwiki:stockwiki/quick_scan_refresh_preview.py",
+      "repository": "stockwiki",
+      "path": "stockwiki/quick_scan_refresh_preview.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "722670f1beb5893addf4cb102a053f45402f7b06",
+      "git_blob_bytes": 15611,
+      "git_blob_raw_sha256": "74e4aecb00355908a7ac44e724e46e40da02daf31521f380e5afd69f499a5b61",
+      "worktree_bytes": 15611,
+      "worktree_raw_sha256": "74e4aecb00355908a7ac44e724e46e40da02daf31521f380e5afd69f499a5b61",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "stockwiki:stockwiki/quick_scan_refresh_owner_cli.py",
+      "repository": "stockwiki",
+      "path": "stockwiki/quick_scan_refresh_owner_cli.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "9fbbd8097aaaaa2a10ffa494cf0aa9e1d8f262ee",
+      "git_blob_bytes": 16590,
+      "git_blob_raw_sha256": "756ec6585f4abbade3790ce1e65dcaa41fc6844fa160bc5a9cda5b89fd55345d",
+      "worktree_bytes": 16590,
+      "worktree_raw_sha256": "756ec6585f4abbade3790ce1e65dcaa41fc6844fa160bc5a9cda5b89fd55345d",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "stockwiki:tests/test_quick_scan_observations.py",
+      "repository": "stockwiki",
+      "path": "tests/test_quick_scan_observations.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "3f0c7624d8dcc6c3cfb794a4325f3c17e9f324ce",
+      "git_blob_bytes": 69650,
+      "git_blob_raw_sha256": "22011d69fffdb1440ad45159fe85a30476b24caac6ad2857352a24ddaec2c2f1",
+      "worktree_bytes": 69650,
+      "worktree_raw_sha256": "22011d69fffdb1440ad45159fe85a30476b24caac6ad2857352a24ddaec2c2f1",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "stockwiki:tests/test_quick_scan_module_refresh.py",
+      "repository": "stockwiki",
+      "path": "tests/test_quick_scan_module_refresh.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "54bec2851a09af41bfdb2b47f98fc38c915c4c68",
+      "git_blob_bytes": 12141,
+      "git_blob_raw_sha256": "3bda63ad2b7b290056d7f3cbdba770fb0d240d5dacdd9726497eb4e295c96021",
+      "worktree_bytes": 12141,
+      "worktree_raw_sha256": "3bda63ad2b7b290056d7f3cbdba770fb0d240d5dacdd9726497eb4e295c96021",
+      "packages": [
+        "TIME-SEMANTICS-30"
+      ]
+    },
+    {
+      "id": "stockwiki:tests/test_quick_scan_import_preview.py",
+      "repository": "stockwiki",
+      "path": "tests/test_quick_scan_import_preview.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "a7f8f84458d6f2835342ba040e75939ebab1016f",
+      "git_blob_bytes": 7048,
+      "git_blob_raw_sha256": "dc851ff554107aafce05c776088e423e0e31d2541e6f9ae8e79edf0b7c2769a4",
+      "worktree_bytes": 7048,
+      "worktree_raw_sha256": "dc851ff554107aafce05c776088e423e0e31d2541e6f9ae8e79edf0b7c2769a4",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "stockwiki:tests/test_quick_scan_profiles.py",
+      "repository": "stockwiki",
+      "path": "tests/test_quick_scan_profiles.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "1ca3db77912c11320d1fcd7b30441c8cc72bc6e8",
+      "git_blob_bytes": 20668,
+      "git_blob_raw_sha256": "d69ad667ea73d17c2e1fe2a86cd228ce324f8bce5d8d999d19596426b846249a",
+      "worktree_bytes": 20668,
+      "worktree_raw_sha256": "d69ad667ea73d17c2e1fe2a86cd228ce324f8bce5d8d999d19596426b846249a",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "stockwiki:tests/test_quick_scan_profiles_coverage.py",
+      "repository": "stockwiki",
+      "path": "tests/test_quick_scan_profiles_coverage.py",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "git_blob_oid": "1b8f46afee823fd18d1dd07fee20e2c473452b61",
+      "git_blob_bytes": 2838,
+      "git_blob_raw_sha256": "f83e16b73ad575705d8e934f85158af026d7bdbd1a6dfdebe1ab9c3d48b12520",
+      "worktree_bytes": 2838,
+      "worktree_raw_sha256": "f83e16b73ad575705d8e934f85158af026d7bdbd1a6dfdebe1ab9c3d48b12520",
+      "packages": [
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "stockqa:src/utils/quick_scan_observation_context.py",
+      "repository": "stockqa",
+      "path": "src/utils/quick_scan_observation_context.py",
+      "source_commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "git_blob_oid": "7ab29965ca2ea7dfa2f72eb3f6666d7fadfd6e10",
+      "git_blob_bytes": 32081,
+      "git_blob_raw_sha256": "9acdf577f29a94218c6910ba015e55dafc60617f3de03cd9d31d417e499b74a0",
+      "worktree_bytes": 32081,
+      "worktree_raw_sha256": "9acdf577f29a94218c6910ba015e55dafc60617f3de03cd9d31d417e499b74a0",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "stockqa:src/utils/quick_scan_work_store.py",
+      "repository": "stockqa",
+      "path": "src/utils/quick_scan_work_store.py",
+      "source_commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "git_blob_oid": "346eb38f9ffc3f274e24be5652c6f6648801ae88",
+      "git_blob_bytes": 285466,
+      "git_blob_raw_sha256": "eaab7f0020ce25fab3b65a122188b461e293a0355717c6ef2be36c215484f111",
+      "worktree_bytes": 285466,
+      "worktree_raw_sha256": "eaab7f0020ce25fab3b65a122188b461e293a0355717c6ef2be36c215484f111",
+      "packages": [
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "stockqa:src/utils/quick_scan_result_outbox.py",
+      "repository": "stockqa",
+      "path": "src/utils/quick_scan_result_outbox.py",
+      "source_commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "git_blob_oid": "10e2bc6e85015d98b6d38b2db550e8c1f27201f3",
+      "git_blob_bytes": 21323,
+      "git_blob_raw_sha256": "29ced5d2da94659409abfff96d8d8dcec74c0ce028a92385ceead1b3a0a11ac4",
+      "worktree_bytes": 21323,
+      "worktree_raw_sha256": "29ced5d2da94659409abfff96d8d8dcec74c0ce028a92385ceead1b3a0a11ac4",
+      "packages": [
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "stockqa:tests/integration/test_ready_checkpoint_freshness.py",
+      "repository": "stockqa",
+      "path": "tests/integration/test_ready_checkpoint_freshness.py",
+      "source_commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "git_blob_oid": "a2710741842f92b054c085768382fa5bb74a304a",
+      "git_blob_bytes": 4667,
+      "git_blob_raw_sha256": "1c5e8bcaa460c5dc7bfbe09c4ccc236ef670ee7d7d48c74bd184ef14ed33f17b",
+      "worktree_bytes": 4667,
+      "worktree_raw_sha256": "1c5e8bcaa460c5dc7bfbe09c4ccc236ef670ee7d7d48c74bd184ef14ed33f17b",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "stockqa:tests/unit/test_quick_scan_result_outbox.py",
+      "repository": "stockqa",
+      "path": "tests/unit/test_quick_scan_result_outbox.py",
+      "source_commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "git_blob_oid": "cd88e51d65a7b343a9b8c41a42f60ed031ef15ef",
+      "git_blob_bytes": 7138,
+      "git_blob_raw_sha256": "f03881c0ed13fdd269268ade80902826d39b12d7b5cf29996041c16a78377262",
+      "worktree_bytes": 7138,
+      "worktree_raw_sha256": "f03881c0ed13fdd269268ade80902826d39b12d7b5cf29996041c16a78377262",
+      "packages": [
+        "IMPORT-PERF-30"
+      ]
+    },
+    {
+      "id": "ui:src/app/ui/product.js",
+      "repository": "ui",
+      "path": "src/app/ui/product.js",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "6421bbc4e197a101320790edb989cb0d53934a7f",
+      "git_blob_bytes": 92623,
+      "git_blob_raw_sha256": "3ff96abc525afe783bcc2ac79bc874f0cca9f9a0774232f2ff01757a2b1458bd",
+      "worktree_bytes": 92623,
+      "worktree_raw_sha256": "3ff96abc525afe783bcc2ac79bc874f0cca9f9a0774232f2ff01757a2b1458bd",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "ui:src/app/ui/product_core.js",
+      "repository": "ui",
+      "path": "src/app/ui/product_core.js",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "22416ae2c354e743707921f70aee8a593f673556",
+      "git_blob_bytes": 25799,
+      "git_blob_raw_sha256": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d",
+      "worktree_bytes": 25799,
+      "worktree_raw_sha256": "90b5cc50a0898e463db1abbb5508a954cc68c2e5a903282ae27f8502bd7a291d",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "ui:src/app/ui/dom.js",
+      "repository": "ui",
+      "path": "src/app/ui/dom.js",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "7a021753148227e84f4d3e81e34c1400e4381afd",
+      "git_blob_bytes": 3388,
+      "git_blob_raw_sha256": "efbde0024d84c8a6b44b04bcb836a54135263545b274bbd03aae0c60925d7c54",
+      "worktree_bytes": 3388,
+      "worktree_raw_sha256": "efbde0024d84c8a6b44b04bcb836a54135263545b274bbd03aae0c60925d7c54",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "ui:src/app/product_api.js",
+      "repository": "ui",
+      "path": "src/app/product_api.js",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "d4d3ecb4d4306c930469f937306c6acf09893b58",
+      "git_blob_bytes": 2493,
+      "git_blob_raw_sha256": "0ae3caae7a97769064ac8fee21b48d606db5b2a705a2b63b65ebbb0937caea89",
+      "worktree_bytes": 2493,
+      "worktree_raw_sha256": "0ae3caae7a97769064ac8fee21b48d606db5b2a705a2b63b65ebbb0937caea89",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "ui:tests/test_comparison_parent_scope.py",
+      "repository": "ui",
+      "path": "tests/test_comparison_parent_scope.py",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "0cf87bf0c233cae56cf160ebb3624aef72f84cac",
+      "git_blob_bytes": 857,
+      "git_blob_raw_sha256": "b535d605aa644dced389660e69c321d173125131a78200eaa320b6d9e680bd1f",
+      "worktree_bytes": 858,
+      "worktree_raw_sha256": "efd26bd7e1173c94f15b5085bb4bcb9e6de6e971a4211d34bafff9409beb4d90",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "ui:tests/test_start_receipt.py",
+      "repository": "ui",
+      "path": "tests/test_start_receipt.py",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "35cbe8012d3a2309a9dba7b68cdf69f465305823",
+      "git_blob_bytes": 933,
+      "git_blob_raw_sha256": "4be07f203ccafedc56388db0274e0c724c227d7c301abbdca9cac9fb1f5b32c9",
+      "worktree_bytes": 955,
+      "worktree_raw_sha256": "52802345c3b74057c216b926f562d2158635e6a3b683e84fc00f7050585a1b8e",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "ui:tests/js/start_receipt.mjs",
+      "repository": "ui",
+      "path": "tests/js/start_receipt.mjs",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "587d8d169dcbcf05b5ce82d747bbda4c5c5e8d50",
+      "git_blob_bytes": 3841,
+      "git_blob_raw_sha256": "13b3b1462b79c0ce1fbc879e94ee0f5852e773db8db2c999a38c76f1903d0156",
+      "worktree_bytes": 3841,
+      "worktree_raw_sha256": "13b3b1462b79c0ce1fbc879e94ee0f5852e773db8db2c999a38c76f1903d0156",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    },
+    {
+      "id": "ui:tests/js/comparison_parent_scope.mjs",
+      "repository": "ui",
+      "path": "tests/js/comparison_parent_scope.mjs",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "git_blob_oid": "e4b0248f1018d6942d08a9993181b22360311936",
+      "git_blob_bytes": 2993,
+      "git_blob_raw_sha256": "5b72e97dd18aa724d4bd82f7a8310b6ec45a2efc65097fad6aeae0765b076949",
+      "worktree_bytes": 2994,
+      "worktree_raw_sha256": "21de16662b20f9c4ad815ea823cbfe7e5d67ee9f51fc84205cbcd493f095e109",
+      "packages": [
+        "RESULT-TRUST-30"
+      ]
+    }
+  ],
+  "dependency_trees": [
+    {
+      "repository": "iqs",
+      "path": "scripts",
+      "tree_oid": "5a240121ab73a26e686cb71425cf913943fee066",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "iqs",
+      "path": "schemas",
+      "tree_oid": "3109d583949aa3218443bb9699a25d592d9fff62",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "iqs",
+      "path": "questions",
+      "tree_oid": "de9dab6d9f22f161db7acb76facea2b4999678b1",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "iqs",
+      "path": "references",
+      "tree_oid": "26268ba3b1ce81589cb3275d9e1ffb3979d53edf",
+      "source_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "stockwiki",
+      "path": "stockwiki",
+      "tree_oid": "cf042553981529a610959b1a59f82abbb354c3a2",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "stockwiki",
+      "path": "tests",
+      "tree_oid": "fdb33e178d849de4962b91e00fd52306f11d7b59",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "stockwiki",
+      "path": "framework",
+      "tree_oid": "ab6c43a8c4cd3be29a810be488b090d1d71c008b",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "stockwiki",
+      "path": "scripts",
+      "tree_oid": "9ecfe34eca525337d4ac359c0c6039330aa6d655",
+      "source_commit": "8527bc771692c501517d8f04c387603a92a77ec0",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "stockqa",
+      "path": "src",
+      "tree_oid": "3f308a48c0081d79231a71f23cb71da070f1fc9d",
+      "source_commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "stockqa",
+      "path": "tests",
+      "tree_oid": "48cf072f70fc8e1f06306a791be42c1f21da8853",
+      "source_commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "ui",
+      "path": "src",
+      "tree_oid": "58214800bfc73e816cdb3717e9d688015c022a36",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "packages": [
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "ui",
+      "path": "tests",
+      "tree_oid": "03656afb29595e6c94f6fe8b2f09aa0ec141a6e0",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "packages": [
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    },
+    {
+      "repository": "ui",
+      "path": "adapters",
+      "tree_oid": "302e412f6ec41a0bbe5ac0d50a5f7d766a0a7311",
+      "source_commit": "2f1f4503885485c474a4bc942f60568756a90626",
+      "packages": [
+        "RESULT-TRUST-30"
+      ],
+      "consumption_rule": "Only necessary tracked source/public schemas/synthetic tests at exact commit; log every consumed blob; never execute original worktree",
+      "denied_paths": [
+        ".git",
+        ".env",
+        "*.sqlite",
+        "*.sqlite3",
+        "*.db",
+        "src/generated/",
+        "runs/",
+        "config/",
+        "data/"
+      ],
+      "denied_content": "Secrets, runtime/provider config, real company documents, private answers or databases; fixture authenticity must be checked, not inferred from tracked status"
+    }
+  ],
+  "controller_artifacts": [
+    {
+      "id": "batch:samples.index",
+      "path": "C:/Users/郑曾波/Projects/invest-quick-scan/docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/samples.index.json",
+      "bytes": 35180,
+      "sha256": "aa100cdcaed43ce71ebe99d78b6857b49870c973acddc79ceb6df053dfd7aaaa",
+      "packages": [
+        "TIME-SEMANTICS-30",
+        "ANSWER-AUDIT-30",
+        "IMPORT-PERF-30",
+        "RESULT-TRUST-30"
+      ],
+      "role": "Controller metadata projection, not a public profiles DTO or owner golden"
+    },
+    {
+      "id": "batch:private-answer-samples",
+      "path": "C:/Users/郑曾波/Projects/invest-quick-scan/runs/package-inputs-2026-10-30-mainline-next/live-answers-32.json",
+      "bytes": 830297,
+      "sha256": "5342c92a5a5ad6a85c4fe030190969578af30c44eaa36e159d9966f01e3937ee",
+      "redistribution": "Do not commit/push raw answers or context; only declared thin audit results",
+      "packages": [
+        "ANSWER-AUDIT-30"
+      ],
+      "role": "32 immutable observations plus their selected original question/subject contexts; no financial truth assertion"
+    }
+  ],
+  "source_worktrees_are_live": true,
+  "consume_frozen_git_not_current_HEAD": true,
+  "source_commit_changed_by_unrelated_work": "Record only; do not switch to latest or stop if fixed objects are available",
+  "production_database_access_granted": false,
+  "shared_budget_access_granted": false
+}

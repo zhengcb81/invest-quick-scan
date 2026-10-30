@@ -1,0 +1,96 @@
+{
+  "scope": "publication_integrity_only_not_worker_completion",
+  "status": "passed",
+  "started_at_utc": "2026-10-30T20:00:45.777099+00:00",
+  "ended_at_utc": "2026-10-30T20:00:57.880622+00:00",
+  "unique_nonoverlapping_absent_Labs": 4,
+  "frozen_source_blobs_verified": 41,
+  "exact_private_answer_samples": 32,
+  "original_cli_catalog_recognition": [
+    {
+      "package_id": "TIME-SEMANTICS-30",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\package-wave30-checks\\invalid-schema-probe-not-delivery.json",
+        "--package-id",
+        "TIME-SEMANTICS-30",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-30-mainline-next\\manifest.json"
+      ],
+      "exit_code": 2,
+      "expected": "schema_invalid; catalog recognized",
+      "stdout_sha256": "3448ff968c572ea726d3a2a173ea983a46b4c261d294498a20b96d918b754466"
+    },
+    {
+      "package_id": "ANSWER-AUDIT-30",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\package-wave30-checks\\invalid-schema-probe-not-delivery.json",
+        "--package-id",
+        "ANSWER-AUDIT-30",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-30-mainline-next\\manifest.json"
+      ],
+      "exit_code": 2,
+      "expected": "schema_invalid; catalog recognized",
+      "stdout_sha256": "3e942887aa72b326f3ac7c6fa65e294357158088b378b7097c69181422c4f170"
+    },
+    {
+      "package_id": "IMPORT-PERF-30",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\package-wave30-checks\\invalid-schema-probe-not-delivery.json",
+        "--package-id",
+        "IMPORT-PERF-30",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-30-mainline-next\\manifest.json"
+      ],
+      "exit_code": 2,
+      "expected": "schema_invalid; catalog recognized",
+      "stdout_sha256": "6ed922188a5f0f77a9cb95db18aaa651b20ffd16f3ee8b678eb3aa72a4e3119f"
+    },
+    {
+      "package_id": "RESULT-TRUST-30",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\package-wave30-checks\\invalid-schema-probe-not-delivery.json",
+        "--package-id",
+        "RESULT-TRUST-30",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-30-mainline-next\\manifest.json"
+      ],
+      "exit_code": 2,
+      "expected": "schema_invalid; catalog recognized",
+      "stdout_sha256": "e3311338eaa812380c6ed6e2a5da3da98cabd7325c7ffd340740f2a46b74ee75"
+    }
+  ],
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "source_repository_writes": 0,
+  "production_database_writes": 0,
+  "paid_API_requests": 0,
+  "limits": [
+    "No package implemented or dispatched",
+    "No financial verdict or production qualification",
+    "Synthetic invalid schema probe only; no valid delivery/owner golden fabricated"
+  ]
+}
