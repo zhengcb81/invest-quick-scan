@@ -1,3 +1,17 @@
+## 2026-10-30T11:43Z 原UI接线完成；真实扫描和原ACK验收进行中
+
+当前主线仍在执行，用户没有暂停。A比较/名单已接原8766并独审通过（UI63f4627，无remote）；B缓存/TTL63唯一用例通过，StockQA测试a8ecb9d/052f3f0已推送；IQS有界preflight修复661658a已推送并于11:31Z安全部署。原批batch-f03eda7de77e4a5ab23fb32c4d89f900从UI明确恢复，未换批/工作区/预算/截止日。
+
+最新精确元数据快照11:41Z为83/108 CP/标准/封存、36/108原ACK：腾讯36全delivered；微软entity33原ready、security3正在执行；宁德entity14原ready、19pending，security3pending。60+请求的累计费用以runs本轮observer实际预算账本为准，在途不当已结算。旧71/108仅历史。微软entity原交付job9c8e25部分(receiver_unavailable)已从UI明确接续，未新建模型回答或伪造ACK。
+
+新增已定位问题：①StockWiki profiles只读旧subject列，忽略真实不可变binding，使腾讯36条误显未绑定。root最小投影修复读取同一原只读snapshot的binding/dispatch/ACK，原canonical哈希/序号/scope均校验，不回写历史、不授C06/金融资格；不同agent21P/open[]，真实39行metadata核对通过，永久14测试已保存。中间原ACK方法实例绑定/嵌套BEGIN等已在最终审前修复，旧错误日志保留。②真实并发C run73942在模型前因StockQA把WAL/SHM/rollback sidecar存在当busy而退出。root已改原admission+inspect使用SQLite mode=ro/query_only/事务读取，保留路径/schema/预算守卫；真实WAL隔离/实际exclusive锁/schema测试及原unit共31P，正在不同agent集中复审。未杀M在途模型或盲重发C。
+
+实际过期预览原CLI一次generic拒绝；同一请求随后由原service只读成功，返回manual_refresh_required（已delivered旧work），没有confirm/dispatch。历史generic未留异常阶段，不能追认唯一原因；原请求/旧时间未改。完整真实过期刷新闭环尚未签收，不能以组件测试/preview成功替代。
+
+下一步：独审WAL修复后，从原UI核实C失败旧process已停/无unknown，明确恢复同scope；完成三家各36题原ACK，原UI冷重启/同范围零额外模型HTTP恢复，原TTL规则有效期与过期刷新验收；最后集中独审并更新本摘要/交接、正常提交推送。保留其他writer的2026-10-10 README改动。证据runs/ui-integration-live30-2026-10-30/；不推密钥、回答全文、上下文、数据库。
+
+---
+
 ## 2026-10-30 用户明确恢复主线：两组件接原UI → 三市场真实扫描/入库/缓存恢复
 
 10:57Z：C从原UI新批f03eda启动3公司6scope，原71 CP保留，T缺1真实MiMo Pro联网题已补成36；当前73/108封存、0目标ACK，1请求在途，金额在途未结算不当成本完成。真实C并发start因其他scope结算令inspectionSHA变化，在原process-reference之前被正确拒绝（preview_changed，有真实no-start proof，非未知发送）；root补一次有界next-tick完整预检，未知/budgetblock仍拒重发。有效红2F、受影响227P/60.92s、独审10P/open[]；旧server尚未载新代码，不能说已生产修好。已由UI安全pause请求draining等M当前scope结束；首次busy保留、刷新后第二次有明确受理，不kill模型。主线继续，不是用户暂停。

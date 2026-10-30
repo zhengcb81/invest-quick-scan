@@ -1,0 +1,104 @@
+{
+  "protocol": "iqs.independent_wal_readers_review/1.0.0",
+  "author": "/root",
+  "reviewer": "/root/accept_compare28",
+  "reviewed_at_utc": "2026-10-30T11:46:52.469546+00:00",
+  "base_source_head": "052f3f0548b90aa3f2df2c7ea871ce0d3516b9f8",
+  "final_worktree_pins": [
+    {
+      "path": "src/utils/quick_scan_refresh_admission.py",
+      "before_sha256": "5a936f4e4ce812ef3efae2c7b70602b209339b0b9aeb584f8ce7c7997e594052",
+      "after_sha256": "5a936f4e4ce812ef3efae2c7b70602b209339b0b9aeb584f8ce7c7997e594052",
+      "ast_equal_normalizing_import_alias_order": true
+    },
+    {
+      "path": "src/utils/quick_scan_refresh_inspect.py",
+      "before_sha256": "e2a4db72f28f4ad3b5f732165c865b90aeb9ea6696493becabca894641a74f82",
+      "after_sha256": "a4946a5b0ca846587662b73c46af177dd17d660d7117425bea3767852d33a69d",
+      "ast_equal_normalizing_import_alias_order": true
+    },
+    {
+      "path": "tests/integration/test_live_wal_refresh_readers.py",
+      "before_sha256": "7efbdf3d48470b8530d924b98880110f584863770df60c6a5b9523f30062ba29",
+      "after_sha256": "ce28d4c5e592cceb71e2461cd409536136d379aa53055d7b0fd981b82ff5081c",
+      "ast_equal_normalizing_import_alias_order": true
+    }
+  ],
+  "verdict": "passed",
+  "open_findings": [],
+  "unique_tests": {
+    "total": 36,
+    "permanent_real_sqlite": 6,
+    "existing_unit": 25,
+    "independent_boundaries": 5
+  },
+  "execution_summary": "Isolated main: 34 passed, 2 sandbox junction creation AccessDenied. Diagnostic repeat confirmed setup access error. Same 2 junction tests repeated elevated inside owned root passed. Final black/isort bytes: permanent 6 retested passed. Repeated cases do not expand 36 unique.",
+  "execution_evidence": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\execution.json",
+      "sha256": "86b543059f81feb6da9a6ddb225785c3e1b1c1ef273aff7033939bb046851fda"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\junction-execution.json",
+      "sha256": "9480bc66540142cc64550b1993feea2ef869f5e55e4f7794fc276121c663a7fa"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\junction-elevated-execution.json",
+      "sha256": "10fad5ac6bed25058fa363fec4fe842bb3c56e33a2a8f882185a4f8109bbed30"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\final6-execution.json",
+      "sha256": "816800a8cbe5b94060cb386c505b4916463e164edfdbc9ec4f355d456c024982"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\pytest.stdout.log",
+      "sha256": "5d62300021737ba684696562207a47e7f4b6be3e8fed617b617a6fbe90a2e194"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\junction.stdout.log",
+      "sha256": "1f5b6606311cc2cc861818f2c169040fe4c1f271fd45eecc9d82d5814d942cf1"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\junction-elevated.stdout.log",
+      "sha256": "998f2fe94c8dac7e46418fd58e75e1c6227738a3bcdb2df23b87a709f538231d"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\final6.stdout.log",
+      "sha256": "ce0e736a71ea19eec876895496f1aa855e68e18caf7f08bc54680184b27ceff7"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\cleanup.json",
+      "sha256": "a1da39cd3e1ee707375d724dc0270604132a807be5a0c5b580f688a04d952c18"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\cleanup-final.json",
+      "sha256": "f957aa1f115ef61d02a0416a104638d6930c490df014da00649afedc3ad58d53"
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\formatter-delta.json",
+      "sha256": "fdab264ee665c3bf884efdecf45a2f1a4612c8aed83a17c52b60c475c28f0e23"
+    }
+  ],
+  "design_assessment": [
+    "Valid WAL is read through SQLite mode=ro/query_only and native BEGIN; no immutable=1, copied main DB, or sidecar removal.",
+    "Original main/sidecar symlink/reparse and file-type guards remain; directory sidecars and actual junction ancestors were exercised and rejected.",
+    "Inspection supported readonly schema versions and admission strict current schema validation remain. Real exclusive rollback locks still fail closed.",
+    "WAL snapshot excludes uncommitted writes and later commits. A new connection sees committed WAL changes.",
+    "Independent full-table fingerprint of all synthetic owned business rows remains equal after both readers. API_requests zero/reservation_created false.",
+    "Readonly WAL coordination may touch/create SHM under SQLite rules; no promise that whole sidecar directories are byte immutable, and no foreign sidecar cleanup."
+  ],
+  "format_delta": "Reader function AST unchanged. Test AST unchanged after normalization of same-module imported class alias order; only black/isort. Original three overlay bytes retained under original-overlay; final6 executed on exact published raw bytes.",
+  "independent_test_file": {
+    "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\sdk-review\\wal-review\\qa\\tests\\integration\\test_independent_wal_edges.py",
+    "sha256": "423aeb7c1814ec6cda590818bcdeb90f0e3436ad7dfc0b65fb3fb7525294f7da"
+  },
+  "source_writes": 0,
+  "original_db_writes": 0,
+  "API_requests": 0,
+  "limits": [
+    "Independent reviewer tests synthetic SQLite only; real UI scan/owner preflight is controller responsibility.",
+    "Review is tied to base HEAD + exact final dirty-overlay pins, not an assertion that base HEAD contains the changes.",
+    "No full scan/financial/identity/production qualification inferred."
+  ],
+  "cleanup_ref": "cleanup-final.json"
+}

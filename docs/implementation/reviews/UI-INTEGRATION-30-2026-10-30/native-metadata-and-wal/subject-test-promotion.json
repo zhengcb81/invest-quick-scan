@@ -1,0 +1,98 @@
+{
+  "protocol": "iqs.subject_dto_permanent_test_promotion/1.0.0",
+  "observed_at_utc": "2026-10-30T11:46:40.230519+00:00",
+  "reviewer_agent_id": "/root/accept_universe28",
+  "verdict": "passed",
+  "open_findings": [],
+  "commit": "8cd239e346289a5af5b825bdb03c675ba576d2fa",
+  "files": [
+    {
+      "file": "stockwiki/quick_scan_profiles.py",
+      "git_blob_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+      "source_raw_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+      "raw_equal_git_blob": true
+    },
+    {
+      "file": "tests/test_quick_scan_profiles_subject_binding.py",
+      "git_blob_sha256": "1fec9fa9ccce1d2d0bf057544845c30a3fb177c2a55170ee405ff9c08936e301",
+      "source_raw_sha256": "1fec9fa9ccce1d2d0bf057544845c30a3fb177c2a55170ee405ff9c08936e301",
+      "raw_equal_git_blob": true
+    }
+  ],
+  "delta_review": "Business test cases unchanged; source permanent file adds explicit original integration opt-in skip before contract imports and import ordering only. Production profiles source unchanged from independently reviewed73178183 bytes.",
+  "integration_verification": {
+    "started_at_utc": "2026-10-30T11:45:46.205096+00:00",
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-c",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\pytest.ini",
+      "-vv",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\inputs\\sw\\tests\\test_quick_scan_profiles_subject_binding.py",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{ff481f3a-9def-4b8a-b875-41e637726d65}\\AC\\Temp\\iqs-subject30-mztm5nqw\\pytest",
+      "--junitxml",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\promote-junit.xml"
+    ],
+    "ended_at_utc": "2026-10-30T11:45:52.096343+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "8ae680fa22f95e407845a70773084bd6ab6adf949526c7b5a628fac7086c7f66",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests": 14,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_profiles_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+    "cleanup": {
+      "observed_at_utc": "2026-10-30T11:45:52.896486+00:00",
+      "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{ff481f3a-9def-4b8a-b875-41e637726d65}\\AC\\Temp\\iqs-subject30-mztm5nqw",
+      "exists_after": false,
+      "exit_code": 0,
+      "actual_database_or_source_writes": 0,
+      "actual_network_requests": 0
+    }
+  },
+  "skip_guard_verification": {
+    "started_at_utc": "2026-10-30T11:46:02.507258+00:00",
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-c",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\pytest.ini",
+      "-vv",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\inputs\\sw\\tests\\test_quick_scan_profiles_subject_binding.py",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{493ae817-c609-42bf-b669-199e8683a8ff}\\AC\\Temp\\iqs-subject30-eup9y9qs\\pytest",
+      "--junitxml",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\promoteskip-junit.xml"
+    ],
+    "ended_at_utc": "2026-10-30T11:46:03.652428+00:00",
+    "exit_code": 5,
+    "stdout_sha256": "352a08a1fbb136844c8bb539613d7e317962cdcfb5a409d3110f678789a2cc32",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 1,
+    "source_profiles_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+    "cleanup": {
+      "observed_at_utc": "2026-10-30T11:46:04.216611+00:00",
+      "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{493ae817-c609-42bf-b669-199e8683a8ff}\\AC\\Temp\\iqs-subject30-eup9y9qs",
+      "exists_after": false,
+      "exit_code": 0,
+      "actual_database_or_source_writes": 0,
+      "actual_network_requests": 0
+    },
+    "expected_exit_code_explanation": "pytest5 means no test functions collected after the intended module-level skip; not a product failure. With integration flags removed and IQS/StockWiki modules absent from PYTHONPATH, no contract imports or DB fixtures execute."
+  },
+  "counts": "Existing 21 unique final cases remain21. This14-case promotion replay plus1skip-guard is not added to unique business case total.",
+  "cleanup": "Both new owned runtime directories removed, exit0; no source/actual DB/network writes."
+}

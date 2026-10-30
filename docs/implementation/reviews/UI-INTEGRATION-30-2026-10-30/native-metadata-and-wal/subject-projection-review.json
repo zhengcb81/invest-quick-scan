@@ -1,0 +1,264 @@
+{
+  "protocol": "iqs.subject_dto_independent_review/1.0.0",
+  "reviewer_agent_id": "/root/accept_universe28",
+  "author_agent_id": "/root",
+  "updated_at_utc": "2026-10-30T11:46:40.230519+00:00",
+  "verdict": "passed",
+  "open_findings": [],
+  "reviewed_source": {
+    "repository": "StockWiki",
+    "file": "stockwiki/quick_scan_profiles.py",
+    "raw_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+    "qualification": "Initial independent review pinned source working-tree bytes; subsequent promotion run verified same raw bytes and permanent test against exact final Git commit.",
+    "commit": "8cd239e346289a5af5b825bdb03c675ba576d2fa"
+  },
+  "final_verification": {
+    "started_at_utc": "2026-10-30T11:40:46.396681+00:00",
+    "argv": [
+      "C:/Miniconda/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-c",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\pytest.ini",
+      "-vv",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\test_subject_dto_retained.py",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\inputs\\sw\\tests\\test_quick_scan_profiles.py",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{bdc54236-5225-4851-8a02-594dbe75f9e3}\\AC\\Temp\\iqs-subject30-3nxy7wyk\\pytest",
+      "--junitxml",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\final2-junit.xml"
+    ],
+    "ended_at_utc": "2026-10-30T11:40:53.180768+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "57a47c759693a7e79a84697d45e8021929bf02456ab99f52aa047fb23f5cface",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests": 21,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_profiles_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+    "cleanup": {
+      "observed_at_utc": "2026-10-30T11:40:54.009535+00:00",
+      "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{bdc54236-5225-4851-8a02-594dbe75f9e3}\\AC\\Temp\\iqs-subject30-3nxy7wyk",
+      "exists_after": false,
+      "exit_code": 0,
+      "actual_database_or_source_writes": 0,
+      "actual_network_requests": 0
+    }
+  },
+  "counts": {
+    "final_unique_tests": 21,
+    "final_passed": 21,
+    "reviewer_owned_cases": 14,
+    "existing_profiles_cases": 7,
+    "skipped": 0,
+    "reruns_not_added_to_unique_count": true
+  },
+  "resolved_findings": [
+    {
+      "id": "SUBJ-SEQ",
+      "red": "r02 actual altered observation.import_sequence against unchanged original accepted ACK was projected without refusal",
+      "fix": "Same read-only transaction batch loads original import item; accepted+ack_sequence matches import_sequence, then existing bound _checked_original_ack reconciles exact original wire metadata.",
+      "green": "final2 21P; sequence contradiction now rejects QueryError"
+    },
+    {
+      "id": "SUBJ-SBR",
+      "red": "r02 changed binding.receipt_id plus self-consistent outer hash was accepted",
+      "fix": "Recompute established original sbr digest from original dispatch receipt ID/hash and binding without its own receipt_id.",
+      "green": "final2 21P; original receipt relationship contradiction now rejects QueryError"
+    },
+    {
+      "id": "SUBJ-ACK-METHOD",
+      "red": "Static exact source/signature mismatch only; not counted as a behavioral red or additional failed test",
+      "fix": "Original actual store bound method is supplied, not an invalid two-argument class call or fake self.",
+      "green": "Original entity/security positives pass after fix."
+    }
+  ],
+  "tested_invariants": [
+    "Real synthetic original register_dispatch/apply_decisions yields retained binding while legacy subject/listing columns remain NULL; entity and security both project exact subject.",
+    "Nullable legacy listing context is not treated as contradiction to richer original dispatch; populated scope contradictions refuse.",
+    "Legacy without native binding remains recorded=false even with a current registered subject.",
+    "Historical revision1 remains1 after original public subject import creates revision2.",
+    "Binding/receipt hashes, observation/payload refs, populated scope, import sequence, protocol, attempt ID, pre-send time and sbr relationship conflicts refuse rather than guessing.",
+    "Original qualification/publication status not promoted, c06_envelope_validated not true, read-only calls preserve all original owned DB file SHA bytes."
+  ],
+  "static_review": {
+    "snapshot": "Observation, binding, dispatch and original ACK maps read from same original _read_connect transaction; existing BEGIN respected. Once-per-store batch maps, no per-row subprocess or contract re-execution.",
+    "compatibility": "Request1.0/1.2 and binding1.0/1.1 accepted. Additional vendor binding keys remain included in canonical sbr input, not discarded. Vendor1.2 was statically reviewed; this agent did not read real vendor answer bodies or run a real vendor test.",
+    "remaining_nonblocking_limits": "No full C06 envelope/schema/financial qualification verified here; native owner historical validation remains its own boundary. Actual production DTO3market UI verification remains root-owned.",
+    "no_additional_blocking_issue_found": true
+  },
+  "environment_history": {
+    "r01": "13setup failures due omitted static metric-registry asset; not product behavioral reds. Static questions assets copied from existing frozen definitions only.",
+    "final": "Collection error when original helper imported CLI default model and sourcecopy lacked config/llm_providers.yaml; no business tests executed. Added synthetic providers empty list in owned copy; actual provider config never read/copied.",
+    "all_original_outputs_retained": true
+  },
+  "artifacts": {
+    "test_file": "test_subject_dto_retained.py",
+    "test_sha256": "c10e42fb53e6159d1143e468af8514d81948a9daeedf20508989ddc38de85b16",
+    "runner": "run-isolated.py",
+    "runner_sha256": "a54413d3e2c101cf72b43ef1d2ed076d7ecc63cd0c1c643a2c86b2e8f9e6db97",
+    "input_manifest": "inputs.manifest.json",
+    "input_manifest_sha256": "7b4126ee593e9deabc1d4c5c0134a0feeece7aa0a3143fe85189dd978901f7b1",
+    "final_junit_sha256": "2fb91cbf57098ff63f30938569f8347c9691ee742782c6db46e6420e961a5a44"
+  },
+  "cleanup": {
+    "all_owned_runtime_directories_absent": true,
+    "runs": [
+      {
+        "run": "r01",
+        "observed_cleanup": {
+          "observed_at_utc": "2026-10-30T11:36:44.995058+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{53ee7e0a-58b9-40a2-940c-959f53966603}\\AC\\Temp\\iqs-subject30-rxq83y1w",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "run": "r02",
+        "observed_cleanup": {
+          "observed_at_utc": "2026-10-30T11:37:09.745649+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{84e340ed-5958-4a5c-8126-23d28f6d1bb9}\\AC\\Temp\\iqs-subject30-yh8wvhix",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "run": "final",
+        "observed_cleanup": {
+          "observed_at_utc": "2026-10-30T11:40:21.757008+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{bbf4878f-7968-45ed-beb3-a19167cec529}\\AC\\Temp\\iqs-subject30-_p8lsa_v",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      },
+      {
+        "run": "final2",
+        "observed_cleanup": {
+          "observed_at_utc": "2026-10-30T11:40:54.009535+00:00",
+          "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{bdc54236-5225-4851-8a02-594dbe75f9e3}\\AC\\Temp\\iqs-subject30-3nxy7wyk",
+          "exists_after": false,
+          "exit_code": 0,
+          "actual_database_or_source_writes": 0,
+          "actual_network_requests": 0
+        },
+        "runtime_exists_now": false
+      }
+    ],
+    "source_real_db_budget_list_writes": 0,
+    "actual_network_model_search_requests": 0,
+    "real_company_answers_read": false,
+    "real_api_key_values_read": false,
+    "intentional_retained_artifacts": "Input source/contracts/synthetic fixtures and immutable logs in this owned review directory; no runtime DB/profile retained."
+  },
+  "permanent_promotion": {
+    "protocol": "iqs.subject_dto_permanent_test_promotion/1.0.0",
+    "observed_at_utc": "2026-10-30T11:46:40.230519+00:00",
+    "reviewer_agent_id": "/root/accept_universe28",
+    "verdict": "passed",
+    "open_findings": [],
+    "commit": "8cd239e346289a5af5b825bdb03c675ba576d2fa",
+    "files": [
+      {
+        "file": "stockwiki/quick_scan_profiles.py",
+        "git_blob_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+        "source_raw_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+        "raw_equal_git_blob": true
+      },
+      {
+        "file": "tests/test_quick_scan_profiles_subject_binding.py",
+        "git_blob_sha256": "1fec9fa9ccce1d2d0bf057544845c30a3fb177c2a55170ee405ff9c08936e301",
+        "source_raw_sha256": "1fec9fa9ccce1d2d0bf057544845c30a3fb177c2a55170ee405ff9c08936e301",
+        "raw_equal_git_blob": true
+      }
+    ],
+    "delta_review": "Business test cases unchanged; source permanent file adds explicit original integration opt-in skip before contract imports and import ordering only. Production profiles source unchanged from independently reviewed73178183 bytes.",
+    "integration_verification": {
+      "started_at_utc": "2026-10-30T11:45:46.205096+00:00",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\inputs\\sw\\tests\\test_quick_scan_profiles_subject_binding.py",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{ff481f3a-9def-4b8a-b875-41e637726d65}\\AC\\Temp\\iqs-subject30-mztm5nqw\\pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\promote-junit.xml"
+      ],
+      "ended_at_utc": "2026-10-30T11:45:52.096343+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "8ae680fa22f95e407845a70773084bd6ab6adf949526c7b5a628fac7086c7f66",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 14,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_profiles_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+      "cleanup": {
+        "observed_at_utc": "2026-10-30T11:45:52.896486+00:00",
+        "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{ff481f3a-9def-4b8a-b875-41e637726d65}\\AC\\Temp\\iqs-subject30-mztm5nqw",
+        "exists_after": false,
+        "exit_code": 0,
+        "actual_database_or_source_writes": 0,
+        "actual_network_requests": 0
+      }
+    },
+    "skip_guard_verification": {
+      "started_at_utc": "2026-10-30T11:46:02.507258+00:00",
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-c",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\pytest.ini",
+        "-vv",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\inputs\\sw\\tests\\test_quick_scan_profiles_subject_binding.py",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{493ae817-c609-42bf-b669-199e8683a8ff}\\AC\\Temp\\iqs-subject30-eup9y9qs\\pytest",
+        "--junitxml",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\ui-integration-live30-2026-10-30\\ui-review\\subject-dto-tests\\promoteskip-junit.xml"
+      ],
+      "ended_at_utc": "2026-10-30T11:46:03.652428+00:00",
+      "exit_code": 5,
+      "stdout_sha256": "352a08a1fbb136844c8bb539613d7e317962cdcfb5a409d3110f678789a2cc32",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "source_profiles_sha256": "73178183c2a1e2f589da771c6ba111224c1c70177d3be3c8b1813af761e356c8",
+      "cleanup": {
+        "observed_at_utc": "2026-10-30T11:46:04.216611+00:00",
+        "runtime": "C:\\Users\\郑曾波\\AppData\\Local\\Packages\\sandbox.{493ae817-c609-42bf-b669-199e8683a8ff}\\AC\\Temp\\iqs-subject30-eup9y9qs",
+        "exists_after": false,
+        "exit_code": 0,
+        "actual_database_or_source_writes": 0,
+        "actual_network_requests": 0
+      },
+      "expected_exit_code_explanation": "pytest5 means no test functions collected after the intended module-level skip; not a product failure. With integration flags removed and IQS/StockWiki modules absent from PYTHONPATH, no contract imports or DB fixtures execute."
+    },
+    "counts": "Existing 21 unique final cases remain21. This14-case promotion replay plus1skip-guard is not added to unique business case total.",
+    "cleanup": "Both new owned runtime directories removed, exit0; no source/actual DB/network writes."
+  }
+}
