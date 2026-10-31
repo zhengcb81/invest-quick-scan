@@ -1,0 +1,796 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "iqs",
+  "package_id": "ANSWER-AUDIT-30",
+  "status": "complete",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/iqs-answer-audit-lab",
+    "base_ref": "codex/answer-audit-30",
+    "base_commit": "5ced05d14b3fa00eba58c7c7e0ddf5e55c2fef7a",
+    "result_ref": "codex/answer-audit-30",
+    "result_commit": "2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+    "worktree_before": {
+      "state": "dirty",
+      "dirty_path_count": 114,
+      "manifest_sha256": null
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "6a72f27ba41a8556f090260365ab6b7f987b62c5b7496816ef7114d7b7886710"
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "ANSWER-AUDIT-30"
+    ],
+    "authorization_scope_ref": "Original package card plus user authorization for controller direct repairs and commits in this chat; unique Lab only.",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/iqs-answer-audit-lab"
+    ],
+    "authorized_paths": [
+      ".gitignore",
+      ".tmp_dump.txt",
+      ".tmp_pkg.json",
+      ".tmp_qm.py",
+      ".tmp_rel.json",
+      "README.md",
+      "audit/build_content.py",
+      "audit/source-reverification.json",
+      "audit/verification/LIVE30_001.json",
+      "audit/verification/LIVE30_002.json",
+      "audit/verification/LIVE30_003.json",
+      "audit/verification/LIVE30_004.json",
+      "audit/verification/LIVE30_005.json",
+      "audit/verification/LIVE30_006.json",
+      "audit/verification/LIVE30_007.json",
+      "audit/verification/LIVE30_008.json",
+      "audit/verification/LIVE30_009.json",
+      "audit/verification/LIVE30_010.json",
+      "audit/verification/LIVE30_011.json",
+      "audit/verification/LIVE30_012.json",
+      "audit/verification/LIVE30_013.json",
+      "audit/verification/LIVE30_014.json",
+      "audit/verification/LIVE30_015.json",
+      "audit/verification/LIVE30_016.json",
+      "audit/verification/LIVE30_017.json",
+      "audit/verification/LIVE30_018.json",
+      "audit/verification/LIVE30_019.json",
+      "audit/verification/LIVE30_020.json",
+      "audit/verification/LIVE30_021.json",
+      "audit/verification/LIVE30_022.json",
+      "audit/verification/LIVE30_023.json",
+      "audit/verification/LIVE30_024.json",
+      "audit/verification/LIVE30_025.json",
+      "audit/verification/LIVE30_026.json",
+      "audit/verification/LIVE30_027.json",
+      "audit/verification/LIVE30_028.json",
+      "audit/verification/LIVE30_029.json",
+      "audit/verification/LIVE30_030.json",
+      "audit/verification/LIVE30_031.json",
+      "audit/verification/LIVE30_032.json",
+      "audit/verification/_CONTRACT.md",
+      "audit/verification_data_sources.py",
+      "audit/verification_data_verdicts.py",
+      "consumed-inputs.json",
+      "content/audit-summary.json",
+      "content/claims.json",
+      "content/coverage.json",
+      "content/report.md",
+      "content/sample-verdicts.json",
+      "content/sources.json",
+      "docs/evidence/pytest-final.log",
+      "docs/evidence/pytest-final.xml",
+      "docs/handoff/ANSWER-AUDIT-30/artifacts.json",
+      "docs/handoff/ANSWER-AUDIT-30/cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/final.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/invocation-evidence.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/pytest.log",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-artifacts.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-handoff.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-tests.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/report.md",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/snapshot.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/adversarial-final-results.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/adversarial-results.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/checks-final.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/final-delta-checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/final.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/pytest-final.log",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/pytest.log",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/report.md",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/round-01.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/web-checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/invocation-evidence.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-artifacts.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-handoff.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-report.md",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-tests.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/tests.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/tests.log",
+      "docs/handoff/ANSWER-AUDIT-30/final.json",
+      "docs/handoff/ANSWER-AUDIT-30/fixes.json",
+      "docs/handoff/ANSWER-AUDIT-30/handoff.json",
+      "docs/handoff/ANSWER-AUDIT-30/invocation-evidence.json",
+      "docs/handoff/ANSWER-AUDIT-30/report.md",
+      "docs/handoff/ANSWER-AUDIT-30/tests.json",
+      "docs/payload-manifest.json",
+      "docs/review/round-01-sources.json",
+      "docs/review/round-01-structure.json",
+      "docs/review/round-02-sources.json",
+      "docs/review/round-02-structure.json",
+      "docs/review/round-03-structure.json",
+      "docs/source-review-2026-10-31/claim-decisions.json",
+      "docs/source-review-2026-10-31/report.md",
+      "docs/source-review-2026-10-31/source-checks.json",
+      "docs/source-review-2026-10-31/summary.json",
+      "findings.md",
+      "integration/host-patch-proposal.md",
+      "progress.md",
+      "pyproject.toml",
+      "schemas/audit-1.1.schema.json",
+      "src/iqs_answer_audit/__init__.py",
+      "src/iqs_answer_audit/provenance.py",
+      "task_plan.md",
+      "tests/test_audit_toolkit.py",
+      "tests/test_controller_integrity.py",
+      "tests/test_provenance_11.py",
+      "tools/vendor_extra_consumed.py",
+      "tools/vendor_locked_inputs.py",
+      "vendor_upstream/iqs/scripts/module_contract.py",
+      "vendor_upstream/iqs/scripts/question_fingerprints.py",
+      "vendor_upstream/iqs/scripts/question_manifest.py"
+    ],
+    "changed_paths": [
+      ".gitignore",
+      ".tmp_dump.txt",
+      ".tmp_pkg.json",
+      ".tmp_qm.py",
+      ".tmp_rel.json",
+      "README.md",
+      "audit/build_content.py",
+      "audit/source-reverification.json",
+      "audit/verification/LIVE30_001.json",
+      "audit/verification/LIVE30_002.json",
+      "audit/verification/LIVE30_003.json",
+      "audit/verification/LIVE30_004.json",
+      "audit/verification/LIVE30_005.json",
+      "audit/verification/LIVE30_006.json",
+      "audit/verification/LIVE30_007.json",
+      "audit/verification/LIVE30_008.json",
+      "audit/verification/LIVE30_009.json",
+      "audit/verification/LIVE30_010.json",
+      "audit/verification/LIVE30_011.json",
+      "audit/verification/LIVE30_012.json",
+      "audit/verification/LIVE30_013.json",
+      "audit/verification/LIVE30_014.json",
+      "audit/verification/LIVE30_015.json",
+      "audit/verification/LIVE30_016.json",
+      "audit/verification/LIVE30_017.json",
+      "audit/verification/LIVE30_018.json",
+      "audit/verification/LIVE30_019.json",
+      "audit/verification/LIVE30_020.json",
+      "audit/verification/LIVE30_021.json",
+      "audit/verification/LIVE30_022.json",
+      "audit/verification/LIVE30_023.json",
+      "audit/verification/LIVE30_024.json",
+      "audit/verification/LIVE30_025.json",
+      "audit/verification/LIVE30_026.json",
+      "audit/verification/LIVE30_027.json",
+      "audit/verification/LIVE30_028.json",
+      "audit/verification/LIVE30_029.json",
+      "audit/verification/LIVE30_030.json",
+      "audit/verification/LIVE30_031.json",
+      "audit/verification/LIVE30_032.json",
+      "audit/verification/_CONTRACT.md",
+      "audit/verification_data_sources.py",
+      "audit/verification_data_verdicts.py",
+      "consumed-inputs.json",
+      "content/audit-summary.json",
+      "content/claims.json",
+      "content/coverage.json",
+      "content/report.md",
+      "content/sample-verdicts.json",
+      "content/sources.json",
+      "docs/evidence/pytest-final.log",
+      "docs/evidence/pytest-final.xml",
+      "docs/handoff/ANSWER-AUDIT-30/artifacts.json",
+      "docs/handoff/ANSWER-AUDIT-30/cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/final.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/invocation-evidence.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/pytest.log",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-artifacts.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-handoff.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/received-tests.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/report.md",
+      "docs/handoff/ANSWER-AUDIT-30/controller-2026-10-31/snapshot.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/adversarial-final-results.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/adversarial-results.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/checks-final.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/final-delta-checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/final.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/pytest-final.log",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/pytest.log",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/report.md",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/round-01.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/answer-independent/web-checks.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/invocation-evidence.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-artifacts.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-cleanup.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-handoff.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-report.md",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/received-tests.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/tests.json",
+      "docs/handoff/ANSWER-AUDIT-30/controller-close-support31/tests.log",
+      "docs/handoff/ANSWER-AUDIT-30/final.json",
+      "docs/handoff/ANSWER-AUDIT-30/fixes.json",
+      "docs/handoff/ANSWER-AUDIT-30/handoff.json",
+      "docs/handoff/ANSWER-AUDIT-30/invocation-evidence.json",
+      "docs/handoff/ANSWER-AUDIT-30/report.md",
+      "docs/handoff/ANSWER-AUDIT-30/tests.json",
+      "docs/payload-manifest.json",
+      "docs/review/round-01-sources.json",
+      "docs/review/round-01-structure.json",
+      "docs/review/round-02-sources.json",
+      "docs/review/round-02-structure.json",
+      "docs/review/round-03-structure.json",
+      "docs/source-review-2026-10-31/claim-decisions.json",
+      "docs/source-review-2026-10-31/report.md",
+      "docs/source-review-2026-10-31/source-checks.json",
+      "docs/source-review-2026-10-31/summary.json",
+      "findings.md",
+      "integration/host-patch-proposal.md",
+      "progress.md",
+      "pyproject.toml",
+      "schemas/audit-1.1.schema.json",
+      "src/iqs_answer_audit/__init__.py",
+      "src/iqs_answer_audit/provenance.py",
+      "task_plan.md",
+      "tests/test_audit_toolkit.py",
+      "tests/test_controller_integrity.py",
+      "tests/test_provenance_11.py",
+      "tools/vendor_extra_consumed.py",
+      "tools/vendor_locked_inputs.py",
+      "vendor_upstream/iqs/scripts/module_contract.py",
+      "vendor_upstream/iqs/scripts/question_fingerprints.py",
+      "vendor_upstream/iqs/scripts/question_manifest.py"
+    ],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {
+      "name": "content/audit-summary.json",
+      "version": "content/audit-summary.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "11ac998c00050445fd65f5f247b541e6543b0b6cd3c9799ad78a79e6f63c370e",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "content/claims.json",
+      "version": "content/claims.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "6ccad1bd4c1b33da3ed21a0fb75c7a6df51cc2b5b63ca4b6242571efe050f6fd",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "content/coverage.json",
+      "version": "content/coverage.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "cd1d507dc9cb51f8a78ca3a3c9bb646b57890eae231cc222b6fd4d26fc957501",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "content/sample-verdicts.json",
+      "version": "content/sample-verdicts.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "ed199aa3e3344bb531ca55705936e83ef949422cd171083a98f1324f4bd92f34",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "content/sources.json",
+      "version": "content/sources.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "fd763229307c15b981e36b58f6ea24959cfa36da282251f321bc7aed3300731e",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "content/report.md",
+      "version": "content/report.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a954df3b46b0dacfa5e3033b2213a363b3d606eea6ecb27d65cce87a248e747a",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "src/iqs_answer_audit/__init__.py",
+      "version": "src/iqs_answer_audit/__init__.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a42463044f324c16ec26275ebdcc1599c4c9cd4e8f521f8a63afe8da28c54a9e",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/claim_spec.py",
+      "version": "audit/claim_spec.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "bf75ccca5ad1cac9d3f8c4a93b254beac82a7a04f6c7f9c5a6ea615adc32c0ae",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/make_briefs.py",
+      "version": "audit/make_briefs.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "0d481870aae9847700a53715de787eda3818b90eb0cb3da9cd15d1f1ce8592e7",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/build_content.py",
+      "version": "audit/build_content.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "0f5c1f4f49bfa92d1e4fb718647015aaf05c82e382ec91756b4e6d7a40e0446a",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification_data_sources.py",
+      "version": "audit/verification_data_sources.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "26fcc57ffb337c8889ea4188c789a00d67982b0b6ec4cc3ceb346cbef6a763f6",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification_data_verdicts.py",
+      "version": "audit/verification_data_verdicts.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "db5295e312dde9b41fd1abd2ce6693ff497788f7aa3a321d9623e9e12b091897",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/_CONTRACT.md",
+      "version": "audit/verification/_CONTRACT.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "778df067423eff917f5aac92c75a9b258597de5ac0ac485db1ba8b7350612fab",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "tools/vendor_locked_inputs.py",
+      "version": "tools/vendor_locked_inputs.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "d84844326285b29cb18f04b41c69fcb740ab90c7e6e2cc125eba9b097b379906",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "tools/vendor_extra_consumed.py",
+      "version": "tools/vendor_extra_consumed.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "80db0133a5ce5edfa49fb15dc881137195c1b721496db0169a140280bfe37344",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "tests/conftest.py",
+      "version": "tests/conftest.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "39a09dc471f009e333463b8d789c00bb1368e8c1e286e0d4f6f49fd6a8ae7cb0",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "tests/test_audit_toolkit.py",
+      "version": "tests/test_audit_toolkit.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "adc23d8d5e1f018db4ab0bc1971b4b9dc95da214358a0af1ac0330ddd5acdae6",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "pyproject.toml",
+      "version": "pyproject.toml @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "be8d7450d06bd21798c845361ac0b8b2e01796ff9ffd9615732c0fc12e984171",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "README.md",
+      "version": "README.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "5ba04d9cff0dce29ce12ce433421bed199a6f30512cf49da5d0b24fe4aa1cb65",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "consumed-inputs.json",
+      "version": "consumed-inputs.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "7a65bb960112bc7702aed8121e61c3761e81ad98f5860d06bd4a530c80a4f876",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "task_plan.md",
+      "version": "task_plan.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "3f8e91f327b1eab6e328b7be717ef2fb61f62d930284a919a5a71979a594afcd",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "progress.md",
+      "version": "progress.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "1862b07d07e6a26b0490cf5ca4b2e5fabb47b78766cce3050114c12dc3c0d174",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "findings.md",
+      "version": "findings.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "ac5a1ae1b6bba251fa563bd377b197800bd336faa14d44ec2aa62087db132dcf",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "vendor_upstream/controller/inputs.lock.json",
+      "version": "vendor_upstream/controller/inputs.lock.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "631943681ab5713fd5c90077516213e469a80a6b57c984a113ab0b5a9ee60765",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "vendor_upstream/controller/samples.index.json",
+      "version": "vendor_upstream/controller/samples.index.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a1216364c29011801344e5494bb1192a25fd91b053361b0414a864510610d184",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "vendor_upstream/controller/manifest.json",
+      "version": "vendor_upstream/controller/manifest.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "2a84291e299911fbfd4b898c569bc5212b2e01e3667d1ba95801d1caa914868f",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "vendor_upstream/controller/interfaces.md",
+      "version": "vendor_upstream/controller/interfaces.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "c6e9d3b28c78e7c27cfc6768f524dd619ec09661378b440634c87d7a9f7c006a",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "vendor_upstream/controller/handoff-rules.md",
+      "version": "vendor_upstream/controller/handoff-rules.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "0d5af6772b3922b24e2b6e17bbd43694fcb38fefe060c7a140106274a7fe7643",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "vendor_upstream/controller/ANSWER-AUDIT-30.md",
+      "version": "vendor_upstream/controller/ANSWER-AUDIT-30.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "03ef2f5900d1581385b04222df2043891773adbc055071323d467661f37c9bfe",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "tests/test_controller_integrity.py",
+      "version": "tests/test_controller_integrity.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "c023747cd971dd47f0a76c6ba9cba82e240f88c14a18523bd561900d63469ff7",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/source-reverification.json",
+      "version": "audit/source-reverification.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "3199eb3630d3d75600e1cecb5ff9541f00a87b62517f181a8723d73ef8d2b034",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_001.json",
+      "version": "audit/verification/LIVE30_001.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "cf26fabb0ccd1ea4c57edad9823c49a566972bd8a274161d8f7d99a30b308e4b",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_002.json",
+      "version": "audit/verification/LIVE30_002.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "8790964c68a3952f680f8b6d2e3205c907916cf7ad1b54bef935c84406d42887",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_003.json",
+      "version": "audit/verification/LIVE30_003.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "c9776d23dfeaae9be3bd6c250c0b184242a4cca08b1031c1726508a03231ff69",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_004.json",
+      "version": "audit/verification/LIVE30_004.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "eb743960f53101e48bf98fb33d0bf2fd64023554a162d8277d274e61d0557c28",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_005.json",
+      "version": "audit/verification/LIVE30_005.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "532a34b49a267ba3e1a6fecbf990695751a44af8e468add8dfb90fe16786d637",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_006.json",
+      "version": "audit/verification/LIVE30_006.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "709399b0c6ea8ea66285bc1a0a620b366ce033e19ae01005abba0d39178023c3",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_007.json",
+      "version": "audit/verification/LIVE30_007.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "bca971d5df9a9833df5a10a16e2d2e43447564152a2bc812b5276448ca6609ad",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_008.json",
+      "version": "audit/verification/LIVE30_008.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "c551aa01330b4ee3449fc3aaa5222f4f26c821eab5e54382a9617db8e29d3286",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_009.json",
+      "version": "audit/verification/LIVE30_009.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a4144267c164078d1286584efd1e6ac82ab6592669cec8f1eb8ea441b55542ff",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_010.json",
+      "version": "audit/verification/LIVE30_010.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "78d6092f8dbc6735e5db318d6f3b401dd15ddb680be89438eacd7a6c48ef95b2",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_011.json",
+      "version": "audit/verification/LIVE30_011.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "3ceedabd012748eac16a792a53183f73916a1c0d253f5198b8edc470e5a18f5b",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_012.json",
+      "version": "audit/verification/LIVE30_012.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "43d5fdda6a00653a03ad0a22289d562f6bfe248bb66fca95e7947cc5ed1004b4",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_013.json",
+      "version": "audit/verification/LIVE30_013.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "af9b440ff4020a46f337fbcd754277f3f8cbcbbfcf1de85e5601ff7fd53aa82d",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_014.json",
+      "version": "audit/verification/LIVE30_014.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "ef73c603555d76b2c8fbd0ddefac9b779451aff2d09725cb33ce3250a4490d2f",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_015.json",
+      "version": "audit/verification/LIVE30_015.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "1ce8d4f55c8ed9c4f977b5ed82b9c1833af547c60944266fe80e9be22f7b05ae",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_016.json",
+      "version": "audit/verification/LIVE30_016.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "067b40e417fd1586128da93dc359be0cc540838a2f5f5774787fd125c4ccbe5b",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_017.json",
+      "version": "audit/verification/LIVE30_017.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a50dbf1c1cf014031d84c1fba1f22e4d5711bf8c8784fc1d475963fc68fa5842",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_018.json",
+      "version": "audit/verification/LIVE30_018.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "f87c5d7e5534217708a15522bd6f80993c5c8ee1b197b7225d8c14a523f29207",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_019.json",
+      "version": "audit/verification/LIVE30_019.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "559f807a389c800bd66baf3a19621ef40f34f92d0312a54b34908749c2bcadde",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_020.json",
+      "version": "audit/verification/LIVE30_020.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "7e38b0bdc9fda0a34f012b9364722a2d96dc718f779ba4d0b820ae720ddf08f9",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_021.json",
+      "version": "audit/verification/LIVE30_021.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "24eec0ded431afdde0adcaac53332a69517b0373c9adbec694476ebc0eaf1c96",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_022.json",
+      "version": "audit/verification/LIVE30_022.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "319e93e5a81ea175f318ac6f6103f3f3f27c5260bcf44f3f8866a96f02a42740",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_023.json",
+      "version": "audit/verification/LIVE30_023.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a3874193ff854872f10e25821ce7f72eba8f83c2c5b17c05792aab0bacba9c05",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_024.json",
+      "version": "audit/verification/LIVE30_024.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a8015787ad8c06ea2ebe37b2ac679f807a5d1cda5d88ac488667f7590a9a27a9",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_025.json",
+      "version": "audit/verification/LIVE30_025.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "a20209689b2df514db1320671531b75b4ddd8f4cbaddfc24c996a63630e54758",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_026.json",
+      "version": "audit/verification/LIVE30_026.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "dcabc34c2452705245e3f4af9d3c3e50f23fd4eb8dffff24720ffa0ef12aaf4b",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_027.json",
+      "version": "audit/verification/LIVE30_027.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "be5f0955a137fb3dd6f9e77905b2f5c60b91df2f02b773a16ab248ea6f2ae1f1",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_028.json",
+      "version": "audit/verification/LIVE30_028.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "afa749db0da7b342629e072390de759dd146e928968d434bc697e18f28426666",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_029.json",
+      "version": "audit/verification/LIVE30_029.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "b488682f3a2d4c1d69b47e7a2c0ce0766cdb53660e4307d6170e6f2af757eea7",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_030.json",
+      "version": "audit/verification/LIVE30_030.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "7ed230f2a1b9d007a7a9c5b7b2e3128a7c697689fc3f671944fad12c836d21c1",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_031.json",
+      "version": "audit/verification/LIVE30_031.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "0808d85a799755a10b76aa85a75e59dec569cc75dff6183f3545bd8da3986425",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "audit/verification/LIVE30_032.json",
+      "version": "audit/verification/LIVE30_032.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "415b43eb0a6abbe8a64b38701513091b51f170a730d4e4de6efc94d3cfa6d603",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "docs/source-review-2026-10-31/claim-decisions.json",
+      "version": "docs/source-review-2026-10-31/claim-decisions.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "198dd6fdee2ae3b2040e5f72d33bf67d10b8be5a671e0834a39590f256083cce",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "docs/source-review-2026-10-31/report.md",
+      "version": "docs/source-review-2026-10-31/report.md @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "23b1001a0e279cf2b73f86399b09b74fde4cf08a218c782f075b835e54d68b64",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "docs/source-review-2026-10-31/source-checks.json",
+      "version": "docs/source-review-2026-10-31/source-checks.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "1a903b0d930292e10c5f4353bc7bbd41363af4fd795e58b5dfc5221ef1646a66",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "docs/source-review-2026-10-31/summary.json",
+      "version": "docs/source-review-2026-10-31/summary.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "db032ff9ba2f391a8d98014fdae4d1f151d0e583bfa81bf95e397b88b8875236",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "schemas/audit-1.1.schema.json",
+      "version": "schemas/audit-1.1.schema.json @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "0af300e6e771f595a5f72b22ee06e9e3fc4dd19819f7f4496e5cee5f244f4455",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "src/iqs_answer_audit/provenance.py",
+      "version": "src/iqs_answer_audit/provenance.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "bdd4d9037ee49eaf354ebbf06ac2f7b08f6340449b734d49d16f47d3d9a87346",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "tests/test_provenance_11.py",
+      "version": "tests/test_provenance_11.py @ 2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+      "content_hash": "700a5011cf5199f3d66ebb9368d01b39b6bee5fd3d8cc00ab17cb86b3a8bba1e",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "controller.inputs.lock",
+      "version": "1.0.0",
+      "content_hash": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+      "direction": "consumed",
+      "result": "compatible"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "name": "controller_related_suite",
+        "command": "See controller-close-support31/tests.json actual argv/cwd/log hashes",
+        "scope": "Lab software/research only",
+        "result": "passed",
+        "passed": 63,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "external_writes": false,
+    "network_calls": true,
+    "paid_calls": false,
+    "temporary_roots": []
+  },
+  "review": {
+    "status": "approved",
+    "snapshot_commit": "2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+    "findings": []
+  },
+  "open_items": [
+    "Audit coverage and explicit unknowns complete;16 unreadable sources/16 not-assessable external facts remain.63 external facts exclude33 original-answer behavior propositions.",
+    "Historical source read timestamps/snapshots remain unknown; current re-reads do not establish financial accuracy or renew original scores.",
+    "Production integration, trusted verification receipt design and live fresh-cache positive acceptance are separate controller work."
+  ],
+  "next_action": "Consume reviewed immutable C for its Lab scope;original service wiring belongs to controller and cannot turn audit or benchmark into financial/reuse authority."
+}

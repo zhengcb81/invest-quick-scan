@@ -1,0 +1,21 @@
+{
+  "source_sha256": "bedf266217967b0f144d06165231e5e04abeaf0056716fdf4e1afaf81c0a6d74",
+  "exit_code": 1,
+  "argv": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-c",
+    "import sys, ipaddress, socket\ndef loopback(value):\n    try:\n        return ipaddress.ip_address(value).is_loopback\n    except (TypeError, ValueError):\n        return False\ndef deny(event, args):\n    if event == 'socket.connect':\n        address = args[1]\n        sock = args[0]\n        if (sock.type == socket.SOCK_STREAM and sock.proto in (0, socket.IPPROTO_TCP)\n                and isinstance(address, tuple) and loopback(address[0])):\n            return\n    elif (event == 'socket.getaddrinfo' and loopback(args[0])\n            and args[3] == socket.SOCK_STREAM and args[4] in (0, socket.IPPROTO_TCP)):\n        return\n    if event in {'socket.connect', 'socket.getaddrinfo', 'socket.sendto'}:\n        raise RuntimeError('offline_test_network_forbidden')\nsys.addaudithook(deny)\nimport pytest\nraise SystemExit(pytest.main(sys.argv[1:]))\n",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.tedns-2c8dce\\test_dns_boundary.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.tedns-2c8dce\\pytest"
+  ],
+  "log_sha256": "0f8059a5fe4ed7070776683d21d7772e70bc4b34cabfd5fb6f9dca9eeea454ed",
+  "actual_external_DNS_queries": 0,
+  "guard_checked_with_real_socket_resolver_APIs": true,
+  "safety": "Secondary audit hook raises before OS resolver if real CHILD hook misses DNS event; no stubbed successful resolver result.",
+  "cleanup_temporary_absent": true
+}

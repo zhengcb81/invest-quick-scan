@@ -1,0 +1,42 @@
+[
+  {
+    "case": "read_window_after_recording",
+    "rejected": true,
+    "reason": "recorded-after time precedes completed read window"
+  },
+  {
+    "case": "reasoning_support_counter",
+    "rejected": true,
+    "reason": "reasoning support counter/denominator drift"
+  },
+  {
+    "case": "mixed_source_wire",
+    "rejected": true,
+    "reason": "mixed audit wire versions"
+  },
+  {
+    "case": "digest_claim_as_direct_source",
+    "rejected": true,
+    "reason": "digest/unread source or unchecked claim cannot support verdict"
+  },
+  {
+    "case": "direct_source_without_toolref",
+    "rejected": true,
+    "reason": "successful read needs actual tool provenance"
+  },
+  {
+    "case": "recorded_timestamp_not_utc",
+    "rejected": true,
+    "reason": "provenance timestamp must be explicit UTC"
+  },
+  {
+    "case": "behavior_counted_as_financial",
+    "rejected": true,
+    "reason": "financial fact denominator/accuracy drift"
+  },
+  {
+    "case": "original_score_altered",
+    "rejected": true,
+    "reason": "LIVE30_003: original score was altered"
+  }
+]

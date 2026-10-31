@@ -1,0 +1,213 @@
+{
+  "exit_code": 0,
+  "commands": [
+    {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.c31resume-a3c2ba\\tools\\prepare_variant.py",
+        "--target",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.c31resume-a3c2ba\\.tmp\\candidate",
+        "--patch",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.c31resume-a3c2ba\\integration\\candidate.patch"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.c31resume-a3c2ba\\bench\\run_once.py",
+        "--variant-root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.c31resume-a3c2ba\\.tmp\\candidate",
+        "--packets",
+        "36",
+        "--reps",
+        "3",
+        "--out",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.c31resume-a3c2ba\\bench\\resumed-candidate-36.json",
+        "--workdir",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.c31resume-a3c2ba\\.tmp\\resumed-run",
+        "--label",
+        "candidate-36"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "started_at": "2026-10-31T21:58:09.386761+00:00",
+  "completed_at": "2026-10-31T22:21:12.154011+00:00",
+  "resumed": true,
+  "preserved_measurements": 21,
+  "resumed_measurements": 3,
+  "performance": {
+    "1": {
+      "baseline": {
+        "median": 8514.0,
+        "min": 5030.6,
+        "max": 8924.3,
+        "stdev": 2139.4,
+        "values": [
+          8924.3,
+          8514.0,
+          5030.6
+        ]
+      },
+      "candidate": {
+        "median": 5802.6,
+        "min": 5185.8,
+        "max": 6994.3,
+        "stdev": 919.4,
+        "values": [
+          5185.8,
+          5802.6,
+          6994.3
+        ]
+      },
+      "baseline_spawns": {
+        "median": 10,
+        "values": [
+          10,
+          10,
+          10
+        ]
+      },
+      "candidate_spawns": {
+        "median": 9,
+        "values": [
+          9,
+          9,
+          9
+        ]
+      },
+      "performance_improvement_observed": true,
+      "speedup_ratio_baseline_over_candidate": 1.467
+    },
+    "3": {
+      "baseline": {
+        "median": 14349.0,
+        "min": 14117.9,
+        "max": 19467.2,
+        "stdev": 3023.9,
+        "values": [
+          14117.9,
+          14349.0,
+          19467.2
+        ]
+      },
+      "candidate": {
+        "median": 11141.4,
+        "min": 10154.2,
+        "max": 12732.6,
+        "stdev": 1300.9,
+        "values": [
+          12732.6,
+          10154.2,
+          11141.4
+        ]
+      },
+      "baseline_spawns": {
+        "median": 22,
+        "values": [
+          22,
+          22,
+          22
+        ]
+      },
+      "candidate_spawns": {
+        "median": 19,
+        "values": [
+          19,
+          19,
+          19
+        ]
+      },
+      "performance_improvement_observed": true,
+      "speedup_ratio_baseline_over_candidate": 1.288
+    },
+    "33": {
+      "baseline": {
+        "median": 120804.6,
+        "min": 120296.2,
+        "max": 132580.6,
+        "stdev": 6950.3,
+        "values": [
+          120296.2,
+          132580.6,
+          120804.6
+        ]
+      },
+      "candidate": {
+        "median": 114634.1,
+        "min": 108455.3,
+        "max": 213954.3,
+        "stdev": 59206.9,
+        "values": [
+          108455.3,
+          114634.1,
+          213954.3
+        ]
+      },
+      "baseline_spawns": {
+        "median": 206,
+        "values": [
+          206,
+          206,
+          206
+        ]
+      },
+      "candidate_spawns": {
+        "median": 173,
+        "values": [
+          173,
+          173,
+          173
+        ]
+      },
+      "performance_improvement_observed": true,
+      "speedup_ratio_baseline_over_candidate": 1.054
+    },
+    "36": {
+      "baseline": {
+        "median": 303495.8,
+        "min": 182369.7,
+        "max": 309252.9,
+        "stdev": 71652.0,
+        "values": [
+          182369.7,
+          309252.9,
+          303495.8
+        ]
+      },
+      "candidate": {
+        "median": 359971.5,
+        "min": 194074.8,
+        "max": 650007.8,
+        "stdev": 230766.0,
+        "values": [
+          650007.8,
+          359971.5,
+          194074.8
+        ]
+      },
+      "baseline_spawns": {
+        "median": 224,
+        "values": [
+          224,
+          224,
+          224
+        ]
+      },
+      "candidate_spawns": {
+        "median": 188,
+        "values": [
+          188,
+          188,
+          188
+        ]
+      },
+      "performance_improvement_observed": false,
+      "speedup_ratio_baseline_over_candidate": 0.843
+    }
+  },
+  "summary_sha256": "782eaa4355154345142d23aa25da6a59e704bfb3ee8572ad6d3d528c93c15889"
+}

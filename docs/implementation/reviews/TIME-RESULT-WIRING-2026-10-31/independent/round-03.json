@@ -1,0 +1,24 @@
+{
+  "protocol": "iqs.controller_independent_wiring_review/1.0.0",
+  "reviewer_agent_id": "/root/review_perf_close31",
+  "status": "changes_required_installed_delta",
+  "payload_commit": null,
+  "source_sha256": "ef2bd1957a03ab313a9f6dbbc34e783255c36d5a197c214fa11c529b9a00a866",
+  "scope": "Independent review of installed clock-only missing-identity fallback before final C; not yet final integration signoff.",
+  "open_findings": [
+    {
+      "id": "WIRE31-I03",
+      "severity": "medium",
+      "path": "scripts/dashboard_temporal.py::_clock_explanation",
+      "reason": "Fallback loses global event_invalidated_at handling, unlike original TIME interpreter; past event and malformed timestamp both still yield clock-only explanation with no event diagnostic. No permission escalation because outer reuse/current-context remain false, but explanation omits known invalidation/error.",
+      "expected": "Validate event via original _parse_utc(code=event_invalidated_at_invalid); retain named invalidation when event<=now plus original event date, without minting context/receipt.",
+      "repro": "installed-fallback-probes.json"
+    }
+  ],
+  "positive_checks": [
+    "Nine synthetic immutable-payload probes preserve originals and never mint context, reuse or verified_at.",
+    "Future/as-of cutoff are named refusals; unknown/withdrawn/future source publication remains explicit.",
+    "Eight accepted pure-vendor targets match original installed bytes; no frozen sys.path import."
+  ],
+  "reviewed_at_utc": "2026-10-31T22:07:07.126685+00:00"
+}

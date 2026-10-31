@@ -1,3 +1,46 @@
+## 最终测试入口补记（2026-10-31T23:00:17.241369+00:00）
+
+基础设施C `e8f184c47221a97f0eb1f0183b55c38d5f835a01` / DNS根修C `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`；不改变生产接线runtime或UI。当前测试114文件一次分层54/57/1/2，已登记遗漏6文件；TIME测试显式加载StockWiki，不要求外置PYTHONPATH。65关联通过，独立19及UDP2/DNS4探针通过；证据与最终hash见[原接线报告](reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。pytest审计hook允许自有字面IP TCP loopback，拒绝UDP/公网连接及列明DNS入口；不传播所有子孙CLI，不当进程树沙箱。只改对应链条时跑受影响组，不因这次收尾重新跑全层。
+
+下面UI测试命令须在`C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab`执行；IQS命令在本仓根执行。其他writer路径保留，原服务留给用户使用，不杀记忆PID。最新archive-manifest绑定归档实际字节；installed-code-manifest仍是接线历史C的Git blob，后续测试C与元数据M另记。
+
+---
+
+# 当前接手入口（2026-10-31T22:40:28.858071+00:00）
+
+本轮ANSWER/PERF修补及TIME/RESULT原UI接线已经完成。先读本段、根PWF最新一条和两份最新报告；旧partial是历史，不是待返工清单。
+
+- 审计/性能：[SUPPORT-CLOSE-2026-10-31](reviews/SUPPORT-CLOSE-2026-10-31/report.md)。ANSWER C/M：`2eb59d3d64e58d387f6abde4f2c9d913e4f34955` / `65973fb8fcb14efe57e338d243caf066fe5fcc4d`；PERF C/M：`99c350b8f332e5ea6459919fd692af19bab25100` / `f581dcf3525ba2040f612fca8d156e56610f00d5`。两Lab无remote，不伪造新remote；main归档补丁/manifest足以绑定本机交付。
+- 原接线：[TIME-RESULT-WIRING-2026-10-31](reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。IQS代码C `c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2` 已推origin；UI本地代码C `03d6b9aa3d45011f09bc77ef69e62b4a1d21e00e`。原UI补丁/25项Git清单在报告目录。固定C是代码真值；后续M只更新README/PWF/交接/薄证据，不能以当前README字节覆盖C里的历史manifest。生产runtime字节不变；测试基础设施随后独立提交，见下方补记，不把当前测试字节冒充原C。
+- 当前地址：`http://127.0.0.1:8766/`，配置`config/dashboard.local.json`。新启动记录在忽略的`runs/close-support31/original-service-started.json`，launcher8936是当时值，绝不能按记忆PID杀进程；重启前实核端口/argv/creationtime/未决工作。原运行服务保留给用户。原配置/模型/预算未改，本轮无新模型HTTP。
+- 用户已授权跨仓必要修复/提交/既有origin推送及独立agent，不重复问权限。其他writer的`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`四行与历史未跟踪文件不碰。
+
+## 下一步怎么做
+
+1. 本段的三项交付不要重做。PERF优化只是研究，36包更慢且噪声大，不自动安装；其`tools/build_handoff.py`与`tools/build_payload_manifest.py`已写前退役，不能重建旧缓存预检提案或28项清单。只读`load_test_evidence`兼容保留。旧root runs里的install/prepare helper有旧HEAD前置，供审计，不是可反复执行的日常CLI。
+2. 下一大节点按根PWF继续可信核查/当前owner上下文及真实fresh正例。现TIME仅只读解释，`current_context_verified=false/reuse_authorized=false`。旧113观察的native identity_revision缺失，不取当前实体版本反填；可解释112条已固定题义的日期，不代表兼容性通过。1条旧release和61事实题未获该definition绑定，保守未知，不猜。
+3. 真正允许复用前，须从原owner公开接口拿可验证原主体/路由/题义/模型/来源与核查覆盖；保留原严格request/policy版本和refresh_id兼容。现尚无可信独立verification receipt或完整字段披露日历。不得用模型自称verified_at、audit1.1重读记录或新导入时间替代原凭证。不得改旧信息日/24h来造fresh。
+4. 现有三公司各36题真实扫描/ACK/历史恢复是过去已验结果，不重跑108题。新鲜结果真实正例与金融准确性仍pending，和只读视图验收分开。名单215已获认可，不擅自造2000公司。收费工作按原预算/用户授权及原服务预检处理，UI浏览不调用模型。
+
+## 必要复验（只在改到对应链条时）
+
+```powershell
+# IQS：最终受影响时间解释+HTTP（32项）；需要改通用owner/transport时再加既有关联组
+python -B -m pytest tests/test_dashboard_temporal.py tests/test_dashboard_entity_view_http.py -q
+
+# 原UI仓库：宿主Node断言；改页面挂载时再跑test_product_ui.py相关scenario
+python -B -m pytest tests/test_result_trust_host.py -q
+
+# 交接仅形状/引用预检，不能代替最终不同作者审查
+python -B scripts/parallel_handoff_cli.py --input ../iqs-import-performance-lab/docs/handoff/IMPORT-PERF-30/handoff.json --package-id IMPORT-PERF-30 --catalog docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/manifest.json --verify-references
+```
+
+测试用自有短TEMP（root忽略的.c31*或.tmp内），禁真实库迁移/真实答案改分，结束后移除私有副本/临时库并保留日志hash。初始沙箱Win10013/硬链PermissionDenied只重试受影响隔离测试，不说产品红，也不问已有授权。不能用collect-only当执行。只在大节点集中独审；新发现补有效反例、根修、只复跑相关组，不重复小时级上游全套。
+
+旧手册与过程保留如下，仅在本段未覆盖且无冲突时使用。
+
+---
+
 ## 2026-10-31T20:29:25+00:00 新四包查验收口：两包签收、两包partial；软件根修已提交
 
 统一报告：[OUTSOURCE-ALL-2026-10-31](reviews/OUTSOURCE-ALL-2026-10-31/report.md)。已按最新Git字节、原CLI、固定输入、实际单元/集成/真实Chrome及不同作者最终独审查验；不是依作者complete或schema转绿。前批比较/名单实际HEAD与已签关键hash完全一致，保持签收。历史55个catalog ID/50个直达路径仅是盘点，不是55包新验收；R1真实嵌套路径和BASIC三仓交付已辨认，早期partial/TH-IN缺交接不凭本轮口头完工关闭。

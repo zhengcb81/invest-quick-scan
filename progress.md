@@ -1,3 +1,35 @@
+## 2026-10-31T23:00:17.241369+00:00 最终交接补记：测试入口根修已通过独审，准备元数据提交推送
+
+本轮ANSWER/PERF与TIME/RESULT签收结论不变；接线runtime C仍为`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`、UI C仍为`03d6b9aa3d45011f09bc77ef69e62b4a1d21e00e`。随后测试基础设施C `e8f184c47221a97f0eb1f0183b55c38d5f835a01`、DNS根修C `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`明确另记，不能声称所有测试源仍等于旧接线C。
+
+日常入口漏登记6文件（含本轮2个）已补，114文件分层54fast/57integration/1e2e/2native，各登记一次。TIME夹具显式加载原StockWiki依赖，裸pytest不再需额外PYTHONPATH。测试进程只放行字面IP TCP loopback自有HTTP；公网connect、UDP及getaddrinfo/gethostbyname/gethostbyname_ex/gethostbyaddr/getnameinfo入口拒绝。独审真实RED先固定UDP与DNS漏拦，再根修；DNS哨兵在系统解析前截断，真实外部查询0。此hook不覆盖所有子孙CLI，不称整树网络沙箱。
+
+本轮受影响65项通过，最终独立19项通过，另UDP2与DNS4入口探针通过；重复复验不加总，不重复小时级上游全套。最终C/hash、RED/GREEN、TEMP清理与命令在[原接线归档](docs/implementation/reviews/TIME-RESULT-WIRING-2026-10-31/report.md)的test-entry-independent内。0收费API/0下载公司文档/0原库写；其他writer的2026-10-10 README保持原状。
+
+**Next Step：** 本轮代码/证据/PWF按精确范围提交推送，最终提交身份以origin/master历史为准。下一主线处理真实当前owner上下文、可信核查凭证及fresh正例，不重做已签收包、不把只读日期解释视作缓存复用许可。归档读取外仓Git一度被沙箱拒绝，已在原授权内提权重做完成；未改外仓。
+
+---
+
+## 2026-10-31T22:40:28.858071+00:00 本轮请求完成：ANSWER/PERF缺口关闭，TIME/RESULT原只读接线通过独审
+
+总报告：[ANSWER/PERF](docs/implementation/reviews/SUPPORT-CLOSE-2026-10-31/report.md)；[TIME/RESULT原服务](docs/implementation/reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。本轮请求收口，不代表整个PWF或金融/fresh门全部完成。旧OUTSOURCE-ALL首轮partial保留历史，不能再次当作当前未修项重做。
+
+|范围|最终交付|真实验证与边界|
+|---|---|---|
+|ANSWER|C2eb59d3d64e58d387f6abde4f2c9d913e4f34955 / M65973fb8fcb14efe57e338d243caf066fe5fcc4d|63软件测试，最终非作者独审通过；51来源全尝试35可读/16不可读。63外部事实+33原答案行为，不输出金融准确率；未知/历史时间精度保留|
+|PERF|C99c350b8f332e5ea6459919fd692af19bab25100 / Mf581dcf3525ba2040f612fca8d156e56610f00d5|64主关联+2来源绑定+2旧写入器退役=68不同用例；最终7短组与64重叠3，不加总。完整非作者与runtime辅助独审通过；优化不接生产|
+|TIME/RESULT原服务|IQS Cc1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2 / UI C03d6b9aa3d45011f09bc77ef69e62b4a1d21e00e|74后端关联+最终32受影响复验（集合77，不重复相加）；53 UI+最终3复验。独立32后端/3 UI/10探针另计复验。原8766真实三市场浏览器通过|
+
+PERF已根修旧缓存preview导致篡改包先持久化consumer_binding的安全偏差，保留绑定前最新原precheck只合并worker。迟到/未知ACK/send_uncertain/撤权、reopen/幂等边界通过；grant/publisher两类unit明确synthetic typed boundary，不宣称生产公共CLI全链。24次正常合成测量已完成：1/3/33/36包baseline/candidate中位比率1.467/1.288/1.054/0.843，36更慢且离散大，不能普遍提速。原40分钟上限后保留21完整测量，仅补缺3；Windows短暂SQLite句柄清理故障已核归属并修30秒有界重试，真实打开文件句柄与越界拒绝2测试通过。上游版本改锁定source commits，旧cleanup fixture补真实声明后7短组绿；两旧writer生成已撤销C1/28项清单的实现已退役（写前exit2，保留load_test_evidence读取兼容）。
+
+TIME新增显式entity-view wrapper，旧entity/refresh DTO、refresh_id、原24h/预算/名单/答案/分数不变。纯库固定来源，不注入Lab frozen sys.path。原113观察中112走clock-only、1旧release未绑定；旧native identity_revision缺失保持未知，不以当前身份反填。当前context/reuse全部false，独立核查receipt未造。RESULT面板真实显示归属/日期/原规则/ACK/金融/研究缺项，原记录按钮可用；父/子外来数据隔离、不借质量/C06当当前公司结果。
+
+原配置在8766启动，腾讯38、微软37、宁德时代38条观察，各36题（额外为历史变体）。三市场新旧DTO除生成时间相同，292原workspace文件hash不变，真实CUA均展开面板和本条原JSON。代码C已推origin/master；此条PWF与最终薄证据作为metadata提交再推。截图仅本地runs，发布的证据只metadata/hash；原32答保留原忽略冻结输入，830297字节验收私有副本与5份UI生成副本已删除，所有自有临时库/短根已清。0收费API、0公司文档下载、0原DB写。其他writer的2026-10-10 README与旧未跟踪文件保持。
+
+**下一主线（未完成，不自动转绿）：** 继续原共享引擎/owner所需的真实当前主体与核查凭证公开读取，明确报表披露日历/字段政策后，再以版本化原owner契约接管复用；随后做真实fresh缓存正例及剩余主线门。仅新生成/入库/checked_at不授fresh。原113观察/108历史有效槽、审计覆盖和金融准确性分开，禁止改旧info日期/TTL造正例或擅自扩2000名单。旧PERF写入生成器不可重跑；禁止重放本轮依旧HEAD的历史mutation helper。后手按交接里的固定C与命令继续，不重做已签收Labs、不逐小节点新增审查。
+
+---
+
 ## 2026-10-31T21:54:38.705200+00:00 ANSWER签收、PERF安全审查通过；TIME/RESULT已定点接线，正在验收
 
 ANSWER审计缺口已关闭：C2eb59d3d64e58d387f6abde4f2c9d913e4f34955 / M65973fb8fcb14efe57e338d243caf066fe5fcc4d，70份Git blob匹配，独立63测试通过、8攻击/4时间边界通过。51来源全部实际尝试（35可读/16不可读），96命题拆为63外部事实与33原答案行为；16外部不可评仍未知，历史午夜时间声明保留，历史真实读取时点不补造。签收是审计覆盖/未知透明，不是金融准确率或原分数认证。

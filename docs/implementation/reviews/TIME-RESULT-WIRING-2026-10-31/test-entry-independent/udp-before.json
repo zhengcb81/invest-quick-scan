@@ -1,0 +1,20 @@
+{
+  "source_sha256": "159ad2df208902926b0d524c4c878ec32a6899a57b8c48d23e7975ab8b7d4b03",
+  "exit_code": 1,
+  "argv": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-c",
+    "import sys, ipaddress\ndef loopback(value):\n    try:\n        return ipaddress.ip_address(value).is_loopback\n    except (TypeError, ValueError):\n        return False\ndef deny(event, args):\n    if event == 'socket.connect':\n        address = args[1]\n        if isinstance(address, tuple) and loopback(address[0]):\n            return\n    elif event == 'socket.getaddrinfo' and loopback(args[0]):\n        return\n    if event in {'socket.connect', 'socket.getaddrinfo', 'socket.sendto'}:\n        raise RuntimeError('offline_test_network_forbidden')\nsys.addaudithook(deny)\nimport pytest\nraise SystemExit(pytest.main(sys.argv[1:]))\n",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.te31-2f2067\\test_udp_boundary.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.te31-2f2067\\pytest"
+  ],
+  "log_sha256": "93421548694ca97e7059cf0e7c8a9dd631a81928803dc6a8d3948770ba67c732",
+  "probe_transmits_payload": false,
+  "paid_api_calls": 0,
+  "cleanup_temporary_absent": true
+}

@@ -1,0 +1,60 @@
+{
+  "protocol": "iqs.independent_perf_fault_review/1.0.0",
+  "reviewer_agent_id": "/root/review_time_result_wiring31",
+  "runtime_patch_author": "/root",
+  "fault_matrix_author": "/root/review_perf_close31",
+  "service_probe_authors": ["/root/review_time_result_wiring31", "/root"],
+  "status": "runtime_candidate_passed_pending_final_payload_binding",
+  "final_source_C_approved": false,
+  "open_runtime_findings": [],
+  "resolved_findings": [
+    {
+      "id": "PERF-CACHE-SEAM-01",
+      "status": "resolved_in_candidate_verified",
+      "reason": "candidate no longer changes _deliver_scope or _apply_import signature. Mapped apply performs new native preview+status batch immediately before target binding; old caller preflight cannot skip this read. Preview errors/token/can_apply are checked before bind, then freshly read status determines target. Original bind/import/ACK code remains unchanged."
+    },
+    {
+      "id": "PERF-COUNT-01",
+      "status": "resolved_verified",
+      "reason": "Meaningless variant labels removed from delegation and publisher units: 17native integration+2grant+2publisher=21, plus4package/release service regressions=25 actual new cases; no duplicated SDK variants counted."
+    },
+    {
+      "id": "PERF-ASSERT-01",
+      "status": "resolved_verified",
+      "reason": "Publisher refusal is now matched to permission_denied; successful before-check and zero outbox reads/unchanged synthetic carrier remain."
+    }
+  ],
+  "independent_execution": {
+    "related_cases": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "breakdown": "4actual service/native store regressions +2native delegation +2publisher guard units",
+    "evidence": "round2-tests.json",
+    "raw_log": "round2-tests.log",
+    "counting_rule": "These8 overlap root64 suite; do not add to64. Service tests include reviewer-authored probes; this result validates root runtime change, not an independent claim that reviewer authored test design was itself separately reviewed."
+  },
+  "static_review_scope": [
+    "integration/candidate.patch both original source files",
+    "Last mutable package/release validation happens before immutable consumer binding",
+    "Status is freshly obtained in same batch rather than cached across the earlier caller preflight",
+    "Original owner error normalization and unavailable status refusal preserved",
+    "Fallback for existing factory adapters without call_batch preserves old original methods",
+    "Producer ACK/uncertain/event/accounting and publisher permission engines untouched"
+  ],
+  "limits": [
+    "No production source file or real service modified in this review.",
+    "Original17fault matrix and8pre-dedup unit executions were independently run earlier; current affected8 rerun instead of whole64 or benchmarks.",
+    "Current full new benchmark is owned by root; this review neither touches its running root nor endorses unfinished performance results.",
+    "Root or another nonauthor must review4service test design; final actualC/manifest/inputlock binding remains required.",
+    "Publisher is a layered original guard unit with explicit synthetic preview/carrier boundary, not full public-CLI/production publication qualification."
+  ],
+  "cleanup": {
+    "temporary_roots_removed": true,
+    "frozen_code_snapshot_retained_for_review": true,
+    "original_service_touched": false,
+    "production_db_writes": false,
+    "paid_api_calls": 0,
+    "network_calls": 0
+  }
+}

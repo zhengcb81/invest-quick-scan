@@ -1,0 +1,98 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_______ test_external_dns_api_rejected_before_secondary_sentinel[name] ________
+
+operation = 'name'
+
+    @pytest.mark.parametrize('operation',['name','name_ex','addr','nameinfo'])
+    def test_external_dns_api_rejected_before_secondary_sentinel(operation):
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+>           if operation=='name':socket.gethostbyname('external.invalid')
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.tedns-2c8dce\test_dns_boundary.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'socket.gethostbyname', args = ('external.invalid',)
+
+    def no_dns_sentinel(event,args):
+        if event in {'socket.gethostbyname','socket.gethostbyaddr','socket.getnameinfo'}:
+>           raise AssertionError('secondary_sentinel_original_guard_missed_'+event)
+E           AssertionError: secondary_sentinel_original_guard_missed_socket.gethostbyname
+
+.tedns-2c8dce\test_dns_boundary.py:6: AssertionError
+______ test_external_dns_api_rejected_before_secondary_sentinel[name_ex] ______
+
+operation = 'name_ex'
+
+    @pytest.mark.parametrize('operation',['name','name_ex','addr','nameinfo'])
+    def test_external_dns_api_rejected_before_secondary_sentinel(operation):
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+            if operation=='name':socket.gethostbyname('external.invalid')
+>           elif operation=='name_ex':socket.gethostbyname_ex('external.invalid')
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.tedns-2c8dce\test_dns_boundary.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'socket.gethostbyname', args = ('external.invalid',)
+
+    def no_dns_sentinel(event,args):
+        if event in {'socket.gethostbyname','socket.gethostbyaddr','socket.getnameinfo'}:
+>           raise AssertionError('secondary_sentinel_original_guard_missed_'+event)
+E           AssertionError: secondary_sentinel_original_guard_missed_socket.gethostbyname
+
+.tedns-2c8dce\test_dns_boundary.py:6: AssertionError
+_______ test_external_dns_api_rejected_before_secondary_sentinel[addr] ________
+
+operation = 'addr'
+
+    @pytest.mark.parametrize('operation',['name','name_ex','addr','nameinfo'])
+    def test_external_dns_api_rejected_before_secondary_sentinel(operation):
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+            if operation=='name':socket.gethostbyname('external.invalid')
+            elif operation=='name_ex':socket.gethostbyname_ex('external.invalid')
+>           elif operation=='addr':socket.gethostbyaddr('203.0.113.1')
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.tedns-2c8dce\test_dns_boundary.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'socket.gethostbyaddr', args = ('203.0.113.1',)
+
+    def no_dns_sentinel(event,args):
+        if event in {'socket.gethostbyname','socket.gethostbyaddr','socket.getnameinfo'}:
+>           raise AssertionError('secondary_sentinel_original_guard_missed_'+event)
+E           AssertionError: secondary_sentinel_original_guard_missed_socket.gethostbyaddr
+
+.tedns-2c8dce\test_dns_boundary.py:6: AssertionError
+_____ test_external_dns_api_rejected_before_secondary_sentinel[nameinfo] ______
+
+operation = 'nameinfo'
+
+    @pytest.mark.parametrize('operation',['name','name_ex','addr','nameinfo'])
+    def test_external_dns_api_rejected_before_secondary_sentinel(operation):
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+            if operation=='name':socket.gethostbyname('external.invalid')
+            elif operation=='name_ex':socket.gethostbyname_ex('external.invalid')
+            elif operation=='addr':socket.gethostbyaddr('203.0.113.1')
+>           else:socket.getnameinfo(('203.0.113.1',443),0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.tedns-2c8dce\test_dns_boundary.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'socket.getnameinfo', args = (('203.0.113.1', 443),)
+
+    def no_dns_sentinel(event,args):
+        if event in {'socket.gethostbyname','socket.gethostbyaddr','socket.getnameinfo'}:
+>           raise AssertionError('secondary_sentinel_original_guard_missed_'+event)
+E           AssertionError: secondary_sentinel_original_guard_missed_socket.getnameinfo
+
+.tedns-2c8dce\test_dns_boundary.py:6: AssertionError
+=========================== short test summary info ===========================
+FAILED .tedns-2c8dce/test_dns_boundary.py::test_external_dns_api_rejected_before_secondary_sentinel[name]
+FAILED .tedns-2c8dce/test_dns_boundary.py::test_external_dns_api_rejected_before_secondary_sentinel[name_ex]
+FAILED .tedns-2c8dce/test_dns_boundary.py::test_external_dns_api_rejected_before_secondary_sentinel[addr]
+FAILED .tedns-2c8dce/test_dns_boundary.py::test_external_dns_api_rejected_before_secondary_sentinel[nameinfo]
+4 failed in 0.16s

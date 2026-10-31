@@ -1,0 +1,477 @@
+{
+  "source_sha256": "ec1a98b166796c6cefce6d7c470935cd13b68ff5a4845f2530b06c8097ec9796",
+  "cases": [
+    {
+      "case": "ordinary_missing_revision",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ],
+        "clock_only_assessment": {
+          "protocol": "iqs.temporal_clock_explanation/1.0.0",
+          "context_assessed": false,
+          "reuse_authorized": false,
+          "clock_assessments": [
+            {
+              "clock": "fact_valid_clock",
+              "reading": "2026-10-31T11:00:00Z",
+              "max_age_hours": 24,
+              "status": "fresh",
+              "reason_code": "fact_valid_clock_fresh",
+              "decision_effect": "ok"
+            },
+            {
+              "clock": "verification_clock",
+              "reading": null,
+              "status": "missing",
+              "reason_code": "verification_missing",
+              "decision_effect": "refresh",
+              "max_age_hours": null
+            }
+          ],
+          "source_constraints": {
+            "status": "ok",
+            "reason_codes": [],
+            "event_status": null
+          },
+          "actual_source_dates": {
+            "observed_at": "2026-10-31T11:00:00Z",
+            "information_as_of": "2026-10-30",
+            "metric_period_end": null,
+            "verified_at": null,
+            "event_invalidated_at": null
+          }
+        }
+      }
+    },
+    {
+      "case": "model_self_verification",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ],
+        "clock_only_assessment": {
+          "protocol": "iqs.temporal_clock_explanation/1.0.0",
+          "context_assessed": false,
+          "reuse_authorized": false,
+          "clock_assessments": [
+            {
+              "clock": "fact_valid_clock",
+              "reading": "2026-10-31T11:00:00Z",
+              "max_age_hours": 24,
+              "status": "fresh",
+              "reason_code": "fact_valid_clock_fresh",
+              "decision_effect": "ok"
+            },
+            {
+              "clock": "verification_clock",
+              "reading": null,
+              "status": "missing",
+              "reason_code": "verification_missing",
+              "decision_effect": "refresh",
+              "max_age_hours": null
+            }
+          ],
+          "source_constraints": {
+            "status": "ok",
+            "reason_codes": [],
+            "event_status": null
+          },
+          "actual_source_dates": {
+            "observed_at": "2026-10-31T11:00:00Z",
+            "information_as_of": "2026-10-30",
+            "metric_period_end": null,
+            "verified_at": null,
+            "event_invalidated_at": null
+          }
+        }
+      }
+    },
+    {
+      "case": "future_information",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown",
+          "information_date_in_future"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ]
+      }
+    },
+    {
+      "case": "information_after_cutoff",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown",
+          "information_after_cutoff"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ]
+      }
+    },
+    {
+      "case": "unknown_publication",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown",
+          "publication_unknown"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ],
+        "clock_only_assessment": {
+          "protocol": "iqs.temporal_clock_explanation/1.0.0",
+          "context_assessed": false,
+          "reuse_authorized": false,
+          "clock_assessments": [
+            {
+              "clock": "fact_valid_clock",
+              "reading": "2026-10-31T11:00:00Z",
+              "max_age_hours": 24,
+              "status": "fresh",
+              "reason_code": "fact_valid_clock_fresh",
+              "decision_effect": "ok"
+            },
+            {
+              "clock": "verification_clock",
+              "reading": null,
+              "status": "missing",
+              "reason_code": "verification_missing",
+              "decision_effect": "refresh",
+              "max_age_hours": null
+            }
+          ],
+          "source_constraints": {
+            "status": "not_assessable",
+            "reason_codes": [
+              "publication_unknown"
+            ],
+            "event_status": null
+          },
+          "actual_source_dates": {
+            "observed_at": "2026-10-31T11:00:00Z",
+            "information_as_of": "2026-10-30",
+            "metric_period_end": null,
+            "verified_at": null,
+            "event_invalidated_at": null
+          }
+        }
+      }
+    },
+    {
+      "case": "withdrawn_source",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown",
+          "source_withdrawn_or_corrected"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ],
+        "clock_only_assessment": {
+          "protocol": "iqs.temporal_clock_explanation/1.0.0",
+          "context_assessed": false,
+          "reuse_authorized": false,
+          "clock_assessments": [
+            {
+              "clock": "fact_valid_clock",
+              "reading": "2026-10-31T11:00:00Z",
+              "max_age_hours": 24,
+              "status": "fresh",
+              "reason_code": "fact_valid_clock_fresh",
+              "decision_effect": "ok"
+            },
+            {
+              "clock": "verification_clock",
+              "reading": null,
+              "status": "missing",
+              "reason_code": "verification_missing",
+              "decision_effect": "refresh",
+              "max_age_hours": null
+            }
+          ],
+          "source_constraints": {
+            "status": "refresh_required",
+            "reason_codes": [
+              "source_withdrawn_or_corrected"
+            ],
+            "event_status": null
+          },
+          "actual_source_dates": {
+            "observed_at": "2026-10-31T11:00:00Z",
+            "information_as_of": "2026-10-30",
+            "metric_period_end": null,
+            "verified_at": null,
+            "event_invalidated_at": null
+          }
+        }
+      }
+    },
+    {
+      "case": "future_publication",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown",
+          "evidence_published_after_cutoff",
+          "evidence_published_in_future"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ],
+        "clock_only_assessment": {
+          "protocol": "iqs.temporal_clock_explanation/1.0.0",
+          "context_assessed": false,
+          "reuse_authorized": false,
+          "clock_assessments": [
+            {
+              "clock": "fact_valid_clock",
+              "reading": "2026-10-31T11:00:00Z",
+              "max_age_hours": 24,
+              "status": "fresh",
+              "reason_code": "fact_valid_clock_fresh",
+              "decision_effect": "ok"
+            },
+            {
+              "clock": "verification_clock",
+              "reading": null,
+              "status": "missing",
+              "reason_code": "verification_missing",
+              "decision_effect": "refresh",
+              "max_age_hours": null
+            }
+          ],
+          "source_constraints": {
+            "status": "refresh_required",
+            "reason_codes": [
+              "evidence_published_after_cutoff",
+              "evidence_published_in_future"
+            ],
+            "event_status": null
+          },
+          "actual_source_dates": {
+            "observed_at": "2026-10-31T11:00:00Z",
+            "information_as_of": "2026-10-30",
+            "metric_period_end": null,
+            "verified_at": null,
+            "event_invalidated_at": null
+          }
+        }
+      }
+    },
+    {
+      "case": "event_invalidated",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown",
+          "event_invalidated"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ],
+        "clock_only_assessment": {
+          "protocol": "iqs.temporal_clock_explanation/1.0.0",
+          "context_assessed": false,
+          "reuse_authorized": false,
+          "clock_assessments": [
+            {
+              "clock": "fact_valid_clock",
+              "reading": "2026-10-31T11:00:00Z",
+              "max_age_hours": 24,
+              "status": "fresh",
+              "reason_code": "fact_valid_clock_fresh",
+              "decision_effect": "ok"
+            },
+            {
+              "clock": "verification_clock",
+              "reading": null,
+              "status": "missing",
+              "reason_code": "verification_missing",
+              "decision_effect": "refresh",
+              "max_age_hours": null
+            }
+          ],
+          "source_constraints": {
+            "status": "refresh_required",
+            "reason_codes": [
+              "event_invalidated"
+            ],
+            "event_status": "invalidated"
+          },
+          "actual_source_dates": {
+            "observed_at": "2026-10-31T11:00:00Z",
+            "information_as_of": "2026-10-30",
+            "metric_period_end": null,
+            "verified_at": null,
+            "event_invalidated_at": "2026-10-30T00:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "case": "malformed_event",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown",
+          "event_invalidated_at_invalid"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ]
+      }
+    },
+    {
+      "case": "scheduled_event",
+      "outcome": {
+        "observation_id": "OBS_TIME_SYNTHETIC",
+        "question_id": "IQS_01",
+        "field_id": "score.iqs_01",
+        "decision": "not_assessable",
+        "reason_codes": [
+          "current_context_not_verified",
+          "native_identity_revision_unknown"
+        ],
+        "current_context_verified": false,
+        "reuse_authorized": false,
+        "verification_receipt_available": false,
+        "knowledge_kind": "structural",
+        "required_clocks": [
+          "fact_valid_clock",
+          "verification_clock"
+        ],
+        "clock_only_assessment": {
+          "protocol": "iqs.temporal_clock_explanation/1.0.0",
+          "context_assessed": false,
+          "reuse_authorized": false,
+          "clock_assessments": [
+            {
+              "clock": "fact_valid_clock",
+              "reading": "2026-10-31T11:00:00Z",
+              "max_age_hours": 24,
+              "status": "fresh",
+              "reason_code": "fact_valid_clock_fresh",
+              "decision_effect": "ok"
+            },
+            {
+              "clock": "verification_clock",
+              "reading": null,
+              "status": "missing",
+              "reason_code": "verification_missing",
+              "decision_effect": "refresh",
+              "max_age_hours": null
+            }
+          ],
+          "source_constraints": {
+            "status": "ok",
+            "reason_codes": [],
+            "event_status": "scheduled"
+          },
+          "actual_source_dates": {
+            "observed_at": "2026-10-31T11:00:00Z",
+            "information_as_of": "2026-10-30",
+            "metric_period_end": null,
+            "verified_at": null,
+            "event_invalidated_at": "2027-01-01T00:00:00Z"
+          }
+        }
+      }
+    }
+  ]
+}

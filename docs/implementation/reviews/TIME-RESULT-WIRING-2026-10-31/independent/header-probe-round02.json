@@ -1,0 +1,15 @@
+{
+  "scenario": "conflicting requested and envelope entity",
+  "main_answer_count": 0,
+  "header_text": "返回数据的公司身份冲突返回的公司与请求不一致；以下异常原记录已隔离，汇总与资格不作为本公司结果展示。身份冲突的原始返回（仅供核对）{\n  \"entity\": {\n    \"entity_id\": \"ENT_FOREIGN\",\n    \"canonical_name\": \"Foreign declared company\"\n  },\n  \"c06_envelope_validated\": true,\n  \"quality\": {\n    \"quality_verified\": true,\n    \"quality_score\": 9.99\n  },\n  \"groups\": [\n    {\n      \"fields\": [\n        {\n          \"entity_id\": \"ENT_FOREIGN\",\n          \"observation_id\": \"FOREIGN_OBSERVATION\",\n          \"question_id\": \"IQS_01\",\n          \"field_id\": \"score.x\",\n          \"status\": \"scored\",\n          \"score\": 10\n        }\n      ]\n    }\n  ],\n  \"gaps\": []\n}",
+  "calls": [
+    {
+      "url": "/api/product/entity-view?id=ENT_REQUESTED",
+      "method": "GET"
+    }
+  ],
+  "normal_quality_field_present": false,
+  "normal_c06_field_present": false,
+  "identity_conflict_notice_present": true,
+  "original_quality_preserved_in_raw": true
+}

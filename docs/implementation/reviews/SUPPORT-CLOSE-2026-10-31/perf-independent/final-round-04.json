@@ -1,0 +1,30 @@
+{
+  "protocol": "iqs.independent_perf_final_review_round/1.0",
+  "reviewer_agent_id": "/root/review_answer_close31",
+  "payload_commit": "6803fae2f415e49fac1708daae9e1879bc4f62ff",
+  "manifest_sha256": "9b556f438b6d288c1f9bc58b080589595f252f73c1af532cf48630feacc0699f",
+  "recorded_at_utc": "2026-10-31T22:33:39.366747+00:00",
+  "status": "changes_required",
+  "resolved_findings": [
+    {
+      "id": "PERF-PROVENANCE-REGRESSION-01",
+      "resolution": "Fixture supplies required frozen source declaration, keeps validator and injected child-failure target active. Independent final5 target passed; old failure log preserved."
+    }
+  ],
+  "open_findings": [
+    {
+      "id": "PERF-LEGACY-GENERATOR-01",
+      "priority": "medium",
+      "paths": [
+        "tools/build_handoff.py",
+        "tools/build_payload_manifest.py"
+      ],
+      "reason": "Active payload CLI generators can reintroduce rejected cached-preview C1 integration instructions and stale unclosed fault matrix claims, and reduce current51 Git-byte artifact manifest to old28 worktree-byte paths. Current README/design are fixed but generation would regress them.",
+      "required": "Retire old mutating CLI entrypoints fail-closed before any write while retaining pure evidence loader used by tests, or update generators and verify their output references current safe design/current artifact set. No benchmark rerun needed."
+    }
+  ],
+  "final_measurements_verified": true,
+  "final_source_git_blobs_verified": 51,
+  "independent_final_probe_passed": 5,
+  "production_qualification_granted": false
+}

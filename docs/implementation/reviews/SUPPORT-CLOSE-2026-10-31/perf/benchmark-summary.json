@@ -1,0 +1,906 @@
+{
+  "protocol": "iqs.original_import_benchmark/1.0.0",
+  "bench_id": "close31-fresh-preflight",
+  "package_id": "IMPORT-PERF-30",
+  "dataset_kind": "synthetic_native",
+  "packet_counts": [
+    1,
+    3,
+    33,
+    36
+  ],
+  "repetitions_per_invocation": 3,
+  "variants": [
+    "baseline",
+    "candidate"
+  ],
+  "results": {
+    "1": {
+      "baseline": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 8514.0,
+          "min": 5030.6,
+          "max": 8924.3,
+          "stdev": 2139.4,
+          "values": [
+            8924.3,
+            8514.0,
+            5030.6
+          ]
+        },
+        "spawn_count": {
+          "median": 10,
+          "values": [
+            10,
+            10,
+            10
+          ]
+        },
+        "fixture_ms": {
+          "median": 523.7
+        },
+        "verify_ms": {
+          "median": 23.6
+        },
+        "spawn_breakdown": {
+          "spawn_count": 10,
+          "wall_in_spawn_ms": 10861.0,
+          "by_operation": {
+            "inspection": {
+              "count": 2,
+              "total_ms": 4406.4,
+              "mean_ms": 2203.2
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2833.0,
+              "mean_ms": 1416.5
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 1073.9,
+              "mean_ms": 1073.9
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 1059.0,
+              "mean_ms": 1059.0
+            },
+            "owner_worker:import_preview": {
+              "count": 2,
+              "total_ms": 871.3,
+              "mean_ms": 435.6
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 344.2,
+              "mean_ms": 344.2
+            },
+            "owner_worker:status": {
+              "count": 1,
+              "total_ms": 273.2,
+              "mean_ms": 273.2
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 1
+        },
+        "work_item_status_counts": {
+          "delivered": 1
+        },
+        "delivery_state_counts": {
+          "delivered": 1
+        }
+      },
+      "candidate": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 5802.6,
+          "min": 5185.8,
+          "max": 6994.3,
+          "stdev": 919.4,
+          "values": [
+            5185.8,
+            5802.6,
+            6994.3
+          ]
+        },
+        "spawn_count": {
+          "median": 9,
+          "values": [
+            9,
+            9,
+            9
+          ]
+        },
+        "fixture_ms": {
+          "median": 420.9
+        },
+        "verify_ms": {
+          "median": 19.9
+        },
+        "spawn_breakdown": {
+          "spawn_count": 9,
+          "wall_in_spawn_ms": 6426.5,
+          "by_operation": {
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2030.4,
+              "mean_ms": 1015.2
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 1771.0,
+              "mean_ms": 885.5
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 903.3,
+              "mean_ms": 903.3
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 886.9,
+              "mean_ms": 886.9
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 315.0,
+              "mean_ms": 315.0
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 1,
+              "total_ms": 268.1,
+              "mean_ms": 268.1
+            },
+            "owner_worker:import_preview": {
+              "count": 1,
+              "total_ms": 251.7,
+              "mean_ms": 251.7
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 1
+        },
+        "work_item_status_counts": {
+          "delivered": 1
+        },
+        "delivery_state_counts": {
+          "delivered": 1
+        }
+      }
+    },
+    "3": {
+      "baseline": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 14349.0,
+          "min": 14117.9,
+          "max": 19467.2,
+          "stdev": 3023.9,
+          "values": [
+            14117.9,
+            14349.0,
+            19467.2
+          ]
+        },
+        "spawn_count": {
+          "median": 22,
+          "values": [
+            22,
+            22,
+            22
+          ]
+        },
+        "fixture_ms": {
+          "median": 1294.3
+        },
+        "verify_ms": {
+          "median": 58.8
+        },
+        "spawn_breakdown": {
+          "spawn_count": 22,
+          "wall_in_spawn_ms": 16613.1,
+          "by_operation": {
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 3418.6,
+              "mean_ms": 1709.3
+            },
+            "ack": {
+              "count": 3,
+              "total_ms": 2996.3,
+              "mean_ms": 998.8
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2976.3,
+              "mean_ms": 1488.2
+            },
+            "bind": {
+              "count": 3,
+              "total_ms": 2916.5,
+              "mean_ms": 972.2
+            },
+            "owner_worker:import_preview": {
+              "count": 6,
+              "total_ms": 2694.1,
+              "mean_ms": 449.0
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 877.3,
+              "mean_ms": 292.4
+            },
+            "owner_worker:status": {
+              "count": 3,
+              "total_ms": 733.9,
+              "mean_ms": 244.6
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 3
+        },
+        "work_item_status_counts": {
+          "delivered": 3
+        },
+        "delivery_state_counts": {
+          "delivered": 3
+        }
+      },
+      "candidate": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 11141.4,
+          "min": 10154.2,
+          "max": 12732.6,
+          "stdev": 1300.9,
+          "values": [
+            12732.6,
+            10154.2,
+            11141.4
+          ]
+        },
+        "spawn_count": {
+          "median": 19,
+          "values": [
+            19,
+            19,
+            19
+          ]
+        },
+        "fixture_ms": {
+          "median": 1201.5
+        },
+        "verify_ms": {
+          "median": 47.4
+        },
+        "spawn_breakdown": {
+          "spawn_count": 19,
+          "wall_in_spawn_ms": 14155.4,
+          "by_operation": {
+            "ack": {
+              "count": 3,
+              "total_ms": 3430.3,
+              "mean_ms": 1143.4
+            },
+            "bind": {
+              "count": 3,
+              "total_ms": 3212.0,
+              "mean_ms": 1070.7
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2357.9,
+              "mean_ms": 1179.0
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2238.2,
+              "mean_ms": 1119.1
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 1058.8,
+              "mean_ms": 352.9
+            },
+            "owner_worker:import_preview": {
+              "count": 3,
+              "total_ms": 939.9,
+              "mean_ms": 313.3
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 3,
+              "total_ms": 918.3,
+              "mean_ms": 306.1
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 3
+        },
+        "work_item_status_counts": {
+          "delivered": 3
+        },
+        "delivery_state_counts": {
+          "delivered": 3
+        }
+      }
+    },
+    "33": {
+      "baseline": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 120804.6,
+          "min": 120296.2,
+          "max": 132580.6,
+          "stdev": 6950.3,
+          "values": [
+            120296.2,
+            132580.6,
+            120804.6
+          ]
+        },
+        "spawn_count": {
+          "median": 206,
+          "values": [
+            206,
+            206,
+            206
+          ]
+        },
+        "fixture_ms": {
+          "median": 10274.8
+        },
+        "verify_ms": {
+          "median": 328.3
+        },
+        "spawn_breakdown": {
+          "spawn_count": 206,
+          "wall_in_spawn_ms": 122255.3,
+          "by_operation": {
+            "bind": {
+              "count": 33,
+              "total_ms": 37830.6,
+              "mean_ms": 1146.4
+            },
+            "ack": {
+              "count": 33,
+              "total_ms": 37417.4,
+              "mean_ms": 1133.9
+            },
+            "owner_worker:import_preview": {
+              "count": 66,
+              "total_ms": 20455.3,
+              "mean_ms": 309.9
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 10584.5,
+              "mean_ms": 320.7
+            },
+            "owner_worker:status": {
+              "count": 33,
+              "total_ms": 7697.3,
+              "mean_ms": 233.3
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 4236.1,
+              "mean_ms": 1059.0
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 4034.0,
+              "mean_ms": 1008.5
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 33
+        },
+        "work_item_status_counts": {
+          "delivered": 33
+        },
+        "delivery_state_counts": {
+          "delivered": 33
+        }
+      },
+      "candidate": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 114634.1,
+          "min": 108455.3,
+          "max": 213954.3,
+          "stdev": 59206.9,
+          "values": [
+            108455.3,
+            114634.1,
+            213954.3
+          ]
+        },
+        "spawn_count": {
+          "median": 173,
+          "values": [
+            173,
+            173,
+            173
+          ]
+        },
+        "fixture_ms": {
+          "median": 9347.6
+        },
+        "verify_ms": {
+          "median": 503.2
+        },
+        "spawn_breakdown": {
+          "spawn_count": 173,
+          "wall_in_spawn_ms": 111350.2,
+          "by_operation": {
+            "ack": {
+              "count": 33,
+              "total_ms": 35903.2,
+              "mean_ms": 1088.0
+            },
+            "bind": {
+              "count": 33,
+              "total_ms": 35689.6,
+              "mean_ms": 1081.5
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 10725.4,
+              "mean_ms": 325.0
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 33,
+              "total_ms": 10265.0,
+              "mean_ms": 311.1
+            },
+            "owner_worker:import_preview": {
+              "count": 33,
+              "total_ms": 9604.7,
+              "mean_ms": 291.1
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 4588.3,
+              "mean_ms": 1147.1
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 4574.0,
+              "mean_ms": 1143.5
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 33
+        },
+        "work_item_status_counts": {
+          "delivered": 33
+        },
+        "delivery_state_counts": {
+          "delivered": 33
+        }
+      }
+    },
+    "36": {
+      "baseline": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 303495.8,
+          "min": 182369.7,
+          "max": 309252.9,
+          "stdev": 71652.0,
+          "values": [
+            182369.7,
+            309252.9,
+            303495.8
+          ]
+        },
+        "spawn_count": {
+          "median": 224,
+          "values": [
+            224,
+            224,
+            224
+          ]
+        },
+        "fixture_ms": {
+          "median": 15797.6
+        },
+        "verify_ms": {
+          "median": 513.7
+        },
+        "spawn_breakdown": {
+          "spawn_count": 224,
+          "wall_in_spawn_ms": 186551.6,
+          "by_operation": {
+            "bind": {
+              "count": 36,
+              "total_ms": 57102.8,
+              "mean_ms": 1586.2
+            },
+            "ack": {
+              "count": 36,
+              "total_ms": 56555.4,
+              "mean_ms": 1571.0
+            },
+            "owner_worker:import_preview": {
+              "count": 72,
+              "total_ms": 30542.6,
+              "mean_ms": 424.2
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 16657.5,
+              "mean_ms": 462.7
+            },
+            "owner_worker:status": {
+              "count": 36,
+              "total_ms": 11722.0,
+              "mean_ms": 325.6
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 7208.2,
+              "mean_ms": 1802.0
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 6763.0,
+              "mean_ms": 1690.8
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 36
+        },
+        "work_item_status_counts": {
+          "delivered": 36
+        },
+        "delivery_state_counts": {
+          "delivered": 36
+        }
+      },
+      "candidate": {
+        "repetitions": 3,
+        "delivery_ms": {
+          "median": 359971.5,
+          "min": 194074.8,
+          "max": 650007.8,
+          "stdev": 230766.0,
+          "values": [
+            650007.8,
+            359971.5,
+            194074.8
+          ]
+        },
+        "spawn_count": {
+          "median": 188,
+          "values": [
+            188,
+            188,
+            188
+          ]
+        },
+        "fixture_ms": {
+          "median": 19543.4
+        },
+        "verify_ms": {
+          "median": 771.9
+        },
+        "spawn_breakdown": {
+          "spawn_count": 188,
+          "wall_in_spawn_ms": 653768.5,
+          "by_operation": {
+            "ack": {
+              "count": 36,
+              "total_ms": 236872.3,
+              "mean_ms": 6579.8
+            },
+            "bind": {
+              "count": 36,
+              "total_ms": 220271.5,
+              "mean_ms": 6118.7
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 36,
+              "total_ms": 55964.7,
+              "mean_ms": 1554.6
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 54159.8,
+              "mean_ms": 1504.4
+            },
+            "owner_worker:import_preview": {
+              "count": 36,
+              "total_ms": 53470.0,
+              "mean_ms": 1485.3
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 17661.4,
+              "mean_ms": 4415.4
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 15368.9,
+              "mean_ms": 3842.2
+            }
+          }
+        },
+        "cold_or_warm": {
+          "1": "cold",
+          "2": "warm",
+          "3": "warm"
+        },
+        "ack_status_counts": {
+          "accepted": 36
+        },
+        "work_item_status_counts": {
+          "delivered": 36
+        },
+        "delivery_state_counts": {
+          "delivered": 36
+        }
+      }
+    }
+  },
+  "performance": {
+    "1": {
+      "baseline": {
+        "median": 8514.0,
+        "min": 5030.6,
+        "max": 8924.3,
+        "stdev": 2139.4,
+        "values": [
+          8924.3,
+          8514.0,
+          5030.6
+        ]
+      },
+      "candidate": {
+        "median": 5802.6,
+        "min": 5185.8,
+        "max": 6994.3,
+        "stdev": 919.4,
+        "values": [
+          5185.8,
+          5802.6,
+          6994.3
+        ]
+      },
+      "baseline_spawns": {
+        "median": 10,
+        "values": [
+          10,
+          10,
+          10
+        ]
+      },
+      "candidate_spawns": {
+        "median": 9,
+        "values": [
+          9,
+          9,
+          9
+        ]
+      },
+      "performance_improvement_observed": true,
+      "speedup_ratio_baseline_over_candidate": 1.467
+    },
+    "3": {
+      "baseline": {
+        "median": 14349.0,
+        "min": 14117.9,
+        "max": 19467.2,
+        "stdev": 3023.9,
+        "values": [
+          14117.9,
+          14349.0,
+          19467.2
+        ]
+      },
+      "candidate": {
+        "median": 11141.4,
+        "min": 10154.2,
+        "max": 12732.6,
+        "stdev": 1300.9,
+        "values": [
+          12732.6,
+          10154.2,
+          11141.4
+        ]
+      },
+      "baseline_spawns": {
+        "median": 22,
+        "values": [
+          22,
+          22,
+          22
+        ]
+      },
+      "candidate_spawns": {
+        "median": 19,
+        "values": [
+          19,
+          19,
+          19
+        ]
+      },
+      "performance_improvement_observed": true,
+      "speedup_ratio_baseline_over_candidate": 1.288
+    },
+    "33": {
+      "baseline": {
+        "median": 120804.6,
+        "min": 120296.2,
+        "max": 132580.6,
+        "stdev": 6950.3,
+        "values": [
+          120296.2,
+          132580.6,
+          120804.6
+        ]
+      },
+      "candidate": {
+        "median": 114634.1,
+        "min": 108455.3,
+        "max": 213954.3,
+        "stdev": 59206.9,
+        "values": [
+          108455.3,
+          114634.1,
+          213954.3
+        ]
+      },
+      "baseline_spawns": {
+        "median": 206,
+        "values": [
+          206,
+          206,
+          206
+        ]
+      },
+      "candidate_spawns": {
+        "median": 173,
+        "values": [
+          173,
+          173,
+          173
+        ]
+      },
+      "performance_improvement_observed": true,
+      "speedup_ratio_baseline_over_candidate": 1.054
+    },
+    "36": {
+      "baseline": {
+        "median": 303495.8,
+        "min": 182369.7,
+        "max": 309252.9,
+        "stdev": 71652.0,
+        "values": [
+          182369.7,
+          309252.9,
+          303495.8
+        ]
+      },
+      "candidate": {
+        "median": 359971.5,
+        "min": 194074.8,
+        "max": 650007.8,
+        "stdev": 230766.0,
+        "values": [
+          650007.8,
+          359971.5,
+          194074.8
+        ]
+      },
+      "baseline_spawns": {
+        "median": 224,
+        "values": [
+          224,
+          224,
+          224
+        ]
+      },
+      "candidate_spawns": {
+        "median": 188,
+        "values": [
+          188,
+          188,
+          188
+        ]
+      },
+      "performance_improvement_observed": false,
+      "speedup_ratio_baseline_over_candidate": 0.843
+    }
+  },
+  "semantic_equivalence": {
+    "1": {
+      "snapshots_compared": 6,
+      "distinct_normalized_snapshots": 1,
+      "semantic_equivalence_passed": true,
+      "alignment_note": "Original normalize_snapshot; statuses/ACK/refusal/content hashes retained."
+    },
+    "3": {
+      "snapshots_compared": 6,
+      "distinct_normalized_snapshots": 1,
+      "semantic_equivalence_passed": true,
+      "alignment_note": "Original normalize_snapshot; statuses/ACK/refusal/content hashes retained."
+    },
+    "33": {
+      "snapshots_compared": 6,
+      "distinct_normalized_snapshots": 1,
+      "semantic_equivalence_passed": true,
+      "alignment_note": "Original normalize_snapshot; statuses/ACK/refusal/content hashes retained."
+    },
+    "36": {
+      "snapshots_compared": 6,
+      "distinct_normalized_snapshots": 1,
+      "semantic_equivalence_passed": true,
+      "alignment_note": "Original normalize_snapshot; statuses/ACK/refusal/content hashes retained."
+    }
+  },
+  "source_repositories": {
+    "iqs": {
+      "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+    },
+    "stockqa": {
+      "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+    },
+    "stockwiki": {
+      "root": "C:/Users/郑曾波/Projects/StockWiki",
+      "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+    }
+  },
+  "production_ready": false,
+  "limitations": [
+    "Initial bounded40-minute controller timed out during candidate36;21 complete measurements preserved, missing cell rerun alone after owned cleanup.",
+    "Other desktop load uncontrolled; descriptive wall ratios only, no production throughput/general speedup. Preserved-cell aggregate driver wall unrecorded; per-rep measured delivery/fixture/verify retained."
+  ]
+}

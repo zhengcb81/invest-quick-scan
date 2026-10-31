@@ -1,0 +1,23 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+____________________ test_udp_connect_must_not_be_allowed _____________________
+
+    def test_udp_connect_must_not_be_allowed():
+        with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as s:
+>           with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE RuntimeError
+
+.te31-2f2067\test_udp_boundary.py:4: Failed
+______________ test_explicit_udp_resolution_must_not_be_allowed _______________
+
+    def test_explicit_udp_resolution_must_not_be_allowed():
+>       with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+.te31-2f2067\test_udp_boundary.py:7: Failed
+=========================== short test summary info ===========================
+FAILED .te31-2f2067/test_udp_boundary.py::test_udp_connect_must_not_be_allowed
+FAILED .te31-2f2067/test_udp_boundary.py::test_explicit_udp_resolution_must_not_be_allowed
+2 failed in 0.13s

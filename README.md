@@ -85,7 +85,7 @@ python scripts/thin_scan.py --company "宁德时代" --out runs/basic-dry-run --
 
 ## 当前可并行施工包
 
-[2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)包含时间语义、真实回答审计、原入库性能、结果可信度UI四条独立线。[首轮验收报告](docs/implementation/reviews/OUTSOURCE-ALL-2026-10-31/report.md)保留当时的partial结论；后续已补齐回答审计的来源方式、读取精度与未知项，以及性能候选的安全根修和故障矩阵独审。审计完成不等于32份原回答金融全对，性能候选也未安装到原服务。TIME/RESULT现已接入原工作台的只读视图，最终计时与集成验收进展以PWF及[接线说明](docs/implementation/time-result-wiring.md)为准；不据此关闭fresh真实正例、金融准确性或2000家公司吞吐门。
+[2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)四条线已完成本轮后续修补与独审，见[ANSWER/PERF收口](docs/implementation/reviews/SUPPORT-CLOSE-2026-10-31/report.md)与[原TIME/RESULT接线验收](docs/implementation/reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。首轮partial报告保留历史。51来源全尝试仍有16不可读，不据此声称金融全对；性能安全根修/68项不同用例与24合成测量通过，36包实测更慢、未装生产。TIME/RESULT已在原8766三市场页面验收，实际数据与原库文件未改；只读时点解释不授复用，不关闭fresh真实正例、金融准确性或2000家公司吞吐门。
 
 ## 项目分工与配置
 

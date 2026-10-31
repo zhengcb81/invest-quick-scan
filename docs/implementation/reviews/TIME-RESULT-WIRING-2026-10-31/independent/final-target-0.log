@@ -1,0 +1,137 @@
+..............................FF                                         [100%]
+================================== FAILURES ===================================
+____________ test_entity_view_http_does_not_change_original_entity ____________
+
+product = (<dashboard_service.DashboardService object at 0x000001CCE0747A10>, 61280, WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.w31last-1438e7db/native/test_entity_view_http_does_not0'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CCE2C7B5C0>
+
+    def test_entity_view_http_does_not_change_original_entity(product,monkeypatch):
+        original={'entity':{'entity_id':'ENT_FIXTURE'},'groups':[], 'gaps':['fixture_gap']}
+        monkeypatch.setattr(Owner,'entity',lambda self,eid:deepcopy(original),raising=False)
+        monkeypatch.setattr(Owner,'entity_view',lambda self,eid:{'protocol':'iqs.company_research_view/1.0.0',
+            'entity':deepcopy(original),'temporal_shadow':{'protocol':'iqs.temporal_shadow/1.0.0','reuse_authorized':False}},raising=False)
+        _,_,root=product
+        before=list(root.rglob('*'))
+>       status,legacy=call(product,path='/api/product/entity?id=ENT_FIXTURE')
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_dashboard_entity_view_http.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_dashboard_http.py:50: in call
+    connection.request(method, path, body=body, headers=headers or {})
+C:\Miniconda\Lib\http\client.py:1338: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+C:\Miniconda\Lib\http\client.py:1384: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+C:\Miniconda\Lib\http\client.py:1333: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+C:\Miniconda\Lib\http\client.py:1093: in _send_output
+    self.send(msg)
+C:\Miniconda\Lib\http\client.py:1037: in send
+    self.connect()
+C:\Miniconda\Lib\http\client.py:1003: in connect
+    self.sock = self._create_connection(
+C:\Miniconda\Lib\socket.py:864: in create_connection
+    raise exceptions[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+address = ('127.0.0.1', 61280), timeout = 5, source_address = None
+all_errors = False
+
+    def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
+                          source_address=None, *, all_errors=False):
+        """Connect to *address* and return the socket object.
+    
+        Convenience function.  Connect to *address* (a 2-tuple ``(host,
+        port)``) and return the socket object.  Passing the optional
+        *timeout* parameter will set the timeout on the socket instance
+        before attempting to connect.  If no *timeout* is supplied, the
+        global default timeout setting returned by :func:`getdefaulttimeout`
+        is used.  If *source_address* is set it must be a tuple of (host, port)
+        for the socket to bind as a source address before making the connection.
+        A host of '' or port 0 tells the OS to use the default. When a connection
+        cannot be created, raises the last error if *all_errors* is False,
+        and an ExceptionGroup of all errors if *all_errors* is True.
+        """
+    
+        host, port = address
+        exceptions = []
+        for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            sock = None
+            try:
+                sock = socket(af, socktype, proto)
+                if timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+                    sock.settimeout(timeout)
+                if source_address:
+                    sock.bind(source_address)
+>               sock.connect(sa)
+E               PermissionError: [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。
+
+C:\Miniconda\Lib\socket.py:849: PermissionError
+_ test_entity_view_requires_registered_identifier_at_native_gateway_boundary __
+
+product = (<dashboard_service.DashboardService object at 0x000001CCE2BFE990>, 61283, WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.w31last-1438e7db/native/test_entity_view_requires_regi0'))
+
+    def test_entity_view_requires_registered_identifier_at_native_gateway_boundary(product):
+>       status,actual=call(product,path='/api/product/entity-view')
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_dashboard_entity_view_http.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_dashboard_http.py:50: in call
+    connection.request(method, path, body=body, headers=headers or {})
+C:\Miniconda\Lib\http\client.py:1338: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+C:\Miniconda\Lib\http\client.py:1384: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+C:\Miniconda\Lib\http\client.py:1333: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+C:\Miniconda\Lib\http\client.py:1093: in _send_output
+    self.send(msg)
+C:\Miniconda\Lib\http\client.py:1037: in send
+    self.connect()
+C:\Miniconda\Lib\http\client.py:1003: in connect
+    self.sock = self._create_connection(
+C:\Miniconda\Lib\socket.py:864: in create_connection
+    raise exceptions[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+address = ('127.0.0.1', 61283), timeout = 5, source_address = None
+all_errors = False
+
+    def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
+                          source_address=None, *, all_errors=False):
+        """Connect to *address* and return the socket object.
+    
+        Convenience function.  Connect to *address* (a 2-tuple ``(host,
+        port)``) and return the socket object.  Passing the optional
+        *timeout* parameter will set the timeout on the socket instance
+        before attempting to connect.  If no *timeout* is supplied, the
+        global default timeout setting returned by :func:`getdefaulttimeout`
+        is used.  If *source_address* is set it must be a tuple of (host, port)
+        for the socket to bind as a source address before making the connection.
+        A host of '' or port 0 tells the OS to use the default. When a connection
+        cannot be created, raises the last error if *all_errors* is False,
+        and an ExceptionGroup of all errors if *all_errors* is True.
+        """
+    
+        host, port = address
+        exceptions = []
+        for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            sock = None
+            try:
+                sock = socket(af, socktype, proto)
+                if timeout is not _GLOBAL_DEFAULT_TIMEOUT:
+                    sock.settimeout(timeout)
+                if source_address:
+                    sock.bind(source_address)
+>               sock.connect(sa)
+E               PermissionError: [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。
+
+C:\Miniconda\Lib\socket.py:849: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/test_dashboard_entity_view_http.py::test_entity_view_http_does_not_change_original_entity
+FAILED tests/test_dashboard_entity_view_http.py::test_entity_view_requires_registered_identifier_at_native_gateway_boundary
+2 failed, 30 passed in 5.54s

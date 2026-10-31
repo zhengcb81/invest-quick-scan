@@ -1,0 +1,43 @@
+{
+  "protocol": "iqs.controller_independent_test_entry_review/1.0.0",
+  "status": "changes_required_pending_final_C",
+  "reviewer_agent_id": "/root/review_perf_close31",
+  "author_agent_id": "/root",
+  "scope": "Test entry/partition manifest/current-pytest network isolation only; signed production wiring C1ee64 and UI03d6b unaffected.",
+  "open_findings": [
+    {
+      "id": "ENTRY31-I02",
+      "severity": "medium",
+      "reason": "Real gethostbyname/name_ex/gethostbyaddr/getnameinfo APIs bypass the getaddrinfo-only audit list. Secondary audit sentinel prevented all OS DNS queries while reproducing misses.",
+      "ref": "dns-boundary-before.json"
+    }
+  ],
+  "closed_findings": [
+    {
+      "id": "ENTRY31-I01",
+      "severity": "medium",
+      "reason": "Initial UDP connect/explicit UDP resolution allowed; root added actual socket type/protocol constraints, independent zero-send probes now both pass.",
+      "before_ref": "udp-before.json",
+      "after_ref": "udp-after.json"
+    }
+  ],
+  "verification": {
+    "target_tests_passed": 19,
+    "target_tests_skipped": 0,
+    "PYTHONPATH_absent": true,
+    "fast_plan_files": 54,
+    "all_manifest_files": 114,
+    "target_ref": "target-tests.json",
+    "zero_send_UDP_probes_passed": 2,
+    "DNS_guard_misses_safely_reproduced": 4,
+    "actual_external_DNS_requests": 0
+  },
+  "nonblocking_docs_note": "Ensure current suite table/count says54fast57integration1e2e2native,total114, or marks48/48/99 as historical. run_group wording should specify external denied/literal TCP loopback allowed.",
+  "cleanup": {
+    "own_TEMP_cleaned": true,
+    "production_workspace_writes": false,
+    "source_repositories_written_by_reviewer": false,
+    "paid_api_calls": 0
+  },
+  "reviewed_at_utc": "2026-10-31T22:57:59.113424+00:00"
+}

@@ -1,0 +1,77 @@
+{
+  "protocol": "iqs.controller_independent_wiring_review/1.0.0",
+  "reviewer_agent_id": "/root/review_perf_close31",
+  "author_agent_id": "/root",
+  "status": "passed_staging_only_pending_native_installation",
+  "reviewed_at_utc": "2026-10-31T21:43:49.421918+00:00",
+  "scope": "TIME/RESULT pure vendoring, native read-only sidecar/wrapper and original UI host wiring. Not installation or production financial/reuse qualification.",
+  "source_staging": "runs/close-support31/wiring-stage",
+  "snapshot_round01": "snapshot-round01-hashes.json",
+  "snapshot_round02": "snapshot-round02-hashes.json",
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "WIRE31-I01",
+      "severity": "medium",
+      "path": "scripts/dashboard_temporal.py::build_entity_view/_record",
+      "original_issue": "Malformed legacy groups/fields/execution raised whole-company error in new read-only wrapper.",
+      "initial_repro": "backend-edge-probes.json",
+      "root_fix": "Explicit shape guards return original detail plus named unknown diagnostics; no fabricated current context.",
+      "closure_repro": "backend-edge-probes-round02.json",
+      "status": "closed_in_staging"
+    },
+    {
+      "id": "WIRE31-I02",
+      "severity": "medium",
+      "path": "ui/src/app/ui/product.js::renderResults",
+      "original_issue": "Conflicting entity envelope isolated scored rows but still displayed foreign C06=true and quality9.99 in ordinary requested-company header.",
+      "initial_repro": "header-probe.json",
+      "root_fix": "Actual render now shows identity-conflict section, omits normal C06/quality fields, retains original values only in isolated raw details.",
+      "closure_repro": "header-probe-round02.json",
+      "status": "closed_in_staging"
+    }
+  ],
+  "tests": {
+    "round01_pure_time": 17,
+    "round02_pure_time": 21,
+    "round02_node_host": 12,
+    "native_subprocess_test_intentionally_not_run_until_original_host_installation": 1,
+    "test_failures": 0,
+    "test_skips": 0,
+    "refs": [
+      "round01-tests.json",
+      "round02-tests.json"
+    ],
+    "harness_note": "Initial wrapper printed Unicode to GBK stdout after both test processes passed and cleanup completed; outer print raised UnicodeEncodeError. Receipts retain actual process exit0; second wrapper print fixed to ASCII and exit0. This was harness output only."
+  },
+  "pin_checks": {
+    "fixed_git_artifacts_exact": 8,
+    "current_release_question_bindings_exact": 222,
+    "ref": "round01-pins.json",
+    "pure_vendor_files_unchanged_between_rounds": true
+  },
+  "positive_findings": [
+    "Legacy entity endpoint and refresh DTO/hash/TTL untouched; new versioned wrapper carries separate sidecar.",
+    "Native payload canonical SHA and observation/question/field/scope identity bound before assessment; root additionally bound native/projection/payload observed_at and cutoff.",
+    "Captured context derived from immutable saved payload is explicitly not current route: current_context_verified=false, reuse_authorized=false, read_only_shadow.",
+    "Verification callback fixedNone and model self-asserted verification cannot mint receipt or renew observation.",
+    "Legacy oracle imports currently configured StockWiki, no frozen vendor sys.path injection.",
+    "RESULT panel vendored unchanged; foreign/invalid child and conflicting parent isolated; no runtime aggregate invented as ACK; original score/model/status/date preserved.",
+    "Unknown childnull remains visibly unknown, absent child can inherit actual matching parent only; URL ID is consistency check only.",
+    "History/facts lack current owner state rather than borrow its ACK. Same question scope/model/version variants remain unmerged."
+  ],
+  "pending_before_final_signoff": [
+    "Install as actual original-host candidate, bind real IQS/UI C and file hashes.",
+    "Run native subprocess/read-only workspace comparison, actual service DTO/CLI, browser original-route and original test groups per root integration plan.",
+    "Only then finalize actual-source review; staging hashes are not a production receipt."
+  ],
+  "cleanup": {
+    "short_owned_temps_absent": true,
+    "code_snapshots_retained_in_ignored_runs": true,
+    "real_databases_touched": false,
+    "service_touched": false,
+    "paid_api_calls": 0,
+    "network_calls": 0,
+    "source_repositories_written": false
+  }
+}

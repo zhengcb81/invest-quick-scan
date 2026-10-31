@@ -1,0 +1,131 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "TIME-RESULT-WIRING-2026-10-31",
+  "status": "passed",
+  "reviewer_agent_id": "/root/review_perf_close31",
+  "author_agent_id": "/root",
+  "independence": "Reviewer did not author installed software, committed SDK vendoring, original company observations or controller browser actions. Reviewer wrote only independent fault/readback probes under ignored controller runs.",
+  "iqs_code_commit": "c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2",
+  "ui_code_commit": "03d6b9aa3d45011f09bc77ef69e62b4a1d21e00e",
+  "payload_commit": "c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2",
+  "installed_code_manifest_sha256": "7b420282320da7f1b44455d71447201dbf505b0b27876dc4a4cc8bd91fc9fe2a",
+  "manifest_hash_basis": "Exact Git blob in the signed IQS C; no stale metadata M substitution.",
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "WIRE31-I01",
+      "reason": "Malformed legacy groups/fields/execution now produce explicit read-only unknown diagnostics without losing original detail; independently reproduced closure."
+    },
+    {
+      "id": "WIRE31-I02",
+      "reason": "Conflicting parent envelope now isolates original results and suppresses normal requested-company C06/quality header; original values retained in diagnostic raw only; actual ESM DOM host tests passed."
+    },
+    {
+      "id": "WIRE31-I03",
+      "reason": "Clock-only fallback now validates original event timestamp with pinned parser; past event has explicit invalidation, malformed event is named refusal, future event is scheduled and original value retained. Independent probes passed."
+    }
+  ],
+  "code_checks": {
+    "manifest_files": 25,
+    "fixed_source_vendor_pins": 8,
+    "runtime_target_and_source_blobs_verified": true,
+    "result_js_delta": "Exactly one missing_date wording line; state, rules and original information_as_of unchanged.",
+    "worktree_eol_note": "Only .gitignore, README and pins JSON differ from Git blobs by CRLF/LF; runtime files and vendor target bytes exact.",
+    "ref": "final-code-checks.json"
+  },
+  "verification": {
+    "unique_backend_target_tests_passed": 32,
+    "backend_breakdown": "30 temporal tests incl native owner subprocess;2 HTTP tests. Initial sandbox blocked only HTTP withWinError10013; only2 HTTP tests rerun elevated and both passed.",
+    "ui_target_pytest_cases_passed": 3,
+    "nested_node_cases": 13,
+    "nested_node_not_added_again_to_pytest_count": true,
+    "independent_fallback_probes": 10,
+    "previous_74_backend_and53_ui_not_added_to_overlapping_target_totals": true,
+    "refs": [
+      "final-target-tests.json",
+      "final-http-tests.json",
+      "final-fallback-probes.json"
+    ],
+    "test_logs": {
+      "native_first_attempt_sha256": "856328f8446f4442160f3892133f263e8a154f22c5dba9b64e451227f49ff533",
+      "ui_delta_sha256": "bc72ab47259e4f073bc613282e076f3cf10a7560855537bc7d8b356136b791df",
+      "http_elevated_retry_sha256": "8edafc7dd40c9c1f3f016a4dd905ab7d0c51e48ea19e8a2a459b188c6db6e22b"
+    }
+  },
+  "live_independent_readback": {
+    "ref": "final-live-independent.json",
+    "origin": "http://127.0.0.1:8766",
+    "GET_calls": 8,
+    "markets": 3,
+    "record_counts": [
+      37,
+      38,
+      38
+    ],
+    "questions_per_company": [
+      36,
+      36,
+      36
+    ],
+    "clock_only_records": 112,
+    "unbound_old_release_records": 1,
+    "new_old_entity_DTO_equal_except_generation": true,
+    "no_reuse_permission": true,
+    "served_UI_JS_bytes_match_committed_install": 2,
+    "native_workspace_before_after_aggregate": "f9b2d9ca9d43e451d47ba37222dbc741a76517328b2a3940ed28c383fea74fc9",
+    "native_workspace_files": 292,
+    "native_workspace_hash_unchanged": true,
+    "answer_bodies_saved": false,
+    "csrf_values_read_or_printed": false
+  },
+  "browser_evidence_review": {
+    "ref": "../browser-proof.json",
+    "sha256": "4821c17a42b55059500c80dc799e78bfca3b364f3e82e878f2f33c38675bd41e",
+    "controller_CUA_readonly_original_origin": true,
+    "all_three_original_callbacks_opened": true,
+    "independent_reviewer_reenacted_browser_actions": false,
+    "independent_reviewer_inspected_CATL_screenshot": true,
+    "local_screenshots": [
+      {
+        "filename": "microsoft-trust.png",
+        "bytes": 118264,
+        "sha256": "b033989c262b2c7e528bcf9814326d0f607cee8abaf3ea6b8c134e1cf0993eb8",
+        "local_only": true
+      },
+      {
+        "filename": "catl-trust.png",
+        "bytes": 119892,
+        "sha256": "e0ea343844f4dfe94841c4089c3d85fec088d6a4a236381b00ce1e0480db5715",
+        "local_only": true
+      },
+      {
+        "filename": "tencent-trust.png",
+        "bytes": 117469,
+        "sha256": "aa8cb0c8a7d25be9cf51a94b008bdcf17d901ccfdf7ee7c96142cb82da803114",
+        "local_only": true
+      }
+    ]
+  },
+  "scope": "Original-host read-only TIME/RESULT engine explanation and UI integration only. Old entity DTO, refresh hash/strict schema/TTL and dispatch permissions unchanged. Not a financial truth audit, fresh-cache positive, verification receipt, new score, or production owner eligibility approval.",
+  "limitations": [
+    "112 old observations have clock-only explanation without native identity revision; current route/context remains explicitly unverified.",
+    "One old-release observation remains policy-definition-unbound; no current identity/release is backfilled.",
+    "Per-observation ACK and independent verification receipts remain absent; model self-claims cannot supply them.",
+    "The113 stored observations cover108 question slots plus historical variants; no new scans or answer slots are claimed.",
+    "No production freshness/financial gate is closed by this read-only signoff."
+  ],
+  "cleanup": {
+    "all_owned_short_test_temps_absent": true,
+    "isolated_code_snapshots_retained_in_ignored_runs": true,
+    "production_workspace_writes": false,
+    "source_repository_writes_by_reviewer": false,
+    "real_service_restart_or_mutation_by_reviewer": false,
+    "external_network_calls": 0,
+    "paid_api_calls": 0
+  },
+  "rounds": [
+    "round-01.json",
+    "round-03.json"
+  ],
+  "reviewed_at_utc": "2026-10-31T22:22:31.441396+00:00"
+}

@@ -1,0 +1,187 @@
+{
+  "protocol": "iqs.independent_perf_measurement_verify/1.0",
+  "recorded_at_utc": "2026-10-31T22:31:00.332966+00:00",
+  "status": "passed",
+  "distinct_measurements": 24,
+  "cells": [
+    {
+      "key": "baseline/1",
+      "source_file_sha256": "25bad8c0dd375d0a5fcff8c568322acbddee822e07901bcbbb0a8f6299fa573c",
+      "rep_count": 3,
+      "delivery_ms": [
+        8924.3,
+        8514.0,
+        5030.6
+      ],
+      "spawn_counts": [
+        10,
+        10,
+        10
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    },
+    {
+      "key": "candidate/1",
+      "source_file_sha256": "aa92b8fbe18f269b7cbbbb6e5caad9d1c1b2642e19e3008f4c929969c39a552a",
+      "rep_count": 3,
+      "delivery_ms": [
+        5185.8,
+        5802.6,
+        6994.3
+      ],
+      "spawn_counts": [
+        9,
+        9,
+        9
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    },
+    {
+      "key": "baseline/3",
+      "source_file_sha256": "0f4250770098b5b28d0694ff61167230eb4af551fd27bcd81c202f8b97442232",
+      "rep_count": 3,
+      "delivery_ms": [
+        14117.9,
+        14349.0,
+        19467.2
+      ],
+      "spawn_counts": [
+        22,
+        22,
+        22
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    },
+    {
+      "key": "candidate/3",
+      "source_file_sha256": "6998cfe4f961e3abce8c62cbb848d53b7d597c7e88e5a30ceb13186ae82d14cb",
+      "rep_count": 3,
+      "delivery_ms": [
+        12732.6,
+        10154.2,
+        11141.4
+      ],
+      "spawn_counts": [
+        19,
+        19,
+        19
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    },
+    {
+      "key": "baseline/33",
+      "source_file_sha256": "a8bb03857a08369e941f57b13c3255760bb7d07312502c94706910970fc77be4",
+      "rep_count": 3,
+      "delivery_ms": [
+        120296.2,
+        132580.6,
+        120804.6
+      ],
+      "spawn_counts": [
+        206,
+        206,
+        206
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    },
+    {
+      "key": "candidate/33",
+      "source_file_sha256": "c71bc407aba7a129a3026d4c51f09076d29d8a26489ed8aa44e163f2c9df72db",
+      "rep_count": 3,
+      "delivery_ms": [
+        108455.3,
+        114634.1,
+        213954.3
+      ],
+      "spawn_counts": [
+        173,
+        173,
+        173
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    },
+    {
+      "key": "baseline/36",
+      "source_file_sha256": "a5ec01c42199a18fd33c2d76fc1bb8d8eef6ee0b77ea2dddc049123a165aa7e0",
+      "rep_count": 3,
+      "delivery_ms": [
+        182369.7,
+        309252.9,
+        303495.8
+      ],
+      "spawn_counts": [
+        224,
+        224,
+        224
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    },
+    {
+      "key": "candidate/36",
+      "source_file_sha256": "e8de3e3adb7e532e2f094fd813c42ba87f7e408f5878cd12ae9b81db44c79ba9",
+      "rep_count": 3,
+      "delivery_ms": [
+        650007.8,
+        359971.5,
+        194074.8
+      ],
+      "spawn_counts": [
+        188,
+        188,
+        188
+      ],
+      "all_original_counts_match": true,
+      "first_rep_spawn_breakdown_not_median": true
+    }
+  ],
+  "raw_semantic_snapshots_already_normalized": true,
+  "normalized_snapshot_distinct_count_by_packet": {
+    "1": 1,
+    "3": 1,
+    "33": 1,
+    "36": 1
+  },
+  "speedup_ratios": {
+    "1": 1.467,
+    "3": 1.288,
+    "33": 1.054,
+    "36": 0.843
+  },
+  "candidate_manifest_sha256": "c1170f8a51ce117daa513d8f7325ed6ee09441004ae876cf228a4b346ecb87c1",
+  "patched_source_checks": [
+    {
+      "path": "iqs/scripts/dashboard_owner.py",
+      "baseline_sha256": "6439e06bb0a0c06193a6be097ef014aa27878e92597297d75d91279a90418fb0",
+      "candidate_sha256": "5b18cea525388d345a2e9fa93c49328039397e36e7ea01a5837a797ed024536e",
+      "matches": true
+    },
+    {
+      "path": "iqs/scripts/dashboard_service.py",
+      "baseline_sha256": "87baa2a4d67a5c115b50c6c25a918b878443ed8d42029913c054491ef04860a1",
+      "candidate_sha256": "23caa11959b42e4bc3f75c6f06f6a4e3b6933f4722789b0f8864b53473c627e4",
+      "matches": true
+    }
+  ],
+  "own_patch_temp_removed": true,
+  "initial_timed_out_root_removed": true,
+  "resumed_root_removed": true,
+  "benchmark_success_initial": false,
+  "preserved_original_cell_file_hashes_verified": true,
+  "resumed_preserved_measurements": 21,
+  "resumed_new_measurements": 3,
+  "production_ready": false,
+  "findings": [],
+  "limitations": [
+    "Baseline/candidate ran in fixed sequence on an uncontrolled desktop; descriptive medians only, not a causal speedup estimate or confidence guarantee.",
+    "Each cell spawn_breakdown is its first rep, not aggregate/median timing; per-rep raw records retain all values.",
+    "Cold/warm labels are process order; no OS cache purge.",
+    "Production integration/public-CLI authority authorization and 2000-company throughput are not established."
+  ]
+}

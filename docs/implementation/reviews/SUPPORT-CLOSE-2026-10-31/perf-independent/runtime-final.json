@@ -1,0 +1,188 @@
+{
+  "protocol": "iqs.independent_perf_runtime_review/1.0.0",
+  "status": "passed",
+  "open_findings": [],
+  "reviewer_agent_id": "/root/review_time_result_wiring31",
+  "runtime_patch_author_agent_id": "/root",
+  "payload_commit": "99c350b8f332e5ea6459919fd692af19bab25100",
+  "payload_manifest_sha256": "0b90ae32d11c4b73a23bef8214a21093fb39ec80353f34e182ba4911de9da73b",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "review_scope": "Final-C runtime patch/provenance delta and honest performance description; not full-payload test-design final approval",
+  "previous_effective_red": "PERF-CACHE-SEAM-01 baseline1P/candidate1F; candidate immutable consumer_binding persisted before bundle rejection",
+  "resolved_in_final_C": true,
+  "tested_file_final_C_bindings": [
+    {
+      "path": "tests/integration/test_service_preflight.py",
+      "tested_sha256": "cc036c2764056e9f4144f16beea0dab05ac39149e75a18c6be385f802e70e5df",
+      "git_blob_sha256": "f67a2dc3d409b8dfdcd5a32548c6003907d0e222c970103e03d0cb22f9621edb",
+      "matching_byte_forms": [
+        "one_stronger_bind_call_assertion_static_review_not_independently_rerun"
+      ]
+    },
+    {
+      "path": "tests/unit/test_native_delegation_faults.py",
+      "tested_sha256": "874f318b6a0476b7e39fab6987bdf153c764c49a4449587e694ea90613ed7ee6",
+      "git_blob_sha256": "874f318b6a0476b7e39fab6987bdf153c764c49a4449587e694ea90613ed7ee6",
+      "matching_byte_forms": [
+        "git_blob"
+      ]
+    },
+    {
+      "path": "tests/unit/test_publisher_authority_boundary.py",
+      "tested_sha256": "be7e9cc01cd7c4d64cc6bafb41ab204db6f92c56719a5e8c593a2b673dda0ce5",
+      "git_blob_sha256": "be7e9cc01cd7c4d64cc6bafb41ab204db6f92c56719a5e8c593a2b673dda0ce5",
+      "matching_byte_forms": [
+        "git_blob"
+      ]
+    },
+    {
+      "path": "integration/candidate.patch",
+      "tested_sha256": "0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451",
+      "git_blob_sha256": "0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451",
+      "matching_byte_forms": [
+        "git_blob"
+      ]
+    }
+  ],
+  "actual_prior_independent_run": {
+    "cases": 8,
+    "exit_code": 0,
+    "raw_log_sha256": "ba0baf864a9b439193736e1556954a1c664b1639e99677af00bc837a0214c1dd",
+    "evidence": "round2-tests.json",
+    "rerun_in_this_binding": false,
+    "not_added_to_root64": true
+  },
+  "new_provenance_change": "baseline_commit now comes from locked source_repositories.iqs.commit, not Lab/scratch HEAD; helper validates exact source keys and40hex commits;2 focused tests are reviewed statically, not independently rerun here",
+  "current_archived_measurements": 24,
+  "metrics_recomputed_from_archived_rows": [
+    {
+      "packets": 1,
+      "baseline_median_ms": 8514.0,
+      "candidate_median_ms": 5802.6,
+      "ratio": 1.467
+    },
+    {
+      "packets": 3,
+      "baseline_median_ms": 14349.0,
+      "candidate_median_ms": 11141.4,
+      "ratio": 1.288
+    },
+    {
+      "packets": 33,
+      "baseline_median_ms": 120804.6,
+      "candidate_median_ms": 114634.1,
+      "ratio": 1.054
+    },
+    {
+      "packets": 36,
+      "baseline_median_ms": 303495.8,
+      "candidate_median_ms": 359971.5,
+      "ratio": 0.843
+    }
+  ],
+  "performance_limits_preserved": [
+    "36packet candidate slower:0.843; other desktop load uncontrolled; no general speed guarantee or2000-company/production throughput claim",
+    "21completed measurements preserved after bounded controller timeout; missing3 rerun alone; provenance remains disclosed",
+    "Source inputset uses fixed upstream commits, not temporary harness HEAD"
+  ],
+  "service_probe_authorship": [
+    "/root/review_time_result_wiring31",
+    "/root"
+  ],
+  "test_design_and_full_payload_final_reviewer": "/root/review_answer_close31 (separate; this review does not self-sign reviewer-authored service probes)",
+  "production_ready": false,
+  "financial_qualification_granted": false,
+  "source_writes": false,
+  "paid_api_calls": 0,
+  "network_calls": 0,
+  "reviewed_at_utc": "2026-10-31T22:28:45.830955+00:00",
+  "final_fixture_delta": {
+    "previous_reviewed_commit": "d4679a1c22bad1590b40db7c7c6300f306148e81",
+    "changed_paths": [
+      "tests/unit/test_execution_evidence.py",
+      "docs/payload-manifest.json"
+    ],
+    "reason": "Four fixture lines copy the original required docs/consumed-inputs.json into synthetic driver LAB_ROOT; validation remains active so injected child failure is actually reached. Runtime, patch and24measurements unchanged.",
+    "runtime_artifact_checks": [
+      {
+        "path": "integration/candidate.patch",
+        "sha256": "0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451",
+        "unchanged": true
+      },
+      {
+        "path": "bench/benchmark-summary.json",
+        "sha256": "782eaa4355154345142d23aa25da6a59e704bfb3ee8572ad6d3d528c93c15889",
+        "unchanged": true
+      },
+      {
+        "path": "bench/raw-runs.json",
+        "sha256": "16003b6efab6862caae6233777b04fd6cbef52ff9cec9462c193e1e19e8b5fa1",
+        "unchanged": true
+      },
+      {
+        "path": "bench/candidate-source-manifest.json",
+        "sha256": "a1f4d5c43ae738b008f99f8cf39c52e2615765e0b8e1636efdad4d27c6b0e8f8",
+        "unchanged": true
+      },
+      {
+        "path": "bench/semantic-equivalence.json",
+        "sha256": "06d2e0b37929dc21d08b53e1fd4a75de8d8587cf55a7be2e826e01bab87efc04",
+        "unchanged": true
+      },
+      {
+        "path": "bench/run_benchmark.py",
+        "sha256": "5529bcefeed44989225a78a9b45a10af1a22e4a01e50064675908fe449277de0",
+        "unchanged": true
+      }
+    ],
+    "tests_rerun_by_this_reviewer": false,
+    "full_payload_test_fixture_final_reviewer": "/root/review_answer_close31"
+  },
+  "retired_writer_delta": {
+    "previous_reviewed_commit": "6803fae2f415e49fac1708daae9e1879bc4f62ff",
+    "changed_paths": [
+      "README.md",
+      "docs/payload-manifest.json",
+      "integration/performance-design.md",
+      "tests/unit/test_retired_generators.py",
+      "tools/build_handoff.py",
+      "tools/build_payload_manifest.py"
+    ],
+    "reason": "Both obsolete writer CLIs now return legacy_generator_retired exit2 before writes; compatible read-only load_test_evidence retained. Removes ability to resurrect withdrawn cached preflight or stale28-entry manifest. Runtime/driver/current24measurements remain byte-identical.",
+    "runtime_artifact_checks": [
+      {
+        "path": "integration/candidate.patch",
+        "sha256": "0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451",
+        "unchanged": true
+      },
+      {
+        "path": "bench/benchmark-summary.json",
+        "sha256": "782eaa4355154345142d23aa25da6a59e704bfb3ee8572ad6d3d528c93c15889",
+        "unchanged": true
+      },
+      {
+        "path": "bench/raw-runs.json",
+        "sha256": "16003b6efab6862caae6233777b04fd6cbef52ff9cec9462c193e1e19e8b5fa1",
+        "unchanged": true
+      },
+      {
+        "path": "bench/candidate-source-manifest.json",
+        "sha256": "a1f4d5c43ae738b008f99f8cf39c52e2615765e0b8e1636efdad4d27c6b0e8f8",
+        "unchanged": true
+      },
+      {
+        "path": "bench/semantic-equivalence.json",
+        "sha256": "06d2e0b37929dc21d08b53e1fd4a75de8d8587cf55a7be2e826e01bab87efc04",
+        "unchanged": true
+      },
+      {
+        "path": "bench/run_benchmark.py",
+        "sha256": "5529bcefeed44989225a78a9b45a10af1a22e4a01e50064675908fe449277de0",
+        "unchanged": true
+      }
+    ],
+    "tests_rerun_by_this_reviewer": false,
+    "primary_full_payload_reviewer": "/root/review_answer_close31",
+    "current_tests_as_reported_by_controller": "68 distinct cases; this runtime reviewer did not rerun68 or the final7 affected cases"
+  }
+}

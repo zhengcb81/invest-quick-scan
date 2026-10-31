@@ -1,0 +1,1239 @@
+diff --git a/README.md b/README.md
+index fc681c6..9e68c8b 100644
+--- a/README.md
++++ b/README.md
+@@ -1,63 +1,27 @@
+ # iqs-import-performance-lab — IMPORT-PERF-30
+ 
+-唯一工作目录。施工卡：`C:/Users/郑曾波/Projects/invest-quick-scan/docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/IMPORT-PERF-30.md`。
++当前研究交付：补齐原生故障矩阵并根修缓存预检的安全语义偏差。
++64项关联测试+2来源绑定+2旧写入器退役测试通过（68不同用例）；新增25故障没有重复variant占位。独立复验不重复加总。
++完整设计、当前24次矩阵数字与局限见integration/performance-design.md。
+ 
+-## 边界
++候选仍production_ready=false、financial_qualification_granted=false，未安装到原服务。
++只在vendor_upstream固定输入的副本和synthetic_native临时库运行；不碰8766/真实库/名单/预算，不调收费API。
+ 
+-- 只在本 Lab 的 `vendor_upstream/`（固定 git blob / 工作树原始字节等价形式，见 `docs/consumed-inputs.json` 的 `byte_form` 记录）冻结副本上运行原实现；不执行源仓工作树、不连接 8766/原DB/预算/名单。
+-- 合成 fixture 全部标 `synthetic_native`；实体 `ENT_CONTEXT_FIXTURE`，来源 URL `example.invalid`；不含任何真实公司/授权/密钥。
+-- 基准走原 dashboard 交付编排（`dashboard_delivery_jobs` → `dashboard_service._deliver_scope` → `dashboard_owner` 子进程 + StockQA 辅助子进程），逐包真实子进程，无 mock 导入器。
+-- 网络：无（除本 Lab 可选 loopback，本包基准不使用）。
++当前候选保留绑定前最新预检，仅将import_preview/status放进同一worker节约启动。
++旧C1跳过重复预检已撤销；旧final4报告与旧patch只作历史，存bench/history/final4/。
++当前性能必须引用bench_id=close31-fresh-preflight。原19分钟不由本Lab替换，跨负载收益不保证。
+ 
+-## 分层命令
++## 命令
+ 
+-```bash
+-# 单元（候选逻辑/缓存key/守卫负例）
++```sh
+ python -m pytest tests/unit -q
+-
+-# 集成（语义等价矩阵：正常/幂等/错scope/换主体/撤权后拒绝/部分失败/中断恢复）
+ python -m pytest tests/integration -q
+-
+-# 端到端（真实子进程 33 包交付 + ACK 对账 + 故障路径清理）
+ python -m pytest tests/e2e -q
+-
+-# 候选源码清单（先于 run_benchmark 生成，供 summary 记录 candidate_source_manifest_sha256）
+ python tools/build_candidate_source_manifest.py
+-
+-# 基准矩阵（1/3/33/36 包 × baseline/candidate × 3 次 × 冷/暖进程）
+-python bench/run_benchmark.py --packets 1 3 33 36 --reps 3 --variants baseline candidate
+-python bench/run_benchmark.py --packets 33 --reps 1 --variants baseline   # 单跑示例
+-
+-# 语义等价对照由 run_benchmark.py 在每次矩阵运行时生成 bench/semantic-equivalence.json
++python bench/run_benchmark.py --bench-id <新的本地ID> --packets 1 3 33 36 --reps 3 --variants baseline candidate
+ ```
+ 
+-## 布局
+-
+-- `vendor_upstream/` — 锁定输入冻结副本（iqs scripts/schemas/questions、stockwiki、stockqa）。
+-- `src/iqs_import_perf/` — fixture 构建、编排驱动、插桩、汇总（本包实现）。
+-- `bench/` — 公共基准入口与产物（`benchmark-summary.json`、`raw-runs.json`、`semantic-equivalence.json`）。
+-- `integration/` — `candidate.patch`（仅改 Lab 内原源码副本）、`performance-design.md`。
+-- `.tmp/<run-id>/` — 每轮临时根（基准变体工作副本、fixture 库、运行日志），运行后清理；
+-  原组件的相对路径日志（如 StockQA `logs/stock_qa_*.log`）被 CWD 钉在每个 rep 临时根内，不落 Lab 根。
+-- `bench/runs/` — 全量运行记录（逐 spawn 明细），声明为长期审计证据保留；
+-  交接薄记录为 `bench/raw-runs.json`。
+-
+-## 状态
+-
+-production_ready=false；financial_qualification_granted=false。性能数字只在本机合成库上成立，
+-不得写"原19分钟已降到某值"。
+-
+-## 交接元数据重建
+-
+-`tools/build_handoff.py --review-commit <最终C> --test-evidence <实际执行记录.json>`
+-默认delivery-status=partial，并要求最终不同agent审查绑定当前C、输入锁及payload manifest；
+-如重建前审查仍绑定旧C会拒绝，不能只填一个新commit冒称通过。
+-要求记录包含 `commands` 数组（unit/integration/e2e各一条），每条带
+-真实 argv、cwd、utc、exit_code、passed/failed/skipped、log、log_sha256。
+-计数是执行证据，不能用collect-only或生成时间代替；日志hash变化或失败/空执行会拒绝。
+-当前实际命令与测试结果应以最新验收记录为准，不复用旧22/5口径。
+-基准报告数字读取已归档summary，36包0.955×的负结果仍保留。
+-
+-双变体原worker新增守卫测试覆盖preview后package/release篡改、stale token及exact replay。
+-原source撤权、late/unknown ACK与send_uncertain的完整双变体故障矩阵仍待补，
+-不能把这些新增用例冒称全部语义已验收；候选保留partial且不接生产。
++bench/runs为合成长期证据，.tmp只用于自有可删除fixture，每次运行结束finally清理。
++候选source-manifest绑定真实byte form，controller最终C与metadata M另见docs/handoff/IMPORT-PERF-30/。
++撤权/publisher单元使用原native类的合成typed边界，不能冒称生产公共CLI全链；完整状态机与真正子进程正常矩阵分层验证。
++tools/build_handoff.py与tools/build_payload_manifest.py的旧写入CLI已退役，调用返回legacy_generator_retired、exit2，写前拒绝；load_test_evidence只读函数保留兼容。禁止重跑它们覆盖51项以上的Git清单或生成已撤销C1说明。当前交接由总控按真实最终C、独审和实际执行证据生成M；原parallel_handoff_cli仅作形状/引用预检。生成/collect-only不代替运行。
+diff --git a/bench/run_benchmark.py b/bench/run_benchmark.py
+index ec57db9..cc2913b 100644
+--- a/bench/run_benchmark.py
++++ b/bench/run_benchmark.py
+@@ -16,6 +16,7 @@ from __future__ import annotations
+ import argparse
+ import hashlib
+ import json
++import re
+ import statistics
+ import subprocess
+ import sys
+@@ -26,6 +27,17 @@ LAB_ROOT = Path(__file__).resolve().parents[1]
+ sys.path.insert(0, str(LAB_ROOT / "src"))
+ 
+ 
++def baseline_source_commits() -> dict:
++    """Source identity is locked upstream commits, never a scratch/Lab HEAD."""
++    sources = json.loads((LAB_ROOT / "docs/consumed-inputs.json").read_text(encoding="utf-8"))["source_repositories"]
++    if set(sources) != {"iqs", "stockqa", "stockwiki"} or any(
++        not isinstance(row, dict) or not re.fullmatch(r"[0-9a-f]{40}", str(row.get("commit", "")))
++        for row in sources.values()
++    ):
++        raise ValueError("locked_source_commits_invalid")
++    return sources
++
++
+ def run_invocation(variant: str, packets: int, reps: int, workdir: Path, out: Path) -> dict:
+     command = [
+         sys.executable, "-B", str(LAB_ROOT / "bench" / "run_once.py"),
+@@ -119,9 +131,8 @@ def _run_matrix(args, workdir: Path) -> int:
+         if candidate_manifest_path.is_file() else None
+     )
+     cleanup_record = LAB_ROOT / "docs" / "cleanup.json"
+-    baseline_commit = subprocess.run(
+-        ["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=LAB_ROOT
+-    ).stdout.strip()
++    source_repositories = baseline_source_commits()
++    baseline_commit = source_repositories["iqs"]["commit"]
+     for packets in args.packets:
+         for variant in args.variants:
+             out = runs_dir / f"{args.bench_id}-{variant}-{packets}.json"
+@@ -194,6 +205,7 @@ def _run_matrix(args, workdir: Path) -> int:
+         "variants": args.variants,
+         "hardware_note": "Single operator desktop; relative comparisons only, no wall-clock production claim",
+         "results": results,
++        "source_repositories": source_repositories,
+         "performance": performance,
+         "semantic_equivalence": semantic_equivalence,
+         "limitations": [
+diff --git a/integration/candidate.patch b/integration/candidate.patch
+index 98edb43..af86835 100644
+--- a/integration/candidate.patch
++++ b/integration/candidate.patch
+@@ -1,8 +1,7 @@
+ diff --git a/iqs/scripts/dashboard_owner.py b/iqs/scripts/dashboard_owner.py
+-index 9f13cbd..158175f 100644
+ --- a/iqs/scripts/dashboard_owner.py
+ +++ b/iqs/scripts/dashboard_owner.py
+-@@ -106,9 +106,7 @@ class OwnerGateway:
++@@ -106,9 +106,7 @@
+              raise DashboardOwnerError("deployment_invalid", "timeout_seconds must be between 1 and 180", 503)
+          return config
+  
+@@ -13,10 +12,11 @@ index 9f13cbd..158175f 100644
+          try:
+              result = subprocess.run([config["stockwiki_python"], "-B", str(Path(__file__).resolve()), "--worker"],
+                                      cwd=config["stockwiki_root"], input=json.dumps(request, ensure_ascii=False),
+-@@ -133,6 +131,47 @@ class OwnerGateway:
++@@ -132,6 +130,47 @@
++         if result.returncode != 0:
+              raise DashboardOwnerError("owner_process_failed", "StockWiki worker failed", 502)
+          return response["result"]
+- 
+++
+ +    def _call(self, operation, payload=None):
+ +        config = self._deployment()
+ +        request = {"config": config, "operation": operation, "payload": payload or {}}
+@@ -57,11 +57,10 @@ index 9f13cbd..158175f 100644
+ +            error = row["__owner_error__"]
+ +            raise DashboardOwnerError(error["code"], error["message"], error["status"], error.get("details"))
+ +        return row
+-+
++ 
+      def status(self):
+          try:
+-             return self._call("status")
+-@@ -277,6 +316,37 @@ def _library_summary(coverage, runtime=None):
++@@ -277,6 +316,37 @@
+  
+  
+  def _owner_worker(config, operation, payload):
+@@ -100,47 +99,30 @@ index 9f13cbd..158175f 100644
+      sys.path.insert(0, config["stockwiki_root"])
+      from stockwiki.paths import WorkspacePaths
+ diff --git a/iqs/scripts/dashboard_service.py b/iqs/scripts/dashboard_service.py
+-index 3bd6317..f52e0ef 100644
+ --- a/iqs/scripts/dashboard_service.py
+ +++ b/iqs/scripts/dashboard_service.py
+-@@ -270,8 +270,14 @@ class DashboardService:
+-         for name,bundle in exported['import_bundles'].items():
+-             try:
+-                 owner=(self._owner_factory or OwnerGateway)({**config,'bundles':{name:bundle}})
+--                preview=owner.import_preview({'bundle_id':name})
+--                result=self._apply_import(owner,bundle,{'bundle_id':name,'preview_token':preview['preview_token']},execution=execution,workspace=config['workspace_root'])
+-+                # The two read-only prechecks run in ONE worker interpreter.
+-+                # Each operation executes the identical original dispatch with
+-+                # its own validation; only the process boundary is shared.
+-+                batched=owner.call_batch([{'operation':'import_preview','payload':{'bundle_id':name}},
+-+                    {'operation':'status'}])
+-+                preview=OwnerGateway.unwrap_batch(batched[0])
+-+                status=OwnerGateway.unwrap_batch(batched[1],swallow_owner_errors=True)
+-+                result=self._apply_import(owner,bundle,{'bundle_id':name,'preview_token':preview['preview_token']},execution=execution,workspace=config['workspace_root'],preview=preview,status_result=status)
+-                 outcomes.append({'bundle_id':name,'status':result.get('status'),
+-                     'package_id':result.get('receipt',{}).get('package_id'),
+-                     'ack_reconciliation':result.get('ack_reconciliation')})
+-@@ -337,14 +343,20 @@ class DashboardService:
+-         setattr(self, attr, gateway)
+-         return gateway
+- 
+--    def _apply_import(self, owner, bundle, body, *, execution=None, workspace=None):
+-+    def _apply_import(self, owner, bundle, body, *, execution=None, workspace=None, preview=None, status_result=None):
++@@ -341,10 +341,22 @@
+          execution=execution or self._gateway('execution')
+          mapped = bool(bundle.get('work_store') and bundle.get('work_item_ids'))
+          if mapped:
+ -            preview=owner.import_preview({'bundle_id':body.get('bundle_id')})
+-+            # A fresh preview supplied by the caller of the same immutable
+-+            # bundle is byte-equivalent to re-reading it here: the preview
+-+            # token is a digest of the registered bundle files and is
+-+            # re-verified inside import_apply before any write. The fallback
+-+            # keeps the original single-operation behavior for other callers.
+-+            if preview is None:
+++            # Re-read both mutable prechecks immediately before binding. A
+++            # previous caller preview/status is never a cached authority here.
+++            # Only interpreter startup is shared; both native operations run.
+++            from dashboard_owner import OwnerGateway
+++            batch=None
+++            if callable(getattr(owner,'call_batch',None)):
+++                batch=owner.call_batch([
+++                    {'operation':'import_preview','payload':{'bundle_id':body.get('bundle_id')}},
+++                    {'operation':'status'}])
+++                preview=OwnerGateway.unwrap_batch(batch[0])
+++            else:
+ +                preview=owner.import_preview({'bundle_id':body.get('bundle_id')})
+              if body.get('preview_token') != preview.get('preview_token') or not preview.get('can_apply'):
+                  raise ProductError('preview_stale','请重新预览原接收目标再导入。',409)
+ -            status=owner.status()
+-+            status=status_result if status_result is not None else owner.status()
+++            status=(OwnerGateway.unwrap_batch(batch[1],swallow_owner_errors=True)
+++                    if batch is not None else owner.status())
+              if not status.get('available') or not status.get('store_id'):
+                  raise ProductError('receiver_unavailable','无法核实原StockWiki接收目标。',409)
+              target={'component':'StockWiki','namespace':'quick_scan','store_id':status['store_id']}
+diff --git a/integration/performance-design.md b/integration/performance-design.md
+index 86c0638..07d589c 100644
+--- a/integration/performance-design.md
++++ b/integration/performance-design.md
+@@ -1,152 +1,57 @@
+-# IMPORT-PERF-30 性能设计：原入库链剖析与守卫不变的加速候选
++# IMPORT-PERF-30 当前候选与故障等价范围
+ 
+-本文档描述本 Lab 对原入库链的剖析方法、瓶颈证据、候选设计与语义等价论证。
+-**所有数字只在本机合成库上成立；不得推断原生产 19 分钟已被降低**（README 的明示限制）。
++当前候选仅为Lab研究，不接生产、不改变StockQA/StockWiki权限、数据或费用账本。
++旧final4的代码/数字/报告存bench/history/final4/，不能为当前候选背书。
+ 
+-## 1. 被测的真实离线入库路径
++## 根因及修复
+ 
+-原链（锁定 dashboard_delivery/jobs + StockWiki 原 import/ACK + StockQA 原 outbox）。
+-基准走真实 UI 的"选择公司批交付"流：`DeliveryJobs.submit({'batch_id'})` → 单个
+-job 顺序迭代批次 entry → 每 entry `_deliver_scope`：
++旧C1复用_deliver_scope第一次preview会在包/release变化后跳过绑定前再次预检。
++实际RED证明：baseline先拒绝、旧candidate先持久化consumer_binding再拒绝，安全语义不同。
++现已完全移除该缓存和新增参数；_deliver_scope保持原代码，_apply_import保持原签名。
++只把绑定前的最新import_preview与status合并在一个owner worker顺序执行。
++两项仍各自走原dispatch/校验/错误归一，preview/token/can_apply/status通过后才bind。
++没有call_batch的旧注入gateway维持原分别调用。节约的只是一个worker启动，绝不跳可变守卫。
+ 
+-```
+-DeliveryJobs.submit({'batch_id': ...})                # dashboard_delivery_jobs.py（原实现）
+-  └─ _run：逐 entry（合成场景=逐合成公司）调 _deliver_scope
+-      └─ dashboard_service._deliver_scope(bundle_id)
+-          ├─ ExecutionGateway.export_delivery(...)      # 每批次 2 个 StockQA 子进程
+-          │   ├─ quick_scan_refresh_inspect_cli（原检查 CLI，只读账本）
+-          │   └─ _EXPORT 助手（复制原封存包字节，哈希核验）
+-          └─ 逐 import bundle（= 逐包，StockQA outbox 每包 1 item）：
+-              ├─ OwnerGateway.import_preview(...)       # StockWiki 子进程 #1
+-              ├─ _apply_import:
+-              │   ├─ OwnerGateway.import_preview(...)   # StockWiki 子进程 #2（重复预检）
+-              │   ├─ OwnerGateway.status(...)           # StockWiki 子进程 #3
+-              │   ├─ ExecutionGateway.bind_delivery_consumer(...)   # StockQA 子进程 #4
+-              │   ├─ OwnerGateway.import_apply(...)     # StockWiki 子进程 #5（原 import_package）
+-              │   └─ ExecutionGateway.acknowledge_delivery(...)     # StockQA 子进程 #6
+-```
++## 当前实测矩阵
+ 
+-每个 StockWiki 子进程 = 冷解释器 + 全量 `stockwiki`/`ui_quick_scan` 导入 +
+-身份库连接 + `migrate()`（BEGIN IMMEDIATE）。每个 StockQA 子进程 = 冷解释器 +
+-`QuickScanWorkStore.__init__` 的全库 O(全部行) 校验扫描（`PRAGMA quick_check`、
+-`foreign_key_check`、逐 delivery/revision/checkpoint 重新解析+canonical+SHA256）。
++bench/benchmark-summary.json bench_id=close31-fresh-preflight；1/3/33/36包×双变体×3次=24次。
++每rep使用新的fixture/子进程；cold/warm为调用顺序标记，不代表清过OS缓存。
++同一桌面其他活动未受控制，原始逐次值、离散度和耗时在raw-runs/summary。
+ 
+-## 2. 剖析结果（本 Lab 合成基准，3 包场景插桩实测）
++|包数|baseline中位ms|candidate中位ms|wall比率|spawn中位 baseline→candidate|
++|---|---:|---:|---:|---|
++|1|8514.0|5802.6|1.467|10 → 9|
++|3|14349.0|11141.4|1.288|22 → 19|
++|33|120804.6|114634.1|1.054|206 → 173|
++|36|303495.8|359971.5|0.843|224 → 188|
+ 
+-`bench/run_once.py --profile-imports` 对每个子进程注入 `PYTHONPROFILEIMPORTTIME`
+-（原环境白名单不剥该变量），`SubprocessSpy` 从 stderr 汇总每个子进程的
+-import 总量（self 列求和）与模块数。每子进程：
++上述仅是本机合成native库描述。比率<1表示candidate更慢；不保证跨负载提速，
++不替代原19分钟UI测量，不给2000公司吞吐资格。旧profile只说明原先环境下的瓶颈，非当前候选计时证据。
++24次正常快照在原有归一规则下等价；只归一wall clock/临时路径衍生ID，不归一状态/ACK/拒绝/内容hash。
+ 
+-| 子进程 | import 总量 | 模块数 | spawn wall |
+-|---|---|---|---|
+-| inspection（StockQA 检查 CLI） | ~20-38ms | 17 | ~780-880ms |
+-| export_bytes（封包复制） | ~17-19ms | 13 | ~790-830ms |
+-| owner import_preview | ~29ms | 23 | ~230-270ms |
+-| owner status | ~28ms | 20 | ~170ms |
+-| owner import_apply | ~28ms | 23 | ~230ms |
+-| bind（StockQA） | ~15ms | 12 | ~810-820ms |
+-| ack（StockQA） | ~17ms | 12 | ~830ms |
++## 测试范围与限制
+ 
+-**结论（修正了"冷 import 主导"的初步假设）**：纯模块 import 每子进程仅
+-15-38ms（<5%）；每子进程的 wall 时间由三部分构成——解释器启动、
+-StockQA `__init__` 全库校验扫描（bind/ack/inspection/export 各一次，随账本
+-行数 O(N) 增长）、以及真实业务工作（preview/import/ACK 校验）。因此每包
+-6 个子进程的结构性成本（每子进程固定 ~800ms/230ms 级别的工作）是主要瓶颈，
+-减少子进程次数是有效的第一杠杆；StockQA init 全库扫描本身**不动**
+-（它是守卫，降低验证被卡明令禁止），但候选使每包少触发 2 次该扫描。
++原39+新增25=64项实际pytest通过。新增25包含：
++-17个native双变体故障/最终状态等价：迟到ACK、未知ACK状态、错store/obs/payload ACK、not-sent、validator源码变化、source预算/路由变化。
++-4个真实service seam：baseline/candidate×package/release篡改，在零bind调用前拒绝、无持久绑定。
++-2个真正原DelegatedApprovalService当前权限撤销测试，缓存数量0/36。
++-2个publisher require_publisher/seal入口，真实owner.inspect读取当前权限后拒绝，不读outbox。
++最后4unit是显式synthetic typed boundary，使用真实grant/permission/record校验，不能称生产公共CLI全链E2E。
++source future-call权限撤销与读取历史sealed delivery是不同授权；历史结果可读不表示可继续调用LLM。
++真实send_uncertain、late/unknown ACK、reopen和重复导入均保留原状态机/计费/一条观察语义。
++独立8项重跑仅为复验，不加到64分母。独立作者测试设计与runtime分别交叉审查。
++另2个benchmark来源绑定测试通过，合计66个不同用例；64完整组+2定点增量，不冒称重跑66完整组。
++上游baseline身份来自docs/consumed-inputs的三仓固定commit，不再把临时/Lab HEAD误作上游版本。
+ 
+-## 3. 最终基准矩阵（1/3/33/36 包 × 基线/候选 × 3 次，冷进程+暖进程）
++## 复现
+ 
+-`bench/benchmark-summary.json`（`bench/raw-runs.json` 为薄记录）：
++python -m pytest tests -q
++python tools/build_candidate_source_manifest.py
++python bench/run_benchmark.py --bench-id <新的本地ID> --packets 1 3 33 36 --reps 3 --variants baseline candidate
+ 
+-交付矩阵（final4，3次/格，冷+暖）：
++全部在自有短临时根运行，finally清理fixture DB/副本；只保留合成基准记录，不运行原服务或收费API。
++候选patch仅修改Lab vendor副本中的dashboard_owner.py/dashboard_service.py，原源仓未安装。
+ 
+-| 包数 | 基线 median (ms) | 候选 median (ms) | 提速比 | spawn 基线→候选 | ACK |
+-|---|---|---|---|---|---|
+-| 1 | 3796.3 | 3461.5 | 1.10× | 10→8 | 全 accepted |
+-| 3 | 8095.8 | 6980.9 | 1.16× | 22→16 | 全 accepted |
+-| 33 | 77116.6 | 64112.1 | 1.20× | 206→140 | 全 accepted |
+-| 36 | 81821.8 | 85667.0 | **0.96×（本轮无改进）** | 224→152 | 全 accepted |
++## 旧写入工具退役
+ 
+-离散度与逐次值见 summary；rep1 为冷进程，rep2/3 为暖进程（同解释器新 fixture），
+-未清 OS 缓存、未改全局设置。`semantic_equivalence_passed` 在全部 4 个规模为
+-true（真实 ACK 序列、content 哈希、状态机、拒绝码逐字节对比）。
+-
+-**跨运行稳定性（诚实区间）**：本机三次完整矩阵的 33 包提速比为
+-1.15× / 1.19× / 1.20×（稳定为正），1/3 包为 1.05–1.16×（稳定为正）；
+-36 包为 1.16× / 1.41× / **0.96×（final4 本轮 wall-time 无改进）**——36 包
+-wall-time 收益在本机噪声范围内不稳定，而 spawn 降幅（-32%）在全部矩阵一致。
+-结论表述：候选在 1–33 包场景提供一致的正收益；36 包场景 spawn 结构性下降
+-但 wall-time 收益需以多次矩阵区间报告，不得引用单次倍数。
+-跨机器/跨负载的外推更不可靠。
+-
+-## 4. 候选设计（守卫不变，局部可合）
+-
+-候选补丁 `integration/candidate.patch` 只改 Lab 内原源码副本两个文件：
+-`iqs/scripts/dashboard_owner.py`、`iqs/scripts/dashboard_service.py`。
+-
+-**C1（去重预检）**：`_deliver_scope` 已取得该包的 `import_preview` 结果；
+-`_apply_import` 的第二次 `import_preview` 子进程被跳过，改为接收调用方传入的
+-同一结果。守卫保持：preview token 是注册 bundle 文件内容的摘要，
+-`import_apply` 在 worker 内部仍完整执行 `preview_import` 并在 `can_apply`
+-为假或 token 不符时拒绝（原代码路径，未改动）；`_apply_import` 保留原
+-`import_preview` 回退（调用方未传时行为与基线逐字节一致）。
+-
+-**C2（只读预检合并）**：每包把 `import_preview` 与 `status` 两个只读操作合并为
+-**一个** owner worker 子进程顺序执行（`operation="operations"`）。每个操作仍走
+-原 dispatch、各自完整校验、不共享任何中间结果；只共享解释器与模块导入。
+-失败语义逐操作保持：错误落在该操作的返回槽位，经与单操作 worker `_main`
+-相同的 `_original_error` 归一（含 raw 异常，如 sqlite3.Error →
+-`owner_store_unreadable`），gateway 的 `unwrap_batch` 按原单操作行为分别
+-处理——`import_preview` 槽位错误照常抛出（`_deliver_scope` 捕获后按原路径
+-记 pending），`status` 槽位错误按原 `owner.status()` 的行为转为
+-`available=False`（随后 `_apply_import` 以原 `receiver_unavailable` 拒绝）。
+-单元测试 `test_worker_batch_converts_raw_exceptions_per_slot` 钉住该边界。
+-
+-RED→GREEN 演示（`tools/red_green_check.py`）：no-op"候选"（= 基线空补丁）
+-无法通过严格 spawn 改进检查（12 vs 12，RED），真候选以 6 < 12 通过且语义
+-快照相同（GREEN）。
+-
+-**不做什么（明确排除）**：
+-- 不合并 `bind → import_apply → ack` 顺序：bind 要求 work 仍为 `result_ready`、
+-  且 ACK consumer 绑定必须在 apply 前用 `status` 的 store_id 冻结；重排会破坏
+-  原 ACK 校验链。
+-- 不改 `QuickScanWorkStore` init 校验扫描、不缓存任何授权/预算/身份/ACK 决定、
+-  不建第二个导入器、不引入后台队列或回执库。
+-- 不动 StockWiki 侧任何文件（import/ACK 语义零改动）。
+-
+-**候选后每包子进程**：batch[import_preview+status]（1）+ bind（1）+
+-import_apply（1）+ ack（1）= **4 个**（基线 6 个），外加每批次 2 个导出子进程。
+-
+-## 5. 语义等价论证
+-
+-- 候选不改任何校验逻辑：preview/apply/ACK 的全部拒绝路径仍在原位置执行；
+-  `bench/semantic-equivalence.json` 逐场景对比基线与候选的真实 ACK 序列、
+-  content 哈希、work/delivery 状态机与拒绝码（wall-clock 与路径派生的
+-  run-local 标识符按 interfaces.md 显式对齐；批次作业单线程顺序迭代保证
+-  ack_sequence 确定）。
+-- 单元/集成矩阵（`tests/`）钉住原边界：未知 schema/重复键/超限/内容地址篡改
+-  仍拒绝；重复同包幂等回放；错 store/主体/版本仍拒；部分成功不回滚；
+-  中断恢复后重放无新副作用；StockQA 存储包不可篡改（触发器拒绝）。
+-
+-## 6. 生产落地待测事项（由总控执行，本 Lab 不接生产）
+-
+-1. 在原仓对真实 33 题批次先跑一次基线 spawn 统计（同一插桩脚本），核对
+-   本 Lab 的 6/包结构是否与生产一致（生产含 3 市场批、真实 owner API、
+-   真实网络延迟——网络占比会稀释本候选的相对收益）。
+-2. StockQA init 全库扫描随账本增长的曲线需在生产规模账本上单独测量；
+-   若其占主导，进一步的候选须另行设计并保持守卫（本包未做）。
+-3. C2 的批量 worker 在生产 timeout 配置下的最大批量（本 Lab 限 16，与
+-   单包场景一致）需按生产 `timeout_seconds` 复核。
+-4. 多公司并发（`batch.max_concurrency>1`）下 DeliveryJobs 线程与批量
+-   worker 的叠加行为。
+-5. 若生产升级 StockWiki/StockQA 后 `_owner_worker` 分派变化，需重放本包
+-   语义矩阵。
+-
+-## 7. 已知限制
+-
+-- 合成实体仅两个（frozen fixture 上下文固定 31 题，含 2 道 security-scope 题），
+-  33/36 包场景拆成同一交付作业的 2 个批次 entry；逐包成本结构与单实体一致。
+-- 未测量网络/真实 LLM/原 owner API；`ack_reconciliation` 之外的生产链路
+-  （预算、send_intent）不在本包范围。
+-- 本 Lab 的绝对时长不可与生产 19 分钟直接比较（机器、数据、网络均不同）。
++tools/build_handoff.py、tools/build_payload_manifest.py会重建旧C1说明或固定28项清单，已移除其生成实现并写前返回legacy_generator_retired（exit2）。只读load_test_evidence保持兼容。两项真实CLI无写回归通过；另以真实锁定source声明补齐旧cleanup故障fixture，5项受影响复验通过。最终测试集合为64原关联+2来源身份+2退役=68，不重复加总重跑。
+diff --git a/tests/integration/test_native_fault_parity.py b/tests/integration/test_native_fault_parity.py
+new file mode 100644
+index 0000000..118f961
+--- /dev/null
++++ b/tests/integration/test_native_fault_parity.py
+@@ -0,0 +1,171 @@
++"""Actual native outbox/receiver fault semantics; all data is synthetic.
++
++The same fixture SDK is immutable in both variants. Each variant invokes its
++actual original owner worker, including candidate batched read-only prechecks.
++No successful receipt, ledger status or permission grant is hand-made here.
++"""
++import copy
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import sqlite3
++import subprocess
++import sys
++
++import pytest
++
++LAB=Path(__file__).resolve().parents[2]
++sys.path.insert(0,str(LAB/'src'))
++from iqs_import_perf import fixtures
++OUTCOMES={}
++
++
++@pytest.fixture(scope='module')
++def fault_variants(tmp_path_factory):
++    variants={}
++    for variant in ('baseline','candidate'):
++        root=tmp_path_factory.mktemp('fault-'+variant)/'v'
++        argv=[sys.executable,'-B',str(LAB/'tools/prepare_variant.py'),'--target',str(root)]
++        if variant=='candidate':argv+=['--patch',str(LAB/'integration/candidate.patch')]
++        subprocess.run(argv,cwd=LAB,check=True,capture_output=True)
++        spec=importlib.util.spec_from_file_location('fault_owner_'+variant,root/'iqs/scripts/dashboard_owner.py')
++        owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
++        assert Path(owner.__file__).resolve().is_relative_to(root.resolve())
++        variants[variant]=(root,owner)
++    return variants
++
++
++def prepared(tmp_path,variant,root,owner):
++    built=fixtures.build_stockqa_ledger(tmp_path/'work.sqlite',fixtures.question_plan(1))
++    work_id=built['sealed'][0]['work_item_id'];store=built['store']
++    delivery=store.get_result_delivery(work_id)
++    ws=fixtures.build_stockwiki_workspace(tmp_path/'ws',vendor=root)
++    package=tmp_path/'package.json';package.write_text(delivery['package_json'],encoding='utf8')
++    release=tmp_path/'release.json';release.write_text(json.dumps(fixtures.release_projection()),encoding='utf8')
++    scratch=tmp_path/'scratch';scratch.mkdir()
++    config={'stockwiki_root':str(root/'stockwiki'),'iqs_root':str(root/'iqs'),
++            'iqs_release_root':str(root/'iqs'),'workspace_root':str(tmp_path/'ws'),
++            'scratch_root':str(scratch),'stockwiki_python':sys.executable,'timeout_seconds':120,
++            'bundles':{'one':{'package':str(package),'release':str(release),
++                'package_sha256':hashlib.sha256(package.read_bytes()).hexdigest(),
++                'release_sha256':hashlib.sha256(release.read_bytes()).hexdigest()}}}
++    if variant=='candidate':
++        result=owner._owner_worker(config,'operations',{'operations':[{'operation':'import_preview','payload':{'bundle_id':'one'}},{'operation':'status'}]})
++        preview=owner.OwnerGateway.unwrap_batch(result[0]);status=owner.OwnerGateway.unwrap_batch(result[1])
++    else:
++        preview=owner._owner_worker(config,'import_preview',{'bundle_id':'one'})
++        status=owner._owner_worker(config,'status',{})
++    assert preview['can_apply'] and status['available']
++    target={'component':'StockWiki','namespace':'quick_scan','store_id':status['store_id']}
++    store.bind_result_delivery_consumer(work_id,target,source_ref='synthetic-native-owner-public-status')
++    return store,work_id,delivery,ws,config,{'bundle_id':'one','preview_token':preview['preview_token']}
++
++
++def budget_rows(store):
++    with sqlite3.connect(store.path) as con:
++        return con.execute('SELECT * FROM quick_scan_budget_attempt ORDER BY budget_attempt_id').fetchall()
++
++
++def receiver_count(ws):
++    with sqlite3.connect(ws['receiver'].database_path) as con:
++        return con.execute('SELECT COUNT(*) FROM quick_scan_observation').fetchone()[0]
++
++
++@pytest.mark.parametrize('variant',['baseline','candidate'])
++@pytest.mark.parametrize('scenario',['late_ack','unknown_status','foreign_store','foreign_observation','foreign_payload','not_sent_proof','validator_withdrawn','source_policy_changed'])
++def test_native_fault_boundary_parity(fault_variants,tmp_path,variant,scenario):
++    root,owner=fault_variants[variant]
++    store,wid,delivery,ws,config,body=prepared(tmp_path,variant,root,owner)
++    from src.utils.quick_scan_work_store import QuickScanWorkStore,WorkConflictError
++    budget_before=budget_rows(store)
++    checkpoint_before=store.get_answer_checkpoint(wid)
++
++    if scenario=='validator_withdrawn':
++        # A successful preview must not cache the availability of trusted
++        # source validation. This is NOT a forged model-spend permission.
++        cli=root/'iqs/scripts/subject_dispatch_cli.py';away=cli.with_suffix('.test-withdrawn')
++        cli.rename(away)
++        try:
++            with pytest.raises(Exception) as exc:
++                owner._owner_worker(config,'import_apply',body)
++            assert 'subject_contract_cli_unavailable' in str(exc.value)
++            assert receiver_count(ws)==0
++            assert store.get_result_delivery(wid)['state']=='ready'
++        finally:
++            away.rename(cli)
++    elif scenario=='source_policy_changed':
++        # Native current budget policy/version must be reread, not cached.
++        # Already sealed result bytes remain readable, without a new grant.
++        from src.utils.quick_scan_refresh_inspect import inspect_refresh
++        request=fixtures.inspection_request_document(fixtures.ENTITY_A,{delivery['package']['items'][0]['observation']['question_id']:{'scope':store.get_item(wid)['scope'],'scope_id':store.get_item(wid)['scope_id']}})
++        old=fixtures.budget_policy_document()
++        before=inspect_refresh(store.path,request,policy=old)
++        assert before['reservation_created'] is False
++        updated=copy.deepcopy(old);updated['policy_version']='perf-lab-current-revoked-route'
++        updated['routes'][0]['model']='no-longer-authorized-model'
++        store.configure_quick_scan_budget(updated)
++        with pytest.raises(ValueError,match='refresh_executor_policy_changed'):
++            inspect_refresh(store.path,request,policy=old)
++        with pytest.raises(ValueError,match='refresh_executor_policy_route_mismatch'):
++            inspect_refresh(store.path,request,policy=updated)
++        assert store.get_result_delivery(wid)['package_bytes']==delivery['package_bytes']
++        assert receiver_count(ws)==0
++    else:
++        sent=store.begin_result_delivery(wid)
++        assert sent['state']=='send_uncertain' and sent['request_bytes']==delivery['package_bytes']
++        with pytest.raises(WorkConflictError):store.begin_result_delivery(wid)
++        if scenario=='not_sent_proof':
++            with pytest.raises(ValueError):store.confirm_result_delivery_not_sent(wid,'timeout_after_unknown_send')
++            assert store.get_result_delivery(wid)['state']=='send_uncertain'
++            # The test has invoked no receiver/import since send intent, so
++            # request_body_not_dispatched is a true synthetic before-send fact.
++            rearmed=store.confirm_result_delivery_not_sent(wid,'request_body_not_dispatched')
++            assert rearmed['state']=='ready'
++            again=store.begin_result_delivery(wid)
++            assert again['request_bytes']==sent['request_bytes'] and again['idempotency_key']==sent['idempotency_key']
++        original=owner._owner_worker(config,'import_apply',body)['receipt']['acks'][0]
++        assert original['status']=='accepted' and receiver_count(ws)==1
++        if scenario not in {'late_ack','not_sent_proof'}:
++            malformed=copy.deepcopy(original)
++            if scenario=='unknown_status':malformed['status']='unknown'
++            elif scenario=='foreign_store':malformed['consumer']['store_id']='qsobs_'+'0'*16
++            elif scenario=='foreign_observation':malformed['observation_id']='obs_'+'a'*64
++            elif scenario=='foreign_payload':malformed['payload_sha256']='0'*64
++            with pytest.raises(ValueError):store.apply_result_delivery_ack(wid,malformed)
++            assert store.get_result_delivery(wid)['state']=='send_uncertain'
++            assert store.get_result_delivery(wid)['ack_json'] is None
++        # Simulated interruption: receiver committed, ACK not yet committed at
++        # producer. Reopen real SQLite; retrying actual receiver is idempotent.
++        reopened=QuickScanWorkStore(store.path)
++        assert reopened.get_result_delivery(wid)['state']=='send_uncertain'
++        with pytest.raises(WorkConflictError):reopened.begin_result_delivery(wid)
++        replay=owner._owner_worker(config,'import_apply',body)['receipt']['acks'][0]
++        assert replay==original and receiver_count(ws)==1
++        first=reopened.apply_result_delivery_ack(wid,replay)
++        second=reopened.apply_result_delivery_ack(wid,replay)
++        assert first==second and first['state']=='delivered'
++        assert reopened.get_item(wid)['status']=='delivered'
++        assert len([e for e in reopened.list_result_delivery_events(wid) if e['event_type']=='accepted'])==1
++        changed=copy.deepcopy(original);changed['received_at']='2026-10-30T01:02:03Z'
++        with pytest.raises(WorkConflictError):reopened.apply_result_delivery_ack(wid,changed)
++    assert store.get_answer_checkpoint(wid)==checkpoint_before
++    assert budget_rows(store)==budget_before
++    final=store.get_result_delivery(wid)
++    OUTCOMES[(scenario,variant)]={
++        'delivery_state':final['state'],'work_state':store.get_item(wid)['status'],
++        'ack_status':None if final['ack_json'] is None else json.loads(final['ack_json'])['status'],
++        'receiver_observation_count':receiver_count(ws),
++        'accepted_producer_events':sum(e['event_type']=='accepted' for e in store.list_result_delivery_events(wid)),
++        'immutable_package_sha256':final['package_bytes_sha256'],
++        'checkpoint_unchanged':store.get_answer_checkpoint(wid)==checkpoint_before,
++        'budget_attempt_rows_unchanged':budget_rows(store)==budget_before,
++    }
++
++
++def test_all_fault_summaries_are_equal_across_both_variants():
++    scenarios=['late_ack','unknown_status','foreign_store','foreign_observation','foreign_payload','not_sent_proof','validator_withdrawn','source_policy_changed']
++    # Use this matrix file as a complete group, not a cherry-picked one case.
++    assert set(OUTCOMES)=={(s,v) for s in scenarios for v in ['baseline','candidate']}
++    for scenario in scenarios:
++        assert OUTCOMES[(scenario,'baseline')]==OUTCOMES[(scenario,'candidate')],scenario
+diff --git a/tests/integration/test_service_preflight.py b/tests/integration/test_service_preflight.py
+new file mode 100644
+index 0000000..52291a3
+--- /dev/null
++++ b/tests/integration/test_service_preflight.py
+@@ -0,0 +1,63 @@
++"""Actual service seam: mutable bundle after first preview must not bind consumer."""
++import hashlib,importlib.util,inspect,json,sys
++from pathlib import Path
++import pytest
++
++LAB=Path(__file__).resolve().parents[2]
++sys.path.insert(0,str(LAB/'src'))
++spec=importlib.util.spec_from_file_location('fault_helpers',LAB/'tests/integration/test_native_fault_parity.py')
++helpers=importlib.util.module_from_spec(spec);spec.loader.exec_module(helpers)
++fault_variants=helpers.fault_variants
++from iqs_import_perf import fixtures
++
++@pytest.mark.parametrize('variant',['baseline','candidate'])
++@pytest.mark.parametrize('changed_file',['package','release'])
++def test_service_preflight_revalidates_before_native_consumer_bind(fault_variants,tmp_path,variant,changed_file):
++ root,owner_module=fault_variants[variant]
++ built=fixtures.build_stockqa_ledger(tmp_path/'work.sqlite',fixtures.question_plan(1))
++ wid=built['sealed'][0]['work_item_id'];store=built['store'];delivery=store.get_result_delivery(wid)
++ assert delivery['consumer_binding'] is None
++ ws=fixtures.build_stockwiki_workspace(tmp_path/'ws',vendor=root)
++ package=tmp_path/'package.json';package.write_text(delivery['package_json'],encoding='utf8')
++ release=tmp_path/'release.json';release.write_text(json.dumps(fixtures.release_projection()),encoding='utf8')
++ scratch=tmp_path/'scratch';scratch.mkdir()
++ config={'stockwiki_root':str(root/'stockwiki'),'iqs_root':str(root/'iqs'),'iqs_release_root':str(root/'iqs'),'workspace_root':str(tmp_path/'ws'),'scratch_root':str(scratch),'stockwiki_python':sys.executable,'timeout_seconds':120,'bundles':{'one':{'package':str(package),'release':str(release),'package_sha256':hashlib.sha256(package.read_bytes()).hexdigest(),'release_sha256':hashlib.sha256(release.read_bytes()).hexdigest()}}}
++ class OriginalOwner:
++  def import_preview(self,payload):return owner_module._owner_worker(config,'import_preview',payload)
++  def status(self):return owner_module._owner_worker(config,'status',{})
++  def import_apply(self,payload):return owner_module._owner_worker(config,'import_apply',payload)
++  def call_batch(self,operations):return owner_module._owner_worker(config,'operations',{'operations':operations})
++ original=OriginalOwner()
++ if variant=='candidate':
++  result=owner_module._owner_worker(config,'operations',{'operations':[{'operation':'import_preview','payload':{'bundle_id':'one'}},{'operation':'status'}]})
++  preview=owner_module.OwnerGateway.unwrap_batch(result[0]);status=owner_module.OwnerGateway.unwrap_batch(result[1])
++ else:preview=original.import_preview({'bundle_id':'one'});status=original.status()
++ assert preview['can_apply'] and status['available']
++ # The only fault injection: mutate a synthetic file after real prechecks.
++ changed=package if changed_file=='package' else release
++ changed.write_bytes(changed.read_bytes()+b' ')
++ bundle={'work_store':str(store.path),'work_item_ids':[wid]}
++ class NativeExecution:
++  bind_calls=0
++  def bind_delivery_consumer(self,bundle,target,source_ref):
++   assert bundle['work_item_ids']==[wid] and Path(bundle['work_store'])==store.path
++   self.bind_calls+=1
++   return store.bind_result_delivery_consumer(wid,target,source_ref=source_ref)
++  def acknowledge_delivery(self,*args):raise AssertionError('tampered package must never reach ACK')
++ scripts=str(root/'iqs/scripts');sys.path.insert(0,scripts)
++ sys.modules['dashboard_owner']=owner_module
++ spec=importlib.util.spec_from_file_location('preflight_service_'+variant,root/'iqs/scripts/dashboard_service.py')
++ service_module=importlib.util.module_from_spec(spec);spec.loader.exec_module(service_module)
++ service=object.__new__(service_module.DashboardService);service.config={'workspace_root':str(tmp_path/'ws')}
++ execution=NativeExecution()
++ kwargs={'execution':execution,'workspace':str(tmp_path/'ws')}
++ if variant=='candidate' and 'preview' in inspect.signature(service._apply_import).parameters:
++  kwargs.update(preview=preview,status_result=status)
++ with pytest.raises(Exception) as error:
++  service._apply_import(original,bundle,{'bundle_id':'one','preview_token':preview['preview_token']},**kwargs)
++ assert getattr(error.value,'code',None)=='bundle_hash_mismatch',str(error.value)
++ after=store.get_result_delivery(wid)
++ print(json.dumps({'variant':variant,'native_bind_calls':execution.bind_calls,'consumer_before':delivery['consumer_binding'],'consumer_after':after['consumer_binding'],'delivery_state':after['state']},sort_keys=True))
++ assert after['state']=='ready'
++ assert execution.bind_calls==0, 'mutable preflight failure must precede any consumer binding call'
++ assert after['consumer_binding']==delivery['consumer_binding'], 'preflight caching persisted consumer binding before rejecting mutable package'
+diff --git a/tests/unit/test_benchmark_provenance.py b/tests/unit/test_benchmark_provenance.py
+new file mode 100644
+index 0000000..a87af7a
+--- /dev/null
++++ b/tests/unit/test_benchmark_provenance.py
+@@ -0,0 +1,20 @@
++"""A harness checkout label is not the upstream source under measurement."""
++import importlib.util,json
++from pathlib import Path
++import pytest
++
++LAB=Path(__file__).resolve().parents[2]
++spec=importlib.util.spec_from_file_location('benchmark_metadata',LAB/'bench/run_benchmark.py')
++module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
++
++def test_baseline_identity_comes_from_frozen_upstream_not_lab_checkout():
++    actual=module.baseline_source_commits()
++    declared=json.loads((LAB/'docs/consumed-inputs.json').read_bytes())['source_repositories']
++    assert actual==declared
++    assert actual['iqs']['commit']=='092b1a2677ef91a0ba03e57d0105138b432acc7c'
++
++def test_scratch_head_label_is_not_accepted_as_upstream_commit(tmp_path,monkeypatch):
++    sources={'iqs':{'commit':'HEAD'},'stockqa':{'commit':'a'*40},'stockwiki':{'commit':'b'*40}}
++    (tmp_path/'docs').mkdir();(tmp_path/'docs/consumed-inputs.json').write_text(json.dumps({'source_repositories':sources}),encoding='utf-8')
++    monkeypatch.setattr(module,'LAB_ROOT',tmp_path)
++    with pytest.raises(ValueError,match='locked_source_commits_invalid'):module.baseline_source_commits()
+diff --git a/tests/unit/test_execution_evidence.py b/tests/unit/test_execution_evidence.py
+index 4cdf6d9..9947f87 100644
+--- a/tests/unit/test_execution_evidence.py
++++ b/tests/unit/test_execution_evidence.py
+@@ -17,6 +17,10 @@ def module(name, path):
+ 
+ def test_matrix_child_failure_cleans_its_entire_variant_root(tmp_path, monkeypatch):
+     driver = module('perf_driver_cleanup', 'bench/run_benchmark.py')
++    # Supply the same required locked source declaration as a real matrix.
++    # Keep validation active so the injected child failure remains the target.
++    (tmp_path / 'docs').mkdir()
++    (tmp_path / 'docs' / 'consumed-inputs.json').write_bytes((LAB / 'docs' / 'consumed-inputs.json').read_bytes())
+     monkeypatch.setattr(driver, 'LAB_ROOT', tmp_path)
+     monkeypatch.setattr(sys, 'argv', ['run_benchmark.py', '--packets', '1', '--variants', 'baseline', '--bench-id', 'failure'])
+     def run(argv, **kwargs):
+diff --git a/tests/unit/test_native_delegation_faults.py b/tests/unit/test_native_delegation_faults.py
+new file mode 100644
+index 0000000..dae5522
+--- /dev/null
++++ b/tests/unit/test_native_delegation_faults.py
+@@ -0,0 +1,42 @@
++"""Native delegation-store lifecycle with original synthetic preview boundary.
++
++This is unit coverage of original grant/revocation storage and rechecks. The
++frozen upstream helper stubs its preview contract; this is intentionally NOT a
++claim of public-CLI/real-owner permission authorization or financial truth.
++"""
++import hashlib
++import importlib.util
++import inspect
++from pathlib import Path
++import sys
++import pytest
++
++LAB=Path(__file__).resolve().parents[2]
++sys.path.insert(0,str(LAB/'vendor_upstream/stockwiki'))
++
++
++@pytest.mark.parametrize('cache_count',[0,36])
++def test_native_delegation_revoke_survives_reopen_and_cached_scope(tmp_path,cache_count):
++    # Candidate changes only IQS owner/service. Grant storage stays the exact
++    # immutable upstream file for BOTH variants, not a second grant engine.
++    from stockwiki.quick_scan_refresh_delegation import DelegatedApprovalService
++    source=LAB/'vendor_upstream/stockwiki/stockwiki/quick_scan_refresh_delegation.py'
++    assert hashlib.sha256(Path(inspect.getfile(DelegatedApprovalService)).read_bytes()).digest()==hashlib.sha256(source.read_bytes()).digest()
++    fixture_path=LAB/'vendor_upstream/stockwiki/tests/test_quick_scan_refresh_delegation.py'
++    spec=importlib.util.spec_from_file_location('original_delegation_fixture',fixture_path)
++    helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
++    service,record,_,_,_,now=helper.prepared(tmp_path,cache_count=cache_count)
++    grant_id=service.install()['grant_id']
++    confirmed=service.confirm(record['preview']['preview_id'],grant_id,'synthetic-only-action')
++    prior=service.inspect_confirmation(confirmed['confirmation_id'],admission_mode='current_permissions')
++    assert prior['confirmation']['delegation']['grant_id']==grant_id
++    confirmation_path=service.confirmations.directory/(confirmed['confirmation_id']+'.json')
++    original_confirmation=confirmation_path.read_bytes()
++    service.revoke(grant_id)
++    reopened=DelegatedApprovalService(paths=service.paths,previews=service.previews,preview_service=service.preview_service,clock=lambda:now.value)
++    assert reopened.revocations.load(grant_id)['grant_id']==grant_id
++    with pytest.raises(ValueError,match='delegation_revoked'):
++        reopened.inspect_confirmation(confirmed['confirmation_id'],admission_mode='current_permissions')
++    with pytest.raises(ValueError):reopened.confirm(record['preview']['preview_id'],grant_id,'synthetic-only-action')
++    with pytest.raises(ValueError):reopened.install()
++    assert confirmation_path.read_bytes()==original_confirmation
+diff --git a/tests/unit/test_publisher_authority_boundary.py b/tests/unit/test_publisher_authority_boundary.py
+new file mode 100644
+index 0000000..b03ea35
+--- /dev/null
++++ b/tests/unit/test_publisher_authority_boundary.py
+@@ -0,0 +1,74 @@
++"""Publisher guard unit: original owner permission engine, synthetic carrier.
++
++Original WorkDecisionOwnerService creates a genuine local rc1 fixture record.
++Its preview/inspection/confirmation input boundary is the upstream explicitly
++synthetic helper. No published native checkpoint, outbox or real owner consent
++is manufactured; a tiny separate SQLite carrier isolates require_publisher.
++"""
++from dataclasses import asdict
++from datetime import datetime,timezone
++import importlib.util
++import json
++from pathlib import Path
++import sqlite3
++import sys
++import pytest
++
++LAB=Path(__file__).resolve().parents[2]
++for root in [LAB/'vendor_upstream/stockwiki',LAB/'vendor_upstream/stockqa']:
++    sys.path.insert(0,str(root))
++
++
++@pytest.mark.parametrize('entry',['require_publisher','seal_result_delivery'])
++def test_original_publisher_gate_rechecks_source_permission_before_outbox(tmp_path,entry):
++    from src.utils.quick_scan_known_outcome_journal import OwnerWorkDecisionAuthority,OwnerWorkDecisionGrant,_authorize
++    from src.utils.quick_scan_saved_research_publication import require_publisher
++    from src.utils.quick_scan_delivery_seal import seal_result_delivery
++    fixture_path=LAB/'vendor_upstream/stockwiki/tests/test_quick_scan_work_decision_owner.py'
++    spec=importlib.util.spec_from_file_location('publisher_owner_fixture',fixture_path)
++    helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
++    f=helper.fixture(tmp_path/'source-owner')
++    _,confirmed=helper.confirm(f)
++    request=f.outer['decision_request']
++    class UnitDeploymentAuthority(OwnerWorkDecisionAuthority):
++        calls=0
++        def authorize(self,value):
++            self.calls+=1
++            # This actual original method rereads current permission; its
++            # previous successful result is not returned or cached here.
++            inspected=f.owner.inspect(confirmed['confirmation_id'],admission_mode='current_permissions')
++            c=inspected['confirmation']
++            assert value==inspected['request']['decision_request']
++            return OwnerWorkDecisionGrant(owner_store_id=c['owner_store_id'],principal_id=c['owner_principal'],
++                confirmation_id=c['confirmation_id'],action_id=c['action_id'],request_sha256=c['request_sha256'],confirmed_at=c['confirmed_at'])
++    authority=UnitDeploymentAuthority()
++    now=datetime(2026,10,31,tzinfo=timezone.utc).timestamp()
++    grant=_authorize(authority,request,now)
++    carrier=tmp_path/'synthetic-schema3-carrier.sqlite'
++    with sqlite3.connect(carrier) as con:
++        con.execute('CREATE TABLE answer_checkpoint(work_item_id TEXT PRIMARY KEY,checkpoint_schema_version INTEGER,payload_json TEXT)')
++        con.execute('INSERT INTO answer_checkpoint VALUES (?,?,?)',('WORK_SYNTHETIC',3,json.dumps({'publication':{'request':request,'grant':grant}})))
++    class CarrierStore:
++        outbox_reads=0
++        _now=staticmethod(lambda:now)
++        def _connect(self):
++            c=sqlite3.connect(carrier);c.row_factory=sqlite3.Row;return c
++        def get_answer_checkpoint(self,*args,**kwargs):return {'checkpoint_schema_version':3}
++        def get_result_delivery(self,*args,**kwargs):
++            self.outbox_reads+=1
++            raise AssertionError('revoked publisher must fail before accessing the outbox')
++    store=CarrierStore()
++    with store._connect() as con:
++        assert require_publisher(store,con,'WORK_SYNTHETIC',authority)==request
++    before=carrier.read_bytes()
++    # Original permission engine rejects a previously confirmed action after
++    # its consumer is removed. No synthetic revoke boolean in the adapter.
++    f.policy['allowed_consumer_ids']=[]
++    with pytest.raises(ValueError,match='permission_denied'):
++        if entry=='require_publisher':
++            with store._connect() as con:require_publisher(store,con,'WORK_SYNTHETIC',authority)
++        else:
++            seal_result_delivery(store,'WORK_SYNTHETIC',authority=None,publisher_authority=authority)
++    assert store.outbox_reads==0
++    assert authority.calls>=3
++    assert carrier.read_bytes()==before
+diff --git a/tests/unit/test_retired_generators.py b/tests/unit/test_retired_generators.py
+new file mode 100644
+index 0000000..484c64e
+--- /dev/null
++++ b/tests/unit/test_retired_generators.py
+@@ -0,0 +1,17 @@
++"""Legacy writers must refuse before touching metadata or truncating a manifest."""
++import json,hashlib,subprocess,sys
++from pathlib import Path
++import pytest
++LAB=Path(__file__).resolve().parents[2]
++
++@pytest.mark.parametrize('tool',['build_handoff.py','build_payload_manifest.py'])
++def test_legacy_writer_refuses_without_any_write(tool,tmp_path):
++    protected=[LAB/'docs/payload-manifest.json',*(LAB/'docs/handoff').rglob('*')]
++    before={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in protected if p.is_file()}
++    target=tmp_path/'should-not-be-created.json'
++    result=subprocess.run([sys.executable,'-B',str(LAB/'tools'/tool),'--out',str(target)],cwd=tmp_path,
++        capture_output=True,text=True,encoding='utf-8',timeout=20)
++    assert result.returncode==2
++    assert json.loads(result.stdout)['error_code']=='legacy_generator_retired'
++    assert not target.exists()
++    assert before=={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in protected if p.is_file()}
+diff --git a/tools/build_handoff.py b/tools/build_handoff.py
+index e6dba21..d14075b 100644
+--- a/tools/build_handoff.py
++++ b/tools/build_handoff.py
+@@ -1,8 +1,8 @@
+-"""Generate docs/handoff/IMPORT-PERF-30/* metadata (commit M content).
++"""Retired legacy handoff writer; load_test_evidence remains a compatible reader.
+ 
+-Run ONLY after the independent review reports open_findings=[] on the final
+-payload commit. The handoff binds the payload commit C; the metadata files
+-themselves land in the metadata commit M which never alters payload content.
++The original generator contained withdrawn cached-preview instructions.
++Its CLI now refuses before any write. Consume the reviewed immutable C/M
++and controller-close-support31 handoff; do not regenerate historical metadata.
+ """
+ 
+ from __future__ import annotations
+@@ -62,254 +62,9 @@ def load_test_evidence(path: Path) -> list[dict]:
+ 
+ 
+ def main() -> int:
+-    parser = argparse.ArgumentParser()
+-    parser.add_argument("--review-commit", required=True,
+-                        help="payload commit the review approved (result commit C)")
+-    parser.add_argument("--test-evidence", type=Path, required=True,
+-                        help="recorded unit/integration/e2e executions with log hashes")
+-    parser.add_argument("--delivery-status", choices=("partial", "complete", "blocked"), default="partial")
+-    parser.add_argument("--review-evidence", type=Path, default=LAB / "docs/review/final.json")
+-    args = parser.parse_args()
+-    final_review = json.loads(args.review_evidence.read_text(encoding="utf-8"))
+-    if (final_review.get("status") != "passed" or final_review.get("open_findings") != []
+-            or final_review.get("final_payload_commit") != args.review_commit
+-            or final_review.get("input_lock_sha256") != INPUT_LOCK_SHA256
+-            or final_review.get("final_payload_manifest_sha256") != sha(LAB / "docs/payload-manifest.json")):
+-        raise ValueError("independent final review does not bind this payload and manifest")
+-    suite_checks = load_test_evidence(args.test_evidence.resolve())
+-    suite_counts = {row["name"]: row["passed"] for row in suite_checks}
+-
+-    HANDOFF_DIR.mkdir(parents=True, exist_ok=True)
+-    now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+-
+-    # artifacts.json — business artifacts only, never handoff/self.
+-    artifact_paths = [
+-        ("bench/benchmark-summary.json", "benchmark summary (protocol iqs.original_import_benchmark/1.0.0)"),
+-        ("bench/raw-runs.json", "thin per-invocation raw records with interface measurement fields"),
+-        ("bench/semantic-equivalence.json", "semantic equivalence verdicts per scenario"),
+-        ("bench/candidate-source-manifest.json", "candidate source manifest (patched paths + hashes)"),
+-        ("bench/profile/profile-baseline-3.json", "importtime profiling pass, baseline"),
+-        ("bench/profile/profile-candidate-3.json", "importtime profiling pass, candidate"),
+-        ("integration/candidate.patch", "candidate patch (C1+C2, two dashboard files)"),
+-        ("integration/performance-design.md", "profiling analysis, candidate design, exclusions"),
+-        ("docs/consumed-inputs.json", "locked-input consumption inventory"),
+-        ("src/iqs_import_perf/fixtures.py", "synthetic-native fixture builder"),
+-        ("src/iqs_import_perf/instrument.py", "subprocess spy (identical for both variants)"),
+-        ("src/iqs_import_perf/orchestrate.py", "original-chain orchestrator + semantic snapshots"),
+-        ("bench/run_benchmark.py", "benchmark matrix driver"),
+-        ("bench/run_once.py", "public benchmark entry (one invocation)"),
+-        ("tools/fetch_locked_blobs.py", "locked blob extraction"),
+-        ("tools/prepare_variant.py", "variant preparation + patch application"),
+-        ("tools/red_green_check.py", "measured RED→GREEN demonstration"),
+-        ("tests/unit/test_original_import_guards.py", "original boundary guard tests"),
+-        ("tests/unit/test_candidate_worker.py", "candidate worker semantics tests"),
+-        ("tests/integration/test_semantic_matrix.py", "integration semantic matrix"),
+-        ("tests/e2e/test_delivery_e2e.py", "real-subprocess E2E both variants + failure path"),
+-    ]
+-    artifacts = {"artifacts": []}
+-    for rel, role in artifact_paths:
+-        path = LAB / rel
+-        if not path.is_file():
+-            raise SystemExit(f"missing artifact: {rel}")
+-        artifacts["artifacts"].append({
+-            "path": rel, "bytes": path.stat().st_size, "sha256": sha(path), "role": role,
+-        })
+-    (HANDOFF_DIR / "artifacts.json").write_text(
+-        json.dumps(artifacts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+-
+-    # tests.json — real commands with argv/cwd/env boundary/UTC/exit code.
+-    summary = json.loads((LAB / "bench" / "benchmark-summary.json").read_text(encoding="utf-8"))
+-    tests = {
+-        "protocol": "iqs.import_perf.tests/1.0.0",
+-        "package_id": "IMPORT-PERF-30",
+-        "generated_at": now,
+-        "environment_boundary": "cwd pinned to Lab / per-rep temp roots; PYTHONPATH only to Lab trees; no API keys in child env (original whitelists); TEMP under Lab/.tmp",
+-        "commands": suite_checks,
+-        "evidence_source": str(args.test_evidence.resolve()),
+-        "evidence_source_sha256": sha(args.test_evidence.resolve()),
+-        "red_green_evidence": {
+-            "unit": "candidate-behavior tests fail against a no-op patch (batch worker operations absent); guard tests pass against vendor baseline",
+-            "measured": "tools/red_green_check.py output recorded in the author session and reproducible from README",
+-        },
+-        "benchmark_summary_sha256": sha(LAB / "bench" / "benchmark-summary.json"),
+-    }
+-    (HANDOFF_DIR / "tests.json").write_text(
+-        json.dumps(tests, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+-
+-    # cleanup.json — copy of the durable record.
+-    (HANDOFF_DIR / "cleanup.json").write_text(
+-        (LAB / "docs" / "cleanup.json").read_text(encoding="utf-8"), encoding="utf-8")
+-
+-    # host-patch-proposal.md
+-    proposal = """# 主控原仓接线提案（仅建议，不改源仓）
+-
+-## 候选补丁落点
+-
+-`integration/candidate.patch` 只涉及 `scripts/dashboard_owner.py` 与
+-`scripts/dashboard_service.py` 两个文件（原仓对应路径）。内容：
+-
+-1. `dashboard_owner.OwnerGateway`：传输逻辑抽出为 `_send`；新增
+-   `call_batch(operations)` 与 `unwrap_batch(...)`；worker 新增
+-   `operation="operations"` 批量分派（每条仍走原 `_owner_operation`，
+-   逐条经 `_original_error` 归一错误）。单操作路径行为不变。
+-2. `dashboard_service._deliver_scope`：每包的 `import_preview` 与 `status`
+-   两个只读预检合并为一次批量 worker 调用；`_apply_import` 接收调用方传入的
+-   preview/status 结果，未传入时回退原行为（其他调用方不受影响）。
+-
+-## 兼容性
+-
+-- 不改任何校验逻辑、不改 ACK/权限/预算语义、不改 StockWiki/StockQA 代码。
+-- `import/apply` HTTP 端点等其它 `_apply_import` 调用方走原回退路径。
+-- 旧客户端/单操作协议完全不变；批量协议是 worker 请求形状的新增分支。
+-
+-## 上线与回滚
+-
+-- 上线：应用补丁 → 跑原仓受影响定向用例 → 用真实 33 题批次先并行跑
+-  基线/候选各一次（同机），核对 spawn 数与 ACK 序列后再切换。
+-- 回滚：还原两个文件即可；无数据/格式迁移，无 journal 变更。
+-
+-## 测试建议
+-
+-- 本 Lab 的 `tests/unit/test_candidate_worker.py`、
+-  `tests/integration/test_semantic_matrix.py`、`tests/e2e/test_delivery_e2e.py`
+-  可在原仓等价重放（替换 vendor 路径）。
+-- 生产待测事项见 `integration/performance-design.md` §6。
+-"""
+-    (HANDOFF_DIR / "integration").mkdir(exist_ok=True)
+-    (HANDOFF_DIR / "integration" / "host-patch-proposal.md").write_text(proposal, encoding="utf-8")
+-
+-    # handoff.json
+-    base_commit = "897b66706417f8595f23490269240d93c87282db"
+-    handoff = {
+-        "schema_version": "1.0.0",
+-        "lane_id": "iqs",
+-        "package_id": "IMPORT-PERF-30",
+-        "status": args.delivery_status,
+-        "snapshot": {
+-            "repository": str(LAB),
+-            "base_ref": "codex/import-perf-30",
+-            "base_commit": base_commit,
+-            "result_ref": "codex/import-perf-30",
+-            "result_commit": args.review_commit,
+-            "worktree_before": {"state": "clean", "dirty_path_count": 0, "manifest_sha256": None},
+-            "worktree_after": {"state": "clean", "dirty_path_count": 0, "manifest_sha256": None},
+-        },
+-        "scope": {
+-            "task_ids": ["IMPORT-PERF-30"],
+-            "authorization_scope_ref": "docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/IMPORT-PERF-30.md (write root C:/Users/郑曾波/Projects/iqs-import-performance-lab)",
+-            "owned_paths": ["C:/Users/郑曾波/Projects/iqs-import-performance-lab"],
+-            "authorized_paths": ["README.md", ".gitignore", "pyproject.toml", "conftest.py", "src/", "schemas/", "content/", "contracts/", "fixtures/", "tests/", "tools/", "demo/", "bench/", "integration/", "vendor_upstream/", ".tmp/", "docs/"],
+-            "changed_paths": [
+-                "README.md", ".gitignore", "pyproject.toml", "conftest.py",
+-                "src/iqs_import_perf/", "bench/", "integration/", "tools/",
+-                "tests/", "docs/", "vendor_upstream/",
+-            ],
+-            "out_of_scope_writes": [],
+-        },
+-        "interfaces": [
+-            {"name": "iqs.original_import_benchmark/1.0.0", "version": "1.0.0",
+-             "content_hash": sha(LAB / "bench" / "benchmark-summary.json"),
+-             "direction": "produced", "result": "compatible"},
+-            {"name": "iqs.import_perf.semantic_equivalence/1.0.0", "version": "1.0.0",
+-             "content_hash": sha(LAB / "bench" / "semantic-equivalence.json"),
+-             "direction": "produced", "result": "compatible"},
+-            {"name": "iqs.import_perf.candidate_source_manifest/1.0.0", "version": "1.0.0",
+-             "content_hash": sha(LAB / "bench" / "candidate-source-manifest.json"),
+-             "direction": "produced", "result": "compatible"},
+-            {"name": "iqs.import_perf.consumed_inputs/1.0.0", "version": "1.0.0",
+-             "content_hash": sha(LAB / "docs" / "consumed-inputs.json"),
+-             "direction": "produced", "result": "compatible"},
+-            {"name": "integration/candidate.patch (text patch)", "version": "n/a",
+-             "content_hash": sha(LAB / "integration" / "candidate.patch"),
+-             "direction": "produced", "result": "compatible"},
+-            {"name": "iqs.mainline_support_input_lock/1.0.0 (locked inputs)", "version": "1.0.0",
+-             "content_hash": INPUT_LOCK_SHA256,
+-             "direction": "consumed", "result": "compatible"},
+-            {"name": "dashboard_owner/dashboard_service worker protocol (original)", "version": "iqs.dashboard.owner/1.0.0",
+-             "content_hash": sha(LAB / "vendor_upstream" / "iqs" / "scripts" / "dashboard_owner.py"),
+-             "direction": "consumed", "result": "compatible"},
+-        ],
+-        "verification": {
+-            "checks": [
+-                {"name": row["name"], "command": " ".join(row["argv"]),
+-                 "scope": "Lab (recorded execution)", "result": "passed",
+-                 "passed": row["passed"], "failed": row["failed"], "skipped": row["skipped"]}
+-                for row in suite_checks
+-            ],
+-            "external_writes": False,
+-            "network_calls": False,
+-            "paid_calls": False,
+-            "temporary_roots": [
+-                {"path_or_id": "Lab/.tmp/<bench-id>/ (variants + per-rep fixture roots)", "created": True, "cleaned": True},
+-                {"path_or_id": "Lab/.tmp/pytest-cwd-*/", "created": True, "cleaned": True},
+-            ],
+-        },
+-        "review": {
+-            "status": "approved",
+-            "snapshot_commit": args.review_commit,
+-            "findings": [],
+-        },
+-        "open_items": [
+-            "生产侧待测事项由总控执行（performance-design.md §6）：真实33题批次的基线spawn核对、StockQA init扫描在生产规模账本的占比、批量worker的生产timeout复核、多公司并发叠加。",
+-            "本包不主张生产19分钟已降低；全部数字仅为本机合成库结果。",
+-            "原source撤权、late/unknown ACK、send_uncertain完整双变体矩阵未补；当前只接受partial，不授生产资格。",
+-        ],
+-        "next_action": "总控用 scripts/parallel_handoff_cli.py 预检后实核；若采纳候选，按 docs/handoff/IMPORT-PERF-30/integration/host-patch-proposal.md 在原仓接线。",
+-    }
+-    (HANDOFF_DIR / "handoff.json").write_text(
+-        json.dumps(handoff, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+-
+-    # report.md
+-    report = f"""# IMPORT-PERF-30 交付报告
+-
+-- Lab: `{LAB}`
+-- 分支: `codex/import-perf-30`；基线骨架 B: `{base_commit}`；最终 payload C: `{args.review_commit}`
+-- 输入锁 sha256: `{INPUT_LOCK_SHA256}`；源仓基线（iqs/stockwiki/stockqa）见 `docs/consumed-inputs.json`
+-- **production_ready = false；financial_qualification_granted = false**
+-
+-## 已做
+-
+-1. 冻结原实现（999 个锁定 blob，`docs/consumed-inputs.json` 逐 blob 记录；
+-   336 个 release artifact 的锁内哈希仅在 worktree 字节形式上成立——CRLF/LF
+-   等价、blob 形式已核验，见 `byte_form` 字段与独立审查验证）。
+-2. 合成原生 fixture（`synthetic_native`）：StockQA 原store密封完整C06包
+-   （原 `seal_result_delivery`）、真实 frozen release 投影（原
+-   `create_projection`）、StockWiki 原接收端；实体为 fixture 自带合成实体
+-   （实体B仅改合成标签）。1/3/33/36 包全链路可复现。
+-3. 真实离线入库基准：原 `DeliveryJobs` 批交付 → 原 `_deliver_scope` →
+-   逐包真实子进程（export 检查/复制 + owner preview/status/apply +
+-   StockQA bind/ack），无 mock 导入器。插桩（`SubprocessSpy`）对两变体一致，
+-   不改参数/返回。
+-4. 剖析结论：纯冷 import 每子进程仅 15-38ms；每包 6 子进程的结构性成本与
+-   StockQA init 全库扫描是主导（`performance-design.md` §2）。
+-5. 候选补丁（守卫不变）：C1 去重预检 + C2 只读预检合并为一次批量 worker；
+-   错误语义逐操作保持（经原 `_original_error` 归一）。仅改 2 个 dashboard 文件。
+-6. 已归档矩阵 `{summary['bench_id']}`，每格 {summary['repetitions_per_invocation']} 次；
+-   33包 {summary['results']['33']['baseline']['delivery_ms']['median']/1000:.1f}s→{summary['results']['33']['candidate']['delivery_ms']['median']/1000:.1f}s，
+-   倍数 {summary['performance']['33']['speedup_ratio_baseline_over_candidate']:.3f}×；
+-   36包倍数 {summary['performance']['36']['speedup_ratio_baseline_over_candidate']:.3f}×，
+-   performance_improvement_observed={summary['performance']['36']['performance_improvement_observed']}。
+-   数字只说明该已归档合成矩阵；不能当作生产已加速。
+-7. 本次真实执行记录：单元 {suite_counts['unit']}、集成 {suite_counts['integration']}、
+-   E2E {suite_counts['e2e']}；计数和执行UTC来自 `--test-evidence`，不以生成时间冒充运行时间。
+-   历史RED/GREEN与原矩阵另见原日志，不重复计为本次测试。
+-8. 独立审查：round-01（8 发现）→ 作者修复 → round-02 复审通过，
+-   `open_findings=[]`（`docs/review/`）。
+-
+-## 未做 / 限制
+-
+-- 未接生产、未测网络/真实 owner API/预算；不主张原生产 19 分钟已降低。
+-- StockQA init 全库校验扫描本身未优化（守卫）；后续候选需另行设计与审查。
+-- 合成实体仅两个（fixture 上下文 31 题）；33/36 包场景为同一交付作业的
+-  2 个批次 entry。
+-
+-## 交接命令
+-
+-    python scripts/parallel_handoff_cli.py --input C:/Users/郑曾波/Projects/iqs-import-performance-lab/docs/handoff/IMPORT-PERF-30/handoff.json --package-id IMPORT-PERF-30 --catalog docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/manifest.json --verify-references
+-"""
+-    (HANDOFF_DIR / "report.md").write_text(report, encoding="utf-8")
+-    print(f"handoff metadata written to {HANDOFF_DIR}")
+-    return 0
++    print(json.dumps({"status": "retired", "error_code": "legacy_generator_retired",
++        "message": "Legacy writer retired before any write. Consume the reviewed immutable payload manifest and controller C/M handoff; validate through IQS parallel_handoff_cli."}))
++    return 2
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/tools/build_payload_manifest.py b/tools/build_payload_manifest.py
+index 4c4bc01..9c8a199 100644
+--- a/tools/build_payload_manifest.py
++++ b/tools/build_payload_manifest.py
+@@ -1,77 +1,16 @@
+-"""Build docs/payload-manifest.json for the final payload commit C.
++"""Retired fixed-list writer: cannot truncate the reviewed Git-blob manifest.
+ 
+-Lists every artifact path with bytes and sha256. The manifest never indexes
+-itself, the handoff metadata, or anything under .tmp/ (per interfaces.md the
+-candidate_source_manifest_sha256 only indexes candidate source paths).
++The historical28-file index is obsolete. Current artifacts are pinned by
++docs/payload-manifest.json and the controller C/M handoff. This legacy CLI
++refuses before parsing output paths or writing any file.
+ """
+-
+-from __future__ import annotations
+-
+-import argparse
+-import hashlib
+ import json
+ import sys
+-from pathlib import Path
+-
+-LAB = Path(__file__).resolve().parents[1]
+-
+-# Final payload C artifact set (business index per interfaces.md IMPORT-PERF-30).
+-PAYLOAD_PATHS = [
+-    "README.md",
+-    "pyproject.toml",
+-    ".gitignore",
+-    "src/iqs_import_perf/__init__.py",
+-    "src/iqs_import_perf/fixtures.py",
+-    "src/iqs_import_perf/instrument.py",
+-    "src/iqs_import_perf/orchestrate.py",
+-    "bench/run_benchmark.py",
+-    "bench/run_once.py",
+-    "bench/benchmark-summary.json",
+-    "bench/raw-runs.json",
+-    "bench/semantic-equivalence.json",
+-    "bench/candidate-source-manifest.json",
+-    "bench/profile/profile-baseline-3.json",
+-    "bench/profile/profile-candidate-3.json",
+-    "conftest.py",
+-    "tests/unit/test_original_import_guards.py",
+-    "tests/unit/test_candidate_worker.py",
+-    "tests/integration/test_semantic_matrix.py",
+-    "tests/e2e/test_delivery_e2e.py",
+-    "integration/candidate.patch",
+-    "integration/performance-design.md",
+-    "tools/fetch_locked_blobs.py",
+-    "tools/prepare_variant.py",
+-    "tools/red_green_check.py",
+-    "tools/build_payload_manifest.py",
+-    "tools/build_candidate_source_manifest.py",
+-    "docs/consumed-inputs.json",
+-]
+-
+ 
+ def main() -> int:
+-    parser = argparse.ArgumentParser()
+-    parser.add_argument("--out", default="docs/payload-manifest.json")
+-    args = parser.parse_args()
+-    entries = []
+-    for rel in PAYLOAD_PATHS:
+-        path = LAB / rel
+-        if not path.is_file():
+-            print(f"missing payload artifact: {rel}", file=sys.stderr)
+-            return 1
+-        raw = path.read_bytes()
+-        entries.append({"path": rel.replace("\\", "/"), "bytes": len(raw),
+-                        "sha256": hashlib.sha256(raw).hexdigest()})
+-    payload = {
+-        "protocol": "iqs.import_perf.payload_manifest/1.0.0",
+-        "package_id": "IMPORT-PERF-30",
+-        "artifacts": entries,
+-    }
+-    out = LAB / args.out
+-    out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+-    manifest_sha = hashlib.sha256(out.read_bytes()).hexdigest()
+-    print(f"payload manifest: {out} ({len(entries)} artifacts)")
+-    print(f"payload-manifest sha256: {manifest_sha}")
+-    return 0
++    print(json.dumps({"status": "retired", "error_code": "legacy_generator_retired",
++        "message": "Legacy writer retired before any write. Consume the reviewed immutable payload manifest and controller C/M handoff; validate through IQS parallel_handoff_cli."}))
++    return 2
+ 
+ 
+ if __name__ == "__main__":

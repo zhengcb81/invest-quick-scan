@@ -1,0 +1,63 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "ANSWER-AUDIT-30",
+  "status": "changes_required",
+  "author_agent_ids": [
+    "/root",
+    "/root/review_answer_close31"
+  ],
+  "reviewer_agent_id": "/root/review_perf_close31",
+  "payload_commit": "6890d1645a1a851d0af915ec3e6ab0554d954f62",
+  "payload_manifest_sha256": "2fa3b04ebd6c7180e2b5a77aee7195da76a977c34b1b51e78098bf8f47cc126a",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "open_findings": [
+    {
+      "id": "AA31-I01",
+      "path": "src/iqs_answer_audit/provenance.py:validate_source",
+      "severity": "medium",
+      "reason": "read window can finish after recorded_after time, allowing impossible source provenance chronology; enforce record>=window.end when recording field is supplied, without using wall clock."
+    },
+    {
+      "id": "AA31-I02",
+      "path": "src/iqs_answer_audit/__init__.py:validate_coverage",
+      "severity": "medium",
+      "reason": "reasoning_support subsidiary counter can change16→32 while row-level and by_reasoning counters remain16; full chain still accepts. Recompute this object count/denominator from verdict rows."
+    }
+  ],
+  "verification": {
+    "related_tests_passed": 61,
+    "failed": 0,
+    "skipped": 0,
+    "manifest_files": 70,
+    "all_manifest_git_blob_bytes_match": true,
+    "private_input_sha256": "5342c92a5a5ad6a85c4fe030190969578af30c44eaa36e159d9966f01e3937ee",
+    "original_input_unchanged": true,
+    "adversarial_ref": "adversarial-results.json",
+    "extra_boundaries_rejected": 6,
+    "bad_boundaries_still_accepted": 2,
+    "pytest_log_sha256": "23bce43aec95615d48b8e79433efe261a7e3270863e7e76ee069b4bc2590146e"
+  },
+  "source_review": {
+    "ref": "web-checks.json",
+    "independent_direct_spotchecks": 5,
+    "declared51_source_coverage_and96_claim_links_inspected": true,
+    "all51_pages_independently_re_read": false,
+    "quality_scope": "Audit completeness/explicit verifiability gaps; not financial accuracy approval or new scores."
+  },
+  "positive_findings": [
+    "Complete51source re-verification records have35direct/16unreadable, tool references and null/unknown historical timestamps.",
+    "96 selected propositions split33 original-answer behavior excluded from financial denominator,63 external facts=22supported25partial16not_assessable.",
+    "Zero whole-claim contradicted is explicitly qualified; cited2014 period, CVTE/CATL attribution and Tencent contrary subclaim remain contextual_findings.",
+    "CATL truncation/estimate and7-equals7 narrative correction do not rewrite original score/quote/input. Original version1.0 reads and mixed-wire rejection are covered."
+  ],
+  "cleanup": {
+    "temporary_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.aa31-8daa33af",
+    "temporary_absent": true,
+    "private_copy_absent": true,
+    "original_private_hash_unchanged": true,
+    "network_calls": 0,
+    "paid_api_calls": 0
+  },
+  "reviewed_at_utc": "2026-10-31T21:19:21.182401+00:00",
+  "next_action": "Root fixes2small integrity findings, commits new real C; independent reviewer verifies new C delta and affected regressions before passed. Old Mpartial not approval of new C."
+}

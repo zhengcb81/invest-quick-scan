@@ -1,0 +1,1312 @@
+diff --git a/src/app/index.html b/src/app/index.html
+index 0578f79..27b709f 100644
+--- a/src/app/index.html
++++ b/src/app/index.html
+@@ -8,6 +8,7 @@
+ <link rel="stylesheet" href="./styles/app.css">
+ <link rel="stylesheet" href="./vendor/compare/compare_view.css">
+ <link rel="stylesheet" href="./vendor/universe-import/universe-import.css">
++<link rel="stylesheet" href="./vendor/result-trust/result_trust_panel.css">
+ </head>
+ <body>
+ <div id="app"></div>
+diff --git a/src/app/ui/product.js b/src/app/ui/product.js
+index 6421bbc..6f2b681 100644
+--- a/src/app/ui/product.js
++++ b/src/app/ui/product.js
+@@ -9,6 +9,9 @@ import {searchableCompanyPicker, statusNotice, diagnosticDetails, lockEditorCont
+ import {connectionFields, policyFields} from './product_forms.js';
+ import {mountCompanyComparison, universeImportSection, originalSubjectKey} from './product_extensions.js';
+ 
++import {renderResultTrustPanel} from '../vendor/result-trust/result_trust_panel.js';
++import {loadCompanyView,resultDetailModel,recordOwnerState,temporalRecordText} from './result_trust_host.js';
++
+ let generation = 0;
+ let poll = null;
+ const componentDisposers = new Set();
+@@ -94,9 +97,12 @@ function startReceiptMessage(result) {
+   return '已收到原启动回执，尚不能确认是否创建了新进程。请核对原任务状态，不重复提交。';
+ }
+ function originalMetadataText(value) { return value === null || value === undefined ? '未提供' : typeof value === 'string' ? value : JSON.stringify(value); }
+-function answerTable(rows) {
++function answerTable(rows, {resultModel=null,temporalShadow=null}={}) {
+   return el('div',{class:'answer-records'},rows.map(raw=>{
+     const row=presentationRow(raw),qid=row.question_id||row.field_id||'未记录';
++    const original=rawCard('版本、主体、发布与完整原始记录',raw);
++    const trust=renderResultTrustPanel({record:raw,ownerState:resultModel?recordOwnerState(resultModel,raw):{},
++      onViewOriginal:()=>{original.open=true;original.scrollIntoView?.({block:'nearest'});original.querySelector?.('summary')?.focus();}});
+     const question=store.questionIndex[qid]||(store.bank.facts?.questions||[]).find(q=>q.id===qid);
+     const href=store.questionIndex[qid]?`#/bank/m/${encodeURIComponent(question.module_id)}?q=${encodeURIComponent(qid)}`:`#/bank?fact=${encodeURIComponent(qid)}`;
+     const qualification=[row.publication_status==='review_pending'?'金融审查待完成（review_pending）':row.publication_status||'发布状态未记录',row.qualification_status||row.check_level||'资格未记录'];
+@@ -116,11 +122,13 @@ function answerTable(rows) {
+       el('p',{class:'answer-summary',text:row.summary?row.summary.slice(0,180)+(row.summary.length>180?'…':''):'无理由文本'}),
+       el('details',{class:'record-details'},[
+         el('summary',{text:'完整理由、来源与记录'}),
++        trust,
++        resultModel?el('p',{class:'note',text:temporalRecordText(temporalShadow,raw)}):null,
+         kv(metadata),
+         el('div',{class:'answer-full',text:row.summary||'无理由文本'}),
+         row.items?.length?rawCard('原始结构化信息',row.items):null,
+         showEvidence(row.evidence),
+-        rawCard('版本、主体、发布与完整原始记录',raw),
++        original,
+       ]),
+     ]);
+   }));
+@@ -178,11 +186,17 @@ export function renderResults(route) {
+   if (id) {
+     root.appendChild(el('div',{class:'row'},[el('a',{href:safeResultsReturn(route.query.return),text:'← 返回结果库'}),el('a',{href:`#/history?id=${encodeURIComponent(id)}`,class:'btn',text:'历史与模型对照'}),el('a',{href:`#/facts?id=${encodeURIComponent(id)}`,class:'btn',text:'基础信息与产业关系'}),el('a',{href:`#/companies/e/${encodeURIComponent(id)}`,class:'btn',text:'查看静态草稿 / 题库覆盖'})]));
+     asyncPanel(root,async()=>{
+-      const detail = await request(`entity?id=${encodeURIComponent(id)}`);
+-      const box = el('div'); const entity = detail.entity || {};
+-      box.appendChild(sectionCard(entity.canonical_name || id,[kv([['entity_id',id],['身份状态',entity.identity_state || '未记录'],['协议',detail.protocol || '未记录'],['C06 已校验',detail.c06_envelope_validated === true ? '是' : '否 / 未提供'],['质量汇总',detail.quality?.quality_verified ? String(detail.quality.quality_score) : '不可用（不以逐题均分替代）']]) ]));
+-      const rows = flattenFields(detail);
+-      box.appendChild(sectionCard(`已存评分与事实记录（${rows.length}）`,rows.length ? answerTable(rows) : empty('该公司尚无可展示的生产记录。')));
++      const view = await loadCompanyView(request,id),detail=view.entity;
++      const model=resultDetailModel(detail,id);
++      const box = el('div'); const entity = model.issues.some(v=>v.code==='entity_envelope_identity_conflict')?{}:(model.entity||{});
++      if(model.ownerState.envelope_identity_conflict)box.appendChild(sectionCard('返回数据的公司身份冲突',[note('返回的公司与请求不一致；以下异常原记录已隔离，汇总与资格不作为本公司结果展示。',true),rawCard('身份冲突的原始返回（仅供核对）',detail)]));
++      else box.appendChild(sectionCard(entity.canonical_name || '公司归属未确认',[kv([['entity_id',model.ownerState.entity_id||'未提供'],['身份状态',entity.identity_state || '未记录'],['协议',detail.protocol || '未记录'],['C06 已校验',detail.c06_envelope_validated === true ? '是' : '否 / 未提供'],['质量汇总',detail.quality?.quality_verified ? String(detail.quality.quality_score) : '不可用（不以逐题均分替代）']]) ]));
++      const rows = model.rows;
++      box.appendChild(note('资料日期、观测时间、签收与金融核查分别展示；时点解释不自动授予缓存复用。'));
++      box.appendChild(sectionCard(`已存评分与事实记录（${rows.length}）`,rows.length ? answerTable(rows,{resultModel:model,temporalShadow:view.temporal_shadow}) : empty('该公司尚无可确认归属的生产记录。')));
++      if(model.isolated.length)box.appendChild(rawCard(`归属异常原记录（${model.isolated.length}，不计入本公司结果）`,model.isolated));
++      if(model.issues.length)box.appendChild(rawCard('原记录归属与格式缺口',model.issues));
++      box.appendChild(rawCard('只读时点解释（不改变原复用规则）',view.temporal_shadow));
+       if (detail.gaps?.length) box.appendChild(note(`原 owner 数据缺口：${detail.gaps.join('；')}`));
+       box.appendChild(rawCard('原始能力、恢复关注和结果状态',{score_summary:detail.score_summary,recovery:detail.recovery,runtime:detail.runtime,capabilities:detail.capabilities}));
+       return box;
+diff --git a/src/app/ui/result_trust_host.js b/src/app/ui/result_trust_host.js
+new file mode 100644
+index 0000000..e7cb2d7
+--- /dev/null
++++ b/src/app/ui/result_trust_host.js
+@@ -0,0 +1,57 @@
++// Read-only host integration. Actual envelopes supply identity; URLs never do.
++import {projectEntity} from '../vendor/compare/compare_view.js';
++import {describeResultTrust} from '../vendor/result-trust/result_trust_panel.js';
++export const COMPANY_VIEW_PROTOCOL='iqs.company_research_view/1.0.0';
++const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
++
++export async function loadCompanyView(request,id) {
++  try {
++    const view=await request(`entity-view?id=${encodeURIComponent(id)}`);
++    if(!object(view)||view.protocol!==COMPANY_VIEW_PROTOCOL||!object(view.entity))
++      throw Object.assign(new Error('公司结果视图协议不匹配，请重新连接服务。'),{code:'company_view_contract'});
++    return view;
++  } catch(error) {
++    // Capability downgrade is explicit; a timeout/identity error never triggers a second read.
++    if(error.code!=='method_or_route_not_allowed')throw error;
++    return {protocol:'legacy_entity_fallback',entity:await request(`entity?id=${encodeURIComponent(id)}`),temporal_shadow:null};
++  }
++}
++
++export function resultDetailModel(detail,requestedId) {
++  const projected=projectEntity(detail,{entityId:requestedId});
++  const conflict=projected.issues.some(x=>x.code==='entity_envelope_identity_conflict');
++  const originalRows=Array.isArray(detail?.groups)
++    ?detail.groups.flatMap(g=>Array.isArray(g?.fields)?g.fields:[])
++    :Array.isArray(detail?.rows)?detail.rows:[];
++  const rows=[],isolated=[];
++  const ownerState={entity_id:projected.entity_id,envelope_identity_conflict:conflict};
++  for(const key of ['generated_at_utc','quality','gaps','score_summary','recovery','runtime','projection','ack','research'])
++    if(Object.hasOwn(detail||{},key))ownerState[key]=detail[key];
++  if(object(projected.entity)&&Object.hasOwn(projected.entity,'identity_state'))ownerState.identity_state=projected.entity.identity_state;
++  for(const raw of originalRows) {
++    if(!object(raw)){isolated.push(raw);continue;}
++    const identity=describeResultTrust({record:raw,ownerState}).items.find(i=>i.key==='identity')?.identity_state;
++    if(conflict||['foreign','invalid_child_identity','envelope_conflict'].includes(identity))isolated.push(raw);
++    else rows.push(raw);
++  }
++  return {rows,isolated,originalRows,ownerState,issues:projected.issues,entity:projected.entity};
++}
++
++export function recordOwnerState(model,row) {
++  return {...model.ownerState,field_observations:model.originalRows.filter(v=>object(v)
++    && ((row.field_id&&v.field_id===row.field_id)||(row.question_id&&v.question_id===row.question_id)))};
++}
++
++const KINDS={market_sensitive:'行情敏感',periodic_financial:'定期财务',structural:'长期经营特征',event_sensitive:'事件敏感',mixed:'多类信息'};
++export function temporalRecordText(shadow,row) {
++  if(!object(shadow)||shadow.protocol!=='iqs.temporal_shadow/1.0.0'
++     ||shadow.mode!=='read_only_shadow'||shadow.production_reuse_applied!==false||shadow.reuse_authorized!==false)
++    return '时点解释未提供；资料新旧以原服务预检为准。';
++  const matches=Array.isArray(shadow.records)?shadow.records.filter(v=>v?.observation_id===row.observation_id
++    &&v.question_id===row.question_id&&v.field_id===row.field_id):[];
++  if(matches.length!==1)return '该原观察缺少唯一时点解释；实际复用以原服务预检为准。';
++  const item=matches[0],assessment=item.captured_context_assessment||item.clock_only_assessment;
++  const clocks=(assessment?.clock_assessments||[]).map(v=>({fact_valid_clock:'答案执行时点',market_clock:'行情时点',
++    reporting_period_clock:'财务期间',publication_clock:'来源发布时间',verification_clock:'独立核查时点'}[v.clock]||v.clock));
++  return `信息类型：${KINDS[item.knowledge_kind]||'尚未绑定当前题义'}。${clocks.length?`分别检查：${clocks.join('、')}。`:''}当前路由未核验，未授予复用；缺少独立核查凭证时不自动续期。`;
++}
+diff --git a/src/app/vendor/result-trust/result_trust_panel.css b/src/app/vendor/result-trust/result_trust_panel.css
+new file mode 100644
+index 0000000..9b777ce
+--- /dev/null
++++ b/src/app/vendor/result-trust/result_trust_panel.css
+@@ -0,0 +1,147 @@
++/* RESULT-TRUST-30 panel styles. Every selector is scoped to .rtp-root so the host page styles are not changed. */
++.rtp-root {
++  box-sizing: border-box;
++  max-width: 100%;
++  margin: 0.5rem 0;
++  padding: 0.75rem 0.875rem;
++  border: 1px solid #c9d3dd;
++  border-radius: 6px;
++  background: #ffffff;
++  color: #1d2733;
++  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
++}
++.rtp-root *,
++.rtp-root *::before,
++.rtp-root *::after {
++  box-sizing: border-box;
++}
++.rtp-root.rtp-root--isolated {
++  border-style: dashed;
++  border-color: #b45309;
++}
++.rtp-root h3 {
++  margin: 0 0 0.25rem;
++  font-size: 1rem;
++  line-height: 1.4;
++}
++.rtp-root .rtp-identity {
++  margin: 0 0 0.5rem;
++  color: #334155;
++  overflow-wrap: anywhere;
++}
++.rtp-root .rtp-banner {
++  margin: 0 0 0.5rem;
++  padding: 0.375rem 0.5rem;
++  border-left: 4px solid #b45309;
++  background: #fff7ed;
++  color: #7c2d12;
++}
++.rtp-root .rtp-main,
++.rtp-root .rtp-detail {
++  display: grid;
++  gap: 0.375rem;
++  margin: 0;
++}
++.rtp-root .rtp-row {
++  display: grid;
++  grid-template-columns: minmax(7.5rem, 11rem) minmax(0, 1fr);
++  gap: 0.25rem 0.75rem;
++  align-items: start;
++}
++.rtp-root dt {
++  margin: 0;
++  font-weight: 600;
++  color: #334155;
++}
++.rtp-root dd {
++  margin: 0;
++  min-width: 0;
++  overflow-wrap: anywhere;
++}
++.rtp-root .rtp-value[data-rtp-state="missing"] {
++  color: #64748b;
++  font-style: italic;
++}
++.rtp-root .rtp-value[data-rtp-state="conflict"] {
++  color: #92400e;
++  font-weight: 600;
++}
++.rtp-root .rtp-value[data-rtp-state="unrecognized"] {
++  color: #6b21a8;
++}
++.rtp-root .rtp-value[data-rtp-state="isolated"] {
++  color: #64748b;
++}
++.rtp-root .rtp-parts,
++.rtp-root .rtp-variants {
++  margin: 0;
++  padding-left: 1.1rem;
++}
++.rtp-root .rtp-warnings {
++  margin: 0.5rem 0 0;
++  padding-left: 1.1rem;
++  color: #7c2d12;
++}
++.rtp-root details {
++  margin-top: 0.5rem;
++}
++.rtp-root summary {
++  cursor: pointer;
++  font-weight: 600;
++  color: #1e40af;
++}
++.rtp-root .rtp-refs {
++  margin: 0.375rem 0 0;
++  padding-left: 1.1rem;
++}
++.rtp-root .rtp-raw pre {
++  margin: 0.25rem 0 0;
++  padding: 0.5rem;
++  background: #f1f5f9;
++  white-space: pre-wrap;
++  overflow-wrap: anywhere;
++  font-size: 12px;
++}
++.rtp-root .rtp-actions {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  gap: 0.5rem;
++  margin-top: 0.625rem;
++}
++.rtp-root .rtp-view {
++  min-height: 36px;
++  padding: 0.375rem 0.75rem;
++  border: 1px solid #1e40af;
++  border-radius: 4px;
++  background: #1e40af;
++  color: #ffffff;
++  font: inherit;
++  cursor: pointer;
++}
++.rtp-root .rtp-view:disabled {
++  border-color: #94a3b8;
++  background: #e2e8f0;
++  color: #475569;
++  cursor: not-allowed;
++}
++.rtp-root .rtp-hint,
++.rtp-root .rtp-muted {
++  margin: 0;
++  color: #64748b;
++  font-size: 13px;
++}
++.rtp-root a {
++  color: #1d4ed8;
++  overflow-wrap: anywhere;
++}
++.rtp-root :focus-visible {
++  outline: 3px solid #2563eb;
++  outline-offset: 2px;
++}
++@media (max-width: 36rem) {
++  .rtp-root .rtp-row {
++    grid-template-columns: minmax(0, 1fr);
++    gap: 0.125rem;
++  }
++}
+diff --git a/src/app/vendor/result-trust/result_trust_panel.js b/src/app/vendor/result-trust/result_trust_panel.js
+new file mode 100644
+index 0000000..0e44e9d
+--- /dev/null
++++ b/src/app/vendor/result-trust/result_trust_panel.js
+@@ -0,0 +1,870 @@
++// RESULT-TRUST-30 read-only result trust panel. Plain ESM with no dependencies.
++// The caller passes owner values. This module reads them, returns new objects, never writes into its inputs,
++// never requests data, never scores, never judges freshness from a clock, and never grants a permission.
++
++export const RESULT_TRUST_PROTOCOL = 'iqs.result_trust_view/1.0.0';
++
++export const RESULT_TRUST_ITEM_KEYS = [
++  'identity', 'score_status', 'information_as_of', 'timing', 'freshness', 'ack', 'financial', 'research',
++  'question', 'scope', 'period', 'subject', 'model', 'coverage', 'confidence', 'missing_fields',
++  'counterevidence', 'summary', 'refs', 'raw_items', 'check_level', 'sign_off_import', 'cohort',
++  'projection', 'score_summary', 'quality', 'gaps', 'recovery', 'field_variants', 'raw_codes',
++];
++
++const MAIN_ORDER = ['identity', 'score_status', 'information_as_of', 'timing', 'freshness', 'ack', 'financial', 'research'];
++const MAIN_KEYS = new Set(MAIN_ORDER);
++
++const LABELS = {
++  identity: '归属', score_status: '分数与状态', information_as_of: '资料适用时点', timing: '研究截止与生成时间',
++  freshness: '资料新旧（原规则）', ack: '签收（ACK）', financial: '金融资格（与签收分开）', research: '研究状态',
++  question: '题目与版本', scope: '范围与证券', period: '指标期间与口径', subject: '分析主体与身份修订',
++  model: '模型与执行记录', coverage: '原 coverage', confidence: '原 confidence', missing_fields: '原缺失字段',
++  counterevidence: '反证与观察触发', summary: '原理由', refs: '原始引用', raw_items: '原结构化条目',
++  check_level: '核查等级', sign_off_import: '导入与签收记录', cohort: '公司分组', projection: '投影版本',
++  score_summary: '原汇总计数', quality: '综合质量', gaps: '原 owner 缺口', recovery: '恢复范围（受控子集）',
++  field_variants: '同题原观察（并列，未合并）', raw_codes: '原诊断码（只读）',
++};
++
++const ANSWER_STATUS = {
++  scored: '已评分', answered: '已作答', insufficient_evidence: '证据不足', not_applicable: '不适用', search_unavailable: '搜索不可用',
++};
++
++const FRESHNESS_TEXT = {
++  fresh: '按原规则判定为 fresh（所示时点未过期，不等于已核实为最新）',
++  stale: '按原规则判定为已过期（资料时点较旧时属预期结果，不代表页面或导入错误）',
++  missing_date: '缺少判定所需的信息日期或有效期，原规则无法判定',
++  event_invalidated: '已有原事件使其失效',
++  unknown: '原状态未知',
++  not_applicable: '不适用',
++};
++const POLICY_NOTE = '字段时效策略未接入：本页不据此判定是否过期';
++
++const CHECK_LEVEL_TEXT = { unverified_model_output: '未经独立核查的模型输出', unreviewed: '未复核', reviewed: '已复核' };
++
++const RESEARCH_STATE = {
++  completed: ['本次交付任务已完成', '到结果库查看本次所选范围的原签收记录；不代表全公司扫描完成或金融审查通过。'],
++  delivered: ['原结果已签收', '到结果库查看；签收不代表金融审查通过。签收不代表整个公司完成。'],
++  historical_read_only: ['历史交付（只读）', '仅保留历史签收摘要；当前部署未重验原ACK，不授予恢复或导入权限。'],
++  partial: ['部分完成', '查看逐项缺口，只接续原服务明确允许的未完成部分。部分完成不等于已交付或已签收。'],
++  pending: ['等待处理', '查看原任务阻断与下一步；等待不等于失败。'],
++  registered: ['公司题库已登记', '下一步进入扫描；登记不代表已有答案。'],
++  preparing: ['正在准备公司与题库', '可离开页面；先读取原准备任务，不要重复提交。'],
++  running: ['正在扫描', '等待当前范围完成，或按原允许动作安全暂停。'],
++  paused: ['已暂停', '核实原状态后按允许动作恢复，已有结果不会重发。'],
++  failed: ['操作未完成', '查看诊断，核实原状态后再处理，不能盲目重发。'],
++  unknown: ['状态未知', '先核原状态；不会自动重发或补成成功。'],
++  prepared: ['已准备（仅准备步骤）', '准备完成不代表已有答案；不能据此当作已登记或已评分。'],
++  ready: ['已就绪', '就绪不等于已 ACK，也不等于已交付。'],
++  accepted: ['已接收（原 ACK 口径）', '接收不等于已交付、可比或金融审查通过。'],
++  process_exited: ['进程已退出', '退出不等于已评分或已签收；请核对原状态与请求范围。'],
++  deferred: ['历史 deferred（延后记录）', '原记录仍为延后状态，不能显示为新研究已完成。'],
++};
++const RESEARCH_UNKNOWN = ['原服务有待核实项', '展开原始诊断，按原服务说明处理；界面不猜测未识别代码的含义。'];
++const HISTORICAL_RESEARCH = new Set(['deferred', 'historical_read_only']);
++
++const IDENTITY_TEXT = {
++  matched: ['present', '属于本公司（与父级实体一致）'],
++  inherited: ['present', '沿用父级结构归属（原子记录未重复写明实体 ID）'],
++  child_unknown: ['missing', '归属未知：原记录的实体 ID 为空（null），页面不补写'],
++  unattributed: ['missing', '归属未确认：原记录与父级都没有实体 ID，页面不补写'],
++  parent_unknown: ['missing', '父级公司 ID 未提供，无法核对该记录归属（不由查询名称补写）'],
++  foreign: ['conflict', '外来子记录：实体 ID 与当前公司不一致，已隔离显示，不计入本公司结果'],
++  envelope_conflict: ['conflict', '父级身份冲突：该组原记录不显示'],
++  invalid_child_identity: ['unrecognized', '原记录的实体 ID 不是文本，归属未确认'],
++};
++
++const WARNING_TEXT = {
++  record_not_object: '原记录不是对象，无法显示可信信息。',
++  owner_state_not_object: '父级状态不是对象，已按未提供处理。',
++  envelope_identity_conflict: '父级身份冲突：该组原记录不显示。',
++  envelope_entity_id_missing: '父级公司 ID 未提供，无法核对子记录归属；页面不从查询名称补写。',
++  child_entity_id_missing: '原记录与父级都没有实体 ID，归属未确认；页面不补写。',
++  child_entity_id_unknown: '原记录的实体 ID 为空（null），归属保持未知，页面不补写。',
++  invalid_child_identity: '原记录的实体 ID 不是文本，归属未确认。',
++  foreign_child_isolated: '此记录属于其他实体，已隔离显示，不计入当前公司结果。',
++  identity_unverified: '公司身份未核实：归属仅供参考，请以原记录和原身份核实为准。',
++  score_status_mismatch: '原分数与原状态不一致；按原值保留，不据此判断可用性。',
++  score_missing_for_scored: '原状态为已评分，但原分数缺失；按原值显示未提供。',
++  score_non_numeric: '原分数不是有限数字，按原值标注，未转换成数字。',
++  generation_is_not_information_date: '资料适用时点未提供；生成或观测时间不能代替资料日期。',
++  information_after_cutoff: '资料适用时点晚于取证截止：两者原值并列保留，未修正。',
++  observed_after_imported: '观测时间晚于导入时间：两者原值并列保留，未修正。',
++  freshness_policy_unavailable: '字段时效策略未接入：本页不据此判定是否过期，原状态按原规则显示。',
++  freshness_error: '原 freshness 计算报错（已记录在原记录中）。',
++  freshness_code_unrecognized: '原 freshness 状态未识别，按原码显示。',
++  fresh_without_information_date: '原状态为 fresh，但资料适用时点未提供：不能据此认为资料仍有效。',
++  ack_not_comparability: '签收（ACK）不表示可比、已金融审查或整个公司完成。',
++  ack_negative: '原 ACK 未接收，不能据此认为已签收。',
++  financial_review_pending: '金融审查待完成：此记录不能当作已核实的金融结论。',
++  check_level_unverified: '核查等级为未经独立核查的模型输出，不等于金融核实。',
++  research_state_not_completion: '研究状态不等于完成、已评分或已签收；请以原状态为准。',
++  requested_scope_incomplete: '本次请求范围未完成：不能显示为新研究已完成。',
++  recovery_subset_partial: '受控恢复子集：不是整公司已扫完，详见恢复范围一行。',
++  recovery_scope_unknown: '恢复范围信息未知或不一致；请核原状态，不能据此判断整公司已扫完。',
++  quality_unverified: '综合质量未核验，不以逐题平均分替代。',
++  ambiguous_field_variants: '原汇总列出存在不可合并变体的字段。',
++  variants_not_merged: '同一题有多条原观察：已并列显示，未合并，也未以较新者覆盖。',
++  information_dates_differ: '同题原观察的资料时点不一致：已并列保留，未以较新日期覆盖。',
++  variant_scope_or_version_differs: '同题原观察的题义版本、证券、挂牌或范围不同：已分别列出。',
++  subject_not_recorded: '此观察未绑定分析主体（历史记录），不补造主体。',
++};
++
++const CHECKED_RECORD_FIELDS = [
++  ['information_as_of', 'information_as_of'], ['information_cutoff', 'information_cutoff'], ['observed_at', 'observed_at'],
++  ['imported_at', 'imported_at'], ['freshness', 'freshness'], ['check_level', 'check_level'],
++  ['publication_status', 'publication_status'], ['qualification_status', 'qualification_status'],
++  ['coverage', 'coverage'], ['confidence', 'confidence'], ['model_resolved', 'model_resolved'],
++  ['subject', 'subject'], ['versions', 'versions'], ['summary', 'summary'],
++];
++const CHECKED_OWNER_FIELDS = ['generated_at_utc', 'ack', 'research', 'quality', 'gaps', 'score_summary', 'identity_state'];
++
++const isPlainObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
++const present = value => value !== undefined && value !== null && value !== '';
++
++// Displays an owner value as its original text. Objects and arrays are shown as full JSON, never
++// truncated and never as "[object Object]"; long values wrap in the layout.
++function displayValue(value) {
++  if (typeof value === 'string') return value;
++  if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') return String(value);
++  if (value === null || value === undefined) return String(value);
++  if (typeof value === 'object') {
++    try {
++      return JSON.stringify(value);
++    } catch {
++      return '[无法显示的原值]';
++    }
++  }
++  return '[无法显示的原值]';
++}
++const shown = (value, fallback = '未记录') => (present(value) ? displayValue(value) : fallback);
++const textOrNull = value => (present(value) ? displayValue(value) : null);
++const listText = values => (Array.isArray(values) && values.length ? values.map(displayValue).join('、') : '无');
++
++function safeHttpUrl(value) {
++  if (typeof value !== 'string' || value.length > 2048) return null;
++  try {
++    const parsed = new URL(value.trim());
++    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : null;
++  } catch {
++    return null;
++  }
++}
++
++function validCalendarPrefix(value) {
++  if (typeof value !== 'string') return false;
++  const match = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/.exec(value);
++  if (!match) return false;
++  const year = Number(match[1]);
++  if (year < 1) return false;
++  if (!match[2]) return true;
++  const month = Number(match[2]);
++  if (month < 1 || month > 12) return false;
++  if (!match[3]) return true;
++  const days = [31, (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
++  const day = Number(match[3]);
++  return day >= 1 && day <= days[month - 1];
++}
++
++function precisionOf(value) {
++  if (!validCalendarPrefix(value)) return 'text';
++  if (/^\d{4}$/.test(value)) return 'year';
++  if (/^\d{4}-\d{2}$/.test(value)) return 'month';
++  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return 'day';
++  if (timestampOf(value)) return 'timestamp';
++  return 'text';
++}
++const PRECISION_LABEL = { year: '年精度', month: '月精度', day: '日精度', timestamp: '时间戳', text: '格式未识别，按原文显示' };
++
++// Explicit owner timestamps only: no wall clock, no normalization of invalid
++// dates, and fractional seconds remain exact beyond JavaScript milliseconds.
++function timestampOf(value) {
++  if (!validCalendarPrefix(value)) return null;
++  const m=/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d+))?)?(Z|([+-])(\d{2}):(\d{2}))$/.exec(value);
++  if (!m) return null;
++  const hour=Number(m[2]), minute=Number(m[3]), second=Number(m[4] || 0);
++  const zoneHour=Number(m[8] || 0), zoneMinute=Number(m[9] || 0);
++  if (hour>23 || minute>59 || second>59 || zoneHour>23 || zoneMinute>59) return null;
++  const base=Date.parse(`${m[1]}T${m[2]}:${m[3]}:${m[4] || '00'}Z`)/1000;
++  if (!Number.isFinite(base)) return null;
++  const offset=(zoneHour*3600+zoneMinute*60)*(m[7]==='-' ? -1 : 1);
++  return {second:base-offset, fraction:(m[5] || '').replace(/0+$/,'')};
++}
++function dayOf(value) {
++  if (precisionOf(value)==='day') return value;
++  const stamp=timestampOf(value);
++  return stamp ? new Date(stamp.second*1000).toISOString().slice(0,10) : null;
++}
++function timestampAfter(left,right) {
++  const a=timestampOf(left), b=timestampOf(right);
++  if (!a || !b) return false;
++  if (a.second!==b.second) return a.second>b.second;
++  const width=Math.max(a.fraction.length,b.fraction.length);
++  return a.fraction.padEnd(width,'0')>b.fraction.padEnd(width,'0');
++}
++
++function questionIDs(value) {
++  return Array.isArray(value)
++    && value.every(id => typeof id === 'string' && /^[A-Z0-9_]+$/.test(id))
++    && new Set(value).size === value.length;
++}
++const isSafeInt = value => Number.isSafeInteger(value);
++const UNKNOWN_RECOVERY = { kind: 'unknown' };
++
++// Same validation and wording as the frozen recoverySubsetInfo (product_core.js), applied to one container.
++function recoveryInfo(container) {
++  if (!isPlainObject(container)) return { kind: 'normal' };
++  const subset = container.recovery_subset;
++  if (subset === undefined || subset === null) return { kind: 'normal' };
++  if (!isPlainObject(subset)) return UNKNOWN_RECOVERY;
++  const legacy = subset.protocol === 'iqs.dashboard-recovery-subset/1.0.0' && subset.purpose === 'retry_unusable_checkpoint';
++  const current = subset.protocol === 'iqs.dashboard-recovery-subset/1.1.0' && subset.purpose === 'native_controlled_retry';
++  if (!legacy && !current) return UNKNOWN_RECOVERY;
++  const ids = subset.execution_question_ids;
++  const count = subset.execution_question_count;
++  const full = subset.full_bank_question_count;
++  const items = subset.items;
++  if (!questionIDs(ids) || !isSafeInt(count) || count < 1 || count !== ids.length || !isSafeInt(full) || full < count
++    || !Array.isArray(items) || items.length !== count) return UNKNOWN_RECOVERY;
++  const itemIDs = items.map(entry => (isPlainObject(entry) ? entry.question_id : undefined));
++  if (!questionIDs(itemIDs) || JSON.stringify([...itemIDs].sort()) !== JSON.stringify([...ids].sort())) return UNKNOWN_RECOVERY;
++  if (items.some(entry => !isPlainObject(entry)
++    || !['work_item_id', 'decision_id'].every(key => typeof entry[key] === 'string' && entry[key].trim())
++    || !isSafeInt(entry.source_generation) || entry.source_generation < 1
++    || !isSafeInt(entry.target_generation) || entry.target_generation <= entry.source_generation)) return UNKNOWN_RECOVERY;
++  if (current && items.some(entry => !['retry_unusable_checkpoint', 'retry_unusable_answer'].includes(entry.purpose)
++    || entry.target_generation !== entry.source_generation + 1)) return UNKNOWN_RECOVERY;
++  const execution = container.execution_question_ids;
++  const actual = container.execution_question_count;
++  if (!questionIDs(execution) || !isSafeInt(actual) || actual < 1 || actual !== execution.length
++    || execution.some(id => !ids.includes(id))) return UNKNOWN_RECOVERY;
++  const declaredFull = [];
++  if (Object.hasOwn(container, 'full_bank_question_count')) declaredFull.push(container.full_bank_question_count);
++  if (isPlainObject(container.bank) && Object.hasOwn(container.bank, 'question_count')) declaredFull.push(container.bank.question_count);
++  if (Array.isArray(container.questions) && Object.hasOwn(container, 'question_count')) declaredFull.push(container.question_count);
++  if (declaredFull.some(value => !isSafeInt(value) || value < 1 || value !== full)) return UNKNOWN_RECOVERY;
++  const prefix = actual === count ? `只执行${actual}题` : `本scope只执行${actual}题，本公司恢复${count}题`;
++  return { kind: 'recovery', label: `受控恢复子集：${prefix}，原题库${full}题；非整公司已扫完。` };
++}
++
++function identityFor(record, envelope, conflict) {
++  if (conflict) return { identity_state: 'envelope_conflict', child: null };
++  const keyPresent = Object.hasOwn(record, 'entity_id');
++  const value = record.entity_id;
++  if (keyPresent && value !== null && value !== undefined && typeof value !== 'string') {
++    return { identity_state: 'invalid_child_identity', child: null };
++  }
++  const child = typeof value === 'string' && value.trim() ? value.trim() : null;
++  if (envelope && child) return { identity_state: child === envelope ? 'matched' : 'foreign', child };
++  if (envelope) return { identity_state: keyPresent ? 'child_unknown' : 'inherited', child: null };
++  if (child) return { identity_state: 'parent_unknown', child };
++  return { identity_state: 'unattributed', child: null };
++}
++
++function scoreStatusFor(record) {
++  const { score, status } = record;
++  const numeric = typeof score === 'number' && Number.isFinite(score);
++  const scoreKind = score === undefined || score === null ? 'absent' : numeric ? 'numeric' : 'non_numeric';
++  const scoreText = scoreKind === 'absent' ? '未提供' : numeric ? String(score) : `原值非数字：${displayValue(score)}`;
++  const code = present(status) && status !== 'missing' ? String(status) : null;
++  let statusText;
++  let statusKind;
++  if (!code) {
++    statusText = '原状态未提供';
++    statusKind = 'missing';
++  } else if (Object.hasOwn(ANSWER_STATUS, code)) {
++    statusText = ANSWER_STATUS[code];
++    statusKind = 'known';
++  } else {
++    statusText = `原状态未识别：${code}`;
++    statusKind = 'unrecognized';
++  }
++  let state;
++  if (statusKind === 'unrecognized') state = 'unrecognized';
++  else if (scoreKind === 'non_numeric') state = 'non_numeric';
++  else if (scoreKind === 'numeric') state = code === 'scored' ? 'present' : code ? 'conflict' : 'partial';
++  else state = code === 'scored' ? 'conflict' : 'missing';
++  const warnings = [];
++  if (scoreKind === 'numeric' && code && code !== 'scored') warnings.push('score_status_mismatch');
++  if (scoreKind === 'absent' && code === 'scored') warnings.push('score_missing_for_scored');
++  if (scoreKind === 'non_numeric') warnings.push('score_non_numeric');
++  return { state, text: `${scoreText} · ${statusText}`, warnings };
++}
++
++function freshnessFor(record) {
++  const f = record.freshness;
++  if (f === undefined || f === null) return { state: 'missing', text: '未提供（原记录未带原时效标记）', warnings: [] };
++  if (!isPlainObject(f)) return { state: 'unrecognized', text: `原格式非对象：${displayValue(f)}`, warnings: [] };
++  const code = present(f.status) ? String(f.status) : null;
++  const warnings = [];
++  let text;
++  let state;
++  if (!code) {
++    text = '原状态未提供';
++    state = 'missing';
++  } else if (Object.hasOwn(FRESHNESS_TEXT, code)) {
++    text = FRESHNESS_TEXT[code];
++    state = 'present';
++  } else {
++    text = `原状态未识别：${code}`;
++    state = 'unrecognized';
++    warnings.push('freshness_code_unrecognized');
++  }
++  if (code === 'fresh' && !present(record.information_as_of)) {
++    state = 'conflict';
++    text = `资料适用时点未提供：不能据此认为资料仍有效。${text}`;
++    warnings.push('fresh_without_information_date');
++  }
++  if (f.policy_available === false) {
++    text += `；${POLICY_NOTE}`;
++    warnings.push('freshness_policy_unavailable');
++  }
++  if (present(f.error)) {
++    text += '；原计算报错（已记录）';
++    warnings.push('freshness_error');
++  }
++  return { state, text, warnings };
++}
++
++function ackFor(owner) {
++  const ack = owner.ack;
++  if (ack === undefined || ack === null) return { state: 'missing', text: '未提供（页面未收到原 ACK 记录）', warnings: [] };
++  if (!isPlainObject(ack)) return { state: 'unrecognized', text: '原 ACK 格式非对象，未显示', warnings: [] };
++  const status = present(ack.status) ? String(ack.status) : null;
++  if (status === 'accepted' || status === 'already_present') {
++    return {
++      state: 'present',
++      text: '已收到原系统的接收确认；仅表示已接收，不代表可比、已金融审查或整个公司完成',
++      warnings: ['ack_not_comparability'],
++    };
++  }
++  if (status === 'conflict' || status === 'rejected') {
++    const reason = present(ack.error_code) ? displayValue(ack.error_code) : '原因未提供';
++    return { state: 'conflict', text: `原系统未接收（${reason}）`, warnings: ['ack_negative'] };
++  }
++  if (!status) return { state: 'missing', text: '原 ACK 状态未提供', warnings: [] };
++  return { state: 'unrecognized', text: `原 ACK 状态未识别：${displayValue(status)}`, warnings: [] };
++}
++
++function financialFor(record) {
++  const publication = record.publication_status;
++  const qualification = record.qualification_status;
++  if (!present(publication) && !present(qualification)) {
++    return { state: 'missing', text: '未提供（原记录没有发布或资格字段）', warnings: [] };
++  }
++  if (publication === 'review_pending' || qualification === 'review_pending') {
++    return {
++      state: 'present',
++      text: '金融审查待完成：不能当作已核实；签收与此互不推断',
++      warnings: ['financial_review_pending'],
++    };
++  }
++  return {
++    state: 'present',
++    text: `原字段显示：发布 ${shown(publication, '未提供')}，资格 ${shown(qualification, '未提供')}。本页只显示原值，不据此授予或判定金融资格`,
++    warnings: [],
++  };
++}
++
++function researchFor(owner) {
++  const research = owner.research;
++  if (research === undefined || research === null) return { state: 'missing', text: '未提供（页面未接收原研究状态）', warnings: [] };
++  if (!isPlainObject(research)) return { state: 'unrecognized', text: '原研究状态格式非对象，未显示', warnings: [] };
++  const code = present(research.code) ? String(research.code) : null;
++  if (!code) return { state: 'missing', text: '原研究状态码未提供', warnings: [] };
++  const known = Object.hasOwn(RESEARCH_STATE, code);
++  let [title, next] = known ? RESEARCH_STATE[code] : RESEARCH_UNKNOWN;
++  const scope = research.requested_scope_completed;
++  const completionCode = code === 'completed' || code === 'delivered';
++  const warnings = [];
++  if (scope === false && completionCode) {
++    title = `原状态码 ${code}，但本次请求范围未完成`;
++    next = '不能显示为新研究已完成；请核对原请求范围与原状态。';
++  }
++  let text = `${title}。${next}`;
++  if (scope === false) {
++    if (!completionCode) text += ' 本次请求范围未完成。';
++    warnings.push('requested_scope_incomplete');
++  } else if (scope === true) {
++    text += HISTORICAL_RESEARCH.has(code)
++      ? ' 历史字段：当时请求范围标记为已完成，这是当时的记录，不代表本次新研究完成。'
++      : ' 本次请求范围已完成（原字段）。';
++  }
++  if (!completionCode || scope === false) warnings.push('research_state_not_completion');
++  return { state: known ? 'present' : 'unrecognized', text, warnings };
++}
++
++function variantsFor(owner) {
++  const raw = owner.field_observations;
++  if (raw === undefined || raw === null) return { state: 'missing', text: '未提供（宿主未传同题原观察）', variants: [], warnings: [] };
++  if (!Array.isArray(raw)) return { state: 'unrecognized', text: '原格式非数组，未显示', variants: [], warnings: [] };
++  const rows = raw.filter(isPlainObject);
++  const unreadable = raw.length - rows.length;
++  if (!rows.length) return { state: unreadable ? 'unrecognized' : 'missing', text: unreadable ? `原数组有 ${unreadable} 条无法读取的记录，不能据此认为没有其他观察` : '无同题其他原观察', variants: [], warnings: [] };
++  const versionOf = row => (isPlainObject(row.versions) ? row.versions.question_version : undefined);
++  const distinct = values => new Set(values.map(value => (present(value) ? displayValue(value) : '∅'))).size > 1;
++  const warnings = [];
++  if (rows.length > 1) warnings.push('variants_not_merged');
++  if (distinct(rows.map(row => row.information_as_of))) warnings.push('information_dates_differ');
++  if (distinct(rows.map(row => [versionOf(row), row.security_id, row.listing_id, row.scope]
++    .map(value => (present(value) ? displayValue(value) : '∅')).join('|')))) warnings.push('variant_scope_or_version_differs');
++  const envelope = typeof owner.entity_id === 'string' && owner.entity_id.trim() ? owner.entity_id.trim() : null;
++  const variants = rows.map(row => ({
++    identity_state: identityFor(row, envelope, false).identity_state,
++    entity_id: textOrNull(row.entity_id),
++    listing_id: textOrNull(row.listing_id),
++    scope: textOrNull(row.scope),
++    observation_id: textOrNull(row.observation_id),
++    information_as_of: textOrNull(row.information_as_of),
++    information_cutoff: textOrNull(row.information_cutoff),
++    question_version: textOrNull(versionOf(row)),
++    security_id: textOrNull(row.security_id),
++    status: textOrNull(row.status),
++    score: present(row.score) ? row.score : null,
++  }));
++  const parts = variants.map(variant => `${shown(variant.observation_id)}：归属 ${IDENTITY_TEXT[variant.identity_state][1]} · 实体 ${shown(variant.entity_id)} · 挂牌 ${shown(variant.listing_id)} · 范围 ${shown(variant.scope)} · 资料时点 ${shown(variant.information_as_of, '未提供')} · 取证截止 ${shown(variant.information_cutoff, '未提供')} · 题义版本 ${shown(variant.question_version)} · 证券 ${shown(variant.security_id)} · 状态 ${shown(variant.status, '未提供')} · 分数 ${shown(variant.score, '未提供')}`);
++  if (unreadable > 0) parts.push(`另有 ${unreadable} 条无法读取的原记录，未显示`);
++  return { state: variants.some(variant => ['foreign', 'invalid_child_identity'].includes(variant.identity_state)) ? 'conflict' : 'present', text: parts.join('；'), variants, warnings };
++}
++
++function makeItem(key, state, text, extra = {}) {
++  const group = MAIN_KEYS.has(key) ? 'main' : key === 'raw_codes' ? 'raw' : 'detail';
++  return { key, label: LABELS[key], group, state, text, ...extra };
++}
++
++function recordRefs(record, identity, envelope, conflict) {
++  if (conflict) return [];
++  const refs = [];
++  const observationId = textOrNull(record.observation_id);
++  if (observationId) refs.push({ kind: 'observation', id: observationId, label: '原观察记录（只读）', url: null, published_at: null });
++  if (identity.identity_state === 'matched' || identity.identity_state === 'inherited') {
++    refs.push({ kind: 'entity', id: envelope, label: '原公司记录（只读）', url: null, published_at: null });
++  } else if (identity.identity_state === 'foreign') {
++    refs.push({ kind: 'entity', id: identity.child, label: '外来实体的原记录（隔离）', url: null, published_at: null });
++  }
++  if (Array.isArray(record.evidence)) {
++    for (const entry of record.evidence) {
++      if (!isPlainObject(entry)) continue;
++      const url = safeHttpUrl(entry.url);
++      refs.push({
++        kind: 'evidence',
++        id: textOrNull(entry.id),
++        label: textOrNull(entry.title) ?? url ?? '无有效链接',
++        url,
++        published_at: textOrNull(entry.published_at),
++      });
++    }
++  }
++  return refs;
++}
++
++export function describeResultTrust({ record, ownerState } = {}) {
++  const warnings = [];
++  const warn = (code, text = WARNING_TEXT[code]) => warnings.push({ code, text });
++  if (!isPlainObject(record)) {
++    warn('record_not_object');
++    return { items: [], warnings, original_refs: [], unknown_fields: ['record'] };
++  }
++  let owner = {};
++  if (ownerState !== undefined && ownerState !== null) {
++    if (isPlainObject(ownerState)) owner = ownerState;
++    else warn('owner_state_not_object');
++  }
++  const envelope = typeof owner.entity_id === 'string' && owner.entity_id.trim() ? owner.entity_id.trim() : null;
++  const conflict = owner.envelope_identity_conflict === true;
++  const identity = identityFor(record, envelope, conflict);
++  const [identityKind, identityBase] = IDENTITY_TEXT[identity.identity_state];
++  const identityWarning = {
++    child_unknown: 'child_entity_id_unknown',
++    unattributed: 'child_entity_id_missing',
++    parent_unknown: 'envelope_entity_id_missing',
++    foreign: 'foreign_child_isolated',
++    envelope_conflict: 'envelope_identity_conflict',
++    invalid_child_identity: 'invalid_child_identity',
++  }[identity.identity_state];
++  if (identityWarning) warn(identityWarning);
++  let identityText = identityBase;
++  if (!conflict && (identity.identity_state === 'matched' || identity.identity_state === 'inherited')) {
++    const ownerIdentity = present(owner.identity_state) ? displayValue(owner.identity_state) : null;
++    if (ownerIdentity === null) identityText += '；公司身份状态未提供';
++    else if (ownerIdentity === 'verified') identityText += '；公司身份已核实（原值：verified）';
++    else {
++      identityText += `；公司身份未核实（原值：${ownerIdentity}），归属仅供参考`;
++      warn('identity_unverified');
++    }
++  }
++
++  const values = {};
++  const score = scoreStatusFor(record);
++  values.score_status = makeItem('score_status', score.state, score.text);
++  score.warnings.forEach(code => warn(code));
++
++  const infoValue = record.information_as_of;
++  const cutoffValue = record.information_cutoff;
++  const observedValue = record.observed_at;
++  const importedValue = record.imported_at;
++  const projectionValue = owner.generated_at_utc;
++  const afterCutoff = dayOf(infoValue) !== null && dayOf(cutoffValue) !== null && dayOf(infoValue) > dayOf(cutoffValue);
++  const observedAfterImported = timestampAfter(observedValue, importedValue);
++  if (!present(infoValue) && (present(observedValue) || present(projectionValue))) warn('generation_is_not_information_date');
++  if (afterCutoff) warn('information_after_cutoff');
++  if (observedAfterImported) warn('observed_after_imported');
++  let infoState;
++  let infoText;
++  if (!present(infoValue)) {
++    infoState = 'missing';
++    infoText = '未提供（不以今天、生成时间或导入时间代替）';
++  } else if (typeof infoValue !== 'string') {
++    infoState = 'unrecognized';
++    infoText = `原值（非文本）：${displayValue(infoValue)}`;
++  } else {
++    const precision = precisionOf(infoValue);
++    infoState = precision === 'text' ? 'unrecognized' : precision === 'year' || precision === 'month' ? 'partial' : 'present';
++    infoText = `${infoValue}（${PRECISION_LABEL[precision]}）`;
++  }
++  if (afterCutoff) infoState = 'conflict';
++  values.information_as_of = makeItem('information_as_of', infoState, infoText);
++
++  const parts = [
++    {
++      label: '取证截止',
++      text: present(cutoffValue) ? `${displayValue(cutoffValue)}（可取得资料的截止，不是资料适用时点）` : '未提供',
++      state: present(cutoffValue) ? 'present' : 'missing',
++    },
++    {
++      label: '观测时间',
++      text: present(observedValue) ? `${displayValue(observedValue)}（观测记录时间，不是资料日期）` : '未提供',
++      state: present(observedValue) ? 'present' : 'missing',
++    },
++    {
++      label: '投影生成时间',
++      text: present(projectionValue) ? `${displayValue(projectionValue)}（页面投影生成，不代表资料日期）` : '未提供（不代表资料日期）',
++      state: present(projectionValue) ? 'present' : 'missing',
++    },
++  ];
++  const timingState = afterCutoff || observedAfterImported ? 'conflict'
++    : parts.some(part => part.state === 'present') ? 'present' : 'missing';
++  values.timing = makeItem('timing', timingState, parts.map(part => `${part.label}：${part.text}`).join('；'), { parts });
++
++  const freshness = freshnessFor(record);
++  values.freshness = makeItem('freshness', freshness.state, freshness.text);
++  freshness.warnings.forEach(code => warn(code));
++
++  const ack = ackFor(owner);
++  values.ack = makeItem('ack', ack.state, ack.text);
++  ack.warnings.forEach(code => warn(code));
++
++  const financial = financialFor(record);
++  values.financial = makeItem('financial', financial.state, financial.text);
++  financial.warnings.forEach(code => warn(code));
++
++  const research = researchFor(owner);
++  values.research = makeItem('research', research.state, research.text);
++  research.warnings.forEach(code => warn(code));
++
++  const versions = isPlainObject(record.versions) ? record.versions : {};
++  const questionId = present(record.question_id) ? record.question_id : record.field_id;
++  values.question = makeItem('question', present(questionId) || Object.keys(versions).length ? 'present' : 'missing', [
++    `题目 ${shown(questionId)}`,
++    `字段 ${shown(record.field_id)}`,
++    `题义版本 ${shown(versions.question_version)}`,
++    `方法 ${shown(versions.method_id)}`,
++    `模板 ${shown(versions.template_version)}`,
++    `模块包 ${shown(versions.module_package_id)}`,
++    `模块发布 ${shown(versions.module_release_id)}`,
++    `回答类型 ${shown(record.response_kind)}`,
++    `构念 ${shown(record.construct_id)}`,
++  ].join(' · '));
++
++  const scopeKnown = [record.scope, record.security_id, record.listing_id, record.segment_id].some(present);
++  values.scope = makeItem('scope', scopeKnown ? 'present' : 'missing',
++    `范围 ${shown(record.scope)} · 证券 ${shown(record.security_id)} · 挂牌 ${shown(record.listing_id)} · 分部 ${shown(record.segment_id)}`);
++
++  const periodKnown = [record.period_start, record.period_end, record.basis].some(present);
++  values.period = makeItem('period', periodKnown ? 'present' : 'missing',
++    `指标期间 ${shown(record.period_start, '未提供')} 至 ${shown(record.period_end, '未提供')} · 口径 ${shown(record.basis, '未提供')}`);
++
++  const subject = record.subject;
++  const identityRevision = textOrNull(record.identity_revision);
++  let subjectState = 'missing';
++  let subjectText;
++  let subjectWarnings = [];
++  if (subject === undefined || subject === null) {
++    subjectText = '未记录（原记录没有分析主体字段）';
++  } else if (!isPlainObject(subject)) {
++    subjectState = 'unrecognized';
++    subjectText = '原分析主体格式非对象，未显示';
++  } else if (subject.recorded === true) {
++    subjectState = 'present';
++    subjectText = `已绑定分析主体 ${shown(subject.analysis_subject_id)}（修订 ${shown(subject.analysis_subject_revision)}）`;
++  } else if (subject.recorded === false) {
++    subjectText = `未绑定：${present(subject.note) ? displayValue(subject.note) : '历史观察未绑定分析主体，不补造'}`;
++    subjectWarnings = ['subject_not_recorded'];
++  } else {
++    subjectText = '绑定状态未提供';
++  }
++  values.subject = makeItem('subject', subjectState, `${subjectText} · 身份修订 ${shown(identityRevision)}`);
++  subjectWarnings.forEach(code => warn(code));
++
++  const modelName = present(record.model_resolved) ? record.model_resolved : record.model_id;
++  values.model = makeItem('model', present(modelName) ? 'present' : 'missing',
++    `模型 ${shown(modelName)}${present(record.model_revision) ? `（修订 ${displayValue(record.model_revision)}）` : ''}`
++    + ` · 提供方 ${shown(record.provider)} · 请求 ${shown(record.request_id)} · 尝试 ${shown(record.attempt_id)}`);
++
++  const coverage = record.coverage;
++  if (coverage === undefined) values.coverage = makeItem('coverage', 'missing', '未提供');
++  else if (coverage === null) values.coverage = makeItem('coverage', 'missing', 'null（原值）');
++  else if (isPlainObject(coverage) && Object.keys(coverage).length === 0) values.coverage = makeItem('coverage', 'present', '{}（空对象，原值）');
++  else values.coverage = makeItem('coverage', 'present', `原值：${displayValue(coverage)}`);
++
++  values.confidence = makeItem('confidence', present(record.confidence) ? 'present' : 'missing',
++    `原 confidence：${shown(record.confidence, '未提供')}`);
++
++  const missing = record.missing_fields;
++  if (missing === undefined || missing === null) values.missing_fields = makeItem('missing_fields', 'missing', '未提供');
++  else if (Array.isArray(missing)) values.missing_fields = makeItem('missing_fields', 'present', missing.length ? missing.map(displayValue).join('、') : '原数组为空');
++  else values.missing_fields = makeItem('missing_fields', 'unrecognized', `原值：${displayValue(missing)}`);
++
++  const counterevidenceKnown = present(record.counterevidence) || Array.isArray(record.watch_triggers);
++  values.counterevidence = makeItem('counterevidence', counterevidenceKnown ? 'present' : 'missing',
++    `反证：${present(record.counterevidence) ? displayValue(record.counterevidence) : '无'}；观察触发：${listText(record.watch_triggers)}`);
++
++  values.summary = makeItem('summary', present(record.summary) ? 'present' : 'missing',
++    present(record.summary) ? displayValue(record.summary) : '无理由文本');
++
++  const refs = recordRefs(record, identity, envelope, conflict);
++  const evidenceCount = refs.filter(ref => ref.kind === 'evidence').length;
++  const unsafeCount = refs.filter(ref => ref.kind === 'evidence' && !ref.url).length;
++  values.refs = makeItem('refs', evidenceCount ? 'present' : 'missing',
++    evidenceCount
++      ? `原始引用 ${evidenceCount} 条${unsafeCount ? `，其中 ${unsafeCount} 条无有效链接，仅作文字显示` : ''}`
++      : '无证据链接');
++
++  if (record.items === undefined) values.raw_items = makeItem('raw_items', 'missing', '未提供');
++  else if (Array.isArray(record.items)) values.raw_items = makeItem('raw_items', record.items.length ? 'present' : 'missing',
++    record.items.length ? `原结构化条目 ${record.items.length} 条（原样见原记录，不在此解释）` : '无条目');
++  else values.raw_items = makeItem('raw_items', 'unrecognized', '原值非数组，未显示');
++
++  const checkLevel = record.check_level;
++  if (!present(checkLevel)) values.check_level = makeItem('check_level', 'missing', '未提供');
++  else if (checkLevel === 'reviewed') values.check_level = makeItem('check_level', 'present',
++    `${CHECK_LEVEL_TEXT.reviewed}（原码 reviewed）。复核状态不等于金融资格或金融审查通过`);
++  else if (Object.hasOwn(CHECK_LEVEL_TEXT, checkLevel)) values.check_level = makeItem('check_level', 'present',
++    `${CHECK_LEVEL_TEXT[checkLevel]}（原码 ${displayValue(checkLevel)}）`);
++  else values.check_level = makeItem('check_level', 'unrecognized', `原码 ${displayValue(checkLevel)}（未识别）`);
++  if (checkLevel === 'unverified_model_output' || checkLevel === 'unreviewed') warn('check_level_unverified');
++
++  const ackDetail = isPlainObject(owner.ack)
++    ? ` · ACK 编号 ${shown(owner.ack.ack_id)} · 接收时间 ${shown(owner.ack.received_at)}` : '';
++  values.sign_off_import = makeItem('sign_off_import', present(importedValue) ? 'present' : 'missing',
++    `导入时间 ${shown(importedValue)} · 导入序号 ${shown(record.import_sequence)}${ackDetail} · 导入不等于签收或资料更新`);
++
++  const cohort = record.cohort;
++  if (cohort === undefined || cohort === null) values.cohort = makeItem('cohort', 'missing', '未提供');
++  else if (isPlainObject(cohort)) values.cohort = makeItem('cohort', 'present',
++    `公司类型 ${shown(cohort.company_type)} · 行业 ${Array.isArray(cohort.industries) && cohort.industries.length ? listText(cohort.industries) : '未记录'} · 阶段 ${shown(cohort.stage)} · 子类 ${shown(cohort.subtype)}`);
++  else values.cohort = makeItem('cohort', 'unrecognized', '原格式非对象，未显示');
++
++  values.projection = makeItem('projection', present(owner.projection_version) ? 'present' : 'missing',
++    `投影版本 ${shown(owner.projection_version, '未提供')}`);
++
++  const summary = owner.score_summary;
++  if (summary === undefined || summary === null) values.score_summary = makeItem('score_summary', 'missing', '未提供');
++  else if (!isPlainObject(summary)) values.score_summary = makeItem('score_summary', 'unrecognized', '原格式非对象，未显示');
++  else {
++    const ambiguous = Array.isArray(summary.ambiguous_fields) ? summary.ambiguous_fields : [];
++    if (ambiguous.length) warn('ambiguous_field_variants');
++    values.score_summary = makeItem('score_summary', ambiguous.length ? 'conflict' : 'present',
++      [`字段 ${shown(summary.fields, '未提供')}`, `观察行 ${shown(summary.detail_rows, '未提供')}`, `已评分 ${shown(summary.scored, '未提供')}`,
++        `最后观测 ${shown(summary.last_observed_at, '未提供')}`, `最大取证截止 ${shown(summary.information_cutoff_max, '未提供')}`,
++        ...(ambiguous.length ? [`存在不可合并变体的字段 ${ambiguous.length} 个`] : [])].join(' · '));
++  }
++
++  const quality = owner.quality;
++  if (quality === undefined || quality === null) values.quality = makeItem('quality', 'missing', '未提供');
++  else if (!isPlainObject(quality)) values.quality = makeItem('quality', 'unrecognized', '原格式非对象，未显示');
++  else if (quality.quality_verified === true) values.quality = makeItem('quality', 'present',
++    `综合质量 ${shown(quality.quality_score, '未提供')}（原字段，已核验）`);
++  else {
++    warn('quality_unverified');
++    values.quality = makeItem('quality', 'missing',
++      `综合质量未核验（原 source：${shown(quality.source, '未提供')}）；不以逐题平均分替代`);
++  }
++
++  const gaps = owner.gaps;
++  if (gaps === undefined || gaps === null) values.gaps = makeItem('gaps', 'missing', '未提供');
++  else if (!Array.isArray(gaps)) values.gaps = makeItem('gaps', 'unrecognized', '原格式非数组，未显示');
++  else values.gaps = makeItem('gaps', 'present', gaps.length ? `原缺口码：${gaps.map(displayValue).join('、')}` : '原数组为空');
++
++  let recovery = recoveryInfo(record);
++  if (recovery.kind === 'normal') recovery = recoveryInfo(owner);
++  if (recovery.kind === 'recovery') {
++    values.recovery = makeItem('recovery', 'present', recovery.label);
++    warn('recovery_subset_partial');
++  } else if (recovery.kind === 'unknown') {
++    values.recovery = makeItem('recovery', 'unrecognized', '恢复范围信息未知或不一致；请核原状态，不能据此判断整公司已扫完。');
++    warn('recovery_scope_unknown');
++  } else {
++    values.recovery = makeItem('recovery', 'missing', '未提供（无受控恢复子集）');
++  }
++
++  const variants = variantsFor(owner);
++  variants.warnings.forEach(code => warn(code));
++  values.field_variants = makeItem('field_variants', variants.state, variants.text, { variants: variants.variants });
++
++  values.raw_codes = makeItem('raw_codes', 'present', JSON.stringify({
++    status: record.status ?? null,
++    publication_status: record.publication_status ?? null,
++    qualification_status: record.qualification_status ?? null,
++    check_level: record.check_level ?? null,
++    freshness_status: isPlainObject(record.freshness) ? record.freshness.status ?? null : null,
++    research_code: isPlainObject(owner.research) ? owner.research.code ?? null : null,
++    ack_status: isPlainObject(owner.ack) ? owner.ack.status ?? null : null,
++    identity_state: present(owner.identity_state) ? displayValue(owner.identity_state) : null,
++    payload_sha256: record.payload_sha256 ?? null,
++    package_id: record.package_id ?? null,
++  }));
++
++  if (conflict) {
++    for (const key of RESULT_TRUST_ITEM_KEYS) {
++      if (key !== 'identity') values[key] = makeItem(key, 'isolated', '未显示（父级身份冲突）');
++    }
++  }
++
++  const items = RESULT_TRUST_ITEM_KEYS.map(key => {
++    if (key === 'identity') {
++      return makeItem('identity', identityKind, identityText, { identity_state: identity.identity_state, child_entity_id: identity.child });
++    }
++    return values[key];
++  });
++
++  const unknown_fields = conflict ? [] : [
++    ...CHECKED_RECORD_FIELDS.filter(([, field]) => !present(record[field])).map(([name]) => name),
++    ...CHECKED_OWNER_FIELDS.filter(field => !present(owner[field])).map(field => field),
++    ...(envelope ? [] : ['entity_id']),
++  ];
++  const finalWarnings = conflict ? warnings.filter(warning => warning.code === 'envelope_identity_conflict') : warnings;
++  return { items, warnings: finalWarnings, original_refs: recordRefs(record, identity, envelope, conflict), unknown_fields };
++}
++
++let panelSequence = 0;
++const ALLOWED_ATTRIBUTES = new Set([
++  'class', 'id', 'type', 'disabled', 'href', 'target', 'rel', 'role', 'tabindex',
++  'aria-labelledby', 'aria-describedby', 'aria-label',
++]);
++
++const h = (tag, attributes = {}, children = []) => {
++  const node = globalThis.document.createElement(tag);
++  for (const [name, value] of Object.entries(attributes)) {
++    if (value === undefined || value === null || value === false) continue;
++    if (name === 'text') {
++      node.textContent = String(value);
++      continue;
++    }
++    if (name === 'class') {
++      node.className = String(value);
++      continue;
++    }
++    if (name === 'disabled') {
++      node.disabled = true;
++      continue;
++    }
++    if (!ALLOWED_ATTRIBUTES.has(name) && !name.startsWith('data-rtp-')) throw new Error(`attribute ${name} is not allowed`);
++    node.setAttribute(name, value === true ? '' : String(value));
++  }
++  for (const child of Array.isArray(children) ? children : [children]) {
++    if (child === undefined || child === null || child === false) continue;
++    node.appendChild(typeof child === 'string' ? globalThis.document.createTextNode(child) : child);
++  }
++  return node;
++};
++
++function valueRow(entry) {
++  const value = Array.isArray(entry.parts)
++    ? h('ul', { class: 'rtp-parts' }, entry.parts.map(part => h('li', { text: `${part.label}：${part.text}` })))
++    : entry.text;
++  const children = [value];
++  if (Array.isArray(entry.variants) && entry.variants.length) {
++    children.push(h('ol', { class: 'rtp-variants', 'aria-label': '同题原观察' }, entry.variants.map(variant => h('li', {
++      text: `${shown(variant.observation_id)} · 归属 ${IDENTITY_TEXT[variant.identity_state][1]} · 实体 ${shown(variant.entity_id)} · 挂牌 ${shown(variant.listing_id)} · 范围 ${shown(variant.scope)} · 资料时点 ${shown(variant.information_as_of, '未提供')} · 取证截止 ${shown(variant.information_cutoff, '未提供')} · 证券 ${shown(variant.security_id)} · 题义版本 ${shown(variant.question_version)}`,
++    }))));
++  }
++  return h('div', { class: 'rtp-row', 'data-rtp-key': entry.key }, [
++    h('dt', { text: entry.label }),
++    h('dd', { class: 'rtp-value', 'data-rtp-state': entry.state }, children),
++  ]);
++}
++
++function refsList(refs) {
++  if (!refs.length) return h('p', { class: 'rtp-muted', text: '没有可链接的原始引用。' });
++  return h('ul', { class: 'rtp-refs', 'aria-label': '原始引用' }, refs.map(ref => {
++    const idText = ref.kind === 'evidence' ? '' : ref.id ? `：${ref.id}` : '';
++    const published = ref.kind === 'evidence' && ref.published_at ? `（原发布时间：${ref.published_at}）` : '';
++    const host = ref.url ? `（来源域名：${new URL(ref.url).hostname}）` : '';
++    const text = `${ref.label}${idText}${host}${published}`;
++    if (ref.url) return h('li', {}, [h('a', { href: ref.url, target: '_blank', rel: 'noopener noreferrer', text })]);
++    return h('li', { text: ref.kind === 'evidence' ? `${text}（无有效链接，仅作文字）` : text });
++  }));
++}
++
++export function renderResultTrustPanel({ record, ownerState, onViewOriginal } = {}) {
++  if (!globalThis.document) throw new Error('renderResultTrustPanel needs a DOM document');
++  const model = describeResultTrust({ record, ownerState });
++  const byKey = Object.fromEntries(model.items.map(entry => [entry.key, entry]));
++  const identityState = byKey.identity ? byKey.identity.identity_state : 'unknown';
++  const isolated = identityState === 'foreign' || identityState === 'envelope_conflict';
++  panelSequence += 1;
++  const titleId = `rtp-title-${panelSequence}`;
++  const hintId = `rtp-hint-${panelSequence}`;
++  const primary = model.original_refs.find(ref => ref.kind === 'observation')
++    ?? model.original_refs.find(ref => ref.kind === 'entity') ?? null;
++  // The interface disables the callback only when a reference is missing. Identity isolation keeps
++  // the three ambiguous-attribution states disabled as well; the rule is documented in the map guards.
++  const isolatedForView = identityState === 'foreign' || identityState === 'envelope_conflict'
++    || identityState === 'invalid_child_identity';
++  const canView = typeof onViewOriginal === 'function' && primary !== null && !isolatedForView;
++  const hintText = primary !== null && isolatedForView
++    ? '此记录归属未确认或属于其他实体，按钮暂不可用；请以原记录为准。'
++    : '没有可用的原记录引用，或宿主未提供只读回调，按钮暂不可用。';
++  const hasItems = model.items.length > 0;
++  const button = h('button', {
++    type: 'button',
++    class: 'rtp-view',
++    'data-rtp-action': 'view-original',
++    disabled: !canView,
++    'aria-describedby': canView ? null : hintId,
++    text: '查看原记录（只读）',
++  });
++  if (canView) {
++    button.addEventListener('click', () => onViewOriginal({ kind: primary.kind, id: primary.id }));
++  }
++  return h('section', {
++    class: isolated ? 'rtp-root rtp-root--isolated' : 'rtp-root',
++    'aria-labelledby': titleId,
++    'data-rtp-identity': identityState,
++  }, [
++    h('div', { class: 'rtp-head' }, [
++      h('h3', { id: titleId, text: '结果可信信息' }),
++      hasItems ? h('p', { class: 'rtp-identity', text: `归属：${byKey.identity.text}` }) : null,
++      isolated ? h('p', { class: 'rtp-banner', text: '隔离显示：这不是当前公司已确认的结果，不计入本公司汇总。' }) : null,
++    ]),
++    hasItems ? h('dl', { class: 'rtp-main', 'aria-label': '主要可信信息' }, MAIN_ORDER.slice(1).map(key => valueRow(byKey[key]))) : null,
++    model.warnings.length
++      ? h('ul', { class: 'rtp-warnings', 'aria-label': '需要注意的提示' }, model.warnings.map(warning => h('li', { 'data-rtp-warning': warning.code, text: warning.text })))
++      : null,
++    hasItems ? h('details', { class: 'rtp-details' }, [
++      h('summary', { text: '展开：模型、范围、题义、原始引用与缺口' }),
++      h('dl', { class: 'rtp-detail' }, RESULT_TRUST_ITEM_KEYS
++        .filter(key => !MAIN_KEYS.has(key) && key !== 'raw_codes')
++        .map(key => valueRow(byKey[key]))),
++      refsList(model.original_refs),
++      h('details', { class: 'rtp-raw' }, [
++        h('summary', { text: '原诊断码（只读）' }),
++        h('pre', { text: byKey.raw_codes.text }),
++      ]),
++    ]) : null,
++    h('div', { class: 'rtp-actions' }, [
++      button,
++      canView ? null : h('p', { class: 'rtp-hint', id: hintId, text: hintText }),
++    ]),
++  ]);
++}
+diff --git a/tests/js/result_trust_host.mjs b/tests/js/result_trust_host.mjs
+new file mode 100644
+index 0000000..e6f9fd8
+--- /dev/null
++++ b/tests/js/result_trust_host.mjs
+@@ -0,0 +1,63 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++import {resultDetailModel,recordOwnerState,loadCompanyView,temporalRecordText} from '../../src/app/ui/result_trust_host.js';
++import {describeResultTrust} from '../../src/app/vendor/result-trust/result_trust_panel.js';
++const A='ENT_SYNTHETIC_A',B='ENT_SYNTHETIC_B';
++const row=(extra={})=>({observation_id:'OBS_SYNTHETIC',question_id:'IQS_01',field_id:'score.iqs_01',scope:'entity',score:7,status:'scored',...extra});
++const detail=(rows=[row()],parent={entity_id:A})=>({entity:parent,groups:[{fields:rows}]});
++const identity=(raw,owner)=>describeResultTrust({record:raw,ownerState:owner}).items.find(v=>v.key==='identity').identity_state;
++
++test('inherit actual envelope only; retain original object and score',()=>{
++ const raw=row(),d=detail([raw]),snapshot=JSON.stringify(d),model=resultDetailModel(d,A);
++ assert.equal(model.rows[0],raw);assert.equal(identity(raw,model.ownerState),'inherited');assert.equal(raw.score,7);
++ assert.equal(Object.hasOwn(raw,'entity_id'),false);assert.equal(JSON.stringify(d),snapshot);
++});
++test('request ID cannot create owner identity',()=>{const raw=row(),m=resultDetailModel(detail([raw],{}),A);assert.equal(m.ownerState.entity_id,null);assert.equal(identity(raw,m.ownerState),'unattributed');});
++test('explicit null child stays unknown',()=>{const r=row({entity_id:null}),m=resultDetailModel(detail([r]),A);assert.equal(m.rows[0],r);assert.equal(identity(r,m.ownerState),'child_unknown');});
++test('foreign and malformed children never appear in main current-company scored cards',()=>{
++ const own=row(),foreign=row({entity_id:B}),invalid=row({entity_id:17}),m=resultDetailModel(detail([own,foreign,invalid,null]),A);
++ assert.deepEqual(m.rows,[own]);assert.deepEqual(m.isolated,[foreign,invalid,null]);
++ assert.equal(recordOwnerState(m,own).field_observations.length,3);
++ assert.equal(identity(foreign,m.ownerState),'foreign');
++});
++test('contradictory actual envelopes quarantine all original rows',()=>{const d={...detail(),entity_id:B},m=resultDetailModel(d,A);assert.equal(m.rows.length,0);assert.equal(m.isolated.length,1);assert.equal(m.ownerState.envelope_identity_conflict,true);});
++test('wrong requested entity is conflict, never rewritten',()=>{const m=resultDetailModel(detail(),B);assert.equal(m.rows.length,0);assert.equal(m.ownerState.entity_id,A);});
++test('same question variant scope/period/version remains unmerged',()=>{
++ const left=row(),right=row({observation_id:'OBS_SECOND',scope:'security',security_id:'SEC_TEST',period_end:'2025-12-31',versions:{question_version:'2.0.0'}});
++ const m=resultDetailModel(detail([left,right]),A),state=recordOwnerState(m,left);
++ assert.equal(m.rows.length,2);assert.equal(state.field_observations[1],right);assert.equal(right.versions.question_version,'2.0.0');
++});
++test('missing ACK and financial receipt never come from runtime aggregate',()=>{
++ const d={...detail(),runtime:{deliveries:{accepted:36}},quality:{quality_verified:false}},m=resultDetailModel(d,A);
++ assert.equal(m.ownerState.ack,undefined);assert.equal(m.ownerState.research,undefined);
++ const fields=describeResultTrust({record:m.rows[0],ownerState:m.ownerState}).items;
++ assert.notEqual(fields.find(v=>v.key==='ack').state,'accepted');assert.match(fields.find(v=>v.key==='financial').text,/未|待|不可/);
++});
++test('native missing_date may mean missing validity deadline, without erasing recorded information date',()=>{
++ const r=row({information_as_of:'2026-04-09',freshness:{status:'missing_date',valid_until:null,policy_available:false}});
++ const m=describeResultTrust({record:r,ownerState:{entity_id:A}});
++ assert.match(m.items.find(i=>i.key==='freshness').text,/信息日期或有效期/);
++ assert.match(m.items.find(i=>i.key==='information_as_of').text,/2026-04-09/);
++ assert.equal(r.freshness.status,'missing_date');assert.equal(r.freshness.valid_until,null);
++});
++test('new versioned endpoint unwraps without mutation or extra calls',async()=>{
++ const calls=[],d=detail(),v={protocol:'iqs.company_research_view/1.0.0',entity:d};
++ assert.equal(await loadCompanyView(async path=>{calls.push(path);return v;},A),v);assert.equal(calls.length,1);
++});
++test('explicit unsupported legacy server alone permits fallback',async()=>{
++ const calls=[];const v=await loadCompanyView(async path=>{calls.push(path);if(calls.length===1)throw Object.assign(new Error(),{code:'method_or_route_not_allowed'});return detail();},A);
++ assert.equal(v.protocol,'legacy_entity_fallback');assert.equal(calls.length,2);assert.equal(v.temporal_shadow,null);
++});
++test('timeouts, wrong identity, malformed wrappers do not silently fall back',async()=>{
++ for(const code of ['owner_timeout','entity_not_found','owner_response_invalid']){let n=0;await assert.rejects(loadCompanyView(async()=>{n++;throw Object.assign(new Error(),{code});},A));assert.equal(n,1);}
++ let n=0;await assert.rejects(loadCompanyView(async()=>{n++;return {protocol:'other',entity:detail()};},A));assert.equal(n,1);
++});
++test('time explanation never claims reuse and refuses duplicate/mismatched records',()=>{
++ const r=row(),s={protocol:'iqs.temporal_shadow/1.0.0',mode:'read_only_shadow',production_reuse_applied:false,reuse_authorized:false,
++  records:[{observation_id:r.observation_id,question_id:r.question_id,field_id:r.field_id,knowledge_kind:'structural'}]};
++ assert.match(temporalRecordText(s,r),/长期经营特征/);assert.match(temporalRecordText(s,r),/未授予复用/);
++ const legacy={...s,records:[{...s.records[0],clock_only_assessment:{context_assessed:false,clock_assessments:[{clock:'verification_clock'}]}}]};
++ assert.match(temporalRecordText(legacy,r),/独立核查时点/);assert.match(temporalRecordText(legacy,r),/未授予复用/);
++ assert.match(temporalRecordText({...s,records:[...s.records,...s.records]},r),/缺少唯一/);
++ assert.match(temporalRecordText({...s,reuse_authorized:true},r),/未提供/);
++});
+diff --git a/tests/test_product_ui.py b/tests/test_product_ui.py
+index d03e76e..3bf19ca 100644
+--- a/tests/test_product_ui.py
++++ b/tests/test_product_ui.py
+@@ -55,6 +55,7 @@ const data={
+  batches:{batches:[]},
+  'tasks/deliver':{status:'partial',items:[{package_id:'original-package',state:'pending',error:{code:'original_not_ready'}}]},
+ };
++Object.defineProperty(data,'entity-view',{get:()=>({protocol:'iqs.company_research_view/1.0.0',entity:data.entity,temporal_shadow:null})});
+ const preparationId='prepare_'+'a'.repeat(32),bindings=[{scope:'entity',scope_id:entity},{scope:'security',scope_id:'SEC_original_US'}];
+ const scopeBundles=[{bundle_id:'scope-entity',entity_id:entity,company:'同一公司',company_preparation_id:preparationId,scope:'entity',scope_id:entity,security_id:null,expected_scope_bindings:bindings},{bundle_id:'scope-security',entity_id:entity,company:'同一公司',company_preparation_id:preparationId,scope:'security',scope_id:'SEC_original_US',security_id:'SEC_original_US',expected_scope_bindings:bindings}];
+ let serverCanApplyWithoutSecurity=false;
+@@ -398,7 +399,7 @@ if(scenario==='recovery-core'){
+   assert.equal(start.disabled,true);await preview.fire('click');assert.equal(start.disabled,false);
+   await Promise.all([start.fire('click'),start.fire('click')]);assert.equal(calls.filter(c=>c.endpoint==='tasks/start').length,1);assert.equal(start.disabled,true);
+   assert.deepEqual(calls.find(c=>c.endpoint==='tasks/start').body,{bundle_id:'test-bundle',preview_id:'preview-1'});
+-  assert.ok(page.textContent.includes('实际状态'));mode='bad';await preview.fire('click');assert.ok(page.textContent.includes('真实资格不足'));assert.equal(start.disabled,true);
++  assert.ok(page.textContent.includes('尚不能确认是否创建了新进程'));assert.equal(page.textContent.includes('已创建运行进程'),false);mode='bad';await preview.fire('click');assert.ok(page.textContent.includes('真实资格不足'));assert.equal(start.disabled,true);
+  }else if(scenario==='settings'){
+   const page=ui.renderSettings();await wait();const save=find(page,n=>n.tag==='button'&&n.textContent==='校验并保存设置');assert.equal(save.disabled,false);await save.fire('click');
+   const submitted=calls.find(c=>c.endpoint==='settings'&&c.method==='PUT');assert.equal(submitted.body.revision_sha256,'original-revision');assert.ok(submitted.body.policy.models);assert.equal('configured'in submitted.body,false);
+@@ -501,6 +502,24 @@ if(scenario==='recovery-core'){
+   const page=ui.renderSettings();await wait();const baseFetch=globalThis.fetch;
+   globalThis.fetch=async(url,opts={})=>opts.method==='PUT'?{ok:false,status:409,headers:{get:()=> 'application/json'},json:async()=>({ok:false,error:{code:'settings_changed',message:'原配置已经变化'}})}:baseFetch(url,opts);
+   await find(page,n=>n.tag==='button'&&n.textContent==='校验并保存设置').fire('click');assert.ok(page.textContent.includes('其他进程'));assert.ok(page.textContent.includes('重新读取'));assert.ok(find(page,n=>n.tag==='button'&&n.textContent.includes('重新读取设置')));
++ }else if(scenario==='resulttrust'){
++  const raw={...observation,observation_id:'OBS_TRUST_FIXTURE',field_id:'score.iqs_01'};
++  data.entity.groups=[{fields:[raw,{...raw,observation_id:'OBS_FOREIGN',entity_id:'ENT_FOREIGN',reported_score:10}]}];
++  const page=ui.renderResults({query:{id:entity}});await wait();
++  const cards=flat(page).filter(n=>n.attributes['data-testid']==='production-answer');assert.equal(cards.length,1);
++  assert.ok(page.textContent.includes('结果可信信息'));assert.ok(page.textContent.includes('归属异常原记录（1，不计入本公司结果）'));
++  assert.ok(page.textContent.includes('签收（ACK）'));assert.ok(page.textContent.includes('金融资格'));
++  const original=find(cards[0],n=>n.tag==='details'&&n.children[0]?.textContent==='版本、主体、发布与完整原始记录');
++  const button=find(cards[0],n=>n.attributes['data-rtp-action']==='view-original');assert.equal(button.disabled,false);
++  await button.fire('click');assert.equal(original.open,true);assert.equal(calls.some(c=>c.method!=='GET'),false);
++ }else if(scenario==='resulttrust-conflict'){
++  data.entity.entity={entity_id:'ENT_FOREIGN',canonical_name:'外来公司'};data.entity.quality={quality_verified:true,quality_score:9.99};data.entity.c06_envelope_validated=true;
++  const page=ui.renderResults({query:{id:entity}});await wait();
++  assert.ok(page.textContent.includes('返回数据的公司身份冲突'));
++  assert.equal(flat(page).filter(n=>n.attributes['data-testid']==='production-answer').length,0);
++  assert.equal(flat(page).filter(n=>n.tag==='dt'&&n.textContent==='质量汇总').length,0);
++  assert.equal(flat(page).filter(n=>n.tag==='dt'&&n.textContent==='C06 已校验').length,0);
++  assert.ok(page.textContent.includes('9.99'),'original foreign summary remains diagnostic raw only');
+  }else if(scenario==='remediation-results'){
+   data.results.total=120;data.results.snapshot_token='same-snapshot';
+   const conditions=JSON.stringify([{field:'score.iqs_01',op:'>=',value:8}]),page=ui.renderResults({query:{query:'宁德',conditions,offset:'50',view:'pending'}});await wait();
+@@ -519,6 +538,8 @@ console.log(JSON.stringify({scenario,passed:true,calls:calls.map(c=>({endpoint:c
+ 
+ 
+ class ProductUITests(unittest.TestCase):
++    def test_result_trust_mount_original_callback_and_foreign_row_isolation(self): self.run_node('resulttrust')
++    def test_foreign_envelope_summary_is_diagnostic_only(self): self.run_node('resulttrust-conflict')
+     def run_node(self, scenario):
+         node = shutil.which('node')
+         self.assertIsNotNone(node, 'Node is required for real frontend ESM tests')
+diff --git a/tests/test_result_trust_host.py b/tests/test_result_trust_host.py
+new file mode 100644
+index 0000000..ad01786
+--- /dev/null
++++ b/tests/test_result_trust_host.py
+@@ -0,0 +1,12 @@
++"""Node host tests use synthetic DTOs and no network."""
++from pathlib import Path
++import os,shutil,subprocess,unittest
++
++ROOT=Path(__file__).resolve().parents[1]
++class ResultTrustHostTests(unittest.TestCase):
++    def test_actual_host_contracts(self):
++        node=shutil.which('node')
++        if not node:self.skipTest('Node runtime unavailable')
++        env={k:v for k,v in os.environ.items() if not any(s in k.upper() for s in ('API_KEY','TOKEN','SECRET','PASSWORD'))}
++        result=subprocess.run([node,'--test','--test-concurrency=1',str(ROOT/'tests/js/result_trust_host.mjs')],cwd=ROOT,env=env,capture_output=True,text=True,encoding='utf-8',timeout=30)
++        self.assertEqual(result.returncode,0,result.stdout+result.stderr)

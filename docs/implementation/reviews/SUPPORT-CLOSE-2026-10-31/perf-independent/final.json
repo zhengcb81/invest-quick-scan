@@ -1,0 +1,174 @@
+{
+  "protocol": "iqs.independent_perf_final_review/1.0",
+  "package_id": "IMPORT-PERF-30",
+  "status": "passed",
+  "open_findings": [],
+  "recorded_at_utc": "2026-10-31T22:38:29.876730+00:00",
+  "reviewer_agent_id": "/root/review_answer_close31",
+  "reviewer_is_payload_author": false,
+  "author_agent_ids": [
+    "/root",
+    "/root/review_perf_close31",
+    "/root/review_time_result_wiring31"
+  ],
+  "original_external_author": "external IMPORT-PERF-30 original author; canonical agent ID unavailable, not fabricated",
+  "final_payload_commit": "99c350b8f332e5ea6459919fd692af19bab25100",
+  "payload_commit": "99c350b8f332e5ea6459919fd692af19bab25100",
+  "final_payload_manifest_sha256": "0b90ae32d11c4b73a23bef8214a21093fb39ec80353f34e182ba4911de9da73b",
+  "payload_manifest_sha256": "0b90ae32d11c4b73a23bef8214a21093fb39ec80353f34e182ba4911de9da73b",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "source_repository": "C:/Users/郑曾波/Projects/iqs-import-performance-lab",
+  "source_head_at_review": "99c350b8f332e5ea6459919fd692af19bab25100",
+  "source_tracked_dirty": false,
+  "metadata_M_reviewed_or_signed": false,
+  "accepted_scope": "Complete current research/engineering payload, immutable source binding, test quality, safe candidate design and descriptive synthetic benchmark. This is not production installation, production owner authorization E2E, financial qualification, or throughput approval.",
+  "checks": {
+    "manifest_git_artifacts": 52,
+    "manifest_git_blobs_all_match": true,
+    "runtime_patch_sha256": "0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451",
+    "candidate_source_manifest_sha256": "c1170f8a51ce117daa513d8f7325ed6ee09441004ae876cf228a4b346ecb87c1",
+    "candidate_source_two_file_patch_independently_reproduced": true,
+    "source_vendor_files_checked": 999,
+    "vendor_content_mismatches": 0,
+    "vendor_checkout_eol_only_changes_vs_historical_written_receipt": 633,
+    "current_git_work_copy_eol_forms_not_claimed_historical_written_bytes": true,
+    "measurements": 24,
+    "preserved_measurements_verified_by_original_file_hashes": 21,
+    "resumed_measurements": 3,
+    "rep_identity_or_rep_hash_duplicates": 0,
+    "normalized_semantic_distinct_snapshots_per_packet": {
+      "1": 1,
+      "3": 1,
+      "33": 1,
+      "36": 1
+    },
+    "all_delivery_ack_work_counts_match": true,
+    "root_suite64_receipt_and_log_hash_verified": true,
+    "root_new_provenance2_and_retirement2_verified_by_delta_targets": true,
+    "distinct_software_cases_covered": 68,
+    "counting_rule": "64 previously executed complete group +2 new provenance +2 new retirement cases; changed old3 and all affected deltas rerun. This does not claim one final68-case execution. Independent repetitions never enlarge68.",
+    "independent_final_byte_targets_passed": {
+      "native_delegation_publisher_service": 8,
+      "execution_evidence_provenance_retired_cli": 7
+    },
+    "all_own_temporary_roots_removed": true
+  },
+  "resolved_findings": [
+    {
+      "id": "PERF-CACHE-SEAM-01",
+      "resolution": "Withdrawn old preview/status reuse. Actual _apply_import executes fresh original preview/status before consumer binding, only batches interpreter startup; package/release four service probes fail before native bind."
+    },
+    {
+      "id": "PERF-COUNT-01",
+      "resolution": "Removed meaningless SDK variant duplication;25 new cases represent17 native fault/parity +4 service +2 delegation +2 publisher."
+    },
+    {
+      "id": "PERF-ASSERT-01",
+      "resolution": "Publisher refusal matches permission_denied and zero outbox access; original owner current-permissions inspect used behind explicitly unit typed adapter."
+    },
+    {
+      "id": "PERF-DOC31-01",
+      "resolution": "Current README/design report safe patch/current24 matrix; stale final4 artifacts segregated as history."
+    },
+    {
+      "id": "PERF-TEST31-01",
+      "resolution": "Zero-bind call assertion added and independently rerun on final bytes."
+    },
+    {
+      "id": "PERF-PROVENANCE-REGRESSION-01",
+      "resolution": "Independently reproduced1F/2P metadata change regression. Required frozen source declaration added to synthetic cleanup fixture, validator remains active; final5 and final7 independently pass."
+    },
+    {
+      "id": "PERF-LEGACY-GENERATOR-01",
+      "resolution": "Removed obsolete mutating generator bodies and28-entry manifest writer. Both real CLI entrypoints return legacy_generator_retired/exit2 before writes; actual two CLI regression tests preserve manifest/handoff and do not create --out; pure evidence loader retained."
+    }
+  ],
+  "performance": {
+    "speedup_ratios_baseline_over_candidate": {
+      "1": 1.467,
+      "3": 1.288,
+      "33": 1.054,
+      "36": 0.843
+    },
+    "spawn_medians_baseline_candidate": {
+      "1": [
+        10,
+        9
+      ],
+      "3": [
+        22,
+        19
+      ],
+      "33": [
+        206,
+        173
+      ],
+      "36": [
+        224,
+        188
+      ]
+    },
+    "conclusion": "Safe patch demonstrably saves one worker launch per packet in this synthetic chain. Wall-time gains are inconsistent:36-packet median is slower,33-packet gains small and variance large. Do not install or promise production speedup on these data alone.",
+    "benchmark_initial_outer_timed_out": true,
+    "completed_cells_preserved_and_owned_cleanup_verified": true,
+    "driver_wall_s_not_reconstructed": true,
+    "phase_breakdown_is_first_rep_not_median": true
+  },
+  "limitations": [
+    "Synthetic native SQLite and frozen upstream original code; no actual company scan or charged API in this review.",
+    "Fault worker integrations are in-process; public benchmark subprocess E2E is layered separately. Delegation/publisher unit fixtures are explicitly synthetic and do not authorize real production owner actions.",
+    "Original permission/ACK/budget engines are unchanged. Reading historical sealed results does not permit new LLM spend after withdrawal.",
+    "Fixed variant order and uncontrolled desktop load confound descriptive timing; no stable or causal speedup inference, no2000-company throughput qualification.",
+    "Cold/warm marks interpreter order; OS cache not cleared.",
+    "Historic consumed-inputs written byte hashes remain original vendoring receipts; current EOL forms were explicitly checked against locked source content, and candidate patched source raw hashes independently reproduced.",
+    "Historical or earlier round reports are not current final approval. This signature binds current C only; pending metadata M must separately reference it."
+  ],
+  "production_ready": false,
+  "production_qualification_granted": false,
+  "financial_qualification_granted": false,
+  "paid_api_calls": 0,
+  "production_database_writes": false,
+  "external_repository_writes_by_reviewer": false,
+  "evidence": [
+    {
+      "path": "runs/close-support31/perf-independent/final-payload-verification.json",
+      "sha256": "1219c0df739c0a363d446b1992d5e2cdd4d4b44384da516b8135a15def190192"
+    },
+    {
+      "path": "runs/close-support31/perf-independent/final-payload-delta-verification.json",
+      "sha256": "95482745ab0a61e9cc7e19b843ddb7783d09d539e82e1377daea7708f3f70447"
+    },
+    {
+      "path": "runs/close-support31/perf-independent/final-retirement-delta-verification.json",
+      "sha256": "1729edddc5289c951f2cd5d032a8d1fe3c8d36e49a7d01acb10cd5c67fec0993"
+    },
+    {
+      "path": "runs/close-support31/perf-independent/final-measurement-verification.json",
+      "sha256": "cfaee7dbee9b5632c2d2349ca8c0338c10d0ccc01193fc63bd1ab28047586f16"
+    },
+    {
+      "path": "runs/close-support31/perf-independent/metadata-regression.json",
+      "sha256": "8ea6dd06bafff6eece84c8a963565a19755496f6fdb0afdd88e436da61b76261"
+    },
+    {
+      "path": "runs/close-support31/perf-independent/metadata-regression-final.json",
+      "sha256": "6b3bc67ecade994100b76cdefd18442cfeb8729be9e863f72b635673eb7ca6e1"
+    },
+    {
+      "path": "runs/close-support31/perf-independent/final-targeted-seven.json",
+      "sha256": "2e814b34f0c70238e16a0fcae511cc377751d76d2372ac4d64969b6683b86c70"
+    },
+    {
+      "path": "runs/close-support31/perf-test-independent/targeted-tests-escalated.json",
+      "sha256": "4f87840cd8f146cbb8bede9db7615a1b642038ae9c4d75264162bd1d10d18b55"
+    },
+    {
+      "path": "runs/close-support31/perf/tests-suite64.json",
+      "sha256": "926eeefc7c2e5361c0dc34af13d18e6ef81d14b7c7626a6444cb193e89fc6c7c"
+    },
+    {
+      "path": "runs/close-support31/perf/provenance-tests.json",
+      "sha256": "1b4ea0747b90177ad4f0cb43651e15bde1324c0fa2c9664456e7c79fd90f91fe"
+    }
+  ]
+}

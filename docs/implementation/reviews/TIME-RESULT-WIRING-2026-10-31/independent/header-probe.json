@@ -1,0 +1,15 @@
+{
+  "scenario": "conflicting requested and envelope entity",
+  "main_answer_count": 0,
+  "header_text": "ENT_REQUESTEDentity_idENT_FOREIGN身份状态未记录协议未记录C06 已校验是质量汇总9.99",
+  "calls": [
+    {
+      "url": "/api/product/entity-view?id=ENT_REQUESTED",
+      "method": "GET"
+    }
+  ],
+  "normal_quality_field_present": true,
+  "normal_c06_field_present": true,
+  "identity_conflict_notice_present": false,
+  "original_quality_preserved_in_raw": true
+}

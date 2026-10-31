@@ -1,0 +1,80 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "ANSWER-AUDIT-30",
+  "status": "passed",
+  "reviewer_agent_id": "/root/review_perf_close31",
+  "author_agent_ids": [
+    "/root",
+    "/root/review_answer_close31"
+  ],
+  "independence": "Reviewer did not author candidate software, source re-verification decisions, original answers or original scores. Reviewer authored only independent fault probes in controller-owned ignored runs.",
+  "payload_commit": "2eb59d3d64e58d387f6abde4f2c9d913e4f34955",
+  "payload_manifest_sha256": "6a72f27ba41a8556f090260365ab6b7f987b62c5b7496816ef7114d7b7886710",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "AA31-I01",
+      "closure": "Recorded-after timestamp cannot precede read-window end; independently reproduced rejection. Equality, later time and omitted recording evidence retain explicit legacy/unknown semantics. No system clock is consulted."
+    },
+    {
+      "id": "AA31-I02",
+      "closure": "Reasoning support denominator/counter are recomputed against verdict rows; previously accepted tampering now rejected."
+    }
+  ],
+  "verification": {
+    "manifest_files": 70,
+    "all_manifest_git_blobs_match": true,
+    "private_input_sha256": "5342c92a5a5ad6a85c4fe030190969578af30c44eaa36e159d9966f01e3937ee",
+    "original_private_input_unchanged": true,
+    "source_tracked_status": "",
+    "tests_passed": 63,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "test_wall_seconds": 8.78096870000445,
+    "test_log_sha256": "16f9c8f7b4311cfed7a0c5d79bc963ecb8576df83b76b669d0a91e3895450e93",
+    "adversarial_cases_rejected": 8,
+    "independent_temporal_boundary_cases": 4,
+    "claims_sources_verdicts_byte_identical_to_prior_candidate": true,
+    "coverage_summary_semantically_identical": true,
+    "checks_ref": "checks-final.json",
+    "adversarial_ref": "adversarial-final-results.json",
+    "delta_ref": "final-delta-checks.json"
+  },
+  "source_review": {
+    "independent_direct_spotchecks": 5,
+    "ref": "web-checks.json",
+    "all51_pages_independently_reread": false,
+    "source_attempt_coverage": {
+      "total": 51,
+      "direct_page": 35,
+      "unreadable": 16
+    },
+    "selected_claims": {
+      "total": 96,
+      "original_answer_behavior_excluded_from_financial_denominator": 33,
+      "external_facts": 63,
+      "supported": 22,
+      "partially_supported": 25,
+      "not_assessable": 16,
+      "whole_claim_contradicted": 0
+    },
+    "scope": "Audit completeness and explicit evidence gaps only. Not financial accuracy approval, score renewal or production owner eligibility."
+  },
+  "limitations": [
+    "16 unreadable sources and16 not-assessable external claims remain explicit. They are not silently promoted to supported.",
+    "Zero whole-claim contradicted does not erase documented period/entity/composite subclaim mismatches.",
+    "Exact historical read timestamps and historical snapshots are unknown; recorded-after is not HTTP read time or native verified_at.",
+    "Old handoff metadata remains partial; this review signs actual code payload C and manifest, not stale M. Root must publish matching final M/handoff separately."
+  ],
+  "cleanup": {
+    "temporary_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.aa31-49c01006",
+    "temporary_absent": true,
+    "private_copy_absent": true,
+    "original_private_hash_unchanged": true,
+    "network_calls": 0,
+    "paid_api_calls": 0
+  },
+  "previous_round": "round-01.json",
+  "reviewed_at_utc": "2026-10-31T21:23:23.415020+00:00"
+}

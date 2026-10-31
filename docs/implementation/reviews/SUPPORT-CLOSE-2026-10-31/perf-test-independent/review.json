@@ -1,0 +1,75 @@
+{
+  "protocol": "iqs.independent_perf_test_review/1.0",
+  "reviewer": "/root/review_answer_close31",
+  "recorded_at_utc": "2026-10-31T21:33:05.684409+00:00",
+  "scope": "test quality and root-fix design; final performance C/manifest pending",
+  "source_writes": false,
+  "paid_api_requests": 0,
+  "reviewed_files": [
+    {
+      "path": "tests/integration/test_native_fault_parity.py",
+      "sha256": "e6a45a801aae36179900cc49702b9684e0d62e2092657878a6a60331e5a341ea"
+    },
+    {
+      "path": "tests/integration/test_service_preflight.py",
+      "sha256": "f67a2dc3d409b8dfdcd5a32548c6003907d0e222c970103e03d0cb22f9621edb"
+    },
+    {
+      "path": "tests/unit/test_native_delegation_faults.py",
+      "sha256": "874f318b6a0476b7e39fab6987bdf153c764c49a4449587e694ea90613ed7ee6"
+    },
+    {
+      "path": "tests/unit/test_publisher_authority_boundary.py",
+      "sha256": "be7e9cc01cd7c4d64cc6bafb41ab204db6f92c56719a5e8c593a2b673dda0ce5"
+    },
+    {
+      "path": "integration/candidate.patch",
+      "sha256": "0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451"
+    },
+    {
+      "path": "integration/performance-design.md",
+      "sha256": "cb981bb61af45fee50b822ef2c4041ba6c337d792642fe962b2fcb7ac090858e"
+    }
+  ],
+  "test_matrix": {
+    "native_fault_parity": {
+      "tests": 17,
+      "layer": "native in-process owner-worker/producer/receiver integration",
+      "meaningful": true
+    },
+    "service_preflight": {
+      "tests": 4,
+      "layer": "actual DashboardService with original worker and real native consumer bind",
+      "meaningful": true
+    },
+    "native_delegation_faults": {
+      "tests": 2,
+      "layer": "original delegation service/storage unit with synthetic preview contract",
+      "meaningful": true,
+      "scope_note": "0 cached scopes vs 36 synthetic resume scopes; not public CLI revocation E2E"
+    },
+    "publisher_authority_boundary": {
+      "tests": 2,
+      "layer": "original publisher guard with typed unit authority invoking original current-permissions inspect and synthetic schema3 carrier",
+      "meaningful": true,
+      "scope_note": "not public CLI subprocess authority adapter; no native published checkpoint manufactured"
+    }
+  },
+  "open_findings": [],
+  "resolved_findings": [
+    {
+      "id": "PERF-TEST31-01",
+      "priority": "low",
+      "issue": "service preflight prints bind call count without explicit assertion",
+      "resolution": "Root added assert execution.bind_calls==0; independent elevated final-byte 4 service +4 unit target passed."
+    }
+  ],
+  "test_quality_conclusion": "No blocking test-design defect found in the 25 new tests. Full fault matrix is serial whole-module by design; typed adapters and synthetic preview boundaries do not establish public CLI production authority end-to-end.",
+  "performance_conclusion": "Final24 descriptive wall ratios independently recomputed;36 slower/variance uncontrolled, no production speedup guarantee",
+  "independent_run_status": "passed: 8 final-byte targeted cases, 73.4136s, exit 0, temporary root removed",
+  "independent_run_receipt": "targeted-tests-escalated.json",
+  "final_review_ref": "final.json",
+  "status": "passed",
+  "final_payload_commit": "99c350b8f332e5ea6459919fd692af19bab25100",
+  "final_payload_manifest_sha256": "0b90ae32d11c4b73a23bef8214a21093fb39ec80353f34e182ba4911de9da73b"
+}

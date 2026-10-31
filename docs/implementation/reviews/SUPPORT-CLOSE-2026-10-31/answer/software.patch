@@ -1,0 +1,1895 @@
+diff --git a/README.md b/README.md
+index 7521b61..e8baf43 100644
+--- a/README.md
++++ b/README.md
+@@ -1,33 +1,28 @@
+-# ANSWER-AUDIT-30 Lab（iqs-answer-audit-lab）
++# ANSWER-AUDIT-30：可追溯复核1.1
+ 
+-对2026-10-30主线批次32份真实回答做来源、数字、主体、时点与评分理由审计。本Lab不是新评分器：不产公司分数、不产买卖建议、不做对照实验；`not_assessable`是真实审计结论。
++当前产物协议 `iqs.live_answer_content_audit/1.1.0`；包版本1.1.0。原handoff协议仍1.0.0。原32份答案、分数、研究截止日、题义版本和原始输入hash不变。
+ 
+-## 目录
++51来源全部实际尝试或定位了明确替代：35原文直读、16不可读，0未尝试。96命题中33条只描述原模型行为，单独统计；外部事实63条为22支持、25部分支持、16无法评估。没有经过审计的整体准确率，不能把没有whole-claim contradicted当成没有错误：期间错配、主体错配和复合命题里的反证仍在contextual_findings。
+ 
+-- `src/iqs_answer_audit/` — 薄工具包：指针解析、覆盖校验、完整性拒绝规则（无评分逻辑）。
+-- `audit/claim_spec.py` — 96条实质命题的逐例声明（每例≤3条）。
+-- `audit/verification_data_sources.py` / `audit/verification_data_verdicts.py` — 核源记录与逐例判定（作者数据层）。
+-- `audit/make_briefs.py` — 生成32份核验任务书（audit/briefs/）。
+-- `audit/build_content.py` — 公开构建入口：冻结输入+核源记录 → content/*.json + audit/verification/*.json。
+-- `content/` — 交付物：claims/sources/sample-verdicts/coverage/audit-summary + report.md。
+-- `vendor_upstream/` — 锁定Git blob字节副本（git cat-file，逐字节校验）。
+-- `.private-inputs/` — 私有32答副本（gitignored，不提交不上传）。
+-- `docs/handoff/ANSWER-AUDIT-30/` — 交接元数据（M commit）。
++## 使用
+ 
+-## 分层命令
++```powershell
++python -m pip install -e .
++python -B audit/build_content.py
++python -B -m pytest tests/ -q
++```
+ 
+-| 层 | 命令 | 耗时 | 说明 |
+-|---|---|---|---|
+-| 单元（合成fixture） | `python -B -m pytest tests/ -k "not real"` 分组见tests文件内注释 | ~1s | 指针解析/JSON重复键拒绝/引文上限/哈希不匹配 |
+-| 集成（真实语料+反例） | `python -B -m pytest tests/` | ~1s | 19项：真实32行校验、rubric绑定、8类损坏反例 |
+-| E2E | `python -B audit/build_content.py && python -B -m pytest tests/test_audit_toolkit.py::test_e2e_rebuild_and_validate_input_bytes_unchanged tests/test_audit_toolkit.py::test_e2e_negative_corrupted_reference` | ~2s | 公开入口重建+输入字节不变断言+损坏引用反例 |
+-| 预检（总控用） | `python scripts/parallel_handoff_cli.py --input docs/handoff/ANSWER-AUDIT-30/handoff.json --package-id ANSWER-AUDIT-30 --catalog <catalog> --verify-references`（在源仓运行，非本Lab） | — | 形状/引用预检，不代表金融或生产门 |
++当前63项相关测试（约12秒），覆盖真实32行重建、输入字节不变、schema/混合版本拒绝、期间/币种/单位/身份绑定、原指针和双向引用、逐行分母、读取精度、摘要不得冒充原文、上下文反证、历史1.0兼容及损坏反例。软件测试不替代金融核源。测试环境请使用独占TEMP、无密钥子进程和finally清理。
+ 
+-单测与真实核源分开统计：软件E2E不替代真实32答核源；核源记录见`content/sources.json`（51条，14条不可读如实记录）。
++## 数据与版本
+ 
+-## 边界
++- `audit/source-reverification.json`：本轮明确的逐来源检查与逐命题人工结论输入，不是自动金融评分器。
++- `docs/source-review-2026-10-31/`：冻结核源报告、工具引用、精确URL、读取时间窗口/未知精度及短定位。
++- `schemas/audit-1.1.schema.json`：当前全部JSON的严格外壳和行契约；未知扩展拒绝。
++- `content/`、`audit/verification/`：公开入口生成的1.1复核产物；每来源保留reported_source/原午夜声明，实际历史读取时间null/unknown。本轮已读有真实工具引用；只有已知UTC窗口才给window_end，记录时间不冒充HTTP读取时刻，更不成为生产verified_at。
++- `audit/verification_data_sources.py`、`verification_data_verdicts.py`及旧briefs：原1.0作者声明和历史任务材料，当前复核不能依其自报转绿。原1.0输出保存在历史Git提交3dbf088；当前loader可读完整1.0语料，但混合1.0/1.1文件会拒绝。
++- `.private-inputs/live-answers-32.json`：只在本机忽略区，固定SHA5342c92a...，不提交不上传。
+ 
+-- 原32答与context不提交/不上传；交付物只含薄审计结果与有限引文（≤60词）。
+-- 联网仅harness自带公开网页阅读（WebFetch/WebSearch）；未调用任何独立API密钥或原预算；`network_calls=true`、`paid_calls=false`。
+-- cutoff 2026-10-25/30；读取时点2026-10-30，页面时点如实区分，未知保持unknown。
+-- `production_ready=false`、`financial_qualification_granted=false`。
++本轮修正审计命题的7等于7文字错误，不改原公司分数。CATL截断分红比例的估算、2014来源期间、CVTE/CATL归属以及腾讯社交网络子命题反证均明确保留。不可读来源保持未知，不依检索摘要强行补分。
++
++本包未调用模型或独立付费搜索API，无文档下载/网页全文保存。`production_ready=false`、`financial_qualification_granted=false`。完成审计的含义是证据及缺口均准确呈现，不是原答案全部正确或可以据此直接投资。
+diff --git a/audit/build_content.py b/audit/build_content.py
+index a2359d5..4a89bee 100644
+--- a/audit/build_content.py
++++ b/audit/build_content.py
+@@ -26,6 +26,7 @@ import iqs_answer_audit as iaa  # noqa: E402
+ from audit.claim_spec import CLAIM_SPECS  # noqa: E402
+ from audit.verification_data_sources import SOURCES  # noqa: E402
+ from audit.verification_data_verdicts import VERDICTS  # noqa: E402
++from iqs_answer_audit.provenance import revise, PROTOCOL  # noqa: E402
+ 
+ PRIVATE_INPUT = LAB / ".private-inputs" / "live-answers-32.json"
+ LOCK = LAB / "vendor_upstream" / "controller" / "inputs.lock.json"
+@@ -33,8 +34,8 @@ INPUT_LOCK_SHA256 = "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c
+ 
+ LIMITATIONS = [
+     "本包只审计32份冻结样本的金融内容，不是对照实验；不能宣布搜索工具或LLM赢家。",
+-    "原研究cutoff为2026-10-25/30；本次核验读取的是2026-10-30的页面，不能冒充当时抓取；来源若此后被编辑则not_assessable。",
+-    "PDF正文（公司年报/研报/评级报告）在本harness中不可读，相关事实经builtin检索摘要佐证或记为not_assessable。",
++    "原研究cutoff为2026-10-25/30；历史真实读取时点无法还原，reported午夜值仅作历史声明；本次重新核源不得冒充历史抓取或续期。",
++    "按逐来源verification_mode区分本轮原文直读/摘要/未读；部分官方PDF可直接读取，无法读取者保持not_assessable，摘要只作线索。",
+     "审计状态不是新的公司分数，不映射买卖建议；not_assessable是真实结论而非失败。",
+ ]
+ 
+@@ -204,11 +205,28 @@ def main() -> int:
+             }
+         )
+ 
++    revision=iaa.load_json_strict(LAB/'audit/source-reverification.json')
++    sources_rows,claims_rows,verdict_rows=revise(sources_rows,claims_rows,verdict_rows,revision)
++    source_map={s['source_id']:s for s in sources_rows}
++    # Current verification files follow explicit source pointers; no historical
++    # midnight date is stamped as a new verified_at.
++    verif_files={row['sample_id']:{
++        'protocol':PROTOCOL,'sample_id':row['sample_id'],'cutoff':row['information_cutoff'],
++        'historical_read_at_utc':None,
++        'records':[{'claim_id':c['claim_id'],'verdict':c['verdict'],
++            'verification_basis':c['verification_basis'],'note':c['verification_note'],
++            'checks':[{'source_id':ref,'url':source_map[ref]['url'],
++                'final_url':source_map[ref]['final_url'],'verification_mode':source_map[ref]['verification_mode'],
++                'read_at_utc':source_map[ref]['read_at_utc'],'read_at_precision':source_map[ref]['read_at_precision'],
++                'locator':source_map[ref]['locator'],'tool_refs':source_map[ref]['verification_tool_refs']}
++                for ref in c['verification_source_refs']]}
++            for c in claims_rows if c['sample_id']==row['sample_id']]
++        } for row in verdict_rows}
+     # ---- coverage.json ----
+     cov = build_coverage(samples, claims_rows, verdict_rows)
+ 
+     # ---- audit-summary.json ----
+-    summary = build_summary(claims_rows, verdict_rows, cov, lock_json)
++    summary = build_current_summary(claims_rows, verdict_rows, cov, sources_rows,revision)
+ 
+     for name, doc in (
+         ("claims.json", claims_rows),
+@@ -218,7 +236,7 @@ def main() -> int:
+         ("audit-summary.json", summary),
+     ):
+         payload = {
+-            "protocol": "iqs.live_answer_content_audit/1.0.0",
++            "protocol": PROTOCOL,
+             "document": name,
+             "input_lock_sha256": INPUT_LOCK_SHA256,
+             "input_lock_sha256_verified": True,
+@@ -235,6 +253,21 @@ def main() -> int:
+             json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+         )
+ 
++    iaa.validate_chain(content_dir,samples)
++    lines=['# ANSWER-AUDIT-30 source re-verification1.1','',
++           '32 frozen answers /96 propositions. Original scores and observations unchanged.',
++           'This completes an audit with explicit unavailable evidence; it is not a financial approval or accuracy rate.','',
++           'Source modes: '+json.dumps(summary['source_mode_counts'],ensure_ascii=False),
++           'External factual propositions: '+json.dumps(cov['financial_fact_support'],ensure_ascii=False),
++           'Original-answer behavior only: '+str(cov['original_answer_only_claims']), '',
++           'Historical midnight declarations are retained under reported_source/reported_read_at_utc. Actual historical read time is unknown. Current direct reads have real tool references, recording-time semantics, and an explicit window when known; neither is a trusted native renewal receipt.','',
++           'The cited2014 margin period, CVTE/CATL attribution, Tencent composite contrary subclaim, CATL truncated dividend estimate, and audit7-equals7 correction remain explicit contextual_findings. A literal value existing does not validate its scoring use.','',
++           '## Sources (all attempted once; current content, no historical snapshot claim)','',
++           '| Source | Read mode | Exact current resource |','|---|---|---|']
++    for s in sources_rows:
++        lines.append('| '+s['source_id']+' | '+s['verification_mode']+' | '+(s['final_url'] or s['url'] or 'unresolved')+' |')
++    (content_dir/'report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
++
+     print(
+         f"claims={len(claims_rows)} sources={len(sources_rows)} verdicts={len(verdict_rows)} "
+         f"verification_files={len(verif_files)}"
+@@ -258,9 +291,9 @@ def build_coverage(samples, claims_rows, verdict_rows) -> dict:
+         lambda: _count(claims_rows, fn)
+     )()
+ 
+-    audit = counter(lambda s: VERDICTS[s["sample_id"]]["audit_status"])
+-    date_sem = counter(lambda s: VERDICTS[s["sample_id"]]["date_semantics_status"])
+-    reason = counter(lambda s: VERDICTS[s["sample_id"]]["reasoning_status"])
++    audit = _count(verdict_rows,lambda s:s['audit_status'])
++    date_sem = _count(verdict_rows,lambda s:s['date_semantics_status'])
++    reason = _count(verdict_rows,lambda s:s['reasoning_status'])
+ 
+     total_claims = len(claims_rows)
+     supported = sum(1 for c in claims_rows if c["verdict"] == "supported")
+@@ -307,7 +340,7 @@ def build_coverage(samples, claims_rows, verdict_rows) -> dict:
+             "supported_share_of_assessable": (
+                 round(supported / assessable, 4) if assessable else None
+             ),
+-            "denominator_note": "分母=可评估claims（supported+partially+contradicted）；not_assessable不计入且单独列示",
++            "denominator_note": "旧兼容字段名：统计全部selected propositions，不等于金融事实或准确率；真实外部事实分母另见financial_fact_support；未知单列。",
+         },
+         "reasoning_support": {
+             "consistent_with_bound_rubric": reason.get("consistent_with_bound_rubric", 0),
+@@ -316,6 +349,34 @@ def build_coverage(samples, claims_rows, verdict_rows) -> dict:
+         },
+         "accuracy_statement": None,
+         "accuracy_statement_reason": "无已审金融真值分母；不评准确率，不给答案打分",
++        'financial_fact_support': financial_fact_counts(claims_rows),
++        'original_answer_only_claims': sum(c.get('verification_basis')=='original_answer_only' for c in claims_rows),
++    }
++
++
++def financial_fact_counts(claims):
++    rows=[c for c in claims if c['claim_type'] in {'factual_numeric','factual_qualitative'}
++          and c.get('verification_basis')!='original_answer_only']
++    counts={key:sum(c['verdict']==key for c in rows) for key in iaa.CLAIM_VERDICTS}
++    return {'claims_total':len(rows),**counts,'accuracy_rate':None,
++            'denominator_note':'External factual propositions only. Original-answer behavior, judgments and unknowns are not silently counted as verified financial facts.'}
++
++
++def build_current_summary(claims,verdicts,coverage,sources,revision):
++    return {
++        'package_id':'ANSWER-AUDIT-30','audit_schema_version':'1.1.0',
++        'source_mode_counts':_count(sources,lambda s:s['verification_mode']),
++        'claim_verdict_counts':_count(claims,lambda c:c['verdict']),
++        'sample_audit_counts':_count(verdicts,lambda r:r['audit_status']),
++        'financial_fact_support':coverage['financial_fact_support'],
++        'original_answer_only_claims':coverage['original_answer_only_claims'],
++        'high_risk_findings':revision.get('findings',[]),
++        'historical_capture_reconstructed':False,
++        'new_company_scores_created':False,
++        'qualification':'Audit complete with explicit source gaps; not financial approval or a model/search winner.',
++        'prior_summary_ref':{'commit':'3dbf088a67ea1b9eaeab006173fc6e173dfca2fc','path':'content/audit-summary.json'},
++        'source_gaps':[{'source_id':s['source_id'],'mode':s['verification_mode'],'reason':s['does_not_support']}
++                       for s in sources if s['verification_mode']!='direct_page'],
+     }
+ 
+ 
+diff --git a/pyproject.toml b/pyproject.toml
+index 643cca0..5bcbf5e 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,8 +1,9 @@
+ [project]
+ name = "iqs-answer-audit"
+-version = "1.0.0"
++version = "1.1.0"
+ description = "Thin read-only audit toolkit for ANSWER-AUDIT-30 (no scorer, no company scores)"
+ requires-python = ">=3.11"
++dependencies = ["jsonschema>=4.18,<5"]
+ 
+ [tool.pytest.ini_options]
+ testpaths = ["tests"]
+diff --git a/schemas/audit-1.1.schema.json b/schemas/audit-1.1.schema.json
+new file mode 100644
+index 0000000..0e4820d
+--- /dev/null
++++ b/schemas/audit-1.1.schema.json
+@@ -0,0 +1,1211 @@
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$id": "https://iqs.local/answer-audit/1.1.0",
++  "type": "object",
++  "properties": {
++    "protocol": {
++      "const": "iqs.live_answer_content_audit/1.1.0"
++    },
++    "document": {
++      "enum": [
++        "claims.json",
++        "sources.json",
++        "sample-verdicts.json",
++        "coverage.json",
++        "audit-summary.json"
++      ]
++    },
++    "input_lock_sha256": {
++      "const": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab"
++    },
++    "input_lock_sha256_verified": {
++      "const": true
++    },
++    "production_ready": {
++      "const": false
++    },
++    "limitations": {
++      "type": "array",
++      "items": {
++        "type": "string"
++      }
++    },
++    "rows": true
++  },
++  "required": [
++    "protocol",
++    "document",
++    "input_lock_sha256",
++    "input_lock_sha256_verified",
++    "production_ready",
++    "limitations",
++    "rows"
++  ],
++  "additionalProperties": false,
++  "allOf": [
++    {
++      "if": {
++        "properties": {
++          "document": {
++            "const": "claims.json"
++          }
++        }
++      },
++      "then": {
++        "properties": {
++          "rows": {
++            "type": "array",
++            "items": {
++              "type": "object",
++              "properties": {
++                "audit_focus": {
++                  "type": "string"
++                },
++                "claim_id": {
++                  "type": "string"
++                },
++                "entity": {
++                  "type": "string"
++                },
++                "original_quote": {
++                  "type": "string"
++                },
++                "proposition": {
++                  "type": "string"
++                },
++                "sample_id": {
++                  "type": "string"
++                },
++                "verification_note": {
++                  "type": "string"
++                },
++                "claim_type": {
++                  "enum": [
++                    "factual_numeric",
++                    "factual_qualitative",
++                    "judgment",
++                    "absence_or_coverage"
++                  ]
++                },
++                "currency": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "unit": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "security_scope": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "period": {
++                  "type": "object",
++                  "properties": {
++                    "start": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "end": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "basis": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    }
++                  },
++                  "required": [
++                    "start",
++                    "end",
++                    "basis"
++                  ],
++                  "additionalProperties": false
++                },
++                "open_evidence_gaps": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "original_evidence_refs": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "original_pointer": {
++                  "type": "object",
++                  "properties": {
++                    "kind": {
++                      "enum": [
++                        "evidence",
++                        "metric",
++                        "summary",
++                        "counter",
++                        "status"
++                      ]
++                    },
++                    "index": {
++                      "type": [
++                        "integer",
++                        "null"
++                      ]
++                    },
++                    "id": {
++                      "type": "string"
++                    },
++                    "url": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "value": true,
++                    "locator": {
++                      "type": "string"
++                    }
++                  },
++                  "required": [
++                    "kind"
++                  ],
++                  "additionalProperties": false
++                },
++                "source_refs": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "verdict": {
++                  "enum": [
++                    "supported",
++                    "partially_supported",
++                    "contradicted",
++                    "not_assessable"
++                  ]
++                },
++                "reported_verdict": {
++                  "enum": [
++                    "supported",
++                    "partially_supported",
++                    "contradicted",
++                    "not_assessable"
++                  ]
++                },
++                "reported_proposition": {
++                  "type": "string"
++                },
++                "verification_basis": {
++                  "enum": [
++                    "direct_source",
++                    "original_answer_only",
++                    "not_assessable"
++                  ]
++                },
++                "verification_source_refs": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "contextual_findings": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "verification_scope": {
++                  "type": "string"
++                }
++              },
++              "required": [
++                "audit_focus",
++                "claim_id",
++                "entity",
++                "original_quote",
++                "proposition",
++                "sample_id",
++                "verification_note",
++                "claim_type",
++                "currency",
++                "unit",
++                "security_scope",
++                "period",
++                "open_evidence_gaps",
++                "original_evidence_refs",
++                "original_pointer",
++                "source_refs",
++                "verdict",
++                "reported_verdict",
++                "verification_basis",
++                "verification_source_refs",
++                "contextual_findings",
++                "verification_scope"
++              ],
++              "additionalProperties": false
++            }
++          }
++        }
++      }
++    },
++    {
++      "if": {
++        "properties": {
++          "document": {
++            "const": "sources.json"
++          }
++        }
++      },
++      "then": {
++        "properties": {
++          "rows": {
++            "type": "array",
++            "items": {
++              "type": "object",
++              "properties": {
++                "url": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "final_url": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "published_at": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "read_at_utc": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "locator": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "does_not_support": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "cutoff_availability_reason": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "source_id": {
++                  "type": "string"
++                },
++                "publisher": {
++                  "type": "string"
++                },
++                "source_kind": {
++                  "type": "string"
++                },
++                "published_at_precision": {
++                  "type": "string"
++                },
++                "cutoff_availability": {
++                  "type": "string"
++                },
++                "bounded_excerpt": {
++                  "type": "string"
++                },
++                "independence_group": {
++                  "type": "string"
++                },
++                "supports": {
++                  "type": "string"
++                },
++                "fetch_status": {
++                  "type": "string"
++                },
++                "used_by_claims": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "reported_source": {
++                  "type": "object",
++                  "properties": {
++                    "url": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "final_url": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "published_at": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "read_at_utc": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "locator": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "does_not_support": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "cutoff_availability_reason": {
++                      "type": [
++                        "string",
++                        "null"
++                      ]
++                    },
++                    "source_id": {
++                      "type": "string"
++                    },
++                    "publisher": {
++                      "type": "string"
++                    },
++                    "source_kind": {
++                      "type": "string"
++                    },
++                    "published_at_precision": {
++                      "type": "string"
++                    },
++                    "cutoff_availability": {
++                      "type": "string"
++                    },
++                    "bounded_excerpt": {
++                      "type": "string"
++                    },
++                    "independence_group": {
++                      "type": "string"
++                    },
++                    "supports": {
++                      "type": "string"
++                    },
++                    "fetch_status": {
++                      "type": "string"
++                    },
++                    "used_by_claims": {
++                      "type": "array",
++                      "items": {
++                        "type": "string"
++                      },
++                      "uniqueItems": true
++                    }
++                  },
++                  "required": [
++                    "url",
++                    "final_url",
++                    "published_at",
++                    "read_at_utc",
++                    "locator",
++                    "does_not_support",
++                    "cutoff_availability_reason",
++                    "source_id",
++                    "publisher",
++                    "source_kind",
++                    "published_at_precision",
++                    "cutoff_availability",
++                    "bounded_excerpt",
++                    "independence_group",
++                    "supports",
++                    "fetch_status",
++                    "used_by_claims"
++                  ],
++                  "additionalProperties": false
++                },
++                "original_url": {
++                  "type": "string"
++                },
++                "reported_read_at_utc": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "historical_read_at_utc": {
++                  "const": null
++                },
++                "historical_snapshot_verified": {
++                  "const": false
++                },
++                "historical_read_at_precision": {
++                  "const": "unknown"
++                },
++                "verification_mode": {
++                  "enum": [
++                    "direct_page",
++                    "search_digest",
++                    "unreadable",
++                    "unverified"
++                  ]
++                },
++                "verification_tool_refs": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "verified_claims": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "supported_claims": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "partially_supported_claims": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "contradicted_claims": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "read_window_utc": {
++                  "anyOf": [
++                    {
++                      "type": "null"
++                    },
++                    {
++                      "type": "object",
++                      "properties": {
++                        "start": {
++                          "type": "string"
++                        },
++                        "end": {
++                          "type": "string"
++                        },
++                        "scope": {
++                          "type": "string"
++                        }
++                      },
++                      "required": [
++                        "start",
++                        "end"
++                      ],
++                      "additionalProperties": false
++                    }
++                  ]
++                },
++                "recorded_after_builtin_read_at_utc": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "read_timing_basis": {
++                  "type": "string"
++                },
++                "read_at_precision": {
++                  "enum": [
++                    "unknown",
++                    "window_end"
++                  ]
++                },
++                "cutoff_availability_basis": {
++                  "type": "string"
++                },
++                "excerpt_kind": {
++                  "const": "reviewer_paraphrase"
++                }
++              },
++              "required": [
++                "url",
++                "final_url",
++                "published_at",
++                "read_at_utc",
++                "locator",
++                "does_not_support",
++                "cutoff_availability_reason",
++                "source_id",
++                "publisher",
++                "source_kind",
++                "published_at_precision",
++                "cutoff_availability",
++                "bounded_excerpt",
++                "independence_group",
++                "supports",
++                "fetch_status",
++                "used_by_claims",
++                "reported_source",
++                "original_url",
++                "reported_read_at_utc",
++                "historical_read_at_utc",
++                "historical_snapshot_verified",
++                "historical_read_at_precision",
++                "verification_mode",
++                "verification_tool_refs",
++                "verified_claims",
++                "supported_claims",
++                "partially_supported_claims",
++                "contradicted_claims",
++                "read_window_utc",
++                "recorded_after_builtin_read_at_utc",
++                "read_timing_basis",
++                "read_at_precision",
++                "cutoff_availability_basis",
++                "excerpt_kind"
++              ],
++              "additionalProperties": false
++            }
++          }
++        }
++      }
++    },
++    {
++      "if": {
++        "properties": {
++          "document": {
++            "const": "sample-verdicts.json"
++          }
++        }
++      },
++      "then": {
++        "properties": {
++          "rows": {
++            "type": "array",
++            "items": {
++              "type": "object",
++              "properties": {
++                "sample_id": {
++                  "type": "string"
++                },
++                "observation_id": {
++                  "type": "string"
++                },
++                "question_id": {
++                  "type": "string"
++                },
++                "question_version": {
++                  "type": "string"
++                },
++                "question_semantic_sha256": {
++                  "type": "string"
++                },
++                "question_definition_sha256": {
++                  "type": "string"
++                },
++                "module_package_id": {
++                  "type": "string"
++                },
++                "module_release_id": {
++                  "type": "string"
++                },
++                "rubric_binding": {
++                  "type": "string"
++                },
++                "information_cutoff": {
++                  "type": "string"
++                },
++                "original_status": {
++                  "type": "string"
++                },
++                "rationale": {
++                  "type": "string"
++                },
++                "information_as_of": {
++                  "type": [
++                    "string",
++                    "null"
++                  ]
++                },
++                "original_score": {
++                  "type": [
++                    "number",
++                    "null"
++                  ]
++                },
++                "date_semantics_status": {
++                  "enum": [
++                    "consistent",
++                    "ambiguous",
++                    "contradicted",
++                    "not_assessable"
++                  ]
++                },
++                "material_claim_ids": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "reasoning_status": {
++                  "enum": [
++                    "consistent_with_bound_rubric",
++                    "unsupported",
++                    "rubric_unavailable",
++                    "not_assessable"
++                  ]
++                },
++                "audit_status": {
++                  "enum": [
++                    "supported",
++                    "partially_supported",
++                    "contradicted",
++                    "not_assessable"
++                  ]
++                },
++                "source_refs": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "open_evidence_gaps": {
++                  "type": "array",
++                  "items": {
++                    "type": "string"
++                  },
++                  "uniqueItems": true
++                },
++                "reported_audit_status": {
++                  "enum": [
++                    "supported",
++                    "partially_supported",
++                    "contradicted",
++                    "not_assessable"
++                  ]
++                },
++                "reported_reasoning_status": {
++                  "type": "string"
++                },
++                "reported_date_semantics_status": {
++                  "type": "string"
++                }
++              },
++              "required": [
++                "sample_id",
++                "observation_id",
++                "question_id",
++                "question_version",
++                "question_semantic_sha256",
++                "question_definition_sha256",
++                "module_package_id",
++                "module_release_id",
++                "rubric_binding",
++                "information_cutoff",
++                "original_status",
++                "rationale",
++                "information_as_of",
++                "original_score",
++                "date_semantics_status",
++                "material_claim_ids",
++                "reasoning_status",
++                "audit_status",
++                "source_refs",
++                "open_evidence_gaps",
++                "reported_audit_status",
++                "reported_reasoning_status",
++                "reported_date_semantics_status"
++              ],
++              "additionalProperties": false
++            }
++          }
++        }
++      }
++    },
++    {
++      "if": {
++        "properties": {
++          "document": {
++            "const": "coverage.json"
++          }
++        }
++      },
++      "then": {
++        "properties": {
++          "rows": {
++            "type": "object",
++            "properties": {
++              "by_market": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_company": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_question_id": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_question_family": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_original_status": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_generation": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_cutoff": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_audit_status": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_date_semantics_status": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "by_reasoning_status": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "sample_total": {
++                "type": "integer",
++                "minimum": 0
++              },
++              "model_output_completeness": {
++                "type": "object",
++                "properties": {
++                  "samples_with_evidence": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "samples_with_metrics": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "scored_samples": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "refusal_samples": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "note": {
++                    "type": "string"
++                  }
++                },
++                "required": [
++                  "samples_with_evidence",
++                  "samples_with_metrics",
++                  "scored_samples",
++                  "refusal_samples",
++                  "note"
++                ],
++                "additionalProperties": false
++              },
++              "factual_support": {
++                "type": "object",
++                "properties": {
++                  "claims_total": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "supported": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "partially_supported": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "contradicted": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "not_assessable": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "supported_share_of_assessable": {
++                    "type": [
++                      "number",
++                      "null"
++                    ]
++                  },
++                  "denominator_note": {
++                    "type": "string"
++                  }
++                },
++                "required": [
++                  "claims_total",
++                  "supported",
++                  "partially_supported",
++                  "contradicted",
++                  "not_assessable",
++                  "supported_share_of_assessable",
++                  "denominator_note"
++                ],
++                "additionalProperties": false
++              },
++              "reasoning_support": {
++                "type": "object",
++                "properties": {
++                  "consistent_with_bound_rubric": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "denominator": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "note": {
++                    "type": "string"
++                  }
++                },
++                "required": [
++                  "consistent_with_bound_rubric",
++                  "denominator",
++                  "note"
++                ],
++                "additionalProperties": false
++              },
++              "accuracy_statement": {
++                "const": null
++              },
++              "accuracy_statement_reason": {
++                "type": "string"
++              },
++              "financial_fact_support": {
++                "type": "object",
++                "properties": {
++                  "claims_total": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "supported": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "partially_supported": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "contradicted": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "not_assessable": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "accuracy_rate": {
++                    "const": null
++                  },
++                  "denominator_note": {
++                    "type": "string"
++                  }
++                },
++                "required": [
++                  "claims_total",
++                  "supported",
++                  "partially_supported",
++                  "contradicted",
++                  "not_assessable",
++                  "accuracy_rate",
++                  "denominator_note"
++                ],
++                "additionalProperties": false
++              },
++              "original_answer_only_claims": {
++                "type": "integer",
++                "minimum": 0
++              }
++            },
++            "required": [
++              "by_market",
++              "by_company",
++              "by_question_id",
++              "by_question_family",
++              "by_original_status",
++              "by_generation",
++              "by_cutoff",
++              "by_audit_status",
++              "by_date_semantics_status",
++              "by_reasoning_status",
++              "sample_total",
++              "model_output_completeness",
++              "factual_support",
++              "reasoning_support",
++              "accuracy_statement",
++              "accuracy_statement_reason",
++              "financial_fact_support",
++              "original_answer_only_claims"
++            ],
++            "additionalProperties": false
++          }
++        }
++      }
++    },
++    {
++      "if": {
++        "properties": {
++          "document": {
++            "const": "audit-summary.json"
++          }
++        }
++      },
++      "then": {
++        "properties": {
++          "rows": {
++            "type": "object",
++            "properties": {
++              "package_id": {
++                "const": "ANSWER-AUDIT-30"
++              },
++              "audit_schema_version": {
++                "const": "1.1.0"
++              },
++              "source_mode_counts": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "claim_verdict_counts": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "sample_audit_counts": {
++                "type": "object",
++                "additionalProperties": {
++                  "type": "integer",
++                  "minimum": 0
++                }
++              },
++              "financial_fact_support": {
++                "type": "object",
++                "properties": {
++                  "claims_total": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "supported": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "partially_supported": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "contradicted": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "not_assessable": {
++                    "type": "integer",
++                    "minimum": 0
++                  },
++                  "accuracy_rate": {
++                    "const": null
++                  },
++                  "denominator_note": {
++                    "type": "string"
++                  }
++                },
++                "required": [
++                  "claims_total",
++                  "supported",
++                  "partially_supported",
++                  "contradicted",
++                  "not_assessable",
++                  "accuracy_rate",
++                  "denominator_note"
++                ],
++                "additionalProperties": false
++              },
++              "original_answer_only_claims": {
++                "type": "integer",
++                "minimum": 0
++              },
++              "high_risk_findings": {
++                "type": "array",
++                "items": {
++                  "type": "object",
++                  "properties": {
++                    "id": {
++                      "type": "string"
++                    },
++                    "severity": {
++                      "type": "string"
++                    },
++                    "scope": {
++                      "type": "string"
++                    },
++                    "finding": {
++                      "type": "string"
++                    }
++                  },
++                  "required": [
++                    "id",
++                    "severity",
++                    "scope",
++                    "finding"
++                  ],
++                  "additionalProperties": false
++                }
++              },
++              "historical_capture_reconstructed": {
++                "const": false
++              },
++              "new_company_scores_created": {
++                "const": false
++              },
++              "qualification": {
++                "type": "string"
++              },
++              "prior_summary_ref": {
++                "type": "object",
++                "properties": {
++                  "commit": {
++                    "type": "string"
++                  },
++                  "path": {
++                    "type": "string"
++                  }
++                },
++                "required": [
++                  "commit",
++                  "path"
++                ],
++                "additionalProperties": false
++              },
++              "source_gaps": {
++                "type": "array",
++                "items": {
++                  "type": "object",
++                  "properties": {
++                    "source_id": {
++                      "type": "string"
++                    },
++                    "mode": {
++                      "type": "string"
++                    },
++                    "reason": {
++                      "type": "string"
++                    }
++                  },
++                  "required": [
++                    "source_id",
++                    "mode",
++                    "reason"
++                  ],
++                  "additionalProperties": false
++                }
++              }
++            },
++            "required": [
++              "package_id",
++              "audit_schema_version",
++              "source_mode_counts",
++              "claim_verdict_counts",
++              "sample_audit_counts",
++              "financial_fact_support",
++              "original_answer_only_claims",
++              "high_risk_findings",
++              "historical_capture_reconstructed",
++              "new_company_scores_created",
++              "qualification",
++              "prior_summary_ref",
++              "source_gaps"
++            ],
++            "additionalProperties": false
++          }
++        }
++      }
++    }
++  ]
++}
+diff --git a/src/iqs_answer_audit/__init__.py b/src/iqs_answer_audit/__init__.py
+index e96ef65..00dae7c 100644
+--- a/src/iqs_answer_audit/__init__.py
++++ b/src/iqs_answer_audit/__init__.py
+@@ -25,7 +25,7 @@ REASONING_STATUSES = {
+ }
+ CLAIM_TYPES = {"factual_numeric", "factual_qualitative", "judgment", "absence_or_coverage"}
+ CLAIM_VERDICTS = {"supported", "partially_supported", "contradicted", "not_assessable"}
+-FETCH_STATUSES = {"ok", "blocked", "not_found", "forbidden", "timeout", "empty"}
++FETCH_STATUSES = {"ok", "blocked", "not_found", "forbidden", "timeout", "empty", "not_attempted", "unreadable"}
+ QUOTE_WORD_CAP = 60
+ INPUT_LOCK_SHA256 = 'd432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab'
+ 
+@@ -116,8 +116,10 @@ def resolve_pointer(answer: dict, kind: str, locator: str) -> tuple[dict, str]:
+ 
+ def _read_rows(content_dir: Path, name: str) -> list[dict]:
+     doc = load_json_strict(Path(content_dir) / name)
+-    if doc.get("protocol") != "iqs.live_answer_content_audit/1.0.0":
++    if doc.get("protocol") not in {"iqs.live_answer_content_audit/1.0.0", "iqs.live_answer_content_audit/1.1.0"}:
+         raise AuditIntegrityError(f"{name}: wrong protocol {doc.get('protocol')}")
++    if doc['protocol']=='iqs.live_answer_content_audit/1.1.0':
++        validate_current_document(doc)
+     if doc.get("production_ready") is not False:
+         raise AuditIntegrityError(f"{name}: production_ready must be false")
+     if doc.get('input_lock_sha256') != INPUT_LOCK_SHA256:
+@@ -196,6 +198,9 @@ def validate_sources(content_dir: Path, claims: dict[str, dict]) -> dict[str, di
+     if len(by_key) != len(sources):
+         raise AuditIntegrityError("duplicate source_id")
+     for s in sources:
++        if 'verification_mode' in s:
++            from .provenance import validate_source
++            validate_source(s)
+         if s["fetch_status"] not in FETCH_STATUSES:
+             raise AuditIntegrityError(f"source {s['source_id']}: bad fetch_status {s['fetch_status']}")
+         if s["cutoff_availability"] not in {
+@@ -209,6 +214,9 @@ def validate_sources(content_dir: Path, claims: dict[str, dict]) -> dict[str, di
+         if len(s["bounded_excerpt"].split()) > QUOTE_WORD_CAP + 5:
+             raise AuditIntegrityError(f"source {s['source_id']}: excerpt exceeds cap")
+     for cid, row in claims.items():
++        if 'verification_basis' in row:
++            from .provenance import validate_claim
++            validate_claim(row,by_key)
+         refs = row["source_refs"]
+         for ref in refs:
+             if ref not in by_key:
+@@ -288,8 +296,10 @@ def validate_sample_verdicts(
+ 
+ def validate_coverage(content_dir: Path, samples: list[dict], verdict_rows: list[dict]) -> dict:
+     cov = load_json_strict(Path(content_dir) / "coverage.json")
+-    if cov.get("protocol") != "iqs.live_answer_content_audit/1.0.0":
++    if cov.get("protocol") not in {"iqs.live_answer_content_audit/1.0.0", "iqs.live_answer_content_audit/1.1.0"}:
+         raise AuditIntegrityError("coverage.json: wrong protocol")
++    if cov['protocol']=='iqs.live_answer_content_audit/1.1.0':
++        validate_current_document(cov)
+     if cov.get('input_lock_sha256')!=INPUT_LOCK_SHA256 or cov.get('production_ready') is not False:
+         raise AuditIntegrityError('coverage.json: lock/production boundary drift')
+     actual_counts = {
+@@ -307,6 +317,10 @@ def validate_coverage(content_dir: Path, samples: list[dict], verdict_rows: list
+     for name,expected in actual_counts.items():
+         if cov['rows'].get(name)!=dict(expected):
+             raise AuditIntegrityError(f'coverage {name} does not match row-level evidence')
++    reasoning=cov['rows'].get('reasoning_support',{})
++    if (reasoning.get('denominator')!=len(verdict_rows) or
++        reasoning.get('consistent_with_bound_rubric')!=sum(r['reasoning_status']=='consistent_with_bound_rubric' for r in verdict_rows)):
++        raise AuditIntegrityError('reasoning support counter/denominator drift')
+     completeness=cov['rows'].get('model_output_completeness',{})
+     answers=[s['original_observation']['answer'] for s in samples]
+     expected_completeness={
+@@ -346,15 +360,65 @@ def validate_coverage(content_dir: Path, samples: list[dict], verdict_rows: list
+             )
+     if cov["rows"].get("accuracy_statement") is not None:
+         raise AuditIntegrityError("accuracy_statement must be null without a truth denominator")
++    if cov['protocol']=='iqs.live_answer_content_audit/1.1.0':
++        external=[c for c in claims if c['claim_type'] in {'factual_numeric','factual_qualitative'} and c.get('verification_basis')!='original_answer_only']
++        f=cov['rows']['financial_fact_support']
++        if f['claims_total']!=len(external) or f['accuracy_rate'] is not None:
++            raise AuditIntegrityError('financial fact denominator/accuracy drift')
++        for verdict in CLAIM_VERDICTS:
++            if f[verdict]!=sum(c['verdict']==verdict for c in external):
++                raise AuditIntegrityError('financial fact verdict counts drift')
++        if cov['rows']['original_answer_only_claims']!=sum(c.get('verification_basis')=='original_answer_only' for c in claims):
++            raise AuditIntegrityError('original behavior must remain outside financial denominator')
+     return cov
+ 
+ 
+ def validate_chain(content_dir: Path, samples: list[dict]) -> dict:
+     """Run the full integrity chain; returns the coverage doc on success."""
++    documents={name:load_json_strict(Path(content_dir)/name) for name in
++               ('claims.json','sources.json','sample-verdicts.json','coverage.json','audit-summary.json')}
++    protocols={d.get('protocol') for d in documents.values()}
++    if len(protocols)!=1:
++        raise AuditIntegrityError('mixed audit wire versions')
+     claims = validate_claims(content_dir, samples)
+-    validate_sources(content_dir, claims)
++    sources=validate_sources(content_dir, claims)
+     verdict_rows = validate_sample_verdicts(content_dir, samples, claims)
+-    return validate_coverage(content_dir, samples, verdict_rows)
++    cov=validate_coverage(content_dir, samples, verdict_rows)
++    if protocols=={'iqs.live_answer_content_audit/1.1.0'}:
++        from datetime import date
++        for source in sources.values():
++            if not set(source['verified_claims']).issubset(claims):
++                raise AuditIntegrityError('source checked claim is outside this corpus')
++        cutoff={s['sample_id']:s['original_observation']['information_cutoff'] for s in samples}
++        for c in claims.values():
++            for ref in c['verification_source_refs']:
++                published=sources[ref]['published_at']
++                if c['verdict']!='not_assessable' and published is not None:
++                    try:
++                        if date.fromisoformat(published[:10])>date.fromisoformat(cutoff[c['sample_id']]):
++                            raise AuditIntegrityError('source publication after original cutoff')
++                    except (TypeError,ValueError) as exc:
++                        raise AuditIntegrityError('source publication/cutoff invalid') from exc
++        summary=documents['audit-summary.json'];validate_current_document(summary)
++        expected={
++          'source_mode_counts':dict(Counter(s['verification_mode'] for s in sources.values())),
++          'claim_verdict_counts':dict(Counter(c['verdict'] for c in claims.values())),
++          'sample_audit_counts':dict(Counter(r['audit_status'] for r in verdict_rows)),
++          'financial_fact_support':cov['rows']['financial_fact_support'],
++          'original_answer_only_claims':cov['rows']['original_answer_only_claims'],
++        }
++        if any(summary['rows'].get(k)!=v for k,v in expected.items()):
++            raise AuditIntegrityError('summary counters drift from final corpus')
++    return cov
++
++
++def validate_current_document(document:dict) -> None:
++    from jsonschema import Draft202012Validator
++    schema=load_json_strict(Path(__file__).resolve().parents[2]/'schemas/audit-1.1.schema.json')
++    errors=sorted(Draft202012Validator(schema).iter_errors(document),key=lambda e:str(list(e.path)))
++    if errors:
++        error=errors[0]
++        raise AuditIntegrityError('1.1 schema violation at '+'.'.join(map(str,error.path))+': '+error.message)
+ 
+ 
+ def summarize(verdict_rows: list[dict], coverage: dict) -> str:
+diff --git a/src/iqs_answer_audit/provenance.py b/src/iqs_answer_audit/provenance.py
+new file mode 100644
+index 0000000..8ed3f53
+--- /dev/null
++++ b/src/iqs_answer_audit/provenance.py
+@@ -0,0 +1,203 @@
++"""Versioned source re-verification; preserves received assertions as history.
++
++No network, clock renewal, score computation or claim entailment by keywords.
++The explicit human audit decisions are inputs; this module validates linkage.
++"""
++from __future__ import annotations
++
++import copy
++from collections import Counter
++from datetime import datetime, timezone
++from urllib.parse import urlsplit
++
++PROTOCOL = 'iqs.live_answer_content_audit/1.1.0'
++MODES = {'direct_page', 'search_digest', 'unreadable', 'unverified'}
++BASES = {'direct_source', 'original_answer_only', 'not_assessable'}
++
++
++def fail(reason):
++    from . import AuditIntegrityError
++    raise AuditIntegrityError(reason)
++
++
++def utc(value):
++    if not isinstance(value, str) or not value.endswith(('Z', '+00:00')):
++        fail('provenance timestamp must be explicit UTC')
++    try:
++        return datetime.fromisoformat(value[:-1] + '+00:00' if value.endswith('Z') else value)
++    except ValueError:
++        fail('provenance timestamp invalid')
++
++
++def public_url(value):
++    if not isinstance(value, str) or any(c.isspace() for c in value):
++        return False
++    try:
++        parsed = urlsplit(value)
++        return bool(parsed.scheme in {'http', 'https'} and parsed.hostname
++                    and not parsed.username and not parsed.password)
++    except ValueError:
++        return False
++
++
++def revise(source_rows, claims, verdicts, revision):
++    """Produce 1.1 records without changing frozen observations or old outputs."""
++    if revision.get('protocol') != 'iqs.source_reverification/1.0.0':
++        fail('unsupported source re-verification protocol')
++    from . import INPUT_LOCK_SHA256
++    if revision.get('input_lock_sha256') != INPUT_LOCK_SHA256:
++        fail('source re-verification input lock mismatch')
++    checks = revision.get('sources', [])
++    decisions = revision.get('claim_decisions', [])
++    by_source = {s['source_id']: s for s in checks}
++    by_claim = {c['claim_id']: c for c in decisions}
++    if len(checks) != len(by_source) or set(by_source) != {s['source_id'] for s in source_rows}:
++        fail('re-verification must explicitly cover each source once')
++    if len(decisions) != len(by_claim) or set(by_claim) != {c['claim_id'] for c in claims}:
++        fail('re-verification must explicitly cover each claim once')
++    sources = copy.deepcopy(source_rows)
++    for source in sources:
++        check = by_source[source['source_id']]
++        mode = check.get('verification_mode')
++        if mode not in MODES:
++            fail('unknown verification mode')
++        source['reported_source'] = copy.deepcopy(source)
++        source['original_url'] = source['url']
++        source['reported_read_at_utc'] = source['read_at_utc']
++        source['historical_read_at_utc'] = None
++        source['historical_read_at_precision'] = 'unknown'
++        source['historical_snapshot_verified'] = False
++        source['verification_mode'] = mode
++        source['verification_tool_refs'] = check.get('tool_refs', [])
++        source['verified_claims'] = check.get('checked_claim_ids', [])
++        source['supported_claims'] = check.get('supported_claim_ids', [])
++        source['partially_supported_claims'] = check.get('partially_supported_claim_ids', [])
++        source['contradicted_claims'] = check.get('contradicted_claim_ids', [])
++        source['read_window_utc'] = check.get('read_window_utc')
++        source['recorded_after_builtin_read_at_utc'] = check.get('recorded_after_builtin_read_at_utc')
++        source['read_timing_basis'] = check.get('read_timing_basis', 'Exact historical reading time unavailable; current record does not renew an observation.')
++        source['read_at_utc'] = None
++        source['read_at_precision'] = 'unknown'
++        source['url'] = check.get('verified_url') or (source['url'] if public_url(source['url']) else None)
++        source['final_url'] = check.get('final_url') if mode == 'direct_page' else None
++        source['locator'] = check.get('locator')
++        source['published_at'] = check.get('published_at')
++        source['published_at_precision'] = check.get('published_at_precision', 'unknown')
++        source['cutoff_availability_basis'] = check.get('cutoff_availability_basis', 'not_established')
++        source['cutoff_availability'] = check.get('cutoff_availability', 'unknown')
++        source['bounded_excerpt'] = check.get('bounded_excerpt', '')
++        source['excerpt_kind'] = 'reviewer_paraphrase'
++        source['supports'] = check.get('supports', '')
++        source['does_not_support'] = check.get('does_not_support') or 'Does not establish historical retrieval, company score or financial qualification.'
++        source['fetch_status'] = check.get('fetch_status', 'ok' if mode == 'direct_page' else 'not_attempted')
++        source['publisher'] = check.get('publisher') or source['publisher']
++        source['source_kind'] = check.get('source_kind') or source['source_kind']
++        if mode in {'direct_page', 'search_digest'}:
++            window = source['read_window_utc']
++            if window is not None:
++                if not isinstance(window, dict) or utc(window['end']) < utc(window['start']):
++                    fail('read window inverted/invalid')
++                source['read_at_utc'] = window['end']
++                source['read_at_precision'] = 'window_end'
++        validate_source(source)
++    by_verified_source = {s['source_id']: s for s in sources}
++    new_claims = copy.deepcopy(claims)
++    for claim in new_claims:
++        decision = by_claim[claim['claim_id']]
++        claim['reported_verdict'] = claim['verdict']
++        claim['verification_basis'] = decision.get('verification_basis')
++        claim['verification_source_refs'] = decision.get('source_refs', [])
++        claim['verdict'] = decision['verdict']
++        claim['verification_note'] = decision['note']
++        claim['open_evidence_gaps'] = decision.get('open_evidence_gaps', [])
++        claim['contextual_findings'] = decision.get('contextual_findings', [])
++        claim['verification_scope'] = 'Current source contents; historical retrieval and cutoff availability remain separately qualified.'
++        if decision.get('corrected_proposition'):
++            claim['reported_proposition'] = claim['proposition']
++            claim['proposition'] = decision['corrected_proposition']
++        validate_claim(claim, by_verified_source)
++    new_verdicts = copy.deepcopy(verdicts)
++    for row in new_verdicts:
++        group = [c for c in new_claims if c['sample_id'] == row['sample_id']]
++        counts = Counter(c['verdict'] for c in group)
++        row['reported_audit_status'] = row['audit_status']
++        row['reported_reasoning_status'] = row['reasoning_status']
++        row['reported_date_semantics_status'] = row['date_semantics_status']
++        if counts['contradicted']:
++            row['audit_status'] = 'contradicted'
++        elif counts['not_assessable']:
++            row['audit_status'] = 'partially_supported' if counts['supported'] or counts['partially_supported'] else 'not_assessable'
++        elif counts['partially_supported']:
++            row['audit_status'] = 'partially_supported'
++        else:
++            row['audit_status'] = 'supported'
++        if row['original_status'] == 'scored':
++            row['reasoning_status'] = 'unsupported' if counts['contradicted'] else 'not_assessable' if counts['not_assessable'] else row['reasoning_status']
++        if any(c['contextual_findings'] for c in group) and row['original_status']=='scored':
++            row['reasoning_status']='unsupported'
++        if any(sources_ref['cutoff_availability']=='unknown' for c in group for sources_ref in [by_verified_source[ref] for ref in c['verification_source_refs']]):
++            row['date_semantics_status']='ambiguous'
++        row['rationale'] = '1.1 re-verification: ' + '; '.join(c['claim_id'] + ': ' + c['verification_note']+' '.join(c['contextual_findings']) for c in group)
++        row['source_refs'] = sorted({s for c in group for s in c['verification_source_refs']})
++        row['open_evidence_gaps'] = sorted({g for c in group for g in c['open_evidence_gaps']})
++    return sources, new_claims, new_verdicts
++
++
++def validate_source(source):
++    mode = source.get('verification_mode')
++    if mode not in MODES:
++        fail('unknown verification mode')
++    for key in ('verification_tool_refs','verified_claims','supported_claims','partially_supported_claims','contradicted_claims'):
++        values=source.get(key)
++        if not isinstance(values,list) or any(not isinstance(x,str) or not x for x in values) or len(values)!=len(set(values)):
++            fail('source provenance list invalid: '+key)
++    if not set(source['supported_claims']+source['partially_supported_claims']+source['contradicted_claims']).issubset(source['verified_claims']):
++        fail('source assessment exceeds checked claims')
++    if source.get('historical_snapshot_verified') is not False or source.get('historical_read_at_utc') is not None:
++        fail('new read must not impersonate historical capture')
++    if source.get('url') is not None and not public_url(source['url']):
++        fail('source URL is not an exact public resource')
++    if mode == 'direct_page':
++        if not public_url(source.get('final_url')) or not source.get('locator') or source.get('fetch_status') != 'ok':
++            fail('direct read lacks exact final URL/location/success')
++    if mode in {'direct_page', 'search_digest'}:
++        window=source.get('read_window_utc')
++        if not source.get('verification_tool_refs'):
++            fail('successful read needs actual tool provenance')
++        if window is None:
++            utc(source.get('recorded_after_builtin_read_at_utc'))
++            if source.get('read_at_utc') is not None or source.get('read_at_precision')!='unknown':
++                fail('recording time cannot replace unknown exact read time')
++        elif (not isinstance(window,dict) or utc(window['start']) > utc(window['end'])
++              or source.get('read_at_utc') != window['end'] or source.get('read_at_precision') != 'window_end'):
++            fail('source read-time provenance mismatch')
++        elif source.get('recorded_after_builtin_read_at_utc') is not None and utc(source['recorded_after_builtin_read_at_utc'])<utc(window['end']):
++            fail('recorded-after time precedes completed read window')
++    elif source.get('read_at_utc') is not None or source.get('read_at_precision') != 'unknown':
++        fail('unread source cannot receive a verification time')
++
++
++def validate_claim(claim, sources):
++    basis = claim.get('verification_basis')
++    refs = claim.get('verification_source_refs')
++    if claim.get('verdict') not in {'supported','partially_supported','contradicted','not_assessable'}:
++        fail('unknown claim verdict')
++    if basis not in BASES or not isinstance(refs, list) or len(refs) != len(set(refs)):
++        fail('claim verification basis/references invalid')
++    if any(ref not in sources for ref in refs):
++        fail('verification references unknown source')
++    if basis == 'original_answer_only':
++        if claim['claim_type'] not in {'absence_or_coverage', 'judgment'} or refs:
++            fail('original-answer-only cannot verify external financial facts')
++    elif claim['verdict'] != 'not_assessable':
++        if basis != 'direct_source' or not refs:
++            fail('assessable external claim needs explicit direct verification')
++        for ref in refs:
++            source=sources[ref]
++            if source['verification_mode'] != 'direct_page' or claim['claim_id'] not in source['verified_claims']:
++                fail('digest/unread source or unchecked claim cannot support verdict')
++        required='supported_claims' if claim['verdict']=='supported' else 'contradicted_claims' if claim['verdict']=='contradicted' else None
++        if required and not any(claim['claim_id'] in sources[r][required] for r in refs):
++            fail('claim verdict exceeds explicit direct source assessment')
++    if basis == 'not_assessable' and claim['verdict'] != 'not_assessable':
++        fail('unverified proposition must remain not_assessable')
+diff --git a/tests/test_provenance_11.py b/tests/test_provenance_11.py
+new file mode 100644
+index 0000000..80c6b23
+--- /dev/null
++++ b/tests/test_provenance_11.py
+@@ -0,0 +1,113 @@
++import json,shutil
++import pytest
++import iqs_answer_audit as audit
++from iqs_answer_audit.provenance import validate_source,validate_claim
++from conftest import CONTENT,PRIVATE,EXPECTED_PRIVATE_SHA256
++
++@pytest.fixture
++def corpus(tmp_path):
++    dst=tmp_path/'content';shutil.copytree(CONTENT,dst);return dst
++
++def edit(path,fn):
++    d=json.loads(path.read_text(encoding='utf-8'));fn(d)
++    path.write_text(json.dumps(d,ensure_ascii=False),encoding='utf-8')
++
++def check(corpus):
++    return audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++def first_source(corpus):
++    return json.loads((corpus/'sources.json').read_bytes())['rows'][0]
++
++def test_sources_keep_reported_midnight_separate_from_actual_reads():
++    rows=audit._read_rows(CONTENT,'sources.json')
++    assert len(rows)==51 and all(r['reported_read_at_utc']=='2026-10-30T00:00:00Z' for r in rows)
++    assert all(r['historical_read_at_utc'] is None for r in rows)
++    assert all(r['read_at_utc'] is None or r['read_at_utc']!='2026-10-30T00:00:00Z' for r in rows)
++
++def test_new_wire_versions_cannot_be_mixed(corpus):
++    edit(corpus/'sources.json',lambda d:d.__setitem__('protocol','iqs.live_answer_content_audit/1.0.0'))
++    with pytest.raises(audit.AuditIntegrityError):check(corpus)
++
++def test_source_publication_cannot_be_forged_before_cutoff_with_a_flag(corpus):
++    edit(corpus/'sources.json',lambda d:d['rows'][0].__setitem__('published_at','2030-01-01'))
++    with pytest.raises(audit.AuditIntegrityError):check(corpus)
++
++def test_source_checked_claims_cannot_name_foreign_unlisted_claims(corpus):
++    edit(corpus/'sources.json',lambda d:d['rows'][0]['verified_claims'].append('FOREIGN-C1'))
++    with pytest.raises(audit.AuditIntegrityError):check(corpus)
++
++def test_summary_counts_must_match_final_source_rows(corpus):
++    edit(corpus/'audit-summary.json',lambda d:d['rows']['source_mode_counts'].__setitem__('direct_page',999))
++    with pytest.raises(audit.AuditIntegrityError):check(corpus)
++
++@pytest.mark.parametrize('field,value',[
++ ('verification_mode','invented'),('verification_tool_refs',[]),('read_at_utc','2026-10-30T00:00:00Z'),
++ ('historical_read_at_utc','2026-10-31T00:00:00Z'),('historical_snapshot_verified',True),
++ ('url','https://www.reuters.com/ (search says so)'),('final_url','not-a-resource'),('verified_claims',[True]),
++])
++def test_invalid_current_provenance_is_rejected(corpus,field,value):
++    row=first_source(corpus);row[field]=value
++    with pytest.raises(audit.AuditIntegrityError):validate_source(row)
++
++@pytest.mark.parametrize('mode',['search_digest','unreadable','unverified'])
++def test_only_direct_checked_source_can_support_a_financial_fact(corpus,mode):
++    sources={s['source_id']:s for s in audit._read_rows(corpus,'sources.json')}
++    claim=next(c for c in audit._read_rows(corpus,'claims.json') if c['verification_basis']=='direct_source' and c['verdict']=='supported')
++    for ref in claim['verification_source_refs']:sources[ref]['verification_mode']=mode
++    with pytest.raises(audit.AuditIntegrityError):validate_claim(claim,sources)
++
++def test_original_behavior_cannot_enter_financial_fact_denominator(corpus):
++    rows=audit._read_rows(corpus,'claims.json')
++    behavior=next(c for c in rows if c['verification_basis']=='original_answer_only')
++    behavior['claim_type']='factual_numeric'
++    with pytest.raises(audit.AuditIntegrityError):validate_claim(behavior,{})
++
++def test_unknown_extension_rejected_by_current_schema(corpus):
++    edit(corpus/'claims.json',lambda d:d['rows'][0].__setitem__('hidden_financial_qualification','accepted'))
++    with pytest.raises(audit.AuditIntegrityError):check(corpus)
++
++def test_financial_counts_exclude_original_answer_only(corpus):
++    cov=check(corpus)['rows'];claims=audit._read_rows(corpus,'claims.json')
++    behavior=sum(c['verification_basis']=='original_answer_only' for c in claims)
++    assert cov['original_answer_only_claims']==behavior
++    assert cov['financial_fact_support']['claims_total']+behavior==96
++    assert cov['financial_fact_support']['accuracy_rate'] is None
++
++def test_contextual_errors_not_erased_by_literal_support(corpus):
++    claims={c['claim_id']:c for c in audit._read_rows(corpus,'claims.json')}
++    assert claims['LIVE30_012-C1']['contextual_findings']
++    assert claims['LIVE30_017-C3']['contextual_findings']
++    assert claims['LIVE30_022-C3']['contextual_findings']
++    assert '低于同题gen3' not in claims['LIVE30_029-C3']['proposition']
++
++def test_complete_legacy_wire_still_loads_without_becoming_current_proof(corpus):
++    import copy
++    from audit.build_content import build_coverage
++    samples=audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256)
++    docs={n:json.loads((corpus/n).read_bytes()) for n in ['claims.json','sources.json','sample-verdicts.json','coverage.json','audit-summary.json']}
++    claims=docs['claims.json']['rows'];sources=docs['sources.json']['rows'];verdicts=docs['sample-verdicts.json']['rows']
++    for c in claims:
++        c['verdict']=c['reported_verdict']
++        if 'reported_proposition' in c:c['proposition']=c['reported_proposition']
++        for key in ['reported_verdict','reported_proposition','verification_basis','verification_source_refs','contextual_findings','verification_scope']:c.pop(key,None)
++    docs['sources.json']['rows']=[s['reported_source'] for s in sources]
++    for v in verdicts:
++        for field in ['audit_status','reasoning_status','date_semantics_status']:v[field]=v.pop('reported_'+field)
++    docs['coverage.json']['rows']=build_coverage(samples,claims,verdicts)
++    for name,d in docs.items():
++        d['protocol']='iqs.live_answer_content_audit/1.0.0'
++        (corpus/name).write_text(json.dumps(d,ensure_ascii=False),encoding='utf-8')
++    result=check(corpus)
++    assert result['protocol'].endswith('/1.0.0')
++    assert result['rows']['accuracy_statement'] is None
++
++def test_read_window_cannot_end_after_recorded_after_time(corpus):
++    row=first_source(corpus)
++    row['read_window_utc']={'start':'2026-11-01T00:00:00Z','end':'2026-11-01T00:01:00Z'}
++    row['read_at_utc']=row['read_window_utc']['end'];row['read_at_precision']='window_end'
++    row['recorded_after_builtin_read_at_utc']='2026-10-31T23:59:59Z'
++    with pytest.raises(audit.AuditIntegrityError):validate_source(row)
++
++def test_reasoning_support_is_not_a_second_unchecked_counter(corpus):
++    edit(corpus/'coverage.json',lambda d:d['rows']['reasoning_support'].__setitem__('consistent_with_bound_rubric',32))
++    with pytest.raises(audit.AuditIntegrityError):check(corpus)

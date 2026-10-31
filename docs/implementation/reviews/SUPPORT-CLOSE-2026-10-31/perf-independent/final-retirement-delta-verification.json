@@ -1,0 +1,339 @@
+{
+  "protocol": "iqs.independent_perf_payload_delta_verify/1.0",
+  "recorded_at_utc": "2026-10-31T22:37:30.219841+00:00",
+  "prior_verified_payload": "6803fae2f415e49fac1708daae9e1879bc4f62ff",
+  "payload_commit": "99c350b8f332e5ea6459919fd692af19bab25100",
+  "head": "99c350b8f332e5ea6459919fd692af19bab25100",
+  "dirty": "",
+  "manifest_sha256": "0b90ae32d11c4b73a23bef8214a21093fb39ec80353f34e182ba4911de9da73b",
+  "manifest_artifact_count": 52,
+  "all_manifest_git_blobs_match": true,
+  "changed_paths": [
+    "README.md",
+    "docs/payload-manifest.json",
+    "integration/performance-design.md",
+    "tests/unit/test_retired_generators.py",
+    "tools/build_handoff.py",
+    "tools/build_payload_manifest.py"
+  ],
+  "runtime_patch_and_24_measurements_unchanged": true,
+  "reuse_evidence": [
+    "final-payload-verification.json",
+    "final-payload-delta-verification.json",
+    "final-measurement-verification.json"
+  ],
+  "artifacts": [
+    {
+      "path": "README.md",
+      "sha256": "81deb7597e95188aa1ee328c140b7c90a8e49b27d8b1eea94cac74261a2726c3",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "f4099ced641a81a8168ea239272dd33f91d4505540e10b2ada0c9fe141381633",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "50e19e213eeda91e2f61265e5b1cf216b388c094c141a0616328849819bdab5b",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "src/iqs_import_perf/__init__.py",
+      "sha256": "b69f37589f543f89cfad2fff9ecc4e817d2b3da8bd6a1b9a6650c9759075d4a5",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "src/iqs_import_perf/fixtures.py",
+      "sha256": "ebacc9a2ffb0cddedb9e2463796eabb219eb51b36b5ad6028aacb256dfb148fa",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "src/iqs_import_perf/instrument.py",
+      "sha256": "fb95159793f9f67019aa05273a7be3b609d03202d359000bc4dff36dafcf123a",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "src/iqs_import_perf/orchestrate.py",
+      "sha256": "95b2b953f1312fec4c52d598e0c58099561233839fc1a76386ab9932da43047b",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/run_benchmark.py",
+      "sha256": "5529bcefeed44989225a78a9b45a10af1a22e4a01e50064675908fe449277de0",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/run_once.py",
+      "sha256": "a809080e1d2b4a7a41442ef5203bcf1d09132e6d90da00bc771c037e19d72bef",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/benchmark-summary.json",
+      "sha256": "782eaa4355154345142d23aa25da6a59e704bfb3ee8572ad6d3d528c93c15889",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/raw-runs.json",
+      "sha256": "16003b6efab6862caae6233777b04fd6cbef52ff9cec9462c193e1e19e8b5fa1",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/semantic-equivalence.json",
+      "sha256": "06d2e0b37929dc21d08b53e1fd4a75de8d8587cf55a7be2e826e01bab87efc04",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/candidate-source-manifest.json",
+      "sha256": "a1f4d5c43ae738b008f99f8cf39c52e2615765e0b8e1636efdad4d27c6b0e8f8",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/profile/profile-baseline-3.json",
+      "sha256": "9bb18418d23f7e82c09d16502086ac8f64d55db2060df3e7203484256f6eee85",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/profile/profile-candidate-3.json",
+      "sha256": "d15c75743730063c9c6d9b3e8713241221884e195d2e4a967a40266ac07a30fb",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "conftest.py",
+      "sha256": "ea82d306510e74c5f6bfcb51489ac9b84edab9f6c57ea4ebd176a88aeb712170",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/unit/test_original_import_guards.py",
+      "sha256": "6c123a9472365bc29c5d659df6472ce1f0c0085f62efd4ead47e0ecb0054eef0",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/unit/test_candidate_worker.py",
+      "sha256": "8b035f591d815675f3061144635d280dbae377b160e4cd228ec22b7cc5ceab20",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/integration/test_semantic_matrix.py",
+      "sha256": "af888264156753b3e402ebaf032f9998053295d5331c2a8a8a2f01a3d6450d59",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/e2e/test_delivery_e2e.py",
+      "sha256": "181ed346c87598cc909c85a696b1de5934adc60338853ba6cb1686830b337757",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "integration/candidate.patch",
+      "sha256": "0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "integration/performance-design.md",
+      "sha256": "3a4a0c598dbbff972c62f7824881cad36462f3d3d9f40d03777b14ae9dbc0f25",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tools/fetch_locked_blobs.py",
+      "sha256": "31028d4ba8841f69a1715555720a441866a7132707df74e51a88f59fec71de17",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tools/prepare_variant.py",
+      "sha256": "e08683481adbf5ef89dba4e8940860ba031d1933cca573f1be74f7f74190fdca",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tools/red_green_check.py",
+      "sha256": "6df3bff3911ff18b7221c1b4ebccdc67e25da150576495547aa641811b3a367d",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tools/build_payload_manifest.py",
+      "sha256": "24d84b35bee5cbc3a296548db2568cba39e56143752b7840fd8283b1024b7cf3",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tools/build_candidate_source_manifest.py",
+      "sha256": "79da079b9cf89d78c93421dfb59910139b771312cd360b1eca33e130ce69a853",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "docs/consumed-inputs.json",
+      "sha256": "76d9a1f2472c86db69d27ec328b745954e70693564321be49d613db5c04ebdcc",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tools/build_handoff.py",
+      "sha256": "cac0da18bf18422d2e11a55f97a32aaf3d9df5c8063b0e39367824924110d783",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/unit/test_execution_evidence.py",
+      "sha256": "f2739da3e608b1f67eebcabab92be60cd25925130f507c3f6d8a903071d4170a",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/integration/test_owner_guard_parity.py",
+      "sha256": "03ded92b7a71ab3390e52c774dd3c5b76e94d0874f09c304d1bd80ec6cc93fb0",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/history/final4/README.md",
+      "sha256": "a404e20520d00f3c36576c2d169736b4e989c79939396952eae4da279a1f33b6",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/history/final4/benchmark-summary.json",
+      "sha256": "ae2d714bb26fd1b30f2978c9d99567c735b3b915b1d1c9602930186337babced",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/history/final4/candidate-source-manifest.json",
+      "sha256": "d41acd1908f5804717cca4a15127eaeb6e07df0d3b9c8bc3424e9fc2af895476",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/history/final4/candidate.patch",
+      "sha256": "b35918d8b7375689cafc263176d30af275b33c89b0904b2fb5ee4cc47bb7ff2c",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/history/final4/performance-design.md",
+      "sha256": "ef3410c5816e400f9dd3dc824e26deb04d8d2c38297916fb749a0dda97759aab",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/history/final4/raw-runs.json",
+      "sha256": "397a1bda6c4dba0eb02495da3ee94905897d86687aa88562de650839e5d50ddc",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/history/final4/semantic-equivalence.json",
+      "sha256": "a6d3742b8581a9c638619dd454f9e9e005bc6ccbf68e316460ac505e01e79a27",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-baseline-1.json",
+      "sha256": "75cf6a889a9925bf48b8f4a4a1f55e516f6d15f29e7b030943aaef55e5d387fc",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-baseline-3.json",
+      "sha256": "3a08e8549fbe5b441663510cdb5cea3ece3c793e0ce2098c8f2ca2b3f0ac1f1f",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-baseline-33.json",
+      "sha256": "e70d726c00e7d5961be668738164f9f79a06ce74931f35741841642212069587",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-baseline-36.json",
+      "sha256": "cf9f4f51ff51c0e7d53369604f2ce2670c667ee6e07b75d7432d4890f7cf97ac",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-candidate-1.json",
+      "sha256": "84f6b03902f892eddb9e108389cfec8ca9ad95a4f86b0fb712dfa84892a8d2ff",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-candidate-3.json",
+      "sha256": "b55442151e9253ee33e9ae5f97ba422a36e7df5952aa900a8d04b1c072d345d3",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-candidate-33.json",
+      "sha256": "2b25fc2f2a87dd4e58fe4c74e38a8ab41a37ffef9d451c5d4f9a1c790fb8a540",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "bench/runs/close31-fresh-preflight-candidate-36.json",
+      "sha256": "23557d657bdee6c65e366f58446582d345a8fa7c4a6c1350c7549978811e0200",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/integration/test_native_fault_parity.py",
+      "sha256": "e6a45a801aae36179900cc49702b9684e0d62e2092657878a6a60331e5a341ea",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/integration/test_service_preflight.py",
+      "sha256": "f67a2dc3d409b8dfdcd5a32548c6003907d0e222c970103e03d0cb22f9621edb",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/unit/test_benchmark_provenance.py",
+      "sha256": "29780c29998ab0b288873c54839c446958f69b2cf64aa0d7f2827c40c6af516d",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/unit/test_native_delegation_faults.py",
+      "sha256": "874f318b6a0476b7e39fab6987bdf153c764c49a4449587e694ea90613ed7ee6",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/unit/test_publisher_authority_boundary.py",
+      "sha256": "be7e9cc01cd7c4d64cc6bafb41ab204db6f92c56719a5e8c593a2b673dda0ce5",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    },
+    {
+      "path": "tests/unit/test_retired_generators.py",
+      "sha256": "3c30fd7f6dd4480ecd20dfe59cb811e717f05d5ecb7f2e8f342402b807c17f9b",
+      "matches_manifest": true,
+      "work_copy_matches_modulo_eol": true
+    }
+  ]
+}

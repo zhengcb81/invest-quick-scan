@@ -1,0 +1,53 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "TEST-ENTRY-CLOSE-2026-10-31",
+  "status": "passed",
+  "reviewer_agent_id": "/root/review_perf_close31",
+  "author_agent_id": "/root",
+  "independence": "Reviewer did not author installed test runner/manifest changes; reviewer wrote only independent fault probes under ignored runs.",
+  "payload_commit": "f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0",
+  "parent_test_infrastructure_commit": "e8f184c47221a97f0eb1f0183b55c38d5f835a01",
+  "production_runtime_commit_unchanged": "c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2",
+  "production_ui_commit_unchanged": "03d6b9aa3d45011f09bc77ef69e62b4a1d21e00e",
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "ENTRY31-I01",
+      "reason": "Real socket type/protocol/literal-IP guard now rejects UDP connect/UDP resolution; two independent zero-send probes pass.",
+      "before": "udp-before.json",
+      "after": "udp-after.json"
+    },
+    {
+      "id": "ENTRY31-I02",
+      "reason": "Native gethostbyname/name_ex/gethostbyaddr/getnameinfo now rejected via their real audit events before OS resolution; four independent probes with secondary no-query safety sentinel pass.",
+      "before": "dns-boundary-before.json",
+      "after": "dns-boundary-after.json"
+    }
+  ],
+  "verification": {
+    "actual_final_C_matches_executed_source_hashes": true,
+    "code_binding": "final-code-binding.json",
+    "lightweight_target_tests_passed": 19,
+    "target_tests_skipped": 0,
+    "PYTHONPATH_removed": true,
+    "UDP_zero_send_probes_passed": 2,
+    "DNS_zero_query_probes_passed": 4,
+    "fast_plan_files": 54,
+    "all_test_manifest_files": 114,
+    "manifest_each_actual_test_file_exactly_once": true,
+    "target_ref": "target-tests-final.json",
+    "target_log_sha256": "8519018fe28f69165bce1c8e83b387a8414a205025917d4c1ee95e089979e100",
+    "not_a_full_fast_or_integration_suite_claim": true
+  },
+  "scope": "Test-only entry/manifest/current pytest child network boundary. TCP only on literal loopback; outgoing external IP/DNS and UDP blocked for covered Python audit events. Original key/live-flag stripping, selected-run accounting and isolated TEMP cleanup retained. This is not a whole CLI descendant tree network sandbox and does not requalify production runtime, scores or freshness.",
+  "cleanup": {
+    "all_owned_short_temps_absent": true,
+    "production_workspace_writes": false,
+    "real_service_restarts_or_writes_by_reviewer": false,
+    "source_repositories_written_by_reviewer": false,
+    "external_DNS_queries_from_fault_probes": 0,
+    "UDP_payloads_from_fault_probes": 0,
+    "paid_api_calls": 0
+  },
+  "reviewed_at_utc": "2026-10-31T23:00:39.685770+00:00"
+}

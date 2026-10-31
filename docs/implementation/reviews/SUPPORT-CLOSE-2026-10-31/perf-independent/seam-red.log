@@ -1,0 +1,66 @@
+INFO - C06 完整包已封存（WORK_41397f8f337c45aab757ba2737cbdd99）→ pkg_8b934aee1119a7dba8314e94c000f0cc1e0584166b30fb6745d5bc6099ee3599
+{"consumer_after": null, "consumer_before": null, "delivery_state": "ready", "native_bind_calls": 0, "variant": "baseline"}
+.INFO - C06 完整包已封存（WORK_40a368d2dccf4989aa3293cafb9fdddb）→ pkg_8b934aee1119a7dba8314e94c000f0cc1e0584166b30fb6745d5bc6099ee3599
+{"consumer_after": {"binding_sha256": "cb591c3212d52aa872c9312ba4839039ea27f4fc692141056b212a53aea70cbc", "bound_at": 1790506800.0, "consumer": {"component": "StockWiki", "namespace": "quick_scan", "store_id": "qsobs_9fffdec9ebb6af06"}, "delivery_id": "DELIVERY_4bafd43d0f7841cca713e0bb1bf94569", "delivery_key": "e4b39e7eb159ca41018cf99f8872df73d4a54e6161dd73ea3a5290e950ea6f56", "item_id": "itm_abbc229b6b0b1274bc6d9fb720a2bddbcd11eb1def0f2de9c16144aa16b879c2", "observation_id": "obs_263bdd986c61a4b928e11e0cefb0a12bb904910eaab3ea64706c3672c619f7b6", "package_bytes_sha256": "22916f72467c46f032b0adcc5283acf0d29f9e02357dfd18690412c6ac5ce117", "package_id": "pkg_8b934aee1119a7dba8314e94c000f0cc1e0584166b30fb6745d5bc6099ee3599", "package_sha256": "8b934aee1119a7dba8314e94c000f0cc1e0584166b30fb6745d5bc6099ee3599", "payload_sha256": "d83e1b6783cd020565061ec344d7d804698d9ae9cf76e14a59e06da00fba4843", "revision": 1, "revision_id": "REVISION_WORK_40a368d2dccf4989aa3293cafb9fdddb_1", "schema": "quick-scan-delivery-consumer-binding", "schema_version": 1, "source_ref": "dashboard-owner-status:C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\.p31seam-cb3319\\pytest\\test_service_preflight_revalid1\\ws", "work_item_id": "WORK_40a368d2dccf4989aa3293cafb9fdddb"}, "consumer_before": null, "delivery_state": "ready", "native_bind_calls": 1, "variant": "candidate"}
+F
+================================== FAILURES ===================================
+__ test_service_preflight_revalidates_before_native_consumer_bind[candidate] __
+
+fault_variants = {'baseline': (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.p31seam-cb3319/pytest/fault-baseline0/v'), <module...s\\郑曾波\\Projects\\invest-quick-scan\\.p31seam-cb3319\\pytest\\fault-candidate0\\v\\iqs\\scripts\\dashboard_owner.py'>)}
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.p31seam-cb3319/pytest/test_service_preflight_revalid1')
+variant = 'candidate'
+
+    @pytest.mark.parametrize('variant',['baseline','candidate'])
+    def test_service_preflight_revalidates_before_native_consumer_bind(fault_variants,tmp_path,variant):
+     root,owner_module=fault_variants[variant]
+     built=fixtures.build_stockqa_ledger(tmp_path/'work.sqlite',fixtures.question_plan(1))
+     wid=built['sealed'][0]['work_item_id'];store=built['store'];delivery=store.get_result_delivery(wid)
+     assert delivery['consumer_binding'] is None
+     ws=fixtures.build_stockwiki_workspace(tmp_path/'ws',vendor=root)
+     package=tmp_path/'package.json';package.write_text(delivery['package_json'],encoding='utf8')
+     release=tmp_path/'release.json';release.write_text(json.dumps(fixtures.release_projection()),encoding='utf8')
+     scratch=tmp_path/'scratch';scratch.mkdir()
+     config={'stockwiki_root':str(root/'stockwiki'),'iqs_root':str(root/'iqs'),'iqs_release_root':str(root/'iqs'),'workspace_root':str(tmp_path/'ws'),'scratch_root':str(scratch),'stockwiki_python':sys.executable,'timeout_seconds':120,'bundles':{'one':{'package':str(package),'release':str(release),'package_sha256':hashlib.sha256(package.read_bytes()).hexdigest(),'release_sha256':hashlib.sha256(release.read_bytes()).hexdigest()}}}
+     class OriginalOwner:
+      def import_preview(self,payload):return owner_module._owner_worker(config,'import_preview',payload)
+      def status(self):return owner_module._owner_worker(config,'status',{})
+      def import_apply(self,payload):return owner_module._owner_worker(config,'import_apply',payload)
+     original=OriginalOwner()
+     if variant=='candidate':
+      result=owner_module._owner_worker(config,'operations',{'operations':[{'operation':'import_preview','payload':{'bundle_id':'one'}},{'operation':'status'}]})
+      preview=owner_module.OwnerGateway.unwrap_batch(result[0]);status=owner_module.OwnerGateway.unwrap_batch(result[1])
+     else:preview=original.import_preview({'bundle_id':'one'});status=original.status()
+     assert preview['can_apply'] and status['available']
+     # The only fault injection: mutate a synthetic file after real prechecks.
+     package.write_bytes(package.read_bytes()+b' ')
+     bundle={'work_store':str(store.path),'work_item_ids':[wid]}
+     class NativeExecution:
+      bind_calls=0
+      def bind_delivery_consumer(self,bundle,target,source_ref):
+       assert bundle['work_item_ids']==[wid] and Path(bundle['work_store'])==store.path
+       self.bind_calls+=1
+       return store.bind_result_delivery_consumer(wid,target,source_ref=source_ref)
+      def acknowledge_delivery(self,*args):raise AssertionError('tampered package must never reach ACK')
+     scripts=str(root/'iqs/scripts');sys.path.insert(0,scripts)
+     spec=importlib.util.spec_from_file_location('preflight_service_'+variant,root/'iqs/scripts/dashboard_service.py')
+     service_module=importlib.util.module_from_spec(spec);spec.loader.exec_module(service_module)
+     service=object.__new__(service_module.DashboardService);service.config={'workspace_root':str(tmp_path/'ws')}
+     execution=NativeExecution()
+     kwargs={'execution':execution,'workspace':str(tmp_path/'ws')}
+     if variant=='candidate':kwargs.update(preview=preview,status_result=status)
+     with pytest.raises(Exception) as error:
+      service._apply_import(original,bundle,{'bundle_id':'one','preview_token':preview['preview_token']},**kwargs)
+     assert getattr(error.value,'code',None)=='bundle_hash_mismatch',str(error.value)
+     after=store.get_result_delivery(wid)
+     print(json.dumps({'variant':variant,'native_bind_calls':execution.bind_calls,'consumer_before':delivery['consumer_binding'],'consumer_after':after['consumer_binding'],'delivery_state':after['state']},sort_keys=True))
+     assert after['state']=='ready'
+>    assert after['consumer_binding']==delivery['consumer_binding'], 'preflight caching persisted consumer binding before rejecting mutable package'
+E    AssertionError: preflight caching persisted consumer binding before rejecting mutable package
+E    assert {'bound_at': 1790506800.0, 'consumer': {'component': 'StockWiki', 'namespace': 'quick_scan', 'store_id': 'qsobs_9fffde...d43d0f7841cca713e0bb1bf94569', 'delivery_key': 'e4b39e7eb159ca41018cf99f8872df73d4a54e6161dd73ea3a5290e950ea6f56', ...} == None
+
+..\test_service_preflight.py:57: AssertionError
+------------------------------ Captured log call ------------------------------
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:269 C06 完整包已封存（WORK_40a368d2dccf4989aa3293cafb9fdddb）→ pkg_8b934aee1119a7dba8314e94c000f0cc1e0584166b30fb6745d5bc6099ee3599
+=========================== short test summary info ===========================
+FAILED ..\test_service_preflight.py::test_service_preflight_revalidates_before_native_consumer_bind[candidate]
+1 failed, 1 passed in 40.46s

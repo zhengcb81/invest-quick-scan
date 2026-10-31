@@ -1,0 +1,45 @@
+{
+  "protocol": "iqs.independent_perf_fault_review/1.0.0",
+  "reviewer_agent_id": "/root/review_time_result_wiring31",
+  "original_test_author_agent_id": "/root/review_perf_close31",
+  "status": "changes_required",
+  "source_payload_approval": false,
+  "original_new_test_executions": 25,
+  "original_native_matrix_passed": 17,
+  "unit_executions_passed_after_sandbox_hardlink_retry": 8,
+  "recommended_deduplicated_new_test_count": 21,
+  "findings": [
+    {
+      "id": "PERF-CACHE-SEAM-01",
+      "severity": "high",
+      "path": "integration/candidate.patch DashboardService._apply_import",
+      "reason": "Cached preview/status skips original last preflight, allowing immutable native consumer_binding persistence before a mutable package is rejected. Baseline rejects before binding.",
+      "evidence": ["seam-red.json", "seam-red.log", "test_service_preflight.py"],
+      "actual_result": "baseline1P/candidate1F; native consumer_binding None->bound only in candidate; ready state stays unchanged",
+      "production_effect_observed": false
+    },
+    {
+      "id": "PERF-COUNT-01",
+      "severity": "low",
+      "reason": "Two unit variant labels do not choose different original SDK paths; remove duplicate labels or state25executions includes4duplicate behavioral combinations."
+    },
+    {
+      "id": "PERF-ASSERT-01",
+      "severity": "low",
+      "reason": "Publisher refusal should match permission_denied rather than any ValueError."
+    }
+  ],
+  "remaining_before_final_C_review": [
+    "Root fixes candidate actual last-preflight cache semantics with original APIs",
+    "Deduplicate unit labels and narrow expected error",
+    "Add service seam permanent package/release/status fault regressions",
+    "Rebind candidate-source manifest and new C; do not relabel historical wall matrix as new implementation performance"
+  ],
+  "cleanup": {
+    "review_temporary_roots_removed": true,
+    "source_writes": false,
+    "production_database_or_service_writes": false,
+    "network_calls": 0,
+    "paid_api_calls": 0
+  }
+}

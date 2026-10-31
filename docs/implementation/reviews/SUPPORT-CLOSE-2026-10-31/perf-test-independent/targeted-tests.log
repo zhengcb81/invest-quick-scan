@@ -1,0 +1,247 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+______ test_native_delegation_revoke_survives_reopen_and_cached_scope[0] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.ptr31-o9f880_6/pytest/test_native_delegation_revoke_0')
+cache_count = 0
+
+    @pytest.mark.parametrize('cache_count',[0,36])
+    def test_native_delegation_revoke_survives_reopen_and_cached_scope(tmp_path,cache_count):
+        # Candidate changes only IQS owner/service. Grant storage stays the exact
+        # immutable upstream file for BOTH variants, not a second grant engine.
+        from stockwiki.quick_scan_refresh_delegation import DelegatedApprovalService
+        source=LAB/'vendor_upstream/stockwiki/stockwiki/quick_scan_refresh_delegation.py'
+        assert hashlib.sha256(Path(inspect.getfile(DelegatedApprovalService)).read_bytes()).digest()==hashlib.sha256(source.read_bytes()).digest()
+        fixture_path=LAB/'vendor_upstream/stockwiki/tests/test_quick_scan_refresh_delegation.py'
+        spec=importlib.util.spec_from_file_location('original_delegation_fixture',fixture_path)
+        helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+>       service,record,_,_,_,now=helper.prepared(tmp_path,cache_count=cache_count)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\tests\unit\test_native_delegation_faults.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\tests\test_quick_scan_refresh_delegation.py:106: in prepared
+    records.save(request, dict(preview=preview, owner_state=state), owner_principal=principal)
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_refresh_records.py:91: in save
+    return self._publish(value,preview['preview_id'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_refresh_records.RefreshRecordStore object at 0x000001B4FE773230>
+value = {'protocol': 'stockwiki.refresh_record/1.0.0', 'request': {'protocol': 'iqs.refresh_request/1.3.0', 'consumer_id': 'iq...', 'policy_version': 1, 'policy_sha256': '2a609fd01bdd991c7bdc6e21cc4c2dd892d8fa732df5188bd734bb7a931967e4', ...}, ...}
+record_id = 'rv1_4313949b91ac5eeab77342c89940152efeb41354f04360d433b499fad0096386'
+
+    def _publish(self,value,record_id):
+        """Shared exclusive immutable publication, not another queue algorithm."""
+        raw=canonical_bytes(value)
+        if len(raw)>MAX_RECORD_BYTES:raise ValueError('refresh_record_too_large')
+        path=self._path(record_id)
+        if path.exists():
+            if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+            return value
+        self.directory.mkdir(parents=True,exist_ok=True,mode=0o700)
+        with self._publication_lock():
+            if path.exists():
+                if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+                return value
+            entries=list(self.directory.iterdir())
+            if any(p.is_symlink() or not p.is_file() for p in entries):
+                raise ValueError('refresh_owner_path_redirected')
+            if (sum(p.suffix=='.json' for p in entries)>=MAX_PREVIEW_RECORDS
+                or sum(p.stat().st_size for p in entries)+len(raw)>MAX_TOTAL_BYTES):
+                raise ValueError('refresh_record_retention_limit')
+            descriptor,name=tempfile.mkstemp(prefix='.owned-refresh-',dir=self.directory)
+            staging=Path(name)
+            try:
+                with os.fdopen(descriptor,'wb') as stream:
+                    stream.write(raw);stream.flush();os.fsync(stream.fileno())
+>               os.link(_native_path(staging),_native_path(path))
+E               PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_native_delegation_revoke_0\\runs\\state\\quick_scan_refresh\\previews\\.owned-refresh-sj93j7_g' -> '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_native_delegation_revoke_0\\runs\\state\\quick_scan_refresh\\previews\\rv1_4313949b91ac5eeab77342c89940152efeb41354f04360d433b499fad0096386.json'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_refresh_records.py:117: PermissionError
+_____ test_native_delegation_revoke_survives_reopen_and_cached_scope[36] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.ptr31-o9f880_6/pytest/test_native_delegation_revoke_1')
+cache_count = 36
+
+    @pytest.mark.parametrize('cache_count',[0,36])
+    def test_native_delegation_revoke_survives_reopen_and_cached_scope(tmp_path,cache_count):
+        # Candidate changes only IQS owner/service. Grant storage stays the exact
+        # immutable upstream file for BOTH variants, not a second grant engine.
+        from stockwiki.quick_scan_refresh_delegation import DelegatedApprovalService
+        source=LAB/'vendor_upstream/stockwiki/stockwiki/quick_scan_refresh_delegation.py'
+        assert hashlib.sha256(Path(inspect.getfile(DelegatedApprovalService)).read_bytes()).digest()==hashlib.sha256(source.read_bytes()).digest()
+        fixture_path=LAB/'vendor_upstream/stockwiki/tests/test_quick_scan_refresh_delegation.py'
+        spec=importlib.util.spec_from_file_location('original_delegation_fixture',fixture_path)
+        helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+>       service,record,_,_,_,now=helper.prepared(tmp_path,cache_count=cache_count)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\tests\unit\test_native_delegation_faults.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\tests\test_quick_scan_refresh_delegation.py:106: in prepared
+    records.save(request, dict(preview=preview, owner_state=state), owner_principal=principal)
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_refresh_records.py:91: in save
+    return self._publish(value,preview['preview_id'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_refresh_records.RefreshRecordStore object at 0x000001B4FE9D8B90>
+value = {'protocol': 'stockwiki.refresh_record/1.0.0', 'request': {'protocol': 'iqs.refresh_request/1.3.0', 'consumer_id': 'iq...', 'policy_version': 1, 'policy_sha256': 'a20cbbe08bec43e2ec4bf7b97cd03d748d4b4084ed0cb291940f37adc3044f50', ...}, ...}
+record_id = 'rv1_1badb86869e3a5e6464d6a9ebb7d2e149779fba93b995aae06675fec5d5e339c'
+
+    def _publish(self,value,record_id):
+        """Shared exclusive immutable publication, not another queue algorithm."""
+        raw=canonical_bytes(value)
+        if len(raw)>MAX_RECORD_BYTES:raise ValueError('refresh_record_too_large')
+        path=self._path(record_id)
+        if path.exists():
+            if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+            return value
+        self.directory.mkdir(parents=True,exist_ok=True,mode=0o700)
+        with self._publication_lock():
+            if path.exists():
+                if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+                return value
+            entries=list(self.directory.iterdir())
+            if any(p.is_symlink() or not p.is_file() for p in entries):
+                raise ValueError('refresh_owner_path_redirected')
+            if (sum(p.suffix=='.json' for p in entries)>=MAX_PREVIEW_RECORDS
+                or sum(p.stat().st_size for p in entries)+len(raw)>MAX_TOTAL_BYTES):
+                raise ValueError('refresh_record_retention_limit')
+            descriptor,name=tempfile.mkstemp(prefix='.owned-refresh-',dir=self.directory)
+            staging=Path(name)
+            try:
+                with os.fdopen(descriptor,'wb') as stream:
+                    stream.write(raw);stream.flush();os.fsync(stream.fileno())
+>               os.link(_native_path(staging),_native_path(path))
+E               PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_native_delegation_revoke_1\\runs\\state\\quick_scan_refresh\\previews\\.owned-refresh-c6ddn5ki' -> '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_native_delegation_revoke_1\\runs\\state\\quick_scan_refresh\\previews\\rv1_1badb86869e3a5e6464d6a9ebb7d2e149779fba93b995aae06675fec5d5e339c.json'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_refresh_records.py:117: PermissionError
+_ test_original_publisher_gate_rechecks_source_permission_before_outbox[require_publisher] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.ptr31-o9f880_6/pytest/test_original_publisher_gate_r0')
+entry = 'require_publisher'
+
+    @pytest.mark.parametrize('entry',['require_publisher','seal_result_delivery'])
+    def test_original_publisher_gate_rechecks_source_permission_before_outbox(tmp_path,entry):
+        from src.utils.quick_scan_known_outcome_journal import OwnerWorkDecisionAuthority,OwnerWorkDecisionGrant,_authorize
+        from src.utils.quick_scan_saved_research_publication import require_publisher
+        from src.utils.quick_scan_delivery_seal import seal_result_delivery
+        fixture_path=LAB/'vendor_upstream/stockwiki/tests/test_quick_scan_work_decision_owner.py'
+        spec=importlib.util.spec_from_file_location('publisher_owner_fixture',fixture_path)
+        helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+        f=helper.fixture(tmp_path/'source-owner')
+>       _,confirmed=helper.confirm(f)
+                    ^^^^^^^^^^^^^^^^^
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\tests\unit\test_publisher_authority_boundary.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\tests\test_quick_scan_work_decision_owner.py:128: in confirm
+    preview=f.owner.preview(f.outer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_work_decision_owner.py:845: in preview
+    self.previews.save_control(
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_work_decision_owner.py:240: in save_control
+    return self._publish(value, preview["preview_id"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_work_decision_owner.WorkDecisionPreviewStore object at 0x000001B4FFBD2CF0>
+value = {'protocol': 'stockwiki.work_decision_preview_record/1.0.0', 'request': {'protocol': 'stockwiki.work_decision_request/...', 'policy_version': 1, 'policy_sha256': 'b27cd0bcc260d71fb861fdec79b5bebd64441f794024af5de4c0025597376217', ...}, ...}
+record_id = 'wdp1_1792e45706b4e70e978a02b9ded640dc17f18ca9a9f4391c940dc7a285392a24'
+
+    def _publish(self,value,record_id):
+        """Shared exclusive immutable publication, not another queue algorithm."""
+        raw=canonical_bytes(value)
+        if len(raw)>MAX_RECORD_BYTES:raise ValueError('refresh_record_too_large')
+        path=self._path(record_id)
+        if path.exists():
+            if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+            return value
+        self.directory.mkdir(parents=True,exist_ok=True,mode=0o700)
+        with self._publication_lock():
+            if path.exists():
+                if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+                return value
+            entries=list(self.directory.iterdir())
+            if any(p.is_symlink() or not p.is_file() for p in entries):
+                raise ValueError('refresh_owner_path_redirected')
+            if (sum(p.suffix=='.json' for p in entries)>=MAX_PREVIEW_RECORDS
+                or sum(p.stat().st_size for p in entries)+len(raw)>MAX_TOTAL_BYTES):
+                raise ValueError('refresh_record_retention_limit')
+            descriptor,name=tempfile.mkstemp(prefix='.owned-refresh-',dir=self.directory)
+            staging=Path(name)
+            try:
+                with os.fdopen(descriptor,'wb') as stream:
+                    stream.write(raw);stream.flush();os.fsync(stream.fileno())
+>               os.link(_native_path(staging),_native_path(path))
+E               PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_original_publisher_gate_r0\\source-owner\\owner\\runs\\state\\quick_scan_refresh\\work_decisions\\previews\\.owned-refresh-bfgolld0' -> '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_original_publisher_gate_r0\\source-owner\\owner\\runs\\state\\quick_scan_refresh\\work_decisions\\previews\\wdp1_1792e45706b4e70e978a02b9ded640dc17f18ca9a9f4391c940dc7a285392a24.json'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_refresh_records.py:117: PermissionError
+_ test_original_publisher_gate_rechecks_source_permission_before_outbox[seal_result_delivery] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.ptr31-o9f880_6/pytest/test_original_publisher_gate_r1')
+entry = 'seal_result_delivery'
+
+    @pytest.mark.parametrize('entry',['require_publisher','seal_result_delivery'])
+    def test_original_publisher_gate_rechecks_source_permission_before_outbox(tmp_path,entry):
+        from src.utils.quick_scan_known_outcome_journal import OwnerWorkDecisionAuthority,OwnerWorkDecisionGrant,_authorize
+        from src.utils.quick_scan_saved_research_publication import require_publisher
+        from src.utils.quick_scan_delivery_seal import seal_result_delivery
+        fixture_path=LAB/'vendor_upstream/stockwiki/tests/test_quick_scan_work_decision_owner.py'
+        spec=importlib.util.spec_from_file_location('publisher_owner_fixture',fixture_path)
+        helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+        f=helper.fixture(tmp_path/'source-owner')
+>       _,confirmed=helper.confirm(f)
+                    ^^^^^^^^^^^^^^^^^
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\tests\unit\test_publisher_authority_boundary.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\tests\test_quick_scan_work_decision_owner.py:128: in confirm
+    preview=f.owner.preview(f.outer)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_work_decision_owner.py:845: in preview
+    self.previews.save_control(
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_work_decision_owner.py:240: in save_control
+    return self._publish(value, preview["preview_id"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_work_decision_owner.WorkDecisionPreviewStore object at 0x000001B4FEB482D0>
+value = {'protocol': 'stockwiki.work_decision_preview_record/1.0.0', 'request': {'protocol': 'stockwiki.work_decision_request/...', 'policy_version': 1, 'policy_sha256': 'b779eab1590d94983fba00a127ff8a65d65d8f619b3e9e2de1e7319e3584d3fc', ...}, ...}
+record_id = 'wdp1_fa5161cc1b0d85a7168c219dfab83a5060f2948718af5e3fb83360fe997b9560'
+
+    def _publish(self,value,record_id):
+        """Shared exclusive immutable publication, not another queue algorithm."""
+        raw=canonical_bytes(value)
+        if len(raw)>MAX_RECORD_BYTES:raise ValueError('refresh_record_too_large')
+        path=self._path(record_id)
+        if path.exists():
+            if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+            return value
+        self.directory.mkdir(parents=True,exist_ok=True,mode=0o700)
+        with self._publication_lock():
+            if path.exists():
+                if self.load(record_id)!=value:raise ValueError('refresh_immutable_record_conflict')
+                return value
+            entries=list(self.directory.iterdir())
+            if any(p.is_symlink() or not p.is_file() for p in entries):
+                raise ValueError('refresh_owner_path_redirected')
+            if (sum(p.suffix=='.json' for p in entries)>=MAX_PREVIEW_RECORDS
+                or sum(p.stat().st_size for p in entries)+len(raw)>MAX_TOTAL_BYTES):
+                raise ValueError('refresh_record_retention_limit')
+            descriptor,name=tempfile.mkstemp(prefix='.owned-refresh-',dir=self.directory)
+            staging=Path(name)
+            try:
+                with os.fdopen(descriptor,'wb') as stream:
+                    stream.write(raw);stream.flush();os.fsync(stream.fileno())
+>               os.link(_native_path(staging),_native_path(path))
+E               PermissionError: [WinError 5] 拒绝访问。: '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_original_publisher_gate_r1\\source-owner\\owner\\runs\\state\\quick_scan_refresh\\work_decisions\\previews\\.owned-refresh-poesfzf0' -> '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.ptr31-o9f880_6\\pytest\\test_original_publisher_gate_r1\\source-owner\\owner\\runs\\state\\quick_scan_refresh\\work_decisions\\previews\\wdp1_fa5161cc1b0d85a7168c219dfab83a5060f2948718af5e3fb83360fe997b9560.json'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\vendor_upstream\stockwiki\stockwiki\quick_scan_refresh_records.py:117: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_native_delegation_faults.py::test_native_delegation_revoke_survives_reopen_and_cached_scope[0]
+FAILED tests/unit/test_native_delegation_faults.py::test_native_delegation_revoke_survives_reopen_and_cached_scope[36]
+FAILED tests/unit/test_publisher_authority_boundary.py::test_original_publisher_gate_rechecks_source_permission_before_outbox[require_publisher]
+FAILED tests/unit/test_publisher_authority_boundary.py::test_original_publisher_gate_rechecks_source_permission_before_outbox[seal_result_delivery]

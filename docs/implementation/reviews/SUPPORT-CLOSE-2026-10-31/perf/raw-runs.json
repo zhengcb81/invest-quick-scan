@@ -1,0 +1,1650 @@
+{
+  "baseline/1": {
+    "packets": 1,
+    "label": "baseline-1",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": null,
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 8924.3,
+        "fixture_ms": 1644.4,
+        "export_ms": 3774.5,
+        "verify_ms": 23.6,
+        "spawn_summary": {
+          "spawn_count": 10,
+          "wall_in_spawn_ms": 10861.0,
+          "by_operation": {
+            "inspection": {
+              "count": 2,
+              "total_ms": 4406.4,
+              "mean_ms": 2203.2
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2833.0,
+              "mean_ms": 1416.5
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 1073.9,
+              "mean_ms": 1073.9
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 1059.0,
+              "mean_ms": 1059.0
+            },
+            "owner_worker:import_preview": {
+              "count": 2,
+              "total_ms": 871.3,
+              "mean_ms": 435.6
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 344.2,
+              "mean_ms": 344.2
+            },
+            "owner_worker:status": {
+              "count": 1,
+              "total_ms": 273.2,
+              "mean_ms": 273.2
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 1,
+          "ack_status_counts": {
+            "accepted": 1
+          },
+          "work_item_status_counts": {
+            "delivered": 1
+          },
+          "delivery_state_counts": {
+            "delivered": 1
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 8514.0,
+        "fixture_ms": 451.5,
+        "export_ms": 2646.1,
+        "verify_ms": 23.9,
+        "spawn_summary": {
+          "spawn_count": 10,
+          "wall_in_spawn_ms": 9778.9,
+          "by_operation": {
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2413.8,
+              "mean_ms": 1206.9
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2364.1,
+              "mean_ms": 1182.0
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 2089.3,
+              "mean_ms": 2089.3
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 1298.6,
+              "mean_ms": 1298.6
+            },
+            "owner_worker:import_preview": {
+              "count": 2,
+              "total_ms": 857.7,
+              "mean_ms": 428.9
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 379.7,
+              "mean_ms": 379.7
+            },
+            "owner_worker:status": {
+              "count": 1,
+              "total_ms": 375.8,
+              "mean_ms": 375.8
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 1,
+          "ack_status_counts": {
+            "accepted": 1
+          },
+          "work_item_status_counts": {
+            "delivered": 1
+          },
+          "delivery_state_counts": {
+            "delivered": 1
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 5030.6,
+        "fixture_ms": 523.7,
+        "export_ms": 2990.9,
+        "verify_ms": 16.6,
+        "spawn_summary": {
+          "spawn_count": 10,
+          "wall_in_spawn_ms": 7055.4,
+          "by_operation": {
+            "inspection": {
+              "count": 2,
+              "total_ms": 2275.3,
+              "mean_ms": 1137.7
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2077.3,
+              "mean_ms": 1038.7
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 847.4,
+              "mean_ms": 847.4
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 846.3,
+              "mean_ms": 846.3
+            },
+            "owner_worker:import_preview": {
+              "count": 2,
+              "total_ms": 541.9,
+              "mean_ms": 270.9
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 272.1,
+              "mean_ms": 272.1
+            },
+            "owner_worker:status": {
+              "count": 1,
+              "total_ms": 195.0,
+              "mean_ms": 195.0
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 1,
+          "ack_status_counts": {
+            "accepted": 1
+          },
+          "work_item_status_counts": {
+            "delivered": 1
+          },
+          "delivery_state_counts": {
+            "delivered": 1
+          }
+        }
+      }
+    ]
+  },
+  "baseline/3": {
+    "packets": 3,
+    "label": "baseline-3",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": null,
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 14117.9,
+        "fixture_ms": 2492.0,
+        "export_ms": 4399.5,
+        "verify_ms": 58.8,
+        "spawn_summary": {
+          "spawn_count": 22,
+          "wall_in_spawn_ms": 16613.1,
+          "by_operation": {
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 3418.6,
+              "mean_ms": 1709.3
+            },
+            "ack": {
+              "count": 3,
+              "total_ms": 2996.3,
+              "mean_ms": 998.8
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2976.3,
+              "mean_ms": 1488.2
+            },
+            "bind": {
+              "count": 3,
+              "total_ms": 2916.5,
+              "mean_ms": 972.2
+            },
+            "owner_worker:import_preview": {
+              "count": 6,
+              "total_ms": 2694.1,
+              "mean_ms": 449.0
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 877.3,
+              "mean_ms": 292.4
+            },
+            "owner_worker:status": {
+              "count": 3,
+              "total_ms": 733.9,
+              "mean_ms": 244.6
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 3,
+          "ack_status_counts": {
+            "accepted": 3
+          },
+          "work_item_status_counts": {
+            "delivered": 3
+          },
+          "delivery_state_counts": {
+            "delivered": 3
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 14349.0,
+        "fixture_ms": 1294.3,
+        "export_ms": 3523.7,
+        "verify_ms": 37.6,
+        "spawn_summary": {
+          "spawn_count": 22,
+          "wall_in_spawn_ms": 16300.3,
+          "by_operation": {
+            "bind": {
+              "count": 3,
+              "total_ms": 3950.4,
+              "mean_ms": 1316.8
+            },
+            "ack": {
+              "count": 3,
+              "total_ms": 3293.2,
+              "mean_ms": 1097.7
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2687.2,
+              "mean_ms": 1343.6
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2465.9,
+              "mean_ms": 1233.0
+            },
+            "owner_worker:import_preview": {
+              "count": 6,
+              "total_ms": 2049.5,
+              "mean_ms": 341.6
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 1083.9,
+              "mean_ms": 361.3
+            },
+            "owner_worker:status": {
+              "count": 3,
+              "total_ms": 770.2,
+              "mean_ms": 256.7
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 3,
+          "ack_status_counts": {
+            "accepted": 3
+          },
+          "work_item_status_counts": {
+            "delivered": 3
+          },
+          "delivery_state_counts": {
+            "delivered": 3
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 19467.2,
+        "fixture_ms": 1114.2,
+        "export_ms": 2451.9,
+        "verify_ms": 62.9,
+        "spawn_summary": {
+          "spawn_count": 22,
+          "wall_in_spawn_ms": 20611.4,
+          "by_operation": {
+            "ack": {
+              "count": 3,
+              "total_ms": 6316.2,
+              "mean_ms": 2105.4
+            },
+            "bind": {
+              "count": 3,
+              "total_ms": 4165.1,
+              "mean_ms": 1388.4
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 3839.1,
+              "mean_ms": 1919.5
+            },
+            "owner_worker:import_preview": {
+              "count": 6,
+              "total_ms": 2373.0,
+              "mean_ms": 395.5
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 1953.2,
+              "mean_ms": 976.6
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 1175.9,
+              "mean_ms": 392.0
+            },
+            "owner_worker:status": {
+              "count": 3,
+              "total_ms": 789.0,
+              "mean_ms": 263.0
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 3,
+          "ack_status_counts": {
+            "accepted": 3
+          },
+          "work_item_status_counts": {
+            "delivered": 3
+          },
+          "delivery_state_counts": {
+            "delivered": 3
+          }
+        }
+      }
+    ]
+  },
+  "baseline/33": {
+    "packets": 33,
+    "label": "baseline-33",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": null,
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 120296.2,
+        "fixture_ms": 13237.0,
+        "export_ms": 5337.9,
+        "verify_ms": 286.3,
+        "spawn_summary": {
+          "spawn_count": 206,
+          "wall_in_spawn_ms": 122255.3,
+          "by_operation": {
+            "bind": {
+              "count": 33,
+              "total_ms": 37830.6,
+              "mean_ms": 1146.4
+            },
+            "ack": {
+              "count": 33,
+              "total_ms": 37417.4,
+              "mean_ms": 1133.9
+            },
+            "owner_worker:import_preview": {
+              "count": 66,
+              "total_ms": 20455.3,
+              "mean_ms": 309.9
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 10584.5,
+              "mean_ms": 320.7
+            },
+            "owner_worker:status": {
+              "count": 33,
+              "total_ms": 7697.3,
+              "mean_ms": 233.3
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 4236.1,
+              "mean_ms": 1059.0
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 4034.0,
+              "mean_ms": 1008.5
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 33,
+          "ack_status_counts": {
+            "accepted": 33
+          },
+          "work_item_status_counts": {
+            "delivered": 33
+          },
+          "delivery_state_counts": {
+            "delivered": 33
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 132580.6,
+        "fixture_ms": 10180.0,
+        "export_ms": 5770.5,
+        "verify_ms": 419.5,
+        "spawn_summary": {
+          "spawn_count": 206,
+          "wall_in_spawn_ms": 135164.3,
+          "by_operation": {
+            "ack": {
+              "count": 33,
+              "total_ms": 41564.1,
+              "mean_ms": 1259.5
+            },
+            "bind": {
+              "count": 33,
+              "total_ms": 40267.2,
+              "mean_ms": 1220.2
+            },
+            "owner_worker:import_preview": {
+              "count": 66,
+              "total_ms": 21668.3,
+              "mean_ms": 328.3
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 12096.1,
+              "mean_ms": 366.5
+            },
+            "owner_worker:status": {
+              "count": 33,
+              "total_ms": 8243.8,
+              "mean_ms": 249.8
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 6756.1,
+              "mean_ms": 1689.0
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 4568.7,
+              "mean_ms": 1142.2
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 33,
+          "ack_status_counts": {
+            "accepted": 33
+          },
+          "work_item_status_counts": {
+            "delivered": 33
+          },
+          "delivery_state_counts": {
+            "delivered": 33
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 120804.6,
+        "fixture_ms": 10274.8,
+        "export_ms": 5098.9,
+        "verify_ms": 328.3,
+        "spawn_summary": {
+          "spawn_count": 206,
+          "wall_in_spawn_ms": 123285.5,
+          "by_operation": {
+            "ack": {
+              "count": 33,
+              "total_ms": 37315.2,
+              "mean_ms": 1130.8
+            },
+            "bind": {
+              "count": 33,
+              "total_ms": 37184.1,
+              "mean_ms": 1126.8
+            },
+            "owner_worker:import_preview": {
+              "count": 66,
+              "total_ms": 21669.3,
+              "mean_ms": 328.3
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 11015.8,
+              "mean_ms": 333.8
+            },
+            "owner_worker:status": {
+              "count": 33,
+              "total_ms": 7679.9,
+              "mean_ms": 232.7
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 4306.9,
+              "mean_ms": 1076.7
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 4114.3,
+              "mean_ms": 1028.6
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 33,
+          "ack_status_counts": {
+            "accepted": 33
+          },
+          "work_item_status_counts": {
+            "delivered": 33
+          },
+          "delivery_state_counts": {
+            "delivered": 33
+          }
+        }
+      }
+    ]
+  },
+  "baseline/36": {
+    "packets": 36,
+    "label": "baseline-36",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": null,
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 182369.7,
+        "fixture_ms": 18797.8,
+        "export_ms": 7677.9,
+        "verify_ms": 419.7,
+        "spawn_summary": {
+          "spawn_count": 224,
+          "wall_in_spawn_ms": 186551.6,
+          "by_operation": {
+            "bind": {
+              "count": 36,
+              "total_ms": 57102.8,
+              "mean_ms": 1586.2
+            },
+            "ack": {
+              "count": 36,
+              "total_ms": 56555.4,
+              "mean_ms": 1571.0
+            },
+            "owner_worker:import_preview": {
+              "count": 72,
+              "total_ms": 30542.6,
+              "mean_ms": 424.2
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 16657.5,
+              "mean_ms": 462.7
+            },
+            "owner_worker:status": {
+              "count": 36,
+              "total_ms": 11722.0,
+              "mean_ms": 325.6
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 7208.2,
+              "mean_ms": 1802.0
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 6763.0,
+              "mean_ms": 1690.8
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 36,
+          "ack_status_counts": {
+            "accepted": 36
+          },
+          "work_item_status_counts": {
+            "delivered": 36
+          },
+          "delivery_state_counts": {
+            "delivered": 36
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 309252.9,
+        "fixture_ms": 10932.0,
+        "export_ms": 6546.5,
+        "verify_ms": 629.0,
+        "spawn_summary": {
+          "spawn_count": 224,
+          "wall_in_spawn_ms": 312450.9,
+          "by_operation": {
+            "bind": {
+              "count": 36,
+              "total_ms": 98297.7,
+              "mean_ms": 2730.5
+            },
+            "ack": {
+              "count": 36,
+              "total_ms": 96312.6,
+              "mean_ms": 2675.4
+            },
+            "owner_worker:import_preview": {
+              "count": 72,
+              "total_ms": 56945.6,
+              "mean_ms": 790.9
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 25921.5,
+              "mean_ms": 720.0
+            },
+            "owner_worker:status": {
+              "count": 36,
+              "total_ms": 20719.3,
+              "mean_ms": 575.5
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 8868.9,
+              "mean_ms": 2217.2
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 5385.2,
+              "mean_ms": 1346.3
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 36,
+          "ack_status_counts": {
+            "accepted": 36
+          },
+          "work_item_status_counts": {
+            "delivered": 36
+          },
+          "delivery_state_counts": {
+            "delivered": 36
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 303495.8,
+        "fixture_ms": 15797.6,
+        "export_ms": 9231.4,
+        "verify_ms": 513.7,
+        "spawn_summary": {
+          "spawn_count": 224,
+          "wall_in_spawn_ms": 308601.7,
+          "by_operation": {
+            "bind": {
+              "count": 36,
+              "total_ms": 98772.7,
+              "mean_ms": 2743.7
+            },
+            "ack": {
+              "count": 36,
+              "total_ms": 94031.6,
+              "mean_ms": 2612.0
+            },
+            "owner_worker:import_preview": {
+              "count": 72,
+              "total_ms": 53673.4,
+              "mean_ms": 745.5
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 25790.1,
+              "mean_ms": 716.4
+            },
+            "owner_worker:status": {
+              "count": 36,
+              "total_ms": 19987.1,
+              "mean_ms": 555.2
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 8766.1,
+              "mean_ms": 2191.5
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 7580.6,
+              "mean_ms": 1895.2
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 36,
+          "ack_status_counts": {
+            "accepted": 36
+          },
+          "work_item_status_counts": {
+            "delivered": 36
+          },
+          "delivery_state_counts": {
+            "delivered": 36
+          }
+        }
+      }
+    ]
+  },
+  "candidate/1": {
+    "packets": 1,
+    "label": "candidate-1",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": "c1170f8a51ce117daa513d8f7325ed6ee09441004ae876cf228a4b346ecb87c1",
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 5185.8,
+        "fixture_ms": 1237.8,
+        "export_ms": 2143.3,
+        "verify_ms": 12.7,
+        "spawn_summary": {
+          "spawn_count": 9,
+          "wall_in_spawn_ms": 6426.5,
+          "by_operation": {
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2030.4,
+              "mean_ms": 1015.2
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 1771.0,
+              "mean_ms": 885.5
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 903.3,
+              "mean_ms": 903.3
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 886.9,
+              "mean_ms": 886.9
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 315.0,
+              "mean_ms": 315.0
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 1,
+              "total_ms": 268.1,
+              "mean_ms": 268.1
+            },
+            "owner_worker:import_preview": {
+              "count": 1,
+              "total_ms": 251.7,
+              "mean_ms": 251.7
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 1,
+          "ack_status_counts": {
+            "accepted": 1
+          },
+          "work_item_status_counts": {
+            "delivered": 1
+          },
+          "delivery_state_counts": {
+            "delivered": 1
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 5802.6,
+        "fixture_ms": 416.4,
+        "export_ms": 2541.5,
+        "verify_ms": 19.9,
+        "spawn_summary": {
+          "spawn_count": 9,
+          "wall_in_spawn_ms": 6982.9,
+          "by_operation": {
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2095.9,
+              "mean_ms": 1048.0
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2056.9,
+              "mean_ms": 1028.5
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 943.0,
+              "mean_ms": 943.0
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 888.4,
+              "mean_ms": 888.4
+            },
+            "owner_worker:import_preview": {
+              "count": 1,
+              "total_ms": 377.1,
+              "mean_ms": 377.1
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 1,
+              "total_ms": 332.2,
+              "mean_ms": 332.2
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 289.4,
+              "mean_ms": 289.4
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 1,
+          "ack_status_counts": {
+            "accepted": 1
+          },
+          "work_item_status_counts": {
+            "delivered": 1
+          },
+          "delivery_state_counts": {
+            "delivered": 1
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 6994.3,
+        "fixture_ms": 420.9,
+        "export_ms": 3544.4,
+        "verify_ms": 22.3,
+        "spawn_summary": {
+          "spawn_count": 9,
+          "wall_in_spawn_ms": 9067.4,
+          "by_operation": {
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2618.0,
+              "mean_ms": 1309.0
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2482.2,
+              "mean_ms": 1241.1
+            },
+            "bind": {
+              "count": 1,
+              "total_ms": 1442.8,
+              "mean_ms": 1442.8
+            },
+            "ack": {
+              "count": 1,
+              "total_ms": 1404.0,
+              "mean_ms": 1404.0
+            },
+            "owner_worker:import_apply": {
+              "count": 1,
+              "total_ms": 428.3,
+              "mean_ms": 428.3
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 1,
+              "total_ms": 378.9,
+              "mean_ms": 378.9
+            },
+            "owner_worker:import_preview": {
+              "count": 1,
+              "total_ms": 313.1,
+              "mean_ms": 313.1
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 1,
+          "ack_status_counts": {
+            "accepted": 1
+          },
+          "work_item_status_counts": {
+            "delivered": 1
+          },
+          "delivery_state_counts": {
+            "delivered": 1
+          }
+        }
+      }
+    ]
+  },
+  "candidate/3": {
+    "packets": 3,
+    "label": "candidate-3",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": "c1170f8a51ce117daa513d8f7325ed6ee09441004ae876cf228a4b346ecb87c1",
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 12732.6,
+        "fixture_ms": 3874.9,
+        "export_ms": 2825.1,
+        "verify_ms": 50.8,
+        "spawn_summary": {
+          "spawn_count": 19,
+          "wall_in_spawn_ms": 14155.4,
+          "by_operation": {
+            "ack": {
+              "count": 3,
+              "total_ms": 3430.3,
+              "mean_ms": 1143.4
+            },
+            "bind": {
+              "count": 3,
+              "total_ms": 3212.0,
+              "mean_ms": 1070.7
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 2357.9,
+              "mean_ms": 1179.0
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 2238.2,
+              "mean_ms": 1119.1
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 1058.8,
+              "mean_ms": 352.9
+            },
+            "owner_worker:import_preview": {
+              "count": 3,
+              "total_ms": 939.9,
+              "mean_ms": 313.3
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 3,
+              "total_ms": 918.3,
+              "mean_ms": 306.1
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 3,
+          "ack_status_counts": {
+            "accepted": 3
+          },
+          "work_item_status_counts": {
+            "delivered": 3
+          },
+          "delivery_state_counts": {
+            "delivered": 3
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 10154.2,
+        "fixture_ms": 1201.5,
+        "export_ms": 2074.8,
+        "verify_ms": 47.4,
+        "spawn_summary": {
+          "spawn_count": 19,
+          "wall_in_spawn_ms": 11523.1,
+          "by_operation": {
+            "ack": {
+              "count": 3,
+              "total_ms": 2856.6,
+              "mean_ms": 952.2
+            },
+            "bind": {
+              "count": 3,
+              "total_ms": 2653.5,
+              "mean_ms": 884.5
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 1766.9,
+              "mean_ms": 883.5
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 1763.9,
+              "mean_ms": 882.0
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 875.4,
+              "mean_ms": 291.8
+            },
+            "owner_worker:import_preview": {
+              "count": 3,
+              "total_ms": 823.5,
+              "mean_ms": 274.5
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 3,
+              "total_ms": 783.3,
+              "mean_ms": 261.1
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 3,
+          "ack_status_counts": {
+            "accepted": 3
+          },
+          "work_item_status_counts": {
+            "delivered": 3
+          },
+          "delivery_state_counts": {
+            "delivered": 3
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 11141.4,
+        "fixture_ms": 1123.0,
+        "export_ms": 1999.6,
+        "verify_ms": 44.9,
+        "spawn_summary": {
+          "spawn_count": 19,
+          "wall_in_spawn_ms": 12141.3,
+          "by_operation": {
+            "bind": {
+              "count": 3,
+              "total_ms": 2958.6,
+              "mean_ms": 986.2
+            },
+            "ack": {
+              "count": 3,
+              "total_ms": 2857.6,
+              "mean_ms": 952.5
+            },
+            "export_bytes": {
+              "count": 2,
+              "total_ms": 1901.3,
+              "mean_ms": 950.6
+            },
+            "inspection": {
+              "count": 2,
+              "total_ms": 1793.1,
+              "mean_ms": 896.5
+            },
+            "owner_worker:import_preview": {
+              "count": 3,
+              "total_ms": 919.4,
+              "mean_ms": 306.5
+            },
+            "owner_worker:import_apply": {
+              "count": 3,
+              "total_ms": 869.3,
+              "mean_ms": 289.8
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 3,
+              "total_ms": 842.0,
+              "mean_ms": 280.7
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 3,
+          "ack_status_counts": {
+            "accepted": 3
+          },
+          "work_item_status_counts": {
+            "delivered": 3
+          },
+          "delivery_state_counts": {
+            "delivered": 3
+          }
+        }
+      }
+    ]
+  },
+  "candidate/33": {
+    "packets": 33,
+    "label": "candidate-33",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": "c1170f8a51ce117daa513d8f7325ed6ee09441004ae876cf228a4b346ecb87c1",
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 108455.3,
+        "fixture_ms": 9103.2,
+        "export_ms": 6058.7,
+        "verify_ms": 318.6,
+        "spawn_summary": {
+          "spawn_count": 173,
+          "wall_in_spawn_ms": 111350.2,
+          "by_operation": {
+            "ack": {
+              "count": 33,
+              "total_ms": 35903.2,
+              "mean_ms": 1088.0
+            },
+            "bind": {
+              "count": 33,
+              "total_ms": 35689.6,
+              "mean_ms": 1081.5
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 10725.4,
+              "mean_ms": 325.0
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 33,
+              "total_ms": 10265.0,
+              "mean_ms": 311.1
+            },
+            "owner_worker:import_preview": {
+              "count": 33,
+              "total_ms": 9604.7,
+              "mean_ms": 291.1
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 4588.3,
+              "mean_ms": 1147.1
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 4574.0,
+              "mean_ms": 1143.5
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 33,
+          "ack_status_counts": {
+            "accepted": 33
+          },
+          "work_item_status_counts": {
+            "delivered": 33
+          },
+          "delivery_state_counts": {
+            "delivered": 33
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 114634.1,
+        "fixture_ms": 9347.6,
+        "export_ms": 4503.2,
+        "verify_ms": 503.2,
+        "spawn_summary": {
+          "spawn_count": 173,
+          "wall_in_spawn_ms": 116944.6,
+          "by_operation": {
+            "ack": {
+              "count": 33,
+              "total_ms": 39894.0,
+              "mean_ms": 1208.9
+            },
+            "bind": {
+              "count": 33,
+              "total_ms": 36656.5,
+              "mean_ms": 1110.8
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 11555.2,
+              "mean_ms": 350.2
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 33,
+              "total_ms": 10730.0,
+              "mean_ms": 325.2
+            },
+            "owner_worker:import_preview": {
+              "count": 33,
+              "total_ms": 10265.6,
+              "mean_ms": 311.1
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 4086.2,
+              "mean_ms": 1021.5
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 3757.1,
+              "mean_ms": 939.3
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 33,
+          "ack_status_counts": {
+            "accepted": 33
+          },
+          "work_item_status_counts": {
+            "delivered": 33
+          },
+          "delivery_state_counts": {
+            "delivered": 33
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 213954.3,
+        "fixture_ms": 13065.7,
+        "export_ms": 6414.5,
+        "verify_ms": 642.1,
+        "spawn_summary": {
+          "spawn_count": 173,
+          "wall_in_spawn_ms": 216631.6,
+          "by_operation": {
+            "ack": {
+              "count": 33,
+              "total_ms": 72746.7,
+              "mean_ms": 2204.4
+            },
+            "bind": {
+              "count": 33,
+              "total_ms": 70845.3,
+              "mean_ms": 2146.8
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 33,
+              "total_ms": 20912.5,
+              "mean_ms": 633.7
+            },
+            "owner_worker:import_preview": {
+              "count": 33,
+              "total_ms": 20709.9,
+              "mean_ms": 627.6
+            },
+            "owner_worker:import_apply": {
+              "count": 33,
+              "total_ms": 20092.8,
+              "mean_ms": 608.9
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 5870.0,
+              "mean_ms": 1467.5
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 5454.4,
+              "mean_ms": 1363.6
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 33,
+          "ack_status_counts": {
+            "accepted": 33
+          },
+          "work_item_status_counts": {
+            "delivered": 33
+          },
+          "delivery_state_counts": {
+            "delivered": 33
+          }
+        }
+      }
+    ]
+  },
+  "candidate/36": {
+    "packets": 36,
+    "label": "candidate-36",
+    "baseline_commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c",
+    "source_repositories": {
+      "iqs": {
+        "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+        "commit": "092b1a2677ef91a0ba03e57d0105138b432acc7c"
+      },
+      "stockqa": {
+        "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+        "commit": "0dc799a4553b8bdd6313f2cdaf915f0d5d67e260"
+      },
+      "stockwiki": {
+        "root": "C:/Users/郑曾波/Projects/StockWiki",
+        "commit": "8527bc771692c501517d8f04c387603a92a77ec0"
+      }
+    },
+    "candidate_source_manifest_sha256": "c1170f8a51ce117daa513d8f7325ed6ee09441004ae876cf228a4b346ecb87c1",
+    "driver_wall_s": null,
+    "reps": [
+      {
+        "rep": 1,
+        "cold_or_warm": "cold",
+        "delivery_ms": 650007.8,
+        "fixture_ms": 19543.4,
+        "export_ms": 10879.8,
+        "verify_ms": 2131.2,
+        "spawn_summary": {
+          "spawn_count": 188,
+          "wall_in_spawn_ms": 653768.5,
+          "by_operation": {
+            "ack": {
+              "count": 36,
+              "total_ms": 236872.3,
+              "mean_ms": 6579.8
+            },
+            "bind": {
+              "count": 36,
+              "total_ms": 220271.5,
+              "mean_ms": 6118.7
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 36,
+              "total_ms": 55964.7,
+              "mean_ms": 1554.6
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 54159.8,
+              "mean_ms": 1504.4
+            },
+            "owner_worker:import_preview": {
+              "count": 36,
+              "total_ms": 53470.0,
+              "mean_ms": 1485.3
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 17661.4,
+              "mean_ms": 4415.4
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 15368.9,
+              "mean_ms": 3842.2
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 36,
+          "ack_status_counts": {
+            "accepted": 36
+          },
+          "work_item_status_counts": {
+            "delivered": 36
+          },
+          "delivery_state_counts": {
+            "delivered": 36
+          }
+        }
+      },
+      {
+        "rep": 2,
+        "cold_or_warm": "warm",
+        "delivery_ms": 359971.5,
+        "fixture_ms": 45397.4,
+        "export_ms": 15919.6,
+        "verify_ms": 560.3,
+        "spawn_summary": {
+          "spawn_count": 188,
+          "wall_in_spawn_ms": 368298.0,
+          "by_operation": {
+            "ack": {
+              "count": 36,
+              "total_ms": 123800.4,
+              "mean_ms": 3438.9
+            },
+            "bind": {
+              "count": 36,
+              "total_ms": 112316.0,
+              "mean_ms": 3119.9
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 33156.9,
+              "mean_ms": 921.0
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 36,
+              "total_ms": 31535.8,
+              "mean_ms": 876.0
+            },
+            "owner_worker:import_preview": {
+              "count": 36,
+              "total_ms": 30838.5,
+              "mean_ms": 856.6
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 23449.1,
+              "mean_ms": 5862.3
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 13201.3,
+              "mean_ms": 3300.3
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 36,
+          "ack_status_counts": {
+            "accepted": 36
+          },
+          "work_item_status_counts": {
+            "delivered": 36
+          },
+          "delivery_state_counts": {
+            "delivered": 36
+          }
+        }
+      },
+      {
+        "rep": 3,
+        "cold_or_warm": "warm",
+        "delivery_ms": 194074.8,
+        "fixture_ms": 16947.3,
+        "export_ms": 8573.1,
+        "verify_ms": 771.9,
+        "spawn_summary": {
+          "spawn_count": 188,
+          "wall_in_spawn_ms": 197990.3,
+          "by_operation": {
+            "ack": {
+              "count": 36,
+              "total_ms": 66198.9,
+              "mean_ms": 1838.9
+            },
+            "bind": {
+              "count": 36,
+              "total_ms": 64017.9,
+              "mean_ms": 1778.3
+            },
+            "owner_worker:batch[import_preview+status]": {
+              "count": 36,
+              "total_ms": 18318.8,
+              "mean_ms": 508.9
+            },
+            "owner_worker:import_apply": {
+              "count": 36,
+              "total_ms": 18221.2,
+              "mean_ms": 506.1
+            },
+            "owner_worker:import_preview": {
+              "count": 36,
+              "total_ms": 18163.9,
+              "mean_ms": 504.6
+            },
+            "export_bytes": {
+              "count": 4,
+              "total_ms": 6734.0,
+              "mean_ms": 1683.5
+            },
+            "inspection": {
+              "count": 4,
+              "total_ms": 6335.5,
+              "mean_ms": 1583.9
+            }
+          }
+        },
+        "verification_counts": {
+          "imported_packages": 36,
+          "ack_status_counts": {
+            "accepted": 36
+          },
+          "work_item_status_counts": {
+            "delivered": 36
+          },
+          "delivery_state_counts": {
+            "delivered": 36
+          }
+        }
+      }
+    ]
+  }
+}

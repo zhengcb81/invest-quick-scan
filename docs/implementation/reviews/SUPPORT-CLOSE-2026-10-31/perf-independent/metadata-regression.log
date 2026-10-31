@@ -1,0 +1,61 @@
+F..                                                                      [100%]
+================================== FAILURES ===================================
+__________ test_matrix_child_failure_cleans_its_entire_variant_root ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.prexe-9mllynm4/pytest/test_matrix_child_failure_clea0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000016F1A1CC2B0>
+
+    def test_matrix_child_failure_cleans_its_entire_variant_root(tmp_path, monkeypatch):
+        driver = module('perf_driver_cleanup', 'bench/run_benchmark.py')
+        monkeypatch.setattr(driver, 'LAB_ROOT', tmp_path)
+        monkeypatch.setattr(sys, 'argv', ['run_benchmark.py', '--packets', '1', '--variants', 'baseline', '--bench-id', 'failure'])
+        def run(argv, **kwargs):
+            if 'prepare_variant.py' in str(argv):
+                target = Path(argv[argv.index('--target') + 1])
+                target.mkdir(parents=True)
+                (target / 'synthetic.sqlite').write_text('synthetic temporary bytes')
+            return subprocess.CompletedProcess(argv, 0, stdout='0' * 40, stderr='')
+        monkeypatch.setattr(driver.subprocess, 'run', run)
+        def child_failure(*args, **kwargs):
+            raise RuntimeError('injected child failure after variant preparation')
+        monkeypatch.setattr(driver, 'run_invocation', child_failure)
+        with pytest.raises(RuntimeError, match='injected child failure'):
+>           driver.main()
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\tests\unit\test_execution_evidence.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\bench\run_benchmark.py:105: in main
+    return _run_matrix(args, workdir)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\bench\run_benchmark.py:134: in _run_matrix
+    source_repositories = baseline_source_commits()
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\close-support31\perf\work\bench\run_benchmark.py:32: in baseline_source_commits
+    sources = json.loads((LAB_ROOT / "docs/consumed-inputs.json").read_text(encoding="utf-8"))["source_repositories"]
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/.prexe-9mllynm4/pytest/test_matrix_child_failure_clea0/docs/consumed-inputs.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.prexe-9mllynm4\\pytest\\test_matrix_child_failure_clea0\\docs\\consumed-inputs.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_execution_evidence.py::test_matrix_child_failure_cleans_its_entire_variant_root

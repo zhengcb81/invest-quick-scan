@@ -1,0 +1,12 @@
+from pathlib import Path
+import importlib.util,subprocess,sys,hashlib,json,uuid,shutil
+root=Path.cwd();out=root/'runs/close-support31/test-entry-independent';spec=importlib.util.spec_from_file_location('entry_dns_probe',root/'scripts/run_tests.py');r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
+tmp=root/('.tedns-'+uuid.uuid4().hex[:6]);tmp.mkdir()
+try:
+ f=tmp/'test_dns_boundary.py';f.write_text('''import socket,sys,pytest\n# Appended AFTER the real CHILD guard. If the original guard misses one of\n# these real Python APIs, stop at this audit event BEFORE OS DNS execution.\ndef no_dns_sentinel(event,args):\n    if event in {'socket.gethostbyname','socket.gethostbyaddr','socket.getnameinfo'}:\n        raise AssertionError('secondary_sentinel_original_guard_missed_'+event)\nsys.addaudithook(no_dns_sentinel)\n@pytest.mark.parametrize('operation',['name','name_ex','addr','nameinfo'])\ndef test_external_dns_api_rejected_before_secondary_sentinel(operation):\n    with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):\n        if operation=='name':socket.gethostbyname('external.invalid')\n        elif operation=='name_ex':socket.gethostbyname_ex('external.invalid')\n        elif operation=='addr':socket.gethostbyaddr('203.0.113.1')\n        else:socket.getnameinfo(('203.0.113.1',443),0)\n''',encoding='utf8')
+ env=r.clean_environment(tmp);env.update(PYTHONDONTWRITEBYTECODE='1',PYTEST_DISABLE_PLUGIN_AUTOLOAD='1',PYTHONUTF8='1',PYTHONIOENCODING='utf-8')
+ cmd=[sys.executable,'-B','-c',r.CHILD,str(f),'-q','-p','no:cacheprovider','--basetemp',str(tmp/'pytest')];p=subprocess.run(cmd,cwd=root,env=env,capture_output=True,timeout=30);log=out/'dns-boundary-after.log';log.write_bytes(p.stdout+p.stderr)
+ obj={'source_sha256':hashlib.sha256((root/'scripts/run_tests.py').read_bytes()).hexdigest(),'exit_code':p.returncode,'argv':cmd,'log_sha256':hashlib.sha256(log.read_bytes()).hexdigest(),'actual_external_DNS_queries':0,'guard_checked_with_real_socket_resolver_APIs':True,'safety':'Secondary audit hook raises before OS resolver if real CHILD hook misses DNS event; no stubbed successful resolver result.'}
+finally:
+ assert tmp.resolve().parent==root.resolve() and tmp.name.startswith('.tedns-');shutil.rmtree(tmp)
+obj['cleanup_temporary_absent']=not tmp.exists();(out/'dns-boundary-after.json').write_text(json.dumps(obj,ensure_ascii=False,indent=2),encoding='utf8');print(p.stdout.decode('utf8',errors='replace')[-2200:])

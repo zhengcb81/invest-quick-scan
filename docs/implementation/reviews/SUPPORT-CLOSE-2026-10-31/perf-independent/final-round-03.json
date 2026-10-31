@@ -1,0 +1,29 @@
+{
+  "protocol": "iqs.independent_perf_final_review_round/1.0",
+  "reviewer_agent_id": "/root/review_answer_close31",
+  "payload_commit": "d4679a1c22bad1590b40db7c7c6300f306148e81",
+  "manifest_sha256": "890ff0d4c5e52531dde9d404dd8f601af2917f2dd8c7258c14ea457ca1e051fe",
+  "recorded_at_utc": "2026-10-31T22:31:21.910522+00:00",
+  "status": "changes_required",
+  "open_findings": [
+    {
+      "id": "PERF-PROVENANCE-REGRESSION-01",
+      "priority": "medium",
+      "path": "tests/unit/test_execution_evidence.py:test_matrix_child_failure_cleans_its_entire_variant_root",
+      "reason": "New public driver source-commit metadata now needs docs/consumed-inputs.json under LAB_ROOT. Existing failure-path test redirects LAB_ROOT to empty synthetic tmp root and fails FileNotFoundError before its intended injected child failure.",
+      "evidence": [
+        "metadata-regression.json",
+        "metadata-regression.log"
+      ],
+      "actual": "1 failed /2 passed; intended child failure assertion not reached",
+      "repair": "Populate explicit frozen/synthetic source_repositories fixture under tmp/docs; do not stub the validator or weaken the expected child-failure cleanup assertion. Run affected3 plus new2 provenance tests, refresh C/manifest; no need to rerun24 matrix or64 unaffected suite."
+    }
+  ],
+  "closed_findings": [
+    "PERF-DOC31-01: current README/design removes unsafe C1 and old numbers",
+    "PERF-TEST31-01: final8 independent tests assert zero bind and pass"
+  ],
+  "payload_check": "51 Git blobs match;999 vendor content matches fixed source blobs with633 checkout EOL-only historical written receipt differences",
+  "measurements_check": "24 distinct valid reps;21 preserved files hashes confirmed;new3 candidate36;derived/semantic all recomputed;36 slower retained",
+  "production_qualification_granted": false
+}
