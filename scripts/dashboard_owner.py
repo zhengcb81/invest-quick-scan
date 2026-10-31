@@ -158,6 +158,9 @@ class OwnerGateway:
     def entity(self, entity_id):
         return self._call("entity", {"entity_id": _identifier(entity_id, "entity_id")})
 
+    def entity_view(self, entity_id):
+        return self._call("entity_view", {"entity_id": _identifier(entity_id, "entity_id")})
+
     def history(self, entity_id):
         return self._call("history", {"entity_id": _identifier(entity_id, "entity_id")})
 
@@ -340,6 +343,12 @@ def _owner_worker(config, operation, payload):
         return {**result, "library_summary": _library_summary(result, runtime)}
     if operation == "entity":
         return build_quick_scan_entity(paths, payload["entity_id"])
+    if operation == "entity_view":
+        from datetime import datetime, timezone
+        from dashboard_temporal import build_entity_view
+        detail = build_quick_scan_entity(paths, payload["entity_id"])
+        return build_entity_view(detail, observations.get_observation, entity_id=payload["entity_id"],
+                                 now_utc=datetime.now(timezone.utc).isoformat())
     if operation in {"history", "facts"}:
         entity(payload["entity_id"])
         if not observations.database_path.is_file():

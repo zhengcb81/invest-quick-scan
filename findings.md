@@ -1,3 +1,31 @@
+## 2026-10-31T21:54:38.705200+00:00 ANSWER签收、PERF安全审查通过；TIME/RESULT已定点接线，正在验收
+
+ANSWER审计缺口已关闭：C2eb59d3d64e58d387f6abde4f2c9d913e4f34955 / M65973fb8fcb14efe57e338d243caf066fe5fcc4d，70份Git blob匹配，独立63测试通过、8攻击/4时间边界通过。51来源全部实际尝试（35可读/16不可读），96命题拆为63外部事实与33原答案行为；16外部不可评仍未知，历史午夜时间声明保留，历史真实读取时点不补造。签收是审计覆盖/未知透明，不是金融准确率或原分数认证。
+
+PERF的安全/故障缺口已由不同作者交叉独审通过，固定patch SHA 0b7ee61adfddd219b6dd9b43ae2d50008be6edb815957b8403b561ea0be73451。原39+新增25=64实际关联测试通过，最后增加零bind断言后独立8例通过（不加分母）。旧缓存preview导致篡改包先写consumer_binding再拒绝的有效RED已根修：绑定前重新做原preview/status，只合并worker启动；迟到/未知ACK、send_uncertain、reopen和撤权边界保持。grant/publisher的unit使用原类+明确synthetic typed boundary，不冒称生产公共CLI全链资格。
+
+计时副线当前21/24合成测量完成，36包候选仍在运行；原40分钟有界runner如超时，只复用已发布完整cell，清理后补缺cell，不重跑21次。它不改变安全审查结论，不给性能普遍提速资格。为免无关计时阻塞，只读TIME/RESULT接线在上述独立代码hash审查与暂存21TIME/12Node/53原UI关联测试通过后推进；不是把性能整包提前签收，性能最终C/M与实测归档仍待收口。PERF优化没有安装到原服务。
+
+已定点写原IQS scripts/dashboard_owner.py/dashboard_service.py、新dashboard_temporal.py及纯TIME vendor；原UI只加已签RESULT组件、只读host和CSS。新增显式entity-view协议，旧entity/refresh DTO、refresh_id、TTL、原回答/分数/预算/名单均不变。TIME严格read_only_shadow，current_context_verified=false、reuse_authorized=false；仅说明多时钟，缺真实独立核查凭证不自动续期。
+
+接线独审两个真实问题已修：旧groups/fields/execution坏结构逐条未知而非整公司失败；外来父实体的C06/质量汇总不再借请求公司标题显示。原UI关联测试还发现一个先于本轮的过时断言，baseline同样失败：未知启动回执早已改为不确认新进程，现测试明确检验未知、不声称已启动，未为测试放宽产品逻辑。新wrapper测试fixture改成动态读取当前entity，避免持有旧mock对象。当前8766经端口/HTTP实核未运行，后续按原部署启动，不杀历史记忆PID、不重跑108题或调用收费API。
+
+**Next Step：** 完成已安装原host关联/native只读验收、原8766三市场浏览器结果链路和独立最终审查；并收口性能计时、C/M与引用预检。最后更新README/交接与薄证据，精确提交推送，保留其他writer的2026-10-10 README与历史未跟踪文件。
+
+---
+
+## 2026-10-31T20:41:32+00:00 继续补齐ANSWER/PERF，再接TIME/RESULT（执行中）
+
+用户明确授权本轮直接修复、独审后原服务接线、PWF/提交/推送，不再重复询问权限。按现有根计划推进，保留其他writer的2026-10-10 README。已只读核七仓HEAD/无tracked改动：ANSWER M5c14fd9、PERF M72718ae、TIME Me434fe7、RESULT M118387b、原UI2f1f450、StockQA0dc799a、StockWiki8527bc7。最新四包前轮的两个partial不提前改complete。
+
+只有两个大节点：A ANSWER精确来源/真实读取精度与PERF双变体撤权/迟到或未知ACK/send_uncertain矩阵，根修/隔离测试后不同作者集中复审；B 前置通过后TIME/RESULT原owner/UI接线、兼容与真实浏览器/隔离原生验收，再集中独审并提交推送。先并行只读核源/故障设计/接线契约勘察，不在A过关前写原服务。使用本轮runs/close-support31自有冻结副本及短TEMP，无原库写/无下载全文/无密钥泄漏，收费实验非关闭缺口必需，不默认重跑108题。
+
+已发现：ANSWER历史51个read_at全午夜且14个digest，需保留原reported值，不能把今天重读冒充当时抓取。当前内置reader能读若干精确官方PDF，不下载/保存全文，缺源仍not_assessable可完成审计。TIME提案所说直接reuse不能照搬：原request/refresh策略是严格schema且refresh_id哈希绑定，应版本化原生映射/兼容接线；缺trusted receipt时不放宽legacyTTL，不接受consumer自签verified_at。IQS CodeGraph context再次挂起，已终止、未重建索引，回退已定位文件读取；相关agent仅核源/审查/设计，源实现由总控接管。
+
+**Next Step：** 固定ANSWER/PERF当前M副本，完成来源1.1补证（精确URL/方式/时点/可得性/未知）及真实原生故障反例；修后独审通过才进入原服务写入。旧32答/96命题/分数/日期与原24h历史保持，不造真值或fresh。
+
+---
+
 ## 2026-10-31T20:29:25+00:00 新四包查验收口：两包签收、两包partial；软件根修已提交
 
 统一报告：[OUTSOURCE-ALL-2026-10-31](docs/implementation/reviews/OUTSOURCE-ALL-2026-10-31/report.md)。已按最新Git字节、原CLI、固定输入、实际单元/集成/真实Chrome及不同作者最终独审查验；不是依作者complete或schema转绿。前批比较/名单实际HEAD与已签关键hash完全一致，保持签收。历史55个catalog ID/50个直达路径仅是盘点，不是55包新验收；R1真实嵌套路径和BASIC三仓交付已辨认，早期partial/TH-IN缺交接不凭本轮口头完工关闭。

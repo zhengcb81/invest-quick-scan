@@ -1,0 +1,79 @@
+{
+  "protocol": "iqs.time_result_wiring_pins/1.0.0",
+  "artifacts": [
+    {
+      "repo": "iqs-time-semantics-lab",
+      "commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "source": "src/iqs_time_semantics/__init__.py",
+      "source_sha256": "2e105b1dd8bb1f49583d3ff35765d0f1381974866a05c2b1ab9f191ebfc0f2f2",
+      "target": "scripts/iqs_temporal_vendor/__init__.py",
+      "target_sha256": "2b030fe3583a483c272f1dc615eb06e92e9e0c0b9ab8301159f6ac35a5524687",
+      "transform": "absolute package imports to relative only"
+    },
+    {
+      "repo": "iqs-time-semantics-lab",
+      "commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "source": "src/iqs_time_semantics/assess.py",
+      "source_sha256": "675cb37c74a86570267bc2a42efa3b02bcc7d41ce18ffdb83c933eee677be8ef",
+      "target": "scripts/iqs_temporal_vendor/assess.py",
+      "target_sha256": "dae120b22d3102b748ac89959034f325d9f6c94e93a75140106159563ebea8d2",
+      "transform": "absolute package imports to relative only"
+    },
+    {
+      "repo": "iqs-time-semantics-lab",
+      "commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "source": "src/iqs_time_semantics/policy.py",
+      "source_sha256": "101712f861c9fb1191b1321cda1e23dec22f53872c82c9d5e9148b73fdf7763c",
+      "target": "scripts/iqs_temporal_vendor/policy.py",
+      "target_sha256": "68529114c91ad23344c72ce8a0b04ffb3cc9af029f1b5da708e03357cb84934c",
+      "transform": "absolute package imports to relative only"
+    },
+    {
+      "repo": "iqs-time-semantics-lab",
+      "commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "source": "src/iqs_time_semantics/errors.py",
+      "source_sha256": "100885ee097aad3229965bee8cdeebeb07d338b2723e1a2c274dbb39ce809565",
+      "target": "scripts/iqs_temporal_vendor/errors.py",
+      "target_sha256": "100885ee097aad3229965bee8cdeebeb07d338b2723e1a2c274dbb39ce809565",
+      "transform": "absolute package imports to relative only"
+    },
+    {
+      "repo": "iqs-time-semantics-lab",
+      "commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "source": "src/iqs_time_semantics/timefields.py",
+      "source_sha256": "ba01643cb4555719b442034ffe67506853017b9a6b9ba56de40406ac69aa9f1b",
+      "target": "scripts/iqs_temporal_vendor/timefields.py",
+      "target_sha256": "ba01643cb4555719b442034ffe67506853017b9a6b9ba56de40406ac69aa9f1b",
+      "transform": "absolute package imports to relative only"
+    },
+    {
+      "repo": "iqs-time-semantics-lab",
+      "commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "source": "content/time-policy-catalog.json",
+      "source_sha256": "2c55a036aa5a80441199c0142f860d73ed2a835430268e50fb346d9cf0c0c97e",
+      "target": "scripts/iqs_temporal_vendor/time-policy-catalog.json",
+      "target_sha256": "2c55a036aa5a80441199c0142f860d73ed2a835430268e50fb346d9cf0c0c97e",
+      "transform": "none"
+    },
+    {
+      "repo": "iqs-result-trust-ui-lab",
+      "commit": "0f15dce2a8b5c2813703b0f0905e2526071482f7",
+      "source": "src/result_trust_panel.js",
+      "source_sha256": "79ba474270d796158a25f6cd3574d5e13e58758fc08bbcc62d8f9efbb14b3d34",
+      "target": "src/app/vendor/result-trust/result_trust_panel.js",
+      "target_sha256": "cc4ba5aca28dfddd9c43b6abe4df31da5952ffc8095906e628882cc544150864",
+      "transform": "One wording correction: native missing_date covers absent information date OR valid_until; no freshness rule or source value changed."
+    },
+    {
+      "repo": "iqs-result-trust-ui-lab",
+      "commit": "0f15dce2a8b5c2813703b0f0905e2526071482f7",
+      "source": "src/result_trust_panel.css",
+      "source_sha256": "cdb07751b99e42145052ee00ebb6e1096a29128877728cc99b7a4b8927b67fc7",
+      "target": "src/app/vendor/result-trust/result_trust_panel.css",
+      "target_sha256": "cdb07751b99e42145052ee00ebb6e1096a29128877728cc99b7a4b8927b67fc7",
+      "transform": "none"
+    }
+  ],
+  "native_oracle": "Current configured StockWiki, no frozen vendor sys.path",
+  "clock_mode": "read-only shadow; no current-context verification or dispatch authority"
+}

@@ -11,7 +11,7 @@ python -m pip install -r requirements.txt
 python scripts/open_dashboard.py
 ```
 
-本机当前已运行的原工作台可直接打开 `http://127.0.0.1:8766/`，无需再启动一份服务。以后重启此本机配置可运行 `python scripts/open_dashboard.py --no-refresh --port 8766 --dashboard-config config/dashboard.local.json`。
+本机原部署地址为 `http://127.0.0.1:8766/`。服务已启动时可直接打开，无需再启动一份。重启此本机配置可运行 `python scripts/open_dashboard.py --no-refresh --port 8766 --dashboard-config config/dashboard.local.json`。
 
 终端打印本机地址，默认 `http://127.0.0.1:8765/`。端口被占用时使用其他空闲端口，以终端输出为准。浏览器打开后进入工作台。五个工作区为总览、扫描、公司研究、题库和设置；各自包含原有子页面，旧地址仍可使用。可维护名单、查看原结果、按题义和分数条件筛选、比较不同观测，并预览和运行已登记扫描包。Ctrl+C停止服务。
 
@@ -33,6 +33,8 @@ python scripts/open_dashboard.py --ui-root "C:/path/to/iqs-question-bank-ui-lab"
 首页分别展示正式库覆盖和历史草稿；截至2026-10-30本轮，隔离真实工作区已完成腾讯、微软、宁德时代各36题的真实回答与原ACK签收（原105成功＋3条真实替代，旧失败留存），并通过原8766冷重启后108个有效记录元数据一致、零新增模型请求的独立复核。真实过期单题刷新及新截止日单题均已另行运行并取得原ACK；不过新回答的信息日期仍旧，原24小时规则正确不予新鲜复用，不能把新生成或新入库当成最新事实。新鲜结果复用的真实正例仍待补证，检查点恢复与该结论分开。实时进度以PWF及原交付任务为准。结果详情可返回原筛选和快照；只有一条历史时显示暂无对照。完整理由、来源和元数据可展开，重大资格缺口保留在主层。
 
 完整操作与配置见[工作台使用说明](docs/implementation/company-and-bank-ui.md)。生产结果直接读StockWiki；题库矩阵、旧草稿与旧选股器仍是明确分开的展示快照。2026-10-28的CATL与Microsoft历史单题恢复结果也保留在原工作区；它们不能替代本轮完整题库验收。原ACK验证工程交付，不代表金融准确性已通过或全名单已有结果。
+
+公司结果页每条答案可展开“完整理由、来源与记录”，查看新增的“结果可信信息”：分别列出归属、分数、资料日期、研究截止、观测时间、原规则状态、ACK和金融核查状态。“查看原记录（只读）”直接展开该条原记录。缺失ACK不会从库内总数推断；外来实体的记录和质量汇总隔离显示。时点说明区分长期经营特征、定期财务、行情/事件敏感或混合信息；它只解释已存日期，缺少原身份修订或独立核查凭证时保持未知，不自动延长缓存有效期。旧公司详情接口和原复用规则保持兼容。接线边界与复验见[时间与结果视图接线说明](docs/implementation/time-result-wiring.md)。
 
 设置页提供连接路径、模型顺位、共享额度、并发和预算字段表单，不必手写JSON；新扫描确认有效期可设0.25–24小时，默认1小时、较长扫描可选4小时，只影响之后明确准备的新确认，已有确认和预算不变。高级JSON仍可展开。保存由原服务校验，发生并发改动须重新读取，保存本身不调用模型。缺少合法原部署、模型或费用授权时，扫描仍会显示缺项。
 
@@ -83,7 +85,7 @@ python scripts/thin_scan.py --company "宁德时代" --out runs/basic-dry-run --
 
 ## 当前可并行施工包
 
-[2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)包含时间语义、真实回答审计、原入库性能、结果可信度UI四条独立线。2026-10-31已完成总控查验和直接修复：时间候选、只读结果组件通过；回答审计的金融内容、性能候选的完整故障矩阵仍为部分验收。具体C/M、测试和剩余项见[验收报告](docs/implementation/reviews/OUTSOURCE-ALL-2026-10-31/report.md)。这四包尚未接入原服务，不代表fresh真实正例、金融准确性或2000家公司吞吐通过。
+[2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)包含时间语义、真实回答审计、原入库性能、结果可信度UI四条独立线。[首轮验收报告](docs/implementation/reviews/OUTSOURCE-ALL-2026-10-31/report.md)保留当时的partial结论；后续已补齐回答审计的来源方式、读取精度与未知项，以及性能候选的安全根修和故障矩阵独审。审计完成不等于32份原回答金融全对，性能候选也未安装到原服务。TIME/RESULT现已接入原工作台的只读视图，最终计时与集成验收进展以PWF及[接线说明](docs/implementation/time-result-wiring.md)为准；不据此关闭fresh真实正例、金融准确性或2000家公司吞吐门。
 
 ## 项目分工与配置
 

@@ -503,6 +503,14 @@ class DashboardService:
                 return result
             if path == 'coverage':
                 return self._gateway('owner').coverage()
+            if path == 'entity-view':
+                entity_id = query.get('id', query.get('entity_id', ''))
+                if not entity_id:
+                    raise ProductError('entity_required', '请选择已注册公司。')
+                result = self._gateway('owner').entity_view(entity_id)
+                result['entity']['draft_runs'] = self._drafts(entity_id)
+                result['entity']['draft_source_label'] = '历史薄草稿，与当前owner观察分开'
+                return result
             if path in {'entity', 'history', 'facts'}:
                 entity_id = query.get('id', query.get('entity_id', ''))
                 if not entity_id:
