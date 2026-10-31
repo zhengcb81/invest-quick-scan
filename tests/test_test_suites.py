@@ -5,6 +5,8 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("split_test_runner", ROOT / "scripts/run_tests.py")
@@ -30,6 +32,44 @@ def test_current_manifest_partitions_every_test_file_exactly_once():
     assert list(runner.selection("fast", suites)) == ["fast"]
     assert "test_producer_pipeline_e2e.py" in suites["e2e"]
     assert all("native_e2e" in name for name in suites["native"])
+
+
+def test_test_child_permits_owned_literal_loopback_but_rejects_external_network(tmp_path):
+    fixture=tmp_path/'test_network_fixture.py'
+    fixture.write_text('''import socket, threading
+def test_loopback():
+    with socket.socket() as server:
+        server.bind(('127.0.0.1',0));server.listen(1)
+        def accept():
+            conn,_=server.accept()
+            with conn:conn.sendall(b'ok')
+        thread=threading.Thread(target=accept,daemon=True);thread.start()
+        with socket.create_connection(server.getsockname(),timeout=3) as client:
+            assert client.recv(2)==b'ok'
+        thread.join(timeout=3);assert not thread.is_alive()
+def test_external():
+    import pytest
+    with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+        socket.create_connection(('203.0.113.1',443),timeout=.1)
+    with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+        socket.getaddrinfo('external.invalid',443)
+    with socket.socket() as outbound:
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+            outbound.connect(('203.0.113.1',443))
+def test_udp():
+    import pytest
+    with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as udp:
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+            udp.connect(('127.0.0.1',9))
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+            udp.sendto(b'owned-fixture',('127.0.0.1',9))
+    with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+        socket.getaddrinfo('127.0.0.1',9,type=socket.SOCK_DGRAM)
+''',encoding='utf-8')
+    env=runner.clean_environment(tmp_path)
+    result=subprocess.run([sys.executable,'-B','-c',runner.CHILD,str(fixture),'-q','-p','no:cacheprovider'],
+        cwd=tmp_path,env=env,capture_output=True,text=True,encoding='utf-8',timeout=30)
+    assert result.returncode==0,result.stdout+result.stderr
 
 
 @pytest.mark.parametrize("mutation", ["unassigned", "missing", "duplicate", "traversal"])

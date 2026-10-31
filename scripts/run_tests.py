@@ -18,8 +18,22 @@ ROOT = Path(__file__).resolve().parents[1]
 GROUPS = ("fast", "integration", "e2e", "native")
 PROFILES = (*GROUPS, "offline", "all")
 NATIVE_ENV = ("IQS_C06_OWN", "IQS_C06_COMPOSITION_CODE_ROOT", "IQS_C06_COMPANY_ROOT", "IQS_C06_BRIDGE_ROOT")
-CHILD = """import sys
+CHILD = """import sys, ipaddress, socket
+def loopback(value):
+    try:
+        return ipaddress.ip_address(value).is_loopback
+    except (TypeError, ValueError):
+        return False
 def deny(event, args):
+    if event == 'socket.connect':
+        address = args[1]
+        sock = args[0]
+        if (sock.type == socket.SOCK_STREAM and sock.proto in (0, socket.IPPROTO_TCP)
+                and isinstance(address, tuple) and loopback(address[0])):
+            return
+    elif (event == 'socket.getaddrinfo' and loopback(args[0])
+            and args[3] == socket.SOCK_STREAM and args[4] in (0, socket.IPPROTO_TCP)):
+        return
     if event in {'socket.connect', 'socket.getaddrinfo', 'socket.sendto'}:
         raise RuntimeError('offline_test_network_forbidden')
 sys.addaudithook(deny)
@@ -83,7 +97,7 @@ def clean_environment(temporary, native=False):
 
 
 def run_group(root, name, files, output, temp_root=None):
-    """One fresh process; network is denied, real API experiments are separate."""
+    """One fresh process; external network denied, literal TCP loopback only."""
     root, output = Path(root), Path(output)
     started = time.perf_counter()
     with tempfile.TemporaryDirectory(prefix="iqs-tests-", dir=temp_root) as temporary:
@@ -100,7 +114,8 @@ def run_group(root, name, files, output, temp_root=None):
             exit_code = completed.returncode
     result = dict(name=name, files=files, exit_code=exit_code,
         elapsed_seconds=round(time.perf_counter() - started, 3), temporary_root_removed=not owned.exists(),
-        api_keys_removed=True, network_denied_in_pytest_process=True,
+        api_keys_removed=True, network_denied_in_pytest_process=False,
+        external_network_denied_in_pytest_process=True, literal_tcp_loopback_allowed=True,
         log=str(output / (name + ".log")))
     xml = output / (name + ".xml")
     if xml.exists():

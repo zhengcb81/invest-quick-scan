@@ -8,6 +8,9 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
+# Explicit test-only dependency, matching the original owner's sibling fixture.
+# Production workers still use only the configured native StockWiki path.
+sys.path.insert(0,str(ROOT.parent/'StockWiki'))
 import dashboard_temporal as temporal
 
 NOW='2026-10-31T12:00:00Z'
