@@ -34,7 +34,8 @@ def deny(event, args):
     elif (event == 'socket.getaddrinfo' and loopback(args[0])
             and args[3] == socket.SOCK_STREAM and args[4] in (0, socket.IPPROTO_TCP)):
         return
-    if event in {'socket.connect', 'socket.getaddrinfo', 'socket.sendto'}:
+    if event in {'socket.connect', 'socket.getaddrinfo', 'socket.sendto',
+                 'socket.gethostbyname', 'socket.gethostbyaddr', 'socket.getnameinfo'}:
         raise RuntimeError('offline_test_network_forbidden')
 sys.addaudithook(deny)
 import pytest

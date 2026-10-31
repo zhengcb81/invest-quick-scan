@@ -65,6 +65,16 @@ def test_udp():
             udp.sendto(b'owned-fixture',('127.0.0.1',9))
     with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
         socket.getaddrinfo('127.0.0.1',9,type=socket.SOCK_DGRAM)
+def test_dns_entrypoints():
+    import pytest
+    for resolve in (
+        lambda: socket.gethostbyname('external.invalid'),
+        lambda: socket.gethostbyname_ex('external.invalid'),
+        lambda: socket.gethostbyaddr('203.0.113.1'),
+        lambda: socket.getnameinfo(('203.0.113.1',443),0),
+    ):
+        with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
+            resolve()
 ''',encoding='utf-8')
     env=runner.clean_environment(tmp_path)
     result=subprocess.run([sys.executable,'-B','-c',runner.CHILD,str(fixture),'-q','-p','no:cacheprovider'],

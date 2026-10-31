@@ -1,6 +1,6 @@
 # 分层测试入口（2026-10-25）
 
-2026-10-31接线收尾已登记后续遗漏的6文件（含本轮TIME/HTTP两文件），清单覆盖所有当前测试一次，不再由旧99文件数字推断。测试进程允许**字面IP的TCP loopback**用于自有HTTP夹具；公网连接、外部DNS（getaddrinfo）与UDP connect/sendto仍在pytest进程审计钩子拒绝。证据字段区分`network_denied_in_pytest_process=false`与`external_network_denied_in_pytest_process=true`/`literal_tcp_loopback_allowed=true`，不再把允许本地测试写成所有网络均禁止。钩子仍不自动覆盖子孙CLI，不是整树网络沙箱。独立真实loopback握手及外部地址/DNS拒绝均有回归。
+2026-10-31接线收尾已登记后续遗漏的6文件（含本轮TIME/HTTP两文件），清单覆盖所有当前测试一次，不再由旧99文件数字推断。测试进程允许**字面IP的TCP loopback**用于自有HTTP夹具；公网连接、外部DNS解析入口（getaddrinfo/gethostbyname/gethostbyname_ex/gethostbyaddr/getnameinfo）与UDP connect/sendto仍在pytest进程审计钩子拒绝。证据字段区分`network_denied_in_pytest_process=false`与`external_network_denied_in_pytest_process=true`/`literal_tcp_loopback_allowed=true`，不再把允许本地测试写成所有网络均禁止。钩子仍不自动覆盖子孙CLI，不是整树网络沙箱。独立真实loopback握手及外部地址/DNS拒绝均有回归。
 
 日常从仓库根运行 `python scripts/run_tests.py`，默认仅运行 `fast`。不要每次小改都跑全套，也不要用快速层通过代替大节点验收。测试使用原来的断言与实现，没有把慢测试改成skip。
 
