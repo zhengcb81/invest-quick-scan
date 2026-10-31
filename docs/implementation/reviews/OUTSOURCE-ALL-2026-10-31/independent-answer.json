@@ -1,0 +1,40 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "ANSWER-AUDIT-30",
+  "status": "passed",
+  "open_findings": [],
+  "review_scope": "software_integrity_and_partial_qualification_boundary_only",
+  "financial_content_delivery_status": "partial",
+  "production_ready": false,
+  "financial_qualification_granted": false,
+  "author_agent_id": "/root",
+  "reviewer_agent_id": "/root/accept_perf30",
+  "invocation_reference": "Real collaboration subagent /root/accept_perf30; parent follow-up requested independent final ANSWER review; reports and fresh test logs in this directory",
+  "payload_commit": "3dbf088a67ea1b9eaeab006173fc6e173dfca2fc",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "payload_manifest_sha256": "bef343e87ccce893aef942c00ae50e16918624e799a809a1652605bb14c81db6",
+  "manifest_artifacts_checked": 30,
+  "manifest_mismatches": [],
+  "pytest": {
+    "passed": 40,
+    "failed": 0,
+    "skipped": 0,
+    "actual_command_result": "checks.json",
+    "raw_log": "pytest.log",
+    "log_sha256": "a069f7236fc7df567bd83bf6bff8869e3c4e8a40fad86cf623aa614e167ff539"
+  },
+  "adversarial_rechecks": "currency/unit/period corruption rejected in final C; old 348ca7d accepted these three and remains historical evidence, not signed final",
+  "limitations": [
+    "Not a new financial truth/source assessment; no web requests or source documents downloaded.",
+    "Reuters homepage cannot stand in for exact article; digest-only PDF references and midnight placeholders need genuine source trace/precision.",
+    "32 answers /96 propositions and software validation do not supply an audited financial correctness denominator.",
+    "Original handoff metadata still needs controller partial/full-commit rebinding; no approval for old complete/short-SHA metadata."
+  ],
+  "cleanup": {
+    "private_input_copy_removed": true,
+    "test_temporary_root_removed": true,
+    "foreign_repo_writes": false,
+    "paid_api_calls": 0
+  },
+  "reviewed_at_utc": "2026-10-31T20:20:31.290486+00:00"
+}

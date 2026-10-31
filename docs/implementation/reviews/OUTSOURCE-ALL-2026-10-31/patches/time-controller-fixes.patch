@@ -1,0 +1,269 @@
+diff --git a/src/iqs_time_semantics/assess.py b/src/iqs_time_semantics/assess.py
+index e993506..3ba5f5d 100644
+--- a/src/iqs_time_semantics/assess.py
++++ b/src/iqs_time_semantics/assess.py
+@@ -46,7 +46,10 @@ _USABLE_STATUSES = {"scored", "answered", "not_applicable"}
+ def _parse_utc(value: Any, *, code: str = "timestamp_not_utc") -> datetime:
+     if not isinstance(value, str) or not _UTC_TIMESTAMP.fullmatch(value):
+         raise bad(code, repr(value)[:80])
+-    parsed = datetime.fromisoformat(value[:-1] + "+00:00" if value.endswith("Z") else value)
++    try:
++        parsed = datetime.fromisoformat(value[:-1] + "+00:00" if value.endswith("Z") else value)
++    except (ValueError, OverflowError) as exc:
++        raise bad(code, repr(value)[:80]) from exc
+     if parsed.utcoffset() != timedelta(0):
+         raise bad(code, value)
+     return parsed
+@@ -122,6 +125,8 @@ def _normalize_observation(obs: Any) -> dict[str, Any]:
+         raise bad("answer_status_invalid", repr(answer.get("status") if isinstance(answer, dict) else answer))
+     if not isinstance(answer.get("evidence", []), list):
+         raise bad("evidence_invalid", type(answer.get("evidence")).__name__)
++    if any(not isinstance(item, dict) for item in answer.get("evidence", [])):
++        raise bad("evidence_invalid", "each evidence entry must be an object")
+     normalized = dict(obs)
+     if "check_level" not in normalized:
+         # Frozen _matching_meta emits the constant check_level for reuse
+@@ -138,6 +143,13 @@ def _normalize_observation(obs: Any) -> dict[str, Any]:
+             if "segment_id" not in obs:
+                 raise bad("observation_missing_field", "segment_id")
+             normalized["scope_id"] = obs["segment_id"]
++    canonical_key = {"entity": "entity_id", "security": "security_id", "segment": "segment_id"}[obs["scope"]]
++    if canonical_key in obs and (
++        not isinstance(obs[canonical_key], str)
++        or not obs[canonical_key]
++        or normalized["scope_id"] != obs[canonical_key]
++    ):
++        raise bad("observation_scope_id_conflict", canonical_key)
+     event = obs.get("event_invalidated_at")
+     if event is not None:
+         # Validate on BOTH paths at the boundary: a malformed event must be a
+@@ -348,15 +360,18 @@ def _publication_check(answer: dict[str, Any], stored_cutoff: str, now_dt: datet
+     observation was captured under (original ``source_available_as_of``
+     semantics: end of cutoff day, unknown publication never satisfies).
+     """
+-    from datetime import timezone
+-
+     cutoff_date = _parse_date_only(stored_cutoff)
+     reasons: list[str] = []
+     unknown = False
++    if not answer.get("evidence"):
++        return "refresh_required", ["publication_missing"]
+     for item in answer.get("evidence", []):
+         retracted = item.get("retracted_at")
+-        if isinstance(retracted, str) and _parse_utc(retracted, code="publication_invalid") <= now_dt:
+-            reasons.append("source_withdrawn_or_corrected")
++        if retracted is not None:
++            if not isinstance(retracted, str):
++                raise bad('publication_invalid', repr(retracted)[:60])
++            if _parse_utc(retracted, code="publication_invalid") <= now_dt:
++                reasons.append("source_withdrawn_or_corrected")
+         published = item.get("published_at")
+         if published is None:
+             unknown = True
+@@ -365,14 +380,18 @@ def _publication_check(answer: dict[str, Any], stored_cutoff: str, now_dt: datet
+             raise bad("publication_invalid", repr(published)[:60])
+         if "T" in published:
+             published_dt = _parse_utc(published, code="publication_invalid")
+-            end_of_day = datetime.combine(cutoff_date, datetime.min.time(), tzinfo=timezone.utc).replace(
+-                hour=23, minute=59, second=59
+-            )
+-            if published_dt > end_of_day:
++            # UTC date comparison includes the complete cutoff day, including
++            # fractional seconds in its last second, without rounded endpoints.
++            if published_dt.date() > cutoff_date:
+                 reasons.append("evidence_published_after_cutoff")
++            if published_dt > now_dt:
++                reasons.append("evidence_published_in_future")
+         else:
+-            if _parse_date_only(published) > cutoff_date:
++            published_date = _parse_date_only(published)
++            if published_date > cutoff_date:
+                 reasons.append("evidence_published_after_cutoff")
++            if published_date > now_dt.date():
++                reasons.append("evidence_published_in_future")
+     if unknown:
+         return "not_assessable", ["publication_unknown"]
+     if reasons:
+@@ -408,6 +427,8 @@ def _verification_check(
+     if verified_dt > now_dt:
+         return "invalid", ["verification_receipt_invalid"], receipt
+     expires_at = receipt.get("expires_at")
++    if expires_at is not None and not isinstance(expires_at, str):
++        return "invalid", ["verification_receipt_invalid"], receipt
+     if isinstance(expires_at, str) and _parse_utc(expires_at, code="verification_receipt_invalid") <= now_dt:
+         return "expired", ["verification_receipt_expired"], receipt
+     if receipt.get("withdrawn_at"):
+@@ -415,10 +436,30 @@ def _verification_check(
+     binding_keys = ("entity_id", "scope", "scope_id", "question_id", "field_id", "observation_id")
+     if any(receipt.get(k) != obs.get(k) for k in binding_keys):
+         return "scope_mismatch", ["verification_receipt_scope_mismatch"], receipt
++    selection = question_policy["policy_selection"]
++    policy_version = f"{selection['policy_family']}/{selection['policy_version']}"
++    if receipt.get("policy_version") != policy_version:
++        return "policy_mismatch", ["verification_receipt_policy_mismatch"], receipt
+     coverage = receipt.get("coverage")
+-    if not isinstance(coverage, dict) or coverage.get("search_executed") is not True or not coverage.get("search_receipt_id"):
++    if not isinstance(coverage, dict) or coverage.get("search_executed") is not True:
+         # "searched but nothing found" without a real tool receipt is not coverage.
+         return "coverage_missing", ["verification_coverage_missing"], receipt
++    receipt_id = coverage.get("search_receipt_id")
++    sources = coverage.get("sources_checked")
++    if (
++        not isinstance(receipt_id, str) or not receipt_id.strip()
++        or not isinstance(sources, list) or not sources
++        or any(not isinstance(source, str) or not source.strip() for source in sources)
++    ):
++        return "coverage_missing", ["verification_coverage_missing"], receipt
++    if coverage.get("cutoff") != obs["information_cutoff"]:
++        return "coverage_mismatch", ["verification_coverage_cutoff_mismatch"], receipt
++    try:
++        searched_dt = _parse_utc(coverage.get("searched_at"), code="verification_receipt_invalid")
++    except TimeSemanticsError:
++        return "invalid", ["verification_receipt_invalid"], receipt
++    if searched_dt > verified_dt:
++        return "invalid", ["verification_receipt_invalid"], receipt
+     if max_age_hours is not None:
+         if now_dt >= verified_dt + timedelta(hours=max_age_hours):
+             return "expired", ["verification_receipt_expired"], receipt
+diff --git a/src/iqs_time_semantics/timefields.py b/src/iqs_time_semantics/timefields.py
+index 31b6662..2e20287 100644
+--- a/src/iqs_time_semantics/timefields.py
++++ b/src/iqs_time_semantics/timefields.py
+@@ -44,7 +44,7 @@ TIME_FIELDS: tuple[dict, ...] = (
+         "precision": "ISO date或UTC datetime；date-only按当日T00:00:00Z解释（与冻结legacy一致）",
+         "trusted_sources": ["answer.information_as_of（经 information_as_of ≤ cutoff 校验）"],
+         "cannot_represent": "导入/观察时刻；无证据支撑的当前性；三个不同时钟的合并",
+-        "refresh_use": "fact_valid_clock 读数；legacy TTL 的信息时刻腿；candidate 单独成钟，不掩盖其他钟",
++        "refresh_use": "legacy TTL 的信息时刻腿；candidate 行情题用作 market_clock，fact_valid_clock 保留 observed_at 执行腿，不将信息日期当核查日期",
+     },
+     {
+         "field_id": "searched_at",
+@@ -81,7 +81,7 @@ CLOCKS: tuple[str, ...] = (
+ )
+ 
+ CLOCK_READING_SOURCES: dict[str, str] = {
+-    "fact_valid_clock": "answer.information_as_of",
++    "fact_valid_clock": "candidate: observed_at（原执行时刻腿，非核查）；legacy: min(observed_at+TTL, information_as_of+TTL)",
+     "market_clock": "answer.information_as_of（行情类题的报价时点声明）或 answer.metrics[].as_of",
+     "reporting_period_clock": "answer.period_end / answer.metrics[].period_end",
+     "publication_clock": "answer.evidence[].published_at（逐条约束，不取最大日期）",
+diff --git a/tests/e2e/test_acceptance_named_refusals.py b/tests/e2e/test_acceptance_named_refusals.py
+new file mode 100644
+index 0000000..8ad5aa0
+--- /dev/null
++++ b/tests/e2e/test_acceptance_named_refusals.py
+@@ -0,0 +1,19 @@
++"""The public CLI must keep malformed JSON values as named refusals."""
++import json
++import pytest
++from tests.e2e.test_cli import _run_cli, _catalog_path, _fixture_context, _fixture_obs
++
++@pytest.mark.parametrize('change,code',[
++    ({'observed_at':'2026-99-99T09:00:00Z'},'timestamp_not_utc'),
++    ({'answer':{'evidence':[None]}},'evidence_invalid'),
++])
++def test_malformed_observation_refusal_is_json_without_output(tmp_path,change,code):
++    obs=_fixture_obs(tmp_path,**change)
++    original=obs.read_bytes()
++    out=tmp_path/'out.json'
++    proc=_run_cli('assess','--observation',str(obs),'--policy-catalog',str(_catalog_path()),
++        '--question-id','IQS_24','--policy','legacy-min-ttl/1.0.0','--now','2026-10-30T12:00:00Z',
++        '--cutoff','2026-10-30','--context',str(_fixture_context(tmp_path)),'--out',str(out))
++    assert proc.returncode==2
++    assert json.loads(proc.stderr)['error']==code
++    assert not out.exists() and obs.read_bytes()==original
+diff --git a/tests/unit/test_acceptance_boundaries.py b/tests/unit/test_acceptance_boundaries.py
+new file mode 100644
+index 0000000..aa592b1
+--- /dev/null
++++ b/tests/unit/test_acceptance_boundaries.py
+@@ -0,0 +1,89 @@
++"""Controller regressions: synthetic candidates, never production qualification."""
++import copy
++import pytest
++
++from iqs_time_semantics.assess import assess_reuse
++from iqs_time_semantics.errors import TimeSemanticsError
++from tests.unit.helpers import (
++    observation, context, question_policy_structural, with_candidate_selection,
++    valid_receipt, accept_all_verifier, NOW_DEFAULT, CUTOFF_DEFAULT,
++)
++
++def call(*, obs=None, receipt=None, required=None):
++    entry=question_policy_structural('IQS_24','score.iqs_24')
++    if required is not None:
++        entry['required_clocks']=required
++    policy=with_candidate_selection(entry, verification_clock={'max_age_hours':24})
++    return assess_reuse(
++        obs or observation(answer={'information_as_of':'2026-10-30T09:00:00Z'}),
++        policy, now_utc=NOW_DEFAULT, information_cutoff=CUTOFF_DEFAULT,
++        context=context(), verification_verifier=accept_all_verifier(receipt),
++    )
++
++def test_bound_valid_receipt_stays_candidate_only():
++    r=call(receipt=valid_receipt())
++    assert r['decision']=='reuse_candidate'
++    assert r['candidate_only'] is True and r['production_ready'] is False
++
++@pytest.mark.parametrize('change',[
++    {'policy_version':'wrong/9'},
++    {'policy_version':None},
++    {'coverage':{'searched_at':'2020-01-01T00:00:00Z','sources_checked':['https://example.com'],'search_executed':True,'search_receipt_id':'synthetic','cutoff':'2020-01-01'}},
++    {'coverage':{'searched_at':'2026-10-30T09:00:00Z','sources_checked':['https://example.com'],'search_executed':True,'search_receipt_id':'synthetic','cutoff':CUTOFF_DEFAULT}},
++    {'coverage':{'searched_at':None,'sources_checked':['https://example.com'],'search_executed':True,'search_receipt_id':'synthetic','cutoff':CUTOFF_DEFAULT}},
++    {'coverage':{'searched_at':'2026-10-30T07:30:00Z','sources_checked':[],'search_executed':True,'search_receipt_id':'synthetic','cutoff':CUTOFF_DEFAULT}},
++    {'coverage':{'searched_at':'2026-10-30T07:30:00Z','sources_checked':['https://example.com'],'search_executed':True,'search_receipt_id':True,'cutoff':CUTOFF_DEFAULT}},
++    {'expires_at':True},
++])
++def test_misbound_or_incomplete_receipt_never_renews(change):
++    r=call(receipt=valid_receipt(**change))
++    assert r['decision']!='reuse_candidate'
++    assert r['actual_source_dates']['verified_at'] is None
++    assert r['actual_source_dates']['searched_at'] is None
++
++@pytest.mark.parametrize('change',[
++    {'security_id':'SEC_FOREIGN'},
++    {'security_id':None},
++    {'scope':'entity','scope_id':'ENT_FOREIGN'},
++])
++def test_conflicting_canonical_subject_is_named_refusal(change):
++    with pytest.raises(TimeSemanticsError):
++        call(obs=observation(**change))
++
++@pytest.mark.parametrize('change',[
++    {'observed_at':'2026-99-99T09:00:00Z'},
++    {'answer':{'evidence':[None]}},
++    {'answer':{'evidence':[True]}},
++    {'answer':{'evidence':['not-an-object']}},
++])
++def test_malformed_input_is_named_refusal_not_runtime_crash(change):
++    with pytest.raises(TimeSemanticsError):
++        call(obs=observation(**change))
++
++def test_missing_citations_cannot_satisfy_publication_gate():
++    r=call(obs=observation(answer={'evidence':[]}))
++    assert r['decision']!='reuse_candidate'
++    assert 'publication_missing' in r['reason_codes']
++
++def test_inputs_unchanged_after_receipt_rejection():
++    obs=observation(); receipt=valid_receipt(policy_version='wrong/9')
++    before=copy.deepcopy((obs,receipt))
++    call(obs=obs,receipt=receipt)
++    assert (obs,receipt)==before
++
++def test_cutoff_day_includes_last_fractional_second():
++    obs=observation(answer={'evidence':[{'published_at':'2026-10-30T23:59:59.999999Z'}]})
++    policy=with_candidate_selection(question_policy_structural('IQS_24','score.iqs_24'))
++    r=assess_reuse(obs,policy,now_utc='2026-10-31T00:00:00Z',information_cutoff=CUTOFF_DEFAULT,context=context())
++    assert 'evidence_published_after_cutoff' not in r['reason_codes']
++
++def test_source_publication_after_actual_now_cannot_pass():
++    obs=observation(answer={'evidence':[{'published_at':'2026-10-30T23:00:00Z'}]})
++    r=call(obs=obs)
++    assert r['decision']!='reuse_candidate'
++    assert 'evidence_published_in_future' in r['reason_codes']
++
++@pytest.mark.parametrize('value',[True,False,123,{},[]])
++def test_malformed_source_retraction_is_never_silently_ignored(value):
++    with pytest.raises(TimeSemanticsError):
++        call(obs=observation(answer={'evidence':[{'published_at':'2026-10-29','retracted_at':value}]}))

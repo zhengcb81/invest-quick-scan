@@ -1,0 +1,99 @@
+{
+  "protocol": "iqs.controller_outsourced_acceptance/1.0.0",
+  "recorded_at_utc": "2026-10-31T20:28:34.975399+00:00",
+  "scope": "All current new deliveries in latest wave; previous compare/universe signed commits rechecked, broader catalog/path inventory only (not a fresh rerun or blanket acceptance of every historical partial package).",
+  "packages": [
+    {
+      "package_id": "TIME-SEMANTICS-30",
+      "status": "complete",
+      "payload_commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "metadata_commit": "e434fe70b5c2f32e0259134550f9d9e1ada4c68c",
+      "handoff": "C:\\Users\\郑曾波\\Projects\\iqs-time-semantics-lab\\docs\\handoff\\TIME-SEMANTICS-30\\handoff.json",
+      "review_ref": "C:\\Users\\郑曾波\\Projects\\iqs-time-semantics-lab\\docs\\handoff\\TIME-SEMANTICS-30\\controller-2026-10-31\\final.json"
+    },
+    {
+      "package_id": "RESULT-TRUST-30",
+      "status": "complete",
+      "payload_commit": "0f15dce2a8b5c2813703b0f0905e2526071482f7",
+      "metadata_commit": "118387b1b4a27ef77e3d6425b4663ca8a2e18c6c",
+      "handoff": "C:\\Users\\郑曾波\\Projects\\iqs-result-trust-ui-lab\\docs\\handoff\\RESULT-TRUST-30\\handoff.json",
+      "review_ref": "C:\\Users\\郑曾波\\Projects\\iqs-result-trust-ui-lab\\docs\\handoff\\RESULT-TRUST-30\\controller-2026-10-31\\final.json"
+    },
+    {
+      "package_id": "ANSWER-AUDIT-30",
+      "status": "partial",
+      "payload_commit": "3dbf088a67ea1b9eaeab006173fc6e173dfca2fc",
+      "metadata_commit": "5c14fd975dd6aad190e4cd1a3ffb69fd2710a2c9",
+      "handoff": "C:\\Users\\郑曾波\\Projects\\iqs-answer-audit-lab\\docs\\handoff\\ANSWER-AUDIT-30\\handoff.json",
+      "review_ref": "C:\\Users\\郑曾波\\Projects\\iqs-answer-audit-lab\\docs\\handoff\\ANSWER-AUDIT-30\\controller-2026-10-31\\final.json"
+    },
+    {
+      "package_id": "IMPORT-PERF-30",
+      "status": "partial",
+      "payload_commit": "5c19ebd0b23b4a7136e7b4de493e4a7e9521cff0",
+      "metadata_commit": "72718ae11aca3d07b3a9a4f7b04f4f2b04b56877",
+      "handoff": "C:\\Users\\郑曾波\\Projects\\iqs-import-performance-lab\\docs\\handoff\\IMPORT-PERF-30\\handoff.json",
+      "review_ref": "C:\\Users\\郑曾波\\Projects\\iqs-import-performance-lab\\docs\\handoff\\IMPORT-PERF-30\\controller-2026-10-31\\final.json"
+    }
+  ],
+  "production_ready": false,
+  "financial_qualification_granted": false,
+  "fresh_cache_live_positive_accepted": false,
+  "old_components_unchanged": true,
+  "initial_public_cli": {
+    "TIME": 2,
+    "ANSWER": 2,
+    "PERF": 0,
+    "RESULT": 2
+  },
+  "final_public_cli": [
+    {
+      "package": "TIME-SEMANTICS-30",
+      "exit": 0
+    },
+    {
+      "package": "ANSWER-AUDIT-30",
+      "exit": 0
+    },
+    {
+      "package": "IMPORT-PERF-30",
+      "exit": 0
+    },
+    {
+      "package": "RESULT-TRUST-30",
+      "exit": 0
+    }
+  ],
+  "limitations": [
+    "Two current packages are explicitly partial; do not close source-truth/fault-matrix gates.",
+    "Historical catalog original55 IDs/direct50 handoff paths are an inventory, not55 new completed packages. R1 nested paths and BASIC multi-repository delivery resolved separately.",
+    "No production owner policy, original UI8766, pool or budget changes in this acceptance. Mainline108 effective observations remain an earlier result, not rerun here."
+  ],
+  "evidence": [
+    {
+      "path": "independent-time.json",
+      "bytes": 5252,
+      "raw_sha256": "5e5e893d1f3ed07c43974af4e7efd6c6ecf21a706c5543be2fca3f412d3a3d56"
+    },
+    {
+      "path": "independent-trust.json",
+      "bytes": 3594,
+      "raw_sha256": "c905fbb314df76259a4084a9231c62ae5cfafafdeb09b152e13fd13f5edd9e07"
+    },
+    {
+      "path": "independent-answer.json",
+      "bytes": 2096,
+      "raw_sha256": "d28b7fa3d71ffd432f2bd1b72d613a12a679ee629439f38841b7de209f49d817"
+    },
+    {
+      "path": "independent-perf.json",
+      "bytes": 11499,
+      "raw_sha256": "6f668c4b4e59f30689a884ca228099f57123d36c569c78bf58168d5517c194a6"
+    },
+    {
+      "path": "historical-check.json",
+      "bytes": 3374,
+      "raw_sha256": "c2962e0c0f5dbe49ceb0a328c2bd0b19fa8d89ff847e2ed48c4c9bc9cc821c70"
+    }
+  ]
+}

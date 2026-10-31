@@ -1,0 +1,376 @@
+diff --git a/README.md b/README.md
+index 0cd9741..fc681c6 100644
+--- a/README.md
++++ b/README.md
+@@ -46,3 +46,18 @@ python bench/run_benchmark.py --packets 33 --reps 1 --variants baseline   # 单
+ 
+ production_ready=false；financial_qualification_granted=false。性能数字只在本机合成库上成立，
+ 不得写"原19分钟已降到某值"。
++
++## 交接元数据重建
++
++`tools/build_handoff.py --review-commit <最终C> --test-evidence <实际执行记录.json>`
++默认delivery-status=partial，并要求最终不同agent审查绑定当前C、输入锁及payload manifest；
++如重建前审查仍绑定旧C会拒绝，不能只填一个新commit冒称通过。
++要求记录包含 `commands` 数组（unit/integration/e2e各一条），每条带
++真实 argv、cwd、utc、exit_code、passed/failed/skipped、log、log_sha256。
++计数是执行证据，不能用collect-only或生成时间代替；日志hash变化或失败/空执行会拒绝。
++当前实际命令与测试结果应以最新验收记录为准，不复用旧22/5口径。
++基准报告数字读取已归档summary，36包0.955×的负结果仍保留。
++
++双变体原worker新增守卫测试覆盖preview后package/release篡改、stale token及exact replay。
++原source撤权、late/unknown ACK与send_uncertain的完整双变体故障矩阵仍待补，
++不能把这些新增用例冒称全部语义已验收；候选保留partial且不接生产。
+diff --git a/bench/run_benchmark.py b/bench/run_benchmark.py
+index 5dd66b1..ec57db9 100644
+--- a/bench/run_benchmark.py
++++ b/bench/run_benchmark.py
+@@ -83,6 +83,19 @@ def main() -> int:
+     args = parser.parse_args()
+ 
+     workdir = LAB_ROOT / ".tmp" / args.bench_id
++    # Validate the cleanup boundary BEFORE creating any paths. Never accept
++    # traversal or a pre-existing run belonging to another writer.
++    if (not args.bench_id or workdir.resolve().parent != (LAB_ROOT / ".tmp").resolve()
++            or workdir.name != args.bench_id or workdir.exists()):
++        raise ValueError("bench-id must name a new direct child of Lab/.tmp")
++    workdir.mkdir(parents=True, exist_ok=False)
++    try:
++        return _run_matrix(args, workdir)
++    finally:
++        _cleanup_bench_root(workdir)
++
++
++def _run_matrix(args, workdir: Path) -> int:
+     runs_dir = LAB_ROOT / "bench" / "runs"
+     runs_dir.mkdir(parents=True, exist_ok=True)
+ 
+@@ -220,7 +233,6 @@ def main() -> int:
+     raw_path.write_text(json.dumps(thin, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+     print(f"summary -> {summary_path}")
+     print(f"raw     -> {raw_path}")
+-    _cleanup_bench_root(workdir)
+     return 0
+ 
+ 
+@@ -236,9 +248,8 @@ def _cleanup_bench_root(workdir: Path) -> None:
+     if resolved.parent != (LAB_ROOT / ".tmp").resolve() or resolved.name != workdir.name:
+         raise RuntimeError(f"refusing to clean unexpected bench root {resolved}")
+     shutil.rmtree(resolved, ignore_errors=True)
+-    leftovers = list(resolved.rglob("*.sqlite*")) if resolved.exists() else []
+-    if leftovers:
+-        raise RuntimeError(f"cleanup left live fixture databases: {leftovers}")
++    if resolved.exists():
++        raise RuntimeError(f"cleanup left temporary benchmark root: {resolved}")
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/tests/integration/test_owner_guard_parity.py b/tests/integration/test_owner_guard_parity.py
+new file mode 100644
+index 0000000..759b071
+--- /dev/null
++++ b/tests/integration/test_owner_guard_parity.py
+@@ -0,0 +1,80 @@
++"""Real frozen owner guards after single/batched preview; SQLite is synthetic.
++
++These extend (not replace) the original importer unit checks. Each variant
++reopens bundle files and the native receiver through its actual worker code.
++No model/search/provider calls or foreign database are involved.
++"""
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import subprocess
++import sys
++import pytest
++
++LAB = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(LAB / 'src'))
++from iqs_import_perf import fixtures
++
++@pytest.fixture(scope='module')
++def owner_variants(tmp_path_factory):
++    prepared = {}
++    for variant in ('baseline', 'candidate'):
++        target = tmp_path_factory.mktemp('guard-' + variant) / 'v'
++        argv = [sys.executable, '-B', str(LAB/'tools/prepare_variant.py'), '--target', str(target)]
++        if variant == 'candidate':
++            argv += ['--patch', str(LAB/'integration/candidate.patch')]
++        subprocess.run(argv, cwd=LAB, check=True)
++        spec = importlib.util.spec_from_file_location('owner_guard_' + variant, target/'iqs/scripts/dashboard_owner.py')
++        owner = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(owner)
++        prepared[variant] = (target, owner)
++    return prepared
++
++@pytest.fixture(scope='module')
++def one_sealed_packet(tmp_path_factory):
++    return fixtures.build_stockqa_ledger(tmp_path_factory.mktemp('guard-ledger')/'work.sqlite', fixtures.question_plan(1))
++
++@pytest.mark.parametrize('variant', ['baseline', 'candidate'])
++@pytest.mark.parametrize('scenario', ['package_tampered', 'release_tampered', 'stale_token', 'exact_replay'])
++def test_real_owner_revalidates_after_preview(owner_variants, one_sealed_packet, tmp_path, variant, scenario):
++    target, owner = owner_variants[variant]
++    ws = fixtures.build_stockwiki_workspace(tmp_path/'workspace')
++    item = one_sealed_packet['sealed'][0]
++    delivery = one_sealed_packet['store'].get_result_delivery(item['work_item_id'])
++    package = tmp_path/'package.json'; package.write_text(delivery['package_json'], encoding='utf8')
++    release = tmp_path/'release.json'; release.write_text(json.dumps(fixtures.release_projection()), encoding='utf8')
++    scratch = tmp_path/'scratch'; scratch.mkdir()
++    config = {'stockwiki_root': str(target/'stockwiki'), 'iqs_root': str(target/'iqs'),
++              'iqs_release_root': str(target/'iqs'), 'workspace_root': str(tmp_path/'workspace'),
++              'scratch_root': str(scratch), 'stockwiki_python': sys.executable, 'timeout_seconds': 120,
++              'bundles': {'one': {'package': str(package), 'release': str(release),
++                                  'package_sha256': hashlib.sha256(package.read_bytes()).hexdigest(),
++                                  'release_sha256': hashlib.sha256(release.read_bytes()).hexdigest()}}}
++    if variant == 'candidate':
++        rows = owner._owner_worker(config, 'operations', {'operations': [
++            {'operation':'import_preview','payload':{'bundle_id':'one'}}, {'operation':'status'}]})
++        preview = owner.OwnerGateway.unwrap_batch(rows[0])
++        status = owner.OwnerGateway.unwrap_batch(rows[1], swallow_owner_errors=True)
++    else:
++        preview = owner._owner_worker(config, 'import_preview', {'bundle_id':'one'})
++        status = owner._owner_worker(config, 'status', {})
++    assert preview['can_apply'] and status['available']
++    body = {'bundle_id':'one','preview_token':preview['preview_token']}
++    if scenario in {'package_tampered','release_tampered'}:
++        path = package if scenario == 'package_tampered' else release
++        path.write_bytes(path.read_bytes() + b' ')
++    if scenario == 'stale_token':
++        body['preview_token'] = 'not-the-current-token'
++    if scenario != 'exact_replay':
++        with pytest.raises(owner.DashboardOwnerError) as error:
++            owner._owner_worker(config, 'import_apply', body)
++        assert error.value.code == ('preview_stale' if scenario == 'stale_token' else 'bundle_hash_mismatch')
++        import sqlite3
++        with sqlite3.connect(ws['receiver'].database_path) as connection:
++            assert connection.execute('SELECT COUNT(*) FROM quick_scan_observation').fetchone()[0] == 0
++    else:
++        first = owner._owner_worker(config, 'import_apply', body)
++        second = owner._owner_worker(config, 'import_apply', body)
++        assert first['receipt']['acks'] == second['receipt']['acks']
++        assert first['receipt']['summary'] == {'accepted':1}
+diff --git a/tests/unit/test_execution_evidence.py b/tests/unit/test_execution_evidence.py
+new file mode 100644
+index 0000000..4cdf6d9
+--- /dev/null
++++ b/tests/unit/test_execution_evidence.py
+@@ -0,0 +1,72 @@
++"""Regression for failed-child cleanup and evidence-derived metadata counts."""
++import importlib.util
++import json
++from pathlib import Path
++import subprocess
++import sys
++import pytest
++
++LAB = Path(__file__).resolve().parents[2]
++
++def module(name, path):
++    spec = importlib.util.spec_from_file_location(name, LAB / path)
++    result = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(result)
++    return result
++
++
++def test_matrix_child_failure_cleans_its_entire_variant_root(tmp_path, monkeypatch):
++    driver = module('perf_driver_cleanup', 'bench/run_benchmark.py')
++    monkeypatch.setattr(driver, 'LAB_ROOT', tmp_path)
++    monkeypatch.setattr(sys, 'argv', ['run_benchmark.py', '--packets', '1', '--variants', 'baseline', '--bench-id', 'failure'])
++    def run(argv, **kwargs):
++        if 'prepare_variant.py' in str(argv):
++            target = Path(argv[argv.index('--target') + 1])
++            target.mkdir(parents=True)
++            (target / 'synthetic.sqlite').write_text('synthetic temporary bytes')
++        return subprocess.CompletedProcess(argv, 0, stdout='0' * 40, stderr='')
++    monkeypatch.setattr(driver.subprocess, 'run', run)
++    def child_failure(*args, **kwargs):
++        raise RuntimeError('injected child failure after variant preparation')
++    monkeypatch.setattr(driver, 'run_invocation', child_failure)
++    with pytest.raises(RuntimeError, match='injected child failure'):
++        driver.main()
++    assert not (tmp_path / '.tmp' / 'failure').exists()
++
++
++def test_metadata_counts_come_from_actual_suite_evidence(tmp_path):
++    builder = module('perf_metadata_evidence', 'tools/build_handoff.py')
++    rows = []
++    for name, count in [('unit', 17), ('integration', 8), ('e2e', 6)]:
++        log = tmp_path / (name + '.log')
++        log.write_text(f'{count} passed')
++        rows.append({'name': name, 'argv': ['python', '-m', 'pytest', 'tests/' + name],
++                     'cwd': str(tmp_path), 'utc': '2026-10-31T00:00:00Z', 'exit_code': 0,
++                     'passed': count, 'failed': 0, 'skipped': 0, 'log': str(log),
++                     'log_sha256': builder.sha(log)})
++    evidence = tmp_path / 'evidence.json'
++    evidence.write_text(json.dumps({'commands': rows}))
++    got = builder.load_test_evidence(evidence)
++    assert {row['name']: row['passed'] for row in got} == {'unit': 17, 'integration': 8, 'e2e': 6}
++    rows[0]['passed'] = True
++    evidence.write_text(json.dumps({'commands': rows}))
++    with pytest.raises(ValueError, match='count'):
++        builder.load_test_evidence(evidence)
++
++
++def test_metadata_rejects_changed_or_failed_execution_evidence(tmp_path):
++    builder = module('perf_metadata_reject', 'tools/build_handoff.py')
++    log = tmp_path / 'test.log'; log.write_text('failed test')
++    rows = [{'name': name, 'argv': ['python', '-m', 'pytest'], 'cwd': str(tmp_path),
++             'utc': '2026-10-31T00:00:00Z', 'exit_code': 1, 'passed': 0, 'failed': 1,
++             'skipped': 0, 'log': str(log), 'log_sha256': builder.sha(log)}
++            for name in ['unit', 'integration', 'e2e']]
++    evidence = tmp_path / 'evidence.json'; evidence.write_text(json.dumps({'commands': rows}))
++    with pytest.raises(ValueError, match='failed|exit'):
++        builder.load_test_evidence(evidence)
++    for row in rows:
++        row.update(exit_code=0, failed=0, passed=1)
++    log.write_text('changed after execution')
++    evidence.write_text(json.dumps({'commands': rows}))
++    with pytest.raises(ValueError, match='hash'):
++        builder.load_test_evidence(evidence)
+diff --git a/tools/build_handoff.py b/tools/build_handoff.py
+index 7aae780..e6dba21 100644
+--- a/tools/build_handoff.py
++++ b/tools/build_handoff.py
+@@ -35,11 +35,49 @@ def sha(path: Path) -> str:
+     return hashlib.sha256(path.read_bytes()).hexdigest()
+ 
+ 
++def load_test_evidence(path: Path) -> list[dict]:
++    """Use recorded executions, never hard-coded test counts or generation time.
++
++    The recorder owns the actual execution. A matching file hash supports
++    provenance, not a claim that software checks prove financial accuracy.
++    """
++    data = json.loads(path.read_text(encoding="utf-8"))
++    rows = data.get("commands")
++    if not isinstance(rows, list) or {row.get("name") for row in rows} != {"unit", "integration", "e2e"} or len(rows) != 3:
++        raise ValueError("test evidence must contain exactly unit/integration/e2e")
++    for row in rows:
++        for field in ("passed", "failed", "skipped"):
++            if type(row.get(field)) is not int or row[field] < 0:
++                raise ValueError("test evidence count must be a nonnegative integer")
++        if type(row.get("exit_code")) is not int or row["exit_code"] != 0 or row["failed"] or not row["passed"]:
++            raise ValueError("test evidence contains failed or empty execution")
++        if not isinstance(row.get("argv"), list) or not row["argv"] or not row.get("cwd") or not row.get("utc"):
++            raise ValueError("test evidence needs real argv/cwd/UTC")
++        log = Path(row.get("log", ""))
++        if not log.is_absolute():
++            log = path.parent / log
++        if not log.is_file() or sha(log) != row.get("log_sha256"):
++            raise ValueError("test evidence log hash mismatch")
++    return rows
++
++
+ def main() -> int:
+     parser = argparse.ArgumentParser()
+     parser.add_argument("--review-commit", required=True,
+                         help="payload commit the review approved (result commit C)")
++    parser.add_argument("--test-evidence", type=Path, required=True,
++                        help="recorded unit/integration/e2e executions with log hashes")
++    parser.add_argument("--delivery-status", choices=("partial", "complete", "blocked"), default="partial")
++    parser.add_argument("--review-evidence", type=Path, default=LAB / "docs/review/final.json")
+     args = parser.parse_args()
++    final_review = json.loads(args.review_evidence.read_text(encoding="utf-8"))
++    if (final_review.get("status") != "passed" or final_review.get("open_findings") != []
++            or final_review.get("final_payload_commit") != args.review_commit
++            or final_review.get("input_lock_sha256") != INPUT_LOCK_SHA256
++            or final_review.get("final_payload_manifest_sha256") != sha(LAB / "docs/payload-manifest.json")):
++        raise ValueError("independent final review does not bind this payload and manifest")
++    suite_checks = load_test_evidence(args.test_evidence.resolve())
++    suite_counts = {row["name"]: row["passed"] for row in suite_checks}
+ 
+     HANDOFF_DIR.mkdir(parents=True, exist_ok=True)
+     now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+@@ -86,26 +124,9 @@ def main() -> int:
+         "package_id": "IMPORT-PERF-30",
+         "generated_at": now,
+         "environment_boundary": "cwd pinned to Lab / per-rep temp roots; PYTHONPATH only to Lab trees; no API keys in child env (original whitelists); TEMP under Lab/.tmp",
+-        "commands": [
+-            {"name": "unit", "argv": [sys.executable, "-m", "pytest", "tests/unit", "-q"],
+-             "cwd": str(LAB), "utc": now, "exit_code": 0,
+-             "semantic_denominator": "22 unit cases: original guard refusals + candidate worker/normalizer semantics",
+-             "log": "pytest stdout captured by the author session; raw runs are reproducible from README"},
+-            {"name": "integration", "argv": [sys.executable, "-m", "pytest", "tests/integration", "-q"],
+-             "cwd": str(LAB), "utc": now, "exit_code": 0,
+-             "semantic_denominator": "8 cases: idempotency, wrong scope/entity, consumer-binding ACK refusal, status/error-code map, partial-success prefix, interruption replay, tamper trigger"},
+-            {"name": "e2e", "argv": [sys.executable, "-m", "pytest", "tests/e2e", "-q"],
+-             "cwd": str(LAB), "utc": now, "exit_code": 0,
+-             "semantic_denominator": "5 cases: 3-packet real-subprocess delivery per variant, candidate spawn reduction with equal semantics, broken-deployment explicit failure + cleanup"},
+-            {"name": "benchmark-matrix", "argv": [sys.executable, "-B", "bench/run_benchmark.py",
+-                                                  "--packets", "1", "3", "33", "36", "--reps", "3",
+-                                                  "--bench-id", "final3"],
+-             "cwd": str(LAB), "utc": now, "exit_code": 0,
+-             "semantic_denominator": "4 packet counts x 2 variants x 3 reps; per-invocation ACK counts and normalized semantic snapshots compared"},
+-            {"name": "red-green", "argv": [sys.executable, "-B", "tools/red_green_check.py", "--packets", "3"],
+-             "cwd": str(LAB), "utc": now, "exit_code": 0,
+-             "semantic_denominator": "measured noop-vs-baseline RED (12<12 false) and candidate GREEN (6<12) with equal snapshots"},
+-        ],
++        "commands": suite_checks,
++        "evidence_source": str(args.test_evidence.resolve()),
++        "evidence_source_sha256": sha(args.test_evidence.resolve()),
+         "red_green_evidence": {
+             "unit": "candidate-behavior tests fail against a no-op patch (batch worker operations absent); guard tests pass against vendor baseline",
+             "measured": "tools/red_green_check.py output recorded in the author session and reproducible from README",
+@@ -163,7 +184,7 @@ def main() -> int:
+         "schema_version": "1.0.0",
+         "lane_id": "iqs",
+         "package_id": "IMPORT-PERF-30",
+-        "status": "complete",
++        "status": args.delivery_status,
+         "snapshot": {
+             "repository": str(LAB),
+             "base_ref": "codex/import-perf-30",
+@@ -210,17 +231,10 @@ def main() -> int:
+         ],
+         "verification": {
+             "checks": [
+-                {"name": "unit", "command": "python -m pytest tests/unit -q", "scope": "Lab",
+-                 "result": "passed", "passed": 22, "failed": 0, "skipped": 0},
+-                {"name": "integration", "command": "python -m pytest tests/integration -q", "scope": "Lab",
+-                 "result": "passed", "passed": 8, "failed": 0, "skipped": 0},
+-                {"name": "e2e", "command": "python -m pytest tests/e2e -q", "scope": "Lab (real subprocesses)",
+-                 "result": "passed", "passed": 5, "failed": 0, "skipped": 0},
+-                {"name": "benchmark-matrix", "command": "python -B bench/run_benchmark.py --packets 1 3 33 36 --reps 3 --bench-id final3",
+-                 "scope": "Lab (real subprocesses, both variants)",
+-                 "result": "passed", "passed": 24, "failed": 0, "skipped": 0},
+-                {"name": "red-green", "command": "python -B tools/red_green_check.py --packets 3",
+-                 "scope": "Lab", "result": "passed", "passed": 1, "failed": 0, "skipped": 0},
++                {"name": row["name"], "command": " ".join(row["argv"]),
++                 "scope": "Lab (recorded execution)", "result": "passed",
++                 "passed": row["passed"], "failed": row["failed"], "skipped": row["skipped"]}
++                for row in suite_checks
+             ],
+             "external_writes": False,
+             "network_calls": False,
+@@ -238,6 +252,7 @@ def main() -> int:
+         "open_items": [
+             "生产侧待测事项由总控执行（performance-design.md §6）：真实33题批次的基线spawn核对、StockQA init扫描在生产规模账本的占比、批量worker的生产timeout复核、多公司并发叠加。",
+             "本包不主张生产19分钟已降低；全部数字仅为本机合成库结果。",
++            "原source撤权、late/unknown ACK、send_uncertain完整双变体矩阵未补；当前只接受partial，不授生产资格。",
+         ],
+         "next_action": "总控用 scripts/parallel_handoff_cli.py 预检后实核；若采纳候选，按 docs/handoff/IMPORT-PERF-30/integration/host-patch-proposal.md 在原仓接线。",
+     }
+@@ -269,12 +284,15 @@ def main() -> int:
+    StockQA init 全库扫描是主导（`performance-design.md` §2）。
+ 5. 候选补丁（守卫不变）：C1 去重预检 + C2 只读预检合并为一次批量 worker；
+    错误语义逐操作保持（经原 `_original_error` 归一）。仅改 2 个 dashboard 文件。
+-6. 最终矩阵（final3，3次/格，冷+暖）：全 ACK accepted；
+-   33包 92.3s→77.8s（1.19×），36包 100.6s→71.5s（1.41×），
+-   spawn 206→140 / 224→152；4 个规模 `semantic_equivalence_passed=true`。
+-7. 验证分层：单元 22（原边界拒绝 + 候选语义）、集成 8（幂等/错scope/换主体/
+-   绑定拒绝/部分成功/中断恢复/篡改触发器）、E2E 5（双变体真实子进程交付、
+-   故障路径显式失败与清理）；实测 RED→GREEN（no-op 变体未通过严格改进检查）。
++6. 已归档矩阵 `{summary['bench_id']}`，每格 {summary['repetitions_per_invocation']} 次；
++   33包 {summary['results']['33']['baseline']['delivery_ms']['median']/1000:.1f}s→{summary['results']['33']['candidate']['delivery_ms']['median']/1000:.1f}s，
++   倍数 {summary['performance']['33']['speedup_ratio_baseline_over_candidate']:.3f}×；
++   36包倍数 {summary['performance']['36']['speedup_ratio_baseline_over_candidate']:.3f}×，
++   performance_improvement_observed={summary['performance']['36']['performance_improvement_observed']}。
++   数字只说明该已归档合成矩阵；不能当作生产已加速。
++7. 本次真实执行记录：单元 {suite_counts['unit']}、集成 {suite_counts['integration']}、
++   E2E {suite_counts['e2e']}；计数和执行UTC来自 `--test-evidence`，不以生成时间冒充运行时间。
++   历史RED/GREEN与原矩阵另见原日志，不重复计为本次测试。
+ 8. 独立审查：round-01（8 发现）→ 作者修复 → round-02 复审通过，
+    `open_findings=[]`（`docs/review/`）。
+ 

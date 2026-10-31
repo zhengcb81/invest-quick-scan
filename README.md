@@ -83,7 +83,7 @@ python scripts/thin_scan.py --company "宁德时代" --out runs/basic-dry-run --
 
 ## 当前可并行施工包
 
-[2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)包含时间语义、真实回答审计、原入库性能、结果可信度UI四条独立线；各用自己的Lab，附固定源码锁、接口、TDD/隔离清理、真实独审与交接要求。已完成编卡并独审，尚未自动派发；不授权worker修改原项目或使用原模型预算。
+[2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)包含时间语义、真实回答审计、原入库性能、结果可信度UI四条独立线。2026-10-31已完成总控查验和直接修复：时间候选、只读结果组件通过；回答审计的金融内容、性能候选的完整故障矩阵仍为部分验收。具体C/M、测试和剩余项见[验收报告](docs/implementation/reviews/OUTSOURCE-ALL-2026-10-31/report.md)。这四包尚未接入原服务，不代表fresh真实正例、金融准确性或2000家公司吞吐通过。
 
 ## 项目分工与配置
 

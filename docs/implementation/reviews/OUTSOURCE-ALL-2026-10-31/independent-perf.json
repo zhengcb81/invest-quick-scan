@@ -1,0 +1,269 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "IMPORT-PERF-30",
+  "status": "passed_for_controller_repairs",
+  "package_acceptance": "partial",
+  "open_implementation_findings": [],
+  "author_agent_id": "/root/accept_perf30",
+  "reviewer_agent_id": "/root",
+  "payload_commit": "5c19ebd0b23b4a7136e7b4de493e4a7e9521cff0",
+  "payload_manifest_sha256": "603bb6df372d0fc17cd52728a60e863dee87c2d8b0e0e6d7b1adce0f8fb82570",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "reviewed_at": "2026-10-31T20:23:19.100151+00:00",
+  "manifest_files": [
+    {
+      "path": "README.md",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "be0bd115db83756bac8e8e1db99c82472d01622bc5ac286b5475e66227875465",
+      "declared_sha256": "a404e20520d00f3c36576c2d169736b4e989c79939396952eae4da279a1f33b6"
+    },
+    {
+      "path": "pyproject.toml",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "887ae29bd9203d69c0cdbc598445b511041bace731ff93e6bad039a4f4493a77",
+      "declared_sha256": "f4099ced641a81a8168ea239272dd33f91d4505540e10b2ada0c9fe141381633"
+    },
+    {
+      "path": ".gitignore",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "9ac3b72cc4279618f2974435fe51b9619a8e524b67b1108271a40ca7923240a7",
+      "declared_sha256": "50e19e213eeda91e2f61265e5b1cf216b388c094c141a0616328849819bdab5b"
+    },
+    {
+      "path": "src/iqs_import_perf/__init__.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "709449121b008a0b505bababae2dd9f9e22cedab1edcd6fbb88719a807912404",
+      "declared_sha256": "b69f37589f543f89cfad2fff9ecc4e817d2b3da8bd6a1b9a6650c9759075d4a5"
+    },
+    {
+      "path": "src/iqs_import_perf/fixtures.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "83361aab40c244573c69a43338ec07e6d8f0bfd362cb77dacd01cd584eedcc16",
+      "declared_sha256": "ebacc9a2ffb0cddedb9e2463796eabb219eb51b36b5ad6028aacb256dfb148fa"
+    },
+    {
+      "path": "src/iqs_import_perf/instrument.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "4ed79c57af0ff62d677e9d1e2cc5249a6931a2324b915cffdead1d61d1ac8a28",
+      "declared_sha256": "fb95159793f9f67019aa05273a7be3b609d03202d359000bc4dff36dafcf123a"
+    },
+    {
+      "path": "src/iqs_import_perf/orchestrate.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "89ca50c4b217291c743839005a2fead5ad7c6faa8f45b5e293e8000cd70c9eee",
+      "declared_sha256": "95b2b953f1312fec4c52d598e0c58099561233839fc1a76386ab9932da43047b"
+    },
+    {
+      "path": "bench/run_benchmark.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "5cca83eb6d01f2589bd8c1f05f3a717cad169dfef5f345fe45de849b4844ad56",
+      "declared_sha256": "dc9a8d0232906645a6abfd0d77407ff458f9d87146fe1badaeb5d790c050e677"
+    },
+    {
+      "path": "bench/run_once.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "12eb986a4b9d3567a2bddaf1981733686170199407a932508619cb1bb6dee01f",
+      "declared_sha256": "a809080e1d2b4a7a41442ef5203bcf1d09132e6d90da00bc771c037e19d72bef"
+    },
+    {
+      "path": "bench/benchmark-summary.json",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "bcc8e1e56dac7d5ca4de7a9f1d9d9ebba4b9d67dc10b317085c6b3dcca40fc9d",
+      "declared_sha256": "ae2d714bb26fd1b30f2978c9d99567c735b3b915b1d1c9602930186337babced"
+    },
+    {
+      "path": "bench/raw-runs.json",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "33ea4195a0bdb65fb41073b508f03c34d7e0d06b038e1df759843b99987aa660",
+      "declared_sha256": "397a1bda6c4dba0eb02495da3ee94905897d86687aa88562de650839e5d50ddc"
+    },
+    {
+      "path": "bench/semantic-equivalence.json",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "a1883fb89a8f810937476ad13c9e4937a5e8fa9e824632214561a4e122da9a98",
+      "declared_sha256": "a6d3742b8581a9c638619dd454f9e9e005bc6ccbf68e316460ac505e01e79a27"
+    },
+    {
+      "path": "bench/candidate-source-manifest.json",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "1a6f5b220018a4e81473e25c6ecfa257408c54c6f3ffb4129eb7d2b91d878dcb",
+      "declared_sha256": "d41acd1908f5804717cca4a15127eaeb6e07df0d3b9c8bc3424e9fc2af895476"
+    },
+    {
+      "path": "bench/profile/profile-baseline-3.json",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "aa017e4ccfae5d05c9dba534609da591124a1a39f24fd2dea32d9ad93711f296",
+      "declared_sha256": "9bb18418d23f7e82c09d16502086ac8f64d55db2060df3e7203484256f6eee85"
+    },
+    {
+      "path": "bench/profile/profile-candidate-3.json",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "fd0c87d183da9ed77dbec5e1afadeaba8c2b2e70f52ead196d33802484edba60",
+      "declared_sha256": "d15c75743730063c9c6d9b3e8713241221884e195d2e4a967a40266ac07a30fb"
+    },
+    {
+      "path": "conftest.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "431b7d8054c876e84cdb4937133c86a514d7862054883237d16bd0d376032f18",
+      "declared_sha256": "ea82d306510e74c5f6bfcb51489ac9b84edab9f6c57ea4ebd176a88aeb712170"
+    },
+    {
+      "path": "tests/unit/test_original_import_guards.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "776cd265cac9379826d4bfb1860d2ab80cf1386fa51256ad99412051006e39cc",
+      "declared_sha256": "6c123a9472365bc29c5d659df6472ce1f0c0085f62efd4ead47e0ecb0054eef0"
+    },
+    {
+      "path": "tests/unit/test_candidate_worker.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "6cfa8e10fb58cdc562f48e43133afe99abda7263498110ac31abea9a3c6ec3f0",
+      "declared_sha256": "8b035f591d815675f3061144635d280dbae377b160e4cd228ec22b7cc5ceab20"
+    },
+    {
+      "path": "tests/integration/test_semantic_matrix.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "9703bd6ecf10aa1371653c37991abf14467eab7614b7951b1d0850159e548cfb",
+      "declared_sha256": "af888264156753b3e402ebaf032f9998053295d5331c2a8a8a2f01a3d6450d59"
+    },
+    {
+      "path": "tests/e2e/test_delivery_e2e.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "efc07c3854017c2c08df061d3b4b3e18c47ab62f79f8d27ba7d18055c5e4e253",
+      "declared_sha256": "181ed346c87598cc909c85a696b1de5934adc60338853ba6cb1686830b337757"
+    },
+    {
+      "path": "integration/candidate.patch",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "dbdc08c3920bc8bd42cc86f5b129f5860b3993bd96a5cddf994384855b5c544a",
+      "declared_sha256": "b35918d8b7375689cafc263176d30af275b33c89b0904b2fb5ee4cc47bb7ff2c"
+    },
+    {
+      "path": "integration/performance-design.md",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "cb981bb61af45fee50b822ef2c4041ba6c337d792642fe962b2fcb7ac090858e",
+      "declared_sha256": "ef3410c5816e400f9dd3dc824e26deb04d8d2c38297916fb749a0dda97759aab"
+    },
+    {
+      "path": "tools/fetch_locked_blobs.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "bd295474d545e863af0c83f5e51628c632335cb7b55c893dbd709edaf6c49694",
+      "declared_sha256": "31028d4ba8841f69a1715555720a441866a7132707df74e51a88f59fec71de17"
+    },
+    {
+      "path": "tools/prepare_variant.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "4953a79f68108497e06e536a66f44c6e208c3870557f5d51f8f8bedf4d18a3cb",
+      "declared_sha256": "e08683481adbf5ef89dba4e8940860ba031d1933cca573f1be74f7f74190fdca"
+    },
+    {
+      "path": "tools/red_green_check.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "0b78597d4b4ad20921d900056537c3c44b4c713b374d85ec5acf6163b8d347c9",
+      "declared_sha256": "6df3bff3911ff18b7221c1b4ebccdc67e25da150576495547aa641811b3a367d"
+    },
+    {
+      "path": "tools/build_payload_manifest.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "0e28947ab14cfb365cf25547041c8e1da4bcbe8e3c2cb0663728dd6891aaa9b2",
+      "declared_sha256": "843e0bfe3639612c9a9edefb6dc1148e2c56b1aa36b30622d670b8400743518b"
+    },
+    {
+      "path": "tools/build_candidate_source_manifest.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "d42f647d363780fd5695b321d58bd3a1cb9eb818750d872de8054f10f086d807",
+      "declared_sha256": "79da079b9cf89d78c93421dfb59910139b771312cd360b1eca33e130ce69a853"
+    },
+    {
+      "path": "docs/consumed-inputs.json",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "88b7d11451d125ab0c0119d20c3d55bab5f2f7344de8dee4d81051c6a1440818",
+      "declared_sha256": "76d9a1f2472c86db69d27ec328b745954e70693564321be49d613db5c04ebdcc"
+    },
+    {
+      "path": "tools/build_handoff.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "94d9d7200e2833c06c0ab8b85da6556d71807862cd24a43972fc65f6f4c6c99f",
+      "declared_sha256": "978feccfa01acc7b5e4f6884a360016eb378b1388092b71443ea60864337688a"
+    },
+    {
+      "path": "tests/unit/test_execution_evidence.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "8ca0e063bd4d3403f740d0f2799366e94a2e5733bc5ac6da358ea2a68fc1297c",
+      "declared_sha256": "4af048c64bd7145f6e235c4f4518b9ac4581d5f61663e9d26c8184319602e8c4"
+    },
+    {
+      "path": "tests/integration/test_owner_guard_parity.py",
+      "matches": true,
+      "byte_form": "LF_blob",
+      "raw_sha256": "2c1e0abe970982480b6f150db97e135e9ab6449ca289af840406e78caa38c21c",
+      "declared_sha256": "03ded92b7a71ab3390e52c774dd3c5b76e94d0874f09c304d1bd80ec6cc93fb0"
+    }
+  ],
+  "verification": {
+    "argv": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/unit",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.tmp-p31-review\\pytest"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-perf\\snapshot-final",
+    "exit_code": 0,
+    "elapsed_seconds": 16.07397050000145,
+    "log_sha256": "f44919a3367dc52929a8af8f8919d5f9536d2eb90b5c6c6d38b1e58904be21bc",
+    "output": ".................                                                        [100%]\n"
+  },
+  "reviewed_scope": [
+    "bench/run_benchmark.py finally cleanup and pre-existing root refusal",
+    "tools/build_handoff.py real test evidence counts/log hashes and final C/manifest binding",
+    "tests/unit/test_execution_evidence.py",
+    "tests/integration/test_owner_guard_parity.py",
+    "integration/candidate.patch dispatch validates each operation; production installation prohibited"
+  ],
+  "remaining_qualification_gaps": [
+    "No complete baseline/candidate native source revocation + late/unknown ACK/send_uncertain matrix",
+    "No general wall-time improvement: archived final4 ratio at36 packets0.955; no production or2000-company qualification"
+  ],
+  "cleanup": {
+    "temporary_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\.tmp-p31-review",
+    "absent": true,
+    "production_writes": false,
+    "network_calls": false,
+    "paid_calls": false
+  }
+}

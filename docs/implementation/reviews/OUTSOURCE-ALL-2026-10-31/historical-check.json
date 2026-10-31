@@ -1,0 +1,79 @@
+[
+  {
+    "package_id": "UI-COMPARE-28-R1",
+    "archive": "UI-COMPARE-CLOSEOUT02-2026-10-30",
+    "head": "b6343cbbc469aa552a27255abc151b4c469f6bf6",
+    "matches_signed_metadata_head": true,
+    "tracked_status": "",
+    "source_pin_checks": [
+      {
+        "path": "tests/browser/cdp.mjs",
+        "sha256": "642b5a182554fa3ec69b5483257550ae3cd57f2430befbc05136979faae6feb8",
+        "matches": true
+      },
+      {
+        "path": "tests/browser/startup-failure.test.mjs",
+        "sha256": "abc18a27b62ff81ecf94ace6acc3a557b5e6bfbc0e274ad07f14c82af49c7e00",
+        "matches": true
+      }
+    ],
+    "actual_current_handoff": "C:\\Users\\郑曾波\\Projects\\iqs-comparison-view-lab\\docs\\handoff\\UI-COMPARE-28\\remediation-01\\handoff.json",
+    "handoff_exists": true,
+    "classification": "previously_accepted_component_unchanged",
+    "production_integration_separate_archive": "UI-INTEGRATION-30-2026-10-30"
+  },
+  {
+    "package_id": "UI-UNIVERSE-28-R1",
+    "archive": "UI-UNIVERSE-CLOSEOUT02-2026-10-30",
+    "head": "f583785b87e45d6f1397750ebe97e6f9b0c04375",
+    "matches_signed_metadata_head": true,
+    "tracked_status": "",
+    "source_pin_checks": [
+      {
+        "path": "src/iqs-universe-import/machine.js",
+        "sha256": "c50de9f2d52b86ce7b953b023cdfe523de5b7e06cac4d51b5ef6245bec431896",
+        "matches": true
+      },
+      {
+        "path": "tools/iqs_universe_import_ui_tools/remediation.py",
+        "sha256": "fd8e0153531dae9a13df3d90261d3bf495ca9d424b8a3f301a3bdd9b27b6ac30",
+        "matches": true
+      },
+      {
+        "path": "tests/js/unit/controller-closeout.test.js",
+        "sha256": "9a6ab55cc3d4a0b378cf95003003b6d8cecdbed908ed14fb8e511f9a79cce02a",
+        "matches": true
+      },
+      {
+        "path": "tests/python/test_controller_closeout.py",
+        "sha256": "6b756511e010ea268d3291a3503bc1c73002739e285d63ecbcd33d7bb43d2d01",
+        "matches": true
+      },
+      {
+        "path": "tests/python/test_r1_closeout02.py",
+        "sha256": "04f4ef84ec6751bcd7fb89122ac938d655a16bbeb5c38e154dcfb7b341289108",
+        "matches": true
+      }
+    ],
+    "actual_current_handoff": "C:\\Users\\郑曾波\\Projects\\iqs-universe-import-ui-lab\\docs\\handoff\\UI-UNIVERSE-28\\remediation-01\\handoff.json",
+    "handoff_exists": true,
+    "classification": "previously_accepted_component_unchanged",
+    "production_integration_separate_archive": "UI-INTEGRATION-30-2026-10-30"
+  },
+  {
+    "package_id": "BASIC-BANK-EXPANSION-21",
+    "classification": "multi_repository_controller_implementation_already_accepted",
+    "evidence": "task_plan.md existing acceptance table at original line999 before this session prepends; main f606fa9, bank c3feee6, UI c45756e; full common36 later live108 evidence",
+    "missing_direct_handoff_is_not_new_blocker": true
+  },
+  {
+    "package_id": "TH-IMPL-01",
+    "classification": "not_a_new_delivery",
+    "reason": "Old dependent implementation card; absent direct handoff is not evidence of completed delivery. No activation or gate closure inferred."
+  },
+  {
+    "package_id": "IN-IMPL-01",
+    "classification": "not_a_new_delivery",
+    "reason": "Old dependent implementation card; absent direct handoff is not evidence of completed delivery. No activation or gate closure inferred."
+  }
+]

@@ -1,0 +1,224 @@
+diff --git a/contracts/owner-field-map.json b/contracts/owner-field-map.json
+index f804e07..be941c5 100644
+--- a/contracts/owner-field-map.json
++++ b/contracts/owner-field-map.json
+@@ -1793,6 +1793,7 @@
+     "The panel never writes into record or ownerState; it only reads them and returns new objects.",
+     "The panel never fills a missing entity_id from the query, the route or the user's search text.",
+     "The read-only view button is disabled when the host gives no callback or the record has no original reference, and also for the three attribution-isolation states (foreign child, envelope conflict, non-text entity id); attribution-unknown states keep the button enabled because the observation came from this detail response.",
+-    "The company-identity suffix (verified or not) is appended only when the record is attributed to this company (matched or inherited). Foreign or unknown-attribution records never carry it, so a company-level verification cannot read as an endorsement of the record's own attribution."
++    "The company-identity suffix (verified or not) is appended only when the record is attributed to this company (matched or inherited). Foreign or unknown-attribution records never carry it, so a company-level verification cannot read as an endorsement of the record's own attribution.",
++    "Each nested same-question variant is attributed independently: foreign, conflicting, malformed and explicit-null identities remain isolated/unknown; only an absent child identity may inherit the actual matching owner envelope. Listing/security scope is preserved. Invalid calendar dates remain unrecognized."
+   ]
+ }
+diff --git a/src/result_trust_panel.js b/src/result_trust_panel.js
+index 124a8a3..55cca0f 100644
+--- a/src/result_trust_panel.js
++++ b/src/result_trust_panel.js
+@@ -150,17 +150,57 @@ function safeHttpUrl(value) {
+   }
+ }
+ 
++function validCalendarPrefix(value) {
++  if (typeof value !== 'string') return false;
++  const match = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/.exec(value);
++  if (!match) return false;
++  const year = Number(match[1]);
++  if (year < 1) return false;
++  if (!match[2]) return true;
++  const month = Number(match[2]);
++  if (month < 1 || month > 12) return false;
++  if (!match[3]) return true;
++  const days = [31, (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
++  const day = Number(match[3]);
++  return day >= 1 && day <= days[month - 1];
++}
++
+ function precisionOf(value) {
++  if (!validCalendarPrefix(value)) return 'text';
+   if (/^\d{4}$/.test(value)) return 'year';
+   if (/^\d{4}-\d{2}$/.test(value)) return 'month';
+   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return 'day';
+-  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.test(value)) return 'timestamp';
++  if (timestampOf(value)) return 'timestamp';
+   return 'text';
+ }
+ const PRECISION_LABEL = { year: '年精度', month: '月精度', day: '日精度', timestamp: '时间戳', text: '格式未识别，按原文显示' };
+ 
+-const dayOf = value => (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value) ? value.slice(0, 10) : null);
+-const isZulu = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/.test(value);
++// Explicit owner timestamps only: no wall clock, no normalization of invalid
++// dates, and fractional seconds remain exact beyond JavaScript milliseconds.
++function timestampOf(value) {
++  if (!validCalendarPrefix(value)) return null;
++  const m=/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d+))?)?(Z|([+-])(\d{2}):(\d{2}))$/.exec(value);
++  if (!m) return null;
++  const hour=Number(m[2]), minute=Number(m[3]), second=Number(m[4] || 0);
++  const zoneHour=Number(m[8] || 0), zoneMinute=Number(m[9] || 0);
++  if (hour>23 || minute>59 || second>59 || zoneHour>23 || zoneMinute>59) return null;
++  const base=Date.parse(`${m[1]}T${m[2]}:${m[3]}:${m[4] || '00'}Z`)/1000;
++  if (!Number.isFinite(base)) return null;
++  const offset=(zoneHour*3600+zoneMinute*60)*(m[7]==='-' ? -1 : 1);
++  return {second:base-offset, fraction:(m[5] || '').replace(/0+$/,'')};
++}
++function dayOf(value) {
++  if (precisionOf(value)==='day') return value;
++  const stamp=timestampOf(value);
++  return stamp ? new Date(stamp.second*1000).toISOString().slice(0,10) : null;
++}
++function timestampAfter(left,right) {
++  const a=timestampOf(left), b=timestampOf(right);
++  if (!a || !b) return false;
++  if (a.second!==b.second) return a.second>b.second;
++  const width=Math.max(a.fraction.length,b.fraction.length);
++  return a.fraction.padEnd(width,'0')>b.fraction.padEnd(width,'0');
++}
+ 
+ function questionIDs(value) {
+   return Array.isArray(value)
+@@ -359,7 +399,7 @@ function variantsFor(owner) {
+   if (!Array.isArray(raw)) return { state: 'unrecognized', text: '原格式非数组，未显示', variants: [], warnings: [] };
+   const rows = raw.filter(isPlainObject);
+   const unreadable = raw.length - rows.length;
+-  if (!rows.length) return { state: 'missing', text: '无同题其他原观察', variants: [], warnings: [] };
++  if (!rows.length) return { state: unreadable ? 'unrecognized' : 'missing', text: unreadable ? `原数组有 ${unreadable} 条无法读取的记录，不能据此认为没有其他观察` : '无同题其他原观察', variants: [], warnings: [] };
+   const versionOf = row => (isPlainObject(row.versions) ? row.versions.question_version : undefined);
+   const distinct = values => new Set(values.map(value => (present(value) ? displayValue(value) : '∅'))).size > 1;
+   const warnings = [];
+@@ -367,7 +407,12 @@ function variantsFor(owner) {
+   if (distinct(rows.map(row => row.information_as_of))) warnings.push('information_dates_differ');
+   if (distinct(rows.map(row => [versionOf(row), row.security_id, row.listing_id, row.scope]
+     .map(value => (present(value) ? displayValue(value) : '∅')).join('|')))) warnings.push('variant_scope_or_version_differs');
++  const envelope = typeof owner.entity_id === 'string' && owner.entity_id.trim() ? owner.entity_id.trim() : null;
+   const variants = rows.map(row => ({
++    identity_state: identityFor(row, envelope, false).identity_state,
++    entity_id: textOrNull(row.entity_id),
++    listing_id: textOrNull(row.listing_id),
++    scope: textOrNull(row.scope),
+     observation_id: textOrNull(row.observation_id),
+     information_as_of: textOrNull(row.information_as_of),
+     information_cutoff: textOrNull(row.information_cutoff),
+@@ -376,9 +421,9 @@ function variantsFor(owner) {
+     status: textOrNull(row.status),
+     score: present(row.score) ? row.score : null,
+   }));
+-  const parts = variants.map(variant => `${shown(variant.observation_id)}：资料时点 ${shown(variant.information_as_of, '未提供')} · 取证截止 ${shown(variant.information_cutoff, '未提供')} · 题义版本 ${shown(variant.question_version)} · 证券 ${shown(variant.security_id)} · 状态 ${shown(variant.status, '未提供')} · 分数 ${shown(variant.score, '未提供')}`);
++  const parts = variants.map(variant => `${shown(variant.observation_id)}：归属 ${IDENTITY_TEXT[variant.identity_state][1]} · 实体 ${shown(variant.entity_id)} · 挂牌 ${shown(variant.listing_id)} · 范围 ${shown(variant.scope)} · 资料时点 ${shown(variant.information_as_of, '未提供')} · 取证截止 ${shown(variant.information_cutoff, '未提供')} · 题义版本 ${shown(variant.question_version)} · 证券 ${shown(variant.security_id)} · 状态 ${shown(variant.status, '未提供')} · 分数 ${shown(variant.score, '未提供')}`);
+   if (unreadable > 0) parts.push(`另有 ${unreadable} 条无法读取的原记录，未显示`);
+-  return { state: 'present', text: parts.join('；'), variants, warnings };
++  return { state: variants.some(variant => ['foreign', 'invalid_child_identity'].includes(variant.identity_state)) ? 'conflict' : 'present', text: parts.join('；'), variants, warnings };
+ }
+ 
+ function makeItem(key, state, text, extra = {}) {
+@@ -459,7 +504,7 @@ export function describeResultTrust({ record, ownerState } = {}) {
+   const importedValue = record.imported_at;
+   const projectionValue = owner.generated_at_utc;
+   const afterCutoff = dayOf(infoValue) !== null && dayOf(cutoffValue) !== null && dayOf(infoValue) > dayOf(cutoffValue);
+-  const observedAfterImported = isZulu(observedValue) && isZulu(importedValue) && observedValue > importedValue;
++  const observedAfterImported = timestampAfter(observedValue, importedValue);
+   if (!present(infoValue) && (present(observedValue) || present(projectionValue))) warn('generation_is_not_information_date');
+   if (afterCutoff) warn('information_after_cutoff');
+   if (observedAfterImported) warn('observed_after_imported');
+@@ -473,7 +518,7 @@ export function describeResultTrust({ record, ownerState } = {}) {
+     infoText = `原值（非文本）：${displayValue(infoValue)}`;
+   } else {
+     const precision = precisionOf(infoValue);
+-    infoState = precision === 'year' || precision === 'month' ? 'partial' : 'present';
++    infoState = precision === 'text' ? 'unrecognized' : precision === 'year' || precision === 'month' ? 'partial' : 'present';
+     infoText = `${infoValue}（${PRECISION_LABEL[precision]}）`;
+   }
+   if (afterCutoff) infoState = 'conflict';
+@@ -740,7 +785,7 @@ function valueRow(entry) {
+   const children = [value];
+   if (Array.isArray(entry.variants) && entry.variants.length) {
+     children.push(h('ol', { class: 'rtp-variants', 'aria-label': '同题原观察' }, entry.variants.map(variant => h('li', {
+-      text: `${shown(variant.observation_id)} · 资料时点 ${shown(variant.information_as_of, '未提供')} · 取证截止 ${shown(variant.information_cutoff, '未提供')} · 证券 ${shown(variant.security_id)} · 题义版本 ${shown(variant.question_version)}`,
++      text: `${shown(variant.observation_id)} · 归属 ${IDENTITY_TEXT[variant.identity_state][1]} · 实体 ${shown(variant.entity_id)} · 挂牌 ${shown(variant.listing_id)} · 范围 ${shown(variant.scope)} · 资料时点 ${shown(variant.information_as_of, '未提供')} · 取证截止 ${shown(variant.information_cutoff, '未提供')} · 证券 ${shown(variant.security_id)} · 题义版本 ${shown(variant.question_version)}`,
+     }))));
+   }
+   return h('div', { class: 'rtp-row', 'data-rtp-key': entry.key }, [
+diff --git a/tests/browser/test_review_regressions.py b/tests/browser/test_review_regressions.py
+new file mode 100644
+index 0000000..fd65c21
+--- /dev/null
++++ b/tests/browser/test_review_regressions.py
+@@ -0,0 +1,18 @@
++"""Reviewer regression: mixed-entity same-question variants remain visibly isolated."""
++def test_mixed_variant_identity_and_malformed_date_in_real_browser(page, loopback_server):
++    page.goto(f'{loopback_server}/demo/index.html')
++    text = page.evaluate("""async () => {
++      const {renderResultTrustPanel}=await import('/src/result_trust_panel.js');
++      const record={entity_id:'entity_A',observation_id:'obs_A',question_id:'IQS_01',score:7,status:'scored',information_as_of:'2026-99-99'};
++      const ownerState={entity_id:'entity_A',field_observations:[record,{...record,entity_id:'entity_B',observation_id:'obs_B',score:9,listing_id:'US_A',scope:'security'}]};
++      const panel=renderResultTrustPanel({record,ownerState});
++      document.getElementById('panel-host').replaceChildren(panel);
++      panel.querySelector('details.rtp-details').open=true;
++      return {text:panel.textContent,dateState:panel.querySelector('[data-rtp-key="information_as_of"] dd').dataset.rtpState,variantState:panel.querySelector('[data-rtp-key="field_variants"] dd').dataset.rtpState};
++    }""")
++    assert 'entity_B' in text['text'] and '已隔离显示' in text['text']
++    assert 'US_A' in text['text'] and 'security' in text['text']
++    assert text['dateState']=='unrecognized' and text['variantState']=='conflict'
++    page.set_viewport_size({'width':390,'height':844})
++    assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
++    assert page.blocked_requests==[]
+diff --git a/tests/unit/review-regressions.test.mjs b/tests/unit/review-regressions.test.mjs
+new file mode 100644
+index 0000000..349bd1a
+--- /dev/null
++++ b/tests/unit/review-regressions.test.mjs
+@@ -0,0 +1,55 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++const { describeResultTrust } = await import('../../src/result_trust_panel.js');
++const base = {entity_id:'entity_A',observation_id:'obs_A',question_id:'IQS_01',score:7,status:'scored',information_as_of:'2026-10-30'};
++const item=(record,ownerState,key)=>describeResultTrust({record,ownerState}).items.find(x=>x.key===key);
++for (const [observed,imported,expected] of [
++ ['2026-10-30T10:00:00.1Z','2026-10-30T10:00:00.10Z',false],
++ ['2026-10-30T10:00:00.1Z','2026-10-30T10:00:00Z',true],
++ ['2026-10-30T10:00:00+00:00','2026-10-30T09:30:00Z',true],
++ ['2026-10-30T10:00:00.000000002Z','2026-10-30T10:00:00.000000001Z',true],
++]) test(`UTC chronology preserves offset and fraction: ${observed}/${imported}`,()=>{
++ const warnings=describeResultTrust({record:{...base,observed_at:observed,imported_at:imported},ownerState:{entity_id:'entity_A'}}).warnings.map(x=>x.code);
++ assert.equal(warnings.includes('observed_after_imported'),expected);
++});
++for(const [info,expected] of [['2026-10-31T00:30:00+02:00',false],['2026-10-30T23:30:00-02:00',true]]) {
++ test(`UTC cutoff day: ${info}`,()=>{
++  const warnings=describeResultTrust({record:{...base,information_as_of:info,information_cutoff:'2026-10-30'},ownerState:{entity_id:'entity_A'}}).warnings.map(x=>x.code);
++  assert.equal(warnings.includes('information_after_cutoff'),expected);
++ });
++}
++for(const value of ['2026-10-30T99:99:99Z','2026-10-30T23:60:00Z','2026-10-30T23:59:60Z','2026-10-30T12:00:00+24:00','2026-10-30T12:00:00+01:60']) {
++ test(`invalid time components remain unrecognized: ${value}`,()=>{
++   assert.equal(item({...base,information_as_of:value},{entity_id:'entity_A'},'information_as_of').state,'unrecognized');
++ });
++}
++test('a foreign same-question variant is explicitly isolated and not called the current entity',()=>{
++ const variant={...base,entity_id:'entity_B',observation_id:'obs_B',score:9};
++ const result=item(base,{entity_id:'entity_A',field_observations:[base,variant]},'field_variants');
++ assert.equal(result.state,'conflict');assert.equal(result.variants[1].identity_state,'foreign');assert.match(result.text,/隔离/);assert.match(result.text,/entity_B/);
++});
++test('explicit null variant identity remains unknown while absent key may inherit the real envelope',()=>{
++ const missing={...base};delete missing.entity_id;
++ const result=item(base,{entity_id:'entity_A',field_observations:[{...base,entity_id:null},missing]},'field_variants');
++ assert.equal(result.variants[0].identity_state,'child_unknown');assert.equal(result.variants[1].identity_state,'inherited');
++});
++test('malformed variant identity is marked unrecognized instead of inheriting the envelope',()=>{
++ const result=item(base,{entity_id:'entity_A',field_observations:[{...base,entity_id:42}]},'field_variants');
++ assert.equal(result.state,'conflict');assert.equal(result.variants[0].identity_state,'invalid_child_identity');
++});
++test('an array containing only unreadable variants reports the unreadable count',()=>{
++ const result=item(base,{entity_id:'entity_A',field_observations:[null,1,false]},'field_variants');
++ assert.equal(result.state,'unrecognized');assert.match(result.text,/3/);assert.doesNotMatch(result.text,/无同题其他原观察/);
++});
++test('variant listing and scope differences remain visible alongside original values',()=>{
++ const result=item(base,{entity_id:'entity_A',field_observations:[{...base,listing_id:'HK_A',scope:'security'},{...base,listing_id:'US_A',scope:'entity'}]},'field_variants');
++ assert.match(result.text,/HK_A/);assert.match(result.text,/US_A/);assert.match(result.text,/security/);assert.match(result.text,/entity/);
++});
++for (const value of ['2026-99-99','2025-02-29','2026-04-31','0000-01-01']) test(`invalid calendar ${value} retains text without claiming recognized precision`,()=>{
++ const result=item({...base,information_as_of:value},{entity_id:'entity_A'},'information_as_of');
++ assert.equal(result.state,'unrecognized');assert.ok(result.text.includes(value));
++});
++test('a leap day is recognized without reading a clock or changing its value',()=>{
++ const result=item({...base,information_as_of:'2024-02-29'},{entity_id:'entity_A'},'information_as_of');
++ assert.equal(result.state,'present');assert.match(result.text,/2024-02-29/);
++});

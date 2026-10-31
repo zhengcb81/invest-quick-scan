@@ -1,3 +1,26 @@
+## 2026-10-31T20:29:25+00:00 新四包查验收口：两包签收、两包partial；软件根修已提交
+
+统一报告：[OUTSOURCE-ALL-2026-10-31](reviews/OUTSOURCE-ALL-2026-10-31/report.md)。已按最新Git字节、原CLI、固定输入、实际单元/集成/真实Chrome及不同作者最终独审查验；不是依作者complete或schema转绿。前批比较/名单实际HEAD与已签关键hash完全一致，保持签收。历史55个catalog ID/50个直达路径仅是盘点，不是55包新验收；R1真实嵌套路径和BASIC三仓交付已辨认，早期partial/TH-IN缺交接不凭本轮口头完工关闭。
+
+| 新包 | 最终结论 | 当前payload C / metadata M（完整值见acceptance-status.json） |
+|---|---|---|
+| TIME-SEMANTICS-30 | 通过候选范围；102关联+12独立边界实际通过 | 881cb177 / e434fe70 |
+| RESULT-TRUST-30 | 通过只读组件；84Node、原119Python、3Chrome有证据，最终只重跑受影响组不双算 | 0f15dce2 / 118387b1 |
+| ANSWER-AUDIT-30 | 40软件测试通过，金融内容partial | 3dbf088a / 5c14fd97 |
+| IMPORT-PERF-30 | 39关联通过，研究成果partial；独立17重跑不加分母 | 5c19ebd0 / 72718ae1 |
+
+已直接根修：TIME回执policy/cutoff/coverage/主体绑定、非法日期/证据/撤回和边界；RESULT嵌套外来变体隔离、未知行保留、日历/时分秒/offset/亚毫秒与UTC截止日；ANSWER冻结hash/题义版本/主体/原指针/数值口径/双向链接/逐行统计；PERF失败finally清理与按实际日志/最终C生成交接。均是Lab修复，原24h政策/旧观察/评分/8766/原库/名单/预算未改，没有新收费API或文档下载。真实输入仍只保留原忽略副本，验收临时私有副本/fixture/Chrome profile/PID/端口已清。源码修复正常本地提交，四Lab没有配置新remote；IQS PWF/薄证据/代码差异归档正常提交推送，其他writer的2026-10-10 README四行不带入。
+
+原CLI初验TIME/RESULT scope错误、ANSWER review.note超schema；已不改schema/validator地修准确逐文件scope、完整C、hash、真实独审绑定和partial声明。最终四包CLI均exit0/valid，仅为形状/引用预检，不能给金融/生产资格。新的独审不改签旧round。
+
+仍缺：ANSWER存在Reuters主页加说明文字、不够精确的PDF digest来源与午夜读取时间精度；原32行/96命题不能算准确率。总控内置网页抽核确认2014财务期间错配及PB2.31归属另一公司，但未独立核完所有金融命题。PERF完整撤权/迟到或未知ACK/send_uncertain双变体矩阵仍缺，原final4加速比1.097/1.160/1.203/0.955，36包变慢，不能宣称普遍提速或2000家就绪。新鲜缓存真实正例和整个PWF仍pending；前108有效槽/原105+3及冷恢复保持上一节点历史结论，本轮没有重跑。
+
+环境/过程错误均保留：外仓Git沙箱Permission denied按已有授权只读提权；PERF副本缺独立Git边界/Windows长路径改验收环境，不冒产品红；两新文件混合换行使预提交清单不绑定Git，已仅改清单明确Git blob字节；缺Git身份用IQS命令级现有身份，未改全局配置。最初猜final.json路径不存在改读实际acceptance-status.json，不作交付缺失。
+
+**Next Step：** 本轮验收完成，不擅自恢复收费扫描。下一主线优先补ANSWER精确一手来源/真实时间精度与PERF完整故障矩阵；TIME/RESULT按最终C供原owner/UI接线设计，兼容原schema/策略、保留旧观察，再做真实fresh正例。不要重发这四包的已修软件问题，不清空历史partial，不扩2000名单，不以旧日期/TTL改绿。完整交接包含C/M、原命令与薄证据索引，后手可直接从本报告继续。
+
+---
+
 ## 2026-10-30T20:04:44Z 新四包可并行派发；只发布施工说明，未自动开工
 
 本批总入口：[2026-10-30 mainline-next](parallel-lanes/packages/2026-10-30-mainline-next/README.md)。四张独立施工卡、共享接口/独审交接规则、manifest、输入锁和32答索引均已完成并通过真实独立agent审查，open_findings=[]。仅施工文档质量通过，不代表四包已实现/主线fresh或金融门关闭。

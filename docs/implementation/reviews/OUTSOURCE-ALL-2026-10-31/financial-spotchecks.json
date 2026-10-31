@@ -1,0 +1,28 @@
+{
+  "observed_at_utc": "2026-10-31T20:28:34.978657+00:00",
+  "method": "Built-in web open/read only; no model or auxiliary search API keys, no downloaded financial documents/full-page archive.",
+  "checks": [
+    {
+      "sample_claim": "LIVE30_001-C1",
+      "url": "https://www.microsoft.com/investor/reports/ar25/index.html",
+      "result": "Current official annual report text corroborates selected FY2025 revenue/operating-income/Azure growth statements. This does not validate all answers or historical page state."
+    },
+    {
+      "sample_claim": "LIVE30_012-C1",
+      "url": "https://money.finance.sina.com.cn/corp/go.php/vFD_FinancialGuideLine/stockid/300750/ctrl/2014/displaytype/4.phtml",
+      "result": "Page explicitly labels reporting date2014-12-31 and lists net sales margin6.4103 and net asset return16.566; current-period use is a period mismatch, not proof those numbers never existed."
+    },
+    {
+      "sample_claim": "LIVE30_017-C3",
+      "url": "https://caifuhao.eastmoney.com/news/20261021190420917209180",
+      "result": "Current article assigns PB2.31/five-year-bottom wording to CVTE002841, not CATL. Article is marked AI-generated. This verifies attribution of article text, not the investment facts in that article."
+    },
+    {
+      "sample_claim": "LIVE30_022-C3",
+      "url": "https://www.tencent.com/wp-content/uploads/2026/08/腾讯公布二零二六年第二季度业绩.pdf",
+      "result": "Built-in reader did not access the named PDF. Do not endorse claimed official numbers from digest alone; remains not_assessable for this controller check."
+    }
+  ],
+  "no_accuracy_rate_or_new_company_score": true,
+  "author_content_not_overwritten": true
+}

@@ -1,0 +1,297 @@
+diff --git a/audit/build_content.py b/audit/build_content.py
+index 9a55672..a2359d5 100644
+--- a/audit/build_content.py
++++ b/audit/build_content.py
+@@ -40,7 +40,7 @@ LIMITATIONS = [
+ 
+ 
+ def load_samples() -> list[dict]:
+-    return json.loads(PRIVATE_INPUT.read_text(encoding="utf-8"))["samples"]
++    return iaa.load_private_samples(PRIVATE_INPUT, '5342c92a5a5ad6a85c4fe030190969578af30c44eaa36e159d9966f01e3937ee')
+ 
+ 
+ def resolve_pointer(sample: dict, spec: dict) -> tuple[dict, str]:
+@@ -50,7 +50,9 @@ def resolve_pointer(sample: dict, spec: dict) -> tuple[dict, str]:
+ 
+ 
+ def main() -> int:
+-    lock_json = json.loads(LOCK.read_text(encoding="utf-8"))
++    if iaa.sha256_file(LOCK) != INPUT_LOCK_SHA256:
++        raise iaa.AuditIntegrityError('input lock modified')
++    lock_json = iaa.load_json_strict(LOCK)
+     samples = load_samples()
+     by_id = {s["sample_id"]: s for s in samples}
+     if set(by_id) != set(CLAIM_SPECS) or set(by_id) != set(VERDICTS):
+diff --git a/src/iqs_answer_audit/__init__.py b/src/iqs_answer_audit/__init__.py
+index 7eeebb0..e96ef65 100644
+--- a/src/iqs_answer_audit/__init__.py
++++ b/src/iqs_answer_audit/__init__.py
+@@ -11,6 +11,7 @@ from __future__ import annotations
+ 
+ import hashlib
+ import json
++from collections import Counter
+ from pathlib import Path
+ from typing import Any, Callable
+ 
+@@ -26,6 +27,7 @@ CLAIM_TYPES = {"factual_numeric", "factual_qualitative", "judgment", "absence_or
+ CLAIM_VERDICTS = {"supported", "partially_supported", "contradicted", "not_assessable"}
+ FETCH_STATUSES = {"ok", "blocked", "not_found", "forbidden", "timeout", "empty"}
+ QUOTE_WORD_CAP = 60
++INPUT_LOCK_SHA256 = 'd432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab'
+ 
+ 
+ class AuditIntegrityError(ValueError):
+@@ -118,6 +120,8 @@ def _read_rows(content_dir: Path, name: str) -> list[dict]:
+         raise AuditIntegrityError(f"{name}: wrong protocol {doc.get('protocol')}")
+     if doc.get("production_ready") is not False:
+         raise AuditIntegrityError(f"{name}: production_ready must be false")
++    if doc.get('input_lock_sha256') != INPUT_LOCK_SHA256:
++        raise AuditIntegrityError(f'{name}: input lock drift')
+     rows = doc.get("rows")
+     if not isinstance(rows, list):
+         raise AuditIntegrityError(f"{name}: rows missing")
+@@ -141,7 +145,14 @@ def validate_claims(content_dir: Path, samples: list[dict]) -> dict[str, dict]:
+             raise AuditIntegrityError(f"claim {cid}: bad type {row['claim_type']}")
+         if row["verdict"] not in CLAIM_VERDICTS:
+             raise AuditIntegrityError(f"claim {cid}: bad verdict {row['verdict']}")
+-        answer = by_id[sid]["original_observation"]["answer"]
++        sample=by_id[sid]
++        obs=sample['original_observation']
++        answer = obs["answer"]
++        if row.get('entity')!=sample['company_label']:
++            raise AuditIntegrityError(f'claim {cid}: entity binding drift')
++        security=obs.get('security_id') if obs.get('scope')=='security' else None
++        if row.get('security_scope')!=security:
++            raise AuditIntegrityError(f'claim {cid}: security binding drift')
+         p = row["original_pointer"]
+         kind_map = {
+             "evidence": ("evidence_claim", p.get("id")),
+@@ -154,10 +165,18 @@ def validate_claims(content_dir: Path, samples: list[dict]) -> dict[str, dict]:
+             raise AuditIntegrityError(f"claim {cid}: bad pointer kind {p['kind']}")
+         spec_kind, locator = kind_map[p["kind"]]
+         expected_pointer, expected_quote = resolve_pointer(answer, spec_kind, locator)
+-        if expected_pointer["kind"] != p["kind"] or expected_pointer.get("index") != p.get("index"):
++        if expected_pointer != p:
+             raise AuditIntegrityError(f"claim {cid}: pointer drift vs frozen input")
+         if expected_quote != row["original_quote"]:
+             raise AuditIntegrityError(f"claim {cid}: original_quote drift vs frozen input")
++        metric=answer['metrics'][expected_pointer['index']] if p['kind']=='metric' else {}
++        expected_period={
++            'start':metric.get('period_start') or (answer.get('period_start') if row['claim_type']!='absence_or_coverage' else None),
++            'end':metric.get('period_end') or (answer.get('period_end') if row['claim_type']!='absence_or_coverage' else None),
++            'basis':answer.get('basis'),
++        }
++        if row.get('period')!=expected_period or row.get('currency')!=metric.get('currency') or row.get('unit')!=metric.get('unit_detail'):
++            raise AuditIntegrityError(f'claim {cid}: original period/currency/unit drift')
+     per_sample: dict[str, int] = {}
+     for row in claims:
+         per_sample[row["sample_id"]] = per_sample.get(row["sample_id"], 0) + 1
+@@ -205,6 +224,11 @@ def validate_sources(content_dir: Path, claims: dict[str, dict]) -> dict[str, di
+         # Factual propositions must carry at least one independent source check.
+         if row["claim_type"] in {"factual_numeric", "factual_qualitative"} and not refs:
+             raise AuditIntegrityError(f"claim {cid}: factual claim without any source")
++    for source_id, source in by_key.items():
++        expected = {cid for cid,c in claims.items() if source_id in c['source_refs']}
++        actual = source.get('used_by_claims')
++        if not isinstance(actual,list) or len(actual)!=len(set(actual)) or set(actual)!=expected:
++            raise AuditIntegrityError(f'source {source_id}: reverse claim links drift')
+     return by_key
+ 
+ 
+@@ -222,6 +246,12 @@ def validate_sample_verdicts(
+             raise AuditIntegrityError(f"duplicate verdict row: {sid}")
+         seen.add(sid)
+         obs = by_id[sid]["original_observation"]
++        for field in ('question_id','question_version','question_definition_sha256',
++                      'module_release_id','information_cutoff'):
++            if row.get(field)!=obs.get(field):
++                raise AuditIntegrityError(f'{sid}: {field} binding drift')
++        if row.get('information_as_of')!=obs['answer'].get('information_as_of'):
++            raise AuditIntegrityError(f'{sid}: information_as_of binding drift')
+         if row["observation_id"] != obs["observation_id"]:
+             raise AuditIntegrityError(f"{sid}: observation_id drift")
+         if row["question_semantic_sha256"] != obs["question_semantic_sha256"]:
+@@ -243,6 +273,9 @@ def validate_sample_verdicts(
+                 raise AuditIntegrityError(f"{sid}: material claim {cid} missing")
+             if claims[cid]["sample_id"] != sid:
+                 raise AuditIntegrityError(f"{sid}: cross-sample claim {cid}")
++        expected_claims={cid for cid,c in claims.items() if c['sample_id']==sid}
++        if len(row['material_claim_ids'])!=len(expected_claims) or set(row['material_claim_ids'])!=expected_claims:
++            raise AuditIntegrityError(f'{sid}: material claim set incomplete')
+         text = json.dumps(row, ensure_ascii=False)
+         for banned in ("买入", "卖出", "buy rating", "sell rating", "target price"):
+             if banned in text:
+@@ -257,6 +290,34 @@ def validate_coverage(content_dir: Path, samples: list[dict], verdict_rows: list
+     cov = load_json_strict(Path(content_dir) / "coverage.json")
+     if cov.get("protocol") != "iqs.live_answer_content_audit/1.0.0":
+         raise AuditIntegrityError("coverage.json: wrong protocol")
++    if cov.get('input_lock_sha256')!=INPUT_LOCK_SHA256 or cov.get('production_ready') is not False:
++        raise AuditIntegrityError('coverage.json: lock/production boundary drift')
++    actual_counts = {
++        'by_market':Counter(s['market'] for s in samples),
++        'by_company':Counter(s['company_label'] for s in samples),
++        'by_question_id':Counter(s['original_observation']['question_id'] for s in samples),
++        'by_question_family':Counter(s['original_observation']['question_id'].split('_')[0] for s in samples),
++        'by_original_status':Counter(s['original_observation']['answer']['status'] for s in samples),
++        'by_generation':Counter(str(s['source_generation']) for s in samples),
++        'by_cutoff':Counter(s['original_observation']['information_cutoff'] for s in samples),
++        'by_audit_status':Counter(r['audit_status'] for r in verdict_rows),
++        'by_date_semantics_status':Counter(r['date_semantics_status'] for r in verdict_rows),
++        'by_reasoning_status':Counter(r['reasoning_status'] for r in verdict_rows),
++    }
++    for name,expected in actual_counts.items():
++        if cov['rows'].get(name)!=dict(expected):
++            raise AuditIntegrityError(f'coverage {name} does not match row-level evidence')
++    completeness=cov['rows'].get('model_output_completeness',{})
++    answers=[s['original_observation']['answer'] for s in samples]
++    expected_completeness={
++        'samples_with_evidence':sum(bool(a.get('evidence')) for a in answers),
++        'samples_with_metrics':sum(bool(a.get('metrics')) for a in answers),
++        'scored_samples':sum(a['status']=='scored' for a in answers),
++        'refusal_samples':sum(a['status']=='insufficient_evidence' for a in answers),
++    }
++    for key,value in expected_completeness.items():
++        if completeness.get(key)!=value:
++            raise AuditIntegrityError(f'coverage completeness {key} drift')
+     if cov["rows"]["sample_total"] != len(samples):
+         raise AuditIntegrityError("coverage sample_total mismatch")
+     if sum(cov["rows"]["by_audit_status"].values()) != len(samples):
+@@ -265,6 +326,10 @@ def validate_coverage(content_dir: Path, samples: list[dict], verdict_rows: list
+         raise AuditIntegrityError("market denominators do not sum to 32")
+     claims = _read_rows(content_dir, "claims.json")
+     factual = cov["rows"]["factual_support"]
++    counts=Counter(c['verdict'] for c in claims)
++    for verdict in CLAIM_VERDICTS:
++        if factual.get(verdict)!=counts[verdict]:
++            raise AuditIntegrityError(f'coverage claim verdict {verdict} drift')
+     if factual["claims_total"] != len(claims):
+         raise AuditIntegrityError(
+             f"claims_total {factual['claims_total']} != claims.json rows {len(claims)}"
+diff --git a/tests/test_audit_toolkit.py b/tests/test_audit_toolkit.py
+index 16f72ba..2eb3da7 100644
+--- a/tests/test_audit_toolkit.py
++++ b/tests/test_audit_toolkit.py
+@@ -250,7 +250,7 @@ def test_negative_supported_only_by_post_cutoff_source_fails(tmp_path):
+                      "used_by_claims": ["X-C1"]}]
+     for name, rows in (("claims.json", claims_rows), ("sources.json", sources_rows)):
+         doc = {"protocol": "iqs.live_answer_content_audit/1.0.0", "production_ready": False,
+-               "document": name, "input_lock_sha256": "0" * 64, "limitations": [], "rows": rows}
++               "document": name, "input_lock_sha256": iaa.INPUT_LOCK_SHA256, "limitations": [], "rows": rows}
+         (content / name).write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+     claims_by_id = {c["claim_id"]: c for c in claims_rows}
+     with pytest.raises(iaa.AuditIntegrityError, match="post-cutoff sources"):
+@@ -262,7 +262,7 @@ def test_negative_factual_claim_without_source_fails(tmp_path):
+     content.mkdir()
+     (content / "sources.json").write_text(json.dumps(
+         {"protocol": "iqs.live_answer_content_audit/1.0.0", "production_ready": False,
+-         "document": "sources.json", "rows": []}, ensure_ascii=False), encoding="utf-8")
++         "document": "sources.json", "input_lock_sha256": iaa.INPUT_LOCK_SHA256, "rows": []}, ensure_ascii=False), encoding="utf-8")
+     claims = {"X-C1": {"claim_id": "X-C1", "sample_id": "S1", "claim_type": "factual_numeric",
+                        "verdict": "supported", "source_refs": [],
+                        "original_pointer": {"kind": "status", "index": None}, "original_quote": "x"}}
+diff --git a/tests/test_controller_integrity.py b/tests/test_controller_integrity.py
+new file mode 100644
+index 0000000..72e0d2a
+--- /dev/null
++++ b/tests/test_controller_integrity.py
+@@ -0,0 +1,99 @@
++import copy
++import json
++import shutil
++import subprocess
++import sys
++from pathlib import Path
++
++import pytest
++import iqs_answer_audit as audit
++from conftest import CONTENT, LAB, PRIVATE, EXPECTED_PRIVATE_SHA256
++
++
++@pytest.fixture
++def corpus(tmp_path):
++    target = tmp_path / 'content'
++    shutil.copytree(CONTENT, target)
++    return target
++
++
++def edit(path, fn):
++    data = json.loads(path.read_text(encoding='utf-8'))
++    fn(data)
++    path.write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
++
++
++@pytest.mark.parametrize('field', ['question_id','question_version','question_definition_sha256','module_release_id','information_cutoff','information_as_of'])
++def test_reject_binding_drift(corpus, field):
++    edit(corpus/'sample-verdicts.json', lambda d: d['rows'][0].__setitem__(field,'wrong'))
++    samples = audit.load_private_samples(PRIVATE, EXPECTED_PRIVATE_SHA256)
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus, samples)
++
++
++def test_coverage_cannot_redistribute_verdicts_preserving_total(corpus):
++    def corrupt(d):
++        f=d['rows']['factual_support']
++        f['supported'] += 1
++        f['partially_supported'] -= 1
++        n=f['supported']+f['partially_supported']+f['contradicted']
++        f['supported_share_of_assessable']=round(f['supported']/n,4)
++    edit(corpus/'coverage.json',corrupt)
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++
++def test_source_reverse_claim_link_cannot_disappear(corpus):
++    edit(corpus/'sources.json',lambda d:d['rows'][0].__setitem__('used_by_claims',[]))
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++
++def test_pointer_url_is_bound_to_original(corpus):
++    edit(corpus/'claims.json',lambda d:d['rows'][0]['original_pointer'].__setitem__('url','https://wrong.example/'))
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++
++def test_shared_lock_must_match(corpus):
++    edit(corpus/'sources.json',lambda d:d.__setitem__('input_lock_sha256','0'*64))
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++
++@pytest.mark.parametrize('field', ['entity','security_scope'])
++def test_claim_subject_must_match_frozen_observation(corpus,field):
++    edit(corpus/'claims.json',lambda d:d['rows'][0].__setitem__(field,'FOREIGN'))
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++@pytest.mark.parametrize('field', ['period','currency','unit'])
++def test_claim_numeric_metadata_remains_original(corpus,field):
++    edit(corpus/'claims.json',lambda d:d['rows'][0].__setitem__(field,{'end':'1900-01-01'} if field=='period' else 'CNY'))
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++def test_output_completeness_is_recomputed_from_original(corpus):
++    def corrupt(d):
++        d['rows']['model_output_completeness']['scored_samples']+=1
++        d['rows']['model_output_completeness']['refusal_samples']-=1
++    edit(corpus/'coverage.json',corrupt)
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++
++def test_material_claims_cannot_be_silently_dropped(corpus):
++    edit(corpus/'sample-verdicts.json',lambda d:d['rows'][0].__setitem__('material_claim_ids',[]))
++    with pytest.raises(audit.AuditIntegrityError):
++        audit.validate_chain(corpus,audit.load_private_samples(PRIVATE,EXPECTED_PRIVATE_SHA256))
++
++
++def test_public_builder_rejects_mutated_private_before_output(tmp_path):
++    target=tmp_path/'lab'
++    for directory in ['audit','src','vendor_upstream']:
++        shutil.copytree(LAB/directory,target/directory)
++    (target/'.private-inputs').mkdir()
++    (target/'.private-inputs/live-answers-32.json').write_bytes(PRIVATE.read_bytes()+b'\n')
++    p=subprocess.run([sys.executable,'-B',str(target/'audit/build_content.py')],cwd=target,capture_output=True,text=True)
++    assert p.returncode != 0, 'tampered corpus was stamped input_lock_sha256_verified=true'
++    assert not (target/'content').exists(), 'must validate before creating deliverables'

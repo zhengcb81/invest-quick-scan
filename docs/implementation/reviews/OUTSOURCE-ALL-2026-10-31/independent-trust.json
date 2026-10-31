@@ -1,0 +1,101 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "RESULT-TRUST-30",
+  "status": "passed",
+  "open_findings": [],
+  "author_agent_ids": [
+    "/root/accept_trust30",
+    "/root"
+  ],
+  "reviewer_agent_id": "/root/accept_time30",
+  "payload_commit": "0f15dce2a8b5c2813703b0f0905e2526071482f7",
+  "payload_manifest_sha256": "8678d9ce4d1a67dec4d3cc69e59458c59ea7a6481440537caf01eb807cec75d7",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "reviewed_at_utc": "2026-10-31T20:19:31.293378+00:00",
+  "rounds": [
+    "round-01.json"
+  ],
+  "resolved_findings": [
+    {
+      "id": "TRUST-DATE-01",
+      "status": "resolved_verified",
+      "evidence": [
+        "date-probes.json",
+        "date-probes-final.json",
+        "node-final.stdout.txt",
+        "final-payload-delta.json"
+      ],
+      "reason": "One deterministic explicit timestamp parser validates calendar/hms/offset; UTC second plus exact fractional string comparisons fix all10 original concrete counterexamples while preserving originals and not reading a current clock."
+    }
+  ],
+  "coverage_paths": [
+    "src/result_trust_panel.js",
+    "contracts/owner-field-map.json",
+    "tests/unit/review-regressions.test.mjs",
+    "tests/browser/test_review_regressions.py",
+    "src/result_trust_panel.css",
+    "fixtures/scenarios.json",
+    "demo/",
+    "integration/host-patch-proposal.md",
+    "schemas/",
+    "tests/integration/"
+  ],
+  "executed_tests": {
+    "df0_baseline": {
+      "node": 73,
+      "python_including_browser_and_e2e": 122,
+      "failed": 0,
+      "skipped": 0,
+      "refs": [
+        "test-results.json",
+        "node.stdout.txt",
+        "python.stdout.txt"
+      ]
+    },
+    "final_C_affected": {
+      "node": 84,
+      "python_manifest_and_real_chrome_mixed_identity_date_narrow_case": 3,
+      "failed": 0,
+      "skipped": 0,
+      "refs": [
+        "final-test-results.json",
+        "node-final.stdout.txt",
+        "browser-final.stdout.txt"
+      ]
+    },
+    "avoid_double_counting": "Final Node84 re-runs baseline73 plus11new; final3 pytest re-run baseline cases, not87 wholly new tests. Browser DOM330/E2E32 internal assertions are not additional pytest test counts.",
+    "manual_counterexample_comparisons": {
+      "original": 10,
+      "all_resolved": true,
+      "reference": "date-probes-final.json"
+    }
+  },
+  "provenance": {
+    "manifest_files": 67,
+    "all_match": true,
+    "refs": [
+      "freeze-checks.json",
+      "freeze-checks2.json",
+      "final-payload-delta.json"
+    ],
+    "only_two_business_files_changed_after_df0": true
+  },
+  "cleanup": {
+    "temp_removed": true,
+    "port18794_free": true,
+    "isolated_chrome_profile_removed": true,
+    "source_repository_writes": false,
+    "original8766_or_databases_accessed": false,
+    "paid_api_calls": 0
+  },
+  "metadata_followups": [
+    "Root refreshes current handoff B/C/M exact scope and artifact/test/review refs. This code review does not approve stale historical metadata and does not alter previous independent review records."
+  ],
+  "limitations": [
+    "Independent component acceptance only; no original UI host integration or financial/production qualification.",
+    "Initial CodeGraph unavailable; known-file reads used without initializing source index.",
+    "Loopback requests controlled; browser process-level background network not measured."
+  ],
+  "production_ready": false,
+  "financial_qualification_granted": false
+}

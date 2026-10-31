@@ -1,0 +1,118 @@
+{
+  "protocol": "iqs.controller_independent_review/1.0.0",
+  "package_id": "TIME-SEMANTICS-30",
+  "status": "passed",
+  "open_findings": [],
+  "author_agent_id": "/root/accept_time30",
+  "reviewer_agent_id": "/root/accept_trust30",
+  "controller_patch_author": "/root",
+  "payload_commit": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+  "payload_manifest_sha256": "7860dea8b4a5a667c659a3b481a4e3f178b67b63bf7bfb30fe73c027a0b7ff7a",
+  "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab",
+  "reviewed_at": "2026-10-31T20:19:29.833308+00:00",
+  "covered_paths": [
+    "src/iqs_time_semantics/assess.py",
+    "src/iqs_time_semantics/policy.py",
+    "src/iqs_time_semantics/timefields.py",
+    "contracts/time-field-semantics.md",
+    "tests/unit/test_acceptance_boundaries.py",
+    "tests/unit/helpers.py",
+    "tests/integration/test_legacy_parity.py",
+    "docs/payload-manifest.json",
+    "consumed-inputs.json"
+  ],
+  "checks": {
+    "payload_files": 40,
+    "consumed_files": 82,
+    "checks_passed": true,
+    "input_lock_sha256": "d432ffce06bf5fc204a703f829f14a3e4de62f1d32957322981c6f13a1c367ab"
+  },
+  "verification": {
+    "related_tests_passed": 102,
+    "independent_boundary_tests_passed": 12,
+    "total_pytest_passed": 114,
+    "failed": 0,
+    "skipped": 0,
+    "no_double_counting": true,
+    "command": {
+      "argv": [
+        "C:/Miniconda/python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-time\\test_independent_boundaries.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--override-ini",
+        "addopts=",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-time\\own-tmp-final\\pytest"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-time\\snapshot-new",
+      "exit_code": 0,
+      "elapsed_seconds": 12.01858139038086,
+      "log_sha256": "87ed79e0da4642f91c1afdc0461b497d054787f615527ee254751ad492be033a"
+    },
+    "coverage": [
+      "Receipt policy version, cutoff, complete sources/search execution and search/verified ordering",
+      "Canonical security scope consistency; context/model/version refusal",
+      "Malformed UTC calendar values and null/nonobject evidence entries produce named refusal",
+      "Publication future/cutoff fractional-second boundary and malformed withdrawal markers",
+      "Old observations and scores unchanged after successful/refused assessment",
+      "Frozen legacy implementation differential with temporary native SQLite",
+      "Dynamic complete catalog coverage and real public CLI named-refusal E2E"
+    ]
+  },
+  "resolved_findings": [
+    {
+      "id": "TIME30-FINAL-01",
+      "old_payload": "85b4953794c1da9926705b32eb8e4f6eb4fcc9b7",
+      "new_payload": "881cb1772e4bc2ef85a857505a67b851452c36f1",
+      "original_independent_regressions": "4F/8P",
+      "final_independent_regressions": "12P",
+      "fix": "Non-null retracted_at now must be a parseable UTC string; malformed values are publication_invalid named refusals. Null/missing and legal future semantics preserved."
+    }
+  ],
+  "delta_from_prior_C": [
+    "src/iqs_time_semantics/assess.py",
+    "tests/unit/test_acceptance_boundaries.py",
+    "docs/payload-manifest.json"
+  ],
+  "cleanup": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-time\\own-tmp",
+      "existed": true,
+      "absent_after": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-time\\own-tmp-final",
+      "existed": true,
+      "absent_after": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-time\\snapshot\\.tmp",
+      "existed": false,
+      "absent_after": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-all-2026-10-31\\review-time\\snapshot-new\\.tmp",
+      "existed": false,
+      "absent_after": true
+    }
+  ],
+  "network_calls": false,
+  "paid_calls": false,
+  "source_repository_writes": false,
+  "production_ready": false,
+  "financial_qualification_granted": false,
+  "real_fresh_cache_positive_achieved": false,
+  "limitations": [
+    "Candidate-only temporal policy; this does not install a production policy, grant financial truth or produce a real fresh cache positive.",
+    "Trusted verifier must substantiate source/query coverage; no new search-age TTL is imposed beyond the defined verifier contract.",
+    "Original review history is preserved; new C has this new independent review, with root metadata-only M still separate.",
+    "CodeGraph uninitialized; exact frozen known source files used without modifying source index.",
+    "A reviewer manifest-check script initially assumed every consumed row had Git OID; controller samples.index correctly uses null OID and declared raw SHA; corrected checker verifies that distinction."
+  ]
+}
