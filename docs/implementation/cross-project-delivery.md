@@ -1,3 +1,5 @@
+> **当前口径（2026-10-31）**：本页为分工/交付规格，当前状态见[根计划](../../task_plan.md)。实际本机入口现由IQS open_dashboard/原UI协调StockQA与StockWiki；最初拟定的StockWiki统一安装名不是当前命令。正式配套全验收仍未完成。
+
 # 各项目交付与联调顺序
 
 2026-09-22。任务细节与依赖唯一来源为[tasks.json](tasks.json)。本页是按仓库划分的阅读索引，不维护第二份状态表。统一启动要求见[一键开启设计](one-click-launch.md)。
@@ -33,13 +35,13 @@
 
 ## analyze-theme-value-chain
 
-- **源目录**：`Projects/local-skills/analyze-theme-value-chain`；T01修改实际第5/6步查询/补缺流程，X07/X08核对安装/宿主实际加载的版本。
+- **源目录**：`Projects/analyze-theme-value-chain`（独立源仓；`local-skills`仅安装镜像）；T01修改实际第5/6步查询/补缺流程，X07/X08核对安装/宿主实际加载的版本。
 - **交出**：按已独立拆解的链条查询候选、字段复用、范围补扫与池外提名；保留主题收入证据、情景模型和完整链条要求。
 - **验收**：通过真实消费入口查询同一StockWiki库；不能只测试一个未被SKILL引用的适配函数，不能让库内名单限定全市场发现。
 
 ## industry-research
 
-- **源目录**：`Projects/local-skills/industry-research`；T02修改实际第6步，按统一实体查询，使用任务时点而非固定2025。
+- **源目录**：`Projects/industry-research`（独立源仓；`local-skills`仅安装镜像）；T02修改实际第6步，按统一实体查询，使用任务时点而非固定2025。
 - **交出**：无company目录也能复用画像、区分行业量表与IQS、只补缺口；X07/X08确认真正加载更新后的技能。
 - **验收**：框架PDF流程留在原技能，快扫不依赖文档；查询/补扫/报告通过实际入口验证，不能只改说明文字却没有调用查询层。
 

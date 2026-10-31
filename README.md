@@ -83,9 +83,13 @@ python scripts/thin_scan.py --company "宁德时代" --out runs/basic-dry-run --
 
 `examples/profile.json`是演示配置，需要替换为经核实的公司分类与时间。`main_questions.json`和旧24题清单仅作历史兼容；新完整基础模板是 `basic_questions.json`。冻结路由、新旧版本兼容和标准答案命令见[SKILL.md](SKILL.md)。薄草稿不等于StockWiki正式观察或金融准确性验收。
 
-## 当前可并行施工包
+## 最近施工交付（已验收，不重复派发）
 
 [2026-10-30四包总说明](docs/implementation/parallel-lanes/packages/2026-10-30-mainline-next/README.md)四条线已完成本轮后续修补与独审，见[ANSWER/PERF收口](docs/implementation/reviews/SUPPORT-CLOSE-2026-10-31/report.md)与[原TIME/RESULT接线验收](docs/implementation/reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。首轮partial报告保留历史。51来源全尝试仍有16不可读，不据此声称金融全对；性能安全根修/68项不同用例与24合成测量通过，36包实测更慢、未装生产。TIME/RESULT已在原8766三市场页面验收，实际数据与原库文件未改；只读时点解释不授复用，不关闭fresh真实正例、金融准确性或2000家公司吞吐门。
+
+## 当前项目阶段
+
+已到小范围可用阶段：原UI、名单/比较、三市场各36题的真实扫描/ACK/历史恢复已验。还没有完成全池产品：真实fresh复用正例、答案质量/校准余项、200家可靠性、事实关系检索与主题/行业消费者、目标规模及配套发布仍有剩余。新TIME目前只读解释，其新增核查凭证不作为原扫描/入库的额外前置。唯一实时计划见[task_plan.md](task_plan.md)，具体差异见[状态对账](docs/implementation/reviews/PWF-RECONCILIATION-2026-10-31/report.md)。旧日期状态页是历史快照。
 
 ## 项目分工与配置
 
