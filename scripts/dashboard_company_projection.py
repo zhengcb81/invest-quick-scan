@@ -112,11 +112,21 @@ def worker_read(config: dict, operation: str, payload: Any) -> dict[str, Any]:
     writable.
     """
     from stockwiki.paths import WorkspacePaths
-    from stockwiki.public_company_assessments import (
-        CompanyAssessmentError,
-        list_company_history,
-        read_company_result,
-    )
+    try:
+        from stockwiki.public_company_assessments import (
+            CompanyAssessmentError,
+            list_company_history,
+            read_company_result,
+        )
+    except ImportError:
+        # An older StockWiki owner does not publish the company assessment
+        # projection: that is a named unavailable capability, never a zero or
+        # a fallback formal result.
+        raise ProjectionError(
+            "owner_company_projection_unavailable",
+            "the StockWiki owner does not publish the company assessment projection",
+            502,
+        ) from None
 
     paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
     if operation == "company_result":

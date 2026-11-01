@@ -426,6 +426,20 @@ B03_STOCKWIKI_ROOT = Path(os.environ.get(
     str(Path(__file__).resolve().parents[2] / 'dashboard-owner-sw-b03-assessments')))
 
 
+@pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / 'stockwiki' / 'public_company_assessments.py').is_file(),
+                    reason='B03 StockWiki worktree is not available next to this service tree')
+def test_worker_reports_a_named_unavailable_for_an_old_owner(monkeypatch, tmp_path):
+    # An older StockWiki without the company assessment module is a named
+    # unavailable capability, never a zero or a fallback formal result.
+    monkeypatch.syspath_prepend(str(B03_STOCKWIKI_ROOT))
+    monkeypatch.setitem(sys.modules, 'stockwiki.public_company_assessments', None)
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.worker_read({'workspace_root': str(tmp_path)}, 'company_result',
+                               {'entity_id': 'ENT_A'})
+    assert error.value.code == 'owner_company_projection_unavailable'
+    assert error.value.status == 502
+
+
 def _seed_workspace(root: Path) -> None:
     """Seed an isolated owner workspace through public entry points only."""
     script = f'''
