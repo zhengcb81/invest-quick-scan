@@ -65,9 +65,9 @@ class CompactIdentityProfileTests(unittest.TestCase):
         result, status = self.validate(request)
         self.assertEqual(status, 2, result)
 
-    def test_verified_country_requirement_is_not_relaxed_by_reader_profile(self):
-        # A deliberately mutated archived DTO is a negative fixture, not a
-        # replacement owner golden or evidence for changing an entity.
+    def test_native_unknown_country_is_preserved_without_relaxing_legacy_write(self):
+        # Synthetic nullable-jurisdiction case, not a replacement owner golden.
+        # Exact issuer/listing/source joins are still checked by validate_file.
         original = json.loads((ROOT / "docs/implementation/contracts/goldens/stockwiki-real-alphabet-2026-10-07.json").read_bytes())
         result, status = self.validate(original)
         self.assertEqual(status, 0, result)
@@ -76,6 +76,9 @@ class CompactIdentityProfileTests(unittest.TestCase):
         for receipt in request["trusted_context"]["identity_receipts"].values():
             receipt["incorporation_country"] = None
         result, status = self.validate(request)
+        self.assertEqual(status, 0, result)
+        self.assertIsNone(request["payload"]["incorporation_country"])
+        result, status = self.validate(request, OLD)
         self.assertEqual(status, 2, result)
 
     def test_original_owner_receipt_aliases_and_lifecycle_are_preserved(self):

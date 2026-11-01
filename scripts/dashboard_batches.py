@@ -461,14 +461,24 @@ class BatchGateway:
             offset = following
 
     def start(self, payload):
-        if not isinstance(payload, dict) or set(payload) != {"preview_id"} or not isinstance(payload["preview_id"], str):
-            raise DashboardBatchError("batch_start_invalid", "启动只接受已预览的公司批")
+        if (not isinstance(payload, dict) or not payload
+            or set(payload) - {"bundle_ids", "preview_id"}
+            or ("bundle_ids" not in payload and not isinstance(payload.get("preview_id"), str))):
+            raise DashboardBatchError("batch_start_invalid", "请明确选择已登记的公司执行包")
+        selected = self._selection({"bundle_ids": payload["bundle_ids"]}) if "bundle_ids" in payload else None
         with self._mutation():
             if self._stop.is_set():
                 raise DashboardBatchError("batch_service_closed", "该工作台实例已关闭", 409)
-            selection = self._previews.get(payload["preview_id"])
+            # An explicit selection is enough to register a coordinator. The
+            # browser's optional memory preview is not dispatch authority;
+            # actual scopes retain the original current-owner preflight.
+            if selected is not None:
+                entries = self._ordered_groups([self._registered(bundle_id) for bundle_id in selected])
+                selection = {"preview_kind": "registration", "entries": entries}
+            else:
+                selection = self._previews.get(payload["preview_id"])
             if not selection:
-                raise DashboardBatchError("batch_preview_required", "请在当前服务先预览公司批", 409)
+                raise DashboardBatchError("batch_preview_required", "旧预览选择已失效；请明确选择已登记执行包后启动", 409)
             entries = selection["entries"]
             selection_hash = _digest([[row["bundle_id"], row["entity_id"], row["bundle_fingerprint"]] for row in entries])
             records = self._records()

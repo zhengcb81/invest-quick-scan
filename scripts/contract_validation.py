@@ -59,6 +59,11 @@ def identity_schema_for_wire_profile(wire_profile: str | None = None) -> dict:
     for definition, field in (("ListingV21", "source_binding_ref"),
                               ("SourceBindingV21", "binding_ref")):
         schema["definitions"][definition]["properties"][field] = deepcopy(binding_ref_schema)
+    if wire_profile == STOCKWIKI_G2B_COMPACT_WIRE_PROFILE:
+        # The native owner may know the issuer and exact listing while its
+        # jurisdiction remains unknown. Preserve null on reads; do not invent
+        # a country or weaken the legacy write contract or ownership joins.
+        schema["definitions"]["VerifiedEntityV21"]["properties"]["incorporation_country"]["type"] = ["string", "null"]
     return schema
 
 

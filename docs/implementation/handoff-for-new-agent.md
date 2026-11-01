@@ -1,6 +1,6 @@
 # 当前接手说明
 
-更新于2026-10-31T23:08:13.768601+00:00。**先读根[当前计划](../../task_plan.md)，再按其唯一Next Step实施。** 本页不另列相互竞争的任务。旧长交接已[原字节归档](archive/pwf-through-2026-10-31/README.md)。
+更新于2026-11-01。**先读根[当前计划](../../task_plan.md)，再按其唯一Next Step实施。** 本页不另列相互竞争的任务。旧长交接已[原字节归档](archive/pwf-through-2026-10-31/README.md)。
 
 ## 从哪里继续
 
@@ -8,16 +8,18 @@
 
 新TIME目前只是原结果页只读解释，不授权复用；其identity_revision/可信核查凭证只在采用新多时钟策略时是必需条件。不要先把新凭证体系扩成原缓存和原只读消费者的额外门。按原W06真实日期/兼容性/预算链完成正例，不改旧日期造fresh。
 
+本次已取消冗余内存preview/旧inspection摘要门、纯缓存的模型准入、只读全历史账复审、自动委托早期重复核查、未知注册国家阻断，以及事实/消费者/小样本配套等待200/2000规模验收的人工依赖。规格1.10.17仍108任务/368场景，规模验收本身没有关闭。源代码、测试和[集中独审](reviews/SIMPLIFY-FRESH-2026-11-01/independent-review.md)已交，不要重造旧门或逐条凭证；变更和实际运行以[本次报告](reviews/SIMPLIFY-FRESH-2026-11-01/report.md)为准。
+
 ## 固定对象与运行
 
 |组件|本次核对基线|
 |---|---|
-|IQS元数据已推送|`d2c575fc1608da2cf2ddb6df2850305146eb1d97`，本次整理另作后续文档提交|
+|IQS本次起点已推送|`215804dada41148ea79011fbb483e02f9f8d1abe`，本次源码及文档在其后正常提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`0dc799a4553b8bdd6313f2cdaf915f0d5d67e260`|
-|StockWiki|`8527bc771692c501517d8f04c387603a92a77ec0`|
-|原UI|`03d6b9aa3d45011f09bc77ef69e62b4a1d21e00e`|
+|StockQA|`745512c`已推既有origin/master|
+|StockWiki|`67e74f4`已提交，无origin，不新建远端|
+|原UI|`ecd03e0`（含首批`06738a0`）已提交，无remote|
 
 实际写前重核当前Git/唯一writer，不因无关HEAD变化重做历史。ANSWER/PERF最终C/M见[已签收口报告](reviews/SUPPORT-CLOSE-2026-10-31/report.md)，TIME/RESULT实际原接线见[报告](reviews/TIME-RESULT-WIRING-2026-10-31/report.md)，不把接线C的历史25文件manifest当当前README/测试字节。
 

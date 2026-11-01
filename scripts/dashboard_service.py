@@ -287,6 +287,21 @@ class DashboardService:
             if deployment != {k:v for k,v in self.config.items() if k not in {'execution_bundles','import_bundles'}}:
                 raise ProductError('preparation_target_changed', '原准备已保留，但工作区或策略已变化，不能登记到新目标。', 409)
             rows = result.get('execution_bundles')
+            cached=result.get('cached_scopes',[])
+            count=result.get('cached_question_count',0)
+            if result.get('status')=='cached':
+                valid_scopes=(isinstance(cached,list) and bool(cached) and all(isinstance(scope,dict)
+                    and isinstance(scope.get('items'),list) and isinstance(scope.get('subject_ref'),dict)
+                    and type(scope.get('question_count')) is int and scope['question_count']==len(scope['items']) for scope in cached))
+                items=[item for scope in cached for item in scope['items']] if valid_scopes else []
+                ids=[item.get('question_id') for item in items if isinstance(item,dict)]
+                if (rows!=[] or not cached or type(count) is not int or count<=0 or len(items)!=count
+                    or type(result.get('question_count_total')) is not int or result['question_count_total']!=count or len(ids)!=count
+                    or any(not isinstance(q,str) or not q for q in ids)
+                    or len(set(ids))!=count
+                    or any(not isinstance(item.get('observation_id'),str) or not item['observation_id'] for item in items)):
+                    raise ProductError('preparation_result_invalid','缓存完成需要逐题原观察引用，空范围不能算成功。',409)
+                return {'bundle_ids':[],'question_count_total':count,'cached_question_count':count,'API_requests':0}
             if result.get('status') != 'prepared' or not isinstance(rows, list) or not rows:
                 raise ProductError('preparation_result_invalid', '原准备没有完整的执行范围集合。', 409)
             config = {**self.config, 'execution_bundles':dict(self.config['execution_bundles'])}
@@ -299,7 +314,8 @@ class DashboardService:
                 config['execution_bundles'][name] = bundle
             config = validate_config(config, self.root)
             self._save_config(config)
-            return {'bundle_ids':ids, 'question_count_total':result.get('question_count_total'), 'API_requests':0}
+            return {'bundle_ids':ids, 'question_count_total':result.get('question_count_total'),
+                **({'cached_question_count':count} if count else {}),'API_requests':0}
 
     def _save_config(self, config):
         self.config_path.parent.mkdir(parents=True, exist_ok=True)

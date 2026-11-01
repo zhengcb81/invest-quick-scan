@@ -121,22 +121,36 @@ def standard_prompt(question, profile, contexts=None, resources=None):
 def typed_semantic_rules(question):
     """Explicit new-request rules; historical renderer fingerprints stay intact."""
     citation_rule = (
-        ' evidence[].url必须从本次实际检索上下文sources[].url逐字复制，完整保留query和fragment；'
-        '包括lang/type/trk等参数，不得删除、改写、补全或生成更干净的URL。'
+        ' evidence[].url引用本次实际检索得到的真实来源，不编造链接；优先使用提供的原URL。'
+        '保留证券、文章、年度、语言或文档类型等语义定位参数；'
+        '跟踪参数差异只由执行层明确的有限白名单处理，不自行删除或改写其他query和fragment。'
         'published_at按真实来源日期填写，未知留null，不得猜测。'
-        '提交前逐一核对URL与提供值完全相等；通常2个直接支持本题结论的已绑定来源即可，'
+        '提交前核对引用确实对应本题来源；通常2个直接支持本题结论的来源即可，'
         '这不是硬性数量上限，不得为凑数增加引用；证据不足则明确不足，不补造引用。'
+    )
+    quality_rule = (
+        ' 提交前自行核对公司/证券/业务主体，其他公司的数值不可归给本公司；同行比较须分别标明主体。'
+        '历史数值不得充当当期，逐项核财年、同比/环比/累计、币种、单位、合并与归属口径。'
+        '区分结论适用日information_as_of、财报期间period_start/period_end和来源发布日期published_at。'
+        '结论适用日表示证据支持本次判断适用的日期，不是简单复制财报期末或来源刊日；'
+        '不得把截止日、检索日或生成日直接填为information_as_of。'
+        '实际检索后只有证据支持结论在该日仍适用时才填写，证据不能支持结论适用日时留null。'
+        '用截尾或四舍五入的每股/比率推导金额时须标明估算；'
+        '已披露精确公告总额时优先引用，不以推导近似值冒充该总额，分部或部分股东范围须分开。'
+        '复合主张逐子句核对，来源支持一个子句不等于支持全部；'
+        '不能核实的断言删去或明确未知，对应metrics不得继续断言确定数值，不为维持原分数补造支持。'
+        '以上为回答自核，不自报已获独立验证或生成新的核查凭证。'
     )
     kind = question.get('response_kind', 'score')
     if kind == 'score':
         return (f"[{question['id']}] response_kind=score；items=[]，不得输出事实关系行，"
                 '不得使用status=answered。scored时score为1至10整数；其余状态score=null。'
                 '解释、反证放summary/counterevidence，数值放metrics并绑定证据；'
-                'insufficient_evidence/not_applicable/search_unavailable时metrics=[]。' + citation_rule)
+                'insufficient_evidence/not_applicable/search_unavailable时metrics=[]。' + citation_rule + quality_rule)
     if kind == 'fact':
         return (f"[{question['id']}] response_kind=fact；score=null，不得使用status=scored；"
                 'answered必须有符合本题关系和条数限制、逐行绑定证据的items。'
-                '未知用insufficient_evidence，不能以空事实列表声称已回答。' + citation_rule)
+                '未知用insufficient_evidence，不能以空事实列表声称已回答。' + citation_rule + quality_rule)
     raise ValueError('unknown original question response kind')
 
 

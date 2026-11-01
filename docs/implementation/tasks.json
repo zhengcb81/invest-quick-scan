@@ -1,5 +1,5 @@
 {
-  "version": "1.10.16",
+  "version": "1.10.17",
   "status": "implementation_plan_not_product_completion",
   "stage_order": [
     "M0",
@@ -2497,8 +2497,8 @@
       "kind": "implementation",
       "title": "审查并接入已提供的61题事实问卷与标准路由",
       "depends_on": [
-        "G3",
-        "C06"
+        "C06",
+        "S02"
       ],
       "invariants": [
         "I01",
@@ -2544,7 +2544,6 @@
       "kind": "implementation",
       "title": "透传facts回复并复用同一执行器",
       "depends_on": [
-        "G3",
         "F01",
         "Q10",
         "F06",
@@ -2592,7 +2591,6 @@
       "kind": "implementation",
       "title": "实现版本化术语、短词和别名",
       "depends_on": [
-        "G3",
         "C06",
         "V03"
       ],
@@ -2789,7 +2787,6 @@
       "kind": "implementation",
       "title": "接入主题研究第5/6步的快扫查询",
       "depends_on": [
-        "G3",
         "F05",
         "W11"
       ],
@@ -2840,7 +2837,6 @@
       "kind": "implementation",
       "title": "接入行业研究第6步的统一实体查询",
       "depends_on": [
-        "G3",
         "F05",
         "W11"
       ],
@@ -3053,7 +3049,6 @@
       "title": "形成约2000家公司候选版本与覆盖检查",
       "depends_on": [
         "W04",
-        "G3",
         "W13"
       ],
       "invariants": [
@@ -3101,7 +3096,6 @@
       "kind": "implementation",
       "title": "实现全池公平调度与增量维护",
       "depends_on": [
-        "G3",
         "Q06",
         "Q09",
         "O01",
@@ -3308,11 +3302,12 @@
       "kind": "implementation",
       "title": "提供名单、筛选、公司卡片与研究入口",
       "depends_on": [
-        "O04",
         "W09",
         "W11",
         "U02",
-        "V08"
+        "V08",
+        "O02",
+        "W12"
       ],
       "invariants": [
         "I03",
@@ -3421,7 +3416,6 @@
       "title": "提供公开本地执行/能力/生命周期入口",
       "depends_on": [
         "C07",
-        "G3",
         "Q10",
         "Q08",
         "Q09"
@@ -3825,7 +3819,6 @@
       "depends_on": [
         "C07",
         "G4",
-        "G5",
         "X06",
         "X03",
         "S06",
@@ -3946,7 +3939,6 @@
         "X06",
         "X02",
         "G4",
-        "G5",
         "U03",
         "U04",
         "W16",
@@ -4125,8 +4117,7 @@
       "depends_on": [
         "X09",
         "X11",
-        "G4",
-        "G5"
+        "G4"
       ],
       "invariants": [
         "I01",
@@ -4640,7 +4631,6 @@
       "kind": "implementation",
       "title": "将事实问题纳入同一模块发布规则",
       "depends_on": [
-        "G3",
         "F01",
         "S05"
       ],
@@ -4738,7 +4728,6 @@
       "kind": "implementation",
       "title": "发布独立评分尺与同题篮可比性契约",
       "depends_on": [
-        "G3",
         "S05",
         "C03",
         "S01"
@@ -4790,7 +4779,6 @@
       "kind": "implementation",
       "title": "冻结事实关系本体与词表映射边界",
       "depends_on": [
-        "G3",
         "F06",
         "C06"
       ],
@@ -4838,7 +4826,6 @@
       "kind": "implementation",
       "title": "定义可组合且三值的筛选lens契约",
       "depends_on": [
-        "G3",
         "V02",
         "C03"
       ],
@@ -4887,7 +4874,6 @@
       "kind": "implementation",
       "title": "定义字段级声明式刷新策略和优先级",
       "depends_on": [
-        "G3",
         "C04",
         "S06"
       ],
@@ -4935,7 +4921,6 @@
       "kind": "implementation",
       "title": "发布提供商能力与实际搜索回执适配快照",
       "depends_on": [
-        "G3",
         "Q13",
         "C05",
         "Q04"
@@ -4985,7 +4970,6 @@
       "kind": "implementation",
       "title": "解析并冻结跨组件ScanRecipe与兼容矩阵",
       "depends_on": [
-        "G3",
         "V02",
         "V04",
         "V05",
@@ -5040,7 +5024,6 @@
       "kind": "implementation",
       "title": "在权威库实现词表映射与关系投影版本",
       "depends_on": [
-        "G3",
         "V03",
         "F03",
         "F04"
@@ -5526,7 +5509,6 @@
       "kind": "implementation",
       "title": "冻结跨层组件发布生命周期与兼容声明",
       "depends_on": [
-        "G3",
         "S04",
         "S05",
         "V01",
@@ -5591,7 +5573,6 @@
       "kind": "implementation",
       "title": "计算版本变更影响范围并生成字段级演进计划",
       "depends_on": [
-        "G3",
         "V01",
         "V05",
         "V10",
@@ -5646,7 +5627,6 @@
       "kind": "implementation",
       "title": "版本化答案解析/标准化并保持轻量回执可追溯",
       "depends_on": [
-        "G3",
         "V16",
         "Q01",
         "Q03",
@@ -5770,7 +5750,6 @@
       "kind": "implementation",
       "title": "将版本影响计划接入权威字段待办与派发预检",
       "depends_on": [
-        "G3",
         "V16",
         "V17",
         "V10",
@@ -5854,7 +5833,6 @@
       "kind": "implementation",
       "title": "在真实provider POST前消费StockWiki活动发布围栏",
       "depends_on": [
-        "G3",
         "Q06",
         "Q08",
         "Q14",

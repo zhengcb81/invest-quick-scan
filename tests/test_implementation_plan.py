@@ -38,6 +38,49 @@ class ImplementationPlanTests(unittest.TestCase):
         self.assertNotIn("status", self.task("P00"))
         self.assertNotIn("P01", {task["id"] for task in self.plan["tasks"]})
 
+    def test_facts_and_consumer_implementation_keep_functional_dependencies_without_200_gate(self):
+        task_map = {task["id"]: task for task in self.plan["tasks"]}
+        for tid in ("F01", "F02", "F03", "F04", "F05", "F06", "T01", "T02",
+                    "V01", "V02", "V03", "V04", "V05", "V06", "V07"):
+            with self.subTest(task=tid):
+                self.assertNotIn("G3", ip.dependency_ids(task_map, tid))
+        for tid in ("T01", "T02"):
+            self.assertTrue({"F05", "W11"} <= set(self.task(tid)["depends_on"]))
+        self.assertIn("S02", ip.dependency_ids(task_map, "F01"))
+
+    def test_finite_live_integration_does_not_wait_for_2000_scale_but_full_release_does(self):
+        task_map = {task["id"]: task for task in self.plan["tasks"]}
+        for tid in ("X07", "X09", "X10", "X11"):
+            with self.subTest(task=tid):
+                self.assertNotIn("G3", ip.dependency_ids(task_map, tid))
+                self.assertNotIn("G5", ip.dependency_ids(task_map, tid))
+        self.assertTrue({"X09", "X11", "G4"} <= set(self.task("X10")["depends_on"]))
+        self.assertTrue({"G4", "G5"} <= set(self.task("G6")["depends_on"]))
+        self.assertTrue({"G3", "G5"} <= set(ip.dependency_ids(task_map, "G6")))
+        self.assertIn("L03", self.task("G3")["depends_on"])
+
+    def test_plan_validator_allows_functional_development_before_scale_milestones(self):
+        task_map = {task["id"]: task for task in self.plan["tasks"]}
+        for tid in ("F01", "F02", "F03", "F06", "T01", "T02", "V01", "V02",
+                    "V03", "V04", "V05", "V06", "V07"):
+            task_map[tid]["depends_on"] = [dep for dep in task_map[tid]["depends_on"] if dep != "G3"]
+        if "S02" not in task_map["F01"]["depends_on"]:
+            task_map["F01"]["depends_on"].append("S02")
+        for tid in ("X07", "X09", "X10"):
+            task_map[tid]["depends_on"] = [dep for dep in task_map[tid]["depends_on"] if dep != "G5"]
+        for tid in ("V16", "V17", "W16", "Q14", "Q15", "X01", "O01", "O02"):
+            task_map[tid]["depends_on"] = [dep for dep in task_map[tid]["depends_on"] if dep != "G3"]
+        task_map["O05"]["depends_on"] = [dep for dep in task_map["O05"]["depends_on"] if dep != "O04"]
+        for dep in ("O02", "W12"):
+            if dep not in task_map["O05"]["depends_on"]:
+                task_map["O05"]["depends_on"].append(dep)
+        query_case = next(case for case in self.cases["cases"] if case["id"] == "QUERY-11")
+        query_case["requires_tasks"] = [dep for dep in query_case["requires_tasks"] if dep != "O04"]
+        for dep in ("O02", "W12"):
+            if dep not in query_case["requires_tasks"]:
+                query_case["requires_tasks"].append(dep)
+        self.assertEqual(ip.validate_package(self.plan, self.cases), [])
+
     def test_retired_task_receipt_workflow_is_absent_from_active_plan(self):
         task_ids = {task["id"] for task in self.plan["tasks"]}
         self.assertNotIn("P01", task_ids)
@@ -598,9 +641,9 @@ class ImplementationPlanTests(unittest.TestCase):
         self.plan["tasks"] = [t for t in self.plan["tasks"] if t["id"] != "G2"]
         self.rejected("missing review gate G2")
 
-    def test_facts_cannot_start_without_score_reliability_gate(self):
+    def test_fact_specification_still_requires_its_actual_oracle_owner(self):
         self.task("F01")["depends_on"] = ["C06"]
-        self.rejected("F01: full facts work must depend on G3")
+        self.rejected("F01: case SC-06 is owned by S02")
 
     def test_unknown_or_multiple_owner_is_rejected(self):
         for owner in ("company-wiki-writer", ["iqs", "stockwiki"]):

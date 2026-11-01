@@ -200,7 +200,7 @@ with contextlib.redirect_stdout(sys.stderr):
     from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
     from src.utils.quick_scan_result_outbox import canonical_sha256
     request = json.load(sys.stdin)
-    config = safe_read(sys.argv[2])
+    config = safe_read(sys.argv[2]) if sys.argv[2] != '-' else request.pop('readonly_config')
     if config.get("protocol") != "stockqa.refresh_admission_config/1.0.0":
         raise ValueError("existing_work_deployment_invalid")
     view = ReadOnlyWorkView(config["work_store"])
@@ -322,6 +322,82 @@ def _reusable_bank(config, payload):
         'route_raw_sha256':snapshot['route_raw_sha256'],'work_bindings_sha256':_sha(rows),
         'work_count':len(rows),'manifest_raw':snapshot['manifest_raw'].decode('utf-8'),
         'route_raw':snapshot['route_raw'].decode('utf-8')}
+
+
+def _cached_scope_result(owner_state, questions, subject_ref):
+    """Only native all-reuse decisions are a zero-dispatch completion."""
+    quote=owner_state.get('quote',{})
+    if any(type(quote.get(key)) is not int or quote[key]!=0 for key in ('max_cost_micros','max_http_requests')):
+        return None
+    items=owner_state.get('items')
+    wanted={q['id'] for q in questions}
+    if not isinstance(items,list) or not wanted or len(items)!=len(wanted):return None
+    projected=[]
+    for item in items:
+        if (not isinstance(item,dict) or item.get('question_id') not in wanted
+            or item.get('subject_ref')!=subject_ref or item.get('decision')!='reuse'
+            or not isinstance(item.get('reuse_observation_id'),str) or not item['reuse_observation_id']):return None
+        projected.append({'question_id':item['question_id'],'observation_id':item['reuse_observation_id']})
+    if {r['question_id'] for r in projected}!=wanted:return None
+    return {'subject_ref':copy.deepcopy(subject_ref),'question_count':len(projected),'items':projected}
+
+
+def _cache_preview(config,payload):
+    """Original W06/C06 reads without quote, grant, runtime keys or admission."""
+    from stockwiki.paths import WorkspacePaths
+    from stockwiki.quick_scan_store import QuickScanStore
+    from stockwiki.quick_scan_routes import QuickScanRouteStore
+    from stockwiki.quick_scan_route_validation import IqsRouteValidator,RouteStoreError
+    from stockwiki.quick_scan_query_contract import IqsQueryContract
+    from stockwiki.quick_scan_subject_refresh import SubjectRefreshView
+    from stockwiki.quick_scan_module_refresh import plan_module_refresh
+    from stockwiki.quick_scan_subject_authority import subject_ref_for_question
+    native,manifest,route=payload['native'],payload['manifest'],payload['route']
+    binding=native.get('binding')
+    if binding is None or config.get('prepare',{}).get('recovery_work_decision_refs') is not None:return None
+    paths=WorkspacePaths.from_root(Path(config['workspace_root']))
+    policy=_read(paths.config_dir/'quick_scan_refresh.json')
+    directory=Path(payload['cache_directory']);directory.mkdir(parents=True,exist_ok=True)
+    routes=QuickScanRouteStore(QuickScanStore(paths),validator=IqsRouteValidator(Path(config['iqs_root']),
+        runs_dir=directory/'route-validation',release_root=Path(config.get('iqs_release_root',config['iqs_root']))))
+    now=_now();kwargs={'subject_key':binding['subject_key'],'scope':'entity','scope_id':binding['entity_id'],'now_utc':now}
+    try:
+        active=routes.get_for_execution(**kwargs);snapshot=active['snapshot']
+        _equivalent_frozen_bank(manifest,route,snapshot,binding,snapshot['manifest_raw_sha256'])
+        contract=IqsQueryContract(Path(config['iqs_root']),runs_dir=directory/'query-validation',
+            release_root=Path(config.get('iqs_release_root',config['iqs_root'])))
+        view=SubjectRefreshView(routes,contract=contract,**kwargs)
+        plan=plan_module_refresh(routes,view,provider=policy['provider'],model=policy['model'],ttl_hours=policy['ttl_hours'],**kwargs)
+    except DashboardPrepareError as error:
+        if error.code=='existing_work_bank_changed':return None
+        raise
+    except RouteStoreError as error:
+        if error.code in {'route_current_unavailable','refresh_subject_observation_store_uninitialized','route_identity_changed'}:return None
+        raise
+    selected=set(payload['question_ids']);fields={row['field_id']:row for row in plan['fields']}
+    if any(fields[qid]['decision']!='reuse' or not fields[qid].get('reuse_observation_id') for qid in selected):return None
+    scopes={q['id']:{'scope':q['scope'],'scope_id':binding['entity_id'] if q['scope']=='entity' else native['selected_listing']['security_id']}
+        for q in manifest['questions'] if q['id'] in selected}
+    request={k:binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision')}
+    request.update(information_cutoff=route['as_of'],scope_bindings=scopes,
+        readonly_config={'protocol':'stockqa.refresh_admission_config/1.0.0','work_store':policy['qa']['work_store']})
+    completed=subprocess.run([config.get('stockqa_python') or sys.executable,'-B','-X','utf8','-c',
+        _WORK_BANK_BINDING_READER,config['stockqa_root'],'-'],input=_bytes(request),capture_output=True,
+        env=_env(),cwd=config['stockqa_root'],timeout=_timeouts(config)[1],creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    if completed.returncode:return None
+    inspected=json.loads(completed.stdout)
+    if (inspected.get('protocol')!='iqs.original_work_bank_bindings/1.0.0' or inspected.get('API_requests')!=0
+        or inspected.get('database_writes')!=0 or inspected.get('rows')!=[]):return None
+    grouped={}
+    for question in manifest['questions']:
+        if question['id'] not in selected:continue
+        ref=subject_ref_for_question(routes,question,snapshot,binding,now_utc=now)
+        row=grouped.setdefault(_sha(ref),{'subject_ref':ref,'question_count':0,'items':[]})
+        row['items'].append({'question_id':question['id'],'observation_id':fields[question['id']]['reuse_observation_id']})
+        row['question_count']+=1
+    return {'status':'cached','entity_id':binding['entity_id'],'execution_bundles':[],'cached_scopes':list(grouped.values()),'checked_at':now,
+        'cached_question_count':len(selected),'question_count_total':len(selected),'API_requests':0,'dispatch_started':False,
+        'financial_accuracy_proven':False,'owner_state_changed':False,'information_cutoff':route['as_of']}
 
 
 def _phase_artifacts(directory):
@@ -499,7 +575,7 @@ class PrepareGateway:
                      "options": options, "selected_profile": selected_profile, "native_input_file_hashes": files})
 
     def bank_preview(self, payload):
-        if not isinstance(payload, dict) or set(payload) - {"entity_id", "as_of", "mode", "subject_key", "profile_id", "scope_selector", "security_id"}:
+        if not isinstance(payload, dict) or set(payload) - {"entity_id", "as_of", "mode", "subject_key", "profile_id", "scope_selector", "security_id", "question_ids"}:
             raise DashboardPrepareError("selection_invalid", "Select only an entity, cutoff, mode and registered profile")
         entity_id, as_of = payload.get("entity_id"), payload.get("as_of")
         if not isinstance(entity_id, str) or not re.fullmatch(r"ENT_[A-Za-z0-9_-]{1,100}", entity_id):
@@ -517,6 +593,12 @@ class PrepareGateway:
         if scope_selector not in {"existing", "issuer_only"} or (scope_selector == "issuer_only" and payload.get("subject_key")):
             raise DashboardPrepareError("scope_selection_invalid", "Select an existing subject or the explicit issuer-only scope")
         profile_id = payload.get("profile_id")
+        subset=payload.get('question_ids')
+        if subset is not None and (not isinstance(subset,list) or not subset or any(not isinstance(q,str) or not q for q in subset)
+            or len(set(subset))!=len(subset)):
+            raise DashboardPrepareError('question_subset_invalid','Select a nonempty, unique question subset from this company bank')
+        if subset is not None and _recovery_refs(self.config) is not None:
+            raise DashboardPrepareError('question_subset_recovery_conflict','A question subset cannot replace an original controlled-recovery selection')
         profile = self.options.get("routing_profiles", {}).get(profile_id, {}) if profile_id else {}
         if profile_id and (not profile or profile.get("entity_id") != entity_id):
             raise DashboardPrepareError("profile_not_registered", "This company has no such trusted routing profile")
@@ -552,8 +634,14 @@ class PrepareGateway:
                 expected_route_decision_id=route["decision_id"], answer_format="standard-1")
             _new(proposed / "route.json", route)
             manifest = _read(proposed / "manifest.json")
+            if subset is not None and set(subset)-{q['id'] for q in manifest['questions']}:
+                raise DashboardPrepareError('question_subset_invalid','Selected question is not part of this company bank')
+            requested=[q['id'] for q in manifest['questions'] if subset is None or q['id'] in subset]
+            cached=self._worker('cache_preview',{'native':native,'manifest':manifest,'route':route,'question_ids':requested,
+                'cache_directory':str(directory/'cache-read')}) if binding is not None else None
             gaps = self._execution_gaps()
-            reused = self._worker("bank_reuse", {"native": native, "manifest": manifest, "route": route}) if binding is not None and not gaps else None
+            if cached is not None:gaps=[]
+            reused = self._worker("bank_reuse", {"native": native, "manifest": manifest, "route": route}) if binding is not None and not gaps and cached is None else None
             _new_raw(directory / "manifest.json", reused['manifest_raw'].encode('utf-8') if reused else (proposed / "manifest.json").read_bytes())
             _new_raw(directory / "questions.json", (proposed / "questions.json").read_bytes())
             _new(directory / "identity.json", identity)
@@ -561,7 +649,7 @@ class PrepareGateway:
             _new(directory / "native.json", native)
             manifest = _read(directory / "manifest.json")
             route = _read(directory / "route.json")
-            recovery = _recovery_subset(self.config, directory, manifest, native, _read(Path(self.config["workspace_root"]) / "config/quick_scan_refresh.json")) if not gaps else None
+            recovery = _recovery_subset(self.config, directory, manifest, native, _read(Path(self.config["workspace_root"]) / "config/quick_scan_refresh.json")) if not gaps and cached is None else None
             if issuer["identity_state"] != "verified":
                 gaps.append("route_identity_unverified")
             if binding is None and native.get("bootstrap") is None:
@@ -590,7 +678,8 @@ class PrepareGateway:
                                            {"key": native["bootstrap"]["subject_key"], "scope_kind": "standalone_issuer"} if native.get("bootstrap") else None),
                       "blocked_reasons": sorted(set(gaps)), "can_apply": not gaps}
             record["recovery_subset"] = recovery
-            record["execution_question_ids"] = recovery["execution_question_ids"] if recovery else record["bank"]["question_ids"]
+            record['cache_only_available']=cached is not None
+            record["execution_question_ids"] = recovery["execution_question_ids"] if recovery else requested
             record["execution_question_count"] = len(record["execution_question_ids"])
             if recovery:
                 record["files"]["recovery-projection-request.json"] = hashlib.sha256((directory / "recovery-projection-request.json").read_bytes()).hexdigest()
@@ -863,6 +952,17 @@ def _apply(config, payload):
     options, directory = config["prepare"], Path(payload["directory"])
     record, native = _read(directory / "preview.json"), _read(directory / "native.json")
     manifest, route = _read(directory / "manifest.json"), _read(directory / "route.json")
+    cached=_cache_preview(config,{'native':native,'manifest':manifest,'route':route,
+        'question_ids':record['execution_question_ids'],'cache_directory':str(directory/'cache-read-apply')})
+    if cached is not None:
+        result={**cached,'protocol':PROTOCOL,'full_bank_question_count':record['bank']['question_count'],
+            'company':record['bank']['company'],
+            'execution_question_ids':record['execution_question_ids'],'execution_question_count':len(record['execution_question_ids']),
+            'recovery_subset':None,'meaning':'Original fresh observations reused; no new executor work, grant, confirmation or paid admission'}
+        _new(directory/'applied.json',result)
+        return result
+    if record.get('cache_only_available'):
+        raise DashboardPrepareError('cache_no_longer_reusable','Original cached answers changed or expired; preview again before any new work',409)
     admission = _read(options["admission_config"])
     paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
     policy = _read(paths.config_dir / "quick_scan_refresh.json")
@@ -951,12 +1051,11 @@ def _apply(config, payload):
         root=Path(expected["iqs_release_root"]), observation_schema_version="1.2.0")
     grouped = {}
     for question in manifest["questions"]:
-        if recovery and question["id"] not in recovery["execution_question_ids"]:
+        if question["id"] not in record['execution_question_ids']:
             continue
         ref = authority["observation_context"]["questions"][question["id"]]["subject_binding"]["subject_ref"]
         grouped.setdefault(_sha(ref), {"ref": ref, "questions": []})["questions"].append(question)
-    executions = []
-    expected_scopes = [{"scope": group["ref"]["scope"], "scope_id": group["ref"]["scope_id"]} for group in grouped.values()]
+    executions, cached_scopes, scope_records = [], [], []
     for index, group in enumerate(grouped.values(), 1):
         subject_ref = group["ref"]
         target = Path(admission["execution_inputs_root"]) / ("subject_" + _sha(subject_ref))
@@ -973,18 +1072,23 @@ def _apply(config, payload):
         scope_dir.mkdir(parents=True, exist_ok=True)
         item = _prepare_scope(config, scope_dir, record, manifest, group["questions"], target, subject_ref, policy,
                               admission, paths, expected, run_id + "-" + str(index))
-        item["execution_bundle"]["expected_scope_bindings"] = copy.deepcopy(expected_scopes)
-        _new(scope_dir / "prepared-scope.json", item)
-        executions.append(item)
-    first = executions[0]
-    result = {"protocol": PROTOCOL, "status": "prepared", "bundle_id": first["bundle_id"], "bundle": first["execution_bundle"],
-              "execution_bundle": first["execution_bundle"], "execution_bundles": executions,
-              "question_count_total": sum(item["question_count"] for item in executions),
+        scope_records.append((scope_dir,item))
+        (cached_scopes if item.get('status')=='cached' else executions).append(item)
+    expected_scopes=[{'scope':item['subject_ref']['scope'],'scope_id':item['subject_ref']['scope_id']} for item in executions]
+    for item in executions:item['execution_bundle']['expected_scope_bindings']=copy.deepcopy(expected_scopes)
+    for scope_dir,item in scope_records:_new(scope_dir/'prepared-scope.json',item)
+    first = executions[0] if executions else None
+    result = {"protocol": PROTOCOL, "status": "prepared" if executions else 'cached', "execution_bundles": executions,
+              'cached_scopes':cached_scopes,'cached_question_count':sum(item['question_count'] for item in cached_scopes),
+              'pending_question_count':sum(item['question_count'] for item in executions),
+              "question_count_total": len(record['execution_question_ids']),
               "recovery_subset": recovery, "execution_question_ids": record["execution_question_ids"],
               "execution_question_count": record["execution_question_count"], "full_bank_question_count": record["bank"]["question_count"],
-              "confirmation_id": first["confirmation_id"], "admission": first["admission"],
               "API_requests": 0, "dispatch_started": False, "financial_accuracy_proven": False,
               "owner_state_changed": True, "meaning": "All question scopes registered with native owner; execution still requires original current checks"}
+    if first is not None:
+        result.update(bundle_id=first['bundle_id'],bundle=first['execution_bundle'],execution_bundle=first['execution_bundle'],
+            confirmation_id=first['confirmation_id'],admission=first['admission'])
 
     # The child publishes before writing stdout. Lost HTTP/process responses can
     # reconcile this exact result without repeating any original owner writes.
@@ -1019,9 +1123,11 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     owner_common = [*common, "--iqs-release-root", expected["iqs_release_root"]]
     preview = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli", [*owner_common, "--request", str(directory / "refresh.json")])
     _new(directory / "owner-preview.json", preview)
+    original = RefreshRecordStore(paths).load(preview["preview_id"])
+    cached=_cached_scope_result(original['owner_state'],selected_questions,subject_ref)
+    if cached is not None:return {'status':'cached',**cached}
     if preview.get("status") != "ready":
         raise DashboardPrepareError("native_preview_not_ready", "Original owner preview is not ready", 409, {"preview": preview})
-    original = RefreshRecordStore(paths).load(preview["preview_id"])
     install = {"protocol": "stockwiki.refresh_delegation_install/1.0.0", "workspace_root": str(paths.root), "preview_id": preview["preview_id"],
                "preview_record_sha256": original["record_sha256"], "agent": options["agent"], "authorization_reference": options["authorization_reference"],
                "expires_at": (datetime.now(timezone.utc) + timedelta(seconds=_delegation_ttl_seconds(config))).isoformat().replace("+00:00", "Z")}
@@ -1061,7 +1167,9 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
               "spend_authorization": options["spend_authorization"], "runtime_dir": options["runtime_dir"], "pack_size": options.get("pack_size", 1),
               "thinking": options.get("thinking", True), "max_output_tokens": options.get("max_output_tokens", 8192)}
     if recovery:
-        bundle.update(recovery_subset=copy.deepcopy(recovery), execution_question_ids=[q["id"] for q in selected_questions], execution_question_count=len(selected_questions))
+        bundle.update(recovery_subset=copy.deepcopy(recovery))
+    if recovery or record.get('selection',{}).get('question_ids') is not None:
+        bundle.update(execution_question_ids=[q['id'] for q in selected_questions], execution_question_count=len(selected_questions))
     if options.get("search_policy"):
         bundle["search_policy"] = options["search_policy"]
     if 'work_lease_seconds' in options:
@@ -1088,6 +1196,8 @@ def _main():
             result = _snapshot(config, request["payload"])
         elif request["operation"] == "bank_reuse":
             result = _reusable_bank(config, request["payload"])
+        elif request['operation']=='cache_preview':
+            result = _cache_preview(config,request['payload'])
         elif request["operation"] == "apply":
             result = _apply(config, request["payload"])
         else:

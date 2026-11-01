@@ -732,15 +732,18 @@ class ExecutionGateway:
                     if record["process_state"] in {"running", "starting"} and record["run_id"] not in self._processes:
                         record.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
                     return {"status": "attached", "run": record, "process_started": False, "paid_dispatch_started": None}
-                selected = self._previews.get(payload.get("preview_id"))
-                if not selected or selected["bundle_id"] != key or selected["bundle_fingerprint"] != self._fingerprint(bundle):
-                    raise DashboardExecutionError("preview_required", "请先预览当前公司执行计划", 409,
-                        {'bundle_id':key,'bundle_fingerprint':self._fingerprint(bundle)},prelaunch_not_started=True)
+                # A read-only browser preview is optional, not a launch permit.
+                # Re-read the actual owner now; an old/missing preview_id must
+                # not prevent a valid launch after a server restart or a
+                # harmless work/quote change.
+                fingerprint = self._fingerprint(bundle)
                 preview = self.preview({"bundle_id": key})
                 if not preview["can_start"]:
                     raise DashboardExecutionError("execution_not_ready", "执行前置未满足", 409, preview,prelaunch_not_started=True)
-                if selected["inspection_sha256"] != preview["inspection_sha256"]:
-                    raise DashboardExecutionError("preview_changed", "原任务或费用状态已变化；请查看更新后的预览", 409, preview,prelaunch_not_started=True)
+                if (preview.get('bundle_fingerprint') != fingerprint
+                        or self._fingerprint(bundle) != fingerprint):
+                    raise DashboardExecutionError('bundle_changed', '执行输入在本次检查期间改变，请重新读取当前执行包',
+                        409, preview, prelaunch_not_started=True)
                 root, runtime, _, _ = self._deployment(bundle)
                 run_id = "run-" + uuid.uuid4().hex
                 folder = self.state_root / run_id

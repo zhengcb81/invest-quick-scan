@@ -263,10 +263,10 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
         gate = task_map.get(f"G{index}")
         if not gate or gate.get("kind") != "review" or gate.get("stage") != f"M{index}":
             errors.append(f"M{index}: missing review gate G{index}")
-    for tid, task in task_map.items():
-        ancestors = dependency_ids(task_map, tid)
-        if task.get("stage") == "M4" and "G3" not in ancestors:
-            errors.append(f"{tid}: full facts work must depend on G3")
+    # Stage labels group deliverables; they are not execution barriers.
+    # Functional facts/consumer work can be built and verified on a small
+    # sample before the independent200-company scale milestone G3. Explicit
+    # dependencies, case ownership and final release requirements still apply.
     release = plan.get("release_requirements")
     if not isinstance(release, dict):
         return errors + ["missing cross-project release requirements"]
@@ -311,11 +311,11 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
                                ("V11", {"V15"})):
         if tid in task_map and not prerequisites <= set(dependency_ids(task_map, tid)):
             errors.append(f"{tid}: fact-enabled chain misses {', '.join(sorted(prerequisites))}")
-    for tid, prerequisites in (("V16", {"G3", "S04", "S05", "V01", "C06", "C07"}),
-                               ("V17", {"G3", "V01", "V05", "V10", "V16"}),
-                               ("W16", {"G3", "V16", "V17", "V10", "W15", "W12"}),
-                               ("Q14", {"G3", "V16", "Q01", "Q03", "Q04", "Q12", "Q13", "C06"}),
-                               ("Q15", {"G3", "Q06", "Q08", "Q14", "W16", "C07"}),
+    for tid, prerequisites in (("V16", {"S04", "S05", "V01", "C06", "C07"}),
+                               ("V17", {"V01", "V05", "V10", "V16"}),
+                               ("W16", {"V16", "V17", "V10", "W15", "W12"}),
+                               ("Q14", {"V16", "Q01", "Q03", "Q04", "Q12", "Q13", "C06"}),
+                               ("Q15", {"Q06", "Q08", "Q14", "W16", "C07"}),
                                ("V18", {"G5", "V16", "V17", "W16", "Q14", "Q15", "V12", "X09"})):
         if tid in task_map and not prerequisites <= set(dependency_ids(task_map, tid)):
             errors.append(f"{tid}: evolution chain misses {', '.join(sorted(prerequisites))}")

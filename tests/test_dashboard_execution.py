@@ -93,6 +93,75 @@ def start(gateway):
     return gateway.start({"bundle_id": "test", "preview_id": preview["preview_id"]})
 
 
+def forbid_model_launch(monkeypatch):
+    """Allow real read-only native CLI fixtures, forbid only the model child."""
+    original = gateway_module.subprocess.Popen
+    def guarded(argv, *args, **kwargs):
+        if any(str(value).endswith('main_with_llm.py') for value in argv):
+            pytest.fail('current refusal launched the model child')
+        return original(argv, *args, **kwargs)
+    monkeypatch.setattr(gateway_module.subprocess, 'Popen', guarded)
+
+
+def test_start_without_optional_preview_checks_current_owner_and_launches_once(deployment):
+    config, runtime, _ = deployment
+    gateway = ExecutionGateway(config)
+    result = gateway.start({'bundle_id': 'test'})
+    assert result['status'] == 'started' and result['process_started'] is True
+    repeated = gateway.start({'bundle_id': 'test', 'preview_id': 'discarded-preview'})
+    assert repeated['status'] == 'attached' and repeated['process_started'] is False
+    assert repeated['run']['run_id'] == result['run']['run_id']
+    wait_done(gateway, result['run']['run_id'])
+    assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
+
+
+def test_start_after_service_restart_does_not_require_old_memory_preview(deployment):
+    config, runtime, _ = deployment
+    old_gateway = ExecutionGateway(config)
+    old_preview = old_gateway.preview({'bundle_id': 'test'})
+    restarted = ExecutionGateway(config)
+    assert old_preview['preview_id'] not in restarted._previews
+    result = restarted.start({'bundle_id': 'test', 'preview_id': old_preview['preview_id']})
+    wait_done(restarted, result['run']['run_id'])
+    assert result['process_started'] is True
+    assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
+
+
+def test_start_uses_latest_allowed_work_instead_of_requiring_old_snapshot_equality(deployment):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    old = gateway.preview({'bundle_id': 'test'})
+    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST',
+        'work_items': [{'status': 'delivered', 'work_item_id': 'already-completed'}]})
+    latest = gateway.preview({'bundle_id': 'test'})
+    assert latest['can_start'] is True and latest['readonly_recovery'] is True
+    assert latest['inspection_sha256'] != old['inspection_sha256']
+    result = gateway.start({'bundle_id': 'test', 'preview_id': old['preview_id']})
+    wait_done(gateway, result['run']['run_id'])
+    assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
+
+
+@pytest.mark.parametrize('current_block', ['budget', 'unknown_work', 'permission'])
+def test_optional_preview_cannot_bypass_current_native_refusal(deployment, monkeypatch, current_block):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    if current_block == 'budget':
+        put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'available': False})
+    elif current_block == 'unknown_work':
+        put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST',
+            'work_items': [{'status': 'uncertain', 'work_item_id': 'unknown-response'}]})
+    else:
+        admission = json.loads(Path(bundle['admission_config']).read_text())
+        admission['permission_error'] = 'delegation_revoked'
+        put(Path(bundle['admission_config']), admission)
+    forbid_model_launch(monkeypatch)
+    with pytest.raises(DashboardExecutionError) as caught:
+        gateway.start({'bundle_id': 'test'})
+    assert caught.value.code == 'execution_not_ready'
+    assert caught.value.prelaunch_not_started is True
+    assert not list(gateway.state_root.glob('run-*')) and not (runtime / 'calls.txt').exists()
+
+
 def test_explicit_work_lease_reaches_only_new_native_process_without_rewriting_legacy(deployment):
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
@@ -121,8 +190,8 @@ def test_invalid_work_lease_never_reaches_native_launch(deployment, monkeypatch,
     assert not (runtime/'calls.txt').exists()
 
 
-@pytest.mark.parametrize('code',['preview_required','execution_not_ready','preview_changed'])
-def test_original_prewrite_refusal_has_positive_proof_and_never_creates_run(deployment,monkeypatch,code):
+def test_original_prewrite_refusal_has_positive_proof_and_never_creates_run(deployment,monkeypatch):
+    code='execution_not_ready'
     config,runtime,bundle=deployment
     gateway=ExecutionGateway(config);registration=gateway.bundle_registration('test')
     if code!='preview_required':
@@ -834,7 +903,7 @@ def test_missing_or_wrong_identity_and_config_block_before_launch(deployment):
     assert "identity_entity_mismatch" in gateway.preview({"bundle_id": "test"})["missing"]
     with pytest.raises(DashboardExecutionError) as raised:
         start(gateway)
-    assert raised.value.code == "preview_required"
+    assert raised.value.code == "execution_not_ready"
     assert not (runtime / "calls.txt").exists()
 
 
@@ -991,19 +1060,21 @@ def test_finish_merges_known_failure_with_original_drain_without_authorizing_unk
     assert not (tmp_path / 'calls.txt').exists()
 
 
-def test_start_requires_original_preview_and_refuses_changed_plan(deployment):
+def test_start_refuses_input_change_during_current_owner_read_without_requiring_old_preview(deployment,monkeypatch):
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
+    original = gateway._registered_permissions
+    def changed_inputs(*args):
+        result = original(*args)
+        Path(bundle['questions']).write_text('changed during this current native check')
+        return result
+    monkeypatch.setattr(gateway,'_registered_permissions',changed_inputs)
+    forbid_model_launch(monkeypatch)
     with pytest.raises(DashboardExecutionError) as raised:
         gateway.start({"bundle_id": "test"})
-    assert raised.value.code == "preview_required"
-    preview = gateway.preview({"bundle_id": "test"})
-    source = Path(config["stockqa_root"]) / "src/utils/quick_scan_refresh_inspect_cli.py"
-    source.write_text(source.read_text().replace('request.get("work_items", [])', '[{"status":"pending"}]'))
-    with pytest.raises(DashboardExecutionError) as raised:
-        gateway.start({"bundle_id": "test", "preview_id": preview["preview_id"]})
-    assert raised.value.code == "preview_changed"
-    assert not (runtime / "calls.txt").exists()
+    assert raised.value.code == "bundle_changed"
+    assert raised.value.prelaunch_not_started is True
+    assert not list(gateway.state_root.glob('run-*')) and not (runtime / "calls.txt").exists()
 
 
 def test_owner_policy_read_write_preserves_provider_secret_and_uses_revision(deployment):

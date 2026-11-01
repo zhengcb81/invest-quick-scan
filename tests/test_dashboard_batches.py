@@ -265,6 +265,44 @@ def row(gateway, batch_id):
     return next(value for value in gateway.list()["batches"] if value["batch_id"] == batch_id)
 
 
+def test_explicit_registered_batch_starts_without_preview_and_attaches_once(setup):
+    gateway, execution = setup
+    result = gateway.start({'bundle_ids': ['b', 'a']})
+    assert result['status'] == 'created' and execution.preview_calls == [] and execution.started == []
+    batch_id = result['batch']['batch_id']
+    assert [item['bundle_id'] for item in result['batch']['entries']] == ['b', 'a']
+    repeated = gateway.start({'bundle_ids': ['b', 'a']})
+    assert repeated['status'] == 'attached' and repeated['batch']['batch_id'] == batch_id
+    assert gateway.list()['total'] == 1
+    gateway._step(batch_id)
+    assert execution.started == ['b']
+
+
+def test_registered_selection_survives_service_restart_with_lost_optional_preview(setup):
+    gateway, execution = setup
+    old = gateway.registration_preview({'bundle_ids': ['a']})
+    restarted = BatchGateway(execution, gateway.state_root, autostart=False)
+    try:
+        assert old['preview_id'] not in restarted._previews
+        result = restarted.start({'bundle_ids': ['a'], 'preview_id': old['preview_id']})
+        assert result['status'] == 'created' and execution.started == []
+        restarted._step(result['batch']['batch_id'])
+        assert execution.started == ['a']
+    finally:
+        restarted.close()
+
+
+@pytest.mark.parametrize('blocked', ['budget', 'unknown'])
+def test_direct_batch_preserves_current_native_budget_and_uncertain_work_block(setup, blocked):
+    gateway, execution = setup
+    result = gateway.start({'bundle_ids': ['a']})
+    execution.bundles['a']['budget'] = blocked != 'budget'
+    execution.bundles['a']['unknown'] = blocked == 'unknown'
+    gateway._step(result['batch']['batch_id'])
+    assert execution.started == [] and execution.preview_calls == ['a']
+    assert row(gateway, result['batch']['batch_id'])['entries'][0]['state'] == 'blocked'
+
+
 def prepare_scope_pair(execution):
     """Representative current basic36: actual entity33 + security3 bindings."""
     prepared = "prepare_" + "a" * 32

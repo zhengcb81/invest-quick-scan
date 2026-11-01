@@ -91,6 +91,36 @@ class QuestionPromptBoundaryTests(unittest.TestCase):
         self.assertEqual(qs.RENDERER_VERSION, release["renderer_version"])
         self.assertEqual(qs.renderer_rules_sha256(), package["renderer_rules_sha256"])
 
+    def test_new_request_rules_distinguish_conclusion_date_from_source_and_period(self):
+        for kind in ("score", "fact"):
+            with self.subTest(response_kind=kind):
+                question = {"id": "QUALITY_DATE", "response_kind": kind}
+                original = dict(question)
+                rules = qp.typed_semantic_rules(question)
+                self.assertIn("结论适用日information_as_of", rules)
+                self.assertIn("财报期间period_start/period_end", rules)
+                self.assertIn("来源发布日期published_at", rules)
+                self.assertIn("不得把截止日、检索日或生成日直接填为information_as_of", rules)
+                self.assertIn("证据不能支持结论适用日时留null", rules)
+                self.assertEqual(question, original)
+
+    def test_new_request_rules_cover_the_audited_quality_failure_classes(self):
+        # Guards are new-request instructions, not automated financial certification.
+        for kind in ("score", "fact"):
+            with self.subTest(response_kind=kind):
+                rules = qp.typed_semantic_rules({"id": "QUALITY_AUDIT", "response_kind": kind})
+                for required in ("公司/证券/业务主体", "历史数值不得充当当期",
+                                 "截尾或四舍五入", "精确公告总额", "复合主张逐子句核对"):
+                    self.assertIn(required, rules)
+                self.assertIn("不为维持原分数补造支持", rules)
+
+    def test_new_request_citations_keep_semantic_locators_without_tracking_byte_gate(self):
+        rules = qp.typed_semantic_rules({"id": "QUALITY_SOURCE"})
+        self.assertIn("证券、文章、年度、语言或文档类型等语义定位参数", rules)
+        self.assertIn("不编造链接", rules)
+        self.assertNotIn("逐字复制", rules)
+        self.assertNotIn("包括lang/type/trk等参数，不得删除", rules)
+
 
 if __name__ == "__main__":
     unittest.main()

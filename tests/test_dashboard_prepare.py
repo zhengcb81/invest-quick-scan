@@ -85,6 +85,99 @@ QA = ROOT.parent / "StockQAbyLLM"
 ENTITY = "ENT_1b2a4d3e-0000-4a1b-8c2d-000000000001"
 
 
+def test_only_exact_original_all_reuse_scope_bypasses_paid_preparation():
+    from scripts.dashboard_prepare import _cached_scope_result
+    ref={'entity_id':ENTITY,'scope':'entity','scope_id':ENTITY}
+    questions=[{'id':'Q1'},{'id':'Q2'}]
+    state={'quote':{'max_cost_micros':0,'max_http_requests':0},'items':[
+        {'question_id':q['id'],'subject_ref':ref,'decision':'reuse','reuse_observation_id':'OBS_'+q['id']}
+        for q in questions]}
+    result=_cached_scope_result(state,questions,ref)
+    assert result['question_count']==2
+    assert result['items']==[{'question_id':'Q1','observation_id':'OBS_Q1'},
+        {'question_id':'Q2','observation_id':'OBS_Q2'}]
+    for mutation in ['pending','result_ready','missing_id','duplicate','wrong_scope','wrong_question','nonzero_quote','empty']:
+        bad=copy.deepcopy(state)
+        if mutation=='pending':bad['items'][0]['decision']='dispatch_new_work'
+        elif mutation=='result_ready':bad['items'][0].update(decision='resume_existing_work',existing_work_status='result_ready')
+        elif mutation=='missing_id':bad['items'][0]['reuse_observation_id']=None
+        elif mutation=='duplicate':bad['items'][1]=copy.deepcopy(bad['items'][0])
+        elif mutation=='wrong_scope':bad['items'][0]['subject_ref']={**ref,'entity_id':'ENT_OTHER'}
+        elif mutation=='wrong_question':bad['items'][0]['question_id']='OTHER'
+        elif mutation=='nonzero_quote':bad['quote']['max_http_requests']=1
+        else:bad['items']=[]
+        assert _cached_scope_result(bad,questions,ref) is None,mutation
+
+
+@pytest.mark.parametrize('subset',[[],['IQS_01','IQS_01'],'IQS_01',[None]])
+def test_question_subset_shape_rejected_before_owner_reads(tmp_path,monkeypatch,subset):
+    gateway=PrepareGateway({})
+    monkeypatch.setattr(gateway,'_deployment',lambda:tmp_path)
+    monkeypatch.setattr(gateway,'_worker',lambda *args:(_ for _ in ()).throw(AssertionError('No owner read for invalid subset')))
+    with pytest.raises(DashboardPrepareError) as error:
+        gateway.bank_preview({'entity_id':ENTITY,'as_of':'2026-10-25','question_ids':subset})
+    assert error.value.code=='question_subset_invalid'
+
+
+def test_cache_completion_obeys_real_owner_freshness_cutoff_and_scope_decisions(monkeypatch):
+    from scripts.dashboard_prepare import _cached_scope_result
+    monkeypatch.syspath_prepend(str(WIKI))
+    from stockwiki.quick_scan_freshness import build_gap_plan
+    ref={'entity_id':ENTITY,'scope':'entity','scope_id':ENTITY}
+    expected={'entity_id':ENTITY,'question_id':'IQS_01','scope':'entity','scope_id':ENTITY,
+        'model':'mimo-v2.6-pro','question_fingerprint':'meaning','routing_fingerprint':'routing',
+        'information_cutoff':'2026-10-31','meaning_version':'1','minimum_check_level':'unverified_model_output'}
+    observation={**expected,'observation_id':'OBS_original','response_status':'scored',
+        'check_level':'unverified_model_output','information_as_of':'2026-10-31','valid_until':'2026-11-01T00:00:00Z'}
+    for mutation in ['fresh','expired','missing_date','wrong_scope','wrong_cutoff']:
+        original=copy.deepcopy(observation);now='2026-10-31T23:30:00Z'
+        if mutation=='expired':now='2026-11-01T00:00:00Z'
+        elif mutation=='missing_date':original['information_as_of']=None
+        elif mutation=='wrong_scope':original['scope_id']='ENT_OTHER'
+        elif mutation=='wrong_cutoff':original['information_cutoff']='2026-10-30'
+        plan=build_gap_plan(now=now,fields={'IQS_01':{'expected':expected,'observation':original,'work_item':None}})
+        state={'quote':{'max_cost_micros':0,'max_http_requests':0},'items':[
+            {**row,'question_id':row['field_id'],'subject_ref':ref} for row in plan['fields']]}
+        assert (_cached_scope_result(state,[{'id':'IQS_01'}],ref) is not None)==(mutation=='fresh'),mutation
+
+
+def test_explicit_subset_preserves_full_bank_and_registers_only_selected_native_question(original):
+    gateway,base,_=original
+    preview=gateway.bank_preview({'entity_id':ENTITY,'as_of':'2026-10-25','question_ids':['IQS_01']})
+    assert preview['question_count']==36 and preview['execution_question_ids']==['IQS_01']
+    assert preview['execution_question_count']==1 and preview['recovery_subset'] is None
+    invalid={'entity_id':ENTITY,'as_of':'2026-10-25','question_ids':['NOT_IN_BANK']}
+    with pytest.raises(DashboardPrepareError) as error:gateway.bank_preview(invalid)
+    assert error.value.code=='question_subset_invalid'
+    try:result=gateway.apply({k:preview[k] for k in ('preview_id','preview_token')})
+    except DashboardPrepareError as error:
+        diagnostic=r'''
+import sys,traceback,subprocess,json
+sys.path.insert(0,sys.argv[1])
+from stockwiki.quick_scan_refresh_owner_cli import main
+def trace(frame,event,arg):
+ if event=='exception' and frame.f_code.co_filename.endswith('quick_scan_refresh_owner_cli.py'):
+  print('NATIVE_DIAGNOSTIC',repr(arg[1]),file=sys.stderr)
+ return trace
+original=subprocess.run
+def run(*args,**kwargs):
+ result=original(*args,**kwargs)
+ if result.returncode:print('CHILD_DIAGNOSTIC',result.stdout,result.stderr,file=sys.stderr)
+ return result
+subprocess.run=run;sys.settrace(trace)
+raise SystemExit(main(['--root',sys.argv[2],'--iqs-code-root',sys.argv[3],'--iqs-release-root',sys.argv[3],'--request',sys.argv[4]]))
+'''
+        request=Path(gateway.options['state_root'])/'candidates'/preview['preview_id']/'scope-1-entity/refresh.json'
+        done=subprocess.run([sys.executable,'-B','-X','utf8','-c',diagnostic,str(WIKI),str(base/'owner'),str(ROOT),str(request)],
+            cwd=base,env=_env(),capture_output=True,timeout=90)
+        pytest.fail(f'Original subset prepare refused {error.code}: {error.details}; {done.stderr.decode("utf8","replace")}')
+    assert result['status']=='prepared' and result['question_count_total']==1 and result['full_bank_question_count']==36
+    assert len(result['execution_bundles'])==1
+    scope=result['execution_bundles'][0]
+    assert scope['question_count']==1 and len(scope['admission']['registration']['items'])==1
+    assert scope['admission']['registration']['items'][0]['question_id']=='IQS_01'
+
+
 def tree(root):
     return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("*") if p.is_file()}
 
@@ -257,23 +350,15 @@ def test_snapshot_accepts_native_compact_g2b_without_rewriting_identity_or_histo
 
 
 @pytest.mark.parametrize("original", ["null_country"], indirect=True)
-def test_native_verified_missing_country_is_refused_before_route_and_without_owner_writes(original, monkeypatch):
+def test_native_verified_missing_country_stays_unknown_and_preview_is_readonly(original):
     gateway, base, _ = original
-    monkeypatch.syspath_prepend(str(ROOT / "scripts"))
-    import routing
-    routes = []
-    def route_must_not_run(*args, **kwargs):
-        routes.append(True)
-        raise AssertionError("Invalid native identity reached question routing")
-    monkeypatch.setattr(routing, "resolve_route_decision", route_must_not_run)
     before = tree(base / "owner")
     ledger = (base / "work.sqlite").read_bytes()
-    with pytest.raises(DashboardPrepareError) as error:
-        gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
-    assert error.value.code == "owner_identity_contract_invalid"
-    assert "original identity attributes" in error.value.message
-    assert error.value.details["required_action"] == "repair_original_identity_and_create_new_preview"
-    assert routes == [] and not Path(gateway.options["state_root"]).exists()
+    preview=gateway.bank_preview({'entity_id':ENTITY,'as_of':'2026-10-25'})
+    assert preview['can_apply'] and preview['bank']['entity_id']==ENTITY and preview['question_count']==36
+    directory=Path(gateway.options['state_root'])/'candidates'/preview['preview_id']
+    native=json.loads((directory/'identity.json').read_bytes())
+    assert native['payload']['incorporation_country'] is None
     assert tree(base / "owner") == before and (base / "work.sqlite").read_bytes() == ledger
 
 

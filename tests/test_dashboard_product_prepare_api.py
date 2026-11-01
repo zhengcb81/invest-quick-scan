@@ -122,3 +122,34 @@ def test_scope_delivery_uses_original_outbox_without_growing_an_all_company_regi
         assert reply['status']=='delivered'
     assert events==['bind','import','ack']*2
     assert service.config['import_bundles']=={} and not service.config_path.exists()
+
+
+def test_cache_only_preparation_finishes_without_execution_registration_or_config_write(tmp_path):
+    class Cached(Prepare):
+        def apply(self,payload):
+            self.calls+=1
+            return {'status':'cached','question_count_total':1,'cached_question_count':1,
+                'execution_bundles':[],'cached_scopes':[{'subject_ref':{'scope':'entity','scope_id':'ENT_X'},
+                'question_count':1,'items':[{'question_id':'Q1','observation_id':'OBS_original'}]}]}
+    def no_executor(config):
+        raise AssertionError('Pure cache must not create an executor')
+    service=DashboardService(tmp_path,execution_factory=no_executor,prepare_factory=Cached)
+    selection={'preview_id':'prepare_'+'4'*32,'preview_token':'a'*64}
+    job=service.dispatch('POST','/api/product/prepare/apply',selection)[1]['data']['job']
+    result=wait_job(service,job['job_id'])
+    assert result['state']=='registered',result
+    assert result['registration']=={'bundle_ids':[],'question_count_total':1,'cached_question_count':1,'API_requests':0}
+    assert service.config['execution_bundles']=={} and not service.config_path.exists()
+
+
+@pytest.mark.parametrize('payload',[
+    {'status':'cached','execution_bundles':[],'cached_scopes':[],'cached_question_count':0,'question_count_total':0},
+    {'status':'prepared','execution_bundles':[],'cached_scopes':[]},
+    {'status':'cached','execution_bundles':[],'cached_scopes':[{'items':[{'question_id':'Q','observation_id':None}]}],
+        'cached_question_count':1,'question_count_total':1},
+])
+def test_empty_or_unbound_cache_result_is_not_a_successful_preparation(tmp_path,payload):
+    service=DashboardService(tmp_path)
+    deployment={k:v for k,v in service.config.items() if k not in {'execution_bundles','import_bundles'}}
+    with pytest.raises(ProductError):service._register_prepared(payload,deployment)
+    assert not service.config_path.exists()

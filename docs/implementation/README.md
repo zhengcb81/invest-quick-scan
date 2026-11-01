@@ -1,8 +1,8 @@
-> **当前执行入口（2026-10-31）**：[根计划](../../task_plan.md)。本页是任务/验收规格，不是运行完成表；当前规格1.10.16为108卡、368场景，旧版本描述保留设计脉络，不据卡数算完成率。已有后续必要写授权，不按历史“另获许可”重复索权。
+> **当前执行入口（2026-11-01）**：[根计划](../../task_plan.md)。本页是任务/验收规格，不是运行完成表；当前规格1.10.17为108卡、368场景，旧版本描述保留设计脉络，不据卡数算完成率。已有后续必要写授权，不按历史“另获许可”重复索权。1.10.17解除事实、消费者及小样本配套开发对200/2000规模验收的人工串行依赖；保留实际接口依赖和最终规模验收。
 
 # 实施入口：按里程碑连续实施，按owner范围拆分
 
-2026-10-31核对，计划规格版本1.10.16。此包细化[M0—M6路线](../implementation-roadmap.md)，包含108张任务卡、368个验收场景、54条约束和G0—G6里程碑；这份计划不代表产品功能已实现。任务与验收场景以[tasks.json](tasks.json)、[acceptance-cases.json](acceptance-cases.json)为唯一清单；当前实施状态记在根`task_plan.md`与`progress.md`，旧过程已归档。1.10.15新增身份包2.2.0公开只读JSON校验CLI验收，并退役逐assertion任务回执、P01双重人工签收及其依赖门；旧回执、sidecar、日志和review原件保留于原路径，校验器、schema、规范和旧测试归档在[task-receipts archive](archive/task-receipts-v2-legacy/README.md)。测试与独立审查按TDD大节点合并执行，不为普通小卡重复完整回归或单独开review。
+2026-11-01核对，计划规格版本1.10.17。此包细化[M0—M6路线](../implementation-roadmap.md)，包含108张任务卡、368个验收场景、54条约束和G0—G6里程碑；这份计划不代表产品功能已实现。任务与验收场景以[tasks.json](tasks.json)、[acceptance-cases.json](acceptance-cases.json)为唯一清单；当前实施状态记在根`task_plan.md`与`progress.md`，旧过程已归档。1.10.15新增身份包2.2.0公开只读JSON校验CLI验收，并退役逐assertion任务回执、P01双重人工签收及其依赖门；旧回执、sidecar、日志和review原件保留于原路径，校验器、schema、规范和旧测试归档在[task-receipts archive](archive/task-receipts-v2-legacy/README.md)。测试与独立审查按TDD大节点合并执行，不为普通小卡重复完整回归或单独开review。
 
 跨项目分别交什么见[各项目交付](cross-project-delivery.md)，最终如何安装配置和一键开启见[统一启动设计](one-click-launch.md)。企业结果的列表、详情与事实关系视图见[结果UI设计](results-ui.md)，U01—U03和浏览器验收为必交项。全部计划完成的最终判定为G6；G5仍是评分规模交付，不代表所有组件已经配套启动。
 
