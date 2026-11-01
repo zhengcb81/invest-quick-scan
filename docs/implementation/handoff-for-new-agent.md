@@ -12,6 +12,8 @@
 
 原预算快照误门已由StockWiki`724f5b7`修复；本地owner policy9已显式采用successful_scan（TTL24h，预算不扩）。原information_as_of/报告期/发布日期不改，新缓存含义只是最近成功联网扫描，可按原执行时间跳过重扫。激活与正反例见本次报告。真实复用尚须根从原UI完成，不通过补today或新增凭证求绿。
 
+当前真实批见根Next Step：paid两题已从原UI零调用恢复，剩余IQS22在途。切勿重建同范围或重复启动。原HTTP JSON digest与final文本digest属于两种对象，分别核验；原owner捕获文件自身不授予scope/恢复权限。IQS11已知FCF跨年问题未金融签收，工程恢复不改变它的资格。
+
 ## 固定对象与运行
 
 |组件|本次核对基线|
@@ -19,7 +21,7 @@
 |IQS本次起点已推送|`215804dada41148ea79011fbb483e02f9f8d1abe`，本次源码及文档在其后正常提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`745512c`已推既有origin/master|
+|StockQA|`36cfb5f`已推既有origin/master|
 |StockWiki|`af2a260`（含预算`724f5b7`）已提交，无origin，不新建远端|
 |原UI|`ffed6ca`（含`ecd03e0`/`06738a0`）已提交，无remote|
 

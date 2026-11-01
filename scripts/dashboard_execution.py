@@ -273,7 +273,7 @@ class ExecutionGateway:
         self._lock, self._processes, self._previews = threading.RLock(), {}, {}
         self._owner_snapshots = {}
 
-    def _select(self, payload, *, launching=False):
+    def _select(self, payload, *, launching=False, recovery=False):
         if not isinstance(payload, dict) or set(payload) - ({"bundle_id", "entity_id", "preview_id"} if launching else {"bundle_id", "entity_id"}):
             raise DashboardExecutionError("selection_invalid", "只允许选择已注册的公司和执行包")
         bundle_id = payload.get("bundle_id")
@@ -287,12 +287,12 @@ class ExecutionGateway:
         bundle = self.bundles[bundle_id]
         if not isinstance(bundle, dict) or payload.get("entity_id", bundle.get("entity_id")) != bundle.get("entity_id"):
             raise DashboardExecutionError("entity_mismatch", "公司身份与执行包不一致", 409)
-        if 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
+        if not recovery and 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
                 or not 1 <= bundle['work_lease_seconds'] <= 86400):
             raise DashboardExecutionError('invalid_work_lease', '新工作租约须为1至86400整秒；不更新已有租约。')
         return bundle_id, bundle
 
-    def _deployment(self, bundle):
+    def _deployment(self, bundle, *, recovery=False):
         missing = []
         root = Path(self.config.get("stockqa_root", ""))
         runtime = Path(bundle.get("runtime_dir", self.config.get("runtime_dir", "")))
@@ -300,7 +300,9 @@ class ExecutionGateway:
             missing.append("stockqa_root")
         if not runtime.is_absolute() or not runtime.is_dir():
             missing.append("runtime_dir")
-        fields = ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "admission_config", "spend_authorization", "inspection_request")
+        fields = ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "admission_config", "inspection_request")
+        if not recovery:
+            fields += ("spend_authorization",)
         for field in fields:
             path = Path(bundle.get(field, ""))
             if not path.is_absolute() or not path.is_file():
@@ -308,15 +310,15 @@ class ExecutionGateway:
         for field in ("entity_id", "company", "provider", "confirmation_id"):
             if not isinstance(bundle.get(field), str) or not bundle[field].strip():
                 missing.append(field)
-        if not (runtime / "llm_apis.json").is_file():
+        if not recovery and not (runtime / "llm_apis.json").is_file():
             missing.append("runtime_llm_config")
         configured = self.config.get("model_policy_path")
-        if configured and Path(configured).resolve() != (runtime / "llm_apis.json").resolve():
+        if not recovery and configured and Path(configured).resolve() != (runtime / "llm_apis.json").resolve():
             missing.append("model_policy_runtime_mismatch")
         pack, tokens = bundle.get("pack_size", 1), bundle.get("max_output_tokens", 8192)
-        if type(pack) is not int or not 1 <= pack <= 30 or type(tokens) is not int or not 1 <= tokens <= 32768 or type(bundle.get("thinking", True)) is not bool:
+        if not recovery and (type(pack) is not int or not 1 <= pack <= 30 or type(tokens) is not int or not 1 <= tokens <= 32768 or type(bundle.get("thinking", True)) is not bool):
             missing.append("generation_controls")
-        if 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
+        if not recovery and 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
                 or not 1 <= bundle['work_lease_seconds'] <= 86400):
             missing.append('work_lease_controls')
         admission = None
@@ -345,7 +347,7 @@ class ExecutionGateway:
                     missing.append("inspection_entity_mismatch")
             except (OSError, ValueError, TypeError, AttributeError):
                 missing.append("inspection_request_invalid")
-        if bundle.get("search_policy") and (not Path(bundle["search_policy"]).is_absolute() or not Path(bundle["search_policy"]).is_file()):
+        if not recovery and bundle.get("search_policy") and (not Path(bundle["search_policy"]).is_absolute() or not Path(bundle["search_policy"]).is_file()):
             missing.append("search_policy")
         return root, runtime, admission, sorted(set(missing))
 
@@ -506,6 +508,31 @@ class ExecutionGateway:
             counts[row['status']] = counts.get(row['status'], 0) + 1
         return {'work_inspection_sha256': _digest(inspection), 'work_item_count': len(work), 'work_status_counts': counts}
 
+    def _seal_preflight(self, record, bundle, *, inspection=None, permissions=None, process_evidence=None):
+        """Check original stopped scope; never require funds or a new model call."""
+        if record['bundle_fingerprint'] != self._fingerprint(bundle):
+            raise DashboardExecutionError('bundle_changed', '原执行包已变化，不能接续旧回答。', 409)
+        if record['run_id'] in self._processes:
+            raise DashboardExecutionError('company_still_draining', '原进程仍在运行，不能并发恢复。', 409)
+        root, runtime, admission, missing = self._deployment(bundle, recovery=True)
+        if missing:
+            raise DashboardExecutionError('seal_inputs_unavailable', '原恢复输入不完整，未启动模型。', 409, {'missing': missing})
+        permissions = permissions if permissions is not None else self._registered_permissions(bundle, root, runtime)
+        if permissions.get('status') != 'passed':
+            raise DashboardExecutionError('seal_permissions_blocked', '原登记范围的当前权限不可用，不能恢复。', 409)
+        inspection = inspection if inspection is not None else self._inspect_work(bundle, root, runtime, admission)
+        try:
+            summary = self._retirement_work_summary(bundle, inspection)
+        except DashboardExecutionError as error:
+            raise DashboardExecutionError('seal_work_unknown', '原范围含在途、未知或缺少题目，不能恢复。', 409) from error
+        if summary['work_status_counts'].get('pending'):
+            raise DashboardExecutionError('seal_work_unknown', '原范围仍有未执行工作，不能按已接收回答恢复。', 409)
+        if (process_evidence or _process_recovery_evidence(record, False)) not in _STOPPED_EVIDENCE:
+            raise DashboardExecutionError('original_process_unknown', '尚未确认原进程停止，不能恢复。', 409)
+        if record['bundle_fingerprint'] != self._fingerprint(bundle):
+            raise DashboardExecutionError('bundle_changed', '检查期间原输入变化，未启动恢复。', 409)
+        return root, runtime
+
     def preview(self, payload):
         key, bundle = self._select(payload)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
@@ -593,6 +620,8 @@ class ExecutionGateway:
                 status_counts_observed_at=None, status_counts_is_cached_projection=None,
                 progress_label='原进度未读取，请核原状态。')
             actions = ["inspect"]
+            preview = None
+            stopped_evidence = None
             if value.get("launcher_state") not in {"paused", "retired"}:
                 actions.append("pause")  # Stops future companies, never interrupts an HTTP.
             try:
@@ -640,22 +669,39 @@ class ExecutionGateway:
             except DashboardExecutionError as error:
                 value.update(inspection_status="unavailable", inspection_error=error.code,
                     progress_label='原进度无法核实，请核原状态。')
+            if ((inspect_owner or (isinstance(preview, dict) and isinstance(preview.get('inspection'), dict)
+                    and isinstance(preview.get('permissions_check'), dict))) and value.get('launcher_state') != 'retired'
+                and value['run_id'] not in self._processes and value['bundle_id'] in self.bundles):
+                try:
+                    self._seal_preflight(value, self.bundles[value['bundle_id']],
+                        inspection=preview.get('inspection') if isinstance(preview, dict) else None,
+                        permissions=preview.get('permissions_check') if isinstance(preview, dict) else None,
+                        process_evidence=stopped_evidence)
+                    actions.append('seal')
+                except DashboardExecutionError:
+                    pass
             value["allowed_actions"] = actions
         return {"protocol": "iqs.dashboard_process_references/1.0.0", "tasks": values, 'total': total,
                 'offset': offset, 'limit': limit, 'next_offset': offset+limit if offset+limit < total else None, "API_requests": 0}
 
-    def _command(self, bundle, root, output):
+    def _command(self, bundle, root, output, *, recovery=False):
         command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8", str(root / "main_with_llm.py")]
         flags = {"company": "company", "entity_id": "entity-id", "provider": "provider", "questions": "config", "identity_snapshot": "identity-snapshot",
                  "manifest": "question-manifest", "c06_authority": "c06-authority", "owner_config": "quick-scan-owner-config",
-                 "admission_config": "refresh-admission-config", "confirmation_id": "refresh-confirmation-id", "spend_authorization": "spend-authorization"}
+                 "admission_config": "refresh-admission-config", "confirmation_id": "refresh-confirmation-id"}
+        if not recovery:
+            flags['spend_authorization'] = 'spend-authorization'
         for field, flag in flags.items():
             command.extend(["--" + flag, str(bundle[field])])
-        command.extend(["--require-search", "--output", str(output), "--question-pack-size", str(bundle.get("pack_size", 1)),
-                        "--thinking-enabled", str(bundle.get("thinking", True)).lower(), "--max-output-tokens", str(bundle.get("max_output_tokens", 8192))])
-        if 'work_lease_seconds' in bundle:
+        command.extend(["--require-search", "--output", str(output)])
+        if recovery:
+            command.extend(['--seal-deliveries', '--recover-checkpoints'])
+        else:
+            command.extend(["--question-pack-size", str(bundle.get("pack_size", 1)),
+                "--thinking-enabled", str(bundle.get("thinking", True)).lower(), "--max-output-tokens", str(bundle.get("max_output_tokens", 8192))])
+        if not recovery and 'work_lease_seconds' in bundle:
             command.extend(['--work-lease-seconds', str(bundle['work_lease_seconds'])])
-        if bundle.get("search_policy"):
+        if not recovery and bundle.get("search_policy"):
             command.extend(["--search-policy", str(bundle["search_policy"])])
         if bundle.get("security_scope_id"):
             command.extend(["--security-scope-id", str(bundle["security_scope_id"])])
@@ -827,6 +873,45 @@ class ExecutionGateway:
                 if action == 'retire':
                     return {'status': 'already_retired', 'run': record, 'process_started': False, 'API_requests': 0}
                 raise DashboardExecutionError('run_retired', '该启动引用已退役；仅可查看原状态和历史', 409)
+            if action == 'seal':
+                _, bundle = self._select({'bundle_id': record['bundle_id']}, recovery=True)
+                if record['bundle_fingerprint'] != self._fingerprint(bundle):
+                    raise DashboardExecutionError('bundle_changed', '原执行包已变化，不能恢复旧回答。', 409)
+                if run_id in self._processes:
+                    if record.get('operation') == 'seal':
+                        return {'status': 'attached', 'run': record, 'process_started': False,
+                            'paid_dispatch_started': False, 'API_requests': 0}
+                    raise DashboardExecutionError('company_still_draining', '原执行进程尚未停止，不能并发恢复。', 409)
+                if (record.get('operation') == 'seal' and record.get('process_state') in
+                    {'starting', 'running', 'needs_original_inspection'}
+                    and _process_recovery_evidence(record, False) == 'present'):
+                    return {'status': 'attached', 'run': record, 'process_started': False,
+                        'paid_dispatch_started': False, 'API_requests': 0}
+                root, runtime = self._seal_preflight(record, bundle)
+                attempt = record.get('launch_attempt', 1) + 1
+                record.setdefault('original_result_path', record['result_path'])
+                launched_at = _now()
+                record.update(operation='seal', launch_attempt=attempt, sealing_at=launched_at, resumed_at=launched_at,
+                    result_path=str(self.state_root / run_id / f'result-seal-{attempt}.json'),
+                    log_path=str(self.state_root / run_id / f'process-seal-{attempt}.log'),
+                    process_state='starting', launcher_state='running')
+                _write(path, record)
+                try:
+                    process = subprocess.Popen(self._command(bundle, root, record['result_path'], recovery=True),
+                        cwd=runtime, env=self._environment(root, paid=False), stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT, text=True, encoding='utf-8', errors='replace',
+                        creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+                except OSError:
+                    record.update(process_state='launch_failed', launcher_state='paused')
+                    _write(path, record)
+                    raise DashboardExecutionError('launch_failed', '无法启动原回答恢复进程。', 503) from None
+                record.update(process_state='running', pid=process.pid)
+                _write(path, record)
+                self._processes[run_id] = process
+                threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
+                return {'status': 'started', 'run': record, 'process_started': True,
+                    'paid_dispatch_started': False, 'API_requests': 0,
+                    'notice': '仅从原已接收响应恢复和封存；不调用模型，不增加费用。'}
             if action == 'retire':
                 if run_id in self._processes:
                     raise DashboardExecutionError('company_still_draining', '当前公司尚未安全退出；不能退役启动引用', 409)
@@ -893,7 +978,7 @@ class ExecutionGateway:
                 threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
                 return {"run": record, "state": "running", "process_started": True, "paid_dispatch_started": None,
                         "notice": "仅恢复同一原owner登记范围；原执行器复用已保存答案，未知HTTP不重发"}
-            raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume", "retire"]})
+            raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume", "retire", "seal"]})
 
     @contextmanager
     def _control_lock(self, action):

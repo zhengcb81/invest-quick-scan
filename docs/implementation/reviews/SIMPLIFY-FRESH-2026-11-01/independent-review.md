@@ -90,3 +90,17 @@ IQS原6个policy schema只添optional enum，原required和OwnerState/items保�
 16最终文件SHA逐项核对。作者SW53P、原IQS contract39P/prepare10P、原UI真实handler2P日志已读回；未重复旧绿套件。独立补4短例在原临时route/observation库通过：默认与精确到期边界、行导入元数据不能续payload执行TTL、null资料仍按合法扫描时钟复用、完整plan未来事实日期仍拒；原DB字节不变，TEMP清理。
 
 两作者曾用同名薄证据导致覆盖，已改wiki/iqs前缀，不重复测试。SW原53P绿日志及hash保留，元数据从原工具返回恢复且显式标记；原RED日志被覆盖，只保留工具返回摘要，不冒称持有原日志。此事不影响已读最终源码/实际绿日志及独立反例。最终passed/open_findings=[]，统一final.json引用所有新范围和日志SHA。真实policy9激活及真实UI缓存/金融质量由总控另证，本审查不代签。
+
+## 同节点最终补审：有限来源URL等价与已接收回答0API恢复
+
+新增12文件统一核SHA。URL仅对精确Sina/Eastmoney主机和完整文章路径去各自显式tracking白名单；语义/未知query、重复值次序、host/path/port、敏感参数和userinfo规则保持，原receipt URL拼写及原body不改。作者81P原日志已核，独立5例验证重复语义参数、大小写未知key、转义分隔符、不同端口仍严格，同语义selector保原receipt。
+
+原UI既有seal动作接空body原HTTP路由，保同bundle/原输入/当前owner/精确题目scope/work/停止证据和原跨进程锁。固定原CLI --seal-deliveries加--recover-checkpoints，paid=False不传新密钥/spend/生成参数；同run或重启后活动seal仅attach，unknown不启动，旧paid结果另存。作者受影响27P日志已核。本审只签其他作者新增seal hunks，不自签审查者此前start改动。
+
+恢复仍由原登记五输入+当前native owner授权，只读固定owner捕获目录原body；不接受caller响应正文或路径。重要信任边界：ledger的response_sha256是严格整HTTP JSON的hash，capture.final_answer_sha256是final文本hash，两者不同且不要求相等。正文依赖原owner存储信任，以自身原capture digest/bytes及native response/pack/member/provider/model映射校验；未伪称ledger原存正文/final hash，也未把诊断replay=false改成权限。原receipt/当前owner是权限来源，不补新签名/凭证。
+
+仅原settled/completed且failed闭lease的最终attempt可在事务内CAS到result_ready；同scope后继generation在事务实读拒绝，unknown/在途/其它请求不reset、不新attempt或费用。原full standard/context/entity/source重验，原answered_at、资料日期、失败事件和费用保留；同文本副本按内容去重，不同文本冲突拒，无关旧坏capture不阻断。CP/context/standard为原pack事务，之后Q10封存是原另一个幂等事务，不冒称outbox也在同一提交。
+
+作者最终隔离14P/0skip原日志与clean TEMP已核（先前11包含其中，不加总）；独立追加2真实原临时store事务例通过：第一member CP已可见后第二member撤权，所有表含work/context/standard/events/CP/费用完整回滚；同HTTP receipt/transport的不同final内容拒且全表不变。测试使用合成持久receipt/capture和明确标注的native权限/seal端口替身，不代真owner。根最后将precommit一处path.read_bytes统一为原_snapshot，已静核；正常hook随后仅规范行尾/Black/isort，3个mypy问题用2处同一未变参数直接is-not-None判断及1处本地类型注解修正，静核运行语义等价。所有正常hook通过，StockQA 36cfb5f已提交推送；本审此时一次绑定最终SHA，作者测试SHA保留，不重跑14/27/81、不造旧格式AST证明。
+
+最终工程passed/open_findings=[]，0收费API、0生产库或实际UI操作，全部自有TEMP清理。金融资格未授予：根的官方原始来源核对发现IQS11跨年Capex/FCF错配，原body/分数保留，需原owner定向纠错/重问；URL/schema和工程恢复成功不关闭该金融问题。已核DUPONT02的真实fresh正例及实际UI恢复由总控独立实证，不由本软件审查代签。

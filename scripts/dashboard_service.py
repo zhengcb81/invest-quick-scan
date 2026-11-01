@@ -584,9 +584,9 @@ class DashboardService:
                 return getattr(self._gateway('owner'), action)(body)
             if path in {'tasks/preview', 'tasks/start'}:
                 return getattr(self._gateway('execution'), path.split('/')[1])(body)
-            match = re.fullmatch(r'tasks/([A-Za-z0-9_.-]{1,128})/(inspect|pause|resume|retire)', path)
+            match = re.fullmatch(r'tasks/([A-Za-z0-9_.-]{1,128})/(inspect|pause|resume|retire|seal)', path)
             if match:
-                if match[2] == 'retire' and body:
-                    raise ProductError('invalid_body', '退役原启动引用无需额外参数。')
+                if match[2] in {'retire','seal'} and body:
+                    raise ProductError('invalid_body', '该原启动控制无需额外参数。')
                 return self._gateway('execution').control(*match.groups())
         raise ProductError('method_or_route_not_allowed', '该接口或方法不支持。', 405)

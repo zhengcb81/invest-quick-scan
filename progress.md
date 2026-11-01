@@ -35,3 +35,9 @@
 已从`215804d`继续真实fresh与答案质量，按最新指令同时取消实际生效的冗余门。中微单题从原UI直接启动、真实模型及原ACK 1/1完成；因证据和范围不足保留null，信息日旧，fresh仍未证明。本次增量1HTTP/$0.015657，00:02:54累计82HTTP/$1.918976、0未结。宁德时代旧准备的admission误拒已核实为全局预算快照漂移并根修；原UI已结束旧编排，保留原确认/历史，不重发错题集。同时核清旧金融反例实际题号应为DUPONT_02/IQS_22/IQS_11，不拿另题冒充验证通过。当前没有待用户回答的权限项，也未新发支线施工包。后续唯一动作仍按根计划，不把本次减负当作F05/TH/IN/规模功能已完成。
 
 本机已显式激活owner policy9（successful_scan，TTL24h），默认旧策略不变；StockWiki53/独立4、IQS39+10、UI2相关检查通过且集中独审通过。正在原UI重新准备正确三题以做实际最近扫描复用，不把资料日期改今天，也不提前宣称真实命中。
+
+当前真实任务：`prepjob_ffd74a7aa18a4220be7c6b5db91d6944`，2026-11-01T00:30:04Z原UI受理，子集DUPONT_02/IQS_22/IQS_11；按原entity/security两个scope准备。已完成登记，00:36:48Z原UI选择唯一完整公司组，不经批次预览明确启动`batch-82a2f43df7084fd984595c4078db898a`，两scope仍按原owner顺序处理；不重复创建。源码基线：IQS`dc53ec8`已推；StockWiki`af2a260`、原UI`ffed6ca`已提交；原预算仍25USD/250HTTP，未扩。后续状态以原job为准。
+
+00:45:07Z首包HTTP200返回，已结算；DUPONT_02/IQS_11内层标准与parser均通过，但原provider搜索URL带tracking、正文同文章裸path被严格来源绑定误拒为invalid_question，原work两failed/批次blocked，IQS_22未发送。00:46:45Z账本83HTTP/$1.947570，0在途/未结；本包1HTTP/$0.028594。原正文完整保留、原receipt3行亦在，非模型漏答或响应丢失。正在原层精简有限tracking误门、补同attempt零API重新封存并接已有UI seal按钮；旧按钮此前没有后端，不能继续写“已可用”。不重问、不改旧失败历史或实际回答时间。金融旧错两项在原答未重现，其他主张尚未全核，不作全答准确性认证。
+
+01:26:19Z真实UI seal恢复DUPONT_02/IQS_11，两题result_ready，83HTTP/$1.947570不变；原完成时刻与资料日保留，0新增API。已从UI恢复原批，01:31:21Z唯一未问的security IQS_22在途（第84HTTP），不重复启动。StockQA36cfb5f已推，IQS seal接线已实际生效、正随本次交接提交。IQS11另有已证实2024 FCF跨年错误，金融整改未关闭；不能以工程恢复或新cache标签签金融通过。

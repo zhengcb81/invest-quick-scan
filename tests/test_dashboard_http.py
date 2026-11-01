@@ -163,3 +163,13 @@ def test_import_reconciles_exact_receipt_and_declares_missing_mapping(tmp_path, 
     assert status==200
     assert events==(['bind','import','ack'] if mapping else ['import'])
     assert reply['data']['ack_reconciliation']['status']==('owner_rejected' if mapping else 'not_configured')
+def test_existing_seal_control_route_forwards_only_empty_explicit_request(product,monkeypatch):
+    service,_,_=product
+    forwarded=[]
+    execution=service._gateway('execution')
+    monkeypatch.setattr(execution,'control',lambda run_id,action:forwarded.append((run_id,action)) or {'status':'started','API_requests':0},raising=False)
+    status,reply=call(product,'POST','/api/product/tasks/run-original/seal','{}',write_headers(product))
+    assert status==200 and reply['data']['status']=='started'
+    assert forwarded==[('run-original','seal')]
+    assert call(product,'POST','/api/product/tasks/run-original/seal','{"command":"forbidden"}',write_headers(product))[0]==400
+    assert len(forwarded)==1

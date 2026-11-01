@@ -1220,3 +1220,106 @@ def test_actual_windows_process_time_probe_does_not_signal_current_process():
     assert mod._process_created_after(os.getpid(), '2100-01-01T00:00:00Z') is False
     assert mod._process_created_after(os.getpid(), 'invalidZ') is None
     assert mod._process_created_after(True, '2000-01-01T00:00:00Z') is None
+
+def sealable_reference(deployment, *, statuses=('failed', 'result_ready')):
+    config, runtime, bundle = deployment
+    rows={f'Q{i}':{'status':status} for i,status in enumerate(statuses,1)}
+    gateway,run_id,path=native_progress_run(deployment,rows)
+    request=json.loads(Path(bundle['inspection_request']).read_text())
+    request.update(available=False,question_ids=list(rows))
+    put(Path(bundle['inspection_request']),request)
+    # These settings are irrelevant to already-paid response recovery.
+    bundle.update(pack_size='not-an-integer',max_output_tokens=-1,thinking='not-a-bool',work_lease_seconds=-1)
+    bundle['spend_authorization']=str(runtime/'no-new-spend.json')
+    (runtime/'llm_apis.json').unlink()
+    record=json.loads(path.read_text())
+    record.update(process_state='process_exited',launcher_state='paused',exit_code=2,
+        bundle_fingerprint=gateway._fingerprint(bundle))
+    put(path,record)
+    return gateway,run_id,path
+
+
+def test_seal_uses_background_original_cli_without_credentials_new_spend_or_budget(deployment,monkeypatch):
+    gateway,run_id,path=sealable_reference(deployment)
+    _,runtime,bundle=deployment
+    monkeypatch.setenv('MODEL_API_KEY','synthetic-secret-never-propagated')
+    original=gateway_module.subprocess.Popen
+    launches=[]
+    def capture(command,*args,**kwargs):
+        if str(Path(deployment[0]['stockqa_root'])/'main_with_llm.py') in command:
+            launches.append((command,kwargs['env']))
+        return original(command,*args,**kwargs)
+    monkeypatch.setattr(gateway_module.subprocess,'Popen',capture)
+    projected=gateway.tasks(run_ids=[run_id])['tasks'][0]
+    assert projected.get('owner_preview',{}).get('can_start') is not True
+    assert 'seal' in projected['allowed_actions']
+    prior=json.loads(path.read_text())['result_path']
+    first=gateway.control(run_id,'seal')
+    repeated=gateway.control(run_id,'seal')
+    assert first['process_started'] is True and first['paid_dispatch_started'] is False
+    assert repeated['status']=='attached' and repeated['process_started'] is False
+    wait_done(gateway,run_id)
+    assert len(launches)==1
+    command,env=launches[0]
+    assert '--seal-deliveries' in command and '--recover-checkpoints' in command
+    assert '--spend-authorization' not in command and '--question-pack-size' not in command
+    assert '--max-output-tokens' not in command and '--work-lease-seconds' not in command
+    assert '--thinking-enabled' not in command and '--search-policy' not in command
+    assert not any('KEY' in key or 'TOKEN' in key or 'SECRET' in key for key in env)
+    final=json.loads(path.read_text())
+    assert final['result_path']!=prior and final['original_result_path']==prior
+    assert final['process_state']=='process_exited'
+    assert json.loads(Path(final['result_path']).read_text())['argv'].count('--seal-deliveries')==1
+    assert 'key=none' in Path(final['log_path']).read_text()
+    assert not Path(bundle['spend_authorization']).exists()
+
+
+@pytest.mark.parametrize('status',['leased','uncertain','inflight','pending','unknown'])
+def test_seal_never_dispatches_for_active_or_unknown_original_work(deployment,monkeypatch,status):
+    gateway,run_id,path=sealable_reference(deployment,statuses=(status,))
+    monkeypatch.setattr(gateway_module.subprocess,'Popen',
+        (lambda original:lambda command,*a,**kw:pytest.fail('recovery must not launch') if str(Path(deployment[0]['stockqa_root'])/'main_with_llm.py') in command else original(command,*a,**kw))(gateway_module.subprocess.Popen))
+    before=path.read_bytes()
+    assert 'seal' not in gateway.tasks(run_ids=[run_id])['tasks'][0]['allowed_actions']
+    with pytest.raises(DashboardExecutionError) as caught:gateway.control(run_id,'seal')
+    assert caught.value.code=='seal_work_unknown'
+    assert path.read_bytes()==before
+
+
+@pytest.mark.parametrize('fault',['unknown_process','active_process','changed_input','permission'])
+def test_seal_rechecks_stopped_process_registered_permission_and_exact_input(deployment,monkeypatch,fault):
+    gateway,run_id,path=sealable_reference(deployment)
+    record=json.loads(path.read_text())
+    if fault=='unknown_process':
+        record['process_state']='needs_original_inspection'
+        put(path,record)
+        monkeypatch.setattr(gateway_module,'_probe_process',lambda pid:'unknown')
+    elif fault=='active_process':gateway._processes[run_id]=object()
+    elif fault=='changed_input':Path(deployment[2]['manifest']).write_text('{"changed":true}')
+    else:
+        config=json.loads(Path(deployment[2]['admission_config']).read_text())
+        config['permission_error']='delegation_revoked'
+        put(Path(deployment[2]['admission_config']),config)
+        record['bundle_fingerprint']=gateway._fingerprint(deployment[2])
+        put(path,record)
+    before=path.read_bytes()
+    with pytest.raises(DashboardExecutionError) as caught:gateway.control(run_id,'seal')
+    assert caught.value.code=={'unknown_process':'original_process_unknown','active_process':'company_still_draining',
+        'changed_input':'bundle_changed','permission':'seal_permissions_blocked'}[fault]
+    assert path.read_bytes()==before
+
+
+def test_restarted_gateway_attaches_existing_seal_without_reusing_old_pause_as_stop_proof(deployment,monkeypatch):
+    gateway,run_id,path=sealable_reference(deployment)
+    record=json.loads(path.read_text())
+    record.update(operation='seal',process_state='running',pid=67890,
+        resumed_at='2026-11-01T02:00:00Z',pause_requested_at='2026-11-01T01:00:00Z')
+    put(path,record)
+    monkeypatch.setattr(gateway_module,'_probe_process',lambda pid:'present')
+    monkeypatch.setattr(gateway_module,'_process_created_after',lambda *a:pytest.fail('old pause cannot prove new launch stopped'))
+    monkeypatch.setattr(gateway_module.subprocess,'Popen',lambda *a,**kw:pytest.fail('restart attach cannot launch'))
+    restarted=ExecutionGateway(deployment[0])
+    before=path.read_bytes()
+    result=restarted.control(run_id,'seal')
+    assert result['status']=='attached' and result['process_started'] is False
+    assert path.read_bytes()==before
