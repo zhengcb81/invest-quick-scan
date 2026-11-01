@@ -29,7 +29,10 @@ BUNDLE_KEYS = BUNDLE_PATHS | {'entity_id', 'company', 'provider', 'confirmation_
     'inspection_schema_version', 'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'security_scope_id',
     'package_sha256', 'release_sha256', 'work_item_ids', 'company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings', 'recovery_subset', 'execution_question_ids', 'execution_question_count'}
 CONFIG_KEYS = PATH_KEYS | {'schema_version', 'universe_id', 'execution_bundles', 'import_bundles',
-                          'timeout_seconds', 'workspace_kind', 'workspace_label', 'prepare', 'batch'}
+                          'timeout_seconds', 'workspace_kind', 'workspace_label', 'prepare', 'batch',
+                          'dashboard_origin'}
+# Optional loopback origin used only to build safe links back to this UI.
+DASHBOARD_ORIGIN_KEY = 'dashboard_origin'
 PREPARE_KEYS = {'state_root', 'admission_config', 'module_package_id', 'producer',
     'authorization_reference', 'agent', 'runtime_dir', 'spend_authorization', 'search_policy',
     'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs', 'shared_company_config'}
@@ -119,6 +122,13 @@ def validate_config(value, root):
     for key in ('universe_id', 'workspace_kind', 'workspace_label'):
         if not isinstance(result[key], str) or not result[key] or len(result[key]) > 256:
             raise ProductError('invalid_config', f'{key}必须是非空短文本。')
+    origin = result.get('dashboard_origin')
+    if origin is not None:
+        from dashboard_iqs_link import _base_origin
+        if not isinstance(origin, str) or _base_origin(origin) is None:
+            raise ProductError('invalid_dashboard_origin',
+                               'dashboard_origin 必须是本机 http(s) origin，例如 http://127.0.0.1:8899。')
+        result['dashboard_origin'] = _base_origin(origin)
     options = result['prepare']
     if not isinstance(options, dict) or set(options)-PREPARE_KEYS:
         raise ProductError('invalid_prepare_config', '公司准备配置包含未知字段。')
@@ -410,6 +420,141 @@ class DashboardService:
         # A different externally loaded configuration must still be checked.
         self._load(inactive_checked_config=config if inactive_checked else None)
 
+    def bind_runtime_origin(self, origin):
+        """G-IQS-01: record the address this process actually bound.
+
+        The launcher only knows the port after `find_free_port`, so the origin
+        cannot come from configuration alone. An explicit `dashboard_origin`
+        still wins: a deliberately fixed deployment address must never be
+        replaced by discovery. An unusable value is ignored rather than stored.
+        """
+        from dashboard_iqs_link import _base_origin
+        value = _base_origin(origin)
+        self._runtime_origin = value
+        return value
+
+    def _iqs_origin(self):
+        """Configured origin first, then the bound runtime address."""
+        return self.config.get(DASHBOARD_ORIGIN_KEY) or getattr(self, '_runtime_origin', None)
+
+    @staticmethod
+    def _is_formal_scored_observation(row):
+        """True only for a published, scored (non-`fact`) observation row.
+
+        The owner's `history` returns raw SQLite rows. `response_kind` is NOT a
+        column on `quick_scan_observation`; it lives at
+        `payload.answer.response_kind` (see `dashboard_owner.py`, which reads it
+        the same way). Reading a top-level key here would silently never match,
+        so the nested location is authoritative and the flat one is only a
+        fallback for a future projection that flattens it.
+        """
+        if not isinstance(row, dict):
+            return False
+        if row.get('publication_status') != 'published':
+            return False
+        answer = (row.get('payload') or {}).get('answer') if isinstance(row.get('payload'), dict) else None
+        kind = answer.get('response_kind') if isinstance(answer, dict) else None
+        if kind is None:
+            kind = row.get('response_kind')
+        return kind != 'fact'
+
+    def _iqs_link(self, entity_id, return_to):
+        """G-IQS-01: publish the frozen IQSLink for the current owner state.
+
+        Only an explicitly configured loopback Dashboard origin is used, so no
+        port is ever hardcoded. The observation context is advertised only when
+        the owner can actually address a formal observation for THIS entity.
+
+        SCOPING (review REV2-02): the frozen `IQSLink` has no field naming the
+        entity it describes, yet `observation` is decided per entity. The DTO is
+        therefore ENTITY-SCOPED BY CONSTRUCTION and must never be cached or
+        reused across entities: a caller that asks about company A must not
+        apply that answer to company B. When no entity id is supplied no
+        per-entity read is performed, so the `observation` context is not
+        advertised at all rather than being claimed owner-wide.
+        """
+        from dashboard_iqs_link import (
+            FALLBACK_RETURN,
+            capability,
+            company_return_entity,
+            safe_entity_id,
+        )
+        origin = self._iqs_origin()
+        count = None
+        state = 'unconfigured'
+        has_subject = False
+        # REV5-01: the bounded-identifier rule is enforced at the boundary rather
+        # than left as an unused helper. A malformed id must not be passed to the
+        # owner as though it were addressable.
+        entity_id = safe_entity_id(entity_id)
+        # B03: a company-scoped return that names a DIFFERENT company than the
+        # link being composed is cross-scope injection; collapse it to the plain
+        # fallback instead of echoing it back to the caller.
+        if return_to and company_return_entity(return_to) not in (None, entity_id):
+            return_to = FALLBACK_RETURN
+        if entity_id and origin:
+            state = 'unreadable'
+            try:
+                history = self._gateway('owner').history(entity_id)
+            except Exception:
+                # An unreadable owner is NOT "no observations"; the state stays
+                # `unreadable` so the count is never mistaken for a real zero.
+                history = None
+            if isinstance(history, dict) and history.get('available') is False:
+                # The owner explicitly reports that it cannot serve this
+                # entity's observations (`owner_observation_database_missing`).
+                # That is "cannot read", not "has none".
+                history = None
+            rows = history.get('observations') if isinstance(history, dict) else None
+            if isinstance(rows, list):
+                state = 'counted'
+                # REV3-03/REV4-01: a `fact` row is stored reference information,
+                # not a scored formal result, so it must not enable the
+                # observation context. Counting it would publish a capability
+                # the UI then refuses -- the exact failure this card prevents.
+                formal = [row for row in rows if self._is_formal_scored_observation(row)]
+                count = len(formal)
+                # REV4-03: `subject` is only addressable when a formal row
+                # actually carries an analysis_subject_id (the column exists but
+                # is NULL for legacy rows).
+                has_subject = any(row.get('analysis_subject_id') for row in formal)
+        value = capability(base_origin=origin, observation_count=count,
+                           observation_state=state, has_subject=has_subject,
+                           return_to=return_to)
+        # The frozen `IQSLink` is `additionalProperties: false`; adding any key
+        # here would break the Dashboard contract, so the exact deep link is
+        # composed by the UI from `routes.results` + the observation id.
+        return value
+
+    def _company_assessment_result(self, entity_id, result_id, return_to):
+        """B03: GET `company/result` - one immutable owner company snapshot.
+
+        The owner's honest absent reasons pass through verbatim (a missing
+        store or an unregistered company is a named reason, never a zero
+        result and never a promoted question score). The entity-scoped
+        IQSLink travels beside it so a consumer can enter the IQS UI with
+        this result's observation context and a validated return route.
+        """
+        import dashboard_company_projection as projection
+
+        owner_payload = self._gateway('owner').company_result(entity_id, result_id)
+        try:
+            response = projection.project_result(owner_payload)
+        except projection.ProjectionError as error:
+            raise ProductError(error.code, error.message, error.status) from None
+        response['iqs_link'] = self._iqs_link(entity_id, return_to)
+        return response
+
+    def _company_assessment_history(self, entity_id, limit, offset):
+        """B03: GET `company/history` - bounded owner company result history."""
+        import dashboard_company_projection as projection
+
+        owner_payload = self._gateway('owner').company_history(entity_id, limit, offset)
+        try:
+            return projection.project_history(owner_payload)
+        except projection.ProjectionError as error:
+            raise ProductError(error.code, error.message, error.status) from None
+
     def _gateway(self, kind):
         attr = '_owner' if kind == 'owner' else '_execution'
         gateway = getattr(self, attr)
@@ -568,6 +713,7 @@ class DashboardService:
         parsed = urlsplit(target)
         path = parsed.path.removeprefix('/api/product/').rstrip('/')
         query = {k: values[-1] for k, values in parse_qs(parsed.query).items()}
+        raw_query = parse_qs(parsed.query, keep_blank_values=True)
         if not parsed.path.startswith('/api/product/'):
             raise ProductError('not_found', '未找到接口。', 404)
         if not isinstance(body, dict):
@@ -683,6 +829,28 @@ class DashboardService:
                 return self._gateway('owner').universe_list(query.get('universe_id', self.config['universe_id']))
             if path == 'delivery':
                 return self._gateway('owner').delivery_status(query.get('package_id'))
+            if path == 'link':
+                return self._iqs_link(query.get('id', query.get('entity_id', '')), query.get('return'))
+            if path == 'company/result':
+                entity_id = query.get('id', query.get('entity_id', ''))
+                if not entity_id:
+                    raise ProductError('entity_required', '请选择已注册公司。')
+                result_ids = raw_query.get('result_id', [])
+                if len(result_ids) > 1 or (result_ids and result_ids[0] == ''):
+                    raise ProductError('invalid_query', '公司结果ID必须唯一且非空。')
+                result_id = result_ids[0] if result_ids else None
+                return self._company_assessment_result(entity_id, result_id, query.get('return'))
+            if path == 'company/history':
+                entity_id = query.get('id', query.get('entity_id', ''))
+                if not entity_id:
+                    raise ProductError('entity_required', '请选择已注册公司。')
+                try:
+                    limit, offset = int(query.get('limit', 20)), int(query.get('offset', 0))
+                except ValueError:
+                    raise ProductError('invalid_query', '公司结果分页无效。')
+                if not 1 <= limit <= 50 or offset < 0:
+                    raise ProductError('invalid_query', '公司结果分页无效。')
+                return self._company_assessment_history(entity_id, limit, offset)
         elif method == 'PUT':
             if path == 'setup':
                 return self._setup(body)

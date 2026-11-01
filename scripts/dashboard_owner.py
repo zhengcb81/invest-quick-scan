@@ -173,6 +173,19 @@ class OwnerGateway:
     def facts(self, entity_id):
         return self._call("facts", {"entity_id": _identifier(entity_id, "entity_id")})
 
+    def company_result(self, entity_id, result_id=None):
+        """B03: one immutable company assessment snapshot (read-only)."""
+        return self._call("company_result", {
+            "entity_id": _identifier(entity_id, "entity_id"),
+            "result_id": _identifier(result_id, "result_id") if result_id else None})
+
+    def company_history(self, entity_id, limit=20, offset=0):
+        """B03: bounded history of registered company results (read-only)."""
+        if type(limit) is not int or not 1 <= limit <= 50 or type(offset) is not int or offset < 0:
+            raise DashboardOwnerError("pagination_invalid", "limit must be 1-50 and offset must be nonnegative")
+        return self._call("company_history", {"entity_id": _identifier(entity_id, "entity_id"),
+                                              "limit": limit, "offset": offset})
+
     def universe_list(self, universe_id="default"):
         return self._call("universe_list", {"universe_id": _identifier(universe_id, "universe_id")})
 
@@ -369,6 +382,16 @@ def _owner_worker(config, operation, payload):
                 "available": True, "complete": True, "relations_supported": False,
                 "meaning": "Stored original observations; not a cross-version comparability decision",
                 "network_calls": 0, "llm_calls": 0}
+    if operation in {"company_result", "company_history"}:
+        # B03: strictly read-only company assessment projection. The bridge
+        # module imports the owner's narrow internal read entry itself and
+        # never registers, computes scores or writes any store.
+        import dashboard_company_projection as projection
+
+        try:
+            return projection.worker_read(config, operation, payload)
+        except projection.ProjectionError as error:
+            raise DashboardOwnerError(error.code, error.message, error.status) from None
     if operation == "universe_list":
         selected = universe_id(payload.get("universe_id", "default"))
         data = universe(selected)
