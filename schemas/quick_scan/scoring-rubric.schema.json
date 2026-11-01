@@ -20,7 +20,8 @@
         "question_definition_sha256": {"$ref": "#/$defs/Hash"},
         "dimension": {"$ref": "#/$defs/Dimension"},
         "scope": {"$ref": "#/$defs/Scope"},
-        "rubric_version": {"$ref": "#/$defs/Version"}
+        "rubric_version": {"$ref": "#/$defs/Version"},
+        "critical": {"type": "boolean", "description": "Frozen question-bank risk metadata; omitted in legacy releases."}
       }
     },
     "Weights": {

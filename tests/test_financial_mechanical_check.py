@@ -65,7 +65,7 @@ def test_scored_answer_without_evidence_is_caught():
 def test_each_mutation_is_caught():
     cases = {
         "score_on_unscored": lambda a: a["answer"].__setitem__("score", 5),
-        "evidence_url_invalid": lambda a: a["answer"]["evidence"][0].__setitem__("url", "http://x"),
+        "evidence_url_invalid": lambda a: a["answer"]["evidence"][0].__setitem__("url", "ftp://example.com/a"),
         "evidence_after_cutoff": lambda a: a["answer"]["evidence"][0].__setitem__("published_at", "2027-01-01"),
         "metric_evidence_unknown": lambda a: a["answer"]["metrics"][0].__setitem__("evidence_ids", ["NOPE"]),
         "metric_period_after_cutoff": lambda a: a["answer"]["metrics"][0].__setitem__("period_end", "2027-01-01"),
@@ -89,3 +89,30 @@ def test_each_mutation_is_caught():
         result = tool.check_answer(value)
         assert result["mechanical_pass"] is False, name
         assert expected[name] in {f["code"] for f in result["findings"]}, name
+
+
+def test_http_source_and_multiple_years_follow_standard_contract():
+    value = observation()
+    value['answer']['evidence'][0]['url'] = 'http://example.com/a'
+    metric = value['answer']['metrics'][0]
+    value['answer']['metrics'].append(dict(metric, period_start='2024-01-01', period_end='2024-12-31'))
+    assert tool.check_answer(value)['mechanical_pass']
+
+
+def test_fact_items_are_required_data_instead_of_an_error():
+    value = observation()
+    value['answer'].update(response_kind='fact', status='answered', metrics=[],
+        items=[dict(name='Example customer', evidence_ids=['SRC_1'], metrics=[])])
+    assert tool.check_answer(value)['mechanical_pass']
+    value['answer']['items'] = []
+    assert 'fact_contract' in {f['code'] for f in tool.check_answer(value)['findings']}
+
+
+def test_legacy_identity_audit_import_is_pure_and_has_no_company_exemptions():
+    import importlib.util
+    path = Path(__file__).resolve().parents[1] / 'scripts/verified_evidence_audit.py'
+    spec = importlib.util.spec_from_file_location('legacy_identity_audit', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert callable(module.main)
+    assert not hasattr(module, 'PRE_EXISTING')

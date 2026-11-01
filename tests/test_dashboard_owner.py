@@ -75,6 +75,32 @@ def test_missing_deployment_and_database_are_honest_and_do_not_create(tmp_path):
     assert not (tmp_path / "data").exists()
 
 
+@pytest.mark.parametrize('timeout', [1, 180, 300, 600])
+def test_saved_timeout_is_accepted_by_owner_deployment(tmp_path, timeout):
+    from scripts.dashboard_service import validate_config
+    code = tmp_path/'code'
+    (code/'stockwiki').mkdir(parents=True)
+    (code/'stockwiki/quick_scan_store.py').write_text('', encoding='utf8')
+    config = validate_config({'stockwiki_root': str(code), 'workspace_root': str(tmp_path),
+        'stockwiki_python': sys.executable, 'timeout_seconds': timeout}, tmp_path)
+    config['iqs_root'] = str(tmp_path)
+    assert OwnerGateway(config)._deployment()['timeout_seconds'] == timeout
+
+
+@pytest.mark.parametrize('timeout', [0, 601, True, float('nan'), float('inf')])
+def test_timeout_bounds_agree_between_configuration_and_owner(tmp_path, timeout):
+    from scripts.dashboard_service import validate_config, ProductError
+    code = tmp_path/'code'
+    (code/'stockwiki').mkdir(parents=True)
+    (code/'stockwiki/quick_scan_store.py').write_text('', encoding='utf8')
+    config = {'stockwiki_root': str(code), 'workspace_root': str(tmp_path),
+        'stockwiki_python': sys.executable, 'iqs_root': str(tmp_path), 'timeout_seconds': timeout}
+    with pytest.raises(ProductError):
+        validate_config({key: value for key, value in config.items() if key != 'iqs_root'}, tmp_path)
+    with pytest.raises(DashboardOwnerError):
+        OwnerGateway(config)._deployment()
+
+
 def test_real_owner_reads_keep_original_model_versions_missingness_and_no_writes(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)

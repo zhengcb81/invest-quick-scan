@@ -8,13 +8,13 @@ from collections import Counter
 from contextlib import closing
 from pathlib import Path
 
-ROOT = Path("C:/Users/郑曾波/Projects/invest-quick-scan")
-DEFAULT_WS = ROOT/"runs/c16b/native-owner-alphabet-01/owner-workspace"
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_WS = ROOT / "workspace"
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workspace", type=Path, default=DEFAULT_WS)
+    parser.add_argument("--workspace", type=Path, required=True, help="Explicit workspace for this legacy offline report")
     parser.add_argument("--json", type=Path, default=None)
     args = parser.parse_args(argv)
     scan = args.workspace/"data/quick_scan/scan.sqlite"

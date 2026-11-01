@@ -322,5 +322,97 @@ class StandardAnswerTests(unittest.TestCase):
         self.assertTrue(sa.compare(first, first, 'time')['metrics'][0]['comparable'])
 
 
+class MetricCoordinatesTests(unittest.TestCase):
+    def answer(self):
+        manifest, answers, _ = fixture()
+        body = next(iter(answers.values()))
+        body['metrics'] = [dict(metric_id='financial.fcf', value=100, unit='currency',
+            currency='CNY', unit_detail=None, period_start='2024-01-01',
+            period_end='2024-12-31', basis='trailing', definition='Consolidated free cash flow',
+            evidence_ids=['e1'])]
+        return manifest['questions'][0], body
+
+    def validate(self, question, body):
+        return sa.validate_content(body, question, '2026-09-22')
+
+    def test_same_metric_retains_each_explicit_year_even_when_values_equal(self):
+        question, body = self.answer()
+        body['metrics'].append(dict(body['metrics'][0], period_start='2025-01-01', period_end='2025-12-31'))
+        self.assertEqual(len(self.validate(question, body)['metrics']), 2)
+
+    def test_rewording_or_new_evidence_cannot_disguise_same_coordinate(self):
+        question, body = self.answer()
+        body['metrics'].append(dict(body['metrics'][0], value=101, definition='A different segment'))
+        with self.assertRaisesRegex(ValueError, 'duplicate metric'):
+            self.validate(question, body)
+
+    def test_repeated_metric_requires_unambiguous_period(self):
+        question, body = self.answer()
+        body['metrics'].append(dict(body['metrics'][0], period_start=None, period_end=None))
+        with self.assertRaisesRegex(ValueError, 'metric.*period'):
+            self.validate(question, body)
+
+    def test_partial_start_does_not_disguise_same_period_end(self):
+        question, body = self.answer()
+        body['metrics'].append(dict(body['metrics'][0], period_start=None))
+        with self.assertRaisesRegex(ValueError, 'duplicate metric'):
+            self.validate(question, body)
+
+    def test_basis_and_currency_are_explicit_economic_coordinates(self):
+        question, body = self.answer()
+        body['metrics'].extend([dict(body['metrics'][0], basis='normalized'),
+                                dict(body['metrics'][0], currency='USD')])
+        self.assertEqual(len(self.validate(question, body)['metrics']), 3)
+
+    def test_custom_metric_cannot_change_its_unit_across_years(self):
+        question, body = self.answer()
+        body['metrics'][0]['metric_id'] = 'custom.segment.cash_flow'
+        body['metrics'].append(dict(body['metrics'][0], period_start='2025-01-01',
+            period_end='2025-12-31', unit='count', currency=None))
+        with self.assertRaisesRegex(ValueError, 'metric.*unit'):
+            self.validate(question, body)
+
+    def test_fact_items_keep_their_own_metric_scope(self):
+        manifest, answers, _ = fixture(fact=True)
+        body = next(iter(answers.values()))
+        metric = self.answer()[1]['metrics'][0]
+        body['items'][0]['metrics'] = [copy.deepcopy(metric)]
+        body['items'].append(dict(copy.deepcopy(body['items'][0]), name='Second customer', segment='Second segment'))
+        self.validate(manifest['questions'][0], body)
+
+    def test_compare_preserves_multiple_years_instead_of_last_metric_only(self):
+        manifest, answers, receipt = fixture()
+        body = next(iter(answers.values()))
+        body['metrics'] = self.answer()[1]['metrics']
+        body['metrics'].append(dict(body['metrics'][0], period_start='2025-01-01', period_end='2025-12-31'))
+        record = sa.build_observations(manifest, answers, receipt)['observations'][0]
+        rows = sa.compare(record, record, 'time')['metrics']
+        self.assertEqual({row['left']['period_end'] for row in rows}, {'2024-12-31', '2025-12-31'})
+        self.assertTrue(all(row['comparable'] for row in rows))
+
+
+    def test_compare_keeps_unmatched_years_when_series_overlap_only_partially(self):
+        manifest, answers, receipt = fixture()
+        body = next(iter(answers.values()))
+        metric = self.answer()[1]['metrics'][0]
+        body['metrics'] = [dict(metric, period_start=f'{year}-01-01', period_end=f'{year}-12-31')
+                           for year in (2023, 2024)]
+        left = sa.build_observations(manifest, answers, receipt)['observations'][0]
+        body['metrics'] = [dict(metric, period_start=f'{year}-01-01', period_end=f'{year}-12-31')
+                           for year in (2024, 2025)]
+        right = sa.build_observations(manifest, answers, receipt)['observations'][0]
+        before_left, before_right = copy.deepcopy(left), copy.deepcopy(right)
+        rows = sa.compare(left, right, 'time')['metrics']
+        self.assertEqual(len(rows), 3)
+        by_year = {(row['left'] or row['right'])['period_end'][:4]: row for row in rows}
+        self.assertIsNone(by_year['2023']['right'])
+        self.assertIsNone(by_year['2025']['left'])
+        self.assertTrue(by_year['2024']['comparable'])
+        self.assertFalse(by_year['2023']['comparable'])
+        self.assertFalse(by_year['2025']['comparable'])
+        self.assertEqual(left, before_left)
+        self.assertEqual(right, before_right)
+
+
 if __name__ == '__main__':
     unittest.main()

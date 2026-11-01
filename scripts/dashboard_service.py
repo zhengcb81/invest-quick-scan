@@ -4,6 +4,7 @@ No model client, question queue, scoring formula, or private database access.
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import os
@@ -14,6 +15,7 @@ import threading
 import time
 from urllib.parse import parse_qs, urlsplit
 from dashboard_locks import control_lock, ControlBusyError
+from dashboard_owner import valid_timeout_seconds, TIMEOUT_SECONDS_MAX
 
 ROOT = Path(__file__).resolve().parents[1]
 SECRET_KEYS = {'api_key', 'apikey', 'api_secret', 'secret', 'password', 'authorization',
@@ -62,18 +64,16 @@ def _reject_credentials(value):
 
 def defaults(root):
     root = Path(root).resolve()
-    real_owner = root / 'runs/r25-live/owner-workspace'
-    historical = root / 'runs/c16b/native-owner-alphabet-01/owner-workspace'
     import sys
     stockqa = root.parent/'StockQAbyLLM'
     llm = stockqa/'llm_apis.json'
     return {'schema_version': '1.0.0', 'stockwiki_root': str(root.parent/'StockWiki'),
         'stockqa_root': str(root.parent/'StockQAbyLLM'), 'stockwiki_python': sys.executable,
-        'stockqa_python': sys.executable, 'workspace_root': str(real_owner if real_owner.is_dir() else historical),
-        'workspace_kind': 'isolated_research', 'workspace_label': '现有真实运行工作区；非金融合格声明',
+        'stockqa_python': sys.executable, 'workspace_root': '',
+        'workspace_kind': 'unconfigured', 'workspace_label': '待连接公司快扫工作区',
         'state_root': str(root/'runs/dashboard-runtime'),
         'runtime_dir': str(stockqa) if llm.is_file() else '', 'model_policy_path': str(llm) if llm.is_file() else '',
-        'iqs_release_root': str(root/'runs/c16b/iqs-release'), 'universe_id': 'default',
+        'iqs_release_root': '', 'universe_id': 'default',
         'execution_bundles': {}, 'import_bundles': {}, 'prepare': {},
         'batch': {'max_concurrency': 1}, 'timeout_seconds': 60}
 
@@ -114,8 +114,8 @@ def validate_config(value, root):
                 path = Path(item)
                 normalized[name][key] = str((Path(root)/path if not path.is_absolute() else path).resolve())
         result[kind] = normalized
-    if type(result['timeout_seconds']) not in (int, float) or not 1 <= result['timeout_seconds'] <= 600:
-        raise ProductError('invalid_timeout', '超时范围为1至600秒。')
+    if not valid_timeout_seconds(result['timeout_seconds']):
+        raise ProductError('invalid_timeout', f'超时范围为1至{TIMEOUT_SECONDS_MAX}秒。')
     for key in ('universe_id', 'workspace_kind', 'workspace_label'):
         if not isinstance(result[key], str) or not result[key] or len(result[key]) > 256:
             raise ProductError('invalid_config', f'{key}必须是非空短文本。')
@@ -402,10 +402,51 @@ class DashboardService:
 
     def _drafts(self, entity_id):
         path = self.ui_root/'src/generated/answers.json'
-        if not path.is_file():
-            return []
-        document = json.loads(path.read_text(encoding='utf8'))
-        return [run for run in document.get('runs', []) if run.get('entity_id') == entity_id]
+        result = {'draft_runs': [], 'draft_source_label': '历史薄草稿，与当前owner观察分开',
+                  'draft_source_status': 'missing'}
+        try:
+            if not path.is_file():
+                return result
+            document = json.loads(path.read_text(encoding='utf8'))
+            if (not isinstance(document, dict) or not isinstance(document.get('runs'), list)
+                    or any(not isinstance(run, dict) for run in document['runs'])):
+                raise ValueError('invalid optional draft document')
+            result.update(draft_runs=[run for run in document['runs'] if run.get('entity_id') == entity_id],
+                          draft_source_status='available')
+        except (OSError, UnicodeError, ValueError, RecursionError):
+            result.update(draft_source_status='unavailable', draft_source_warning='draft_source_unavailable',
+                          draft_source_label='历史薄草稿暂不可用；正式结果仍可查看')
+        return result
+
+    def _read_view(self, target):
+        """Capture one deployment and its existing adapters before slow read I/O.
+
+        This lightweight request view never saves or reloads configuration. The
+        original adapters retain their task/process state; config replacement
+        cannot redirect an in-flight read into another workspace.
+        """
+        path = urlsplit(target).path.removeprefix('/api/product/').rstrip('/')
+        if path in {'status', 'doctor'}:
+            for kind in ('owner', 'execution'):
+                try:
+                    self._gateway(kind)
+                except Exception:
+                    pass  # _safe_status reports this adapter's error in the view.
+        elif path in {'results', 'coverage', 'entity-view', 'entity', 'history', 'facts', 'universe', 'delivery'}:
+            self._gateway('owner')
+        elif path in {'settings', 'tasks'}:
+            self._gateway('execution')
+        elif path in {'prepare/status', 'prepare/preview'}:
+            self._preparer()
+        elif path == 'prepare/jobs' or re.fullmatch(r'prepare/jobs/prepjob_[a-f0-9]{32}', path):
+            self._preparation_jobs()
+        elif path == 'batches':
+            self._batches()
+        elif path == 'delivery/jobs':
+            self._delivery_jobs()
+        view = copy.copy(self)
+        view.config = copy.deepcopy(self.config)
+        return view
 
     def _setup(self, body=None):
         if body is None:
@@ -430,7 +471,14 @@ class DashboardService:
         try:
             with self._lock:
                 self._load()
-                result = self._dispatch(method, target, {} if body is None else body)
+                readonly = method == 'GET' or (method == 'POST'
+                    and urlsplit(target).path.rstrip('/') == '/api/product/prepare/preview')
+                if readonly:
+                    view = self._read_view(target)
+                else:
+                    result = self._dispatch(method, target, {} if body is None else body)
+            if readonly:
+                result = view._dispatch(method, target, {} if body is None else body)
             return 200, {'ok': True, 'data': redact(result), 'elapsed_ms': round((time.monotonic()-started)*1000)}
         except Exception as exc:
             known = isinstance(exc, ProductError) or hasattr(exc, 'code')
@@ -510,25 +558,31 @@ class DashboardService:
                     'condition_combine': combine, 'view': query.get('view', 'all_relevant'), 'limit': limit}
                 fingerprint = hashlib.sha256(json.dumps(selection, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
                 now = time.monotonic()
-                self._snapshots = {k: v for k, v in self._snapshots.items() if now-v['time'] < 900}
                 token = query.get('snapshot_token')
                 snapshot = None
-                if token:
-                    saved = self._snapshots.get(token)
-                    if saved is None or saved['fingerprint'] != fingerprint:
-                        raise ProductError('snapshot_expired', '筛选快照已过期或条件已变化，请从第一页刷新。', 409)
-                    snapshot = saved['snapshot']
-                elif offset:
-                    raise ProductError('snapshot_required', '翻页须使用第一页返回的筛选快照。', 409)
+                with self._lock:
+                    for key in list(self._snapshots):
+                        if now-self._snapshots[key]['time'] >= 900:
+                            self._snapshots.pop(key)
+                    if token:
+                        saved = self._snapshots.get(token)
+                        if (saved is None or saved['fingerprint'] != fingerprint
+                                or saved.get('config_revision') != self._config_revision):
+                            raise ProductError('snapshot_expired', '筛选快照已过期或条件已变化，请从第一页刷新。', 409)
+                        snapshot = saved['snapshot']
+                    elif offset:
+                        raise ProductError('snapshot_required', '翻页须使用第一页返回的筛选快照。', 409)
                 result = self._gateway('owner').search(selection['query'], limit, offset,
                     filters=filters, conditions=conditions or None, condition_combine=combine,
                     view=selection['view'], snapshot=snapshot)
                 if isinstance(result, dict) and isinstance(result.get('snapshot'), dict):
-                    if not token:
-                        if len(self._snapshots) >= 128:
-                            self._snapshots.pop(next(iter(self._snapshots)))
-                        token = secrets.token_urlsafe(24)
-                    self._snapshots[token] = {'snapshot': result['snapshot'], 'fingerprint': fingerprint, 'time': now}
+                    with self._lock:
+                        if not token:
+                            if len(self._snapshots) >= 128:
+                                self._snapshots.pop(next(iter(self._snapshots)))
+                            token = secrets.token_urlsafe(24)
+                        self._snapshots[token] = {'snapshot': result['snapshot'], 'fingerprint': fingerprint,
+                            'config_revision': self._config_revision, 'time': now}
                     result['snapshot_token'] = token
                 return result
             if path == 'coverage':
@@ -538,8 +592,7 @@ class DashboardService:
                 if not entity_id:
                     raise ProductError('entity_required', '请选择已注册公司。')
                 result = self._gateway('owner').entity_view(entity_id)
-                result['entity']['draft_runs'] = self._drafts(entity_id)
-                result['entity']['draft_source_label'] = '历史薄草稿，与当前owner观察分开'
+                result['entity'].update(self._drafts(entity_id))
                 return result
             if path in {'entity', 'history', 'facts'}:
                 entity_id = query.get('id', query.get('entity_id', ''))
@@ -547,8 +600,7 @@ class DashboardService:
                     raise ProductError('entity_required', '请选择已注册公司。')
                 result = getattr(self._gateway('owner'), path)(entity_id)
                 if path == 'entity':
-                    result['draft_runs'] = self._drafts(entity_id)
-                    result['draft_source_label'] = '历史薄草稿，与当前owner观察分开'
+                    result.update(self._drafts(entity_id))
                 return result
             if path == 'universe':
                 return self._gateway('owner').universe_list(query.get('universe_id', self.config['universe_id']))

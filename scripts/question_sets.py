@@ -1083,7 +1083,8 @@ def main():
     routing = sub.add_parser('routing')
     for key in ('company', 'ticker', 'exchange', 'as-of', 'output'):
         routing.add_argument('--' + key, required=True)
-    compile_cmd = sub.add_parser('compose')
+    compile_cmd = sub.add_parser('compose', help='Legacy direct-profile composition; use compose-route for multi-business routing',
+        description='Direct-profile compatibility entry (up to two industry modules). For material multi-business groups use resolve-route then compose-route; historical profile rules remain readable.')
     compile_cmd.add_argument('--profile', required=True)
     compile_cmd.add_argument('--mode', choices=('quick', 'full'), default='quick')
     compile_cmd.add_argument('--out-dir', required=True)

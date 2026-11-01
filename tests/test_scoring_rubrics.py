@@ -85,6 +85,33 @@ class ScoringRubricTests(unittest.TestCase):
         return sr.aggregate(sr.seal_rubric(body or self.body), raw,
                             expected_snapshot_sha256=mc.digest(raw), at=at)
 
+    def test_new_critical_core_is_frozen_in_rubric_even_when_answer_missing(self):
+        body = copy.deepcopy(self.body)
+        declared = sr.question_declaration({'id': 'IQS_25', 'construct_id': 'IQS_25',
+            'dimension': 'financial', 'scope': 'entity', 'rubric_version': '1.0.0', 'critical': True})
+        self.assertTrue(declared['critical'])
+        body['core_basket'].append(declared)
+        raw = snapshot(body)
+        original = copy.deepcopy(raw)
+        raw['records'] = [row for row in raw['records'] if row['id'] != 'IQS_25']
+        result = self.aggregate(raw, body)
+        self.assertIsNone(result['quality_score'])
+        self.assertIn({'id': 'IQS_25', 'kind': 'unresolved'}, result['critical_issues'])
+        self.assertEqual(original['records'][-1]['id'], 'IQS_25')
+        raw = original
+        raw['records'][-1].update(critical=False, score=3)
+        result = self.aggregate(raw, body)
+        self.assertIn({'id': 'IQS_25', 'kind': 'material_concern'}, result['critical_issues'])
+
+    def test_old_rubric_without_critical_metadata_preserves_original_fallback(self):
+        body = copy.deepcopy(self.body)
+        for question in body['core_basket']:
+            question.pop('critical', None)
+        raw = snapshot(body)
+        raw['records'] = [row for row in raw['records'] if row['id'] != 'IQS_12']
+        result = self.aggregate(raw, body)
+        self.assertIn({'id': 'IQS_12', 'kind': 'unresolved'}, result['critical_issues'])
+
     def test_evo05_weight_only_release_keeps_originals_and_parallel_scores(self):
         raw = snapshot(self.body, score=5)
         for row in raw["records"]:

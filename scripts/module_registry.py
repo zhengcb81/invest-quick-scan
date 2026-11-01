@@ -297,7 +297,7 @@ def load_package(package_id: str, *, root: Path = ROOT) -> tuple[dict, dict[str,
 
 
 def _load_routing_policy(root: Path, release: dict, modules: dict) -> dict:
-    from routing import validate_policy
+    from routing_contract import validate_policy
     raw = _filesystem_path(_safe_path(root, release["routing_policy_ref"])).read_bytes()
     if hashlib.sha256(raw).hexdigest() != release["routing_policy_sha256"]:
         raise ValueError("routing policy archive hash mismatch")
@@ -361,7 +361,7 @@ def publish(*, root: Path = ROOT, renderer_version: str, router_version: str,
     contract._version(router_version)
     policy_artifact = None
     if routing_policy is not None:
-        from routing import validate_policy
+        from routing_contract import validate_policy
         validate_policy(routing_policy, modules)
         if router_version != routing_policy["router_version"]:
             raise ValueError("routing policy version differs from requested router")

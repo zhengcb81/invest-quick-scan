@@ -159,6 +159,16 @@ def test_original_snapshot_is_bound_to_filters_and_config(product):
     assert call(product, path='/api/product/results?offset=50')[0] == 409
 
 
+def test_old_unbound_snapshot_is_rejected_as_stale_instead_of_crashing(tmp_path):
+    service = DashboardService(tmp_path, owner_factory=Owner)
+    status, reply = service.dispatch('GET', '/api/product/results')
+    assert status == 200
+    token = reply['data']['snapshot_token']
+    service._snapshots[token].pop('config_revision')
+    status, reply = service.dispatch('GET', f'/api/product/results?offset=1&snapshot_token={token}')
+    assert status == 409 and reply['error']['code'] == 'snapshot_expired'
+
+
 def test_finished_process_allows_setup_and_unknown_process_blocks_even_on_first_access(tmp_path):
     class Finished(Execution):
         def tasks(self, **kwargs): return {'tasks':[{'process_state':'process_exited','launcher_state':'running'}]}
@@ -207,3 +217,128 @@ def test_existing_seal_control_route_forwards_only_empty_explicit_request(produc
     assert forwarded==[('run-original','seal')]
     assert call(product,'POST','/api/product/tasks/run-original/seal','{"command":"forbidden"}',write_headers(product))[0]==400
     assert len(forwarded)==1
+
+
+def test_slow_owner_read_does_not_block_setup_or_pause(tmp_path):
+    entered, release = threading.Event(), threading.Event()
+    replies = []
+    class SlowOwner(Owner):
+        def coverage(self):
+            entered.set()
+            assert release.wait(3)
+            return {'workspace': self.config['workspace_root']}
+    class Controls(Execution):
+        def control(self, run_id, action):
+            return {'run_id': run_id, 'action': action}
+    service = DashboardService(tmp_path, owner_factory=SlowOwner, execution_factory=Controls)
+    reader = threading.Thread(target=lambda: replies.append(service.dispatch('GET', '/api/product/coverage')))
+    reader.start()
+    try:
+        assert entered.wait(2)
+        finished = threading.Event()
+        def unrelated():
+            replies.append(service.dispatch('GET', '/api/product/setup'))
+            replies.append(service.dispatch('POST', '/api/product/tasks/run-existing/pause'))
+            finished.set()
+        other = threading.Thread(target=unrelated)
+        other.start()
+        try:
+            assert finished.wait(1), 'slow read held the entire service lock'
+        finally:
+            release.set()
+            other.join(3)
+        assert not other.is_alive()
+    finally:
+        release.set()
+        reader.join(3)
+    assert not reader.is_alive()
+    assert all(status == 200 for status, _ in replies)
+
+
+def test_read_keeps_original_deployment_during_config_change_and_snapshot_cannot_cross(tmp_path):
+    entered, release = threading.Event(), threading.Event()
+    replies = []
+    class SlowOwner(Owner):
+        def search(self, *args, **kwargs):
+            if not kwargs.get('snapshot'):
+                entered.set()
+                assert release.wait(3)
+            return {'workspace': self.config['workspace_root'], 'snapshot': {'ordered_ids': ['original']}}
+    class Idle(Execution):
+        def active_references(self): return {'items': []}
+    service = DashboardService(tmp_path, owner_factory=SlowOwner, execution_factory=Idle)
+    service.config['workspace_root'] = str(tmp_path / 'original')
+    reader = threading.Thread(target=lambda: replies.append(service.dispatch('GET', '/api/product/results')))
+    reader.start()
+    try:
+        assert entered.wait(2)
+        finished = threading.Event()
+        config_replies = []
+        def change():
+            config_replies.append(service.dispatch('PUT', '/api/product/setup', {
+                'config': {**service.config, 'workspace_root': str(tmp_path / 'replacement')},
+                'revision_sha256': service._config_revision}))
+            finished.set()
+        writer = threading.Thread(target=change)
+        writer.start()
+        try:
+            assert finished.wait(1), 'read must not hold the setup lock during owner I/O'
+        finally:
+            release.set()
+            writer.join(3)
+        assert config_replies[0][0] == 200, config_replies
+    finally:
+        release.set()
+        reader.join(3)
+    assert not reader.is_alive()
+    status, result = replies[0]
+    assert status == 200 and result['data']['workspace'] == str(tmp_path / 'original')
+    token = result['data']['snapshot_token']
+    status, result = service.dispatch('GET', f'/api/product/results?offset=50&snapshot_token={token}')
+    assert status == 409 and result['error']['code'] == 'snapshot_expired'
+
+
+@pytest.mark.parametrize('document', ['{', '[]', '{"runs":{}}', '{"runs":["bad-row"]}'])
+def test_bad_optional_drafts_do_not_hide_formal_entity(tmp_path, document):
+    class FormalOwner(Owner):
+        def entity(self, entity_id): return {'entity': {'entity_id': entity_id}, 'groups': ['formal']}
+        def entity_view(self, entity_id): return {'entity': self.entity(entity_id), 'temporal_shadow': {}}
+    service = DashboardService(tmp_path, ui_root=tmp_path/'ui', owner_factory=FormalOwner)
+    source = service.ui_root/'src/generated/answers.json'
+    source.parent.mkdir(parents=True)
+    source.write_text(document, encoding='utf8')
+    for endpoint in ('entity', 'entity-view'):
+        status, reply = service.dispatch('GET', f'/api/product/{endpoint}?id=ENT_FORMAL')
+        assert status == 200, reply
+        formal = reply['data']['entity'] if endpoint == 'entity-view' else reply['data']
+        assert formal['groups'] == ['formal'] and formal['draft_runs'] == []
+        assert formal['draft_source_status'] == 'unavailable'
+        assert formal['draft_source_warning'] == 'draft_source_unavailable'
+
+
+def test_optional_draft_read_error_keeps_formal_result(tmp_path, monkeypatch):
+    class FormalOwner(Owner):
+        def entity(self, entity_id): return {'entity': {'entity_id': entity_id}, 'groups': ['formal']}
+    service = DashboardService(tmp_path, ui_root=tmp_path/'ui', owner_factory=FormalOwner)
+    source = service.ui_root/'src/generated/answers.json'
+    source.parent.mkdir(parents=True)
+    source.write_text('{"runs": []}', encoding='utf8')
+    original = Path.read_text
+    def read(path, *args, **kwargs):
+        if path == source: raise PermissionError('optional source denied')
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, 'read_text', read)
+    status, reply = service.dispatch('GET', '/api/product/entity?id=ENT_FORMAL')
+    assert status == 200 and reply['data']['draft_source_status'] == 'unavailable'
+
+
+def test_new_deployment_defaults_and_template_do_not_select_a_historical_experiment(tmp_path):
+    from dashboard_service import defaults, validate_config
+    for historical in ('runs/r25-live/owner-workspace', 'runs/c16b/native-owner-alphabet-01/owner-workspace'):
+        (tmp_path / historical).mkdir(parents=True)
+    value = defaults(tmp_path)
+    assert value['workspace_root'] == '' and value['iqs_release_root'] == ''
+    template = json.loads((Path(__file__).resolve().parents[1]/'examples/dashboard.config.template.json').read_text(encoding='utf8'))
+    assert template['workspace_root'] == '' and template['iqs_release_root'] == ''
+    explicit = {**value, 'workspace_root': str(tmp_path/'existing'), 'iqs_release_root': str(tmp_path/'existing-release')}
+    assert validate_config(explicit, tmp_path)['workspace_root'] == explicit['workspace_root']

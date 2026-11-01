@@ -13,9 +13,9 @@ import sqlite3
 from contextlib import closing
 from datetime import date
 from pathlib import Path
+from metric_coordinates import validate_metric_coordinates
+from question_library import valid_url
 
-DEFAULT_WS = Path("C:/Users/郑曾波/Projects/invest-quick-scan/runs/c16b/native-owner-alphabet-01/owner-workspace")
-URL_RE = re.compile(r"^https://[^\s]+$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 BASES = {"current", "trailing", "normalized", "stress", "forward", "not_applicable"}
 
@@ -47,8 +47,11 @@ def check_answer(observation):
             fail("score_invalid", "scored answer needs an integer score 1..10")
     elif score is not None:
         fail("score_on_unscored", "non-scored answer must keep score null")
-    if answer.get("response_kind") == "fact" and (score is not None or answer.get("items")):
-        fail("fact_contract", "fact answer must not use score or items")
+    if answer.get("response_kind") == "fact":
+        if score is not None or status == "scored" or (status == "answered" and not answer.get("items")):
+            fail("fact_contract", "answered fact needs structured items and no score")
+    elif answer.get("items") or status == "answered":
+        fail("score_contract", "score answers must not carry fact items")
     if status == "scored" and not (answer.get("evidence") or []):
         fail("scored_without_evidence", "scored answer needs at least one evidence item")
     as_of = parse_date(answer.get("information_as_of"))
@@ -74,7 +77,7 @@ def check_answer(observation):
             fail("evidence_id_missing", "evidence without id")
             continue
         evidence_ids.append(eid)
-        if not URL_RE.fullmatch(str(item.get("url") or "")):
+        if not valid_url(item.get("url")):
             fail("evidence_url_invalid", eid)
         published = parse_date(item.get("published_at"))
         if item.get("published_at") and published is None:
@@ -87,20 +90,24 @@ def check_answer(observation):
         fail("evidence_duplicate", "duplicate evidence id")
     known = set(evidence_ids)
 
-    metrics = answer.get("metrics") or []
-    metric_ids = []
+    groups = [answer.get("metrics") or []] + [item.get("metrics") or [] for item in answer.get("items") or []]
+    metrics = [metric for group in groups for metric in group]
+    for group in groups:
+        try:
+            validate_metric_coordinates([metric for metric in group if isinstance(metric.get('metric_id'), str)])
+        except ValueError as error:
+            fail("metric_duplicate", str(error))
     for metric in metrics:
         mid = metric.get("metric_id")
         if not isinstance(mid, str) or not mid:
             fail("metric_id_missing", "metric without id")
             continue
-        metric_ids.append(mid)
         if metric.get("basis") not in BASES:
             fail("metric_basis_invalid", mid)
         value = metric.get("value")
-        if not isinstance(value, (int, float)) or isinstance(value, bool):
+        if value is not None and (not isinstance(value, (int, float)) or isinstance(value, bool)):
             fail("metric_value_invalid", mid)
-        if metric.get("unit") == "currency" and not (metric.get("currency") or "").strip():
+        if metric.get("unit") in {"currency", "currency_per_share"} and not (metric.get("currency") or "").strip():
             fail("metric_currency_missing", mid)
         if metric.get("unit") == "ratio" and metric.get("currency") is not None:
             fail("metric_ratio_currency", mid)
@@ -108,17 +115,15 @@ def check_answer(observation):
         m_end = parse_date(metric.get("period_end"))
         if m_start and m_end and m_start > m_end:
             fail("metric_reversed_period", mid)
-        if m_end and cutoff_date and m_end > cutoff_date:
+        if m_end and cutoff_date and m_end > cutoff_date and metric.get("basis") != "forward":
             fail("metric_period_after_cutoff", mid)
         refs = metric.get("evidence_ids") or []
-        if not refs:
+        if value is not None and not refs:
             fail("metric_evidence_missing", mid)
         elif not set(refs) <= known:
             fail("metric_evidence_unknown", mid)
         if not str(metric.get("definition") or "").strip():
             fail("metric_definition_missing", mid)
-    if len(metric_ids) != len(set(metric_ids)):
-        fail("metric_duplicate", "duplicate metric id inside one answer")
     return {
         "observation_id": observation.get("observation_id"),
         "question_id": observation.get("question_id"),
@@ -135,7 +140,7 @@ def check_answer(observation):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workspace", type=Path, default=DEFAULT_WS)
+    parser.add_argument("--workspace", type=Path, required=True, help="Explicit owner workspace; no experiment default")
     parser.add_argument("--json", type=Path, default=None)
     parser.add_argument("--html", type=Path, default=None)
     parser.add_argument("--entity-id")

@@ -8,10 +8,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path("C:/Users/郑曾波/Projects/invest-quick-scan")
+ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT/"scripts"
-DEFAULT_WS = ROOT/"runs/c16b/native-owner-alphabet-01/owner-workspace"
-DEFAULT_LINKS = ROOT/"runs/existing-list-onboarding-2026-10-18/candidate-links.json"
+DEFAULT_WS = ROOT / "workspace"
+DEFAULT_LINKS = ROOT / "config/candidate-links.json"
 
 
 def run(args):
@@ -23,8 +23,8 @@ def run(args):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workspace", type=Path, default=DEFAULT_WS)
-    parser.add_argument("--out", type=Path, default=ROOT/"runs/existing-list-onboarding-2026-10-18/dashboard")
+    parser.add_argument("--workspace", type=Path, required=True, help="Explicit workspace for this legacy offline report")
+    parser.add_argument("--out", type=Path, default=ROOT / "runs/offline-dashboard")
     parser.add_argument("--links", type=Path, default=DEFAULT_LINKS)
     args = parser.parse_args(argv)
     args.out.mkdir(parents=True, exist_ok=True)

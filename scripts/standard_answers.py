@@ -19,6 +19,7 @@ from question_prompts import standard_prompt
 from question_fingerprints import question_fingerprint
 import module_contract
 import module_registry
+from metric_coordinates import metric_coordinate, validate_metric_coordinates
 
 ROOT = library.ROOT
 
@@ -90,8 +91,7 @@ def validate_content(
         if item['valid_from'] and item['valid_to'] and item['valid_from'] > item['valid_to']:
             raise ValueError('reversed relationship validity')
     for group in [answer['metrics']] + [i['metrics'] for i in answer['items']]:
-        if len({m['metric_id'] for m in group}) != len(group):
-            raise ValueError('duplicate metric id')
+        validate_metric_coordinates(group)
     metrics_by_id = (metric_registry or library.read_json(ROOT / 'questions/metric-registry.json'))['metrics']
     for m in values:
         if m['metric_id'] in metrics_by_id:
@@ -459,9 +459,24 @@ def compare(left, right, axis):
         warnings.append('evidence_set_changed: 检索来源变化与模型差异可能混杂')
     # Keep typed metrics visible; never silently subtract unlike units or fiscal periods.
     metric_rows = []
-    am = {m['metric_id']: m for m in a['metrics']}; bm = {m['metric_id']: m for m in b['metrics']}
+    # Preserve every period. Single-row time comparisons keep their established
+    # cadence alignment; a multi-period series pairs exact coordinates only.
+    am, bm = {}, {}
+    for metric in a['metrics']:
+        am.setdefault(metric['metric_id'], []).append(metric)
+    for metric in b['metrics']:
+        bm.setdefault(metric['metric_id'], []).append(metric)
+    pairs = []
     for key in sorted(set(am) | set(bm)):
-        x, y = am.get(key), bm.get(key)
+        left_rows, right_rows = am.get(key, []), bm.get(key, [])
+        if len(left_rows) <= 1 and len(right_rows) <= 1:
+            pairs.append((key, left_rows[0] if left_rows else None, right_rows[0] if right_rows else None))
+        else:
+            left_map = {metric_coordinate(m): m for m in left_rows}
+            right_map = {metric_coordinate(m): m for m in right_rows}
+            for coordinate in sorted(set(left_map) | set(right_map), key=repr):
+                pairs.append((key, left_map.get(coordinate), right_map.get(coordinate)))
+    for key, x, y in pairs:
         compatible = bool(not key.startswith('custom.') and x and y and all(x[k] == y[k] for k in
                           ('unit', 'currency', 'unit_detail', 'basis', 'definition')))
         if axis != 'time' and x and y:

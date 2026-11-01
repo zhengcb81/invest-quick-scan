@@ -32,12 +32,16 @@ METRIC_CONTRACT_VERSION = '1.0.0'
 
 def metric_mapping(question, *, metric_schema=None, root=None):
     """Map a routed question to the frozen C02 metric/aggregation contract."""
+    local_root = Path(root) if root else ROOT
+    schema = metric_schema or library.read_json(local_root / 'schemas/quick_scan/metric.schema.json')
+    properties = schema['definitions']['QuestionMetricMapping']['properties']
+    generic_diagnostics = 'diagnostic' in properties['dimension']['enum'] and 'framework' in properties
     framework = question.get('framework')
     diagnostic = question.get('aggregation', 'scored') == 'diagnostic'
     if diagnostic:
         contract_dimension = {
             'dupont': 'dupont', 'porter': 'porter', 'recovery': 'recovery_watch'
-        }.get(framework, 'recovery_watch')
+        }.get(framework, 'diagnostic' if generic_diagnostics else 'recovery_watch')
         aggregation_role = 'diagnostic_only'
     elif question['dimension'] == 'growth':
         contract_dimension, aggregation_role = 'growth', 'growth_core'
@@ -59,8 +63,8 @@ def metric_mapping(question, *, metric_schema=None, root=None):
             'counter_evidence_required': True,
         },
     }
-    local_root = Path(root) if root else ROOT
-    schema = metric_schema or library.read_json(local_root / 'schemas/quick_scan/metric.schema.json')
+    if contract_dimension == 'diagnostic' and framework is not None:
+        mapping['framework'] = framework
     Draft7Validator(schema, format_checker=FormatChecker()).validate(mapping)
     return mapping
 

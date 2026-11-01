@@ -197,7 +197,6 @@ _WORK_BANK_BINDING_READER = r'''
 import contextlib, json, sys
 sys.path.insert(0, sys.argv[1])
 with contextlib.redirect_stdout(sys.stderr):
-    from contextlib import closing
     from src.utils.quick_scan_refresh_admission import safe_read
     from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
     from src.utils.quick_scan_result_outbox import canonical_sha256
@@ -209,29 +208,22 @@ with contextlib.redirect_stdout(sys.stderr):
     result = []
     controls = request.get('controlled_work_refs', [])
     controlled_refs = {(ref['work_item_id'], ref['decision_id']) for ref in controls}
-    with closing(view._connect()) as connection:
-        connection.execute("BEGIN")
-        view._inspection_connection = connection
-        rows = view.owner_refresh_projection(entity_id=request["entity_id"],
-            question_ids=list(request["scope_bindings"]), scope_bindings=request["scope_bindings"],
-            include_owner_decisions=bool(controls))
-        for qid, row in rows.items():
-            controlled_comparison = (row['status'] == 'delivered' and row.get('retry_purpose') == 'comparison'
-                and (row['work_item_id'], row.get('retry_decision_id')) in controlled_refs)
-            if row["status"] not in {"pending", "leased", "uncertain", "result_ready"} and not controlled_comparison:
-                continue
-            record = view.get_owner_refresh_binding(row["work_item_id"])
-            if record is None:
-                raise ValueError("existing_work_binding_unavailable")
-            binding = record["binding"]
-            if any(binding.get(k) != request[k] for k in (
-                "entity_id", "subject_key", "perimeter_sha256", "identity_revision", "information_cutoff")):
-                raise ValueError("existing_work_subject_binding_changed")
-            if any(binding.get(k) != v for k, v in request["scope_bindings"][qid].items()):
-                raise ValueError("existing_work_scope_changed")
-            result.append({"question_id":qid,"work_item_id":row["work_item_id"],
-                "generation":row["generation"],"manifest_raw_sha256":binding["manifest_raw_sha256"],
-                "binding_sha256":canonical_sha256(binding)})
+    snapshot = view.continuation_binding_snapshot(entity_id=request["entity_id"],
+        question_ids=list(request["scope_bindings"]), scope_bindings=request["scope_bindings"],
+        comparison_refs=controlled_refs)
+    for qid, entry in snapshot.items():
+        row, record = entry["work"], entry["binding_record"]
+        if record is None:
+            raise ValueError("existing_work_binding_unavailable")
+        binding = record["binding"]
+        if any(binding.get(k) != request[k] for k in (
+            "entity_id", "subject_key", "perimeter_sha256", "identity_revision", "information_cutoff")):
+            raise ValueError("existing_work_subject_binding_changed")
+        if any(binding.get(k) != v for k, v in request["scope_bindings"][qid].items()):
+            raise ValueError("existing_work_scope_changed")
+        result.append({"question_id":qid,"work_item_id":row["work_item_id"],
+            "generation":row["generation"],"manifest_raw_sha256":binding["manifest_raw_sha256"],
+            "binding_sha256":canonical_sha256(binding)})
 print(json.dumps({"protocol":"iqs.original_work_bank_bindings/1.0.0", "rows":result,
     "API_requests":0,"database_writes":0}, allow_nan=False))
 '''

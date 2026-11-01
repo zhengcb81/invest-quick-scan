@@ -244,23 +244,12 @@ def create_company_scan_task(
 ):
     from iqs_company_agent_lab.canonical import canonical_json, sha256_hex
     from iqs_company_agent_lab.task import LoadedTask
-    from src.runners.llm_runner import QuickScanWorkLifecycle
-    from src.utils.quick_scan_owner_refresh import OwnerRefreshSession
-    from src.utils.quick_scan_refresh_execution import ApprovedRefreshSession
-    from src.utils.quick_scan_result_outbox import canonical_sha256
+    from src.utils.quick_scan_company_context import company_scan_inputs
 
-    if not isinstance(lifecycle, QuickScanWorkLifecycle):
-        raise NativeTaskRejected("original_native_lifecycle_required")
-    owner = lifecycle._owner_refresh
-    if (
-        not isinstance(owner, ApprovedRefreshSession)
-        or not isinstance(owner.native, OwnerRefreshSession)
-        or owner.service.store is not lifecycle._store
-        or owner.native.store is not lifecycle._store
-        or not lifecycle._transport_managed
-    ):
-        raise NativeTaskRejected("original_admitted_native_owner_required")
-    owner.check()
+    try:
+        owner = company_scan_inputs(lifecycle)
+    except ValueError as error:
+        raise NativeTaskRejected(str(error)) from error
     from iqs_company_agent_lab.scan_profile import build_scan_profile, validate_scan_task
     from src.core.models import Question
 
@@ -284,13 +273,7 @@ def create_company_scan_task(
         or not set(selected) <= set(owner.requested_question_ids)
     ):
         raise NativeTaskRejected("nonempty_unique_original_authorized_questions_required")
-    context = lifecycle._observation_context
-    if (
-        not isinstance(context, dict)
-        or context.get("schema") != "stockqa.quick_scan_observation_context/2.0.0"
-        or canonical_sha256(context) != canonical_sha256(owner.native.observation_context)
-    ):
-        raise NativeTaskRejected("original_native_subject_context_required")
+    context = owner.observation_context
     manifest = owner.bundle["manifest"]
     manifest_rows = {row["id"]: row for row in manifest["questions"]}
     locks = {row["module_id"]: row for row in manifest["module_locks"]}
@@ -409,8 +392,6 @@ def create_company_scan_task(
         native_inputs=native_inputs,
         module_locks=copy.deepcopy(manifest["module_locks"]),
     )
-    if owner.plan["provider"] != "mimo" and max_questions_per_pack != 1:
-        raise NativeTaskRejected("non_mimo_scan_requires_explicit_singleton_profile")
     groups = {
         q["question_id"]: lifecycle.question_pack_group_key(
             Question(q["question"]["prompt"], question_id=q["question_id"])
@@ -420,13 +401,14 @@ def create_company_scan_task(
     execution = build_scan_profile(
         questions,
         information_cutoff=owner.plan["information_cutoff"],
-        route_id=lifecycle._route_id,
+        route_id=owner.route_id,
         group_keys=groups,
         pack_by=pack_by,
         max_questions_per_pack=max_questions_per_pack,
-        limits=selected_limits,
+        limits=limits,
         search_exposure=search_exposure,
     )
+    raw['limits'] = execution['resource_limits']
     raw["execution_profile"] = execution
     raw["execution_profile_sha256"] = sha256_hex(execution)
     task = LoadedTask(
@@ -446,6 +428,5 @@ def create_company_scan_task(
     if owner.proof["request"].get("protocol") == "iqs.refresh_request/1.5.0":
         from src.utils.quick_scan_owner_budget_continuation import assert_research_task
 
-        assert_research_task(owner, task, search_service=None)
-    owner.check()
+        assert_research_task(lifecycle._owner_refresh, task, search_service=None)
     return task

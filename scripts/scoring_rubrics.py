@@ -22,7 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schemas/quick_scan/scoring-rubric.schema.json").read_text(encoding="utf-8"))
 DIMENSIONS = ("business", "moat", "execution", "financial", "governance", "resilience", "growth", "valuation")
 QUALITY_DIMENSIONS = DIMENSIONS[:6]
-CRITICAL_CONSTRUCTS = frozenset({"IQS_12", "IQS_13", "IQS_16"})
+LEGACY_CRITICAL_CONSTRUCTS = frozenset({"IQS_12", "IQS_13", "IQS_16"})
+# Retain the old exported name for callers reading legacy rubric metadata.
+CRITICAL_CONSTRUCTS = LEGACY_CRITICAL_CONSTRUCTS
 CHECK_LEVELS = ("unverified_model_output", "execution_verified", "screening_audited", "formal_research_accepted")
 SIGNATURE_FIELDS = ("schema_version", "cohort", "minimum_check_level", "dimension_min_coverage",
                     "quality_min_coverage", "quality_weights", "core_basket", "critical_extensions")
@@ -51,6 +53,20 @@ def _utc(value):
 
 def _signature(rubric):
     return {key: rubric[key] for key in SIGNATURE_FIELDS}
+
+
+def question_declaration(question):
+    """Project released bank metadata, including criticality, into a rubric.
+
+    A missing answer cannot erase the question's risk role. Old rubric bytes
+    without this additive field retain their original legacy interpretation.
+    """
+    result = {'construct_id': question.get('construct_id'), 'question_id': question['id'],
+        'question_definition_sha256': question.get('definition_sha256') or digest(question),
+        'dimension': question['dimension'], 'scope': question['scope'],
+        'rubric_version': question['rubric_version'], 'critical': question.get('critical', False)}
+    _validate(result, 'Question')
+    return result
 
 
 def validate_rubric(rubric, *, core_constructs=None):
@@ -226,7 +242,7 @@ def aggregate(rubric, snapshot, *, expected_snapshot_sha256, at):
         evaluated.append(item)
         if reason is not None:
             reasons.append({"id": question["question_id"], "code": reason})
-        is_critical = (question["construct_id"] in CRITICAL_CONSTRUCTS
+        is_critical = (question.get('critical', question["construct_id"] in LEGACY_CRITICAL_CONSTRUCTS)
                        or question in rubric["critical_extensions"]
                        or (row is not None and row["critical"]))
         if is_critical and (score is None or score <= 3):

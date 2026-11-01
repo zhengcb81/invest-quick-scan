@@ -12,8 +12,8 @@ from collections import Counter
 from contextlib import closing
 from pathlib import Path
 
-DEFAULT_WS = Path("C:/Users/郑曾波/Projects/invest-quick-scan/runs/c16b/native-owner-alphabet-01/owner-workspace")
-DEFAULT_LINKS = Path("C:/Users/郑曾波/Projects/invest-quick-scan/runs/existing-list-onboarding-2026-10-18/candidate-links.json")
+DEFAULT_WS = Path(__file__).resolve().parents[1] / "workspace"
+DEFAULT_LINKS = Path(__file__).resolve().parents[1] / "config/candidate-links.json"
 
 
 def connect(path):
@@ -107,7 +107,7 @@ if (data.candidates && (data.candidates.unresolved_rows||[]).length) {
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workspace", type=Path, default=DEFAULT_WS)
+    parser.add_argument("--workspace", type=Path, required=True, help="Explicit workspace for this legacy offline report")
     parser.add_argument("--json", type=Path, default=None)
     parser.add_argument("--html", type=Path, default=None)
     parser.add_argument("--links", type=Path, default=DEFAULT_LINKS)

@@ -21,6 +21,12 @@ PROTOCOL = "iqs.dashboard.owner/1.0.0"
 _ID = re.compile(r"^[A-Za-z0-9_.:-]{1,200}$")
 _ROOTS = ("stockwiki_root", "workspace_root", "iqs_root")
 _MAX_BYTES = 16 * 1024 * 1024
+TIMEOUT_SECONDS_MAX = 600
+
+
+def valid_timeout_seconds(value):
+    """One deployment timeout rule shared with the settings validator."""
+    return type(value) in (int, float) and 1 <= value <= TIMEOUT_SECONDS_MAX
 
 
 class DashboardOwnerError(ValueError):
@@ -102,8 +108,8 @@ class OwnerGateway:
         if not (Path(config["stockwiki_root"]) / "stockwiki" / "quick_scan_store.py").is_file():
             raise DashboardOwnerError("owner_code_missing", "StockWiki code root is invalid", 503)
         timeout = config.get("timeout_seconds", 30)
-        if type(timeout) not in (int, float) or not 1 <= timeout <= 180:
-            raise DashboardOwnerError("deployment_invalid", "timeout_seconds must be between 1 and 180", 503)
+        if not valid_timeout_seconds(timeout):
+            raise DashboardOwnerError("deployment_invalid", f"timeout_seconds must be between 1 and {TIMEOUT_SECONDS_MAX}", 503)
         return config
 
     def _call(self, operation, payload=None):

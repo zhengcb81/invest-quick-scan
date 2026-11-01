@@ -8,7 +8,7 @@ import sqlite3
 from contextlib import closing
 from pathlib import Path
 
-DEFAULT_WS = Path("C:/Users/郑曾波/Projects/invest-quick-scan/runs/c16b/native-owner-alphabet-01/owner-workspace")
+DEFAULT_WS = Path(__file__).resolve().parents[1] / "workspace"
 
 
 def _open(path, uri=False):
@@ -48,7 +48,7 @@ def load(workspace, entity_id):
 
 
 def load_reviews(entity_id):
-    root = Path("C:/Users/郑曾波/Projects/invest-quick-scan/docs/implementation/reviews/financial-verdicts")
+    root = Path(__file__).resolve().parents[1] / "docs/implementation/reviews/financial-verdicts"
     found = {}
     for path in root.glob("*.json") if root.is_dir() else []:
         try:
@@ -119,7 +119,7 @@ def _card(obs, reviews=None):
 
 
 def load_scored(entity_id):
-    root = Path("C:/Users/郑曾波/Projects/invest-quick-scan/docs/implementation/reviews")
+    root = Path(__file__).resolve().parents[1] / "docs/implementation/reviews"
     found = []
     for meta in sorted(root.glob("search-scored-*/entity.json")):
         try:
@@ -198,7 +198,7 @@ table{{width:100%;border-collapse:collapse;margin:6px 0}} th,td{{text-align:left
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--workspace", type=Path, default=DEFAULT_WS)
+    parser.add_argument("--workspace", type=Path, required=True, help="Explicit workspace for this legacy offline report")
     parser.add_argument("--entity-id")
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--include-empty", action="store_true")

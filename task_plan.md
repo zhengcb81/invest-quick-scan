@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-01本节点已完成：共享已付回答从原UI零API恢复、保存、StockWiki原ACK及普通配置后的同题缓存复用均已验。总账86HTTP/US$2.024863，0在途/未结/active；原分数7、资料日10/29、完成时间07:33:28.670089Z保持。短证据实际SDK载荷与保存/复用的隔离E2E通过，不能冒签旧请求曾使用它或金融正确。集中独审通过，普通policy11及原prepare已还原、59个包保留。StockQAa37d60c已推；Lab a37af8d本地提交（无远端）；本仓本轮源码/PWF随本次正常提交发布，准确commit以Git记录为准。
+执行状态：2026-11-01代码审查整改完成并通过集中非作者审查。已付恢复跨发送/租约/手动分类期限、共享实际题包资源、多期间指标、UI并发/故障隔离及模块薄接口均已根修；原owner/SDK完整隔离E2E1P/744.04秒，最终UI执行模块154P。原8766已安全重载，doctor ready；普通pack2/thinking=true/max32768、59登记包保持，账本86HTTP/US$2.024863且0在途/未结/active，无新增收费。StockQA6447225已推；StockWiki719520b、Company Lab d1d92a2、Runtime4241d79本地提交（无远端）；本仓源码/PWF同次正常提交，准确commit见Git。共享跨模型自动fallback与原五个产品节点未完范围仍明确保留。
 
 ## 当前结论
 
@@ -42,7 +42,7 @@
 
 ## Next Step
 
-**11/01全面代码审查已完成，发现待修；已付恢复的上一节点交付保持。** [审查报告](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)确认：当前没有发现按公司名/ticker评分的生产分支，基础题数已泛化，但零API恢复仍受新派发期限约束、共享默认8次不能覆盖36题pack2、指标单ID判重妨碍多期间数据。下一实施动作是在现有小池质量/共享节点修这三类根因，再处理UI全局锁、草稿故障隔离和超时口径冲突。能力配置/公共owner投影/重复检查随原fallback接线收敛；不新发支线或新增门禁。本次仅审查和文档，不自动启动收费实验、200家或事实支线。G3/F05/两消费者/全池/配套仍未完成。
+**本次整改已收口，后续继续原小池质量与共享fallback主线。** [代码审查及整改结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)已对齐：只保全原已付响应的读取/写入不再要求新发送期限或分类覆盖仍有效；主体/anchor/actor撤权/原safe/物理回执/原子提交保护保留。旧task沿原证据和控件恢复，当前新设置不改旧响应。多期指标和比较、UI锁/草稿/超时、模块语义与公共投影均已修。原budget/provider材料仍需存在可绑定；不重造历史许可。共享跨模型自动fallback仍是原未完功能，不以循环client冒签。下一产品工作仍为真实回答质量及该fallback，再按下方顺序推进G3/F05/消费者/配套；不重问已交付对象、不新发支线或新增门禁。
 
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
 - 普通policy11/1.1、successful_scan/24h及prepare原字节设置已恢复；pack2、thinking=true、max32768，shared配置和comparison refs撤回。保留59个登记包及所有旧答。08:35:49Z原UI同实体/合并主体/截止日/模型再预览IQS_11，cached1、执行包0、0API、原owner未变化；复用同一`obs_37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188`，资料日10/29与原成功搜索时间07:33:28.670089Z不变。

@@ -95,7 +95,9 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
                              'package_json': raw, 'package_bytes_sha256': hashlib.sha256(raw.encode()).hexdigest()})
         return {'items': rows, 'API_requests': 0, 'network_calls': 0}
     monkeypatch.setattr(gateway, '_call', native)  # Native process boundary; SQL/package validation is tested separately.
-    result = export_deliveries(gateway, {'bundle_id': 'B'})
+    _, selected = gateway._select({'bundle_id': 'B'})
+    result = export_deliveries(bundle_id='B', bundle=selected, config=gateway.config,
+        state_root=gateway.state_root, call=gateway._call, inspection_work_items=gateway.inspection_work_items)
     assert result['status'] == ('exported' if ready_count == 2 and not missing_work else 'partial')
     extra = int(missing_work in {'row','omitted'})
     assert len(result['items']) == 2+extra and len(result['import_bundles']) == ready_count

@@ -19,6 +19,56 @@ import pytest
 from scripts.dashboard_prepare import DashboardPrepareError, PrepareGateway, _env, _new, _apply_guard, _control_path, _native_cli, _timeouts, _sha, _snapshot_sha
 
 
+def test_work_binding_transport_uses_only_public_snapshot(monkeypatch, capsys):
+    import io
+    import types
+    from scripts.dashboard_prepare import _WORK_BANK_BINDING_READER
+    binding = dict(entity_id='ENT_EXAMPLE', subject_key='ASJ_EXAMPLE', perimeter_sha256='a'*64,
+        identity_revision=1, information_cutoff='2026-11-01', scope='entity', scope_id='ENT_EXAMPLE',
+        manifest_raw_sha256='b'*64)
+    calls = []
+    class PublicView:
+        def __init__(self, path):
+            assert path == 'not-opened.sqlite'
+        def __getattr__(self, name):
+            raise AssertionError('consumer accessed private owner implementation: ' + name)
+        def continuation_binding_snapshot(self, **request):
+            calls.append(request)
+            return {'Q1': {'work': {'work_item_id': 'WORK_EXAMPLE', 'generation': 1},
+                           'binding_record': {'binding': binding}}}
+    modules = {
+        'src': types.ModuleType('src'),
+        'src.utils': types.ModuleType('src.utils'),
+        'src.utils.quick_scan_refresh_admission': types.SimpleNamespace(safe_read=lambda p: None),
+        'src.utils.quick_scan_refresh_inspect': types.SimpleNamespace(ReadOnlyWorkView=PublicView),
+        'src.utils.quick_scan_result_outbox': types.SimpleNamespace(canonical_sha256=_sha),
+    }
+    for name, value in modules.items():
+        monkeypatch.setitem(sys.modules, name, value)
+    request = {key: binding[key] for key in ('entity_id', 'subject_key', 'perimeter_sha256',
+        'identity_revision', 'information_cutoff')}
+    request.update(scope_bindings={'Q1': {'scope': 'entity', 'scope_id': 'ENT_EXAMPLE'}},
+        readonly_config={'protocol': 'stockqa.refresh_admission_config/1.0.0', 'work_store': 'not-opened.sqlite'})
+    monkeypatch.setattr(sys, 'argv', ['reader', 'unused-code-root', '-'])
+    monkeypatch.setattr(sys, 'stdin', io.StringIO(json.dumps(request)))
+    monkeypatch.setattr(sys, 'path', list(sys.path))
+    exec(compile(_WORK_BANK_BINDING_READER, '<work-binding-transport>', 'exec'), {})
+    result = json.loads(capsys.readouterr().out)
+    assert calls == [dict(entity_id='ENT_EXAMPLE', question_ids=['Q1'],
+        scope_bindings=request['scope_bindings'], comparison_refs=set())]
+    assert result['rows'][0]['work_item_id'] == 'WORK_EXAMPLE'
+    assert result['database_writes'] == result['API_requests'] == 0
+
+
+@pytest.mark.parametrize('arguments', [[], ['--apply']])
+def test_legacy_subject_apply_is_retired_before_any_workspace_access(tmp_path, arguments):
+    import runpy
+    module = runpy.run_path(str(Path(__file__).resolve().parents[1] / 'scripts/owner_admission_subject.py'))
+    with pytest.raises(SystemExit, match='Legacy subject generation is retired'):
+        module['main'](['--ticker', 'AMBIGUOUS', '--workspace', str(tmp_path / 'absent'), *arguments])
+    assert not list(tmp_path.iterdir())
+
+
 def test_frozen_bank_equivalence_ignores_only_route_clock_and_id_not_meaning():
     from scripts.dashboard_prepare import _equivalent_frozen_bank
     binding={'entity_id':ENTITY,'identity_revision':3,'perimeter_sha256':'a'*64}

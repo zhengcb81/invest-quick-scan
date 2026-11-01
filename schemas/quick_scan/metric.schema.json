@@ -61,8 +61,9 @@
         },
         "dimension": {
           "type": "string",
-          "enum": ["quality", "growth", "valuation", "recovery_watch", "dupont", "porter", "fact"]
+          "enum": ["quality", "growth", "valuation", "recovery_watch", "dupont", "porter", "fact", "diagnostic"]
         },
+        "framework": {"type": "string", "minLength": 1, "maxLength": 160},
         "aggregation_role": { "$ref": "#/definitions/AggregationRole" },
         "critical_risk": {
           "type": "boolean",
@@ -86,7 +87,7 @@
       "allOf": [
         {
           "if": {
-            "properties": { "dimension": { "enum": ["recovery_watch", "dupont", "porter", "fact"] } },
+            "properties": { "dimension": { "enum": ["recovery_watch", "dupont", "porter", "fact", "diagnostic"] } },
             "required": ["dimension"]
           },
           "then": { "properties": { "aggregation_role": { "const": "diagnostic_only" } } }

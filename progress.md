@@ -2,6 +2,28 @@
 
 更新于2026-11-01。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/01 代码审查整改收口
+
+沿原小池节点完成[审查整改](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)，无新施工卡、许可注册表或逐题凭证。恢复仅保全原paid safe，分开发送委托/租约/手动分类期限；actor/撤权/原scope与anchor/原response/physical proof及CAS保持。SDK原初始化不再把已知safe误回收为uncertain；普通leased capture也走原parser与事务；混合登记明确原2/本次恢复1，缓存引用和原日期不变。原budget/provider材料删除仍拒，不重造历史。
+
+共享生产资源按实际packs派生，不改冻结实验；旧CP沿原task/board/控件，后续32k不污染原8192/16k。多期指标统一坐标、比较不丢年；UI慢读锁外且冻结部署，坏草稿局部降级，超时统一。中性诊断与critical元数据兼容旧包；StockQA公开任务投影/原子work快照，delivery显式参数，纯routing/error边界解除两组import环。旧实验默认与subject生成器退役，身份审计取消公司名/000002的无证据豁免。
+
+|验证|实际结果/边界|
+|---|---|
+|原owner/SDK/共享引擎完整E2E|1P/744.04秒；实际HTTP载荷含短证据，CP/封包/0send复用。只有vendor wire脚本化，0收费；临时根已删除。随后paid-only尾修另以真实原类/SQLite验证，不假称该快照覆盖后写分支|
+|恢复最终parser与capture|完整两文件118P/91.98秒；字符串/对象description省outer date，只有outer缺key才继承原inner日期；显式null/冲突/非法日拒|
+|独立恢复复验|QA32P/1S、UI3P；另单跑真实IQS过期override/SQLite1P确认关键正例非skip（与32重叠）。actor撤权、anchor/scope漂移、unknown/pending/无safe拒，混合scope与原cutoff保持|
+|最终完整UI执行模块|154P/76.44秒；自有短TEMP清理。此前147P/5F的旧断言/包装器路径已修，不再保留未闭合失败|
+|其它相关回归|UI72P；题库87个不同测试，14项Windows环境失败换短TEMP/外层后通过；指标/原子快照QA117P、IQS36P；共享入口17P、Lab profile22P、Runtime6P；共享/交付42P、旧CLI/资料反例25P等。有重叠不加总|
+|集中独审|三个agent交叉审他人源码。残留DTO.check、旧CP控件、初始化顺序、错误事件、分类期限、混合分母与日期问题均已根修；本轮工程范围passed，无未解项，不授金融准确性|
+|原提交检查|StockQA正常hooks全通过（black/isort/mypy100源文件/secrets等）；格式自动修后精确重暂存，无绕过。StockWiki原static hook通过，临时保存的外来patch已只读核实原样恢复|
+
+工具/环境问题如实保留：一次4模块组合超过300秒，临时根已清理，未算通过；随后分层选相关模块和最终execution154P。包装器初始语法/路径、测试夹具provider/response_kind错误已修，不计产品RED。自动审批拒绝泛化放开leased的未执行方案后，改用原read_registered同次实际safe核验范围标记，无第二凭证且未重复问用户权限。
+
+StockQA6447225已推origin；StockWiki719520b、Company Lab d1d92a2、Runtime4241d79本地提交、均无远端。本仓源码/PWF同次正常提交推送。原8766按实际argv/父子关系及无在途账本安全重载（新launcher17624，仅为当时记录）；doctor ready/无阻塞、原obs37dc465可见，普通pack2/thinking/max32768/shared=false、59包保持。账本前后均86HTTP/2024863micros、0在途/未结/active。没有新的真实公司扫描或金融核准，原错误历史不覆写。
+
+保留根外来10/10 README，以及StockWiki source-reader/checks相关并发修改和各仓历史untracked；它们会随其他进程变化，接手者以实际git状态为准，不reset/清理或并入本组。共享自动跨模型fallback仍未接；200家、事实、消费者及完整配套继续原计划。
+
 ## 11/01 全面代码质量审查
 
 完成题库、UI/编排与跨仓owner/共享引擎三路独立只读审查，主控核源汇总于[代码审查报告](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)。IQS基线dfb831c；StockQA a37d60c、StockWiki1bde9e0、Company Lab a37af8d、Runtime f58fdb1、UI8fc9072均实际Git核对，外仓tracked干净，根外来10/10 README改动保留。

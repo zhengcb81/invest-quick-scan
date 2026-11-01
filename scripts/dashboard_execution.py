@@ -25,12 +25,10 @@ except ImportError:
     from dashboard_locks import control_lock, ControlBusyError
 
 
-class DashboardExecutionError(ValueError):
-    def __init__(self, code, message, status=400, details=None, *, prelaunch_not_started=False):
-        super().__init__(message)
-        self.code, self.message, self.status = code, message, status
-        self.details = details or {}
-        self.prelaunch_not_started = prelaunch_not_started is True
+try:
+    from .dashboard_errors import DashboardExecutionError
+except ImportError:
+    from dashboard_errors import DashboardExecutionError
 
 
 def _now():
@@ -239,17 +237,20 @@ except Exception as error:
 
 _REGISTERED_PERMISSIONS_HELPER = r'''
 import contextlib, json, sys
-source, config_path, confirmation_id = sys.argv[1:]
+source, config_path, confirmation_id, mode = sys.argv[1:]
 sys.path.insert(0, source)
 try:
     with contextlib.redirect_stdout(sys.stderr):
         from src.utils.quick_scan_refresh_admission import RefreshAdmissionService
-        proof, _, _ = RefreshAdmissionService(config_path).read_registered(confirmation_id)
+        service = RefreshAdmissionService(config_path)
+        proof, _, _ = (service.read_registered(confirmation_id, recovery_only=True)
+            if mode == "paid_response_recovery" else service.read_registered(confirmation_id))
         if proof["confirmation"]["confirmation_id"] != confirmation_id:
             raise ValueError("original_confirmation_mismatch")
     result = {"protocol": "iqs.dashboard_registered_permissions/1.0.0",
         "status": "passed", "confirmation_id": confirmation_id,
-        "permission_authenticated": True, "API_requests": 0}
+        "permission_authenticated": True, "API_requests": 0,
+        "received_response_scope_verified": mode == "paid_response_recovery"}
     code = 0
 except Exception as error:
     reason = getattr(error, "reason", "owner_confirmation_permissions_rejected")
@@ -450,7 +451,7 @@ class ExecutionGateway:
             'status_counts_is_cached_projection': cached,
             'progress_label': f'原scope工作快照：{parts}（共{len(rows)}题；{marker}；核实于{moment}）'}
 
-    def _registered_permissions(self, bundle, root, runtime):
+    def _registered_permissions(self, bundle, root, runtime, *, recovery_only=False):
         """Read original registered consent/current authority, never admit new work.
 
         The original reader owns receipt/deployment/input checks. It may create
@@ -459,7 +460,8 @@ class ExecutionGateway:
         """
         command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8",
                    "-c", _REGISTERED_PERMISSIONS_HELPER, str(root),
-                   bundle["admission_config"], bundle["confirmation_id"]]
+                   bundle["admission_config"], bundle["confirmation_id"],
+                   "paid_response_recovery" if recovery_only else "current_permissions"]
         try:
             result = self._call(command, root, runtime)
         except DashboardExecutionError as error:
@@ -468,10 +470,12 @@ class ExecutionGateway:
             or result.get("status") != "passed"
             or result.get("confirmation_id") != bundle["confirmation_id"]
             or result.get("permission_authenticated") is not True
-            or type(result.get("API_requests")) is not int or result["API_requests"] != 0):
+            or type(result.get("API_requests")) is not int or result["API_requests"] != 0
+            or (recovery_only and result.get("received_response_scope_verified") is not True)):
             return {"status": "blocked", "reason": "owner_permissions_contract_invalid"}
         return {"status": "passed", "confirmation_id": bundle["confirmation_id"],
-                "inspection_mode": "current_permissions", "registered_action_checked": True}
+                "inspection_mode": "paid_response_recovery" if recovery_only else "current_permissions",
+                "received_response_scope_verified": bool(recovery_only), "registered_action_checked": True}
 
     def _inspect_work(self, bundle, root, runtime, admission):
         """Original fixed read-only ledger inspection, not consent or dispatch."""
@@ -521,13 +525,13 @@ class ExecutionGateway:
         root, runtime, admission, missing = self._deployment(bundle, recovery=True)
         if missing:
             raise DashboardExecutionError('seal_inputs_unavailable', '原恢复输入不完整，未启动模型。', 409, {'missing': missing})
-        permissions = permissions if permissions is not None else self._registered_permissions(bundle, root, runtime)
+        permissions = self._registered_permissions(bundle, root, runtime, recovery_only=True)
         if permissions.get('status') != 'passed':
             raise DashboardExecutionError('seal_permissions_blocked', '原登记范围的当前权限不可用，不能恢复。', 409)
         inspection = inspection if inspection is not None else self._inspect_work(bundle, root, runtime, admission)
         try:
             summary = self._retirement_work_summary(bundle, inspection,
-                received_recovery=bool(bundle.get('shared_company_config')))
+                received_recovery=permissions.get('received_response_scope_verified') is True)
         except DashboardExecutionError as error:
             raise DashboardExecutionError('seal_work_unknown', '原范围含在途、未知或缺少题目，不能恢复。', 409) from error
         if summary['work_status_counts'].get('pending'):
@@ -1094,7 +1098,10 @@ except Exception:
             from .dashboard_delivery import export_deliveries
         except ImportError:
             from dashboard_delivery import export_deliveries
-        return export_deliveries(self, payload)
+        name, bundle = self._select(payload)
+        return export_deliveries(bundle_id=name, bundle=bundle, config=self.config,
+            state_root=self.state_root, call=self._call,
+            inspection_work_items=self.inspection_work_items)
 
     def bind_delivery_consumer(self, bundle, target, source_ref):
         """Freeze the receiver from its independent public DTO BEFORE importing."""

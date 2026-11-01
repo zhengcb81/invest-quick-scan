@@ -8,9 +8,9 @@ import sys
 import tempfile
 
 try:
-    from .dashboard_execution import DashboardExecutionError
+    from .dashboard_errors import DashboardExecutionError
 except ImportError:
-    from dashboard_execution import DashboardExecutionError
+    from dashboard_errors import DashboardExecutionError
 
 
 _EXPORT = r'''
@@ -52,11 +52,11 @@ def _immutable(path, raw):
             raise DashboardExecutionError('delivery_archive_changed','原封存包归档已变化，不能覆盖。',409)
 
 
-def export_deliveries(execution, payload):
-    key,bundle=execution._select(payload)
+def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection_work_items):
+    key = bundle_id
     # Reading an already sealed result does not require a new spending grant,
     # runtime model config or permission to dispatch again.
-    root=Path(execution.config.get('stockqa_root',''))
+    root=Path(config.get('stockqa_root',''))
     if not root.is_absolute() or not (root/'src/utils/quick_scan_work_store.py').is_file():
         raise DashboardExecutionError('delivery_not_configured','原交付代码根缺失。',409)
     for field in ('admission_config','inspection_request','manifest'):
@@ -69,16 +69,16 @@ def export_deliveries(execution, payload):
     request=json.loads(Path(bundle['inspection_request']).read_text(encoding='utf-8-sig'))
     if request.get('entity_id')!=bundle.get('entity_id'):
         raise DashboardExecutionError('delivery_entity_mismatch','交付请求与原实体不一致。',409)
-    interpreter=str(execution.config.get('stockqa_python',sys.executable))
+    interpreter=str(config.get('stockqa_python',sys.executable))
     command=[interpreter,'-B','-X','utf8','-m','src.utils.quick_scan_refresh_inspect_cli',
         '--ledger',admission['work_store'],'--policy',admission['budget_policy_file'],
         '--request',bundle['inspection_request'],'--schema-version',bundle.get('inspection_schema_version','1.0.0')]
     if bundle.get('inspection_schema_version') in {'1.4.0','1.5.0'}:
         command.extend(['--admission-config',bundle['admission_config']])
-    execution.state_root.mkdir(parents=True,exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix='delivery-read-',dir=execution.state_root) as runtime:
-        inspection=execution._call(command,root,runtime)
-        rows=execution.inspection_work_items(inspection)
+    state_root.mkdir(parents=True,exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='delivery-read-',dir=state_root) as runtime:
+        inspection=call(command,root,runtime)
+        rows=inspection_work_items(inspection)
         if (inspection.get('protocol')!='stockqa.refresh_inspection/'+bundle.get('inspection_schema_version','1.0.0')
             or inspection.get('reservation_created') is not False or not isinstance(rows,list)
             or any(not isinstance(row,dict) or row.get('status') not in
@@ -100,17 +100,17 @@ def export_deliveries(execution, payload):
         work_ids=[row.get('work_item_id') for row in rows if row not in missing]
         if any(not isinstance(work,str) or not work for work in work_ids) or len(set(work_ids))!=len(work_ids):
             raise DashboardExecutionError('delivery_work_mapping_missing','原检查器未提供唯一逐题work引用。',409)
-        result=execution._call([interpreter,'-B','-X','utf8','-c',_EXPORT,
+        result=call([interpreter,'-B','-X','utf8','-c',_EXPORT,
             str(root),str(admission['work_store'])],root,runtime,input_value={
             'entity_id':bundle['entity_id'],'question_ids':request['question_ids'],'work_ids':work_ids})
         result['items'].extend({'question_id':row['question_id'],'work_item_id':None,
                                 'status':'not_exportable','reason':'missing'} for row in missing)
     from frozen_release_projection import create_projection
     manifest=json.loads(Path(bundle['manifest']).read_text(encoding='utf-8-sig'))
-    release=create_projection(manifest,root=Path(execution.config['iqs_release_root']))
+    release=create_projection(manifest,root=Path(config['iqs_release_root']))
     raw_release=(json.dumps(release,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False)+'\n').encode('utf8')
     release_sha=hashlib.sha256(raw_release).hexdigest()
-    archive=execution.state_root/'deliveries'
+    archive=state_root/'deliveries'
     release_path=archive/('release-'+release_sha+'.json')
     _immutable(release_path,raw_release)
     registrations={};items=[]

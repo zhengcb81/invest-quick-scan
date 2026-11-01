@@ -57,6 +57,9 @@ def capabilities():
             "cutoff": "original_owner_actual_cutoff",
             "pack_size_range": [1, 12],
             "mode": "one_shot_packs",
+            "provider_selection": "original_stockqa_endpoint_capabilities",
+            "automatic_cross_model_fallback": False,
+            "resource_defaults": "derived_from_actual_question_packs",
             "search_queries": 0,
             "qualification_granted": False,
         },
@@ -695,18 +698,20 @@ def _scan_preflight(task, services, session_config):
         native_input_references,
     )
 
-    refs = native_input_references(services.owner.input_raw)
-    subject = services.lifecycle._observation_context["questions"][task.question_ids[0]][
+    from src.utils.quick_scan_company_context import company_scan_inputs
+    original = company_scan_inputs(services.lifecycle)
+    refs = native_input_references(original.input_raw)
+    subject = original.observation_context["questions"][task.question_ids[0]][
         "subject_binding"
     ]["subject_ref"]
     company = native_company_projection(
-        json.loads(services.owner.input_raw["identity.json"]).get("payload"), subject
+        json.loads(original.input_raw["identity.json"]).get("payload"), subject
     )
     expected_runtime = dict(
         protocol="iqs.company-scan-runtime/1.0.0",
         synthetic=False,
-        provider=services.owner.plan["provider"],
-        model=services.owner.plan["model"],
+        provider=original.plan["provider"],
+        model=original.plan["model"],
         native_inputs_sha256=sha256_hex(refs),
     )
     binding = dict(
@@ -721,17 +726,15 @@ def _scan_preflight(task, services, session_config):
         task.raw.get("native_inputs") != refs
         or task.company_doc != company
         or task.runtime_profile != expected_runtime
-        or task.raw.get("module_locks") != services.owner.bundle["manifest"]["module_locks"]
+        or task.raw.get("module_locks") != original.bundle["manifest"]["module_locks"]
         or task.raw.get("owner_binding") != binding
         or getattr(task, "owner_binding", None) != binding
     ):
         raise SharedEngineRejected("scan_profile_original_native_source_projection_mismatch")
     if services.native_session:
         raise SharedEngineRejected("scan_multiturn_not_supported_in_one_shot_profile")
-    if profile["route_id"] != services.lifecycle._route_id:
+    if profile["route_id"] != original.route_id:
         raise SharedEngineRejected("scan_profile_native_route_mismatch")
-    if services.client.provider_name != "mimo" and any(len(pack) > 1 for pack in profile["packs"]):
-        raise SharedEngineRejected("non_mimo_scan_requires_explicit_singleton_profile")
     if not callable(getattr(services, "recover_intent", None)):
         raise SharedEngineRejected("original_native_intent_lookup_required")
     if services.attempt_observations(transport_origin="scripted_wire"):

@@ -68,7 +68,7 @@ python scripts/open_dashboard.py --ui-root "C:/path/to/iqs-question-bank-ui-lab"
 
 原任务恢复与新任务缓存是两回事：同一个已登记任务可恢复已接受的检查点，入库后的历史结果和ACK仍可查看；未配置新扫描时钟的旧策略仍按来源信息日和原有效期判断新鲜度。过期、缺日期或证据不足应如实显示，不会因重启或入库变成新鲜结果。接续旧任务时还须沿用它的quick/full模式；quick也保留全部基础36题，不可为改标签覆盖原绑定。
 
-2026-11-01起，本机原owner策略显式采用`policy_version: 9`、`cache_clock: "successful_scan"`、TTL24小时：用原已验成功联网回答的执行时间判断是否需要重扫，界面分别显示最近扫描与资料日期。全部命中时直接复用原观察，不再走模型准入；导入、查看和重启不延长期限。财报期间和来源日期保持原值，答案准确性仍按证据核验。未配置该可选策略的工作区保持旧信息日期规则；不要把`cache_clock`填到仪表盘连接JSON，它属于原StockWiki owner policy。
+2026-11-01起，本机原owner策略显式采用`policy_version: 11`、`cache_clock: "successful_scan"`、TTL24小时：用原已验成功联网回答的执行时间判断是否需要重扫，界面分别显示最近扫描与资料日期。全部命中时直接复用原观察，不再走模型准入；导入、查看和重启不延长期限。财报期间和来源日期保持原值，答案准确性仍按证据核验。未配置该可选策略的工作区保持旧信息日期规则；不要把`cache_clock`填到仪表盘连接JSON，它属于原StockWiki owner policy。
 
 长联网请求还需留足单次工作处理时长：高级连接配置可为新准备设置`prepare.work_lease_seconds: 3600`（省略沿用600秒），新扫描确认可独立设置12小时。两项都只作用新准备/新claim，不延长旧任务，也不增加预算。HTTP读取超时并不保证请求总时长；迟到回复仍须保留真实费用和回执，按原恢复流程处置，不能直接重发。完整时长分工见[产品配置说明](docs/implementation/dashboard-product-contract.md)。
 

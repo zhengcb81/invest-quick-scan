@@ -12,9 +12,11 @@
 
 ## 现在从哪里继续
 
-上一节点工程收尾已完成且IQS dfb831c已推；不再重复补封、重问或重建预算。随后用户要求全面代码质量审查，现已完成[核源报告](reviews/CODE-QUALITY-2026-11-01/report.md)，源码问题待修。先在原小池质量节点处理：已付恢复不该混用新发送期限；共享默认8次不能完成36题pack2；财务指标需要多期间坐标；再修UI全局锁、附属草稿故障隔离和超时口径冲突。不要误称本次审查已修好这些问题，也不要否定原有效期内恢复成功。
+代码审查整改已完成并集中非作者审查通过，详见[核源与整改报告](reviews/CODE-QUALITY-2026-11-01/report.md)。已付safe保全不再要求新发送委托/租约/手动分类覆盖仍有效；主体/anchor/actor撤权/原response和物理回执/CAS仍严格。普通与共享恢复都只保存原回答；混合范围明确原登记/本次恢复子集。原budget/provider材料仍须存在可绑定，不重造历史。原parser外层日期仅缺key时沿原inner提取，不猜新日期。
 
-原共享fallback接线时收敛端点能力、公开owner投影和重复动态检查；题库新模块语义与旧实验CLI按报告处理。不新发支线、不新造门。200家可靠性、事实F05、TH/IN正式消费、认可名单扩容与完整配套仍按根计划；小范围可用不等于2000覆盖或全套交付。
+共享资源按真实packs派生；旧CP保持原task/证据/控件。多期指标与比较、UI锁/草稿故障/超时、公开owner投影和work快照、模块元数据与import环均已修，旧生成器退役。原8766已重载并只读复验：ready、原观察可见，59包/普通配置不变，总账86HTTP/US$2.024863且无在途，0新增收费。不要重做已交付对象。
+
+下一工作仍按根计划：回答质量与原共享自动跨模型fallback（尚未接，不能循环client冒签），然后200家可靠性、事实F05、TH/IN正式消费、认可名单扩容与完整配套；不新发支线、不造门。此次工程收尾不是全项目完成。
 
 ## 本机运行与普通配置
 
@@ -42,19 +44,21 @@ IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算
 
 |仓库|当前已核实版本|
 |---|---|
-|IQS|原工程收尾dfb831c已推；后续代码审查仅改文档，本次准确commit见Git记录|
-|StockQA|a37d60c，正常hooks通过且已推origin/master|
-|Company Lab|a37af8d，本地提交、无remote|
-|Runtime Lab|f58fdb1，本地提交、无remote|
+|IQS|本轮源码/PWF同次提交推送；准确commit见Git最新记录，审查基线cdad8a4|
+|StockQA|6447225，正常hooks全过，已推origin/master|
+|Company Lab|d1d92a2，本地提交、无remote|
+|Runtime Lab|4241d79，本地提交、无remote，原codex/agent-run-02分支|
 |原UI|8fc9072，本地提交、无remote|
-|StockWiki|1bde9e0，本地提交、无remote|
+|StockWiki|719520b，本地提交、无remote；保留其他writer的source-reader/checks修改|
 
 原UI补封透传冻结shared配置和controls；StockQA原recover分支仅重放，缺原safe拒绝新model/search。缺密钥不改变policy eligibility，按原response_available attempt精确route恢复。新pending仍受原发送准入；已有坏检查点不跳过，真实缺文件才回读尚存原pending。来源闭包拒失效ID改名，HTTP只有原投影合格才接受。
 
 ## 测试、审查与未完成边界
 
-相关IQS语义/引擎50P、QA入口15P、Lab41P、seal11P；原252P/1F的旧测试接口失败已修并定向通过，不将重叠结果相加。完整短证据owner/SDK E2E1P/701.62秒，前轮失败已记录；本轮自有临时根已清理。旧AppContainer目录未定位，没有擅删不明路径。
+本轮完整原owner/SDK E2E1P/744.04秒（仅vendor wire脚本化、0收费、TEMP移除），最后paid-only尾修用实际session/SQLite和原parser118P验证。最终完整UI执行模块154P，UI其它72P、题库87个不同测试、QA指标/原子快照117P、共享17P、Lab22P/Runtime6P；测试有重叠不加总。独审最终QA32P/1S与UI3P，关键过期override实际1P并非skip；其余详细命令/局限见progress。原701.62秒是前一节点证据，不冒签当前paid-only分支。
 
 集中独审通过工程恢复/原ACK范围，不授金融准确性。只对大产品节点集中测试/审查；小修复跑受影响项，不跑小时全套、不建逐题凭证/组件资格审批/active全局ReleaseSet或第二派发许可证。原身份/作用域、预算、防未知重发和ACK保护保留。
 
 用户已授权必要后续修复、独审及正常提交推送，不重复问权限。每仓单writer，保留根外来的`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`改动与历史untracked，不使用git add全仓、reset或清理他人文件。
+
+StockWiki其他writer状态会变化，不按本页旧清单清理；原static hook临时保存的外来patch已核实恢复。本轮只做相关测试及一次集中交叉独审，未新增许可证或逐assertion回执。

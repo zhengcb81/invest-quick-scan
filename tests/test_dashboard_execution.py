@@ -61,7 +61,7 @@ class LLMConfig:
 import json, pathlib
 class RefreshAdmissionService:
  def __init__(self, path): self.path=pathlib.Path(path)
- def read_registered(self, confirmation_id):
+ def read_registered(self, confirmation_id, *, recovery_only=False):
   data=json.loads(self.path.read_text())
   if data.get("permission_error"):
    error=ValueError("synthetic native permission refusal")
@@ -175,7 +175,10 @@ def test_shared_company_config_is_bound_and_forwarded_only_for_execution(deploym
     before = gateway._fingerprint(bundle)
     command = gateway._command(bundle, Path(config['stockqa_root']), output)
     assert command[command.index('--shared-company-config')+1] == str(shared)
-    assert '--shared-company-config' not in gateway._command(bundle, Path(config['stockqa_root']), output, recovery=True)
+    recovery = gateway._command(bundle, Path(config['stockqa_root']), output, recovery=True)
+    assert recovery[recovery.index('--shared-company-config') + 1] == str(shared)
+    assert '--recover-checkpoints' in recovery and '--seal-deliveries' in recovery
+    assert '--spend-authorization' not in recovery
     put(shared, {'schema_version':'1.0.0','evidence_boards':[{'changed':True}]})
     assert gateway._fingerprint(bundle) != before
     shared.unlink()
@@ -1403,7 +1406,7 @@ def test_shared_seal_keeps_original_scope_and_passes_frozen_replay_inputs(deploy
     assert command[command.index('--max-output-tokens')+1] == '16384'
 
 
-@pytest.mark.parametrize('status',['leased','uncertain','inflight','pending','unknown'])
+@pytest.mark.parametrize('status',['uncertain','inflight','pending','unknown'])
 def test_seal_never_dispatches_for_active_or_unknown_original_work(deployment,monkeypatch,status):
     gateway,run_id,path=sealable_reference(deployment,statuses=(status,))
     monkeypatch.setattr(gateway_module.subprocess,'Popen',
@@ -1452,3 +1455,37 @@ def test_restarted_gateway_attaches_existing_seal_without_reusing_old_pause_as_s
     result=restarted.control(run_id,'seal')
     assert result['status']=='attached' and result['process_started'] is False
     assert path.read_bytes()==before
+
+
+def test_paid_response_permission_helper_uses_recovery_not_send_mode(deployment, monkeypatch):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    calls = []
+    def original_owner(command, root, runtime):
+        calls.append(command)
+        return {'protocol': 'iqs.dashboard_registered_permissions/1.0.0',
+                'status': 'passed', 'confirmation_id': bundle['confirmation_id'],
+                'permission_authenticated': True, 'API_requests': 0, 'received_response_scope_verified': True}
+    monkeypatch.setattr(gateway, '_call', original_owner)
+    result = gateway._registered_permissions(bundle, Path(config['stockqa_root']), runtime, recovery_only=True)
+    assert result['status'] == 'passed'
+    assert calls[0][-1] == 'paid_response_recovery'
+    assert not (runtime/'calls.txt').exists()
+
+
+def test_normal_seal_accepts_only_native_verified_original_leased_response_scope(deployment):
+    gateway, run_id, path = sealable_reference(deployment, statuses=('leased',))
+    config, runtime, bundle = deployment
+    gateway._seal_preflight(json.loads(path.read_text()), bundle)
+    command = gateway._command(bundle, Path(config['stockqa_root']), runtime/'recovered.json', recovery=True)
+    assert '--recover-checkpoints' in command and '--seal-deliveries' in command
+    assert '--spend-authorization' not in command and '--shared-company-config' not in command
+
+
+def test_unverified_leased_scope_cannot_enter_paid_capture_recovery(deployment, monkeypatch):
+    gateway, _, path = sealable_reference(deployment, statuses=('leased',))
+    bundle = deployment[2]
+    monkeypatch.setattr(gateway, '_registered_permissions', lambda *a, **kw: {
+        'status': 'passed', 'received_response_scope_verified': False})
+    with pytest.raises(DashboardExecutionError, match='原范围含'):
+        gateway._seal_preflight(json.loads(path.read_text()), bundle)

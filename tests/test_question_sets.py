@@ -586,6 +586,26 @@ class QuestionSetTests(unittest.TestCase):
         self.assertIn('付费客户', question['prompt'])
         self.assertIn('融资摊薄', question['prompt'])
 
+    def test_new_diagnostic_framework_keeps_neutral_dimension_and_framework(self):
+        question = {'id': 'AI_DISRUPTION_01', 'framework': 'ai_disruption',
+            'aggregation': 'diagnostic', 'dimension': 'moat', 'critical': True}
+        mapping = qs.metric_mapping(question)
+        self.assertEqual(mapping['dimension'], 'diagnostic')
+        self.assertEqual(mapping['framework'], 'ai_disruption')
+        self.assertEqual(mapping['aggregation_role'], 'diagnostic_only')
+        self.assertFalse(mapping['critical_risk'])
+        old_schema = copy.deepcopy(qs.read_json(qs.ROOT / 'schemas/quick_scan/metric.schema.json'))
+        properties = old_schema['definitions']['QuestionMetricMapping']['properties']
+        properties['dimension']['enum'].remove('diagnostic')
+        properties.pop('framework')
+        historical = qs.metric_mapping(question, metric_schema=old_schema)
+        self.assertEqual(historical['dimension'], 'recovery_watch')
+        self.assertNotIn('framework', historical)
+        for framework, dimension in [('dupont', 'dupont'), ('porter', 'porter'), ('recovery', 'recovery_watch')]:
+            old = qs.metric_mapping({**question, 'framework': framework})
+            self.assertEqual(old['dimension'], dimension)
+            self.assertNotIn('framework', old)  # Preserve archived known-framework mappings.
+
     def test_s03_does_not_add_unapproved_bridge_questions_or_nondefault_diagnostics(self):
         diagnostic_modules = {key for key, module in self.modules.items()
                               if module['kind'] == 'diagnostics'}
