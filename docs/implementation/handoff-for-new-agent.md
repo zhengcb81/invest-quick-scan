@@ -35,13 +35,15 @@
 
 |组件|本次核对基线|
 |---|---|
-|IQS本次起点已推送|`215804dada41148ea79011fbb483e02f9f8d1abe`，本次源码及文档在其后正常提交|
+|IQS当前实现已推送|`2970499`，含可选共享接线、runtime减负和1.10.19规范；后续PWF记录单独提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
 |StockQA|`07db665`正常hooks全通过，已推送且HEAD=origin/master；含原provider/共享接线|
 |原Runtime Lab|`cb00e4e`已本地提交（codex/agent-run-02），无远端，不新建origin|
 |StockWiki|`1bde9e0`（含`af2a260`及预算`724f5b7`）已提交，无origin，不新建远端|
 |原UI|`d3ec24a`（含`0212c5c`/`d6e0eb8`）已提交，无remote|
+
+原8766已于2026-11-01T05:19:09Z加载上述精简，launcher29892/服务15444；这只是定位线索，任何进程控制仍核实际身份。原配置保持、shared模式未激活，doctor就绪且新增HTTP/费用0。
 
 实际写前重核当前Git/唯一writer，不因无关HEAD变化重做历史。ANSWER/PERF最终C/M见[已签收口报告](reviews/SUPPORT-CLOSE-2026-10-31/report.md)，TIME/RESULT实际原接线见[报告](reviews/TIME-RESULT-WIRING-2026-10-31/report.md)，不把接线C的历史25文件manifest当当前README/测试字节。
 
