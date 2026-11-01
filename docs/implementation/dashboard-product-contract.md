@@ -16,7 +16,7 @@ execution_bundles以短bundle_id为键，每条指向原输入文件：questions
 
 import_bundles指向原package、release文件，可登记package_sha256、release_sha256和entity_id显示标签。需要完整对账时，加work_store（原StockQA账本）和work_item_ids（observation_id到work_item_id的完整一一映射）。这些是服务部署引用，浏览器动作只能选bundle_id，不能提交任意命令、运行脚本或拼接shell。
 
-执行预览调用原refresh inspect，绑定原输入字节和检查结果；启动前重新核验。重复点击附着已有记录。过程记录只存本机启动引用，不是第二套题目队列。process_started只证明CLI启动，paid_dispatch_started未知时保持null；进程退出不等于ready、入库或金融资格。暂停在公司边界排空，保留在途请求；未知/租约/费用不明继续由原owner拒绝恢复。服务重启不盲重发。
+任务预览是可选诊断；启动时核实原输入与当前owner状态，不保存或要求额外预览票据。重复点击附着已有记录。过程记录只存本机启动引用，不是第二套题目队列。process_started只证明CLI启动，paid_dispatch_started未知时保持null；进程退出不等于ready、入库或金融资格。暂停在公司边界排空，保留在途请求；未知/租约/费用不明继续由原owner拒绝恢复。服务重启不盲重发。
 
 ## 页面与API
 
@@ -37,7 +37,7 @@ import_bundles指向原package、release文件，可登记package_sha256、relea
 - 首次分页保留原owner snapshot于服务内存并返回短snapshot_token；后页带同条件及token。15分钟、128个快照上限；过期/重启/更改条件409要求从第一页刷新，不能静默重排漏公司。
 - GET entity/history/facts：精确id（或entity_id）。静态draft_runs另列，不合并为正式观察。缺少数据库不返回假0。
 - POST universe/preview、universe/apply；动作add/remove/restore/pin/unpin，含原entity_id/universe_id/reason。apply必须带原preview_token；名称只用于候选检索，不自动建立或激活身份。
-- POST tasks/preview、tasks/start：仅已登记bundle_id（可核entity_id），start带preview_id。POST tasks/{run_id}/inspect、pause、resume，逐任务allowed_actions不代替服务端守卫。
+- POST tasks/preview、tasks/start：仅已登记bundle_id（可核entity_id），start不要求preview_id；旧客户端传入该字段时兼容忽略。POST tasks/{run_id}/inspect、pause、resume，逐任务allowed_actions不代替服务端守卫。
 - POST import/preview、import/apply：bundle_id，apply带preview_token。原public PRE预检不写库、不产生ACK。实际导入事务重新核验；接收目标来自独立owner.status，在导入前调用原bind_result_delivery_consumer冻结，不能从ACK反向学习。原receipt逐项传回原apply_result_delivery_ack；pending保留已成功入库与原回执，重试幂等。没有登记原账本映射时明确not_configured，不能宣称原执行器delivered。
 - PUT setup：`{config,revision_sha256}`；PUT settings：`{policy,revision_sha256}`。未知字段拒绝；不接收密钥。
 
@@ -74,7 +74,7 @@ Host只允许当前端口127.0.0.1/localhost；Origin如存在须为本机同源
 }
 ```
 
-`admission_config`继续指向原StockQA work_store/budget_policy_file和原StockWiki工作区；它们必须已存在。准备器只派生每次准备独有的不可变输入目录，不创建第二预算或覆盖旧manifest。新原范围必须由原部署提供；不能给已耗尽的r25六次请求补额度。**自动准备当前支持原owner policy 1.0/1.1**；1.2及以上在预览中明确返回`native_prepare_owner_dialect_not_supported`，不先写原路由、不降级策略。已登记的高级原包仍走执行器对应的原1.2–1.5检查与控制，此能力不等于自动准备已支持它们。
+`admission_config`继续指向原StockQA work_store/budget_policy_file和原StockWiki工作区；它们必须已存在。准备器只派生每次准备独有的不可变输入目录，不创建第二预算或覆盖旧manifest。普通自动准备支持原owner policy 1.0/1.1；1.2不可用结果恢复及1.3已成功答案比较，使用原owner明确记录的精确工作决议。普通扫描不需要这些专用引用，不能把比较模式当日常门禁。其余未支持的自动准备策略明确拒绝，不自动降级。旧r25六次实验预算保持历史，本机新运行沿既有u25-live预算，打开页面不补充或重置额度。
 
 `prepare.work_lease_seconds`是新工作每次claim的有限处理时长，允许1–86400整秒；省略时保留原StockQA默认600秒。显式值随新执行包冻结，并由`--work-lease-seconds`传给原CLI，不修改旧包、旧代次或已有租约。联网搜索可能持续发送心跳，因此HTTP的`timeout`不是总耗时上限；本轮真实MiMo请求曾耗时633秒。长搜索可明确选3600秒，并为新准备单独设置足够的`delegation_ttl_seconds`（例43200秒），二者都不是自动续期，也不增加费用预算。设置须等原工作安全退出；旧grant或lease过期后仍走原核验/恢复，未知HTTP不重发。`worker_timeout_seconds`和`native_timeout_seconds`仅限制准备流程，不能当作模型请求总超时。
 
@@ -89,7 +89,7 @@ Host只允许当前端口127.0.0.1/localhost；Origin如存在须为本机同源
 - GET `batches`；POST `batches/preview`只冻结本地输入字节和完整公司scope集合，`owner_inspected=false`，**不是费用或真实派发准入**。POST `batches/start`登记薄编排引用，后台在每scope派发前调用原检查器；已ready复用，未知HTTP不重发。这样2000公司预览/登记不串行启动4000个原检查进程。
 - POST `batches/{id}/pause|resume`；暂停在scope/公司边界排空。重启不自动续跑；已完成范围只核冻结字节，尚未启动的范围延迟到派发时原预检，已有在途/未知引用仍按原恢复规则核实。`company_counts`与`scope_counts`分开，`company_groups.complete`才是整公司所有scope完成。
 - POST `tasks/{run_id}/seal`，body为`{}`，接原界面“补封检查点”。只选择原运行/冻结bundle，后台调用原StockQA `--seal-deliveries --recover-checkpoints`；不接受caller正文、分数或任意目录。原账本、当前owner与原捕获绑定后，同已结算attempt恢复检查点/上下文/标准答案，再沿原幂等sealer补封；新结果另存`result-seal-N.json`，原paid结果和原时间保留。此路径不调用模型、不申请新spend，不因余额耗尽、无密钥或无模型生成配置而阻挡；原在途/未知工作、作用域变化、撤权和不同正文冲突仍拒。相同运行恢复进程在途时重复点击只attach。恢复成功须继续原交付/ACK；来源和格式校验通过不授金融正确性。
-- GET `tasks`只读本机过程引用并分页；每个run先点“核原状态”，即POST `tasks/{run_id}/inspect`，再按原allowed_actions恢复。不能用进程退出或缓存投影当派发许可。
+- GET `tasks`只读本机过程引用并分页；可直接选择“检查并恢复”“检查并补封”或归档，服务在动作内实时核实原owner与进程。“核原状态”是可选查看，不是恢复前置；进程退出或缓存投影不替代实际执行检查。
 - POST `tasks/deliver`选择bundle_id，或POST `batches/{batch_id}/deliver`选择该批当前原ready范围，均返回异步交付job；GET `delivery/jobs`查看，POST `delivery/jobs/{id}/resume|abandon`明确接续。长时间原CLI在后台，不占全站服务锁。父job只保scope摘要/计数；逐题ACK仍归原StockWiki和StockQA outbox，避免2000×36条明细复制成不可恢复的大文件。
 - 原公开只读交付检查、精确outbox字节导出、冻结release投影、独立接收目标绑定、原导入及exact ACK仍逐步执行。不申请新spend grant、不重新封存或重问已完成答案。历史24题保留24，不能按当前36题改写旧观察。`tasks/export-delivery`可只导出原已封存包引用；不永久把全池每个包登记进另一个配置账本。
 
@@ -101,6 +101,4 @@ Host只允许当前端口127.0.0.1/localhost；Origin如存在须为本机同源
 
 ## 实际数据与尚存边界
 
-界面不是全名单扫描完成的证明。当前214实体、旧12运行/11公司，另有一条原CATL正式入库观察（旧24题manifest，仅IQS_05）。基础当前36题不反向改写旧观察。W09读原语义，不宣称C06 envelope已验收，不用前端均分替代原质量规则。
-
-本机已将用户认可的214个既有entity_id接入`UNI_IQS_APPROVED_214_20261025`，通过原名单API维护；实体身份完整摘要前后相同，没有新增/合并/升级身份，原实验名单保留。当前真实部署的自动准备参数和新预算仍需正确配置；空配置的阻断是实际部署状态，不伪称已开始全池扫描。原完整36题准入和工程假数据批协调通过，不等于214家公司已被实际问答，更不授金融准确性。
+当前本机名单215个实体；原UI已完成微软、宁德时代、腾讯各36题的真实工程闭环、原ACK和冷恢复，实际扫描时间策略的单题零HTTP复用正例也已完成。共享引擎的真实复核仍在收尾，事实填充、规模化与深研消费者尚未全部完成。部署、预算、实际覆盖和剩余工作统一查根[task_plan.md](../../task_plan.md)，本接口文档不另维护一套进度门。历史24题不反向改写为当前36题，工程交付和缓存命中不授予金融准确性。

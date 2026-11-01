@@ -64,6 +64,29 @@ class ContextPort(SyntheticReplayPort):
         return receipt
 
 
+@pytest.mark.parametrize('kind', ['model', 'search'])
+def test_replay_only_port_never_calls_live_transport(tmp_path, monkeypatch, kind):
+    calls = []
+    port = SimpleNamespace(model_step=lambda e: calls.append('model'),
+                           search=lambda e: calls.append('search'))
+    guarded = engine._pending_port(port, [], tmp_path, recover_intent=lambda i: None,
+                                   replay_only=True)
+    monkeypatch.setattr(guarded, '_save', lambda *args: None)
+    with pytest.raises(engine.SharedEngineRejected, match='replay_only'):
+        getattr(guarded, 'model_step' if kind == 'model' else 'search')({'intent': {}})
+    assert calls == []
+
+
+def test_replay_only_port_uses_original_saved_receipt(tmp_path, monkeypatch):
+    calls = []
+    saved = {'original': 'saved'}
+    guarded = engine._pending_port(SimpleNamespace(model_step=lambda e: calls.append('model')),
+        [], tmp_path, recover_intent=lambda i: {'decision': 'recover_saved_receipt', 'saved_receipt': saved},
+        replay_only=True)
+    monkeypatch.setattr(guarded, '_save', lambda *args: None)
+    assert guarded.model_step({'intent': {}}) == saved and calls == []
+
+
 class SyntheticObservations:
     def __init__(self, port):
         self.port = port

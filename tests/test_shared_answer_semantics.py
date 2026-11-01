@@ -285,3 +285,120 @@ def test_native_search_uses_original_source_projection_without_fabricating_exter
             callback(body,qid,attempt_ref='stockqa:UNIT_SDK_ATTEMPT',evidence_board=board)
     assert len(captured)==1 and 'external_context_use' not in captured[0]
     assert captured[0]['work_transport']['work_attempt_id']=='UNIT_NATIVE'
+
+
+def test_actual_native_http_source_does_not_require_https(native_bound):
+    from iqs_company_agent_lab.answers import AnswerRejection, validate_single_answer
+    task, qid, body, services, source, board = native_bound
+    source['url'] = 'http://example.invalid/original-search-result.pdf'
+    body['evidence'][0]['url'] = source['url']
+    body['metrics'] = [metric()]
+    callback = engine._production_answer_semantics(task, services)
+    verified = callback(body, qid, attempt_ref='stockqa:UNIT_SDK_ATTEMPT', evidence_board=board)
+    validate_single_answer(copy.deepcopy(body), qid, board, board.publication_exclusive_date,
+                           verified_source_urls=verified)
+    runner = Runner(task, SyntheticReplayPort(helpers.scenario_doc([]), task.raw['run_id']),
+                    answer_semantic_validator=callback, answer_semantic_validator_version=2)
+    runner._start()
+    runner._apply_answers({'question_ids': [qid]}, [copy.deepcopy(body)], 'stockqa:UNIT_SDK_ATTEMPT')
+    assert runner.state.slot(qid)['execution_status'] == 'completed'
+    # The same transport scheme does not qualify an unreturned source.
+    source['url'] += '?different-document'
+    with pytest.raises((ValueError, AnswerRejection)):
+        callback(body, qid, attempt_ref='stockqa:UNIT_SDK_ATTEMPT', evidence_board=board)
+
+
+def test_external_url_does_not_reactivate_invalidated_board_evidence(original):
+    from iqs_company_agent_lab.answers import AnswerRejection, validate_single_answer
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+    task, qid, body, _ = original
+    record = helpers.sf.evidence_record('e1', task.company_ref, 'moat')
+    body['evidence'][0].update(id='e1', url=record['source_url'])
+    board = EvidenceBoard(2000)
+    board.add(record)
+    board.invalidate(['e1'], 'superseded')
+    with pytest.raises(AnswerRejection, match='inactive|not_in_evidence_store'):
+        validate_single_answer(body, qid, board, '2026-10-14', verified_source_urls=(record['source_url'],))
+
+
+def scan_board(task):
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+    return EvidenceBoard(2000, allow_undated_retrieved=True, validation_context={
+        'information_cutoff': '2026-10-13', 'publication_exclusive_date': '2026-10-14',
+        'profile_sha256': '0' * 64, 'company_ref_sha256': sha256_hex(task.raw['company_ref'])})
+
+
+@pytest.mark.parametrize('day', ['2026-10-12', '2026-10-13', None])
+def test_answer_date_may_precede_search_cutoff_without_being_rewritten(original, day):
+    from iqs_company_agent_lab.answers import validate_single_answer
+    task, qid, body, _ = original
+    body['information_as_of'] = day
+    before = copy.deepcopy(body)
+    validate_single_answer(body, qid, scan_board(task), '2026-10-14')
+    assert body['information_as_of'] == before['information_as_of']
+
+
+def test_answer_future_information_date_still_rejected(original):
+    from iqs_company_agent_lab.answers import AnswerRejection, validate_single_answer
+    task, qid, body, _ = original
+    body['information_as_of'] = '2026-10-14'
+    with pytest.raises(AnswerRejection):
+        validate_single_answer(body, qid, scan_board(task), '2026-10-14')
+
+
+def test_scan_undated_source_retains_unknown_and_requires_known_availability(original):
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+    task, _, _, _ = original
+    ref = task.raw['company_ref']
+    record = helpers.sf.evidence_record('provided', ref, 'moat')
+    record.update(published_at=None, retrieved_at_utc='2026-10-13T10:00:00Z',
+                  limitations=['Publication date not independently known'])
+    board = scan_board(task)
+    assert board.intake([record], ref)['accepted'] == ['provided']
+    restored = EvidenceBoard.from_snapshot(board.snapshot())
+    assert restored.get('provided')['published_at'] is None
+    assert restored.source_available(record, '2026-10-14')
+    for change in ({'published_at': '2026-10-14'},
+                   {'retrieved_at_utc': '2026-10-14T00:00:00Z'},
+                   {'retrieved_at_utc': '2026-10-13TgarbageZ'},
+                   {'limitations': []}):
+        invalid = {**record, **change, 'evidence_id': 'invalid'}
+        assert scan_board(task).intake([invalid], ref)['accepted'] == []
+    assert EvidenceBoard(2000).intake([record], ref)['accepted'] == []
+
+
+@pytest.mark.parametrize('allow_undated', [False, True])
+def test_evidence_replay_keeps_original_acceptance_policy(allow_undated):
+    scan_helpers = load('semantic_scan_fixtures', ROOT.parent / 'iqs-company-agent-lab/tests/test_scan_profile.py')
+    from iqs_company_agent_lab.replay import ReplayEngine
+    from iqs_company_agent_lab.evidence import EvidenceBoard
+    task = scan_helpers.scan_task(qs=scan_helpers.questions(1))
+    record = helpers.sf.evidence_record('undated', task.company_ref, 'moat')
+    record.update(published_at=None, retrieved_at_utc='2026-10-17T10:00:00Z',
+                  limitations=['Publication date unknown'])
+    task.evidence_board_doc['records'] = [record]
+    from iqs_company_agent_lab.canonical import canonical_json
+    raw_board = canonical_json(task.evidence_board_doc).encode('utf-8')
+    import hashlib
+    task.raw['evidence_epoch_ref'].update(bytes=len(raw_board), sha256=hashlib.sha256(raw_board).hexdigest())
+    task.task_sha256 = sha256_hex(task.raw)
+    runner = Runner(task, SyntheticReplayPort(helpers.scenario_doc([]), task.raw['run_id']))
+    runner.state.board.allow_undated_retrieved = allow_undated
+    runner._start()
+    snapshot = runner.state.board.snapshot()
+    assert len(snapshot['records']) == int(allow_undated)
+    if not allow_undated:
+        assert 'allow_undated_retrieved' not in snapshot
+        assert 'allow_undated_retrieved' not in runner.journal.events[0]['data']
+    assert EvidenceBoard.from_snapshot(snapshot).snapshot() == snapshot
+    replayed = ReplayEngine(task).replay(runner.journal.events)['state']
+    assert replayed.board.snapshot() == snapshot
+    from iqs_company_agent_lab.runner import input_manifest_sha256
+    from iqs_company_agent_lab.export import build_research_run
+    from iqs_company_agent_lab.provenance import runtime_evidence_document, summarize_runtime_evidence
+    manifest = input_manifest_sha256(task.raw)
+    run = build_research_run(runner.state, manifest, [], {}, [], {})
+    document = runtime_evidence_document(run_id=run['run_id'], input_manifest_sha256=manifest,
+        events=runner.journal.events, attempts=[], evidence_origin='synthetic')
+    summarize_runtime_evidence(document, run=run, events=runner.journal.events, run_raw=b'',
+        board_doc=task.evidence_board_doc, board_snapshot=snapshot)

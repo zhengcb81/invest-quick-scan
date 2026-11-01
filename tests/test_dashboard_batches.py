@@ -40,7 +40,7 @@ class FakeExecution:
     def _control_lock(self, action):
         return nullcontext()
 
-    def preview(self, payload):
+    def preview(self, payload, **kwargs):
         with self.lock:
             key = payload["bundle_id"]
             if key not in self.bundles:
@@ -775,10 +775,10 @@ def test_shutdown_during_original_preview_does_not_dispatch_after_it_returns(set
     batch_id = start(gateway, ("a",))
     entered, release = threading.Event(), threading.Event()
     original_preview = execution.preview
-    def held_preview(payload):
+    def held_preview(payload, **kwargs):
         entered.set()
         assert release.wait(3)
-        return original_preview(payload)
+        return original_preview(payload, **kwargs)
     monkeypatch.setattr(execution, "preview", held_preview)
     thread = threading.Thread(target=gateway._step, args=(batch_id,))
     thread.start()
@@ -1287,8 +1287,8 @@ def test_native_preview_barrier_does_not_block_projection_reads_local_previews_o
     batch_id = gateway.start({"preview_id": plan["preview_id"]})["batch"]["batch_id"]
     entered, release = threading.Event(), threading.Event()
     original = execution.preview
-    def slow_original_preview(payload):
-        value = original(payload)
+    def slow_original_preview(payload, **kwargs):
+        value = original(payload, **kwargs)
         entered.set()
         assert release.wait(5)
         return value
@@ -1430,8 +1430,8 @@ def test_all_original_inspection_paths_persist_only_necessary_status_not_scope_i
 
 def retirement_fixture(gateway, execution):
     original_preview = execution.preview
-    def checked(payload):
-        value = original_preview(payload)
+    def checked(payload, **kwargs):
+        value = original_preview(payload, **kwargs)
         value['inspection'] = {'work_items': {'Q1': {'status': 'leased' if execution.bundles[payload['bundle_id']]['unknown'] else 'pending'}}}
         return value
     execution.preview = checked
@@ -1534,8 +1534,8 @@ def test_abandon_proven_prelaunch_only_preserves_all_original_work(tmp_path,faul
     from scripts.dashboard_execution import ExecutionGateway,DashboardExecutionError
     class OriginalRefusal(FakeExecution):
         prelaunch_refusal=staticmethod(ExecutionGateway.prelaunch_refusal)
-        def preview(self,payload):
-            value=super().preview(payload)
+        def preview(self,payload,**kwargs):
+            value=super().preview(payload,**kwargs)
             value['inspection']={'work_items':{'Q1':{'status':'leased' if self.bundles[payload['bundle_id']]['unknown'] else 'pending'}}}
             return value
         def start(self,payload):

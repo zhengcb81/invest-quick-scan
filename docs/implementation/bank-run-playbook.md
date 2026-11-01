@@ -46,7 +46,7 @@ python -B -X utf8 scripts\question_sets.py compose `
 成功输出 `question_count` / `modules` / `module_package_id`。**空目录 = compose 失败**，
 不要当成"在后台跑"。
 
-## 2. 前置检查（必须，零成本）
+## 2. 独立研究脚本的输入诊断（无模型费用）
 
 ```powershell
 python -B -X utf8 scripts\bank_manifest_preflight.py --manifest runs\<run>\composed\manifest.json
@@ -54,7 +54,7 @@ python -B -X utf8 scripts\bank_manifest_preflight.py --manifest runs\<run>\compo
 
 校验：题数非空、必填字段、三个 sha256、`prompt_sha256` 与 prompt 文本实算一致、
 无重复 id、每个模块都有锁、`comparison_role` 齐全且至少 1 个 core、包/发布身份存在。
-exit 0 才继续；exit 2 是清单不可跑。
+此工具检查旧`thin_scan.py --bank-manifest`研究输入尚未内建的prompt与发布绑定；不属于原UI扫描、入库或恢复的前置步骤，不签发许可或核查凭证。直接使用这条独立研究路径时应先修复其报告的输入错误；exit 2列出问题。原UI继续使用原准备器和执行器的输入校验，不要求再运行此工具。
 
 ## 3. 真实跑
 
@@ -73,7 +73,7 @@ python -B -X utf8 scripts\thin_scan.py `
 - 传输层超时/断连不会中断整轮，只影响当前题。
 - 推理内容（`reasoning_content`）永不当作答案。
 
-## 4. 验收（必须）
+## 4. 独立研究结果诊断
 
 ```powershell
 python -B -X utf8 scripts\scan_result_check.py --run runs\<run>\final

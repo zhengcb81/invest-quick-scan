@@ -81,6 +81,29 @@ class RefreshAdmissionService:
     return config, runtime, bundle
 
 
+def test_batch_work_classification_does_not_repeat_dispatch_permissions(deployment, monkeypatch):
+    config, _, bundle = deployment
+    gateway = ExecutionGateway(config)
+    calls = []
+    original = gateway._registered_permissions
+    def permissions(*args):
+        calls.append('permissions')
+        return original(*args)
+    monkeypatch.setattr(gateway, '_registered_permissions', permissions)
+    classified = gateway.preview({'bundle_id': 'test'}, check_permissions=False)
+    assert classified['can_start'] is True
+    assert classified['permissions_check']['status'] == 'not_checked'
+    assert classified['API_requests'] == 0 and calls == []
+    # Actual launch validation remains authoritative and rejects revoked rights.
+    path = Path(bundle['admission_config'])
+    value = json.loads(path.read_text())
+    value['permission_error'] = 'delegation_revoked'
+    path.write_text(json.dumps(value))
+    with pytest.raises(DashboardExecutionError):
+        gateway.start({'bundle_id': 'test'})
+    assert calls == ['permissions']
+
+
 def wait_done(gateway, run_id):
     deadline = time.monotonic() + 8
     while run_id in gateway._processes and time.monotonic() < deadline:
@@ -1362,6 +1385,22 @@ def test_seal_uses_background_original_cli_without_credentials_new_spend_or_budg
     assert json.loads(Path(final['result_path']).read_text())['argv'].count('--seal-deliveries')==1
     assert 'key=none' in Path(final['log_path']).read_text()
     assert not Path(bundle['spend_authorization']).exists()
+
+
+def test_shared_seal_keeps_original_scope_and_passes_frozen_replay_inputs(deployment):
+    gateway, run_id, path = sealable_reference(deployment, statuses=('leased',))
+    config, runtime, bundle = deployment
+    bundle.update(shared_company_config=put(runtime/'shared.json', {'synthetic': True}),
+                  pack_size=1, max_output_tokens=16384, thinking=True)
+    value = json.loads(path.read_text())
+    value['bundle_fingerprint'] = gateway._fingerprint(bundle)
+    put(path, value)
+    gateway._seal_preflight(value, bundle)
+    command = gateway._command(bundle, Path(config['stockqa_root']), runtime/'out.json', recovery=True)
+    assert command[command.index('--shared-company-config')+1] == bundle['shared_company_config']
+    assert '--seal-deliveries' in command and '--recover-checkpoints' in command
+    assert '--spend-authorization' not in command
+    assert command[command.index('--max-output-tokens')+1] == '16384'
 
 
 @pytest.mark.parametrize('status',['leased','uncertain','inflight','pending','unknown'])

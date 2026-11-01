@@ -1,82 +1,58 @@
 # 当前接手说明
 
-更新于2026-11-01。**先读根[当前计划](../../task_plan.md)，再按其唯一Next Step实施。** 本页不另列相互竞争的任务。旧长交接已[原字节归档](archive/pwf-through-2026-10-31/README.md)。
+更新于2026-11-01。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
 
-## 从哪里继续
+## 当前已经完成什么
 
-原8766/原UI/StockQA/StockWiki已接通，三市场各36有效题槽、ACK、冷恢复和真实过期刷新均已验；不要重做这些。真实最近扫描单题复用正例本轮也已完成；当前先纠正已知答案质量，之后原200家可靠性、事实F05、TH/IN、全池与配套仍未完成。旧卡中的“待权限/未部署/未ACK/主线暂停”不是现在状态。
+原8766工作台、身份/215实体名单、组合基础36题、比较/名单维护、三市场各36有效题槽的真实入库与冷恢复均已接通。最近扫描真实复用与过期刷新已有正例。
 
-新TIME保留原结果页只读解释，不授权复用；取消另建独立核查凭证签发/续期系统，不再是必做计划。已有核查元数据仍可读，缺失不阻塞原扫描、入库、缓存或消费者；时效改进沿原字段/事件/成功搜索时间规则。原W06兼容链与显式新扫描时钟的真实单题正例已完成；勿重做或改旧日期造fresh。
+本节点已完成原UI共享已付IQS_11的零API恢复、保存、StockWiki ACK及普通配置再次同题复用。总账86HTTP/US$2.024863，0在途/未结/active；同一原分数7、资料日2026-10-29与完成时间2026-11-01T07:33:28.670089Z不变。不是只有HTTP200，也不是只生成离线报告。
 
-本次已取消冗余内存preview/旧inspection摘要门、纯缓存的模型准入、只读全历史账复审、自动委托早期重复核查、未知注册国家阻断，以及事实/消费者/小样本配套等待200/2000规模验收的人工依赖。此前1.10.17解除串行依赖；当前规格1.10.19为107任务/359场景，规模验收本身没有关闭。源代码、测试和[集中独审](reviews/SIMPLIFY-FRESH-2026-11-01/independent-review.md)已交，不要重造旧门或逐条凭证；变更和实际运行以[本次报告](reviews/SIMPLIFY-FRESH-2026-11-01/report.md)为准。
+原owner/SDK短证据软件E2E1P/701.62秒，实际出站body含excerpt/URL/published_at:null，保存和复用通过；只替换vendor wire。旧真实请求的原证据板仍空，未把新原数补进旧context。不得据此声明金融准确性通过或模型已在旧请求使用这些原数。
 
-原预算快照误门已由StockWiki`724f5b7`修复；本地owner policy9已显式采用successful_scan（TTL24h，预算不扩）。原information_as_of/报告期/发布日期不改，新缓存含义只是最近成功联网扫描，可按原执行时间跳过重扫。激活与正反例见本次报告。真实原UI复用已完成，原观察和资料日不变、0新增HTTP/费用，不重做或补凭证。
+## 现在从哪里继续
 
-当前真实批全部三题已补封并完成原ACK2/2；同范围DUPONT02再次准备已cached1、执行包0。见根Next Step和native-cache-reuse.json，不再等IQS22或重启该批。原HTTP JSON digest与final文本digest属于两种对象，分别核验；原owner捕获文件自身不授予scope/恢复权限。IQS11已知FCF跨年问题未金融签收，工程恢复不改变它的资格。
+当前请求的工程收尾已完成并随本次提交发布；不再重复补封、重问、重建预算或新发支线。后续未完范围仍按根计划：回答质量及共享fallback、200家可靠性、事实F05、TH/IN正式消费、用户认可名单扩容与完整配套。当前小范围可用不等于2000覆盖或全套交付。
 
-当前现金流纠错仍沿根Next Step，详细状态见[现金流节点报告](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。generation5真实单题已返回并原ACK1/1，仍沿用已知错误；不标金融通过、不再重发该请求。实际冻结bank/questions未包含新增逐期提示，实际请求规则/原数上下文的可选公共接线现已实现，下一步从原UI进行实际复核。原历史保持；现已复位普通policy11/1.1，专用refs移除、TTL24h和已登记包保留，不再按临时policy10继续配置。
+## 本机运行与普通配置
 
-03:39基础修复已保留。其后的公共接线现已由StockQA `07db665`（含`1825a14`）与原runtime桥`cb00e4e`实现，不要重新做下面的接线；源码阅读路径和实际边界如下：
+- 入口`http://127.0.0.1:8766/`，配置`config/dashboard.local.json`（忽略文件），原工作区`runs/r25-live/owner-workspace`明确为isolated_research；执行配置`runs/u25-live/runtime`。密钥只在环境变量，不打印、不提交。
+- 本节点独审后已恢复普通policy11/1.1、successful_scan/24h及原prepare全部设置；pack2、thinking=true、max32768，无shared专用配置或comparison refs。保留59个已登记包和历史，不能整文件恢复到只有58包的旧备份。
+- 同范围IQS_11新预览`prepare_16f75b1a321f4ee592459d7ea66e33ad`为cached1/执行包0/API0、owner未变；原UI直接显示原结果，无确认/登记job。资料日与最近扫描时间分别保留，查看/导入/重启不续期。
+- 正常启动见[README](../../README.md)。不按记忆PID杀进程；重启前核实际argv、创建时间和原费用/任务状态。看页面与预览不发模型。
 
-1. 原设置`prepare.shared_company_config`→候选冻结配置→原CLI `--shared-company-config`→`LLMRunner._run_single_company.process_selected_questions`→新`src/utils/quick_scan_shared_company.py`。在同一ApprovedRefreshSession、lifecycle与预算中，从原route_providers/execution_routes精确取现成client；未选择此配置仍走原process_questions。
-2. 新入口只构造一次create_company_scan_task，用同一公开native_company_projection取得证据引用。evidence_boards按原完整subject_ref匹配，短record不改源数字、时间、范围；原数在本机`runs/fresh-quality-2026-10-31/catl-primary-reference.private.json`。写seed前重核原subject是否合并范围和真实来源；该文件不是owner golden或金融认证。
-3. 配置指定IQS、Company Lab与Runtime Lab根，动态加载原包并核模块位置。新native题包委托原send_search_request，原permit同时保存搜索回执与公开输出；默认工具会话/原external保持。当前native MiMo或原external单题；共享跨模型顺位降级未完成，不能冒称已复用cascade。
-4. 原execute/resume/checkpoint保持，task身份来自原confirmation/题目，与UI输出文件名无关。候选export-NNNN完整后才rename发布export，残缺candidate保留并按原CP恢复；finalize后仅hydrate_questions输出原格式，缺CP不回退重问。finalize逐题幂等，不是全包单事务。
-5. 控制沿原bundle与输入hash；共享单请求上限16384，一题comparison须实际pack1、思考开启。普通UI当前pack2/max32768，为新scope明确设置，不改旧grant。基础软件E2E1P/536.71秒先于尾修；尾修后SDK/配置/原CLI67P/4.75秒、独审通过，两套环境全清理、0新收费，未重跑长例。
+## 不要重复处理的原对象
 
-**原owner带provided-only来源的scored软件正例已于v5通过（1P/468.81秒，去密钥隔离临时环境已清理），现在继续原UI真实复核，不重复实现上述接线。** 前例N/A没有覆盖这个保存缺口；StockQA `8791c0e`已沿原intent/attempt贯通provided来源，原vendor回执不变；runtime `f58fdb1`修复显式one_shot profile删除空tool_results造成的动态hash偏差。前四次长例失败均保留，末端封包及原restore的来源遗漏已由756eee6/7b3814f修复；v5通过不代签真实公司金融准确性。 精确源为IQS_11 generation5 `WORK_df168ba95e824103ad4cf3678c88c638`（delivered但FCF错误）；用原comparison准确后继，不伪作失败重试。先核原主体、配置/账本及官方同表原数，再配置短evidence和新pack1/max≤16384，从原UI准备/启动一次有明确变化的复核。核2024/2025各自OCF−购建长期资产现金，原ACK、旧答保留和0HTTP复用；若仍错，查实际已发上下文/证据，不盲重问或择高分。company-wiki有活动writer，继续只读。共享模式尚未在原UI真实激活，软件通过不替代此验收。
-
-进一步精简已取消重启后人工inspect前置、读旧job的新配置门、纯缓存预览的确认/job，以及只读轮询中的重复执行预检。恢复/补封/归档按钮表示明确检查动作；真正control仍实时核原owner/预算/进程，未知请求不重发。旧applied可能触发登记，冻结输入完整性检查仍保留，不误删有实际作用的保护。
-
-
-本轮进一步减负的当前规则（规格1.10.19，107任务/359场景/52约束）：不要重建Q15或W16的第二派发许可证、consume/dispatch_commit、组件资格审批或active全局ReleaseSet启动门。V16只版本元数据、V17只影响分析、W16只原owner字段应用，收费/防重仍由原StockQA管理；停新派发后升级，不新增无停机热切控制面。ExecutionGateway执行preview不再保存票据，旧preview_id兼容忽略；查看旧工作不要求新扫描输入。已取消的是重复机制，不是原预算/身份/未知发送保护和真实规模/事实/消费者/安装目标。
-
-## 固定对象与运行
-
-|组件|本次核对基线|
+|对象|已完成的原记录|
 |---|---|
-|IQS当前实现已推送|`2970499`，含可选共享接线、runtime减负和1.10.19规范；后续PWF记录单独提交|
-|IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
-|IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`7b3814f`正常hooks提交且已推，含provided来源、末端封包和原注册恢复贯通|
-|原Runtime Lab|`f58fdb1`已本地提交（codex/agent-run-02），无远端，不新建origin|
-|StockWiki|`1bde9e0`（含`af2a260`及预算`724f5b7`）已提交，无origin，不新建远端|
-|原UI|`d3ec24a`（含`0212c5c`/`d6e0eb8`）已提交，无remote|
+|运行/批次|run-73ab08b815574449a6337c806a9bb2cc / batch-8e527bf6bd6a45f58e908cc9ea3837b3|
+|原work/代次|WORK_3bfb09edaec248aca717f561b20d68cf / generation6，delivered|
+|原attempt/SDK|ATTEMPT_a0a4f2329acf4a3483ca11bb6f41ba8e / 3c660196-d0f7-44ff-9467-e789305992b8|
+|原CP|CHECKPOINT_91c41d78927d4330ba74001ff783442e|
+|交付|deliveryjob_275e156668c52d138ea84887f11626c8，completed，scope1/1；ACK accepted，08:28:19Z|
+|观察|obs_37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188|
 
-原8766已于2026-11-01T05:19:09Z加载上述精简，launcher29892/服务15444；这只是定位线索，任何进程控制仍核实际身份。原配置保持、shared模式未激活，doctor就绪且新增HTTP/费用0。
+原safe与失败重放诊断继续保留；session0003从原pending恢复并发布export，不删除或覆写原session0001。原时间/receipt/response hash、旧板与原ACK已由非作者亲自只读对账。详细原报告见[现金流/共享接线节点](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。
 
-实际写前重核当前Git/唯一writer，不因无关HEAD变化重做历史。ANSWER/PERF最终C/M见[已签收口报告](reviews/SUPPORT-CLOSE-2026-10-31/report.md)，TIME/RESULT实际原接线见[报告](reviews/TIME-RESULT-WIRING-2026-10-31/report.md)，不把接线C的历史25文件manifest当当前README/测试字节。
+## 实现边界与实际版本
 
-入口`http://127.0.0.1:8766/`；配置`config/dashboard.local.json`；数据`runs/r25-live/owner-workspace`（isolated_research），执行`runs/u25-live/runtime`。配置文件不发布，密钥仅环境变量，不打印。当前doctor只读就绪，不等于新任务已有收费准入。启动方法见[总README](../../README.md)。不杀记忆PID；重启前核端口、真实argv/creationtime、未决任务。UI静态浏览不调用模型。
+IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算、任务、检查点与outbox；StockWiki负责身份/名单/观察/ACK/查询。不复制数据库或重试器；company-wiki及其他活动writer保持隔离，不下载财报或网页全文。
 
-## 授权、边界和测试
+|仓库|当前已核实版本|
+|---|---|
+|IQS|本轮前已推25cad52；本次源码/PWF提交以Git最新记录为准|
+|StockQA|a37d60c，正常hooks通过且已推origin/master|
+|Company Lab|a37af8d，本地提交、无remote|
+|Runtime Lab|f58fdb1，本地提交、无remote|
+|原UI|8fc9072，本地提交、无remote|
+|StockWiki|1bde9e0，本地提交、无remote|
 
-- 用户已给必要后续跨仓修复/独审/正常提交推送授权，不重复问。仍须避开其他writer；特别保留IQS的`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`改动及历史untracked。
-- StockQA/StockWiki/原UI各管自己权威状态，不从IQS旁路写数据库，不复制另一套LLM重试器。发布新策略显式版本兼容，旧记录/费用/已收答案保持。
-- 不执行历史PWF里的mutation/回执刷新helper。PERF两个旧generator已退役，不重造旧C1或裁清单；PERF优化未装生产且36包更慢。
-- 测试按[分层说明](testing.md)和改动范围选择；大产品节点集中独审，不逐helper增门、不重复小时全套。真实金融/收费/规模测试与软件fixture分开。
+原UI补封透传冻结shared配置和controls；StockQA原recover分支仅重放，缺原safe拒绝新model/search。缺密钥不改变policy eligibility，按原response_available attempt精确route恢复。新pending仍受原发送准入；已有坏检查点不跳过，真实缺文件才回读尚存原pending。来源闭包拒失效ID改名，HTTP只有原投影合格才接受。
 
-```powershell
-# IQS根：改到时间解释/HTTP时才执行
-python -B -m pytest tests/test_dashboard_temporal.py tests/test_dashboard_entity_view_http.py -q -p no:cacheprovider
-# 查看当前分层，不执行测试
-python -B scripts/run_tests.py all --plan
-# 原UI根 C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab：改到可信面板时才执行
-python -B -m pytest tests/test_result_trust_host.py -q -p no:cacheprovider
-```
+## 测试、审查与未完成边界
 
-测试用自有短TEMP，结束清理自身临时库/副本/进程，保留最小证据；不清他人文件。pytest hook只放行字面IP TCP loopback，不是整进程树沙箱。不得将collect/shape CLI/自报passed替代执行或真实owner golden。
+相关IQS语义/引擎50P、QA入口15P、Lab41P、seal11P；原252P/1F的旧测试接口失败已修并定向通过，不将重叠结果相加。完整短证据owner/SDK E2E1P/701.62秒，前轮失败已记录；本轮自有临时根已清理。旧AppContainer目录未定位，没有擅删不明路径。
 
-最新减负以规格1.10.18为准：101处逐卡独审/额外凭证已取消，不恢复五阶段逐卡状态流或逐断言证书。内容不变的候选不因本地一小时作废；原样保存配置不核活跃任务；真实变更只核一次；可先交付已封存答案，原检查器省略的题仍算缺口。141项相关测试、72子测试通过，独审遗漏行反例已修复；04:01:44Z原8766已加载，doctor就绪、账本85HTTP/US$1.999868无新增收费。不要以此宣称原UI共享引擎或FCF金融纠错已完成。
+集中独审通过工程恢复/原ACK范围，不授金融准确性。只对大产品节点集中测试/审查；小修复跑受影响项，不跑小时全套、不建逐题凭证/组件资格审批/active全局ReleaseSet或第二派发许可证。原身份/作用域、预算、防未知重发和ACK保护保留。
 
-尾修另147P：control(inspect)只读原工作、不再跑独立_registered_permissions子进程，不建preview或要求新spend/模型配置；can_start=false、权限not_checked，不是准入。真正start/resume/seal/批次默认仍原检查；1.4/1.5原policy/exposure范围读取没有删除。04:06:54Z原8766已加载尾修，独审无未解问题；两批测试环境均已清理，无新收费。
-
-## 交接完成标准
-
-报告本次改变的功能、准确C/受影响文件、相关测试实际结果、真实模型/搜索费用及剩余边界；提交已完成工作并更新原计划表。历史验收原件不改签，当前入口只留一份状态，不再把同一长段复制进三份PWF。
-
-
-第二轮减负已实施：自动交付同操作只预览一次；新交付目标不含未来扫描参数，原UI同目标partial可修改这些设置，原包/状态目录变化仍拒；旧任务保持原算法匹配，不伪造迁移。TIME只作日期解释，不重建核查凭证或第二套缓存许可。测试不再全仓快照或逐文件hash清理；普通临时目录/finally即可。历史strict夹具与旧元数据只读兼容；这些精简不改变原StockQA预算、未知请求防重、身份与ACK。
-
-
-当前真实复核临时状态：原owner config/quick_scan_refresh.json为policy12/1.3，来源为runs/shared-ui-catl-2026-11-01，原policy11和dashboard备份均在此；尚无新增模型HTTP。新comparison精确源gen5，permission来自原source scope/refresh.json的实际冻结source_query，不用snapshot_id=null的query.json。按根progress真实活跃handle接续，不重复preview/确认/已付请求；完成或失败收尾必须按原字节/已登记包合并恢复普通设置。root维护唯一计划，不恢复已取消的凭证体系。
+用户已授权必要后续修复、独审及正常提交推送，不重复问权限。每仓单writer，保留根外来的`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`改动与历史untracked，不使用git add全仓、reset或清理他人文件。

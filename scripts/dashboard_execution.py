@@ -495,7 +495,7 @@ class ExecutionGateway:
         inspection = self._inspect_work(bundle, root, runtime, admission)
         return self._retirement_work_summary(bundle, inspection)
 
-    def _retirement_work_summary(self, bundle, inspection):
+    def _retirement_work_summary(self, bundle, inspection, *, received_recovery=False):
         """Validate original scope metadata; cached UI evidence never controls writes."""
         work = self.inspection_work_items(inspection)
         expected = _read(bundle['inspection_request']).get('question_ids')
@@ -504,7 +504,8 @@ class ExecutionGateway:
             or not isinstance(expected, list) or not expected or any(not isinstance(qid, str) or not qid for qid in expected)
             or len(set(expected)) != len(expected) or any(not isinstance(qid, str) for qid in actual)
             or len(actual) != len(set(actual)) or set(actual) != set(expected)
-            or any(row.get('status') not in {'pending', 'failed', 'result_ready', 'delivered'} for row in work)):
+            or any(row.get('status') not in ({'pending', 'failed', 'result_ready', 'delivered'}
+                | ({'leased'} if received_recovery else set())) for row in work)):
             raise DashboardExecutionError('retirement_work_unknown', '原范围含在途、未知或缺少题目，不能退役启动引用', 409)
         counts = {}
         for row in work:
@@ -525,7 +526,8 @@ class ExecutionGateway:
             raise DashboardExecutionError('seal_permissions_blocked', '原登记范围的当前权限不可用，不能恢复。', 409)
         inspection = inspection if inspection is not None else self._inspect_work(bundle, root, runtime, admission)
         try:
-            summary = self._retirement_work_summary(bundle, inspection)
+            summary = self._retirement_work_summary(bundle, inspection,
+                received_recovery=bool(bundle.get('shared_company_config')))
         except DashboardExecutionError as error:
             raise DashboardExecutionError('seal_work_unknown', '原范围含在途、未知或缺少题目，不能恢复。', 409) from error
         if summary['work_status_counts'].get('pending'):
@@ -536,7 +538,7 @@ class ExecutionGateway:
             raise DashboardExecutionError('bundle_changed', '检查期间原输入变化，未启动恢复。', 409)
         return root, runtime
 
-    def preview(self, payload, *, read_only=False):
+    def preview(self, payload, *, read_only=False, check_permissions=True):
         key, bundle = self._select(payload, recovery=read_only)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
         root, runtime, admission, missing = self._deployment(bundle, recovery=read_only, inspect_only=read_only)
@@ -557,14 +559,18 @@ class ExecutionGateway:
                     "missing": [], "blocked_reasons": [], "permissions_check": {"status": "not_checked"},
                     "required_action": None,
                     "notice": "仅查看原工作状态；未检查派发权限，也未预留费用。真正启动或恢复时仍由原执行器检查。"}
-        permissions = self._registered_permissions(bundle, root, runtime)
-        ready = not unknown and (quote.get("budget_available") is True or readonly) and permissions['status'] == 'passed'
+        # Batch scheduling only classifies original work/budget here. The
+        # locked start below performs the actual permission check once.
+        permissions = (self._registered_permissions(bundle, root, runtime)
+                       if check_permissions else {'status': 'not_checked'})
+        ready = (not unknown and (quote.get("budget_available") is True or readonly)
+                 and (not check_permissions or permissions['status'] == 'passed'))
         blocked = []
         if unknown:
             blocked.append("owner_work_unknown")
         elif quote.get("budget_available") is not True and not readonly:
             blocked.append("owner_budget_or_original_work_blocked")
-        if permissions['status'] != 'passed':
+        if check_permissions and permissions['status'] != 'passed':
             blocked.append(permissions['reason'])
         return {**grouping, "bundle_id": key, "entity_id": bundle["entity_id"], "status": "ready" if ready else "blocked",
                 "bundle_fingerprint": self._fingerprint(bundle),
@@ -574,8 +580,9 @@ class ExecutionGateway:
                 "permissions_check": permissions,
                 "required_action": ("fresh_same_scope_owner_preparation" if permissions.get('reason') in {
                     'delegation_expired_or_future', 'delegation_revoked'}
-                    else "inspect_original_owner_permissions") if permissions['status'] != 'passed' else None,
-                "notice": "预览不预留费用；原owner同时检查已登记确认的当前权限。权限失效须重新准备同一scope，不能扩预算或重发旧任务。执行前仍会再次核验。"}
+                    else "inspect_original_owner_permissions") if check_permissions and permissions['status'] != 'passed' else None,
+                "notice": ("预览不预留费用；原owner同时检查已登记确认的当前权限。权限失效须重新准备同一scope，不能扩预算或重发旧任务。执行前仍会再次核验。"
+                           if check_permissions else "仅分类原工作和预算；不是派发许可，实际启动时检查当前权限。")}
 
     def _records(self):
         if not self.state_root.is_dir():
@@ -715,14 +722,14 @@ class ExecutionGateway:
         command.extend(["--require-search", "--output", str(output)])
         if recovery:
             command.extend(['--seal-deliveries', '--recover-checkpoints'])
-        else:
+        if not recovery or bundle.get('shared_company_config'):
             command.extend(["--question-pack-size", str(bundle.get("pack_size", 1)),
                 "--thinking-enabled", str(bundle.get("thinking", True)).lower(), "--max-output-tokens", str(bundle.get("max_output_tokens", 8192))])
         if not recovery and 'work_lease_seconds' in bundle:
             command.extend(['--work-lease-seconds', str(bundle['work_lease_seconds'])])
         if not recovery and bundle.get("search_policy"):
             command.extend(["--search-policy", str(bundle["search_policy"])])
-        if not recovery and bundle.get('shared_company_config'):
+        if bundle.get('shared_company_config'):
             command.extend(['--shared-company-config', str(bundle['shared_company_config'])])
         if bundle.get("security_scope_id"):
             command.extend(["--security-scope-id", str(bundle["security_scope_id"])])

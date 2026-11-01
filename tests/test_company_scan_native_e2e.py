@@ -282,7 +282,7 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
     excerpt = 'SYNTHETIC-CONTEXT-CANARY: same-period OCF=100; cash capex=40; no real company finding.'
     record = dict(evidence_id='synthetic-primary', scope='issuer', period_start='2025-01-01', period_end='2025-12-31',
                   unit='thousand', currency='CNY', accounting_basis='synthetic', source_url='https://provided.example.org/statement',
-                  published_at='2026-10-01', retrieved_at_utc='2026-10-13T00:00:00Z', excerpt=excerpt,
+                  published_at=None, retrieved_at_utc='2026-10-13T00:00:00Z', excerpt=excerpt,
                   excerpt_sha256=hashlib.sha256(excerpt.encode()).hexdigest(), claim_kind='fact',
                   support_status='supported', supersedes_id=None, limitations=['Synthetic software fixture only.'])
     config = dict(schema_version='1.0.0', iqs_root=str(CODE), company_agent_root=str(COMPANY),
@@ -326,6 +326,9 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
             assert any(t.get('type') == 'web_search' for t in body['tools'])
             assert excerpt in json.dumps(body)
             context = json.loads(body['messages'][-1]['content'].splitlines()[-1])
+            assert excerpt in json.dumps(context['evidence'])
+            assert record['source_url'] in json.dumps(context['evidence'])
+            assert '"published_at": null' in json.dumps(context['evidence'])
             selected = context['requested_question_ids']
             answers = [sf.gen_insufficient(row['question']) for row in task.questions if row['question_id'] in selected]
             for answer in answers:

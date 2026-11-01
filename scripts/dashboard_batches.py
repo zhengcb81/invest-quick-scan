@@ -216,8 +216,9 @@ class BatchGateway:
         record["cursor"] = next((index for index, row in enumerate(record["entries"]) if row["state"] != "owner_ready"), len(record["entries"]))
         _write(self._path(record["batch_id"]), record)
 
-    def _inspect(self, bundle_id, expected=None):
-        result = self.execution.preview({"bundle_id": bundle_id})
+    def _inspect(self, bundle_id, expected=None, *, work_only=False):
+        result = self.execution.preview({"bundle_id": bundle_id}, **(
+            {"check_permissions": False} if work_only else {}))
         if (not isinstance(result, dict) or type(result.get("can_start")) is not bool
             or result.get("API_requests") != 0
             or re.fullmatch(r"[a-f0-9]{64}", str(result.get("bundle_fingerprint", ""))) is None
@@ -648,7 +649,7 @@ class BatchGateway:
                         if self._uncertain(entry):
                             break
                         continue
-                    fresh = self._inspect(entry["bundle_id"], entry)
+                    fresh = self._inspect(entry["bundle_id"], entry, work_only=True)
                     entry["last_inspection"] = self._inspection_summary(fresh)
                     if self._ready(fresh):
                         entry.update(state="owner_ready", blocked_reasons=[])

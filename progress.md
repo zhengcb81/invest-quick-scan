@@ -2,6 +2,28 @@
 
 更新于2026-11-01。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/01 本节点最终收口
+
+用户07:56Z恢复后只收尾同一共享已付回答。原UI补封先暴露leased提前报告、缺钥route selector和指标https-only遗漏，均在原入口根修；原失败诊断保留。恢复仅重放原safe，任何新model/search调用在原port前硬拒，不新增队列、预算或恢复凭证。
+
+- **真实恢复/原ACK：** 同一WORK_3bfb09edaec248aca717f561b20d68cf generation6、ATTEMPT_a0a4f2329acf4a3483ca11bb6f41ba8e、provider attempt3c660196-d0f7-44ff-9467-e789305992b8。原CP CHECKPOINT_91c41d78927d4330ba74001ff783442e，work与delivery均delivered；原job275e156668c52d138ea84887f11626c8 completed，scope1/1、原ACK accepted/received_at08:28:19Z。obs37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188，StockWiki store qsobs_c2ce64820343a7b1。原score7、资料日2026-10-29、response_completed/observed/answered时间07:33:28.670089Z保持。原receipt和response hash一致；总账86HTTP/2024863micros，0inflight/unsettled/active。
+- **短证据软件实送：** 原owner/SDK/engine E2E增加published_at=null以及实际HTTP body动态evidence中excerpt、URL、null断言。首轮1F/498.94秒发现provenance遗漏原board时间策略；小反例RED1F1P后修复，最终1P/701.62秒，含原CP、封包、重新打开及0send复用。只替换vendor wire，0真实收费，临时根移除。原真实这笔的旧板仍empty/allow_undated=false、provided来源空，未追认当时未发送原数，不声明金融纠错通过。
+- **针对性回归：** IQS语义/引擎50P/13.25秒；QA入口最终15P/5.47秒；Lab最后41P/2.07秒；seal11P/8.84秒；此前14定向中已包含旧held_preview修复。前轮252P/1F的唯一失败已定向通过，不加总为重复测试数。HTTP指标及失效ID改名反例均有效RED后修复；旧/新board snapshot/replay/summary兼容通过。不存在但可读的历史pending可仅重放回读，存在但坏文件/目录/断链不静默跳过。
+- **独审：** fresh_semantics_review为非作者，亲读原SQLite/job/CP/响应hash/ACK及旧板与最终export，对工程恢复/交付范围passed，无未解项；金融准确性仍false。没有新增review JSON或逐节点许可证。
+- **普通配置与缓存：** 审查后恢复原policy11/1.1成功扫描时钟TTL24h；prepare与原备份完全相等，pack2/thinking=true/max32768，无shared专用配置/比较refs，59个包保留。原UI08:35:49Z新预览prepare_16f75b1a321f4ee592459d7ea66e33ad缓存同一IQS_11观察，status cached/count1/执行包0/API0/dispatch false/owner_state_changed false，无确认或新job。资料日10/29、原成功扫描07:33:28.670089Z与有效至11/02 07:33:28Z分列。前后账本不变。截图保存在忽略的runs/shared-ui-catl-2026-11-01/normal-cache-reuse.jpg，不发布回答正文或DB。
+- **源码与清理：** StockQAa37d60c正常hooks（black/isort/mypy/secrets等）通过并已推origin；首轮hooks格式与两处类型错误已修，不绕过。Company Lab a37af8d本地提交、无remote；原UI8fc9072/runtime f58fdb1/StockWiki1bde9e0保持。Lab保原各文件行尾，不混入整文件伪差异。所有本轮QA/Lab/native E2E临时根清理；旧AppContainer目录未定位，不擅删未知路径。根外来10/10README及旧untracked保留，本仓本轮进展正常提交推送。
+
+## 11/01 07:52Z 暂停交接
+
+- 用户把目标设为paused，已调用目标工具确认paused；停止实施和自有测试，不继续真实请求。当前IQS最后已推`25cad52`，本轮新增代码/文档改动均未提交、未加载原UI服务；外来10/10 README改动继续保留。
+- 用户要求再减负：已修改现行README、test-strategy、dashboard-product-contract、one-click-launch、shared-engine-operations、bank-run-playbook，删日常人工inspect、全仓零漂移、active ReleaseSet/组件资格、历史72源码锁/transition凭证等要求；原身份、预算、防未知重发、来源与ACK不取消。批启动首层不再重复原权限子进程，实际start仍即时完整核验；252P/1F（76.70秒），唯一失败是旧测试held_preview缺内部keyword，尚未收尾，不报全绿。
+- 真实原UI批`batch-8e527bf6bd6a45f58e908cc9ea3837b3`、run`run-73ab08b815574449a6337c806a9bb2cc`已退出1；唯一新attempt`ATTEMPT_a0a4f2329acf4a3483ca11bb6f41ba8e`/work`WORK_3bfb09edaec248aca717f561b20d68cf` generation6，原HTTP200及safe输出存在，CP0。累计86HTTP/US$2.024863（本次$0.024995），0在途/未结，leased1；不能重发。原lease当时到08:28:48Z，用户恢复时须核实际状态，不假造续租。
+- 实际误门已定位并修源码：vendor真实http URL被https-only拒；资料日10/29被强制等截止日11/01；provided两条原数published_at=null被intake丢弃。最后一点意味着本次实际没有发送第一方原数，不能称金融纠错完成。原答保留、不补写context。IQS语义+引擎46P/6.82秒；初始6个新增反例4F/2P有效RED；中途测试设置/ref及异常类型错误已修，不能算产品RED。
+- Company Lab五源码文件answers/evidence/runner/replay/events未提交（原HEAD803ff51、起点clean）。HTTP只沿当前原attempt已核来源集合；较早/未知资料日保持原值；新scan未知published只在已知检索时点不晚于cutoff且有limitations时接入。旧board/event缺可选allow_undated_retrieved字段仍false，旧拒绝证据不追认，新true纳入原epoch，旧新重放正反例通过。独审指出的多响应原文查找尾修已实现，最终尾审未关闭。
+- 独立Lab回归包装器`runs/shared-ui-catl-2026-11-01/test_lab_isolated.py`长时间无结果，暂停时精确停止本轮PID19724（无子进程），未得测试/清理终态；未定位其`C:/Temp/iqs-lab-*`根，不能宣称清理完成。另一pytest已终态252P/1F。所有审查agent均已完成只读调查，无活动writer。
+- 原UI“检查并恢复”已实际被owner_work_unknown拒，费用未变。原CLI recover_checkpoints仅处理failed旧pack，shared pending无入口；不能仅放开leased。下一步最小修复：复用原seal动作透传冻结shared配置，QA原recover分支接原shared resume；在既有`_pending_port`加仅重放选项，找到原safe才能恢复，缺失直接拒新model/search send，然后原finalize/hydrate。不造第二恢复状态机或许可证。
+- 临时policy12/1.3、pack1/max16384/shared_company_config及精确comparison refs仍在。备份位于`runs/shared-ui-catl-2026-11-01`；恢复普通policy11、prepare旧设置时必须保留当前59个bundle/原历史，不能整文件回滚旧58包配置。当前暂停不擅自变更原工作区；下次先零API恢复收尾。未提交不推送这组尚未通过最终验证的改动。
+
 |日期/阶段|已完成的实际工作|尚未证明的范围|
 |---|---|---|
 |10/05 G2|获准6家缩样与局部G2签收|不是原60家+20重复全配方完成；不是200家G3|
@@ -17,9 +39,9 @@
 ## 可复查基线
 
 - 本次起点IQS已推送`215804dada41148ea79011fbb483e02f9f8d1abe`；接线代码`c1ee64f`、测试基础设施`e8f184c`/`f16da24`。本次源码与文档进展另作正常提交。
-- 当前StockQA `07db665`（含`1825a14`/`76c9431`）已推送并核实HEAD=origin/master；StockWiki `1bde9e0`已提交、无origin；原UI `d3ec24a`已提交、无remote。早期基线保留在下方历史阶段，不再冒作当前HEAD。
+- 当前StockQA `a37d60c`已推送；Company Lab `a37af8d`、StockWiki `1bde9e0`、原UI `8fc9072`、runtime `f58fdb1`已本地提交，后四仓均未配置remote，不新建远端。IQS当前基线25cad52，本轮提交另见Git；早期日期段不冒作当前HEAD。
 - 215为本机名单独立实体；108为三家公司目标有效题槽；113为原三公司含历史版本的观察；32为回答审计抽样。互不充当对方分母。
-- 81HTTP/US$1.903319是10/30 TTL-B历史累计；84HTTP/US$1.974640是首次fresh复用节点。11/01当前实测85HTTP/US$1.999868，0在途/未结；历史数字不是实时预算承诺。
+- 81HTTP/US$1.903319为10/30 TTL-B历史；84HTTP/US$1.974640为首次fresh复用；85HTTP/US$1.999868为generation5历史。当前86HTTP/US$2.024863，0在途/未结/active；本轮零API恢复、ACK和普通配置复用增量均0，不能把历史数字当当前快照。
 
 ## 证据入口
 
@@ -132,3 +154,8 @@ provided-v5原owner整链1P/468.81秒、0skip、0付费，唯一五组件runtime
 
 
 首comparison预览的拒绝来自实验编排错误：请求草稿漏permission_request；随后取scope原query.json时其snapshot尚为null。已改从gen5原refresh.json读取真实冻结source_query，题目/主体选真实子集，同时通过原_work_request和refresh.validate_request两校验，不伪造snapshot或改产品校验。期间误把缺文件的输入准备失败与下一CLI放在同一调用导致一次无效重试，0费用；已改为先检查exit_code再执行依赖。新原CLI preview现handle80391运行，旧failed日志保留；不是新权限缺失或需用户再次授权。
+
+
+原comparison控制已真实ready→原委托confirmed→StockQA apply recorded：owd1_b19b257a3b5982b4613dfa660a90b64ca98c2bb89c82d1f9c5884e7e4fa09f03，gen5→6、0模型HTTP。IQS25cad52已提交推送，QA7b3814f已推。实际首次writer将原work库25→26，之前用SQLite backup保存一致私有备份；只核相关原列，85预算attempt、244原响应、0旧research intent全保留，未做全仓快照。
+
+从原UI保存prepare.shared_company_config、pack1/thinking/max16384及精确新refs，58原执行包保留，原账本仍85HTTP/$1.999868。初次填定向IQS11与原受控范围选择冲突，按公开契约清空可选字段，由原决议确定IQS11单题；没有改产品校验。原UI确认预览本次1/完整36、group ASJ_02f60cec@1、唯一真实SZSE300750后，点击登记得到prepjob_490615d422a3424497cb16fa609f1432（preparing，原后台在运行）。登记未启动模型，勿重复提交。当前临时policy12/1.3与专用prepare仍在，完成或失败收尾后恢复普通配置并保留新登记包。

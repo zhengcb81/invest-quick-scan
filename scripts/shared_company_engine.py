@@ -170,8 +170,8 @@ def _production_answer_semantics(task, services):
 
     def validate_native(answer, question_id, *, attempt_ref, evidence_board):
         original(answer, question_id)
-        _validate_native_answer_sources(task, services, context, answer, question_id,
-                                        attempt_ref=attempt_ref, evidence_board=evidence_board)
+        return _validate_native_answer_sources(task, services, context, answer, question_id,
+                                               attempt_ref=attempt_ref, evidence_board=evidence_board)
 
     validate_native.semantic_version = 2
     validate_native.base_semantic_validator = original
@@ -193,8 +193,6 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
         or inspected.get("outcome_recorded") != "response_available" or evidence_board is None):
         raise ValueError("original successful current native reference required")
     body, board = copy.deepcopy(answer), copy.deepcopy(evidence_board)
-    check_citation_closure(body, board, board.publication_exclusive_date)
-    _native_final_answer(inspected["response_saved"], question_id, body, evidence_board=evidence_board)
     entry = services.owner.entries.get(question_id)
     if not isinstance(entry, dict) or entry.get("kind") != "work":
         raise ValueError("original question work member required")
@@ -221,6 +219,11 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
     projection = project_quick_scan_answer_sources(execution, work_store=services.store, work_item_id=work_id)
     if projection.get("search_status") != "executed" or not projection.get("search_source_urls"):
         raise ValueError("original verified source projection required")
+    verified_urls = tuple(projection["source_urls"])
+    check_citation_closure(body, board, board.publication_exclusive_date,
+                           verified_source_urls=verified_urls)
+    _native_final_answer(inspected["response_saved"], question_id, body,
+                         evidence_board=evidence_board, verified_source_urls=verified_urls)
     transported = Answer(json.dumps(body, ensure_ascii=False), score=body.get("score"),
                          status=body.get("status"), source="llm", metadata={"execution": execution})
     summary, standard = services.lifecycle._standard_transport(transported.text)
@@ -228,6 +231,7 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
                       status=transported.status, score=transported.score, description=summary)
     validate_standard_answer(standard, metadata=context["questions"][question_id]["metadata"],
                              normalized_answer=normalized, source_urls=projection["source_urls"])
+    return verified_urls
 
 
 def _write_atomic(path, payload):
@@ -291,7 +295,8 @@ def _journal(session_dir, run_id, *, start_seq=-1, start_head=None):
     return DurableOriginalJournal(run_id, start_seq=start_seq, start_head_sha256=start_head)
 
 
-def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_intent=None):
+def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_intent=None,
+                  replay_only=False):
     """Save original pending state before HTTP, without another execution loop."""
     from iqs_company_agent_lab.canonical import canonical_json
     from iqs_company_agent_lab.checkpoint import build_checkpoint, write_checkpoint
@@ -337,11 +342,15 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
                     result = recovered["saved_receipt"]
                     self._save(envelope["intent"], result)
                     return result
+            if replay_only:
+                raise SharedEngineRejected("replay_only_original_saved_response_required")
             result = port.model_step(envelope)
             self._save(envelope["intent"], result)
             return result
 
         def search(self, envelope):
+            if replay_only:
+                raise SharedEngineRejected("replay_only_new_search_forbidden")
             return port.search(envelope)
 
         def inspect_attempt(self, ref):
@@ -489,6 +498,7 @@ def resume_shared_engine(
     *,
     session_dir,
     transport_origin="stockqa_live",
+    replay_only=False,
 ):
     """Resume an original verified checkpoint through native read-before-send.
 
@@ -605,7 +615,8 @@ def resume_shared_engine(
     runner = Runner.continue_from_checkpoint(
         task,
         _pending_port(
-            port, runner_ref, session_dir, history, recover_intent=services.recover_intent
+            port, runner_ref, session_dir, history, recover_intent=services.recover_intent,
+            replay_only=replay_only,
         ),
         checkpoint,
         journal,
@@ -790,7 +801,8 @@ def _verified_finalization_export(task, export_dir, answer_semantic_rules=()):
     return run, EvidenceBoard.from_snapshot(copy.deepcopy(checkpoint["state"]["board"]))
 
 
-def _native_final_answer(saved, question_id, expected_answer, *, evidence_board=None):
+def _native_final_answer(saved, question_id, expected_answer, *, evidence_board=None,
+                         verified_source_urls=()):
     """Match the completed slot to safe original output, never caller text."""
     from iqs_company_agent_lab.answers import AnswerRejection, check_citation_closure, parse_answers_payload
     from iqs_company_agent_lab.strictjson import loads
@@ -831,7 +843,8 @@ def _native_final_answer(saved, question_id, expected_answer, *, evidence_board=
         # caller board, and do not mutate native output/checkpoint/slot objects.
         board = copy.deepcopy(evidence_board)
         try:
-            check_citation_closure(original, board, board.publication_exclusive_date)
+            check_citation_closure(original, board, board.publication_exclusive_date,
+                                   verified_source_urls=verified_source_urls)
         except (AnswerRejection, ValueError, TypeError, KeyError) as error:
             raise SharedEngineRejected("finalization_original_citation_validation_failed") from error
     if original != expected_answer:
@@ -885,10 +898,6 @@ def finalize_shared_engine(task, services, export_dir):
             saved = inspected.get("response_saved")
             if not inspected.get("known") or not isinstance(saved, dict):
                 continue
-            try:
-                _native_final_answer(saved, qid, body, evidence_board=evidence_board)
-            except SharedEngineRejected:
-                continue
             native = inspected["native_receipt"]
             members = [
                 attempt
@@ -903,8 +912,17 @@ def finalize_shared_engine(task, services, export_dir):
                                            evidence_board=copy.deepcopy(evidence_board))
                         if probe != body:
                             raise ValueError("original semantic validator changed answer")
+                    except SharedEngineRejected as error:
+                        if str(error) == "finalization_answer_differs_from_original_native_output":
+                            continue
+                        raise SharedEngineRejected("finalization_standard_answer_contract_requires_repair") from error
                     except Exception as error:
                         raise SharedEngineRejected("finalization_standard_answer_contract_requires_repair") from error
+                else:
+                    try:
+                        _native_final_answer(saved, qid, body, evidence_board=evidence_board)
+                    except SharedEngineRejected:
+                        continue
                 candidates.append((reference, members[0]["attempt_id"], native))
                 break
         if not candidates:

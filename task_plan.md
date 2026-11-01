@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-01减负已推送并加载。共享引擎provided来源完整软件链1P（468.81秒）通过，QA `7b3814f`已推、runtime `f58fdb1`已本地提交。当前从原UI做宁德时代IQS_11真实比较；临时owner policy12/1.3已激活，原控制preview正在运行，尚无新模型HTTP。收尾须恢复普通policy11及非专用准备设置，保留新包和历史。
+执行状态：2026-11-01本节点已完成：共享已付回答从原UI零API恢复、保存、StockWiki原ACK及普通配置后的同题缓存复用均已验。总账86HTTP/US$2.024863，0在途/未结/active；原分数7、资料日10/29、完成时间07:33:28.670089Z保持。短证据实际SDK载荷与保存/复用的隔离E2E通过，不能冒签旧请求曾使用它或金融正确。集中独审通过，普通policy11及原prepare已还原、59个包保留。StockQAa37d60c已推；Lab a37af8d本地提交（无远端）；本仓本轮源码/PWF随本次正常提交发布，准确commit以Git记录为准。
 
 ## 当前结论
 
@@ -24,7 +24,7 @@
 |题库与组合|已实现并接UI|48评分模块/222题；另61信息题。所有公司基础36题=核心24+杜邦7+五力5，数量派生，非硬编码24上限|
 |身份/名单/比较/UI|原UI已接|215实体；手动增删/恢复、TXT/CSV审阅、模型/时间对比已接。并非全池有答案|
 |原部署|当前可用|本轮原GET doctor `ready=true`、`blocked_reasons=[]`；未做付费连通测试。入口`http://127.0.0.1:8766/`|
-|共享引擎实际入口|可选原入口已接源码，真实UI验收待做|原设置/冻结准备包→原CLI/LLMRunner→原owner/client/预算→共享引擎→原封存/hydrate已接；原owner软件E2E通过，尚未激活原UI真实扫描。默认旧路径与既有成果保持；共享跨模型fallback仍待接|
+|共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|本节点同一已付请求零API补封、原ACK1/1、普通配置直接cached1；默认路径保持。未证明共享全公司36题/规模/金融全对；共享跨模型fallback仍待接|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
 |真实过期刷新|已验收|A/B两次单题刷新均原ACK；信息日旧，按原24h规则仍不fresh|
@@ -42,22 +42,15 @@
 
 ## Next Step
 
-**唯一下一主线动作：从原UI以可选共享引擎和第一方短证据复核宁德时代IQS_11，再验原ACK及零重发复用。** 付费前先补当前发现的provided来源保存缺口：原搜索来源保持，实际已发送的provided上下文来源从原research_intent/attempt绑定读取并单列，不伪作external search或新授权凭证；相关scored正例通过再从原UI派发。 公共接线源码与软件验收已推进，不重做SDK/engine；先核原分析主体范围和原数来源，按原comparison创建generation5已交付工作之准确后继，不能改旧bank/分数/正文/时间或择高分。generation5原ACK1/1仍保留，但2024 FCF546.45亿元已知错误，正确同口径为658.10402亿元；金融纠错没有通过。IQS_22的估值主张仍未独立证实。
+**当前请求已收口；本仓改动随本次正常提交发布，不再扩大本轮范围。** 后续主线仍是下方五个产品节点，优先继续回答质量与共享路由未完项；本节点不自动启动新付费实验、200家或事实支线。G3/F05/两消费者/全池/配套仍未完成。
 
-11/01接续已修第一部分：StockQA原单题/题包共用发送提示加入逐期原始输入与第一方核对，实际SDK边界有效RED后10项隔离验证通过；旧题面与旧记录不改，尚未新增收费验证。原native搜索被错误要求external proof、compact路由逐字匹配及封存后缺CP可能再次派发三处兼容问题也已修复：语义20P、QAEngine23P、原owner单例1P（149.11秒、0skip，临时runtime清理）。随后完成的公共接线见下一段，实际原数复核继续沿现有evidence_board；不能冒充external-search proof，不回退legacy重问。普通UI/已有成果继续保持，不为这次接线新增核查凭证。
+- 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
+- 普通policy11/1.1、successful_scan/24h及prepare原字节设置已恢复；pack2、thinking=true、max32768，shared配置和comparison refs撤回。保留59个登记包及所有旧答。08:35:49Z原UI同实体/合并主体/截止日/模型再预览IQS_11，cached1、执行包0、0API、原owner未变化；复用同一`obs_37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188`，资料日10/29与原成功搜索时间07:33:28.670089Z不变。
+- **短证据验证的准确边界：** 新unknown-published短证据确实进入原SDK实际HTTP载荷的dynamic evidence，并通过原intent/CP/封包/复用软件链；只有vendor wire脚本化、0真实收费。原这笔已付请求的两条原数当时被过滤，旧板仍empty、provided_context_sources仍空，不能追认；本节点也不声明现金流/估值等金融内容已核实。
+- 相关验证：IQS语义/引擎50P；QA入口15P；Lab四模块41P；seal11P；原252P/1F中的旧held_preview失败已修并定向通过（结果有重叠，不相加）。唯一完整owner/SDK短证据E2E最终1P/701.62秒，先前498.94秒失败和修复保留。自有临时环境已清理，未跑小时全套或新增凭证。
+- 集中非作者审查已亲读原账本、CP、响应、ACK与旧/新证据板并通过工程范围；不授金融准确性。之前未定位的旧AppContainer临时目录没有擅删，本轮重新运行的隔离Lab/QA/E2E根均确认已清理。
 
-上述公共接线本轮已落地：StockQA `07db665`（含`1825a14`）已推，原runtime桥`cb00e4e`已本地提交（无远端）；新增可选shared_company_config不改默认工作流。原研究final_json没有native搜索的实质缺口已修，复用原send_search_request及同一permit原子保存原回执/公开输出，不复制传输或费用账本。原owner/SDK/engine软件E2E1P（536.71秒；源码基础快照），独审三处尾修后最终SDK/配置/原CLI67P（4.75秒，含未完成run不发布的尾例；更早42/47/66不累加）；两类隔离环境全清理，新增收费0。尾修未重跑长例、真实公司/原UI/金融结果仍待验，不能把这些软件结果冒签为生产完成。共享模式当前native MiMo或原external单题、精确原批准路由；跨模型顺位降级未完成，原普通入口的已有策略保留。
-
-本轮定向复核接线及真实状态见[当前现金流节点](docs/implementation/reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。source-bank及原inspection遗漏comparison后继均已根修；03:04:25Z原研究结果ACK后已恢复普通policy11/1.1，successful_scan/TTL24h不变、专用refs移除，新登记包与原历史保留。累计85HTTP/US$1.999868、0在途/未结；不要重建或重发本轮已付请求。
-
-最近扫描复用已经真实完成：原三题批`batch-82a2f43df7084fd984595c4078db898a`从原UI补封已付回答后，原交付`deliveryjob_16886fe886925566121f1ca2fcc68b5c`在01:55:00Z完成2/2 scope、3/3包。随后原UI以相同实体、合并主体、截止日、模型再次准备DUPONT_02，job `prepjob_907362f371a048b38a2e3dd32be7800a`为registered/result.cached，复用相同原观察且无执行包、无委托/确认/模型准入；前后84HTTP/US$1.974640、0未结/在途，新增请求及费用均0。见[真实结果](docs/implementation/reviews/SIMPLIFY-FRESH-2026-11-01/native-cache-reuse.json)。
-
-policy9/successful_scan/TTL24h以原成功搜索执行时间00:45:07.932157Z判断是否重扫；资料日2026-10-27保持。导入、重启、查看及重放不续期；失败/未执行搜索/不合法执行时间、事件失效、主体/题义/版本/模型不兼容仍不能复用。默认旧information_as_of策略保持；真实旧规则过期A/B与新时钟边界/过期测试均已过，不再为此另加凭证或真实等待24小时重跑。
-
-本轮精简及真实恢复均已集中独审；只读导出与缓存专用文案的尾修随同一节点收尾，不开启新审查流程。金融核验与工程缓存分开：IQS_11已知错误仍未关闭，IQS_22未金融认证；不能把这次三题定向补扫说成整公司36题更新或全池生产通过。
-
-新TIME仅保留时点解释和已有核查元数据的只读兼容；取消独立verification receipt签发/续期系统，不再列为后续必做。时效直接沿原字段/事件/成功搜索时间规则，缺核查凭证不阻塞扫描、入库、缓存或消费者。后续只沿下列产品节点推进，不恢复人工preview门或逐assertion任务凭证。
-
+本节点细节与历史已知金融错误见[原报告](docs/implementation/reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)及[progress](progress.md)。不再按下方历史暂停、旧generation5或尚未真实启动的说法重新派发。
 
 ## 本轮继续减负
 

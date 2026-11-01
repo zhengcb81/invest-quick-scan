@@ -25,10 +25,14 @@
 
 ## 中断后恢复
 
+- 原UI已收回答但未完成保存时，选择该原运行的“检查并补封”。有冻结共享配置的包沿原`--seal-deliveries --recover-checkpoints`进入共享检查点的仅重放路径；缺原已收响应就停止，禁止新增模型或搜索请求，不要求重新提供密钥或新费用授权。普通恢复路径保持。恢复后继续原入库/ACK，不把“已受理”当作签收。
+- 若一次重放被内容校验拒绝，其诊断继续保留；后续软件修复可以在仅重放模式读取最近尚存的原pending检查点。存在但损坏、目录或断链的检查点不能被静默跳过；不修改原答、原来源板、原时间或费用。
 - 先检查同一原 intent/attempt，禁止先发一遍模型请求“试试看”。有原安全输出才恢复；存在原请求但缺安全输出时保持待核实，不清库、换任务或另开预算重发。
 - 新进程仍使用同一冻结输入和原记录，以 `resume_shared_engine` 恢复。原 lease 必须按原规则有效；本接口不自动续租或接管过期 work，也不恢复私有思考。
 - 恢复后显式封存；若之前已经保存同一完整答案和 receipt，重复封存复用同一检查点并补原封包，不再调用模型。多题部分成功时保留已保存进度。
-- 对照恢复前后的物理请求、预算行、外部操作行和安全响应行的数量与完整内容哈希。只比数量不足以证明没有篡改或重复计费。模型 token cache 命中与本地安全响应复用分别记录。
+- 沿原intent/attempt、预算和检查点确认接续的是同一次请求；已收答案不重问，ACK失败只重投原结果。日常恢复不要求逐表全行hash审计或新核查凭证。相关故障测试验证原记录保持及新增请求数；模型token cache命中与本地答案复用分别记录。
+
+新显式company-scan允许发布日期未知的短来源进入上下文，前提是检索时点已知且不晚于截止日、主体绑定正确并保留限制说明；发布日期保持null，不从URL或财年推断。旧任务按原快照/事件中的接受语义恢复，不追认当时被过滤的来源。模型引用仍须与当前原请求的实际搜索或已发送provided来源对应，真实HTTP来源与HTTPS同样处理；已失效的板内记录不能改名成外部引用复活。
 
 原安全响应已知但语义不合法时，保留原回答、receipt、费用与失败导出。先走原known-response resolution，再由原`retry_unusable_answer`明确开启新generation，重新准入与冻结输入；不得增加旧task请求限额、手改失败行或重置预算。当前singleton恢复证明与pack分支分开核验，singleton不能伪造pack intent/member。生产单次任务暂限一次模型请求，本轮不宣称已支持自动多轮修答。
 
@@ -65,7 +69,7 @@ Company 和 main 的普通 `report` CLI 当前没有传入这些可信规则的�
 
 generation3 的真实 cold 已保存合法 native safe；当时暖恢复因重放漏传同一 typed rules，被原稳定前缀哈希检查拒绝。修复统一请求构造和规则传递，不能改 safe、问题、引用、receipt、原任务或账本来消除差异。原冷执行锁仍为原锁，修后暖恢复只能记为“不同源码的显式修复兼容”，不能称为同版本 cold/warm 验收。
 
-本轮修复桥使用 `typed-generation3/replay-repair/source-transition.json` 和 `repair-source-pins.json`，原 72 项锁、冷执行源码快照及失败日志继续保留。执行前须逐项核对 transition 绑定的原 task / crash proof / safe / 原锁摘要、原提示规则摘要，以及六个变更源码的 before/after 摘要；原 `replay.py` 不在旧 72 项锁时，以保存的实际冷源码快照提供其 before 字节依据，不能倒填旧锁。修复驱动、当前源码及报告器也必须被新锁覆盖。结果和薄摘要须显式输出 `same_source_cold_and_warm_claim=false`、原锁、新锁、transition 摘要及旧新源码关系。
+以下仅记录2026-10-25 generation3一次历史修复，不是新扫描或日常恢复前置：当时使用 `typed-generation3/replay-repair/source-transition.json`、`repair-source-pins.json`、72项旧锁及六处源码前后摘要解释不同版本的恢复结果。历史证据原样保留，`same_source_cold_and_warm_claim=false`保持；当前恢复直接沿原intent/attempt、预算、检查点和公开入口，不创建或刷新这套transition凭证。
 
 修复暖恢复在新进程执行：移除模型/搜索 key、通过audit阻断socket连接、解析与sendto；执行路径不调用子进程传输，只允许复用原 native safe。恢复前后比较原全部八张预算/请求/外部检索/context-use 相关表、原安全响应及 `owner_decisions` 的完整行投影哈希；同时核原 checkpoint、标准答案、delivery 和导出/报告之间的绑定。新增本地检查点与封包应单独记录，不把它们混入“账本完全不变”的比较。物理模型和搜索请求必须均无新增，不能只比较计费总数、金额或行数。双封存应复用同一原检查点；`ready` 仍只是本地待交付封包，不是 StockWiki ACK，也不是金融准确性通过。
 
