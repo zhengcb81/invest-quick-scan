@@ -55,6 +55,19 @@ def test_async_duplicate_click_only_applies_once(setup):
     assert len(registered)==1
 
 
+def test_existing_job_attach_does_not_revalidate_a_new_preparation(setup, monkeypatch):
+    jobs,preparer,registered=setup
+    job_id=jobs.submit(SELECTION)['job']['job_id']
+    preparer.release.set();finish(jobs,job_id)
+    def stale(_):raise DashboardJobError('preview_stale','Current settings changed',409)
+    monkeypatch.setattr(preparer,'validate_selection',stale)
+    assert jobs.submit(SELECTION)['attached'] is True
+    assert preparer.apply_count==1 and len(registered)==1
+    with pytest.raises(DashboardJobError,match='指纹不一致'):
+        jobs.submit({**SELECTION,'preview_token':'b'*64})
+    assert preparer.apply_count==1 and len(registered)==1
+
+
 def test_read_after_restart_never_reapplies_unknown_preparation(setup):
     jobs,preparer,registered=setup
     job_id=jobs.submit(SELECTION)['job']['job_id'];assert preparer.entered.wait(2)

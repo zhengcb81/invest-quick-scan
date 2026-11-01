@@ -1071,6 +1071,27 @@ def test_cached_scope_retains_owner_scan_clock_without_inventing_fact_dates(cloc
     assert 'information_as_of' not in result['items'][0]
 
 
+def test_cache_preview_exposes_existing_results_without_an_apply_or_job(original,monkeypatch):
+    gateway,base,_=original
+    cached={'status':'cached','cached_question_count':1,'cached_scopes':[{
+        'subject_ref':{'entity_id':ENTITY,'scope':'entity','scope_id':ENTITY},
+        'question_count':1,'items':[{'question_id':'DUPONT_02','observation_id':'obs_existing'}]}],
+        'execution_bundles':[],'API_requests':0,'owner_state_changed':False}
+    worker=gateway._worker
+    def read(operation,payload):
+        if operation=='cache_preview':return copy.deepcopy(cached)
+        assert operation!='apply'
+        return worker(operation,payload)
+    monkeypatch.setattr(gateway,'_worker',read)
+    owner_before=tree(base/'owner/data')
+    preview=gateway.bank_preview({'entity_id':ENTITY,'as_of':'2026-10-25','question_ids':['DUPONT_02']})
+    assert preview['cache_only_available'] is True
+    assert preview.get('cached_result')==cached
+    assert preview['API_requests']==0 and tree(base/'owner/data')==owner_before
+    directory=Path(gateway.options['state_root'])/'candidates'/preview['preview_id']
+    assert not (directory/'apply-started.json').exists()
+
+
 @pytest.mark.parametrize('clock',[None,'successful_scan'])
 def test_readonly_cache_preview_passes_owner_clock_and_preserves_source_dates(tmp_path,monkeypatch,clock):
     from types import SimpleNamespace

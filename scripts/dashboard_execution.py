@@ -624,6 +624,15 @@ class ExecutionGateway:
             stopped_evidence = None
             if value.get("launcher_state") not in {"paused", "retired"}:
                 actions.append("pause")  # Stops future companies, never interrupts an HTTP.
+            # These are explicit check-and-act entry points. Their handlers
+            # read fresh owner/process state under the original lock. Neither
+            # a missing nor a stale display snapshot requires manual inspect.
+            if (not inspect_owner and value['run_id'] not in self._processes
+                and value['bundle_id'] in self.bundles
+                and value.get('launcher_state') != 'retired'):
+                actions.extend(['seal','retire'])
+                if value.get('launcher_state') in {'paused','draining'}:
+                    actions.append('resume')
             try:
                 if inspect_owner:
                     preview = self.preview({"bundle_id": value["bundle_id"]})
@@ -644,6 +653,9 @@ class ExecutionGateway:
                 value.update(self.work_progress_projection(preview.get('inspection'),
                     observed_at=value.get('inspection_observed_at'),
                     cached=value.get('inspection_is_cached_projection') is True))
+                if not inspect_owner:
+                    value['allowed_actions']=list(dict.fromkeys(actions))
+                    continue  # Display cached progress; check only on action.
                 stopped_evidence = None
                 if (value.get("launcher_state") in {"paused", "draining"}
                     and value["run_id"] not in self._processes
@@ -680,7 +692,7 @@ class ExecutionGateway:
                     actions.append('seal')
                 except DashboardExecutionError:
                     pass
-            value["allowed_actions"] = actions
+            value["allowed_actions"] = list(dict.fromkeys(actions))
         return {"protocol": "iqs.dashboard_process_references/1.0.0", "tasks": values, 'total': total,
                 'offset': offset, 'limit': limit, 'next_offset': offset+limit if offset+limit < total else None, "API_requests": 0}
 

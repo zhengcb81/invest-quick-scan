@@ -25,8 +25,16 @@
 
 原source工作`WORK_3a5fefcc7c6f4876bc1166c7e0ee49fe`实际generation4，比较目标5。初始原控制已recorded但未派发；原UI准备`prepjob_81fcdad6c4714567a310938957d398db`在scope preview因source-bank遗漏退出，0模型HTTP。已从原UIabandon保留，再经原route activate+精确CAS恢复原bank，保留新旧route历史。旧控制窗口已过，未改旧记录；修复后重新取得当前范围的显式控制，仍同一目标代次，非模型回答择高重问。
 
-截至本页初记，累计仍84HTTP/US$1.974640，0新模型请求；真实新答案、第一方数字对照及原ACK尚未完成，不提前关闭IQS_11。当前临时owner policy10为1.3比较模式，原普通配置备份在本机`runs/cashflow-correction-2026-11-01/`；在未决任务结束前不盲目复位，收尾后须恢复普通策略并移除专用refs，原日期不续期。
+初记84HTTP/US$1.974640是调用前快照；实际后续如下，不把初记误作当前阻塞。
+
+原UI准备`prepjob_ac48559e48864ddba7f3e588c26e2af9`登记了`WORK_df168ba95e824103ad4cf3678c88c638`（generation5）。启动时原inspection仍只接受两类retry的已登记后继、漏掉comparison，以`refresh_control_source_work_changed`拒绝正常接续；已补原目的枚举，generation和原owner_control准确绑定保留，无关generation3仍拒。合成原SQLite正反例有效RED1F/1P后，两相关模块18P/0skip，禁网去密钥副本已删除，非作者尾审通过。
+
+修复后从原UI接续同一`batch-42b5379fe5b54655a63f853df3ec582a`，实际`run-292caf2b061348b4ae4c53c15c4c7ea8`只发1次MiMo Pro请求。原HTTP200/search executed，02:57:07.849238Z至03:00:17.536037Z约189.69秒，03:00:18Z完成回答；增量US$0.025228，累计85HTTP/US$1.999868，0未结/在途。原UI交付`deliveryjob_b8c59f9d3c02c4d5db9cc6358c57e55d`于03:04:25Z完成scope1/1、原包1/1 ACK，仅存隔离研究库中的未核实模型输出。
+
+**金融纠错未通过。** 新模型分数8仍引用二手文章的2024 FCF546.45亿元，未用官方比较列重算，不择高分、不改原score7或新score8。只读查本次冻结manifest和questions，未含本轮新增逐期原始输入/二手来源提示；因此不能把helper的新规则或软件通过当这次实际请求已使用新规则。下一步先核实际请求接线并带入已核第一方原数，不继续盲目重问；不会因已有ACK给它金融资格。
+
+原任务结束后已复位普通owner policy11/1.1，successful_scan、TTL24h、模型及预算不变，移除专用refs并保留新登记bundles。经原validate_policy离线验证与当前字节CAS确认后保存，未覆盖登记期间新增包；原8766已安全重载，doctor ready=true/无缺项。未改任何旧时间、答案或原控制历史。
 
 ## 提交范围
 
-StockQA `c6854fd`已推既有origin/master；StockWiki `1bde9e0`、原UI `0212c5c`已提交，两仓无remote不创建新远端。IQS本节点源码/文档由根正常提交。原服务、原库、原失败事件与已发生费用保留；不提交私有配置、原回答或捕获正文。
+StockQA `3fd35a1`（含`c6854fd`）已推既有origin/master，正常hooks全部通过，仅Black规范新增测试后重提；StockWiki `1bde9e0`、原UI `0212c5c`为本节点接线基线，后续UI精简另提交，两仓无remote不创建新远端。IQS本节点源码/文档由根正常提交。原服务、原库、原失败事件与已发生费用保留；不提交私有配置、原回答或捕获正文。

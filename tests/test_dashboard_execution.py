@@ -402,7 +402,11 @@ def test_progress_cache_keeps_its_original_time_and_never_launches_new_inspectio
     observed=gateway._owner_snapshots[run_id]['observed_at']
     def forbidden(*args,**kwargs):raise AssertionError('Cached progress cannot issue a new owner process')
     monkeypatch.setattr(gateway,'_inspect_work',forbidden)
-    task=gateway.tasks(run_ids=[run_id],inspect_owner=False)['tasks'][0]
+    with monkeypatch.context() as display:
+        def no_preflight(*args,**kwargs):raise AssertionError('Display polling cannot recheck execution')
+        for method in ('_fingerprint','_seal_preflight','_retirement_work_summary'):
+            display.setattr(gateway,method,no_preflight)
+        task=gateway.tasks(run_ids=[run_id],inspect_owner=False)['tasks'][0]
     assert task['status_counts']=={'result_ready':1,'pending':1}
     assert task['status_counts_is_cached_projection'] is True
     assert task['status_counts_observed_at']==observed
@@ -417,6 +421,25 @@ def test_uninspected_running_reference_is_explicit_unknown_progress_not_empty_co
     assert task['status_counts'] is None and task['counts'] is None
     assert '未读取' in task['progress_label']
     assert task['work_completion_authoritative'] is False
+
+
+@pytest.mark.parametrize('cached',[False,True])
+def test_recovery_actions_need_no_cached_inspection_but_recheck_when_clicked(deployment,monkeypatch,cached):
+    gateway,run_id,path=native_progress_run(deployment,{'Q1':{'status':'pending'}})
+    before=path.read_bytes()
+    calls=[]
+    def blocked(_):
+        calls.append('fresh')
+        raise DashboardExecutionError('owner_transport_unavailable','Original owner unavailable',503)
+    monkeypatch.setattr(gateway,'preview',blocked)
+    if cached:
+        gateway._owner_snapshots[run_id]={'preview':{'can_start':False,'inspection':{}},'observed_at':'2026-10-25T00:00:00Z'}
+    task=gateway.tasks(run_ids=[run_id],inspect_owner=False)['tasks'][0]
+    assert {'resume','seal','retire'} <= set(task['allowed_actions'])
+    assert calls==[] and task['counts'] is None and path.read_bytes()==before
+    with pytest.raises(DashboardExecutionError,match='Original owner unavailable'):
+        gateway.control(run_id,'resume')
+    assert calls==['fresh'] and path.read_bytes()==before
 
 
 @pytest.mark.parametrize('rows',[{'Q1':{}},{'Q1':{'status':'future-unrecognized'}},[]])

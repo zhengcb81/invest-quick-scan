@@ -694,6 +694,10 @@ class PrepareGateway:
                       "blocked_reasons": sorted(set(gaps)), "can_apply": not gaps}
             record["recovery_subset"] = recovery
             record['cache_only_available']=cached is not None
+            if cached is not None:
+                # The original read already returned these observation IDs.
+                # Viewing them needs neither confirmation nor an apply job.
+                record['cached_result']=cached
             record["execution_question_ids"] = recovery["execution_question_ids"] if recovery else requested
             record["execution_question_count"] = len(record["execution_question_ids"])
             if recovery:

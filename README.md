@@ -114,4 +114,4 @@ python scripts/run_tests.py fast --temp-root C:/Temp
 python scripts/run_tests.py all --plan
 ```
 
-不要每次小改运行小时级全套。集成、端到端和原生跨仓层的前置、隔离与命令见[测试说明](docs/implementation/testing.md)。项目当前进度和接续步骤见[task_plan.md](task_plan.md)、[progress.md](progress.md)及[交接文档](docs/implementation/handoff-for-new-agent.md)。
+不要每次小改运行小时级全套。只在产品大节点集中审查，日常只验证受影响部分；不要求逐文件签收、逐断言回执或因无关文档改动刷新已通过的证明。浏览旧任务与缓存不走新收费准备，恢复按钮在点击时检查，纯缓存预览可直接查看原结果。防串公司、错题义、重复收费和误覆盖的原检查保留。集成、端到端和原生跨仓层的隔离与命令见[测试说明](docs/implementation/testing.md)。项目当前进度和接续步骤见[task_plan.md](task_plan.md)、[progress.md](progress.md)及[交接文档](docs/implementation/handoff-for-new-agent.md)。

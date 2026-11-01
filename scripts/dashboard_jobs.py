@@ -82,7 +82,9 @@ class PreparationJobs:
             raise DashboardJobError('preparation_selection_invalid', '请选择完整原预览和确认指纹。')
         job_id = 'prepjob_'+payload['preview_id'].removeprefix('prepare_')
         path = self._path(job_id)
-        self.preparer.validate_selection(payload)
+        new_job = not path.exists()
+        if new_job:
+            self.preparer.validate_selection(payload)
         try:
             with self._mutex, control_lock(self.state_root/'jobs.lock'):
                 if path.exists():
@@ -90,6 +92,10 @@ class PreparationJobs:
                     if record['preview_token'] != payload['preview_token']:
                         raise DashboardJobError('preview_mismatch', '同一预览的确认指纹不一致。', 409)
                     return {'attached': True, 'job': self.get(job_id), 'API_requests': 0}
+                # Attaching an existing exact job is a read, not a new apply.
+                # Only a new job needs today's preparation prerequisites.
+                if not new_job:
+                    self.preparer.validate_selection(payload)
                 record = {'protocol':'iqs.preparation_job/1.0.0', 'job_id': job_id,
                     **payload, 'state':'preparing', 'created_at':_now(), 'session':self.session,
                     'model_dispatch_started': False}

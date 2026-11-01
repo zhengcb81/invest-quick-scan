@@ -112,3 +112,11 @@ IQS原6个policy schema只添optional enum，原required和OwnerState/items保�
 独立mode=ro亲核原StockWiki三题观察和StockQA outbox，3包ID及payload SHA逐一匹配、均delivered，qualification_status仍review_pending。原cache job为registered/result.cached、1题/fullbank36、空bundle；obs_52f45f…与已交付原观察同ID。observed_at==answered_at=2026-11-01T00:45:07.932157Z，资料日10/27保持。原预算SQL聚合与before-cache均84HTTP/$1.974640，0在途/未结/active工作，新增模型请求及费用0。只支持本机CATL/DUPONT02单题最近扫描复用，不支持金融、整公司或规模签收。
 
 根当前PWF未将G3/G5/G6/200/2000假关；审查指出README/handoff残留fresh pending及job状态用词，根已收敛为完成与registered/result.cached。这些小文案改正不要求新凭证或回归。
+
+## 同节点进一步精简复核（2026-11-01）
+
+非作者 /root/fresh_ui_route 对root最终三个去冗余范围及QA后继检查尾修集中复核，未代写实现、未触真实库/原进程或收费API。确认现有job精确attach不成为新apply，错token/损坏及新job检查保留；原任务只读页面开放明确检查式操作，不发模型，真实control仍实时检查；纯缓存复用原cached_result/原展示，多挂牌或混合仍原流程。轮询早返回与一行.btn[hidden]尾修亦已静核，无未解产品问题。
+
+独审指出的无关importPanel hidden重置已删除；最初短组唯一错误为wrong_token验证太晚创建空目录，已修并包含在原jobs全9P，不是cache透传失败。UI旧按钮文本断言已同步并单项通过。execution23P与尾部各3P互有重叠，不相加；未要求重跑全套/新回执。原UI随后实际0新job、0新模型HTTP/费用完成纯缓存直出和按钮隐藏，属于总控真实使用验证。
+
+独审另明确纠正适用范围：此前只确认shared_company_engine存在prompt_rules消费分支，不能证明这次原UI实际发出的冻结请求带了新逐期提示。实际金融纠错仍失败，不能因本节点软件通过、工程ACK或新score8宣称金融正确。
