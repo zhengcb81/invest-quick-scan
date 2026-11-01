@@ -28,6 +28,9 @@ from typing import Any
 
 PROJECTION_PROTOCOL = "iqs.dashboard.company_assessment/1"
 PROJECTION_VERSION = "company_assessment/1.0.0"
+# The owner's own declaration this projection was written against.
+OWNER_PROTOCOL = "stockwiki.company_assessment/1"
+OWNER_SCHEMA_VERSION = "1.0.0"
 
 # Honest named absences pass through verbatim: a store that cannot be read
 # or a registry with no registered result is an explicit reason, never zero.
@@ -44,6 +47,7 @@ _REFUSAL_STATUS = {
     "manifest_invalid": 400,
     "bounds_exceeded": 400,
     "registry_schema_too_new": 502,
+    "registry_schema_unavailable": 502,
     "registry_integrity_mismatch": 502,
     "registry_unavailable": 503,
     "observation_store_unavailable": 503,
@@ -124,7 +128,7 @@ def worker_read(config: dict, operation: str, payload: Any) -> dict[str, Any]:
             raise ProjectionError(
                 error.code,
                 "the owner company assessment authority refused this read",
-                _REFUSAL_STATUS.get(error.code, 400),
+                _REFUSAL_STATUS.get(error.code, 502),
             ) from None
     elif operation == "company_history":
         normalized = _validated_history_payload(payload)
@@ -135,15 +139,11 @@ def worker_read(config: dict, operation: str, payload: Any) -> dict[str, Any]:
             raise ProjectionError(
                 error.code,
                 "the owner company assessment authority refused this read",
-                _REFUSAL_STATUS.get(error.code, 400),
+                _REFUSAL_STATUS.get(error.code, 502),
             ) from None
     else:  # pragma: no cover - the worker dispatch only sends these two
         raise ProjectionError("operation_unknown", "Unsupported company projection read", 404)
-    for key in ("protocol", "schema_version", "network_calls", "llm_calls"):
-        if key not in owner:
-            raise ProjectionError("owner_projection_invalid", "owner read is missing envelope fields", 502)
-    if owner.get("network_calls") != 0 or owner.get("llm_calls") != 0:
-        raise ProjectionError("owner_projection_invalid", "owner read reported unexpected I/O", 502)
+    owner = _checked_owner_read(owner)
     return {
         "protocol": PROJECTION_PROTOCOL,
         "projection_version": PROJECTION_VERSION,
@@ -153,6 +153,24 @@ def worker_read(config: dict, operation: str, payload: Any) -> dict[str, Any]:
         "network_calls": 0,
         "llm_calls": 0,
     }
+
+
+def _checked_owner_read(owner: Any) -> dict[str, Any]:
+    """Validate the owner's own read envelope before it is projected.
+
+    The owner's protocol/schema declaration is checked rather than assumed, so
+    a future owner shape is never relabelled under this projection version.
+    """
+    if not isinstance(owner, dict):
+        raise ProjectionError("owner_projection_invalid", "owner read is not an object", 502)
+    for key in ("protocol", "schema_version", "network_calls", "llm_calls"):
+        if key not in owner:
+            raise ProjectionError("owner_projection_invalid", "owner read is missing envelope fields", 502)
+    if owner.get("protocol") != OWNER_PROTOCOL or owner.get("schema_version") != OWNER_SCHEMA_VERSION:
+        raise ProjectionError("owner_protocol_unsupported", "owner company assessment protocol is unsupported", 502)
+    if owner.get("network_calls") != 0 or owner.get("llm_calls") != 0:
+        raise ProjectionError("owner_projection_invalid", "owner read reported unexpected I/O", 502)
+    return owner
 
 
 def _require_entity(config: dict, entity_id: str) -> None:
@@ -191,8 +209,14 @@ def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
             "owner_projection_invalid", "owner result read has neither a result nor a named reason", 502
         )
     if result is not None:
-        if not isinstance(result, dict) or not result.get("result_id"):
+        if not isinstance(result, dict) or not isinstance(result.get("result_id"), str) or not result["result_id"]:
             raise ProjectionError("owner_projection_invalid", "owner result snapshot is malformed", 502)
+        if result.get("entity_id") != owner_payload["entity_id"]:
+            raise ProjectionError(
+                "owner_projection_invalid",
+                "owner result snapshot names a different entity than the read",
+                502,
+            )
         if result.get("aggregate_score") is not None:
             raise ProjectionError(
                 "owner_projection_invalid",
@@ -213,24 +237,35 @@ def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def project_history(owner_payload: dict[str, Any]) -> dict[str, Any]:
-    """Service half: shape one GET ``company/history`` response."""
+def project_history(owner_payload: dict[str, Any], *, limit: int, offset: int) -> dict[str, Any]:
+    """Service half: shape one GET ``company/history`` response.
+
+    The page is re-checked against the REQUESTED bounds: a bounded route must
+    not forward a page the owner was not asked for (defence in depth against
+    an owner that ignores its own limit).
+    """
     _require_owner_envelope(owner_payload, "history")
     owner = owner_payload["owner_payload"]
     items = owner.get("items")
     page = owner.get("page")
     if not isinstance(items, list) or not isinstance(page, dict):
         raise ProjectionError("owner_projection_invalid", "owner history read is missing items/page", 502)
-    if any(not isinstance(item, dict) or not item.get("result_id") for item in items):
+    if any(not isinstance(item, dict) or not isinstance(item.get("result_id"), str)
+           or not item["result_id"] for item in items):
         raise ProjectionError("owner_projection_invalid", "owner history item is malformed", 502)
-    if page.get("total") is not None and type(page.get("total")) is not int:
+    if len(items) > limit:
+        raise ProjectionError("owner_projection_invalid", "owner history page exceeds the requested limit", 502)
+    if page.get("limit") != limit or page.get("offset") != offset:
+        raise ProjectionError("owner_projection_invalid", "owner history page does not echo the request", 502)
+    total = page.get("total")
+    if type(total) is not int or total < len(items) + (offset or 0):
         raise ProjectionError("owner_projection_invalid", "owner history total is malformed", 502)
     return {
         "protocol": PROJECTION_PROTOCOL,
         "projection_version": PROJECTION_VERSION,
         "entity_id": owner_payload["entity_id"],
         "items": items,
-        "page": {"limit": page.get("limit"), "offset": page.get("offset"), "total": page.get("total")},
+        "page": {"limit": limit, "offset": offset, "total": total},
         "registry_state": owner.get("registry_state"),
         "registry_store_id": owner.get("registry_store_id"),
         "network_calls": 0,

@@ -551,7 +551,7 @@ class DashboardService:
 
         owner_payload = self._gateway('owner').company_history(entity_id, limit, offset)
         try:
-            return projection.project_history(owner_payload)
+            return projection.project_history(owner_payload, limit=limit, offset=offset)
         except projection.ProjectionError as error:
             raise ProductError(error.code, error.message, error.status) from None
 

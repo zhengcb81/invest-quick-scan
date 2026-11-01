@@ -8,6 +8,7 @@ the B03 StockWiki worktree is available — the real worker subprocess against
 a real isolated owner workspace. GET reads perform no business write.
 """
 from pathlib import Path
+import copy
 import http.client
 import http.server
 import json
@@ -232,10 +233,45 @@ def test_project_result_refuses_a_reasonless_absence():
 
 
 def test_project_history_shapes_items_and_page():
-    payload = Owner(None).company_history('ENT_A')
-    response = projection.project_history(payload)
+    payload = Owner(None).company_history('ENT_A', limit=20, offset=0)
+    response = projection.project_history(payload, limit=20, offset=0)
     assert response['page'] == {'limit': 20, 'offset': 0, 'total': 1}
     assert response['items'][0]['aggregate_score'] is None
+
+
+def test_project_history_refuses_a_page_that_ignores_the_request():
+    payload = Owner(None).company_history('ENT_A', limit=20, offset=0)
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.project_history(payload, limit=5, offset=0)
+    assert error.value.code == 'owner_projection_invalid'
+    forged = copy.deepcopy(payload)
+    forged['owner_payload']['items'] = forged['owner_payload']['items'] * 30
+    with pytest.raises(projection.ProjectionError):
+        projection.project_history(forged, limit=20, offset=0)
+
+
+def test_project_result_refuses_a_mismatched_entity():
+    item = dict(RESULT_SNAPSHOT, entity_id='ENT_OTHER')
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.project_result(_owner_result_payload(result=item))
+    assert error.value.code == 'owner_projection_invalid'
+
+
+def test_owner_read_envelope_protocol_is_checked():
+    # A future owner shape must not be relabelled under this projection
+    # version: the owner's own protocol/schema declaration is checked.
+    good = {'protocol': projection.OWNER_PROTOCOL,
+            'schema_version': projection.OWNER_SCHEMA_VERSION,
+            'network_calls': 0, 'llm_calls': 0}
+    assert projection._checked_owner_read(dict(good)) == good
+    with pytest.raises(projection.ProjectionError) as error:
+        projection._checked_owner_read({**good, 'protocol': 'stockwiki.company_assessment/9'})
+    assert error.value.code == 'owner_protocol_unsupported'
+    with pytest.raises(projection.ProjectionError) as error:
+        projection._checked_owner_read({**good, 'schema_version': '9.9.9'})
+    assert error.value.code == 'owner_protocol_unsupported'
+    with pytest.raises(projection.ProjectionError):
+        projection._checked_owner_read({**good, 'network_calls': 3})
 
 
 # -- dispatch level ------------------------------------------------------------

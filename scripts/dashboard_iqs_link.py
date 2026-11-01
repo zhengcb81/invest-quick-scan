@@ -12,6 +12,7 @@ eight declared keys and no others.
 
 from __future__ import annotations
 
+import re
 from urllib.parse import urlsplit
 
 SERVICE_ID = "invest-quick-scan"
@@ -54,6 +55,17 @@ RETURN_QUERY_ALLOWLIST = {
 # a user is navigated back to.
 COMPANY_ROUTE_TABS = frozenset({"overview", "documents", "research", "forecast", "quickscan"})
 COMPANY_RETURN_QUERY_ALLOWLIST = frozenset({"listing_id", "analysis_subject_id"})
+
+# An absolute company return is parsed from the RAW text, not from a URL
+# normalizer: only the exact literal loopback authority and an exact
+# `/company/...` path are accepted, so integer/IPv4-short/IPv6-expanded
+# spellings, empty ports, userinfo and dot segments never normalize their way
+# through the boundary.
+_ABSOLUTE_COMPANY_RETURN = re.compile(
+    r"^(?P<scheme>https?)://(?P<authority>(?:127\.0\.0\.1|localhost|\[::1\])"
+    r"(?::(?P<port>[0-9]{1,5}))?)(?P<path>/company/[^?#]*)(?:\?(?P<query>[^#]*))?$",
+    re.I,
+)
 
 FALLBACK_RETURN = "#/results"
 
@@ -109,9 +121,13 @@ def _company_route(path: object) -> tuple[str, str | None] | None:
 
 
 def _query_keys_ok(query: str, allowed: frozenset) -> bool:
-    """Bounded query keys with duplicate refusal (a repeated key is ambiguous)."""
+    """Bounded query keys with duplicate refusal (a repeated key is ambiguous).
+
+    Both `&` and `;` separate pairs here: a `;`-joined duplicate must not slip
+    through as one opaque key value.
+    """
     seen: set[str] = set()
-    for pair in query.split("&") if query else ():
+    for pair in re.split(r"[&;]", query) if query else ():
         if not pair:
             continue
         key = pair.split("=", 1)[0]
@@ -124,22 +140,21 @@ def _query_keys_ok(query: str, allowed: frozenset) -> bool:
 def _safe_absolute_company_return(raw: str) -> str | None:
     """Validate an absolute trusted-loopback Dashboard company return URL.
 
-    Only a concrete loopback http(s) origin over an explicit company route
-    with bounded query keys is accepted; a fragment, foreign host, encoded
-    bypass or cross-scope parameter makes the whole value unusable.
+    Only the exact literal loopback authority over an exact company route with
+    bounded query keys is accepted; a fragment, foreign host, alternate host
+    spelling, encoded bypass or cross-scope parameter makes it unusable.
     """
-    try:
-        parsed = urlsplit(raw)
-    except ValueError:
+    if "#" in raw:
         return None
-    if parsed.fragment:
+    match = _ABSOLUTE_COMPANY_RETURN.fullmatch(raw)
+    if match is None:
         return None
-    origin = _base_origin(f"{parsed.scheme}://{parsed.netloc}")
-    if origin is None:
+    port = match.group("port")
+    if port is not None and not 1 <= int(port) <= 65535:
         return None
-    if _company_route(parsed.path) is None:
+    if _company_route(match.group("path")) is None:
         return None
-    if not _query_keys_ok(parsed.query, COMPANY_RETURN_QUERY_ALLOWLIST):
+    if not _query_keys_ok(match.group("query") or "", COMPANY_RETURN_QUERY_ALLOWLIST):
         return None
     return raw
 
