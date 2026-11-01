@@ -15,7 +15,7 @@
 | 原 `GET /api/product/entity?id=...` | 原DTO及草稿附加字段不变 |
 | 新 `GET /api/product/entity-view?id=...` | `iqs.company_research_view/1.0.0`，`entity`内保留原DTO，另带`temporal_shadow` |
 | 时点侧附 | `iqs.temporal_shadow/1.0.0`，固定`read_only_shadow`、`reuse_authorized=false`、`production_reuse_applied=false` |
-| 无原身份修订时的钟解释 | `iqs.temporal_clock_explanation/1.0.0`，`context_assessed=false`；不伪造修订后调用兼容性评估 |
+| 原日期解释 | `iqs.temporal_clock_explanation/1.0.0`，统一`context_assessed=false`，不另作当前路由/缓存许可判定 |
 | RESULT组件 | 原`iqs.result_trust_view/1.0.0`；只读、无网络、无时钟推断或评分 |
 
 客户端仅在旧服务明确返回`method_or_route_not_allowed`时回退到原entity接口。超时、身份错误、错误wrapper协议不会触发静默重读/降级。旧消费者无需接受新字段；原refresh plan/request/policy严格schema、`refresh_id`、TTL、调度/预算权限均未修改。
@@ -24,7 +24,7 @@
 
 原owner worker通过现有公开观察读取方法取得不可变原payload。先绑定父实体、观察ID、题目/字段、scope/证券/分部、SHA、观测时点和截止日，再匹配固定题义definition及release。TIME目录包含222评分题与61事实题的候选分类；当前仅对已固定release的222题有definition绑定，事实题或新旧题义不匹配时保守未绑定，不能借相同question_id套用。目录不作为当前路由证明。
 
-有完整原观察身份版本时，可运行仅基于其保存上下文的候选评估，但仍明确不是当前owner兼容性或复用许可。缺身份版本时，只调用固定TIME纯时钟函数，分别解释执行时点、行情、财务期间、来源发布时间和独立核查时点；同时保留未来信息、截止日期、未知/撤回来源和事件失效约束。不从当前实体修订反填旧观察，不接受模型自称`verified_at`，不把生成/导入当独立核查。
+当前适配器统一调用TIME纯时钟函数，解释执行时点、行情、财务期间、来源发布时间和事件失效；保留未来信息、截止日期及未知/撤回来源约束。不再构造captured-context复用决策或要求verification_clock，不因缺少独立核查凭证制造刷新提示。原身份版本或模型派发信息缺失仍可解释已有日期；原观察完整性和公司/题义归属检查保持。旧核查元数据留在原DTO只读兼容，不从模型自称`verified_at`补造核查。
 
 原native“新鲜缓存”规则继续由原预检决定。侧附中的24小时候选钟只是实验解释，不是当前owner政策的重新计算。当前路由与主体兼容性由原owner判定，不能由本视图认证。2026-11-01进一步精简：取消另建独立核查凭证签发/续期系统的计划；已有核查元数据仍可只读显示，但缺失不阻塞扫描、入库、浏览或原缓存复用。后续时效改进直接使用真实事件、字段日期和原成功搜索时间，不用查看/导入时间续期，也不把机器检查标为金融核实。
 

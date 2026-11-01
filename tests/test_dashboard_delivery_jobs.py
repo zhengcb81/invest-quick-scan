@@ -118,7 +118,7 @@ def test_maximum_reference_count_is_readable_and_oversized_write_preserves_old_r
     assert path.read_bytes()==before
 
 
-def test_normal_recovery_reference_removal_preserves_delivery_target_identity():
+def test_new_scan_settings_do_not_change_the_sealed_delivery_destination():
     from scripts.dashboard_delivery_jobs import delivery_deployment_fingerprint
     config={'workspace_root':'owner-A','stockwiki_root':'wiki-A','stockqa_root':'qa-A',
         'model_policy_path':'model-A','prepare':{'pack_size':2,'recovery_work_decision_refs':[{'work_item_id':'WORK_A','decision_id':'decision-A'}]},
@@ -128,11 +128,68 @@ def test_normal_recovery_reference_removal_preserves_delivery_target_identity():
     del config['prepare']['recovery_work_decision_refs']
     assert delivery_deployment_fingerprint(config)==first
     assert before['prepare']['recovery_work_decision_refs']
-    for key in ('workspace_root','stockwiki_root','stockqa_root','model_policy_path'):
+    for key in ('workspace_root','stockwiki_root','stockqa_root'):
         changed=copy.deepcopy(config);changed[key]+='-different'
         assert delivery_deployment_fingerprint(changed)!=first
-    changed=copy.deepcopy(config);changed['prepare']['pack_size']=4
-    assert delivery_deployment_fingerprint(changed)!=first
+    changed=copy.deepcopy(config)
+    changed.update(model_policy_path='model-B',runtime_dir='runtime-B',workspace_label='renamed',
+                   batch={'max_concurrency':3},timeout_seconds=120)
+    changed['prepare'].update(pack_size=4,thinking=True,shared_company_config='shared-B')
+    assert delivery_deployment_fingerprint(changed)==first
+
+
+def test_pending_delivery_survives_new_model_settings_but_not_a_new_receiver(tmp_path):
+    from scripts.dashboard_delivery_jobs import delivery_deployment_fingerprint,STABLE_DEPLOYMENT_PROFILE
+    config={'workspace_root':'owner-A','stockwiki_root':'wiki-A','stockqa_root':'qa-A',
+            'prepare':{'pack_size':2},'model_policy_path':'model-A'}
+    execution=Execution();calls=[]
+    original=DeliveryJobs(execution,tmp_path,delivery_deployment_fingerprint(config),
+        lambda bundle:calls.append(bundle) or {'status':'partial'},lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
+    jid=original.submit({'bundle_id':'A'})['job']['job_id'];settled(original,jid)
+    changed=copy.deepcopy(config);changed['prepare']['pack_size']=1;changed['model_policy_path']='model-B'
+    current=DeliveryJobs(execution,tmp_path,delivery_deployment_fingerprint(changed),
+        lambda bundle:calls.append(bundle) or {'status':'delivered'},lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
+    assert current.get(jid)['state']=='partial'
+    foreign=DeliveryJobs(execution,tmp_path,delivery_deployment_fingerprint({**changed,'workspace_root':'owner-B'}),
+        lambda _:pytest.fail('wrong receiver must not import'),lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
+    with pytest.raises(DeliveryJobError):foreign.control(jid,'resume')
+    current.control(jid,'resume')
+    assert settled(current,jid)['state']=='completed' and calls==['A','A']
+
+
+@pytest.mark.parametrize('profile',['iqs.delivery-deployment/1.0.0','iqs.delivery-deployment/1.1.0'])
+def test_old_delivery_digest_remains_usable_only_with_its_actual_matching_configuration(tmp_path,profile):
+    from scripts.dashboard_delivery_jobs import delivery_deployment_fingerprint,STABLE_DEPLOYMENT_PROFILE
+    config={'workspace_root':'owner-A','prepare':{'pack_size':2},'execution_bundles':{},'import_bundles':{}}
+    old_digest=delivery_deployment_fingerprint(config,profile=profile)
+    execution=Execution()
+    old=DeliveryJobs(execution,tmp_path,old_digest,lambda _:{'status':'partial'},lambda _:None,
+                     fingerprint_profile=profile)
+    jid=old.submit({'bundle_id':'A'})['job']['job_id'];settled(old,jid)
+    before=old._path(jid).read_bytes()
+    current=DeliveryJobs(execution,tmp_path,delivery_deployment_fingerprint(config),lambda _:None,lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,deployment_fingerprints={profile:old_digest})
+    assert current.get(jid)['state']=='partial' and old._path(jid).read_bytes()==before
+    changed={**config,'prepare':{'pack_size':1}}
+    incompatible=DeliveryJobs(execution,tmp_path,delivery_deployment_fingerprint(changed),
+        lambda _:pytest.fail('opaque legacy digest cannot attest the changed configuration'),lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,
+        deployment_fingerprints={profile:delivery_deployment_fingerprint(changed,profile=profile)})
+    with pytest.raises(DeliveryJobError):incompatible.get(jid)
+    assert old._path(jid).read_bytes()==before
+
+
+def test_missing_target_digest_does_not_match_a_missing_legacy_compatibility_entry(tmp_path):
+    from scripts.dashboard_delivery_jobs import STABLE_DEPLOYMENT_PROFILE
+    jobs=DeliveryJobs(Execution(),tmp_path,'a'*64,lambda _:{'status':'partial'},lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
+    jid=jobs.submit({'bundle_id':'A'})['job']['job_id'];settled(jobs,jid)
+    path=jobs._path(jid);value=json.loads(path.read_bytes());value.pop('deployment_sha256')
+    value['deployment_fingerprint_profile']='iqs.delivery-deployment/1.1.0';jobs._write(path,value)
+    with pytest.raises(DeliveryJobError):jobs.get(jid)
 
 
 def test_completed_legacy_deployment_change_is_readonly_history_not_replay_authority(tmp_path):

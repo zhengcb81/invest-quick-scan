@@ -52,10 +52,12 @@ def test_pure_shadow_calls_real_engine_without_mutation_or_current_context_claim
     assert record['knowledge_kind']=='structural'
     assert record['decision']=='not_assessable' and record['reuse_authorized'] is False
     assert record['current_context_verified'] is False
-    saved=record['captured_context_assessment']
-    assert 'verification_missing' in saved['reason_codes']
+    saved=record['clock_only_assessment']
+    assert 'verification_missing' not in record['reason_codes']
+    assert 'verification_clock' not in record['required_clocks']
+    assert 'captured_context_assessment' not in record
     assert saved['actual_source_dates']['verified_at'] is None
-    assert saved['legacy_equivalent']['authoritative'] is False
+    assert saved['reuse_authorized'] is False
 
 
 @pytest.mark.parametrize('target',['payload','projection'])
@@ -106,7 +108,7 @@ def test_model_self_verification_never_becomes_receipt():
     raw['payload_sha256']=temporal._sha(raw['payload']);detail['groups'][0]['fields'][0]['payload_sha256']=raw['payload_sha256']
     actual=result(detail,raw)
     assert not actual['verification_receipt_available']
-    assert actual['captured_context_assessment']['actual_source_dates']['verified_at'] is None
+    assert actual['clock_only_assessment']['actual_source_dates']['verified_at'] is None
 
 
 def test_unbound_legacy_and_unknown_question_remain_readable():
@@ -128,8 +130,7 @@ def test_absent_native_revision_can_explain_clocks_but_never_create_identity_con
     clocks=actual['clock_only_assessment']
     assert clocks['context_assessed'] is False and clocks['reuse_authorized'] is False
     assert clocks['actual_source_dates']['verified_at'] is None
-    assert [r['clock'] for r in clocks['clock_assessments']]==['fact_valid_clock','verification_clock']
-    assert clocks['clock_assessments'][1]['status']=='missing'
+    assert [r['clock'] for r in clocks['clock_assessments']]==['fact_valid_clock']
     assert raw==before
 
 
@@ -174,10 +175,27 @@ def test_malformed_legacy_groups_keep_original_detail(groups):
     assert actual['temporal_shadow']['records']==[]
 
 
-def test_malformed_legacy_execution_is_unknown_not_whole_company_failure():
+def test_date_explanation_does_not_require_model_dispatch_metadata():
     detail,raw=specimen();raw['payload']['execution']='legacy-unknown'
     raw['payload_sha256']=temporal._sha(raw['payload']);detail['groups'][0]['fields'][0]['payload_sha256']=raw['payload_sha256']
-    assert result(detail,raw)['reason_codes']==['native_execution_unreadable']
+    actual=result(detail,raw)
+    assert 'clock_only_assessment' in actual
+    assert actual['reuse_authorized'] is False
+
+
+@pytest.mark.parametrize('qid',['IQS_06','IQS_19','IQS_20','IQS_21'])
+def test_mixed_date_explanation_never_depends_on_retired_verification_receipts(qid):
+    detail,raw=specimen();policies,bindings=temporal._policies();binding=bindings[qid]
+    payload=raw['payload'];payload.update(question_id=qid,field_id=policies[qid]['field_id'],
+        question_definition_sha256=binding['definition_sha256'],module_release_id=binding['module_release_id'])
+    raw.update(question_id=qid,field_id=payload['field_id'],payload_sha256=temporal._sha(payload))
+    detail['groups'][0]['fields'][0].update(question_id=qid,field_id=payload['field_id'],payload_sha256=raw['payload_sha256'])
+    actual=result(detail,raw)
+    assert actual['knowledge_kind']=='mixed'
+    assert 'clock_only_assessment' in actual and 'captured_context_assessment' not in actual
+    assert 'verification_clock' not in actual['required_clocks']
+    assert 'verification_missing' not in actual['reason_codes']
+    assert actual['reuse_authorized'] is False
 
 
 def test_native_subprocess_view_is_readonly_and_old_entity_unchanged(owner):

@@ -32,25 +32,34 @@ def _digest(value):
 
 
 LEGACY_DEPLOYMENT_PROFILE='iqs.delivery-deployment/1.0.0'
-STABLE_DEPLOYMENT_PROFILE='iqs.delivery-deployment/1.1.0'
+PREVIOUS_DEPLOYMENT_PROFILE='iqs.delivery-deployment/1.1.0'
+STABLE_DEPLOYMENT_PROFILE='iqs.delivery-deployment/1.2.0'
 
 
-def delivery_deployment_fingerprint(config):
-    """Preparation retry selection is not a delivery destination or permission."""
-    frozen=copy.deepcopy({k:v for k,v in config.items() if k not in {'execution_bundles','import_bundles'}})
-    if isinstance(frozen.get('prepare'),dict):
+def delivery_deployment_fingerprint(config, *, profile=STABLE_DEPLOYMENT_PROFILE):
+    """Bind delivery to its owners and destination, not future scan settings."""
+    if profile==STABLE_DEPLOYMENT_PROFILE:
+        frozen={key:config.get(key) for key in ('workspace_root','stockwiki_root','stockwiki_python',
+            'stockqa_root','stockqa_python','iqs_release_root','iqs_root')}
+    elif profile in {LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE}:
+        frozen=copy.deepcopy({k:v for k,v in config.items() if k not in {'execution_bundles','import_bundles'}})
+    else:
+        raise ValueError('delivery_deployment_profile_invalid')
+    if profile==PREVIOUS_DEPLOYMENT_PROFILE and isinstance(frozen.get('prepare'),dict):
         frozen['prepare'].pop('recovery_work_decision_refs',None)
     return hashlib.sha256(json.dumps(frozen,sort_keys=True,ensure_ascii=False).encode('utf8')).hexdigest()
 
 
 class DeliveryJobs:
     def __init__(self, execution, state_root, deployment_sha256, deliver_scope, resolve_batch,
-                 *, fingerprint_profile=LEGACY_DEPLOYMENT_PROFILE):
+                 *, fingerprint_profile=LEGACY_DEPLOYMENT_PROFILE, deployment_fingerprints=None):
         self.execution,self.state_root=execution,Path(state_root)
         self.deployment_sha256,self.deliver_scope,self.resolve_batch=deployment_sha256,deliver_scope,resolve_batch
-        if fingerprint_profile not in {LEGACY_DEPLOYMENT_PROFILE,STABLE_DEPLOYMENT_PROFILE}:
+        profiles={LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE,STABLE_DEPLOYMENT_PROFILE}
+        if fingerprint_profile not in profiles or set(deployment_fingerprints or {})-profiles:
             raise ValueError('delivery_deployment_profile_invalid')
         self.fingerprint_profile=fingerprint_profile
+        self.deployment_fingerprints={**(deployment_fingerprints or {}),fingerprint_profile:deployment_sha256}
         self.session=uuid.uuid4().hex; self._threads={}
 
     def _path(self,job_id):
@@ -73,12 +82,12 @@ class DeliveryJobs:
                         for row in value['entries'])):
                     raise ValueError('invalid')
                 profile=value.get('deployment_fingerprint_profile',LEGACY_DEPLOYMENT_PROFILE)
-                if profile not in {LEGACY_DEPLOYMENT_PROFILE,STABLE_DEPLOYMENT_PROFILE}:
+                if profile not in {LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE,STABLE_DEPLOYMENT_PROFILE}:
                     raise ValueError('unknown_profile')
                 if value['state']=='completed' and not self._completed_history(value):
                     raise ValueError('invalid_completed_summary')
-                same_target=(value.get('deployment_sha256')==self.deployment_sha256
-                    and profile==self.fingerprint_profile)
+                expected=self.deployment_fingerprints.get(profile)
+                same_target=isinstance(expected,str) and value.get('deployment_sha256')==expected
                 verified=True
                 if value['state']=='completed':
                     for entry in value['entries']:
@@ -244,11 +253,15 @@ class DeliveryJobs:
                     'current_target_verified':False,'notice':'该引用不可读取或目标已变；不隐藏其他记录，不自动重做。'})
         return {'jobs':jobs,'total':len(paths),'API_requests':0}
 
-    def active(self):
+    def active(self, *, compatible_target_sha256=None):
         if not self.state_root.exists():return False
         for path in self.state_root.glob('deliveryjob_*.json'):
             try:
-                if self.get(path.stem)['state'] in {'running','partial','needs_original_inspection'}:return True
+                record=self.get(path.stem)
+                if (record['state']=='partial' and record.get('deployment_fingerprint_profile')==STABLE_DEPLOYMENT_PROFILE
+                    and compatible_target_sha256==self.deployment_sha256):
+                    continue  # No I/O is running; changing future scans preserves this exact destination.
+                if record['state'] in {'running','partial','needs_original_inspection'}:return True
             except DeliveryJobError:
                 return True
         return False

@@ -182,7 +182,7 @@ class DashboardService:
         additive = old is not None and self._append_only(old, config)
         if old is not None and not additive:
             if config != inactive_checked_config:
-                self._assert_inactive()
+                self._assert_inactive(next_config=config)
             if self._batch is not None:
                 self._batch.close()
         self.config = config
@@ -202,7 +202,7 @@ class DashboardService:
         return ({k:v for k,v in old.items() if k not in maps} == {k:v for k,v in new.items() if k not in maps}
             and all(all(new[key].get(name) == row for name, row in old[key].items()) for key in maps))
 
-    def _assert_inactive(self):
+    def _assert_inactive(self, *, next_config=None):
         state=Path(self.config['state_root'])
         if self._jobs is None and any((state/'preparation-jobs').glob('prepjob_*.json')):
             self._preparation_jobs()
@@ -225,8 +225,15 @@ class DashboardService:
                 if offset >= page['total'] or not page['batches']: break
         if self._jobs is not None and self._jobs.active():
             raise ProductError('preparation_active', '准备结果尚未处理；先查看或核对原准备记录。', 409)
-        if self._delivery is not None and self._delivery.active():
-            raise ProductError('delivery_active','交付或恢复尚未处理，先核对原ACK或显式放弃等待。',409)
+        if self._delivery is not None:
+            target=None
+            if (next_config is not None and next_config['state_root']==self.config['state_root']
+                and all(all(next_config[key].get(name)==row for name,row in self.config[key].items())
+                    for key in ('execution_bundles','import_bundles'))):
+                from dashboard_delivery_jobs import delivery_deployment_fingerprint
+                target=delivery_deployment_fingerprint({**next_config,'iqs_root':str(self.root)})
+            if self._delivery.active(compatible_target_sha256=target):
+                raise ProductError('delivery_active','交付仍在运行或目标将变化；请等当前操作结束或保留原接收设置。',409)
 
     def _preparer(self):
         if self._prepare is None:
@@ -251,11 +258,14 @@ class DashboardService:
 
     def _delivery_jobs(self):
         if self._delivery is None:
-            from dashboard_delivery_jobs import DeliveryJobs, delivery_deployment_fingerprint, STABLE_DEPLOYMENT_PROFILE
-            digest=delivery_deployment_fingerprint(self.config)
+            from dashboard_delivery_jobs import (DeliveryJobs, delivery_deployment_fingerprint,
+                LEGACY_DEPLOYMENT_PROFILE, PREVIOUS_DEPLOYMENT_PROFILE, STABLE_DEPLOYMENT_PROFILE)
+            digest=delivery_deployment_fingerprint({**self.config,'iqs_root':str(self.root)})
+            previous={profile:delivery_deployment_fingerprint(self.config,profile=profile)
+                for profile in (LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE)}
             self._delivery=DeliveryJobs(self._gateway('execution'),Path(self.config['state_root'])/'delivery-jobs',digest,
                 lambda bundle_id:self._deliver_scope(bundle_id),lambda batch_id:self._batches().get(batch_id),
-                fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
+                fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,deployment_fingerprints=previous)
         return self._delivery
 
     def _deliver_scope(self, bundle_id):
@@ -271,8 +281,8 @@ class DashboardService:
         for name,bundle in exported['import_bundles'].items():
             try:
                 owner=(self._owner_factory or OwnerGateway)({**config,'bundles':{name:bundle}})
-                preview=owner.import_preview({'bundle_id':name})
-                result=self._apply_import(owner,bundle,{'bundle_id':name,'preview_token':preview['preview_token']},execution=execution,workspace=config['workspace_root'])
+                result=self._apply_import(owner,bundle,{'bundle_id':name},execution=execution,
+                    workspace=config['workspace_root'],automatic=True)
                 outcomes.append({'bundle_id':name,'status':result.get('status'),
                     'package_id':result.get('receipt',{}).get('package_id'),
                     'ack_reconciliation':result.get('ack_reconciliation')})
@@ -356,13 +366,16 @@ class DashboardService:
         setattr(self, attr, gateway)
         return gateway
 
-    def _apply_import(self, owner, bundle, body, *, execution=None, workspace=None):
+    def _apply_import(self, owner, bundle, body, *, execution=None, workspace=None, automatic=False):
         execution=execution or self._gateway('execution')
         mapped = bool(bundle.get('work_store') and bundle.get('work_item_ids'))
-        if mapped:
+        if mapped or automatic:
             preview=owner.import_preview({'bundle_id':body.get('bundle_id')})
+            if automatic:
+                body={**body,'preview_token':preview.get('preview_token')}
             if body.get('preview_token') != preview.get('preview_token') or not preview.get('can_apply'):
                 raise ProductError('preview_stale','请重新预览原接收目标再导入。',409)
+        if mapped:
             status=owner.status()
             if not status.get('available') or not status.get('store_id'):
                 raise ProductError('receiver_unavailable','无法核实原StockWiki接收目标。',409)
@@ -407,7 +420,7 @@ class DashboardService:
         if current and config == self.config:
             return self._setup()  # No write, reconfiguration or interruption.
         self._gateway('execution')  # Include persisted references on first access.
-        self._assert_inactive()
+        self._assert_inactive(next_config=config)
         self._save_config(config, inactive_checked=True)
         return self._setup()
 

@@ -50,6 +50,11 @@
 
 38. **可组合演进被扩成了第二个派发控制面。** 未上线的Q15/W16计划要求每次POST跨仓申请permit、消费并生成dispatch_commit，另有每组件资格revision/CAS和active全局ReleaseSet门，与原StockQA权限/租约/预算/attempt防重重复。1.10.19取消Q15及9个许可证专属场景，解除其任务/发布依赖及校验器硬编码。版本元数据、只读影响分析、原owner字段应用和停新派发后的升级回退保留；不承诺无停机跨仓热切。原attempt/unknown/fallback场景保留或归原任务，G3/G6实际目标不变；旧C07离线full_release标签只作兼容，不作为日常准入。
 
+
+39. **给模型的证据没有完整接进答案保存。** 独立追查确认：EvidenceBoard能过citation closure，但engine、原lifecycle、checkpoint写/读及build_observation仍只用vendor source_urls，provided官方URL未被vendor返回就会误拒。原native软件E2E只回答N/A，未覆盖带provided-only来源的有效scored，这是实质覆盖缺口。现沿原research_intent绑定实际发送的短证据摘要，原vendor receipt/search状态不改；不伪external_context_use，不从运行config直接信任URL。先补真实保存/恢复的scored软件正例，再用原UI做第一方原数实验，仍未金融签收。
+
+40. **第二轮仍有运行冗余。** 自动交付在同一操作两次预览；delivery目标包含模型/题包/标签等无关配置且setup把partial一律当活跃；TIME只读页模拟新核查许可，永远返回verification_missing；测试规范仍要求全仓零漂移和逐文件清理凭证。已分别去重、收窄新目标并兼容旧算法、允许同目标pending修改未来扫描设置、统一真实日期解释及普通临时目录清理。独审发现的原setup残留也已修，不拿类级正例冒充原UI设置可用；错库/原包/在途/未知发送/预算/ACK边界继续保留。
+
 ## 当前真实风险
 
 - 原24小时信息日规则仍是legacy默认；显式新扫描时钟已激活，原UI单题真实最近扫描复用正例已完成（同一观察、0新HTTP/费用）。不得把最近扫描可复用误写成资料最新或金融正确。

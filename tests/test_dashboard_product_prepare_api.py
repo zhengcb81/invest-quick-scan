@@ -121,7 +121,9 @@ def test_scope_delivery_uses_original_outbox_without_growing_an_all_company_regi
     class Receiver:
         def __init__(self,config): assert set(config['bundles'])=={'original-package'}
         def status(self): return {'available':True,'store_id':'independent-owner'}
-        def import_preview(self,body): return {'can_apply':True,'preview_token':'original-preview'}
+        def import_preview(self,body):
+            events.append('preview')
+            return {'can_apply':True,'preview_token':'original-preview'}
         def import_apply(self,body):
             assert body['preview_token']=='original-preview'
             events.append('import');return {'receipt':{'acks':[]}}
@@ -129,8 +131,32 @@ def test_scope_delivery_uses_original_outbox_without_growing_an_all_company_regi
     for _ in range(2):
         reply=service._deliver_scope('scope')
         assert reply['status']=='delivered'
-    assert events==['bind','import','ack']*2
+    assert events==['preview','bind','import','ack']*2
     assert service.config['import_bundles']=={} and not service.config_path.exists()
+
+
+def test_setup_can_change_future_scan_settings_while_exact_delivery_waits(tmp_path):
+    class Registered(Execution):
+        def bundle_registration(self,bundle_id):
+            return {'bundle_id':bundle_id,'entity_id':'ENT_X','bundle_fingerprint':'a'*64}
+    service=DashboardService(tmp_path,execution_factory=Registered)
+    service.config['execution_bundles']['original']={'entity_id':'ENT_X'}
+    jobs=service._delivery_jobs();jobs.deliver_scope=lambda _: {'status':'partial'}
+    jid=jobs.submit({'bundle_id':'original'})['job']['job_id']
+    deadline=time.monotonic()+5
+    while jobs._threads and time.monotonic()<deadline:time.sleep(.01)
+    assert jobs.get(jid)['state']=='partial'
+    before=jobs._path(jid).read_bytes()
+    config={**service.config,'prepare':{'pack_size':1,'thinking':True},'workspace_label':'new label'}
+    status,reply=service.dispatch('PUT','/api/product/setup',{'config':config,'revision_sha256':service._config_revision})
+    assert status==200,reply
+    assert service._delivery_jobs().get(jid)['state']=='partial'
+    assert jobs._path(jid).read_bytes()==before
+    for key,value in [('workspace_root',str(tmp_path/'other-owner')),('state_root',str(tmp_path/'other-jobs')),
+                      ('execution_bundles',{'unrelated':{'entity_id':'ENT_OTHER'}})]:
+        changed={**service.config,key:value}
+        status,reply=service.dispatch('PUT','/api/product/setup',{'config':changed,'revision_sha256':service._config_revision})
+        assert status==409 and reply['error']['code']=='delivery_active',reply
 
 
 def test_cache_only_preparation_finishes_without_execution_registration_or_config_write(tmp_path):

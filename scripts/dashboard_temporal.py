@@ -4,12 +4,11 @@ The saved record is NOT current routing context. This sidecar cannot authorize
 reuse, renew TTL, issue receipts or change the original entity/refresh DTO.
 """
 from __future__ import annotations
-from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
 
-from iqs_temporal_vendor import assess_reuse, TimeSemanticsError
+from iqs_temporal_vendor import TimeSemanticsError
 from iqs_temporal_vendor.policy import candidate_policy
 from iqs_temporal_vendor.assess import (_parse_utc, _clock_reading, _assess_clock,
                                        _publication_check, _information_datetime, _parse_date_only)
@@ -67,10 +66,8 @@ def _clock_explanation(observation, policy, now_utc):
     readings = []
     for clock in policy["required_clocks"]:
         if clock == "verification_clock":
-            item = {"clock": clock, "reading": None, "status": "missing",
-                    "reason_code": "verification_missing", "decision_effect": "refresh",
-                    "max_age_hours": rules[clock]["max_age_hours"]}
-        elif clock == "publication_clock":
+            continue  # Retired receipt system; historical metadata stays in the original DTO.
+        if clock == "publication_clock":
             status, reasons = _publication_check(answer, observation.get("information_cutoff"), now)
             item = {"clock": clock, "reading": [e.get("published_at") for e in answer.get("evidence", [])],
                     "max_age_hours": None, "status": "satisfied" if status == "ok" else status,
@@ -123,49 +120,16 @@ def _record(row, raw, entity_id, now_utc, policies, bindings):
             or policy["module_id"] != binding["module_id"]):
         return _refusal(row, "time_policy_definition_unbound")
     result["knowledge_kind"] = policy["knowledge_kind"]
-    result["required_clocks"] = list(policy["required_clocks"])
-    obs = deepcopy(payload)
+    result["required_clocks"] = [clock for clock in policy["required_clocks"] if clock != "verification_clock"]
     revision = raw.get("identity_revision")
-    if type(revision) is not int or ("identity_revision" in obs and obs["identity_revision"] != revision):
+    if type(revision) is not int or ("identity_revision" in payload and payload["identity_revision"] != revision):
         result["reason_codes"].append("native_identity_revision_unknown")
-        try:
-            result["clock_only_assessment"] = _clock_explanation(obs, policy, now_utc)
-            result["reason_codes"] += result["clock_only_assessment"]["source_constraints"]["reason_codes"]
-        except (TimeSemanticsError, ValueError, TypeError, KeyError) as error:
-            result["reason_codes"].append(getattr(error, "error_code", "native_clock_not_assessable"))
-        return result
-    obs["identity_revision"] = revision
-    # Native immutable payload is model output, never an independent verifier.
-    obs["check_level"] = "unverified_model_output"
-    if not isinstance(obs.get("scope"), str):
-        return _refusal(row, "native_scope_unknown")
-    scope_key = {"entity": "entity_id", "security": "security_id", "segment": "segment_id"}.get(obs.get("scope"))
-    if scope_key is None:
-        return _refusal(row, "native_scope_unknown")
-    context = {key: obs.get(key) for key in ("entity_id", "identity_revision", "scope", "question_id",
-        "question_semantic_sha256", "question_definition_sha256", "question_version",
-        "module_package_id", "module_release_id", "template_version")}
-    execution = obs.get("execution")
-    if not isinstance(execution, dict):
-        return _refusal(row, "native_execution_unreadable")
-    context.update(scope_id=obs.get(scope_key), provider=execution.get("provider"),
-                   model=execution.get("model_resolved"), minimum_check_level="unverified_model_output")
-    selected = deepcopy(policy)
-    selected["policy_selection"] = candidate_policy()
     try:
-        assessment = assess_reuse(obs, selected, now_utc=now_utc,
-            information_cutoff=obs.get("information_cutoff"), context=context,
-            verification_verifier=None)
+        # Explain the original dates; the native service alone decides cache reuse.
+        result["clock_only_assessment"] = _clock_explanation(payload, policy, now_utc)
+        result["reason_codes"] += result["clock_only_assessment"]["source_constraints"]["reason_codes"]
     except (TimeSemanticsError, ValueError, TypeError, KeyError) as error:
-        result["reason_codes"].append(getattr(error, "error_code", "native_observation_not_assessable"))
-        return result
-    # The library's frozen-oracle label must not misdescribe this live adapter.
-    assessment["legacy_equivalent"]["oracle"] = "current configured StockWiki.quick_scan_freshness"
-    assessment["legacy_equivalent"]["policy_ref"] = "legacy-min-ttl/1.0.0 (illustrative 24h; not active owner policy)"
-    assessment["legacy_equivalent"]["authoritative"] = False
-    result["captured_context_assessment"] = assessment
-    result["context_basis"] = "immutable_saved_record_only_not_current_route"
-    result["reason_codes"] += assessment["reason_codes"]
+        result["reason_codes"].append(getattr(error, "error_code", "native_clock_not_assessable"))
     return result
 
 

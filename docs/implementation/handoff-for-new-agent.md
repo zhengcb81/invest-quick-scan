@@ -8,7 +8,7 @@
 
 新TIME保留原结果页只读解释，不授权复用；取消另建独立核查凭证签发/续期系统，不再是必做计划。已有核查元数据仍可读，缺失不阻塞原扫描、入库、缓存或消费者；时效改进沿原字段/事件/成功搜索时间规则。原W06兼容链与显式新扫描时钟的真实单题正例已完成；勿重做或改旧日期造fresh。
 
-本次已取消冗余内存preview/旧inspection摘要门、纯缓存的模型准入、只读全历史账复审、自动委托早期重复核查、未知注册国家阻断，以及事实/消费者/小样本配套等待200/2000规模验收的人工依赖。规格1.10.17仍108任务/368场景，规模验收本身没有关闭。源代码、测试和[集中独审](reviews/SIMPLIFY-FRESH-2026-11-01/independent-review.md)已交，不要重造旧门或逐条凭证；变更和实际运行以[本次报告](reviews/SIMPLIFY-FRESH-2026-11-01/report.md)为准。
+本次已取消冗余内存preview/旧inspection摘要门、纯缓存的模型准入、只读全历史账复审、自动委托早期重复核查、未知注册国家阻断，以及事实/消费者/小样本配套等待200/2000规模验收的人工依赖。此前1.10.17解除串行依赖；当前规格1.10.19为107任务/359场景，规模验收本身没有关闭。源代码、测试和[集中独审](reviews/SIMPLIFY-FRESH-2026-11-01/independent-review.md)已交，不要重造旧门或逐条凭证；变更和实际运行以[本次报告](reviews/SIMPLIFY-FRESH-2026-11-01/report.md)为准。
 
 原预算快照误门已由StockWiki`724f5b7`修复；本地owner policy9已显式采用successful_scan（TTL24h，预算不扩）。原information_as_of/报告期/发布日期不改，新缓存含义只是最近成功联网扫描，可按原执行时间跳过重扫。激活与正反例见本次报告。真实原UI复用已完成，原观察和资料日不变、0新增HTTP/费用，不重做或补凭证。
 
@@ -24,7 +24,7 @@
 4. 原execute/resume/checkpoint保持，task身份来自原confirmation/题目，与UI输出文件名无关。候选export-NNNN完整后才rename发布export，残缺candidate保留并按原CP恢复；finalize后仅hydrate_questions输出原格式，缺CP不回退重问。finalize逐题幂等，不是全包单事务。
 5. 控制沿原bundle与输入hash；共享单请求上限16384，一题comparison须实际pack1、思考开启。普通UI当前pack2/max32768，为新scope明确设置，不改旧grant。基础软件E2E1P/536.71秒先于尾修；尾修后SDK/配置/原CLI67P/4.75秒、独审通过，两套环境全清理、0新收费，未重跑长例。
 
-**现在只做原UI真实复核，不重做上述源码。** 精确源为IQS_11 generation5 `WORK_df168ba95e824103ad4cf3678c88c638`（delivered但FCF错误）；用原comparison准确后继，不伪作失败重试。先核原主体、配置/账本及官方同表原数，再配置短evidence和新pack1/max≤16384，从原UI准备/启动一次有明确变化的复核。核2024/2025各自OCF−购建长期资产现金，原ACK、旧答保留和0HTTP复用；若仍错，查实际已发上下文/证据，不盲重问或择高分。company-wiki有活动writer，继续只读。共享模式尚未在原UI真实激活，软件通过不替代此验收。
+**先完成已在运行的原owner带provided-only来源的scored软件正例，再做原UI真实复核，不重复实现上述接线。** 前例N/A没有覆盖这个保存缺口；StockQA `8791c0e`已沿原intent/attempt贯通provided来源，原vendor回执不变；runtime `f58fdb1`修复显式one_shot profile删除空tool_results造成的动态hash偏差。前两次长例仍记录失败，修后结果以根progress增量为准，不能用已有软件结果代签金融准确性。 精确源为IQS_11 generation5 `WORK_df168ba95e824103ad4cf3678c88c638`（delivered但FCF错误）；用原comparison准确后继，不伪作失败重试。先核原主体、配置/账本及官方同表原数，再配置短evidence和新pack1/max≤16384，从原UI准备/启动一次有明确变化的复核。核2024/2025各自OCF−购建长期资产现金，原ACK、旧答保留和0HTTP复用；若仍错，查实际已发上下文/证据，不盲重问或择高分。company-wiki有活动writer，继续只读。共享模式尚未在原UI真实激活，软件通过不替代此验收。
 
 进一步精简已取消重启后人工inspect前置、读旧job的新配置门、纯缓存预览的确认/job，以及只读轮询中的重复执行预检。恢复/补封/归档按钮表示明确检查动作；真正control仍实时核原owner/预算/进程，未知请求不重发。旧applied可能触发登记，冻结输入完整性检查仍保留，不误删有实际作用的保护。
 
@@ -38,8 +38,8 @@
 |IQS当前实现已推送|`2970499`，含可选共享接线、runtime减负和1.10.19规范；后续PWF记录单独提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`07db665`正常hooks全通过，已推送且HEAD=origin/master；含原provider/共享接线|
-|原Runtime Lab|`cb00e4e`已本地提交（codex/agent-run-02），无远端，不新建origin|
+|StockQA|`8791c0e`正常hooks提交，含provided来源贯通；此前`07db665`已推，最新远端状态见根progress|
+|原Runtime Lab|`f58fdb1`已本地提交（codex/agent-run-02），无远端，不新建origin|
 |StockWiki|`1bde9e0`（含`af2a260`及预算`724f5b7`）已提交，无origin，不新建远端|
 |原UI|`d3ec24a`（含`0212c5c`/`d6e0eb8`）已提交，无remote|
 
@@ -74,3 +74,6 @@ python -B -m pytest tests/test_result_trust_host.py -q -p no:cacheprovider
 ## 交接完成标准
 
 报告本次改变的功能、准确C/受影响文件、相关测试实际结果、真实模型/搜索费用及剩余边界；提交已完成工作并更新原计划表。历史验收原件不改签，当前入口只留一份状态，不再把同一长段复制进三份PWF。
+
+
+第二轮减负已实施：自动交付同操作只预览一次；新交付目标不含未来扫描参数，原UI同目标partial可修改这些设置，原包/状态目录变化仍拒；旧任务保持原算法匹配，不伪造迁移。TIME只作日期解释，不重建核查凭证或第二套缓存许可。测试不再全仓快照或逐文件hash清理；普通临时目录/finally即可。历史strict夹具与旧元数据只读兼容；这些精简不改变原StockQA预算、未知请求防重、身份与ACK。
