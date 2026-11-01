@@ -108,3 +108,10 @@
 主线另记真实未关状态：provided来源的StockQA修复已正常hooks提交8791c0e；原runtime完整dynamic修复f58fdb1本地提交（无远端）。QA原intent/标准答案/观察111P，以及独审尾部9P与runtime实际SDK wire6P分别验证，重叠不累加。原owner scored长例前两次各1F（218.26/221.57秒），不是已通过：第一处SDK消息封装和未来期指引日期误门已修；随后定位bridge删空tool_results导致实际发送hash变化，修复只作用显式one_shot profile，旧协议保持。修后第三次隔离原owner例正在运行，付费0，不能先签成原UI真实扫描或金融纠错完成。
 
 StockQA8791c0e已推送既有origin/master；原UI文案8fc9072已本地提交（无远端）。本轮取消的不是原安全权限或预算检查，不扩运行授权、不开新收费请求。
+
+
+第二轮减负14文件已正常提交并推既有origin/master `4526eb7`。原8766只读核空闲后，按实际argv/父子/创建时间重载（新launcher27636），doctor ready=true、无阻断；13旧交付保持11 completed+2历史只读，原85HTTP/US$1.999868、0在途/未结/未知。没有改原部署JSON或重做已付扫描。
+
+原owner scored第三次终态1F/386.86秒，临时五组件runtime已清理、0付费。发送与两题CP已通过；原sealer末端仍仅认vendor URL，报exchange package evidence URL is not bound to checkpoint，继而hydrate缺CP。保留失败，已交原StockQA同一writer沿原provided来源投影补末端短反例和根修，不把删除空tool_results的前置修复宣称端到端已全通。软件缺口修好后才做原UI真实金融复核，不盲发新模型。
+
+原CUA结果页已重新加载并展开宁德时代真实记录，实际显示“仅展示原记录时点；实际缓存复用和刷新以原服务预检为准。”旧已加载JS曾显示旧文案，完整刷新后确认新内容；未提交表单或发模型。搜索实操规范遗留的permit/consume/dispatch_commit指令亦已删除，对齐原StockQA防重/预算，并说明provided_context独立来源语义。

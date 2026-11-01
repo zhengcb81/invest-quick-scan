@@ -24,7 +24,7 @@
 4. 原execute/resume/checkpoint保持，task身份来自原confirmation/题目，与UI输出文件名无关。候选export-NNNN完整后才rename发布export，残缺candidate保留并按原CP恢复；finalize后仅hydrate_questions输出原格式，缺CP不回退重问。finalize逐题幂等，不是全包单事务。
 5. 控制沿原bundle与输入hash；共享单请求上限16384，一题comparison须实际pack1、思考开启。普通UI当前pack2/max32768，为新scope明确设置，不改旧grant。基础软件E2E1P/536.71秒先于尾修；尾修后SDK/配置/原CLI67P/4.75秒、独审通过，两套环境全清理、0新收费，未重跑长例。
 
-**先完成已在运行的原owner带provided-only来源的scored软件正例，再做原UI真实复核，不重复实现上述接线。** 前例N/A没有覆盖这个保存缺口；StockQA `8791c0e`已沿原intent/attempt贯通provided来源，原vendor回执不变；runtime `f58fdb1`修复显式one_shot profile删除空tool_results造成的动态hash偏差。前两次长例仍记录失败，修后结果以根progress增量为准，不能用已有软件结果代签金融准确性。 精确源为IQS_11 generation5 `WORK_df168ba95e824103ad4cf3678c88c638`（delivered但FCF错误）；用原comparison准确后继，不伪作失败重试。先核原主体、配置/账本及官方同表原数，再配置短evidence和新pack1/max≤16384，从原UI准备/启动一次有明确变化的复核。核2024/2025各自OCF−购建长期资产现金，原ACK、旧答保留和0HTTP复用；若仍错，查实际已发上下文/证据，不盲重问或择高分。company-wiki有活动writer，继续只读。共享模式尚未在原UI真实激活，软件通过不替代此验收。
+**先完成原owner带provided-only来源的scored软件正例（v3发送/CP通过，末端封包URL投影尚待修复），再做原UI真实复核，不重复实现上述接线。** 前例N/A没有覆盖这个保存缺口；StockQA `8791c0e`已沿原intent/attempt贯通provided来源，原vendor回执不变；runtime `f58fdb1`修复显式one_shot profile删除空tool_results造成的动态hash偏差。前三次长例仍记录失败，v3已定位到原sealer末端，修后结果以根progress增量为准，不能用已有软件结果代签金融准确性。 精确源为IQS_11 generation5 `WORK_df168ba95e824103ad4cf3678c88c638`（delivered但FCF错误）；用原comparison准确后继，不伪作失败重试。先核原主体、配置/账本及官方同表原数，再配置短evidence和新pack1/max≤16384，从原UI准备/启动一次有明确变化的复核。核2024/2025各自OCF−购建长期资产现金，原ACK、旧答保留和0HTTP复用；若仍错，查实际已发上下文/证据，不盲重问或择高分。company-wiki有活动writer，继续只读。共享模式尚未在原UI真实激活，软件通过不替代此验收。
 
 进一步精简已取消重启后人工inspect前置、读旧job的新配置门、纯缓存预览的确认/job，以及只读轮询中的重复执行预检。恢复/补封/归档按钮表示明确检查动作；真正control仍实时核原owner/预算/进程，未知请求不重发。旧applied可能触发登记，冻结输入完整性检查仍保留，不误删有实际作用的保护。
 
@@ -38,7 +38,7 @@
 |IQS当前实现已推送|`2970499`，含可选共享接线、runtime减负和1.10.19规范；后续PWF记录单独提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`8791c0e`正常hooks提交，含provided来源贯通；此前`07db665`已推，最新远端状态见根progress|
+|StockQA|`8791c0e`正常hooks提交且已推，含provided来源贯通；末端封包尾修进行中|
 |原Runtime Lab|`f58fdb1`已本地提交（codex/agent-run-02），无远端，不新建origin|
 |StockWiki|`1bde9e0`（含`af2a260`及预算`724f5b7`）已提交，无origin，不新建远端|
 |原UI|`d3ec24a`（含`0212c5c`/`d6e0eb8`）已提交，无remote|

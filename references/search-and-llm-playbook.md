@@ -12,7 +12,7 @@
 
 # 联网搜索与LLM统一使用规范
 
-规范版本：1.6.0；日期：2026-10-18。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
+规范版本：1.6.1；日期：2026-11-01。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
 
 StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检查点和费用账本；IQS只维护题面与规范；StockWiki提供名单、缺口及观察入库，不能另包请求重试。[配置参考模板](../examples/search-and-llm-policy.template.json)仅供填写需求，执行器尚不读取；`template_only=true`、`execution_enabled=false`保持不变，不是第二份生效配置或调用授权。
 
@@ -41,7 +41,7 @@ StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检
 1. 固定实体/挂牌、分析分部、信息截止日、题目/rubric/prompt版本及策略。仅名称/ticker不能消歧时停止该对象，不让搜索引擎决定公司身份。
 2. 先查答案/检查点复用；已完成未ACK先重投outbox，结果不明先对账，只让真实缺口进入派发。
 3. 外部模式先冻结query、取证意图和题目→来源映射。可共用业务、经营财务、竞争、优势、风险、成长变化六类意图，必要时按题补充；不默认30题×所有引擎。query改写受预先取证计划限制，不因后来的分数低而追加。
-4. 持久化领取逻辑工作租约、账户槽和预算，按既有permit/consume/dispatch_commit授权POST。外部检索、模型回答/续写各是真实发送，不隐藏在“一题一次”中。
+4. 实际POST沿StockQA原主体/题义/权限、lease/attempt/send_intent、统一预算原子预留及未知发送防重，不申请第二套跨仓许可证。外部检索、模型回答/续写各是真实发送，不隐藏在“一题一次”中。
 5. 回执验证→证据规整→最终答案→解析/来源审核→逐题检查点/outbox→导入ACK。搜索成功但没有答案时保留中间阶段，不能标题目完成。
 6. 到期、预算不足或所有路由冷却时保存待办/恢复资格，结束有界运行；下次从未完成阶段继续。在途调用和迟到费用仍处理。
 
@@ -50,6 +50,8 @@ StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检
 ## 3. 给LLM的证据规范
 
 外部条目统一为`source_id/title/publisher/url/published_at/retrieved_at/short_snippet`，另绑定实体、检索attempt/request、query/过滤、adapter版本、证据包hash和`question_id→source_id`映射。ID在包内唯一，引用可回查；没有发表时间留null，检索时间不能代替发表时间。
+
+用户或前序研究提供的短证据单列为`provided_context`，与厂商实际搜索返回的来源分开。只有已绑定当前实体/截止日、进入实际请求且由原intent/attempt核实的短证据，才可用于对应答案引用；不能只凭配置里的URL放行。搜索仍依原真实回执判断，不将provided来源改写为厂商搜索结果或伪造external-context proof。保存、恢复与封包使用同一原来源语义，不另发核查许可证。
 
 来源按URL去重、不同有效片段按内容hash保留，再按实体、分部、相关性、来源权威和时点筛选，不照抄搜索排名。公司/交易所/监管机构原始披露优先；关键数值须有期间、币种、单位、集团/归母及指标口径的原始证据。摘要不能证明就留缺口。错公司、晚于截止日、无日期且无法确认当时可知、来源冲突的材料不能支持对应主张；第三方新闻不能声称为官方披露。
 
