@@ -124,3 +124,56 @@ def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(del
     with pytest.raises(DashboardExecutionError):
         gateway._call(command,SOURCE,tmp_path,input_value={**request,'entity_id':'ENT_FOREIGN'})
     assert ledger.read_bytes()==before
+
+
+def test_export_uses_layout_checked_read_only_view_without_history_audit(delivery, tmp_path):
+    from scripts.dashboard_delivery import _EXPORT
+    gateway,bundle,receipt=delivery
+    ledger=Path(bundle['work_store'])
+    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'work_ids':list(bundle['work_item_ids'].values())}
+    # Original layout validation must still run, while a scan of every unrelated
+    # historical answer/package is deliberately rejected in this child.
+    guard=r'''
+import sys
+sys.path.insert(0,sys.argv[1])
+from src.utils.quick_scan_work_store import QuickScanWorkStore
+original=QuickScanWorkStore._validate_schema.__func__
+def layout_only(cls,connection,**kwargs):
+    if kwargs.get('audit_records',True):
+        print('HISTORY_AUDIT_FORBIDDEN',file=sys.stderr)
+        raise AssertionError('export must not audit unrelated history')
+    return original(cls,connection,**kwargs)
+QuickScanWorkStore._validate_schema=classmethod(layout_only)
+'''
+    before=ledger.read_bytes()
+    response=gateway._call([sys.executable,'-B','-X','utf8','-c',guard+_EXPORT,
+        str(SOURCE),str(ledger)],SOURCE,tmp_path,input_value=request)
+    assert response['API_requests']==0 and response['network_calls']==0
+    assert len(response['items'])==2 and all(r['status']=='exportable' for r in response['items'])
+    assert ledger.read_bytes()==before
+
+
+@pytest.mark.parametrize('fault',['layout','current_package'])
+def test_read_only_export_keeps_layout_and_current_package_validation(delivery,tmp_path,fault):
+    import sqlite3
+    from scripts.dashboard_delivery import _EXPORT
+    gateway,bundle,receipt=delivery
+    ledger=Path(bundle['work_store'])
+    work_ids=list(bundle['work_item_ids'].values())
+    # Corrupt only this disposable test database. Restore the exact trigger
+    # definition after changing the selected payload, so that case reaches
+    # current-object validation rather than merely the layout check.
+    with sqlite3.connect(ledger) as connection:
+        if fault=='layout':
+            connection.execute('DROP TRIGGER answer_checkpoint_no_update')
+        else:
+            trigger=connection.execute("SELECT sql FROM sqlite_master WHERE name='quick_scan_delivery_package_immutable'").fetchone()[0]
+            connection.execute('DROP TRIGGER quick_scan_delivery_package_immutable')
+            connection.execute('UPDATE quick_scan_result_delivery SET package_json=? WHERE work_item_id=?',('{}',work_ids[0]))
+            connection.execute(trigger)
+    before=ledger.read_bytes()
+    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'work_ids':work_ids}
+    with pytest.raises(DashboardExecutionError):
+        gateway._call([sys.executable,'-B','-X','utf8','-c',_EXPORT,str(SOURCE),str(ledger)],
+            SOURCE,tmp_path,input_value=request)
+    assert ledger.read_bytes()==before

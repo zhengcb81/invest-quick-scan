@@ -19,12 +19,12 @@ sys.path.insert(0,sys.argv[1])
 def offline(event,args):
     if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}: raise RuntimeError('network_forbidden')
 sys.addaudithook(offline)
-from src.utils.quick_scan_work_store import QuickScanWorkStore
+from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
 request=json.load(sys.stdin)
 try:
     path=pathlib.Path(sys.argv[2])
     if not path.is_file(): raise ValueError('ledger_missing')
-    store=QuickScanWorkStore(path);items=[]
+    store=ReadOnlyWorkView(path);items=[]
     for work_id in request['work_ids']:
         work=store.get_item(work_id)
         if work['entity_id']!=request['entity_id'] or work['question_id'] not in request['question_ids']:

@@ -4,15 +4,15 @@
 
 ## 从哪里继续
 
-原8766/原UI/StockQA/StockWiki已接通，三市场各36有效题槽、ACK、冷恢复和真实过期刷新均已验；不要重做这些。当前欠原真实fresh复用正例及答案质量，之后原200家可靠性、事实F05、TH/IN、全池与配套仍未完成。旧卡中的“待权限/未部署/未ACK/主线暂停”不是现在状态。
+原8766/原UI/StockQA/StockWiki已接通，三市场各36有效题槽、ACK、冷恢复和真实过期刷新均已验；不要重做这些。真实最近扫描单题复用正例本轮也已完成；当前先纠正已知答案质量，之后原200家可靠性、事实F05、TH/IN、全池与配套仍未完成。旧卡中的“待权限/未部署/未ACK/主线暂停”不是现在状态。
 
-新TIME目前只是原结果页只读解释，不授权复用；其identity_revision/可信核查凭证只在采用新多时钟策略时是必需条件。不要先把新凭证体系扩成原缓存和原只读消费者的额外门。按原W06真实日期/兼容性/预算链完成正例，不改旧日期造fresh。
+新TIME目前只是原结果页只读解释，不授权复用；其identity_revision/可信核查凭证只在采用新多时钟策略时是必需条件。不要先把新凭证体系扩成原缓存和原只读消费者的额外门。原W06兼容链与显式新扫描时钟的真实单题正例已完成；勿重做或改旧日期造fresh。
 
 本次已取消冗余内存preview/旧inspection摘要门、纯缓存的模型准入、只读全历史账复审、自动委托早期重复核查、未知注册国家阻断，以及事实/消费者/小样本配套等待200/2000规模验收的人工依赖。规格1.10.17仍108任务/368场景，规模验收本身没有关闭。源代码、测试和[集中独审](reviews/SIMPLIFY-FRESH-2026-11-01/independent-review.md)已交，不要重造旧门或逐条凭证；变更和实际运行以[本次报告](reviews/SIMPLIFY-FRESH-2026-11-01/report.md)为准。
 
-原预算快照误门已由StockWiki`724f5b7`修复；本地owner policy9已显式采用successful_scan（TTL24h，预算不扩）。原information_as_of/报告期/发布日期不改，新缓存含义只是最近成功联网扫描，可按原执行时间跳过重扫。激活与正反例见本次报告。真实复用尚须根从原UI完成，不通过补today或新增凭证求绿。
+原预算快照误门已由StockWiki`724f5b7`修复；本地owner policy9已显式采用successful_scan（TTL24h，预算不扩）。原information_as_of/报告期/发布日期不改，新缓存含义只是最近成功联网扫描，可按原执行时间跳过重扫。激活与正反例见本次报告。真实原UI复用已完成，原观察和资料日不变、0新增HTTP/费用，不重做或补凭证。
 
-当前真实批见根Next Step：paid两题已从原UI零调用恢复，剩余IQS22在途。切勿重建同范围或重复启动。原HTTP JSON digest与final文本digest属于两种对象，分别核验；原owner捕获文件自身不授予scope/恢复权限。IQS11已知FCF跨年问题未金融签收，工程恢复不改变它的资格。
+当前真实批全部三题已补封并完成原ACK2/2；同范围DUPONT02再次准备已cached1、执行包0。见根Next Step和native-cache-reuse.json，不再等IQS22或重启该批。原HTTP JSON digest与final文本digest属于两种对象，分别核验；原owner捕获文件自身不授予scope/恢复权限。IQS11已知FCF跨年问题未金融签收，工程恢复不改变它的资格。
 
 ## 固定对象与运行
 
@@ -21,9 +21,9 @@
 |IQS本次起点已推送|`215804dada41148ea79011fbb483e02f9f8d1abe`，本次源码及文档在其后正常提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`36cfb5f`已推既有origin/master|
+|StockQA|`65b3711`已推既有origin/master，含`36cfb5f`原答恢复|
 |StockWiki|`af2a260`（含预算`724f5b7`）已提交，无origin，不新建远端|
-|原UI|`ffed6ca`（含`ecd03e0`/`06738a0`）已提交，无remote|
+|原UI|`d6e0eb8`（含`ffed6ca`/`ecd03e0`/`06738a0`）已提交，无remote|
 
 实际写前重核当前Git/唯一writer，不因无关HEAD变化重做历史。ANSWER/PERF最终C/M见[已签收口报告](reviews/SUPPORT-CLOSE-2026-10-31/report.md)，TIME/RESULT实际原接线见[报告](reviews/TIME-RESULT-WIRING-2026-10-31/report.md)，不把接线C的历史25文件manifest当当前README/测试字节。
 

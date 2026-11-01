@@ -104,3 +104,11 @@ IQS原6个policy schema只添optional enum，原required和OwnerState/items保�
 作者最终隔离14P/0skip原日志与clean TEMP已核（先前11包含其中，不加总）；独立追加2真实原临时store事务例通过：第一member CP已可见后第二member撤权，所有表含work/context/standard/events/CP/费用完整回滚；同HTTP receipt/transport的不同final内容拒且全表不变。测试使用合成持久receipt/capture和明确标注的native权限/seal端口替身，不代真owner。根最后将precommit一处path.read_bytes统一为原_snapshot，已静核；正常hook随后仅规范行尾/Black/isort，3个mypy问题用2处同一未变参数直接is-not-None判断及1处本地类型注解修正，静核运行语义等价。所有正常hook通过，StockQA 36cfb5f已提交推送；本审此时一次绑定最终SHA，作者测试SHA保留，不重跑14/27/81、不造旧格式AST证明。
 
 最终工程passed/open_findings=[]，0收费API、0生产库或实际UI操作，全部自有TEMP清理。金融资格未授予：根的官方原始来源核对发现IQS11跨年Capex/FCF错配，原body/分数保留，需原owner定向纠错/重问；URL/schema和工程恢复成功不关闭该金融问题。已核DUPONT02的真实fresh正例及实际UI恢复由总控独立实证，不由本软件审查代签。
+
+## 同节点最终尾修与真实结果复核
+
+非作者`/root/fresh_ui_route`只读复核通过，open_findings=[]。纯导出两行改原ReadOnlyWorkView，SQL布局、目标work/封存包hash/原ACK检查保留；5项隔离日志已核。全缓存文案仅registered+result.cached+空execution_bundles触发，普通/混合任务保持；2项真实handler日志已核。四文件SHA与作者最终manifest一致，不重复测试或另立审查门。
+
+独立mode=ro亲核原StockWiki三题观察和StockQA outbox，3包ID及payload SHA逐一匹配、均delivered，qualification_status仍review_pending。原cache job为registered/result.cached、1题/fullbank36、空bundle；obs_52f45f…与已交付原观察同ID。observed_at==answered_at=2026-11-01T00:45:07.932157Z，资料日10/27保持。原预算SQL聚合与before-cache均84HTTP/$1.974640，0在途/未结/active工作，新增模型请求及费用0。只支持本机CATL/DUPONT02单题最近扫描复用，不支持金融、整公司或规模签收。
+
+根当前PWF未将G3/G5/G6/200/2000假关；审查指出README/handoff残留fresh pending及job状态用词，根已收敛为完成与registered/result.cached。这些小文案改正不要求新凭证或回归。
