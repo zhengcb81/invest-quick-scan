@@ -533,10 +533,10 @@ class ExecutionGateway:
             raise DashboardExecutionError('bundle_changed', '检查期间原输入变化，未启动恢复。', 409)
         return root, runtime
 
-    def preview(self, payload):
-        key, bundle = self._select(payload)
+    def preview(self, payload, *, read_only=False):
+        key, bundle = self._select(payload, recovery=read_only)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
-        root, runtime, admission, missing = self._deployment(bundle)
+        root, runtime, admission, missing = self._deployment(bundle, recovery=read_only)
         if missing:
             return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"), "status": "blocked", "missing": missing,
                     "bundle_fingerprint": self._fingerprint(bundle),
@@ -546,6 +546,14 @@ class ExecutionGateway:
         work = self.inspection_work_items(inspection)
         unknown = any(row.get("status") in {"uncertain", "leased"} for row in work)
         readonly = bool(work) and all(row.get("status") in {"result_ready", "delivered"} for row in work)
+        if read_only:
+            return {**grouping, "bundle_id": key, "entity_id": bundle['entity_id'], "status": "inspected",
+                    "bundle_fingerprint": self._fingerprint(bundle), "preview_id": None,
+                    "inspection_sha256": _digest(inspection), "readonly_recovery": readonly,
+                    "can_start": False, "inspection": inspection, "API_requests": 0, "database_writes": 0,
+                    "missing": [], "blocked_reasons": [], "permissions_check": {"status": "not_checked"},
+                    "required_action": None,
+                    "notice": "仅查看原工作状态；未检查派发权限，也未预留费用。真正启动或恢复时仍由原执行器检查。"}
         permissions = self._registered_permissions(bundle, root, runtime)
         ready = not unknown and (quote.get("budget_available") is True or readonly) and permissions['status'] == 'passed'
         preview_id = "preview-" + uuid.uuid4().hex
@@ -877,7 +885,7 @@ class ExecutionGateway:
                 raise DashboardExecutionError("run_unknown", "没有该启动记录", 404)
             record = records[0]
             if action == "inspect":
-                preview = self.preview({"bundle_id": record["bundle_id"]})
+                preview = self.preview({"bundle_id": record["bundle_id"]}, read_only=True)
                 self._owner_snapshots[run_id] = {'preview': preview, 'observed_at': _now()}
                 return {"run": record, "preview": preview}
             path = self.state_root / (run_id + ".json")

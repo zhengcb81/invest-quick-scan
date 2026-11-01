@@ -69,3 +69,5 @@
 新增定向先有效RED7F/4P，三项最小修复后11P；扩围在沙箱遇localhost10013及长TEMP超过Windows路径上限，并非模型或业务失败。改用去密钥原Python、唯一短C:/Temp，执行`pytest tests/test_dashboard_http.py tests/test_dashboard_delivery.py tests/test_dashboard_product_prepare_api.py tests/test_dashboard_prepare.py::test_old_local_preview_uses_current_inputs_and_owner_not_an_arbitrary_hour tests/test_implementation_plan.py -q -p no:cacheprovider --tb=short --basetemp <own-temp>/p`，最终141P/72子测试/0skip，45.13秒，临时环境清理True。导出单独执行的10例亦通过，不能重复加总；测试边界替身不宣称真实模型或金融认证。
 
 04:01:44Z确认准备全部registered/abandoned、交付completed/历史只读、无模型子进程且原账本0在途/未结后，核实原8766进程argv/创建时间并重载；新launcher27116。doctor ready=true、blocked_reasons=[]，仍85HTTP/US$1.999868，本轮新增收费0。StockQA `76c9431`已核HEAD=origin/master；主线仍待共享公共入口和第一方上下文金融纠错，不以此次减负签成已完成。保留其他writer README原hash与全部旧记录。
+
+04:07同节点尾修：只查看旧任务改走preview(read_only=True)，省掉独立_registered_permissions重复子进程、不创建preview凭证、不需新spend或模型配置；明确未检查派发许可，真正start/resume/seal/批次仍原逻辑。有效RED1F后原执行模块147P/0skip，43.19秒；去密钥短TEMP全部清理，独立agent静核无未解问题，不新增审查凭证。此前141P与本批分开报告，不把子测试或重复用例累加为产品完成度。04:06:54Z空闲核实后原8766已加载尾修（launcher33104），账本仍85HTTP/US$1.999868；源码/PWF前一提交`6259d75`已推既有origin/master，尾修及此记录随下一正常提交保存。主线范围不变。

@@ -115,6 +115,32 @@ def test_start_without_optional_preview_checks_current_owner_and_launches_once(d
     assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
 
 
+def test_read_only_inspection_needs_no_new_dispatch_permission_or_model_config(deployment, monkeypatch):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'available': False,
+        'work_items': [{'status': 'pending', 'work_item_id': 'original-work'}]})
+    admission = json.loads(Path(bundle['admission_config']).read_text())
+    admission['permission_error'] = 'delegation_revoked'
+    put(Path(bundle['admission_config']), admission)
+    original = gateway._registered_permissions
+    calls = []
+    def permission_read(*args):
+        calls.append('permission')
+        return original(*args)
+    monkeypatch.setattr(gateway, '_registered_permissions', permission_read)
+    forbid_model_launch(monkeypatch)
+    view = gateway.preview({'bundle_id': 'test'}, read_only=True)
+    assert view['status'] == 'inspected' and view['inspection']['work_items'][0]['status'] == 'pending'
+    assert view['permissions_check']['status'] == 'not_checked' and view['can_start'] is False
+    assert view['preview_id'] is None and not gateway._previews and calls == []
+    assert gateway.preview({'bundle_id': 'test'})['can_start'] is False and calls == ['permission']
+    Path(bundle['spend_authorization']).unlink()
+    (runtime/'llm_apis.json').unlink()
+    assert gateway.preview({'bundle_id': 'test'}, read_only=True)['status'] == 'inspected'
+    assert calls == ['permission'] and not (runtime/'calls.txt').exists()
+
+
 def test_start_after_service_restart_does_not_require_old_memory_preview(deployment):
     config, runtime, _ = deployment
     old_gateway = ExecutionGateway(config)

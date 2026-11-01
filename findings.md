@@ -37,6 +37,7 @@
 28. **本地预览的一小时不是实际权限期限。** 输入、身份和配置未变时，固定小时门只迫使重做准备；已取消，apply仍核当前原owner快照与原确认的真实有效期，未知apply不自动重试。
 29. **原样保存和重复核查不产生新保护。** 已持久化相同配置直接返回，不写文件、不干扰任务；真实变更保一次运行检查与原CAS，不再写后重复核查。外部不同配置热加载仍按原检查。
 30. **封存是逐题的，不应等整scope。** 导出取消全ready同步屏障，已有封存包可先入库。原检查器会省略未建work的题，现按原请求求差并保持not_exportable/partial，全部缺题也不误报完成；不造work ID、不重发模型，逐包身份/hash及原ACK保持。
+31. **查看状态不用重读一次派发许可。** control(inspect)已只读原工作状态，不再跑额外_registered_permissions子进程或创建内存preview。返回inspected、can_start=false及权限not_checked；start/resume/seal和批次仍按原当前检查。原1.4/1.5范围选择的policy/exposure读取保留，不冒称绕过全部owner验证。
 
 ## 当前真实风险
 
