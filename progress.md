@@ -115,3 +115,20 @@ StockQA8791c0e已推送既有origin/master；原UI文案8fc9072已本地提交�
 原owner scored第三次终态1F/386.86秒，临时五组件runtime已清理、0付费。发送与两题CP已通过；原sealer末端仍仅认vendor URL，报exchange package evidence URL is not bound to checkpoint，继而hydrate缺CP。保留失败，已交原StockQA同一writer沿原provided来源投影补末端短反例和根修，不把删除空tool_results的前置修复宣称端到端已全通。软件缺口修好后才做原UI真实金融复核，不盲发新模型。
 
 原CUA结果页已重新加载并展开宁德时代真实记录，实际显示“仅展示原记录时点；实际缓存复用和刷新以原服务预检为准。”旧已加载JS曾显示旧文案，完整刷新后确认新内容；未提交表单或发模型。搜索实操规范遗留的permit/consume/dispatch_commit指令亦已删除，对齐原StockQA防重/预算，并说明provided_context独立来源语义。
+
+
+主线原封包尾修已有效RED1F/3.04秒→原seal/get/reopen/hydrate正例1P/2.68秒；provided/outbox/Q10三模块68P/0skip/10.15秒，唯一去密钥禁网副本清理。原validate_checkpoint_binding默认仍严格，只有Store同事务_checkpoint_record重读原intent/receipt后显式传合法provided来源；prepare/supersede及完整observation重建、原厂商回执均保持。原hooks首轮仅修换行/import排序，重跑正常hooks全过；StockQA756eee6已提交推送origin。不同agent集中审三个QA与三个IQS主线文件，无未解阻断，不新建审查凭证。
+
+第四次原owner完整软件例provided-v4现用新唯一五组件临时副本运行（原exec handle72879），只vendor wire脚本化、0收费，等待真实终态后才执行UI comparison；不是重发前三次请求或覆盖其失败。实际原owner政策11原字节与准备的备份一致，候选12仅1.3方言/quote和单调版本变化，TTL24h与successful_scan保持；尚未激活原配置。
+
+
+provided-v4终态1F/374.72秒，临时副本已清理、0收费。两题C06包均sealed，末端封包修复确已生效；旧ApprovedRefreshSession.restore_registered_checkpoint重新验证标准答案时仍只认vendor来源，异常被hydrate的DEBUG捕获后表现missing CP。原restore短例已有效RED1F/3.13秒，明确是真生产来源投影遗漏；未改decision guard（原_refresh_states本会正确转resume）。只补已由原Store复核的来源合集，不放松原主体/模型/绑定校验；修后短回归正在原writer唯一隔离环境执行。未因长例失败去收费试错或删断言。
+
+
+原恢复尾修保持decision/registered_scope/self.check/binding/题义/主体/model/日期与原回执，仅合并已Store复核的provided来源。provided+refresh_execution原两模块81P/0skip/24.30秒，临时副本清理；不同agent同节点静审关闭，原hooks规范换行/import后全过，StockQA7b3814f已正常提交推送。第五次原owner完整软件用例provided-v5现handle89150唯一隔离运行，只scripted vendor wire、0真实API。原UI仅准备内存设置草稿和只读操作页，未保存shared/比较配置；尚未做新真实金融结论。
+
+
+provided-v5原owner整链1P/468.81秒、0skip、0付费，唯一五组件runtime已清理。覆盖实际SDK native search+thinking+provided-only来源两题scored、原封包/水合、原回执不改及再入0POST；原前四次失败保持。开始真实原UI复核：只读原账本85HTTP/1999868micros且0在途/未结/未知后，保存当前dashboard备份并原字节CAS临时policy11→12/1.3（TTL与预算不变）。首原work-decision preview返回refresh_owner_preview_rejected，0新模型HTTP；正在追原公开服务详细拒绝原因，不盲重复请求。当前policy12仍临时，须本轮完成或失败收尾后回退普通policy11。
+
+
+首comparison预览的拒绝来自实验编排错误：请求草稿漏permission_request；随后取scope原query.json时其snapshot尚为null。已改从gen5原refresh.json读取真实冻结source_query，题目/主体选真实子集，同时通过原_work_request和refresh.validate_request两校验，不伪造snapshot或改产品校验。期间误把缺文件的输入准备失败与下一CLI放在同一调用导致一次无效重试，0费用；已改为先检查exit_code再执行依赖。新原CLI preview现handle80391运行，旧failed日志保留；不是新权限缺失或需用户再次授权。

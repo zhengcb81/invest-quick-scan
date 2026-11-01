@@ -229,8 +229,9 @@ def native_bound(original, monkeypatch):
             "outcome_recorded": "response_available", "native_receipt": copy.deepcopy(native),
             "response_saved": {"final_content": json.dumps(body), "tool_calls": None}})
     import src.utils.quick_scan_work_transport as transport
-    monkeypatch.setattr(transport, "project_quick_scan_search", lambda *args, **kwargs:
-                        {"search_status": "executed", "source_urls": [source["url"]]})
+    monkeypatch.setattr(transport, "project_quick_scan_answer_sources", lambda *args, **kwargs:
+                        {"search_status": "executed", "source_urls": [source["url"]],
+                         "search_source_urls": [source["url"]], "provided_context_sources": []})
     from iqs_company_agent_lab.evidence import EvidenceBoard
     return task, qid, body, services, source, EvidenceBoard(2000)
 
@@ -270,9 +271,12 @@ def test_native_search_uses_original_source_projection_without_fabricating_exter
     captured=[]
     def projection(execution,**kwargs):
         captured.append(copy.deepcopy(execution))
-        return {'search_status':'executed' if executed else 'not_executed','source_urls':[source['url']] if executed else []}
+        # A provided URL alone must never qualify as an executed native search.
+        return {'search_status':'executed' if executed else 'not_executed',
+                'search_source_urls':[source['url']] if executed else [],
+                'source_urls':[source['url']], 'provided_context_sources':[]}
     import src.utils.quick_scan_work_transport as transport
-    monkeypatch.setattr(transport,'project_quick_scan_search',projection)
+    monkeypatch.setattr(transport,'project_quick_scan_answer_sources',projection)
     callback=engine._production_answer_semantics(task,services)
     if executed:
         callback(body,qid,attempt_ref='stockqa:UNIT_SDK_ATTEMPT',evidence_board=board)

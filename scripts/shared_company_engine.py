@@ -186,7 +186,7 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
     from src.core.models import Answer
     from src.utils.quick_scan_observation_context import validate_standard_answer
     from src.utils.quick_scan_result_outbox import canonical_sha256
-    from src.utils.quick_scan_work_transport import project_quick_scan_search
+    from src.utils.quick_scan_work_transport import project_quick_scan_answer_sources
 
     inspected = services.inspect_attempt(attempt_ref)
     if (not inspected.get("known") or not inspected.get("response_saved")
@@ -218,8 +218,8 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
         execution["external_context_use"] = copy.deepcopy(use["proof"])
     # Native search has its own original execution receipt. Never require or
     # manufacture an external-search use row for that independent path.
-    projection = project_quick_scan_search(execution, work_store=services.store, work_item_id=work_id)
-    if projection.get("search_status") != "executed" or not projection.get("source_urls"):
+    projection = project_quick_scan_answer_sources(execution, work_store=services.store, work_item_id=work_id)
+    if projection.get("search_status") != "executed" or not projection.get("search_source_urls"):
         raise ValueError("original verified source projection required")
     transported = Answer(json.dumps(body, ensure_ascii=False), score=body.get("score"),
                          status=body.get("status"), source="llm", metadata={"execution": execution})

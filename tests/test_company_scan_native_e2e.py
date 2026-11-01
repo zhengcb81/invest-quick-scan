@@ -281,7 +281,7 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
     task, services = construct(settings)
     excerpt = 'SYNTHETIC-CONTEXT-CANARY: same-period OCF=100; cash capex=40; no real company finding.'
     record = dict(evidence_id='synthetic-primary', scope='issuer', period_start='2025-01-01', period_end='2025-12-31',
-                  unit='thousand', currency='CNY', accounting_basis='synthetic', source_url='https://example.org/source',
+                  unit='thousand', currency='CNY', accounting_basis='synthetic', source_url='https://provided.example.org/statement',
                   published_at='2026-10-01', retrieved_at_utc='2026-10-13T00:00:00Z', excerpt=excerpt,
                   excerpt_sha256=hashlib.sha256(excerpt.encode()).hexdigest(), claim_kind='fact',
                   support_status='supported', supersedes_id=None, limitations=['Synthetic software fixture only.'])
@@ -289,6 +289,35 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
                   runtime_bridge_root=str(BRIDGE), state_root=str(tmp_path/'shared'),
                   evidence_boards=[{'subject_ref': task.raw['owner_binding']['subject_ref'], 'records':[record]}])
     before_config = copy.deepcopy(config)
+    # Observe and re-raise real boundary failures: an incomplete run alone
+    # cannot distinguish a send-binding error from a rejected answer.
+    from functools import wraps
+    def observe_errors(function, label):
+        @wraps(function)
+        def observed(*args, **kwargs):
+            try:
+                return function(*args, **kwargs)
+            except Exception as error:
+                chain = []
+                cause = error
+                for _ in range(6):
+                    if cause is None:
+                        break
+                    chain.append(type(cause).__name__ + ': ' + str(cause)[:240])
+                    cause = cause.__cause__
+                print('SCRIPTED-NATIVE-BOUNDARY', label, json.dumps(chain))
+                raise
+        return observed
+    monkeypatch.setattr(LLMClient, 'send_search_request', observe_errors(LLMClient.send_search_request, 'send'))
+    from src.utils.quick_scan_refresh_execution import ApprovedRefreshSession
+    monkeypatch.setattr(ApprovedRefreshSession, 'restore_registered_checkpoint',
+                        observe_errors(ApprovedRefreshSession.restore_registered_checkpoint, 'restore'))
+    shared_engine = __import__('importlib').import_module('shared_company_engine')
+    semantics = shared_engine._production_answer_semantics
+    def observe_semantics(*args, **kwargs):
+        callback = semantics(*args, **kwargs)
+        return None if callback is None else observe_errors(callback, 'answer')
+    monkeypatch.setattr(shared_engine, '_production_answer_semantics', observe_semantics)
     posts = []
     class Wire:
         def post(self, *args, **kwargs):
@@ -300,8 +329,19 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
             selected = context['requested_question_ids']
             answers = [sf.gen_insufficient(row['question']) for row in task.questions if row['question_id'] in selected]
             for answer in answers:
-                answer.update(status='not_applicable', information_as_of=task.raw['information_cutoff'],
-                              summary='[Synthetic software fixture] No financial assertion.')
+                answer.update(status='scored', score=6, confidence='medium',
+                              information_as_of=task.raw['information_cutoff'],
+                              period_start=record['period_start'], period_end=record['period_end'], basis='current',
+                              summary='[Synthetic software fixture] Cash after cash capex is 60 thousand CNY.',
+                              evidence=[dict(id=record['evidence_id'], title='Synthetic statement',
+                                  url=record['source_url'], published_at=record['published_at'], claim=excerpt)],
+                              metrics=[dict(metric_id='custom.synthetic_cash_after_capex', value=60,
+                                  unit='currency', currency='CNY', unit_detail='thousand',
+                                  period_start=record['period_start'], period_end=record['period_end'],
+                                  basis='current', definition='Synthetic OCF 100 minus cash capex 40.',
+                                  evidence_ids=[record['evidence_id']])],
+                              counterevidence='Synthetic software fixture only; no real financial conclusion.',
+                              coverage=dict(status='partial', reason='Only synthetic input-context evidence.'))
             response = _b01_thinking_response('mimo_chat_completions','mimo-v2.6-pro',
                                              final=json.dumps({'answers':answers,'declared_question_ids':selected}))
             payload = response.json.return_value
@@ -320,6 +360,23 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
     assert len(hydrated.results) == 2
     work_ids = [services.owner.existing_work(qid)['work_item_id'] for qid in task.question_ids]
     original = [services.store.get_answer_checkpoint(w) for w in work_ids]
+    assert all(row['payload']['answer']['status']=='scored' and row['payload']['answer']['score']==6 for row in original)
+    assert all(services.store.get_standard_answer(work_id)['answer']['evidence'][0]['url']==record['source_url']
+               for work_id in work_ids)
+    from src.utils.quick_scan_work_transport import project_quick_scan_search, project_quick_scan_answer_sources
+    for work_id in work_ids:
+        attempt = next(row for row in services.store.list_attempts(work_id) if row['phase']=='response_available')
+        receipt = services.store.get_attempt_response(attempt['attempt_id'])['receipt']
+        saved_receipt = copy.deepcopy(receipt)
+        execution = copy.deepcopy(receipt)
+        execution['work_transport'] = dict(work_attempt_id=attempt['attempt_id'], final_receipt=copy.deepcopy(receipt))
+        search = project_quick_scan_search(execution, work_store=services.store, work_item_id=work_id)
+        sources = project_quick_scan_answer_sources(execution, work_store=services.store, work_item_id=work_id)
+        assert search['search_status'] == 'executed' and record['source_url'] not in search['source_urls']
+        assert sources['search_source_urls'] == search['source_urls'] and record['source_url'] in sources['source_urls']
+        assert any(row['origin']=='provided_context' and row['source_url']==record['source_url']
+                   and row['excerpt_sha256']==record['excerpt_sha256'] for row in sources['provided_context_sources'])
+        assert services.store.get_attempt_response(attempt['attempt_id'])['receipt'] == saved_receipt
     run_shared_company_scan(services.lifecycle, services.client, **arguments)
     assert len(posts) == 2 and config == before_config
     assert [services.store.get_answer_checkpoint(w) for w in work_ids] == original
