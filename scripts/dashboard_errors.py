@@ -5,4 +5,3 @@ class DashboardExecutionError(ValueError):
         self.code, self.message, self.status = code, message, status
         self.details = details or {}
         self.prelaunch_not_started = prelaunch_not_started is True
-

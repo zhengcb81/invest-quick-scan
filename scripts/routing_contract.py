@@ -104,4 +104,3 @@ def validate_policy(policy, modules):
         if module_id in by_id and set(by_id[module_id]["mandatory_question_ids"]) != ids:
             raise ValueError("policy cannot drop mandatory distress/recovery questions")
     mc.digest(policy)
-
