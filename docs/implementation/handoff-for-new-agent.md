@@ -49,7 +49,7 @@ IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算
 |Company Lab|d1d92a2，本地提交、无remote|
 |Runtime Lab|4241d79，本地提交、无remote，原codex/agent-run-02分支|
 |原UI|8fc9072，本地提交、无remote|
-|StockWiki|719520b，本地提交、无remote；保留其他writer的source-reader/checks修改|
+|StockWiki|本组719520b已被其他harness合入381811e，五个本组文件未改；无remote。该HEAD为本次快照，后续以Git实际状态为准|
 
 原UI补封透传冻结shared配置和controls；StockQA原recover分支仅重放，缺原safe拒绝新model/search。缺密钥不改变policy eligibility，按原response_available attempt精确route恢复。新pending仍受原发送准入；已有坏检查点不跳过，真实缺文件才回读尚存原pending。来源闭包拒失效ID改名，HTTP只有原投影合格才接受。
 
