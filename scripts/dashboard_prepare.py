@@ -324,7 +324,7 @@ def _reusable_bank(config, payload):
         'route_raw':snapshot['route_raw'].decode('utf-8')}
 
 
-def _cached_scope_result(owner_state, questions, subject_ref):
+def _cached_scope_result(owner_state, questions, subject_ref, *, cache_clock="information_as_of"):
     """Only native all-reuse decisions are a zero-dispatch completion."""
     quote=owner_state.get('quote',{})
     if any(type(quote.get(key)) is not int or quote[key]!=0 for key in ('max_cost_micros','max_http_requests')):
@@ -339,7 +339,8 @@ def _cached_scope_result(owner_state, questions, subject_ref):
             or not isinstance(item.get('reuse_observation_id'),str) or not item['reuse_observation_id']):return None
         projected.append({'question_id':item['question_id'],'observation_id':item['reuse_observation_id']})
     if {r['question_id'] for r in projected}!=wanted:return None
-    return {'subject_ref':copy.deepcopy(subject_ref),'question_count':len(projected),'items':projected}
+    return {'subject_ref':copy.deepcopy(subject_ref),'question_count':len(projected),'items':projected,
+        **({'cache_clock':cache_clock} if cache_clock=='successful_scan' else {})}
 
 
 def _cache_preview(config,payload):
@@ -367,7 +368,8 @@ def _cache_preview(config,payload):
         contract=IqsQueryContract(Path(config['iqs_root']),runs_dir=directory/'query-validation',
             release_root=Path(config.get('iqs_release_root',config['iqs_root'])))
         view=SubjectRefreshView(routes,contract=contract,**kwargs)
-        plan=plan_module_refresh(routes,view,provider=policy['provider'],model=policy['model'],ttl_hours=policy['ttl_hours'],**kwargs)
+        plan=plan_module_refresh(routes,view,provider=policy['provider'],model=policy['model'],ttl_hours=policy['ttl_hours'],
+            cache_clock=policy.get('cache_clock','information_as_of'),**kwargs)
     except DashboardPrepareError as error:
         if error.code=='existing_work_bank_changed':return None
         raise
@@ -393,10 +395,14 @@ def _cache_preview(config,payload):
         if question['id'] not in selected:continue
         ref=subject_ref_for_question(routes,question,snapshot,binding,now_utc=now)
         row=grouped.setdefault(_sha(ref),{'subject_ref':ref,'question_count':0,'items':[]})
-        row['items'].append({'question_id':question['id'],'observation_id':fields[question['id']]['reuse_observation_id']})
+        field=fields[question['id']]
+        row['items'].append({'question_id':question['id'],'observation_id':field['reuse_observation_id'],
+            **({key:field[key] for key in ('information_as_of','cache_started_at','cache_valid_until') if key in field}
+               if plan.get('cache_clock')=='successful_scan' else {})})
         row['question_count']+=1
     return {'status':'cached','entity_id':binding['entity_id'],'execution_bundles':[],'cached_scopes':list(grouped.values()),'checked_at':now,
         'cached_question_count':len(selected),'question_count_total':len(selected),'API_requests':0,'dispatch_started':False,
+        **({'cache_clock':'successful_scan'} if plan.get('cache_clock')=='successful_scan' else {}),
         'financial_accuracy_proven':False,'owner_state_changed':False,'information_cutoff':route['as_of']}
 
 
@@ -1080,6 +1086,7 @@ def _apply(config, payload):
     first = executions[0] if executions else None
     result = {"protocol": PROTOCOL, "status": "prepared" if executions else 'cached', "execution_bundles": executions,
               'cached_scopes':cached_scopes,'cached_question_count':sum(item['question_count'] for item in cached_scopes),
+              **({'cache_clock':'successful_scan'} if policy.get('cache_clock')=='successful_scan' else {}),
               'pending_question_count':sum(item['question_count'] for item in executions),
               "question_count_total": len(record['execution_question_ids']),
               "recovery_subset": recovery, "execution_question_ids": record["execution_question_ids"],
@@ -1124,7 +1131,8 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     preview = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli", [*owner_common, "--request", str(directory / "refresh.json")])
     _new(directory / "owner-preview.json", preview)
     original = RefreshRecordStore(paths).load(preview["preview_id"])
-    cached=_cached_scope_result(original['owner_state'],selected_questions,subject_ref)
+    cached=_cached_scope_result(original['owner_state'],selected_questions,subject_ref,
+        cache_clock=policy.get('cache_clock','information_as_of'))
     if cached is not None:return {'status':'cached',**cached}
     if preview.get("status") != "ready":
         raise DashboardPrepareError("native_preview_not_ready", "Original owner preview is not ready", 409, {"preview": preview})

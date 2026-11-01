@@ -1,6 +1,6 @@
 # 本次不同作者集中独立审查
 
-以下保留实际审查结论，各范围分开署实；重复执行不加总，不作为每个小节点的新增准入手续。
+各范围保留实际结论；重复执行不加总，不作为每个小节点的新准入手续。
 
 
 ---
@@ -72,3 +72,21 @@ StockWiki两文件最终SHA与delegation-source-manifest逐项一致。只有早
 IQS批次与原UI四文件最终SHA已核。明确bundle_ids按当前真实登记重建本地编排，旧preview_id只是可选提示；旧仅preview调用仍兼容，失去选择不猜。完整scope组、原冻结指纹、同实体占用、同批attach以及每scope当前原owner/预算/未知态检查仍在原代码路径；明确开始才POST，双击互斥、缓存不自动启动。后台13P、真实ESM新增1P、完整受影响UI53P实际日志已核（1包含在53，不加总），不重复前轮QA13/计划83/原UI旧52。
 
 最终签收范围/hash统一补在final.json；原先main审查的UI06738a0之后新增批次UI字节由本补审覆盖，不以旧UI签名冒当前字节。纯软件去重与本地编排精简，不授权任意范围/费用，不代替根正在进行的真实模型fresh/金融质量验收。无新门、新卡、服务重启或真实库操作。
+
+## 同节点真实UI根因补审：共享预算余额漂移
+
+CATL确认后AMEC结算仅改变全局预算hash/可用余额。最终改动只在原StockWiki native `_recheck` 中复制当前state、验证当前budget_available严格为True，再把3个余额快照字段投影为旧值供原严格contract比较。返回和存储仍是原冻结preview/quote/confirmation，现金/HTTP批准cap均未扩大；currency、provider/model、scope/field/question、generation/work、policy/主体权限、member/anchor及期限仍由原校验约束。公共validate_preview未放宽，原QA当前预算读取、实际reserve/CAS及unknown拒绝路径未改。
+
+作者95P/0skip实际日志与3最终SHA已核（包含原两模块，不加总旧58）；独立追加6短反例：provider/TTL/field漂移、缺失HTTPcap、非布尔预算均拒且回执不变；大额余额增加仍返回完整旧inspection、旧费用22846681micros/HTTP3。独立反例只用自有临时owner回执，结束清理。首轮沙箱在原不可变发布os.link触发WinError5，离沙箱同6例0.84秒通过，未放宽产品。
+
+最终3文件SHA和quote-independent.json/quote-budget-green.log引用合并在final.json，passed/open_findings=[]。不重复此前已绿套件，不重启或操作真实任务，不收费、不写生产库；真实金融准确性和fresh正例由总控原UI实证另行验收。
+
+## 同节点最终补审：最近成功扫描与资料时间分离
+
+StockWiki仅增加显式可选successful_scan策略；默认information_as_of及默认wire输出形状保留。新TTL来自原已导入payload.execution.answered_at，需和原observed_at同UTC时刻、原答案成功、原search_status executed及search引用存在；导入/重放/重启/读取时间不续期，未新增凭证验证，也未放宽原导入验证。原资料日期不被覆盖；null如实保留且不抹去合法执行时钟，future事实/event/未知或不可用答案、实体/scope/题义/model/cutoff/inflight规则保持。
+
+IQS原6个policy schema只添optional enum，原required和OwnerState/items保持；显式策略自然进入原policy SHA。prepare调用原W06并透传其计算的扫描起点、到期及资料日期，不另算TTL；原UI把三种时间分开显示，null资料日期显示未知，提示扫描可复用不代表资料最新或答案准确。全缓存仍无执行包/模型调用/再次入库，native all-reuse仅添策略标签、不造时间。
+
+16最终文件SHA逐项核对。作者SW53P、原IQS contract39P/prepare10P、原UI真实handler2P日志已读回；未重复旧绿套件。独立补4短例在原临时route/observation库通过：默认与精确到期边界、行导入元数据不能续payload执行TTL、null资料仍按合法扫描时钟复用、完整plan未来事实日期仍拒；原DB字节不变，TEMP清理。
+
+两作者曾用同名薄证据导致覆盖，已改wiki/iqs前缀，不重复测试。SW原53P绿日志及hash保留，元数据从原工具返回恢复且显式标记；原RED日志被覆盖，只保留工具返回摘要，不冒称持有原日志。此事不影响已读最终源码/实际绿日志及独立反例。最终passed/open_findings=[]，统一final.json引用所有新范围和日志SHA。真实policy9激活及真实UI缓存/金融质量由总控另证，本审查不代签。

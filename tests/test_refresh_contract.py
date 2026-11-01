@@ -183,3 +183,17 @@ def test_dynamic_pool_and_module_permission_require_explicit_owner_opt_in(tmp_pa
     assert refresh.validate_policy(value)==value
     value['routes']=policy(tmp_path)['routes']
     with pytest.raises(ValueError):refresh.validate_policy(value)
+
+
+@pytest.mark.parametrize('dialect',['1.0.0','1.1.0','1.2.0','1.3.0'])
+def test_owner_cache_clock_is_explicit_and_legacy_default_is_unchanged(tmp_path,dialect):
+    value=policy(tmp_path)
+    value['protocol']='stockwiki.refresh_owner_policy/'+dialect
+    if dialect!='1.0.0':value['qa']['quote_schema_version']=dialect
+    assert refresh.validate_policy(value)==value and 'cache_clock' not in value
+    for clock in ['information_as_of','successful_scan']:
+        selected={**value,'cache_clock':clock}
+        assert refresh.validate_policy(selected)==selected
+        assert refresh.digest(selected)!=refresh.digest(value)
+    for invalid in [None,'answered_today','',True]:
+        with pytest.raises(ValueError):refresh.validate_policy({**value,'cache_clock':invalid})

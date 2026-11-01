@@ -1055,3 +1055,72 @@ def test_unapplied_legacy_local_candidate_requires_new_preview_without_rebuildin
         gateway.apply({key: record[key] for key in ("preview_id", "preview_token")})
     assert error.value.code == "preview_stale"
     assert not (directory / "apply-started.json").exists() and tree(base / "owner") == before
+
+
+@pytest.mark.parametrize('clock',['information_as_of','successful_scan'])
+def test_cached_scope_retains_owner_scan_clock_without_inventing_fact_dates(clock):
+    from scripts.dashboard_prepare import _cached_scope_result
+    ref={'entity_id':ENTITY,'scope':'entity','scope_id':ENTITY}
+    state={'quote':{'max_cost_micros':0,'max_http_requests':0},'items':[
+        {'question_id':'DUPONT_02','subject_ref':ref,'decision':'reuse','reuse_observation_id':'obs_original'}]}
+    before=copy.deepcopy(state)
+    result=_cached_scope_result(state,[{'id':'DUPONT_02'}],ref,cache_clock=clock)
+    assert result.get('cache_clock','information_as_of')==clock and state==before
+    if clock=='information_as_of':assert 'cache_clock' not in result
+    assert result['items']==[{'question_id':'DUPONT_02','observation_id':'obs_original'}]
+    assert 'information_as_of' not in result['items'][0]
+
+
+@pytest.mark.parametrize('clock',[None,'successful_scan'])
+def test_readonly_cache_preview_passes_owner_clock_and_preserves_source_dates(tmp_path,monkeypatch,clock):
+    from types import SimpleNamespace
+    from scripts import dashboard_prepare as prepare
+    monkeypatch.syspath_prepend(str(WIKI))
+    import stockwiki.paths as paths_module
+    import stockwiki.quick_scan_store as stores
+    import stockwiki.quick_scan_routes as routes_module
+    import stockwiki.quick_scan_route_validation as route_validation
+    import stockwiki.quick_scan_query_contract as queries
+    import stockwiki.quick_scan_subject_refresh as views
+    import stockwiki.quick_scan_module_refresh as refresh
+    import stockwiki.quick_scan_subject_authority as subjects
+    owner_policy={'provider':'mimo','model':'mimo-v2.6-pro','ttl_hours':24,'qa':{'work_store':str(tmp_path/'never-opened.sqlite')}}
+    if clock is not None:owner_policy['cache_clock']=clock
+    _new(tmp_path/'config/quick_scan_refresh.json',owner_policy)
+    monkeypatch.setattr(paths_module.WorkspacePaths,'from_root',lambda p:SimpleNamespace(config_dir=tmp_path/'config'))
+    monkeypatch.setattr(stores,'QuickScanStore',lambda p:object())
+    snapshot={'manifest_raw_sha256':'a'*64}
+    owner_routes=SimpleNamespace(get_for_execution=lambda **kw:{'snapshot':snapshot})
+    monkeypatch.setattr(routes_module,'QuickScanRouteStore',lambda *a,**kw:owner_routes)
+    monkeypatch.setattr(route_validation,'IqsRouteValidator',lambda *a,**kw:object())
+    monkeypatch.setattr(queries,'IqsQueryContract',lambda *a,**kw:object())
+    monkeypatch.setattr(views,'SubjectRefreshView',lambda *a,**kw:object())
+    monkeypatch.setattr(prepare,'_equivalent_frozen_bank',lambda *a:None)
+    calls=[]
+    def owner_plan(*args,**kwargs):
+        calls.append(kwargs)
+        return {'cache_clock':kwargs['cache_clock'],'fields':[{'field_id':'DUPONT_02','decision':'reuse',
+            'reuse_observation_id':'obs_original','information_as_of':'2025-12-31',
+            'cache_started_at':'2026-11-01T12:00:00Z','cache_valid_until':'2026-11-02T12:00:00Z'}]}
+    monkeypatch.setattr(refresh,'plan_module_refresh',owner_plan)
+    ref={'entity_id':ENTITY,'scope':'entity','scope_id':ENTITY}
+    monkeypatch.setattr(subjects,'subject_ref_for_question',lambda *a,**kw:ref)
+    read={'protocol':'iqs.original_work_bank_bindings/1.0.0','API_requests':0,'database_writes':0,'rows':[]}
+    monkeypatch.setattr(prepare.subprocess,'run',lambda *a,**kw:SimpleNamespace(returncode=0,stdout=json.dumps(read).encode()))
+    binding={'entity_id':ENTITY,'subject_key':'subject@1','perimeter_sha256':'a'*64,'identity_revision':1}
+    config={'workspace_root':str(tmp_path),'iqs_root':str(ROOT),'stockqa_root':str(QA)}
+    payload={'native':{'binding':binding,'selected_listing':{'security_id':'SEC_original'}},
+        'manifest':{'questions':[{'id':'DUPONT_02','scope':'entity'}]},'route':{'as_of':'2026-11-01'},
+        'cache_directory':str(tmp_path/'cache-preview'),'question_ids':['DUPONT_02']}
+    result=prepare._cache_preview(config,payload)
+    expected_clock=clock or 'information_as_of'
+    assert calls[0]['cache_clock']==result.get('cache_clock','information_as_of')==expected_clock
+    item=result['cached_scopes'][0]['items'][0]
+    if clock=='successful_scan':
+        assert item['information_as_of']=='2025-12-31'
+        assert item['cache_started_at']=='2026-11-01T12:00:00Z'
+        assert item['cache_valid_until']=='2026-11-02T12:00:00Z'
+    else:
+        assert 'cache_clock' not in result and set(item)=={'question_id','observation_id'}
+    assert result['execution_bundles']==[] and result['API_requests']==0
+    assert not (tmp_path/'never-opened.sqlite').exists()
