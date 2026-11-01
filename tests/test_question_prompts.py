@@ -121,6 +121,19 @@ class QuestionPromptBoundaryTests(unittest.TestCase):
         self.assertNotIn("逐字复制", rules)
         self.assertNotIn("包括lang/type/trk等参数，不得删除", rules)
 
+    def test_numeric_inputs_are_reconciled_per_period_before_deriving_cash_flow(self):
+        _, modules = qs.load_library()
+        question = next(q for q in modules['common']['questions'] if q['id'] == 'IQS_11')
+        rules = qp.typed_semantic_rules(question)
+        for required in ('逐期间列出原始输入', '先对齐期间、主体、币种与单位，再计算',
+                         '经营现金流净额与购建长期资产现金', '不能混用不同年度',
+                         '二手文章的计算结果', '优先核对公司或交易所原披露'):
+            self.assertIn(required, rules)
+        # Strengthening new-request instructions does not rewrite released
+        # question definitions, historical prompts or their renderer hash.
+        package, _, _, _ = module_registry.load_current(root=ROOT)
+        self.assertEqual(qp.renderer_rules_sha256(), package['renderer_rules_sha256'])
+
 
 if __name__ == "__main__":
     unittest.main()

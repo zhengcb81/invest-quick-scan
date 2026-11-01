@@ -118,8 +118,8 @@ def _recovery_subset(config, directory, manifest, native, policy):
     dialect = policy["protocol"].split("/")[-1]
     if refs is None and dialect in {"1.0.0", "1.1.0"}:
         return None
-    if refs is None or dialect != "1.2.0":
-        raise DashboardPrepareError("recovery_policy_refs_required", "Explicit policy 1.2 and original finite retry references must be selected together", 409)
+    if refs is None or dialect not in {"1.2.0", "1.3.0"}:
+        raise DashboardPrepareError("recovery_policy_refs_required", "Explicit controlled policy and original finite retry references must be selected together", 409)
     admission = _read(config["prepare"]["admission_config"])
     entity = native["binding"]["entity_id"]
     selected = native["selected_listing"]["security_id"]
@@ -138,7 +138,8 @@ def _recovery_subset(config, directory, manifest, native, policy):
     by_work = {row["work_item_id"]: (qid, row) for qid, row in projection["rows"].items() if isinstance(row, dict) and isinstance(row.get("work_item_id"), str)}
     items = []
     purposes = set()
-    eligible_states = {"retry_unusable_checkpoint": "result_ready", "retry_unusable_answer": "failed"}
+    eligible_states = ({"comparison": {"result_ready", "delivered"}} if dialect == "1.3.0" else
+                       {"retry_unusable_checkpoint": {"result_ready"}, "retry_unusable_answer": {"failed"}})
     for ref in refs:
         match = by_work.get(ref["work_item_id"])
         if match is None:
@@ -146,7 +147,8 @@ def _recovery_subset(config, directory, manifest, native, policy):
         qid, row = match
         if (qid not in scopes or row.get("retry_decision_id") != ref["decision_id"]
             or not isinstance(row.get("retry_purpose"), str) or row.get("retry_purpose") not in eligible_states
-            or row.get("status") != eligible_states.get(row.get("retry_purpose"))
+            or not isinstance(row.get("status"), str)
+            or row.get("status") not in eligible_states.get(row.get("retry_purpose"), set())
             or type(row.get("generation")) is not int or row["generation"] < 1
             or type(row.get("target_generation")) is not int or row["target_generation"] != row["generation"] + 1
             or row.get("delivery_required") is not False):
@@ -205,13 +207,18 @@ with contextlib.redirect_stdout(sys.stderr):
         raise ValueError("existing_work_deployment_invalid")
     view = ReadOnlyWorkView(config["work_store"])
     result = []
+    controls = request.get('controlled_work_refs', [])
+    controlled_refs = {(ref['work_item_id'], ref['decision_id']) for ref in controls}
     with closing(view._connect()) as connection:
         connection.execute("BEGIN")
         view._inspection_connection = connection
         rows = view.owner_refresh_projection(entity_id=request["entity_id"],
-            question_ids=list(request["scope_bindings"]), scope_bindings=request["scope_bindings"])
+            question_ids=list(request["scope_bindings"]), scope_bindings=request["scope_bindings"],
+            include_owner_decisions=bool(controls))
         for qid, row in rows.items():
-            if row["status"] not in {"pending", "leased", "uncertain", "result_ready"}:
+            controlled_comparison = (row['status'] == 'delivered' and row.get('retry_purpose') == 'comparison'
+                and (row['work_item_id'], row.get('retry_decision_id')) in controlled_refs)
+            if row["status"] not in {"pending", "leased", "uncertain", "result_ready"} and not controlled_comparison:
                 continue
             record = view.get_owner_refresh_binding(row["work_item_id"])
             if record is None:
@@ -281,6 +288,8 @@ def _reusable_bank(config, payload):
         scopes[q['id']] = {'scope':scope,'scope_id':binding['entity_id'] if scope=='entity' else native['selected_listing']['security_id']}
     request = {k:binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision')}
     request.update(information_cutoff=route['as_of'],scope_bindings=scopes)
+    if _recovery_refs(config) is not None:
+        request['controlled_work_refs'] = _recovery_refs(config)
     try:
         done = subprocess.run([config.get('stockqa_python') or sys.executable,'-B','-X','utf8','-c',
             _WORK_BANK_BINDING_READER,config['stockqa_root'],config['prepare']['admission_config']],
@@ -527,9 +536,9 @@ class PrepareGateway:
                 protocol = original_policy.get("protocol") if isinstance(original_policy, dict) else None
                 if not isinstance(protocol, str) or not protocol.startswith("stockwiki.refresh_owner_policy/"):
                     missing.append("native_prepare_owner_policy_invalid")
-                elif protocol not in {"stockwiki.refresh_owner_policy/1.0.0", "stockwiki.refresh_owner_policy/1.1.0", "stockwiki.refresh_owner_policy/1.2.0"}:
+                elif protocol not in {"stockwiki.refresh_owner_policy/1.0.0", "stockwiki.refresh_owner_policy/1.1.0", "stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0"}:
                     missing.append("native_prepare_owner_dialect_not_supported")
-                elif (protocol == "stockwiki.refresh_owner_policy/1.2.0") != (_recovery_refs(self.config) is not None):
+                elif (protocol in {"stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0"}) != (_recovery_refs(self.config) is not None):
                     missing.append("recovery_policy_refs_required")
             except (OSError, ValueError, TypeError):
                 missing.append("native_prepare_owner_policy_invalid")
@@ -1108,7 +1117,7 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     options = config["prepare"]
     dialect = policy["protocol"].split("/")[-1]
     field_ids = sorted({row.get("field_id", row["metric_id"]) for row in selected_questions})
-    query = {"message_type": "request", "schema_version": "2.6.0" if dialect in {"1.1.0", "1.2.0"} else "2.0.0", "request_id": run_id + "-query",
+    query = {"message_type": "request", "schema_version": "2.6.0" if dialect in {"1.1.0", "1.2.0", "1.3.0"} else "2.0.0", "request_id": run_id + "-query",
              "consumer_id": admission["consumer_id"], "operation": "get_profiles", "requested_at": _now(),
              "payload": {"subject_refs": [subject_ref], "field_ids": field_ids, "information_cutoff": record["bank"]["information_cutoff"],
                          "include_history": True, "model_filter": None, "snapshot_id": None}}

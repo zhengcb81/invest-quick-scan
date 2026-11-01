@@ -14,6 +14,8 @@
 
 当前真实批全部三题已补封并完成原ACK2/2；同范围DUPONT02再次准备已cached1、执行包0。见根Next Step和native-cache-reuse.json，不再等IQS22或重启该批。原HTTP JSON digest与final文本digest属于两种对象，分别核验；原owner捕获文件自身不授予scope/恢复权限。IQS11已知FCF跨年问题未金融签收，工程恢复不改变它的资格。
 
+当前现金流纠错仍沿根Next Step，详细接线与真实状态见[现金流节点报告](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。只复核原IQS_11，不重扫整公司；原成功答案通过既有1.3 comparison后继保留历史。切勿把软件提示/接线通过当财务已纠正。临时专用refs和原普通配置的恢复说明均在该报告，未决原任务须先核实，不盲目复位或重复POST。
+
 ## 固定对象与运行
 
 |组件|本次核对基线|
@@ -21,9 +23,9 @@
 |IQS本次起点已推送|`215804dada41148ea79011fbb483e02f9f8d1abe`，本次源码及文档在其后正常提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`65b3711`已推既有origin/master，含`36cfb5f`原答恢复|
-|StockWiki|`af2a260`（含预算`724f5b7`）已提交，无origin，不新建远端|
-|原UI|`d6e0eb8`（含`ffed6ca`/`ecd03e0`/`06738a0`）已提交，无remote|
+|StockQA|`c6854fd`已推既有origin/master，含`65b3711`原答恢复与有限URL修复|
+|StockWiki|`1bde9e0`（含`af2a260`及预算`724f5b7`）已提交，无origin，不新建远端|
+|原UI|`0212c5c`（含`d6e0eb8`/`ffed6ca`）已提交，无remote|
 
 实际写前重核当前Git/唯一writer，不因无关HEAD变化重做历史。ANSWER/PERF最终C/M见[已签收口报告](reviews/SUPPORT-CLOSE-2026-10-31/report.md)，TIME/RESULT实际原接线见[报告](reviews/TIME-RESULT-WIRING-2026-10-31/report.md)，不把接线C的历史25文件manifest当当前README/测试字节。
 

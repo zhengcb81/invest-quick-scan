@@ -43,7 +43,9 @@
 
 **唯一下一主线动作：纠正宁德时代IQS_11已证实的跨年FCF输入错误，沿原owner定向补扫与原结果界面核对，不重做已完成的fresh验收。** 原2024同口径FCF写546.45亿元，官方原数计算为658.10402亿元；原分数/正文/历史保留。优先复用已取得的官方数字和来源上下文，明确主体、期间、单位与公式，不因重问选高分。IQS_22的估值主张尚未独立证实，不能以8分或来源格式通过视为估值准确。
 
-最近扫描复用已经真实完成：原三题批`batch-82a2f43df7084fd984595c4078db898a`从原UI补封已付回答后，原交付`deliveryjob_16886fe886925566121f1ca2fcc68b5c`在01:55:00Z完成2/2 scope、3/3包。随后原UI以相同实体、合并主体、截止日、模型再次准备DUPONT_02，job `prepjob_907362f371a048b38a2e3dd32be7800a`job registered/result cached，复用相同原观察且无执行包、无委托/确认/模型准入；前后84HTTP/US$1.974640、0未结/在途，新增请求及费用均0。见[真实结果](docs/implementation/reviews/SIMPLIFY-FRESH-2026-11-01/native-cache-reuse.json)。
+本轮定向复核接线及真实状态见[当前现金流节点](docs/implementation/reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。source-bank缺口已根修；当前临时1.3比较模式，待原真实新答/ACK后复位普通模式，不重建原失败任务或改写旧历史。
+
+最近扫描复用已经真实完成：原三题批`batch-82a2f43df7084fd984595c4078db898a`从原UI补封已付回答后，原交付`deliveryjob_16886fe886925566121f1ca2fcc68b5c`在01:55:00Z完成2/2 scope、3/3包。随后原UI以相同实体、合并主体、截止日、模型再次准备DUPONT_02，job `prepjob_907362f371a048b38a2e3dd32be7800a`为registered/result.cached，复用相同原观察且无执行包、无委托/确认/模型准入；前后84HTTP/US$1.974640、0未结/在途，新增请求及费用均0。见[真实结果](docs/implementation/reviews/SIMPLIFY-FRESH-2026-11-01/native-cache-reuse.json)。
 
 policy9/successful_scan/TTL24h以原成功搜索执行时间00:45:07.932157Z判断是否重扫；资料日2026-10-27保持。导入、重启、查看及重放不续期；失败/未执行搜索/不合法执行时间、事件失效、主体/题义/版本/模型不兼容仍不能复用。默认旧information_as_of策略保持；真实旧规则过期A/B与新时钟边界/过期测试均已过，不再为此另加凭证或真实等待24小时重跑。
 

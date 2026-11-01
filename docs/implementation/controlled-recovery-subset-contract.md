@@ -1,6 +1,14 @@
 # 受控恢复子集展示与接线契约
 
-本操作只恢复原owner已明确批准的有限失败范围，不是普通全公司快扫。普通题库和基本必做集合不裁剪，题数动态派生；当前示例36题不是固定限制。
+本操作只执行原owner已明确批准的有限补题或复核范围，不是普通全公司快扫。普通题库和基本必做集合不裁剪，题数动态派生；当前示例36题不是固定限制。
+
+## 已成功答案的定向复核
+
+已入库但经核对发现内容错误时，复用原生`comparison`决策和1.3目标模型方言，不把成功答案伪称格式失败。用户明确指定原work，原只读derive取得真实物理回执、原检查点和严格N+1；原单动作agent委托分别由StockWiki和StockQA核其完整绑定、期限、撤权、comparison_controls与target provider/model/route/policy。原预算仍在派发时预留，旧结果/费用保留；不因分数低反复择高重问。
+
+`prepare.recovery_work_decision_refs`在1.3下只接受purpose=comparison且原source为result_ready/delivered的精确决策引用；1.2保持原不可用恢复语义。1.3仍输出已有`iqs.dashboard-recovery-subset/1.1.0`，items中的purpose=comparison，UI显示“受控复核子集”，只本次题数，不冒充整公司完成或金融认证。一般准备不含这些refs，仍按原缓存规则；没有已批准comparison就不能绕过缓存去派发。
+
+本轮真实运行的完成情况以根PWF为准；本段接线说明不是实际模型准确性或ACK签收证据。
 
 ## 原生执行顺序
 

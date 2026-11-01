@@ -141,6 +141,89 @@ def _write(path, value):
     Path(path).write_text(json.dumps(value), encoding="utf-8")
 
 
+@pytest.mark.parametrize('status', ['result_ready', 'delivered'])
+def test_original_comparison_decision_selects_only_its_exact_successor(tmp_path, monkeypatch, status):
+    ref = {'work_item_id': 'WORK_' + 'a' * 32, 'decision_id': 'owd1_' + 'b' * 64}
+    admission = tmp_path / 'admission.json'
+    _write(admission, {'work_store': 'original.sqlite', 'budget_policy_file': 'original-policy.json'})
+    config = {'prepare': {'recovery_work_decision_refs': [ref], 'admission_config': str(admission)}}
+    manifest = {'questions': [{'id': 'IQS_11', 'scope': 'entity'}, {'id': 'IQS_22', 'scope': 'security'}]}
+    native = {'binding': {'entity_id': 'ENT_FIX'}, 'selected_listing': {'security_id': 'SEC_FIX'}}
+    row = {'work_item_id': ref['work_item_id'], 'generation': 2, 'status': status,
+           'retry_decision_id': ref['decision_id'], 'retry_purpose': 'comparison',
+           'target_generation': 3, 'delivery_required': False}
+    monkeypatch.setattr(p, '_native_cli', lambda *args: {
+        'protocol': 'stockqa.owner_control_projection/1.0.0', 'entity_id': 'ENT_FIX',
+        'rows': {'IQS_11': row}, 'authority': 'original_journal_read_not_permission',
+        'API_requests': 0, 'database_writes': 0})
+    policy = {'protocol': 'stockwiki.refresh_owner_policy/1.3.0'}
+    out = p._recovery_subset(config, tmp_path, manifest, native, policy)
+    assert out['execution_question_ids'] == ['IQS_11'] and out['full_bank_question_count'] == 2
+    assert out['items'][0] == {'question_id': 'IQS_11', **ref, 'source_generation': 2,
+                               'target_generation': 3, 'purpose': 'comparison'}
+    for change in ({'status': 'leased'}, {'status': []}, {'target_generation': 4}, {'retry_purpose': 'retry_unusable_answer'},
+                   {'retry_decision_id': 'owd1_' + 'c' * 64}, {'delivery_required': True}):
+        previous = dict(row)
+        row.update(change)
+        with pytest.raises(p.DashboardPrepareError):
+            p._recovery_subset(config, tmp_path, manifest, native, policy)
+        row.clear(); row.update(previous)
+    with pytest.raises(p.DashboardPrepareError):
+        p._recovery_subset(config, tmp_path, manifest, native,
+                           {'protocol': 'stockwiki.refresh_owner_policy/1.2.0'})
+
+
+def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch, capsys):
+    # Exercise the actual subprocess reader text with synthetic read-only ports.
+    # This checks selection, not original-owner permission or a real SQLite DB.
+    import io
+    import types
+    binding = {'entity_id': 'ENT_FIX', 'subject_key': 'ASJ_FIX@1', 'perimeter_sha256': 'a'*64,
+               'identity_revision': 1, 'information_cutoff': '2026-11-01',
+               'scope': 'entity', 'scope_id': 'ENT_FIX', 'manifest_raw_sha256': 'b'*64}
+    row = {'status': 'delivered', 'work_item_id': 'WORK_source', 'generation': 4,
+           'retry_purpose': 'comparison', 'retry_decision_id': 'owd1_original'}
+    calls = []
+    class View:
+        def __init__(self, path): pass
+        def _connect(self):
+            return types.SimpleNamespace(execute=lambda *args: None, close=lambda: None)
+        def owner_refresh_projection(self, **kwargs):
+            calls.append(kwargs)
+            return {'IQS_11': copy.deepcopy(row)}
+        def get_owner_refresh_binding(self, work):
+            assert work == 'WORK_source'
+            return {'binding': dict(binding)}
+    for name in ('src', 'src.utils'):
+        module = types.ModuleType(name); module.__path__ = []
+        monkeypatch.setitem(sys.modules, name, module)
+    for name, members in (
+        ('src.utils.quick_scan_refresh_admission', {'safe_read': lambda path: None}),
+        ('src.utils.quick_scan_refresh_inspect', {'ReadOnlyWorkView': View}),
+        ('src.utils.quick_scan_result_outbox', {'canonical_sha256': p._sha}),
+    ):
+        module = types.ModuleType(name); module.__dict__.update(members)
+        monkeypatch.setitem(sys.modules, name, module)
+    monkeypatch.setattr(sys, 'argv', ['reader', 'synthetic-source', '-'])
+    monkeypatch.setattr(sys, 'path', list(sys.path))
+    request = {k: binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision','information_cutoff')}
+    request.update(scope_bindings={'IQS_11': {'scope':'entity','scope_id':'ENT_FIX'}},
+                   readonly_config={'protocol':'stockqa.refresh_admission_config/1.0.0','work_store':'synthetic'},
+                   controlled_work_refs=[{'work_item_id':'WORK_source','decision_id':'owd1_original'}])
+    def run():
+        monkeypatch.setattr(sys, 'stdin', io.StringIO(json.dumps(request)))
+        exec(p._WORK_BANK_BINDING_READER, {})
+        return json.loads(capsys.readouterr().out)['rows']
+    assert run()[0]['manifest_raw_sha256'] == binding['manifest_raw_sha256']
+    assert calls[-1]['include_owner_decisions'] is True
+    request['controlled_work_refs'][0]['decision_id'] = 'owd1_other'
+    assert run() == []
+    request.pop('controlled_work_refs')
+    assert run() == []
+    row['status'] = 'pending'
+    assert run()[0]['work_item_id'] == 'WORK_source'
+
+
 def _stage(base, label, **extra):
     with (
         ROOT

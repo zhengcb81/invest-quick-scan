@@ -44,3 +44,9 @@
 金融质量仍有已证实未关项：IQS_11的2024 FCF跨年输入错误，IQS_22估值证据尚未独立证实。下一主线按根计划定向纠正，不篡改原答或把工程可复用写成金融认证。当前没有待用户回答的权限项；没有新发外包支线。
 
 尾修纯导出5项隔离验证与缓存文案2项handler验证通过，非作者集中复核passed；原服务同配置重启、页面已显示新文案。02:03:54Z只读doctor ready=true，缓存原job仍在、费用仍84HTTP/$1.974640。当前源码/文档正常保存，外仓无origin不新建，别的writer及历史untracked保留。
+
+11/01接续：亲读最新PWF和工作树；前轮为实质进展。核对官方2025年报合并现金流2024比较数，确认FCF应为658.10402亿元，原546.45不可沿用。新请求提示增加逐期间原始输入/单位/公式及第一方来源核对；有效RED后8项及8 subtests通过，旧release renderer hash保持。CodeGraph context无响应已终止该等待，改读已定位原文件，非产品阻塞。下一步复用原owner既有comparison后继控制做定向纠错；当前UI只接unusable recovery子集，需核实该既有比较类型接线，不新建客户端/账本或改旧答案。尚未发新收费请求。
+
+11/01 02:24阶段：既有comparison目的已补入原UI准备1.3、展示及StockWiki/QA原单动作委托枚举。IQS4相关+新增status类型2项、原UI3项实际handler均通过。SW原22项绿后新增测试读错install摘要已纠正，新增1项通过；QA在唯一禁网/去密钥临时源码副本有效RED后13项通过、复制全清理。原control真实preview/agent确认已完成，源工作generation4→5；首apply被QA重复enum拒绝，原SQL确认未写决策后才修复接续同幂等键。第二次原apply仍有live handle49397，未发新收费请求，不重启/重复执行。permissions request改用原冻结query真实子集，未编造snapshot。
+
+02:31后实际进展：原比较控制已recorded（owd1_934f7c66132ee46492b6dbf4e078e3cd81c1e1ecb7f60fc58adda9ebf6b2ff8d，4→5），源model/预算不变。StockQA c6854fd已推、StockWiki1bde9e0与UI0212c5c已提交（后两仓无远端）；hooks未跳过。原UI准备job prepjob_81fcdad6c4714567a310938957d398db在scope1原preview时以subject_dispatch_owner_metadata_mismatch退出，0新HTTP，尚未登记后继work。根因：原bank_reuse只收unfinished，忽略已delivered但有精确comparison决议的源工作，因此错误创建了新bank并移动current，原source metadata无法匹配。将补source-bank选择，保留StockWiki实质metadata检查；旧job/旧决议保持。当前本机policy10/1.3比较模式+精确refs仍在，原普通配置备份于runs/cashflow-correction-2026-11-01；必须收尾后恢复普通模式，不提前宣称金融纠错或新模型调用已完成。
