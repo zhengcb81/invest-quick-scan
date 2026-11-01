@@ -2,6 +2,16 @@
 
 更新于2026-11-01。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/01 全面代码质量审查
+
+完成题库、UI/编排与跨仓owner/共享引擎三路独立只读审查，主控核源汇总于[代码审查报告](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)。IQS基线dfb831c；StockQA a37d60c、StockWiki1bde9e0、Company Lab a37af8d、Runtime f58fdb1、UI8fc9072均实际Git核对，外仓tracked干净，根外来10/10 README改动保留。
+
+126个tracked scripts Python文件AST解析无错误；10组内存反例确认恢复期限、共享默认额度、UI锁/超时/草稿、指标/模块泛化与旧工具误检。没有运行全套测试、实际模型、服务或数据库操作；部分反例为原源码抽取纯函数，不宣称跨仓E2E。三个agent的源码证据与范围界限已并入一份报告，不另建审核回执。
+
+结果为发现待修：有职责分工但未充分解耦；未发现现行生产按公司名/ticker打分；仍有实验默认、private对象穿透、重复动态校验。过期委托阻断已付保全是新确认边界，不否定上轮有效期内恢复/ACK/cache的真实成功。完整整改顺序回到原小池质量节点，没有新增支线或开工门。此次只更新报告/PWF/交接，业务源码和普通配置保持。
+
+工具限制：CodeGraph status/files可用、context未及时返回后停止，已知源码+AST补足；Git外仓受限读取失败后以已授权外层只读方式完成。首次报告patch采用同路径删除/新增被工具拒绝，未写入；改成单次Update成功。未清理他人文件。
+
 ## 11/01 本节点最终收口
 
 用户07:56Z恢复后只收尾同一共享已付回答。原UI补封先暴露leased提前报告、缺钥route selector和指标https-only遗漏，均在原入口根修；原失败诊断保留。恢复仅重放原safe，任何新model/search调用在原port前硬拒，不新增队列、预算或恢复凭证。
