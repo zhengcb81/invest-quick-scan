@@ -59,6 +59,53 @@ def test_original_target_binding_and_exact_ack_replay(delivery):
     assert Path(bundle['work_store']).read_bytes()==before
 
 
+@pytest.mark.parametrize('ready_count,missing_work', [(n, missing) for n in [0, 1, 2]
+                                                    for missing in [False, 'row', 'omitted']] + [(0, 'all')])
+def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers(tmp_path, monkeypatch, ready_count, missing_work):
+    import hashlib
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    import frozen_release_projection
+    from scripts.dashboard_delivery import export_deliveries
+    monkeypatch.setattr(frozen_release_projection, 'create_projection', lambda manifest, **kwargs: {'fixture': 'release'})
+    for name, value in {'admission': {'work_store': str(tmp_path/'ledger'), 'budget_policy_file': str(tmp_path/'policy')},
+                        'request': {'entity_id': 'ENT_TEST', 'question_ids': ['Q1', 'Q2'] + (['Q3'] if missing_work in {'row','omitted'} else [])}, 'manifest': {}}.items():
+        (tmp_path/name).write_text(json.dumps(value), encoding='utf8')
+    (tmp_path/'ledger').write_bytes(b'test boundary')
+    (tmp_path/'policy').write_text('{}', encoding='utf8')
+    bundle = {'entity_id': 'ENT_TEST', 'admission_config': str(tmp_path/'admission'),
+              'inspection_request': str(tmp_path/'request'), 'manifest': str(tmp_path/'manifest')}
+    gateway = ExecutionGateway({'stockqa_root': str(SOURCE), 'iqs_release_root': str(ROOT),
+                                'state_root': str(tmp_path/'state'), 'bundles': {'B': bundle}})
+    calls = []
+    def native(command, root, runtime, *, input_value=None):
+        calls.append(command)
+        if len(calls) == 1:
+            return {'protocol': 'stockqa.refresh_inspection/1.0.0', 'reservation_created': False,
+                    'API_requests': 0, 'work_items': [] if missing_work=='all' else [{'question_id': f'Q{i+1}', 'work_item_id': f'WORK_{i}',
+                        'status': 'result_ready' if i < ready_count else 'pending'} for i in range(2)] +
+                        ([{'question_id':'Q3','status':'missing','work_item_id':None}] if missing_work=='row' else [])}
+        assert input_value['work_ids'] == ([] if missing_work=='all' else ['WORK_0', 'WORK_1'])
+        rows = []
+        for i in range(0 if missing_work=='all' else 2):
+            if i >= ready_count:
+                rows.append({'work_item_id': f'WORK_{i}', 'status': 'not_exportable', 'reason': None})
+            else:
+                raw = json.dumps({'fixture': i})
+                rows.append({'work_item_id': f'WORK_{i}', 'status': 'exportable', 'observation_id': f'obs_{i}',
+                             'package_json': raw, 'package_bytes_sha256': hashlib.sha256(raw.encode()).hexdigest()})
+        return {'items': rows, 'API_requests': 0, 'network_calls': 0}
+    monkeypatch.setattr(gateway, '_call', native)  # Native process boundary; SQL/package validation is tested separately.
+    result = export_deliveries(gateway, {'bundle_id': 'B'})
+    assert result['status'] == ('exported' if ready_count == 2 and not missing_work else 'partial')
+    extra = int(missing_work in {'row','omitted'})
+    assert len(result['items']) == 2+extra and len(result['import_bundles']) == ready_count
+    assert sum(row['status'] == 'not_exportable' for row in result['items']) == 2-ready_count+extra
+    assert result['API_requests'] == result['model_calls'] == 0 and len(calls) == 2
+    for registration in result['import_bundles'].values():
+        raw = Path(registration['package']).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == registration['package_sha256']
+
+
 @pytest.mark.parametrize('mutation', ['store','hash'])
 def test_original_owner_rejects_foreign_store_or_hash_without_mutation(delivery,mutation):
     gateway,bundle,receipt=delivery

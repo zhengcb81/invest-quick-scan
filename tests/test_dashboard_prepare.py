@@ -1057,6 +1057,52 @@ def test_unapplied_legacy_local_candidate_requires_new_preview_without_rebuildin
     assert not (directory / "apply-started.json").exists() and tree(base / "owner") == before
 
 
+@pytest.mark.parametrize('change', [None, 'identity', 'input', 'token', 'config', 'partial'])
+def test_old_local_preview_uses_current_inputs_and_owner_not_an_arbitrary_hour(tmp_path, monkeypatch, change):
+    config = {'iqs_root': str(tmp_path), 'stockwiki_root': str(tmp_path), 'workspace_root': str(tmp_path)}
+    gateway = PrepareGateway(config)
+    preview_id = 'prepare_' + 'a' * 32
+    directory = gateway._deployment() / 'candidates' / preview_id
+    directory.mkdir(parents=True)
+    native = {'owner_snapshot_as_of': '2026-10-01T00:00:00Z', 'binding': None,
+              'selected_listing': {'security_id': 'SEC_TEST'}}
+    _new(directory / 'native.json', native)
+    record = {'preview_id': preview_id, 'selection': {}, 'can_prepare': True, 'gaps': [],
+              'expires_at': '2026-10-01T01:00:00Z', 'bank': {'entity_id': 'ENT_TEST', 'information_cutoff': '2026-10-01'},
+              'snapshot_sha256': _snapshot_sha(native), 'config_sha256': gateway._configuration_binding({}),
+              'files': {'native.json': hashlib.sha256((directory / 'native.json').read_bytes()).hexdigest()}}
+    record['preview_token'] = _sha(record)
+    _new(directory / 'preview.json', record)
+    calls = []
+    def worker(operation, payload):
+        calls.append(operation)
+        if operation == 'snapshot':
+            return {**native, 'changed_identity': True} if change == 'identity' else native
+        assert operation == 'apply'
+        return {'status': 'prepared', 'API_requests': 0}
+    monkeypatch.setattr(gateway, '_worker', worker)  # Original owner process boundary only.
+    payload = {'preview_id': preview_id, 'preview_token': record['preview_token']}
+    if change == 'input':
+        (directory / 'native.json').write_text('{}', encoding='utf8')
+    elif change == 'token':
+        payload['preview_token'] = 'wrong'
+    elif change == 'config':
+        gateway.config['stockwiki_python'] = 'changed-python'
+    elif change == 'partial':
+        _new(directory / 'apply-started.json', {'started_at': '2026-10-01T00:01:00Z'})
+    if change is None:
+        result = gateway.apply(payload)
+        assert result['status'] == 'prepared' and calls == ['snapshot', 'apply']
+        assert gateway.apply(payload)['replayed'] is True and calls == ['snapshot', 'apply']
+    else:
+        with pytest.raises(DashboardPrepareError) as error:
+            gateway.apply(payload)
+        assert error.value.code == ('preparation_partial' if change == 'partial' else 'preview_stale')
+        assert calls == (['snapshot'] if change == 'identity' else [])
+        if change != 'partial':
+            assert not (directory / 'apply-started.json').exists()
+
+
 @pytest.mark.parametrize('clock',['information_as_of','successful_scan'])
 def test_cached_scope_retains_owner_scan_clock_without_inventing_fact_dates(clock):
     from scripts.dashboard_prepare import _cached_scope_result

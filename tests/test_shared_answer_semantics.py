@@ -244,7 +244,7 @@ def test_production_v2_keeps_original_body_while_validating_exact_native(native_
     assert callback.semantic_version == 2
 
 
-@pytest.mark.parametrize("kind", ["wrong_ref", "bad_source", "missing_proof", "future_date"])
+@pytest.mark.parametrize("kind", ["wrong_ref", "bad_source", "invalid_proof", "future_date"])
 def test_production_v2_source_ref_cutoff_fail_closed(native_bound, kind):
     task, qid, body, services, source, board = native_bound
     ref = "stockqa:UNIT_SDK_ATTEMPT"
@@ -252,10 +252,32 @@ def test_production_v2_source_ref_cutoff_fail_closed(native_bound, kind):
         ref = "stockqa:FOREIGN"
     elif kind == "bad_source":
         source["url"] = "https://example.invalid/foreign-original-receipt"
-    elif kind == "missing_proof":
-        services.store.get_external_context_use = lambda _: None
+    elif kind == "invalid_proof":
+        services.store.get_external_context_use = lambda _: {"proof": None}
     else:
         body["evidence"][0]["published_at"] = "2099-01-01"
     callback = engine._production_answer_semantics(task, services)
     with pytest.raises(ValueError):
         callback(body, qid, attempt_ref=ref, evidence_board=board)
+
+
+@pytest.mark.parametrize('executed',[True,False])
+def test_native_search_uses_original_source_projection_without_fabricating_external_use(native_bound,monkeypatch,executed):
+    # Unit boundary only: the actual projector's native receipt verification is
+    # independently covered in StockQA. No fake original owner/search golden.
+    task,qid,body,services,source,board=native_bound
+    services.store.get_external_context_use=lambda _:None
+    captured=[]
+    def projection(execution,**kwargs):
+        captured.append(copy.deepcopy(execution))
+        return {'search_status':'executed' if executed else 'not_executed','source_urls':[source['url']] if executed else []}
+    import src.utils.quick_scan_work_transport as transport
+    monkeypatch.setattr(transport,'project_quick_scan_search',projection)
+    callback=engine._production_answer_semantics(task,services)
+    if executed:
+        callback(body,qid,attempt_ref='stockqa:UNIT_SDK_ATTEMPT',evidence_board=board)
+    else:
+        with pytest.raises(ValueError,match='verified source projection'):
+            callback(body,qid,attempt_ref='stockqa:UNIT_SDK_ATTEMPT',evidence_board=board)
+    assert len(captured)==1 and 'external_context_use' not in captured[0]
+    assert captured[0]['work_transport']['work_attempt_id']=='UNIT_NATIVE'

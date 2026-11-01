@@ -35,6 +35,18 @@
 
 原任务结束后已复位普通owner policy11/1.1，successful_scan、TTL24h、模型及预算不变，移除专用refs并保留新登记bundles。经原validate_policy离线验证与当前字节CAS确认后保存，未覆盖登记期间新增包；原8766已安全重载，doctor ready=true/无缺项。未改任何旧时间、答案或原控制历史。
 
+### 实际请求接续修复（同日03:39）
+
+原UI实际命令是main_with_llm→LLMRunner→QAEngine，尚非shared_company_engine。现将逐期间原始输入/第一方披露/同年FCF公式/缺原数不猜的要求加到StockQA原单题、题包共同发送规则；实际pack SDK载荷有效RED2F后原模块10P/0skip，含单题SDK边界、原文本不改及模式恢复。没有据此重新付费，金融纠错仍未过。共享引擎的现有evidence_board可携带已核原数；standard_answer_transport只有布尔模式，不能假装已有传数接口。
+
+为接原公共入口，独审又定位并根修三个真实兼容点：
+
+- 原native搜索没有external_context_use很正常。共享来源校验现走原native receipt+work member+project_quick_scan_search；只有实际外部use存在时附proof，坏proof仍拒。原语义模块有效RED后20P；新增两例是边界替身，非真实搜索或原owner golden。
+- 原runner的budget_route是四字段compact，原OwnerResearchServices要求与完整原route逐字相等。现只接受完整原route或其准确四字段投影，不接宽松字段集合。原临时owner单例有效RED1F/107.82秒后1P/149.11秒，包含四键漂移及额外字段拒绝；0skip、0收费、唯一runtime删除。最初复制漏一个旧producer的夹具错误已单独记录，没有冒充产品RED，也未复制历史docs/runs大树。
+- 普通process_questions在缺CP时会claim/send。新增原QAEngine.hydrate_questions，仅在原已准入调用链复用reference/CP，缺项即停，不回落派发；复用原输出投影与执行时点。有效RED5F后原模块23P，禁网去密钥副本清理。不会把这个通用方法宣传成任意无owner lifecycle均无副作用。
+
+非作者`/root/fresh_ui_route`在同一产品节点完成上述源码与覆盖方向审查，未发现阻断，未代写实现/触真实服务或库。当前StockQA `76c9431`正常hooks通过（仅Black/isort排版后重提），原已付结果不变。**公共UI→共享引擎及第一方原数board仍待接线**，两个Lab包尚未加入原默认Python搜索路径。不得仅凭这些前置修复称原UI已用共享引擎或重新问模型；细节见当前交接。
+
 ## 提交范围
 
 StockQA `3fd35a1`（含`c6854fd`）已推既有origin/master，正常hooks全部通过，仅Black规范新增测试后重提；StockWiki `1bde9e0`、原UI `0212c5c`为本节点接线基线，后续UI精简另提交，两仓无remote不创建新远端。IQS本节点源码/文档由根正常提交。原服务、原库、原失败事件与已发生费用保留；不提交私有配置、原回答或捕获正文。

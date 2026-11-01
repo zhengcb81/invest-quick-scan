@@ -168,7 +168,7 @@ class DashboardService:
         self._snapshots = {}
         self._load()
 
-    def _load(self):
+    def _load(self, *, inactive_checked_config=None):
         raw = self.config_path.read_bytes() if self.config_path.is_file() else b''
         revision = hashlib.sha256(raw).hexdigest()
         if revision == self._config_revision:
@@ -181,7 +181,8 @@ class DashboardService:
         old = getattr(self, 'config', None)
         additive = old is not None and self._append_only(old, config)
         if old is not None and not additive:
-            self._assert_inactive()
+            if config != inactive_checked_config:
+                self._assert_inactive()
             if self._batch is not None:
                 self._batch.close()
         self.config = config
@@ -317,7 +318,7 @@ class DashboardService:
             return {'bundle_ids':ids, 'question_count_total':result.get('question_count_total'),
                 **({'cached_question_count':count} if count else {}),'API_requests':0}
 
-    def _save_config(self, config):
+    def _save_config(self, config, *, inactive_checked=False):
         self.config_path.parent.mkdir(parents=True, exist_ok=True)
         try:
             with control_lock(self.config_path.with_name(self.config_path.name+'.lock')):
@@ -332,7 +333,9 @@ class DashboardService:
                     temporary.unlink(missing_ok=True)
         except ControlBusyError:
             raise ProductError('setup_busy','另一个服务正在保存连接，刷新后重试；原准备结果保留。',409) from None
-        self._load()
+        # The locked setup path already checked inactivity before writing.
+        # A different externally loaded configuration must still be checked.
+        self._load(inactive_checked_config=config if inactive_checked else None)
 
     def _gateway(self, kind):
         attr = '_owner' if kind == 'owner' else '_execution'
@@ -401,13 +404,11 @@ class DashboardService:
         if body['revision_sha256'] != hashlib.sha256(current).hexdigest():
             raise ProductError('stale_setup', '连接配置已变化，请刷新后再保存。', 409)
         config = validate_config(body['config'], self.root)
-        execution = self._gateway('execution')
-        running = execution.active_references() if hasattr(execution, 'active_references') else execution.tasks(inspect_owner=False, limit=2000)
-        if any(item.get('process_state') in {'running', 'starting', 'needs_original_inspection'}
-               for item in running.get('items', running.get('tasks', []))):
-            raise ProductError('execution_active', '运行期间不切换工作区；请等待当前公司安全结束。', 409)
+        if current and config == self.config:
+            return self._setup()  # No write, reconfiguration or interruption.
+        self._gateway('execution')  # Include persisted references on first access.
         self._assert_inactive()
-        self._save_config(config)
+        self._save_config(config, inactive_checked=True)
         return self._setup()
 
     def dispatch(self, method, target, body=None):

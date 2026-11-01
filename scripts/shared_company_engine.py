@@ -206,7 +206,7 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
         raise ValueError("exact original successful native work member required")
     attempt_id = matches[0]["attempt_id"]
     use = services.store.get_external_context_use(attempt_id)
-    if not use or not use.get("proof"):
+    if use is not None and (not isinstance(use, dict) or not isinstance(use.get("proof"), dict) or not use["proof"]):
         raise ValueError("original external context use proof required")
     saved_context = services.store.get_observation_context(work_id)
     if (not saved_context or saved_context["context"] != context
@@ -214,7 +214,10 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
         raise ValueError("original frozen observation context required")
     execution = copy.deepcopy(native)
     execution["work_transport"] = dict(work_attempt_id=attempt_id, final_receipt=copy.deepcopy(native))
-    execution["external_context_use"] = copy.deepcopy(use["proof"])
+    if use is not None:
+        execution["external_context_use"] = copy.deepcopy(use["proof"])
+    # Native search has its own original execution receipt. Never require or
+    # manufacture an external-search use row for that independent path.
     projection = project_quick_scan_search(execution, work_store=services.store, work_item_id=work_id)
     if projection.get("search_status") != "executed" or not projection.get("source_urls"):
         raise ValueError("original verified source projection required")

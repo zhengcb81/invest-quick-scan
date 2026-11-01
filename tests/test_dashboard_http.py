@@ -106,6 +106,40 @@ def test_setup_revision_credential_and_active_guard(product):
     assert not (root/'config/dashboard.local.json').exists()
 
 
+def test_saving_identical_persisted_setup_does_not_check_or_interrupt_active_work(tmp_path):
+    class Busy(Execution):
+        def active_references(self):
+            raise AssertionError('an unchanged save must not inspect running work')
+    service = DashboardService(tmp_path, owner_factory=Owner, execution_factory=Busy)
+    service.config_path.parent.mkdir(parents=True, exist_ok=True)
+    service.config_path.write_text(json.dumps(service.config), encoding='utf8')
+    service._load()
+    execution = service._gateway('execution')
+    before = service.config_path.read_bytes(), service.config_path.stat().st_mtime_ns
+    body = {'config': service.config, 'revision_sha256': service._config_revision}
+    status, reply = service.dispatch('PUT', '/api/product/setup', body)
+    assert status == 200, reply
+    assert (service.config_path.read_bytes(), service.config_path.stat().st_mtime_ns) == before
+    assert service._gateway('execution') is execution
+    body['revision_sha256'] = 'stale'
+    assert service.dispatch('PUT', '/api/product/setup', body)[1]['error']['code'] == 'stale_setup'
+
+
+def test_changed_setup_checks_running_references_once_and_keeps_active_guard(tmp_path):
+    calls = []
+    class Tracked(Execution):
+        def active_references(self):
+            calls.append('check')
+            return {'items': [{'process_state': 'running'}] if len(calls) > 1 else []}
+    service = DashboardService(tmp_path, owner_factory=Owner, execution_factory=Tracked)
+    body = {'config': {**service.config, 'workspace_label': 'changed'}, 'revision_sha256': service._config_revision}
+    assert service.dispatch('PUT', '/api/product/setup', body)[0] == 200
+    assert calls == ['check']
+    body = {'config': {**service.config, 'workspace_label': 'another'}, 'revision_sha256': service._config_revision}
+    assert service.dispatch('PUT', '/api/product/setup', body)[1]['error']['code'] == 'execution_active'
+    assert service.config['workspace_label'] == 'changed'
+
+
 def test_condition_and_query_validation(product):
     assert call(product, path='/api/product/results?limit=nope')[0] == 400
     assert call(product, path='/api/product/results?filters=%5B%5D')[0] == 400
@@ -135,7 +169,7 @@ def test_finished_process_allows_setup_and_unknown_process_blocks_even_on_first_
         def tasks(self, **kwargs): return {'tasks':[{'process_state':'needs_original_inspection'}]}
     unknown = DashboardService(tmp_path, owner_factory=Owner, execution_factory=Unknown)
     assert unknown._execution is None
-    body={'config':unknown.config,'revision_sha256':unknown._config_revision}
+    body={'config':{**unknown.config,'workspace_label':'actual-change'},'revision_sha256':unknown._config_revision}
     assert unknown.dispatch('PUT','/api/product/setup',body)[0] == 409
 
 

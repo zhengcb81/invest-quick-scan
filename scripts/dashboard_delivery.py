@@ -80,15 +80,31 @@ def export_deliveries(execution, payload):
         inspection=execution._call(command,root,runtime)
         rows=execution.inspection_work_items(inspection)
         if (inspection.get('protocol')!='stockqa.refresh_inspection/'+bundle.get('inspection_schema_version','1.0.0')
-            or inspection.get('reservation_created') is not False or not isinstance(rows,list) or not rows
-            or any(not isinstance(row,dict) or row.get('status') not in {'result_ready','delivered'} for row in rows)):
-            raise DashboardExecutionError('delivery_not_ready','原执行范围尚未全部ready；不会重新封存或发模型请求。',409)
-        work_ids=[row.get('work_item_id') for row in rows]
-        if any(not isinstance(work,str) for work in work_ids) or len(set(work_ids))!=len(work_ids):
+            or inspection.get('reservation_created') is not False or not isinstance(rows,list)
+            or any(not isinstance(row,dict) or row.get('status') not in
+                   {'result_ready','delivered','pending','failed','leased','uncertain','missing'} for row in rows)):
+            raise DashboardExecutionError('delivery_not_ready','原执行范围不可核实；不会重新封存或发模型请求。',409)
+        # Each original sealed package is independently exportable. Unfinished
+        # questions remain not_exportable, without holding completed answers.
+        expected=request.get('question_ids')
+        actual=[row.get('question_id') for row in rows]
+        if (not isinstance(expected,list) or not expected
+            or any(not isinstance(qid,str) or not qid for qid in expected+actual)
+            or len(set(expected))!=len(expected) or len(set(actual))!=len(actual)
+            or not set(actual)<=set(expected)):
+            raise DashboardExecutionError('delivery_work_mapping_missing','原检查范围与所选题目不一致。',409)
+        missing=[row for row in rows if row.get('status')=='missing' and row.get('work_item_id') is None]
+        # The native projection omits questions with no original work row.
+        # Report those gaps without inventing an ID or marking them delivered.
+        missing.extend({'question_id':qid} for qid in expected if qid not in actual)
+        work_ids=[row.get('work_item_id') for row in rows if row not in missing]
+        if any(not isinstance(work,str) or not work for work in work_ids) or len(set(work_ids))!=len(work_ids):
             raise DashboardExecutionError('delivery_work_mapping_missing','原检查器未提供唯一逐题work引用。',409)
         result=execution._call([interpreter,'-B','-X','utf8','-c',_EXPORT,
             str(root),str(admission['work_store'])],root,runtime,input_value={
             'entity_id':bundle['entity_id'],'question_ids':request['question_ids'],'work_ids':work_ids})
+        result['items'].extend({'question_id':row['question_id'],'work_item_id':None,
+                                'status':'not_exportable','reason':'missing'} for row in missing)
     from frozen_release_projection import create_projection
     manifest=json.loads(Path(bundle['manifest']).read_text(encoding='utf-8-sig'))
     release=create_projection(manifest,root=Path(execution.config['iqs_release_root']))

@@ -17,9 +17,9 @@
 ## 可复查基线
 
 - 本次起点IQS已推送`215804dada41148ea79011fbb483e02f9f8d1abe`；接线代码`c1ee64f`、测试基础设施`e8f184c`/`f16da24`。本次源码与文档进展另作正常提交。
-- StockQA本次`65b3711`已推送（含`36cfb5f`恢复与`745512c`只读优化）；StockWiki`af2a260`已提交（无origin，含预算`724f5b7`）；原UI`d6e0eb8`（含`ffed6ca`）已提交（无remote，含`ecd03e0`/`06738a0`）。不是仍在旧只读基线。
+- 当前StockQA `76c9431`已推送并核实HEAD=origin/master；StockWiki `1bde9e0`已提交、无origin；原UI `d3ec24a`已提交、无remote。早期基线保留在下方历史阶段，不再冒作当前HEAD。
 - 215为本机名单独立实体；108为三家公司目标有效题槽；113为原三公司含历史版本的观察；32为回答审计抽样。互不充当对方分母。
-- 81HTTP/US$1.903319是10/30 TTL-B完成时的历史累计，不是实时预算余额。当前本轮实测累计已变为84HTTP/US$1.974640；不是实时余额承诺。
+- 81HTTP/US$1.903319是10/30 TTL-B历史累计；84HTTP/US$1.974640是首次fresh复用节点。11/01当前实测85HTTP/US$1.999868，0在途/未结；历史数字不是实时预算承诺。
 
 ## 证据入口
 
@@ -55,5 +55,17 @@
 
 02:55实际推进：原单题已登记generation5/WORK_df168ba95e824103ad4cf3678c88c638，首次启动被原inspection漏comparison后继阻断（0新HTTP）；原函数只读追出source_work_changed。新增准确后继/无关新代次原临时SQLite正反例，有效RED1F/1P后两相关模块18P/0skip，禁网去密钥副本已全清理，非作者同节点尾审通过。源判断只增加comparison，准确generation及原owner_control全等仍保留。已原UI恢复同batch-42b5379fe5b54655a63f853df3ec582a，实际run-292caf2b061348b4ae4c53c15c4c7ea8正在执行，不重复创建请求。另落实用户取消过设计：已找出重启后强制人工inspect才能恢复、读旧job重验当前新准备配置及纯缓存还要求确认登记三处冗余，正在原接口内精简。
 
-03:12收尾：三类去冗余已落地：原任务直接检查并恢复/补封/归档，旧job只读attach不验新配置，纯缓存preview直接显示原结果不确认/登记job；缓存轮询亦不跑执行预检。jobs全9P、execution受影响23P及尾部相关3P（重叠不累计）、原cache透传1P；UI5个不同实际ESM例通过，原错token/未知/混合/多挂牌保护保持。独审指出importPanel无关hidden重置已删，实测CSS覆盖hidden已用1行.btn[hidden]修正。普通policy11/1.1重载后原UI真实DUPONT02预览直接复用1题，确认按钮实际不可见、原结果链接可用；重启后0新job，模型账本保持85HTTP/US.999868、0在途/未结。
-现金流真实后继本轮新增1HTTP/US.025228，原研究ACK03:04:25完成1/1，但仍沿用错值546.45，新score8非金融通过。另发现实际冻结bank/questions未带新增逐期规则，不能称该规则真实生效或无效。Next Step已改为先修实际规则/原数上下文接线，不继续盲重问；旧答/日期保持，临时比较模式已安全撤回，保留新登记包。StockQA3fd35a1已推、原hooks通过；当前UI/IQS精简将随正常提交保存。当前根只保留此主线，不开新包/凭证/小节点审查。
+03:12收尾：三类去冗余已落地：原任务直接检查并恢复/补封/归档，旧job只读attach不验新配置，纯缓存preview直接显示原结果不确认/登记job；缓存轮询亦不跑执行预检。jobs全9P、execution受影响23P及尾部相关3P（重叠不累计）、原cache透传1P；UI5个不同实际ESM例通过，原错token/未知/混合/多挂牌保护保持。独审指出importPanel无关hidden重置已删，实测CSS覆盖hidden已用1行.btn[hidden]修正。普通policy11/1.1重载后原UI真实DUPONT02预览直接复用1题，确认按钮实际不可见、原结果链接可用；重启后0新job，模型账本保持85HTTP/US$1.999868、0在途/未结。
+现金流真实后继本轮新增1HTTP/US$0.025228，原研究ACK03:04:25完成1/1，但仍沿用错值546.45，新score8非金融通过。另发现实际冻结bank/questions未带新增逐期规则，不能称该规则真实生效或无效。Next Step已改为先修实际规则/原数上下文接线，不继续盲重问；旧答/日期保持，临时比较模式已安全撤回，保留新登记包。StockQA3fd35a1已推、原hooks通过；原UI d3ec24a已本地提交，IQS b66ee7a已推。当前根只保留此主线，不开新包/凭证/小节点审查。
+
+03:35接续：前轮为有效进展，根PWF仍是唯一计划。CodeGraph context再次无响应，终止该只读等待后按已定位源码核实实际入口；没有业务进程重启。真实入口规则从IQS闲置分支接到StockQA原共用provider提示，实际pack发送RED2F后全10P（含单题SDK边界），唯一去密钥/禁网副本已删除。独审确认原evidence_board可复用、standard_answer_transport并无手工context接口，不伪造external proof或再盲问。
+
+同节点兼容：原shared来源校验强制external proof的误门已有效RED2F后原语义模块20P；native无真实搜索及坏external行仍拒。原QAEngine新增明确hydrate_questions接口，缺CP/恢复错/重复或无ID均不claim/send，RED5F后原模块23P/0skip，隔离副本清理。最后核compact路由：第一次隔离native夹具因未复制单个旧produce_bundle.py失败（不是产品RED），已只补该明确源码，当前同一选中case在新自有临时运行，不跑整套。尚未新增收费调用；原85HTTP账本/原服务不动。company-wiki存在活动writer，保持只读。
+
+03:39原native终态：补齐唯一producer后真实原owner在compact构造有效RED1F/107.82秒；准确四字段等价投影修复后同case1P/149.11秒、0skip，内含四键漂移与额外字段五个拒绝反例，临时runtime全清理。没有复制历史docs/runs大树、没有真实模型/搜索；原账本仍85HTTP/US$1.999868且0在途/未结。非作者已集中静核发送规则及三处兼容源码/测试边界，无未解产品问题；未把这些前置修复签成原UI已使用共享引擎，公共调用与原数board仍接着实施。
+
+04:02进一步取消过设计：规格1.10.18清掉101处逐卡独审/额外凭证，108任务/368场景/56约束及产品行为保持；审查后无关HEAD/文档变化不重签，普通测试无需逐断言或清理证明。运行路径取消本地预览固定一小时、已持久化相同设置保存时的活跃门，以及实际变更重复状态核查；导出取消全scope ready屏障，原检查器省略未建work时也保留not_exportable/partial，不冒报完成。独立agent合并审查反例已直接修复，无未解阻断，不生成新审查工件。
+
+新增定向先有效RED7F/4P，三项最小修复后11P；扩围在沙箱遇localhost10013及长TEMP超过Windows路径上限，并非模型或业务失败。改用去密钥原Python、唯一短C:/Temp，执行`pytest tests/test_dashboard_http.py tests/test_dashboard_delivery.py tests/test_dashboard_product_prepare_api.py tests/test_dashboard_prepare.py::test_old_local_preview_uses_current_inputs_and_owner_not_an_arbitrary_hour tests/test_implementation_plan.py -q -p no:cacheprovider --tb=short --basetemp <own-temp>/p`，最终141P/72子测试/0skip，45.13秒，临时环境清理True。导出单独执行的10例亦通过，不能重复加总；测试边界替身不宣称真实模型或金融认证。
+
+04:01:44Z确认准备全部registered/abandoned、交付completed/历史只读、无模型子进程且原账本0在途/未结后，核实原8766进程argv/创建时间并重载；新launcher27116。doctor ready=true、blocked_reasons=[]，仍85HTTP/US$1.999868，本轮新增收费0。StockQA `76c9431`已核HEAD=origin/master；主线仍待共享公共入口和第一方上下文金融纠错，不以此次减负签成已完成。保留其他writer README原hash与全部旧记录。

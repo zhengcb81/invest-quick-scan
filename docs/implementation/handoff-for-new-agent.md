@@ -16,6 +16,14 @@
 
 当前现金流纠错仍沿根Next Step，详细状态见[现金流节点报告](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。generation5真实单题已返回并原ACK1/1，仍沿用已知错误；不标金融通过、不再重发该请求。实际冻结bank/questions未包含新增逐期提示，下一步先修原UI实际请求的规则/已有原数上下文接线。原历史保持；现已复位普通policy11/1.1，专用refs移除、TTL24h和已登记包保留，不再按临时policy10继续配置。
 
+03:39接续已完成实际provider规则与三个兼容修复：StockQA `76c9431`，IQS本轮shared来源校验只对实际external use附proof；单题/pack载荷10P、原语义20P、原QAEngine23P、原owner compact单例1P/149.11秒，副本清理、0新增收费。接下来继续公共入口，具体复用如下，不另发施工包或小节点审查：
+
+1. 原UI当前仍调用`StockQAbyLLM/main_with_llm.py`，最后走`LLMRunner._run_single_company`的`QAEngine.process_questions`。新增显式共享引擎选择时，应在同一已初始化的`ApprovedRefreshSession`、`QuickScanWorkLifecycle`和预算内调用IQS原API，不另建owner/客户端/账本。原本地`route_providers`与`execution_routes`可精确匹配lifecycle路由取原client；cascade配置热加载时其公开providers/routes会被置空，不能据此新建client。
+2. 复用`shared_company_task.create_company_scan_task(..., evidence_board=...)`，不用旧固定12题/10-13实验factory。原数用现有evidence record及原官方URL/真实刊日/期间/单位/摘录；issuer_ref须准确匹配该task的company_ref。先核原subject是否合并范围，不能将合并现金流移给仅法律发行人。已核原数在本机`runs/fresh-quality-2026-10-31/catl-primary-reference.private.json`，不是owner golden或自动金融认证。
+3. 默认Python尚找不到`iqs_company_agent_lab`/`iqs_agent_runtime_lab`；公共接线要显式使用已交的两个Lab/src路径，缺依赖/配置变化/错误上下文在收费前明确停止，不回退legacy重问。原company-wiki有活动writer（文档及.githooks），保持只读。
+4. 使用原`execute_shared_engine`/`resume_shared_engine`和已有checkpoint，不另造恢复状态机。session/export必须互不嵌套；同一次原工作恢复要保持原task及选中work集合，不能因输出文件换名创建新的付费会话。封存后先`finalize_shared_engine`，再用新增`QAEngine.hydrate_questions`输出原格式；缺CP直接失败，不能裸调用会发问的process_questions。finalize逐题幂等，并非全包单事务。
+5. 新engine选择应沿原bundle/config路径及原输入hash冻结，旧bundle继续原方式。当前共享runtime单请求上限16384，且一题comparison按实际pack长度要求原controls.pack_size=1；当前普通UI为pack2/max32768。将来真实新比较须按新已选参数取得原批准，不修改旧grant、不假装降低请求上限是旧授权的静默扩展。思考保持开启。先完成真实调用链的隔离E2E，再以现有第一方上下文做一次有明确变化的真实复核，不盲问。
+
 进一步精简已取消重启后人工inspect前置、读旧job的新配置门、纯缓存预览的确认/job，以及只读轮询中的重复执行预检。恢复/补封/归档按钮表示明确检查动作；真正control仍实时核原owner/预算/进程，未知请求不重发。旧applied可能触发登记，冻结输入完整性检查仍保留，不误删有实际作用的保护。
 
 ## 固定对象与运行
@@ -25,7 +33,7 @@
 |IQS本次起点已推送|`215804dada41148ea79011fbb483e02f9f8d1abe`，本次源码及文档在其后正常提交|
 |IQS原接线|`c1ee64fd5a7cd1331e67d7ec7f3a242ff2ffc0b2`|
 |IQS测试入口|`e8f184c47221a97f0eb1f0183b55c38d5f835a01` / `f16da24a5d78eb654a4a3e317e827d7e5cfe7bc0`|
-|StockQA|`3fd35a1`已推既有origin/master，含`c6854fd`原比较目的接线及原答恢复|
+|StockQA|`76c9431`正常hooks已通过；实际provider规则及共享接线兼容修复已提交推送，已核HEAD=origin/master|
 |StockWiki|`1bde9e0`（含`af2a260`及预算`724f5b7`）已提交，无origin，不新建远端|
 |原UI|`d3ec24a`（含`0212c5c`/`d6e0eb8`）已提交，无remote|
 
@@ -50,6 +58,8 @@ python -B -m pytest tests/test_result_trust_host.py -q -p no:cacheprovider
 ```
 
 测试用自有短TEMP，结束清理自身临时库/副本/进程，保留最小证据；不清他人文件。pytest hook只放行字面IP TCP loopback，不是整进程树沙箱。不得将collect/shape CLI/自报passed替代执行或真实owner golden。
+
+最新减负以规格1.10.18为准：101处逐卡独审/额外凭证已取消，不恢复五阶段逐卡状态流或逐断言证书。内容不变的候选不因本地一小时作废；原样保存配置不核活跃任务；真实变更只核一次；可先交付已封存答案，原检查器省略的题仍算缺口。141项相关测试、72子测试通过，独审遗漏行反例已修复；04:01:44Z原8766已加载，doctor就绪、账本85HTTP/US$1.999868无新增收费。不要以此宣称原UI共享引擎或FCF金融纠错已完成。
 
 ## 交接完成标准
 

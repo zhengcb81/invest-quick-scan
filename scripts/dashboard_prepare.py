@@ -732,8 +732,8 @@ class PrepareGateway:
                     (record["selection"].get("scope_selector") == "issuer_only" and
                      native.get("scope_as_of") != native["owner_snapshot_as_of"])):
                 raise DashboardPrepareError("preview_stale", "This candidate predates frozen owner time; create a new bank preview", 409)
-            if _now() >= record["expires_at"]:
-                raise DashboardPrepareError("preview_expired", "Preparation preview expired", 409)
+            # Local elapsed time is not authority. Apply rechecks the current
+            # owner snapshot; original confirmations enforce their own expiry.
             if not record["can_prepare"]:
                 raise DashboardPrepareError("preparation_blocked", "Original preparation prerequisites are missing", 409, {"gaps": record["gaps"]})
         return directory, record

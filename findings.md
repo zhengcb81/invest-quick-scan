@@ -29,6 +29,14 @@
 20. **读旧任务不等于新准备。** 已有job凭准确ID/token关联，不再重验当前新准备配置；新job的完整验证、损坏记录/错误token拒绝和单次apply保留。旧applied可能触发登记，原冻结输入完整性仍有独立作用，不随意删。
 21. **缓存预览已有原结果就直接显示。** 原只读缓存检查已得到观察ID与时钟，新增透传原cached_result并复用UI已有展示；不再强制确认/登记准备job。部分命中、多证券歧义或缺摘要的旧服务仍走原流程；不新建协议、权限凭证或队列。
 22. **helper的新规则不等于冻结请求已带新规则。** generation5真实新答仍沿用546.45错误，已保留为未核实模型输出。只读检查本次原manifest与questions，均未含新增逐期间原始输入/二手来源规则；故这次不能用于证明新提示有效或无效。先核实际prompt路径并接入已有第一方原数，不继续盲问、不给旧bank补新签名。工程ACK和金融正确分开。
+23. **共享引擎库存在不等于原UI已接。** 实际是main_with_llm→LLMRunner→QAEngine，原发送共用BaseLLMProvider规则才影响此路径。已补实际单题/pack载荷规则并10P；原evidence_board入口可复用，不另造手工搜索proof。两个Lab包在当前默认Python搜索路径尚未安装，公共接线须明确加载既有包，失败不能退回legacy重问。
+24. **原生搜索不该要外部搜索凭证。** shared_company_engine来源校验曾无条件要求external_context_use；现仅有实际external use行时检查它，native路径仍经原project_quick_scan_search核实已搜索/源URL/准确work member。缺真实搜索仍拒，坏external行不当作native放过。
+25. **封存后恢复不能落回会发问的普通入口。** QAEngine.process_questions在hydrate缺失后继续claim/send。已增hydrate_questions只复用原reference/CP，缺失或恢复错误直接停止；复用原投影/时间，不建新恢复器。原模块23项隔离通过，未据此称完整共享引擎接线完成。
+26. **同一路由的完整与compact表示不该误拒。** 原runner实际用route_id/provider/model_requested/quota_group，OwnerResearchServices却要求与完整route逐字相等。已仅接受原完整路由或其准确四字段投影，错值/额外字段仍拒；原policy、model resolution及后续SDK检查保留。真实临时owner单例有效RED后1P，不把表示适配当新授权或金融资格。
+27. **过度设计仍藏在有效规格里。** 任务卡残留101处逐卡独审、逐断言回执或额外清理证明要求，与产品节点节奏冲突；1.10.18已统一清掉。108任务/368行为保留；G0—G6是验收范围，不是开工许可。无关HEAD/文档变化不重签，普通测试沿用临时目录和finally清理。
+28. **本地预览的一小时不是实际权限期限。** 输入、身份和配置未变时，固定小时门只迫使重做准备；已取消，apply仍核当前原owner快照与原确认的真实有效期，未知apply不自动重试。
+29. **原样保存和重复核查不产生新保护。** 已持久化相同配置直接返回，不写文件、不干扰任务；真实变更保一次运行检查与原CAS，不再写后重复核查。外部不同配置热加载仍按原检查。
+30. **封存是逐题的，不应等整scope。** 导出取消全ready同步屏障，已有封存包可先入库。原检查器会省略未建work的题，现按原请求求差并保持not_exportable/partial，全部缺题也不误报完成；不造work ID、不重发模型，逐包身份/hash及原ACK保持。
 
 ## 当前真实风险
 
