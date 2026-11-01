@@ -520,6 +520,84 @@ def child_run(config_path, phase):
 
 
 @pytest.mark.parametrize("actual", ["1.2.0"], indirect=True)
+def test_original_shared_partial_pack_saved_before_confirmed_refusal_32k(actual, tmp_path, monkeypatch):
+    """Original owner/SQLite/SDK, two packs; only vendor wire is scripted."""
+    from src.core.models import Question
+    from src.utils.quick_scan_shared_company import run_shared_company_scan, load_original_company_task
+    from src.utils.http_client import http_client_manager
+    from tests.unit.test_llm_client import _b01_thinking_response
+    from iqs_company_agent_lab import synthfixtures as sf
+    import requests
+
+    policy = _policy(model="mimo-v2.6-pro", max_cost=25, max_cost_per_attempt=1)
+    prepared = setup_admission(actual, tmp_path, policy=policy, provider="mimo", selected_question_count=2)
+    accepted = RefreshAdmissionService(prepared["deployment_file"], process_env=dict(SAFE_ENV)).admit(prepared["consent"]["confirmation_id"])
+    assert accepted["status"] == "accepted"
+    settings = dict(root=str(tmp_path), deployment=str(prepared["deployment_file"]),
+                    confirmation_id=prepared["consent"]["confirmation_id"], bundle=str(prepared["bundle"]), policy=policy)
+    source_task, services = construct(settings)
+    shared_config = dict(schema_version="1.0.0", iqs_root=str(CODE), company_agent_root=str(COMPANY),
+                         runtime_bridge_root=str(BRIDGE), state_root=str(tmp_path / "shared"))
+    sent = []
+
+    class Wire:
+        def post(self, *args, **kwargs):
+            body = kwargs["json"]
+            sent.append(copy.deepcopy(body))
+            assert body["max_completion_tokens"] == 32768
+            assert body["thinking"] == {"type": "enabled"}
+            selected = json.loads(body["messages"][-1]["content"].splitlines()[-1])["requested_question_ids"]
+            assert len(selected) == 1
+            if len(sent) == 1:
+                answers = [sf.gen_insufficient(row["question"]) for row in source_task.questions if row["question_id"] in selected]
+                for answer in answers:
+                    answer.update(status="not_applicable", information_as_of=source_task.raw["information_cutoff"],
+                                  summary="[Synthetic software fixture] Completed first pack, no real financial finding.")
+                response = _b01_thinking_response("mimo_chat_completions", "mimo-v2.6-pro",
+                    final=json.dumps({"answers": answers, "declared_question_ids": selected}))
+                response.content = json.dumps(response.json.return_value).encode()
+                return response
+            assert len(sent) == 2, "a completed or explicitly refused pack must never be reasked"
+            response = requests.Response()
+            response.status_code = 401
+            response.headers = {"x-request-id": "synthetic-confirmed-auth-refusal"}
+            response._content = json.dumps({"error": {"code": "invalid_api_key", "message": "synthetic explicit refusal"}}).encode()
+            return response
+
+    monkeypatch.setattr(http_client_manager, "get_sync_session", lambda: Wire())
+    questions = [Question(row["question"]["prompt"], question_id=row["question_id"]) for row in source_task.questions]
+    with pytest.raises(ValueError, match="shared_company_scan_incomplete"):
+        run_shared_company_scan(services.lifecycle, services.client, config=shared_config,
+            questions=questions, cost_resolver=services.cost_resolver,
+            question_pack_size=1, max_output_tokens=32768, transport_origin="scripted_wire")
+    assert len(sent) == 2
+    selected = [json.loads(body["messages"][-1]["content"].splitlines()[-1])["requested_question_ids"][0] for body in sent]
+    assert len(set(selected)) == 2
+    first, second = [services.owner.existing_work(q)["work_item_id"] for q in selected]
+    checkpoint = services.store.get_answer_checkpoint(first)
+    assert checkpoint is not None and checkpoint["payload"]["answer"]["status"] == "not_applicable"
+    assert services.store.get_result_delivery(first)["state"] == "ready"
+    assert services.store.get_answer_checkpoint(second) is None
+    assert [a["phase"] for a in services.store.list_attempts(first)] == ["response_available"]
+    assert [a["phase"] for a in services.store.list_attempts(second)] == ["confirmed_failure"]
+    run_root = next((tmp_path / "shared").glob("scan-*"))
+    assert not (run_root / "export").exists()
+    candidate = run_root / "export-0001"
+    original_task = load_original_company_task(candidate / "checkpoint.json")
+    # Retry only native publication, never the whole incomplete scan or model.
+    with monkeypatch.context() as scoped:
+        scoped.setattr(http_client_manager, "get_sync_session", lambda: pytest.fail("partial finalization must not send"))
+        restored = OwnerResearchServices(services.lifecycle, services.client, task=original_task,
+                                        cost_resolver=services.cost_resolver, owner_batch_claim=True, native_search=True)
+        again = engine.finalize_shared_engine(original_task, restored, candidate, question_ids=[selected[0]])
+    assert again["status"] == "partial" and again["whole_task_finalized"] is False
+    assert again["selected_question_count"] == 1 and again["original_question_count"] == 2
+    assert again["unfinalized_question_ids"] == [selected[1]] and again["new_model_http"] == 0
+    assert services.store.get_answer_checkpoint(first) == checkpoint
+    assert services.store.get_answer_checkpoint(second) is None and len(sent) == 2
+
+
+@pytest.mark.parametrize("actual", ["1.2.0"], indirect=True)
 def test_original_dynamic_scan_owner_sdk_process_resume_no_duplicate_http(actual, tmp_path):
     # Native owner quotes conservatively for both selected fields before the pack
     # executor reduces physical HTTP to independent sends. The isolated synthetic budget must

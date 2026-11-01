@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-01代码审查整改完成并通过集中非作者审查。已付恢复跨发送/租约/手动分类期限、共享实际题包资源、多期间指标、UI并发/故障隔离及模块薄接口均已根修；原owner/SDK完整隔离E2E1P/744.04秒，最终UI执行模块154P。原8766已安全重载，doctor ready；普通pack2/thinking=true/max32768、59登记包保持，账本86HTTP/US$2.024863且0在途/未结/active，无新增收费。StockQA6447225已推；StockWiki719520b、Company Lab d1d92a2、Runtime4241d79本地提交（无远端）；本仓源码/PWF同次正常提交，准确commit见Git。共享跨模型自动fallback与原五个产品节点未完范围仍明确保留。
+执行状态：2026-11-01接续整改的软件部分已集中独审通过，真实单题质量比较仍在运行。Dashboard NEW-6最终候选独立定点复测通过。此次根修实际SDK32k漏接、构造前先claim、原未发送意图误判和部分已付题包未落CP；最终相关124P，独立not_sent63P/getter27P，原owner/SDK两pack32k软件E2E1P/396.47秒。原UI同run第三段接续gen7，不重建work/清计数；前两段均发送前失败、0新HTTP/费用。当前原部署临时policy12/1.3、pack1/thinking/max32768/shared配置用于这一题，保留60包；结束后须恢复普通policy11/pack2并保新包。最后原账本86HTTP/US$2.024863、0在途/未结/active；尚未签真实短证据实送或金融准确性。跨模型fallback及原五个产品节点未完，不新发支线/新门。
 
 ## 当前结论
 
@@ -42,7 +42,7 @@
 
 ## Next Step
 
-**本次整改已收口，后续继续原小池质量与共享fallback主线。** [代码审查及整改结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)已对齐：只保全原已付响应的读取/写入不再要求新发送期限或分类覆盖仍有效；主体/anchor/actor撤权/原safe/物理回执/原子提交保护保留。旧task沿原证据和控件恢复，当前新设置不改旧响应。多期指标和比较、UI锁/草稿/超时、模块语义与公共投影均已修。原budget/provider材料仍需存在可绑定；不重造历史许可。共享跨模型自动fallback仍是原未完功能，不以循环client冒签。下一产品工作仍为真实回答质量及该fallback，再按下方顺序推进G3/F05/消费者/配套；不重问已交付对象、不新发支线或新增门禁。
+**继续原小池质量验证，不重做已完整改。** [代码审查及整改结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)保持通过。Dashboard NEW-6已按最终四仓候选完成[独立定点复测](docs/implementation/reviews/DASHBOARD-NEW6-2026-11-01.md)，不代替Dashboard D00组合并线/E07/浏览器验收。当前执行第一方短证据的真实单题质量比较：从原已交付generation6申请明确comparison后继，旧答/分数/时间与费用保持，新的候选不得标成旧请求恢复。完成后恢复普通配置并核原账本。共享跨模型fallback另沿原合同继续：先在原确认内冻结有序目标，每个attempt保存实际模型；旧请求、comparison与已付恢复保持单模型。不能在现有单模型binding下循环client。后续顺序仍是G3/F05/消费者/配套，不新发支线或新增门禁。
 
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
 - 普通policy11/1.1、successful_scan/24h及prepare原字节设置已恢复；pack2、thinking=true、max32768，shared配置和comparison refs撤回。保留59个登记包及所有旧答。08:35:49Z原UI同实体/合并主体/截止日/模型再预览IQS_11，cached1、执行包0、0API、原owner未变化；复用同一`obs_37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188`，资料日10/29与原成功搜索时间07:33:28.670089Z不变。

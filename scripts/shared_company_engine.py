@@ -338,13 +338,16 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
             if recover_intent is not None:
                 recovered = recover_intent(copy.deepcopy(envelope["intent"]))
                 if recovered is not None:
-                    if recovered.get("decision") != "recover_saved_receipt" or not recovered.get(
-                        "saved_receipt"
-                    ):
+                    if recovered.get("decision") == "recover_saved_receipt" and recovered.get("saved_receipt"):
+                        result = recovered["saved_receipt"]
+                        self._save(envelope["intent"], result)
+                        return result
+                    if not (recovered.get("decision") == "not_sent"
+                            and recovered.get("saved_receipt") is None and not replay_only):
                         raise SharedEngineRejected("native_prior_intent_unresolved_never_resend")
-                    result = recovered["saved_receipt"]
-                    self._save(envelope["intent"], result)
-                    return result
+                    # The native store classified an exact released unsent
+                    # scope. This is not send permission: normal generation,
+                    # current owner, claim, attempt and budget guards follow.
             if replay_only:
                 raise SharedEngineRejected("replay_only_original_saved_response_required")
             result = port.model_step(envelope)
@@ -506,8 +509,9 @@ def resume_shared_engine(
     """Resume an original verified checkpoint through native read-before-send.
 
     A fresh private runtime port is created; hidden reasoning is never restored.
-    Pending work without original native safe-output proof is refused before a
-    new session or HTTP. This does not implement lease renewal or owner consent.
+    Pending sent/unknown work requires original native safe output. Only an
+    original released-unsent classification with no receipt may continue into
+    normal dispatch, and never in replay_only mode. No lease is renewed here.
     """
     from iqs_agent_runtime_lab.port import create_runtime_port
     from iqs_company_agent_lab.canonical import sha256_hex
@@ -549,16 +553,19 @@ def resume_shared_engine(
                 else {"intent": pending_intent}
             ),
         )
-        if recovered.get("decision") != "recover_saved_receipt" or not recovered.get(
-            "saved_receipt"
-        ):
+        unsent = (pending is None and not replay_only
+                  and recovered.get("decision") == "not_sent"
+                  and recovered.get("saved_receipt") is None)
+        if not unsent and (recovered.get("decision") != "recover_saved_receipt"
+                           or not recovered.get("saved_receipt")):
             raise SharedEngineRejected("native_safe_output_required_never_resend_unknown")
-        native_saved = recovered["saved_receipt"]
+        native_saved = None if unsent else recovered["saved_receipt"]
         original_events = [
             event
             for _, journal in history
             for event in journal.events
             if event["event_type"] == "receipt_model"
+            and native_saved is not None
             and event["data"]["attempt_ref"] == native_saved["runtime_attempt_ref"]
         ]
         if original_events:
@@ -585,6 +592,8 @@ def resume_shared_engine(
                 raise SharedEngineRejected("checkpoint_receipt_conflicts_with_original_journal")
             pending = original
         else:
+            # For a store-proven unsent scope this stays None. The original
+            # Runner opens a new segment and accounts only an actual receipt.
             pending = native_saved
     elif pending is not None:
         raise SharedEngineRejected("orphan_pending_receipt")
@@ -740,7 +749,6 @@ def _scan_preflight(task, services, session_config):
     if services.attempt_observations(transport_origin="scripted_wire"):
         raise SharedEngineRejected("fresh_owner_service_observer_required")
     _production_answer_semantics(task, services)
-    services.owner.check()
     # Original comparison approval is exact, not a pack-size upper bound.
     for pack in profile["packs"]:
         services.owner.assert_execution_controls(
@@ -854,33 +862,52 @@ def _native_final_answer(saved, question_id, expected_answer, *, evidence_board=
         raise SharedEngineRejected("finalization_answer_differs_from_original_native_output")
 
 
-def finalize_shared_engine(task, services, export_dir):
+def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
     """Explicitly seal original successful answers with existing owner services.
 
     The research execute/resume APIs stay read/export-only. This separate API
     requires each final answer to match a safe original native response and
-    its exact original work member. It restores only an unexpired original
-    handle through StockQA's public method, then uses commit_standard_answers.
+    its exact original work member. StockQA's public method restores the
+    original handle (including its verified paid-response recovery rules),
+    then commit_standard_answers preserves the same received answer.
     Existing matching checkpoints are reused without a lease or another HTTP.
 
     Each native checkpoint is atomic, while a multi-question publication can
     stop after an earlier checkpoint was saved. Such partial progress stays in
     the original store; invoking this API again reuses it, never resends a model
-    request. A missing search proof or expired lease remains a native refusal.
+    request. Missing search proof or an unbound response remains a native refusal.
+
+    By default every task slot must be completed, preserving the original API.
+    An explicit question_ids subset saves only those original completed slots
+    from the same verified export; incomplete members remain unfinalized and
+    the result reports the entire original task scope, never full completion.
     """
     from src.utils.quick_scan_owner_research import OwnerResearchServices
 
     if not isinstance(services, OwnerResearchServices) or services.task is not task:
         raise SharedEngineRejected("original_owner_research_services_required")
     services._assert_registered_inputs()
+    selected_ids = None
+    if question_ids is not None:
+        if (not isinstance(question_ids, list) or not question_ids
+            or any(not isinstance(qid, str) for qid in question_ids)
+            or len(set(question_ids)) != len(question_ids)
+            or not set(question_ids) <= set(task.question_ids)):
+            raise SharedEngineRejected("finalization_original_question_selection_required")
+        selected_ids = [qid for qid in task.question_ids if qid in question_ids]
     semantic_validator = _production_answer_semantics(task, services)
     if semantic_validator is None:
         raise SharedEngineRejected("original_production_answer_semantics_required")
     run, evidence_board = _verified_finalization_export(task, export_dir, getattr(semantic_validator, "prompt_rules", ()))
-    if any(row["execution_status"] != "completed" or row.get("answer") is None for row in run["slots"]):
+    slots = run["slots"] if selected_ids is None else [
+        row for row in run["slots"] if row["question_id"] in selected_ids
+    ]
+    if selected_ids is not None and [row["question_id"] for row in slots] != selected_ids:
+        raise SharedEngineRejected("finalization_original_question_selection_mismatch")
+    if any(row["execution_status"] != "completed" or row.get("answer") is None for row in slots):
         raise SharedEngineRejected("finalization_all_original_slots_must_be_completed")
     plan = []
-    for slot in run["slots"]:
+    for slot in slots:
         qid, body = slot["question_id"], slot["answer"]
         try:
             probe = copy.deepcopy(body)
@@ -965,8 +992,18 @@ def finalize_shared_engine(task, services, export_dir):
                            checkpoint_id=checkpoint["checkpoint_id"], checkpoint_sha256=checkpoint["payload_sha256"],
                            delivery_state=None if delivery is None else delivery["state"]))
     pending = [row["question_id"] for row in result if row["delivery_state"] not in {"ready", "delivered"}]
-    return dict(protocol="iqs.shared-engine-finalization/1.0.0", run_id=run["run_id"],
+    result = dict(protocol="iqs.shared-engine-finalization/1.0.0", run_id=run["run_id"],
                 status="checkpointed_delivery_pending" if pending else "completed",
                 checkpoint_status="completed", pending_delivery_question_ids=pending,
                 checkpoints=result, reused_question_ids=reused,
                 new_model_http=0, financial_accuracy_assessed=False)
+    if selected_ids is not None:
+        remaining = [qid for qid in task.question_ids if qid not in selected_ids]
+        result.update(selected_question_ids=selected_ids,
+                      selected_question_count=len(selected_ids),
+                      original_question_count=len(task.question_ids),
+                      unfinalized_question_ids=remaining,
+                      whole_task_finalized=not remaining and not pending)
+        if remaining:
+            result.update(status="partial", checkpoint_status="partial")
+    return result

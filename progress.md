@@ -2,6 +2,28 @@
 
 更新于2026-11-01。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/01 接续与 Dashboard NEW-6
+
+亲读外包B03最终交接及原独审报告，另派未参与实现agent复测最终Dashboard代码e7ce9ae（文档HEAD edd964b）/service3eb99cd/UI6f0391e/SWb3084ff。5类scope判断、6条实际UI模块深链均通过，原StockWiki32P/11.28秒覆盖run/scan引用与缺run拒绝；0收费/0服务/0生产写，自有TEMP移除。[定点结论](docs/implementation/reviews/DASHBOARD-NEW6-2026-11-01.md)不代签E07、浏览器或D00并线，也未把外包owner authority合入本仓。
+
+本次原8766最初停止：sandbox网络Win10013，外层只读确认10061无监听后才启动原no-refresh配置，未杀其他PID；新launcher18544为当时记录。doctor ready/无阻断、账本仍86HTTP/2024863micros且0在途/未结/unknown。只读核原gen6真实回答：明确原数不足，未继续断言错误FCF，旧板仍空，不能追认为短证据实送。
+
+继续原质量节点：仅在线核公司原2025年报合并现金流量表2024/2025原数，不下载保存文档；原CLI派生gen6→7 comparison与两条原短证据，独立run目录`runs/quality-context-retest-2026-11-01/`，原owner临时policy11→12/1.3（TTL/预算不变）。原决议`owd1_0e16517c7b2dc2d8513a6743b18508b99638ab99c269e35eed43e4feedfcc294`已confirmed/recorded；原UI准备job`prepjob_f2edee1be7f94e2eac7b836ef6108276`已登记，60个原包保持，新冻结shared配置与两条原记录逐对象相等。23:00:19Z开始`run-5a03133643e34e60b69d6b9b311b46c0`，batch`batch-a4a0514b51f04d9fa048f266500a7ec2`，只选一个公司组/一题、pack1/thinking/max32768/request cap1；不是重复gen6已付恢复。开始后原账本尚86HTTP，终态另记，不预先宣称金融准确通过。完成或安全失败后须恢复普通prepare/policy11并保留60包与新历史。
+
+独审预执行发现的wrapper DTO读取已在执行前按`applied.decision.decision_id`更正；恢复脚本补仅覆盖本次仍相等的prepare，避免覆盖并发writer。检查冻结配置时最初误要求路径仍指private源文件而assert失败，实际原准备按契约复制为冻结配置；已比较实际JSON与预期完全相等，没有改产品规则求绿。
+
+真实首段在SDK研究会话构造报`research_limits_invalid`（原共享/Runtime已32k，实际ResearchChatSession仍硬限16k），0新API/费用却先claim了gen7。已有效SDK RED2F/7P→完整40P/6.13秒；生产final_json沿原SDK32k应用上限，旧tools16k保持；Runtime构造/控件校验前置于generation_scope，实际step仍当前owner/budget/send guard内，RED2F/7P→9P。原Store新增精确Lease的release_unsent；独审13P后将真实`WORK_ef7cfb7bd41740ab95e2d31af6c78548`/gen7/epoch1、attempt0/CP0由leased→pending，epoch/原历史不变，0未结/在途。
+
+原UI同run第2段接续仍在发送前拒`native_safe_output_required_never_resend_unknown`，0新API/费用，原pending保持。根因是旧resume把账本明确已释放的未发送意图也当unknown；同一作者正在原Store只读分类与原engine分支窄修，不能用重建work或新代次绕开。当前比较未通过，不先称真实短证据已发送。
+
+上述尾修随后完成：Store公开`is_released_unsent`只在原RO事务核同epoch原释放/到期事件、pending空lease、无任何send/safe/CP/未结/nativeintent；原确认/原输入不变，不新增凭证。Owner优先原native intent/safe/unknown，只有整范围原分类真才返回not_sent；engine仅无receipt且非replay_only时继续正常claim/send。真实counter0→1/原cap1和旧CP保持；最终六个相关文件124P/17.47秒，独立not_sent63P/14.35秒和getter27P/8.40秒通过（均有重叠）。调用者自报布尔不能放行、畸形原记录安全拒绝并关闭事务、读后新claim仍由CAS挡住。源码行为已冻结，原UI同run第三段接续已明确提交，终态另记；不改前两段的失败。
+
+相关共享部分保存根修已主树82P/3.81秒：后续题包明确拒绝时，先沿原safe/receipt/CP保存已成功成员，原entry仍incomplete、不发布完整export。原owner/SDK两pack/32k隔离E2E1P/396.47秒，仅vendor wire脚本化，第一包CP/ready、次401无CP、部分重入0HTTP且原CP不变。非作者SDK/inspection63P、partial59P及4个实际函数反例均通过（重叠不累加）。所有外层自有TEMP移除；首沙箱包装器未得终态、精确停止后未定位其AppContainer临时根，未称清理完成。不得把该软件E2E代签真实金融准确性。
+
+共享fallback只读根因确认：底层work库已有明确拒绝后的下一attempt和unknown阻断，但上层原preview、owner binding、research intent与共享task都锁单模型。必须演进原有序目标/逐attempt实际route，不能把client循环称已完成；comparison和paid恢复仍固定原模型。未改外仓源码、未新造许可/队列。
+
+本轮CodeGraph context在大混合索引长时间无结果后已停止，窄search无结果，沿已知源文件补足；全Projects literal搜索过宽已停止并改定点外包路径。没有把工具错误或未跑项记成测试通过。
+
 ## 11/01 代码审查整改收口
 
 沿原小池节点完成[审查整改](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)，无新施工卡、许可注册表或逐题凭证。恢复仅保全原paid safe，分开发送委托/租约/手动分类期限；actor/撤权/原scope与anchor/原response/physical proof及CAS保持。SDK原初始化不再把已知safe误回收为uncertain；普通leased capture也走原parser与事务；混合登记明确原2/本次恢复1，缓存引用和原日期不变。原budget/provider材料删除仍拒，不重造历史。

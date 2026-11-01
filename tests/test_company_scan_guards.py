@@ -137,3 +137,42 @@ def test_new_capabilities_do_not_claim_multiturn_or_search_proof():
         "native_multiturn_packs" in value["unsupported"]
         and "official_search_backed_checkpoint" in value["unsupported"]
     )
+
+
+def test_pure_scan_construction_does_not_recheck_current_permissions(monkeypatch):
+    """Data-projection unit only, not a native admission positive."""
+    from iqs_company_agent_lab.scan_profile import native_input_references
+    import iqs_company_agent_lab.scan_profile as scan_profile
+    import src.utils.quick_scan_company_context as public_context
+
+    t = task()
+    subject = {"entity_id": "synthetic"}
+    original = SimpleNamespace(
+        input_raw={name: b"{}" for name in ("identity.json", "manifest.json", "authority.json", "owner-config.json", "questions.json")},
+        observation_context={"questions": {"ORIGINAL_1": {"subject_binding": {"subject_ref": subject}}}},
+        plan={"provider": "synthetic", "model": "m"}, bundle={"manifest": {"module_locks": []}}, route_id="r")
+    refs = native_input_references(original.input_raw)
+    binding = dict(protocol="iqs.native-company-owner-binding/1.0.0", synthetic=False,
+                   subject_ref=subject, authority_ref=refs["authority.json"],
+                   native_scope={"scope": "entity", "scope_id": "synthetic"},
+                   original_inputs_sha256=sha256_hex(refs))
+    subject.update(scope="entity", scope_id="synthetic")
+    t.runtime_profile = dict(protocol="iqs.company-scan-runtime/1.0.0", synthetic=False,
+                             provider="synthetic", model="m", native_inputs_sha256=sha256_hex(refs))
+    raw = canonical_json(t.runtime_profile).encode("utf8")
+    t.raw["runtime_profile_ref"] = dict(path="runtime.json", bytes=len(raw), sha256=sha256_hex(raw))
+    t.raw.update(native_inputs=refs, module_locks=[], owner_binding=binding)
+    t.owner_binding = copy.deepcopy(binding)
+    t.task_sha256 = sha256_hex(t.raw)
+    monkeypatch.setattr(public_context, "company_scan_inputs", lambda lifecycle: original)
+    monkeypatch.setattr(scan_profile, "native_company_projection", lambda identity, ref: t.company_doc)
+    monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: None)
+    controls = []
+    owner = SimpleNamespace(check=lambda: pytest.fail("pure construction must not invoke current permission I/O"),
+                            assert_execution_controls=lambda **kw: controls.append(kw))
+    services = SimpleNamespace(client=SimpleNamespace(model="m"), native_session=False,
+        lifecycle=SimpleNamespace(question_pack_group_key=lambda q: ["issuer", "perimeter"]),
+        questions={"ORIGINAL_1": "original"}, recover_intent=lambda intent: None,
+        attempt_observations=lambda **kw: [], owner=owner)
+    assert engine._scan_preflight(t, services, config()) == config()
+    assert len(controls) == 1

@@ -226,3 +226,72 @@ def test_native_answer_rejects_unsupported_external_citation():
     body = dict(answer("IQS_05"), evidence=[{"id": "missing", "url": "http://example.invalid/not-https"}])
     with pytest.raises(engine.SharedEngineRejected):
         engine._native_final_answer({"final_content": json.dumps(body), "tool_calls": None}, "IQS_05", body, evidence_board=EvidenceBoard(2000))
+
+
+@pytest.mark.parametrize("remaining_status", ["not_attempted", "paused", "failed"])
+def test_partial_finalizer_saves_only_original_completed_selection(bound, remaining_status):
+    task, services, run = bound
+    run["slots"][1].update(execution_status=remaining_status, answer=None, attempt_refs=[])
+    result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"),
+                                           question_ids=["IQS_05"])
+    assert result["status"] == "partial"
+    assert result["checkpoint_status"] == "partial"
+    assert result["selected_question_ids"] == ["IQS_05"]
+    assert result["unfinalized_question_ids"] == ["IQS_06"]
+    assert result["original_question_count"] == 2
+    assert result["selected_question_count"] == 1
+    assert result["whole_task_finalized"] is False
+    assert services.saves == services.restores == ["IQS_05"]
+    assert set(services.checkpoints) == {"WORK_IQS_05"}
+    assert result["new_model_http"] == 0 and result["financial_accuracy_assessed"] is False
+    # Existing matching first-member CP is reused without touching the other member.
+    services.expired = True
+    again = engine.finalize_shared_engine(task, services, Path("unused-unit-export"),
+                                          question_ids=["IQS_05"])
+    assert again["status"] == "partial" and again["reused_question_ids"] == ["IQS_05"]
+    assert services.saves == services.restores == ["IQS_05"]
+
+
+@pytest.mark.parametrize("selection", [[], ["IQS_05", "IQS_05"], ["foreign"], "IQS_05", [None], True])
+def test_partial_selection_cannot_grant_foreign_or_ambiguous_scope(bound, selection):
+    task, services, _ = bound
+    with pytest.raises(engine.SharedEngineRejected, match="selection"):
+        engine.finalize_shared_engine(task, services, Path("unused-unit-export"), question_ids=selection)
+    assert services.saves == services.restores == []
+
+
+@pytest.mark.parametrize("fault", ["not_completed", "wrong_native", "changed_answer", "foreign_member"])
+def test_partial_selection_retains_all_native_preflight_guards(bound, fault):
+    task, services, run = bound
+    selected = run["slots"][0]
+    if fault == "not_completed":
+        selected["execution_status"] = "not_attempted"
+    elif fault == "wrong_native":
+        selected["attempt_refs"] = ["stockqa:foreign"]
+    elif fault == "changed_answer":
+        selected["answer"]["summary"] = "modified paid output"
+    else:
+        services.owner.entries["IQS_05"]["work_item_id"] = "WORK_IQS_06"
+    with pytest.raises(engine.SharedEngineRejected):
+        engine.finalize_shared_engine(task, services, Path("unused-unit-export"), question_ids=["IQS_05"])
+    assert services.saves == services.restores == []
+
+
+def test_explicit_all_selection_uses_original_task_order_and_retains_complete_semantics(bound):
+    task, services, _ = bound
+    result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"),
+                                           question_ids=list(reversed(task.question_ids)))
+    assert result["status"] == "completed" and result["whole_task_finalized"] is True
+    assert services.saves == task.question_ids
+    assert result["selected_question_ids"] == task.question_ids
+    assert result["unfinalized_question_ids"] == []
+
+
+def test_explicit_full_scope_with_pending_delivery_is_not_whole_task_finalized(bound):
+    task, services, _ = bound
+    services.delivery_pending = True
+    result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"),
+                                           question_ids=task.question_ids)
+    assert result["status"] == "checkpointed_delivery_pending"
+    assert result["whole_task_finalized"] is False
+    assert result["pending_delivery_question_ids"] == task.question_ids

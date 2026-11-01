@@ -87,6 +87,35 @@ def test_replay_only_port_uses_original_saved_receipt(tmp_path, monkeypatch):
     assert guarded.model_step({'intent': {}}) == saved and calls == []
 
 
+@pytest.mark.parametrize("replay_only", [False, True])
+def test_pending_port_proven_unsent_still_uses_normal_send_guard(tmp_path, monkeypatch, replay_only):
+    # Composition-only classification double; the native SQLite tests prove
+    # which exact released work may produce this classification.
+    calls = []
+    port = SimpleNamespace(model_step=lambda e: calls.append(e) or {"scripted": "received"})
+    guarded = engine._pending_port(port, [], tmp_path,
+        recover_intent=lambda intent: {"decision": "not_sent", "saved_receipt": None},
+        replay_only=replay_only)
+    monkeypatch.setattr(guarded, "_save", lambda *args: None)
+    if replay_only:
+        with pytest.raises(engine.SharedEngineRejected):
+            guarded.model_step({"intent": {}})
+        assert calls == []
+    else:
+        assert guarded.model_step({"intent": {}}) == {"scripted": "received"}
+        assert len(calls) == 1
+
+
+def test_unsent_classification_never_accepts_a_received_carrier(tmp_path, monkeypatch):
+    calls = []
+    guarded = engine._pending_port(SimpleNamespace(model_step=lambda e: calls.append(e)), [], tmp_path,
+        recover_intent=lambda intent: {"decision": "not_sent", "saved_receipt": {"original": "received"}})
+    monkeypatch.setattr(guarded, "_save", lambda *args: None)
+    with pytest.raises(engine.SharedEngineRejected):
+        guarded.model_step({"intent": {}})
+    assert calls == []
+
+
 class SyntheticObservations:
     def __init__(self, port):
         self.port = port
@@ -271,6 +300,82 @@ def test_resume_unknown_original_proof_refuses_before_new_session_or_http(tmp_pa
     assert old_port.calls == 1
     assert not (tmp_path / "resumed").exists()
     assert not (tmp_path / "export").exists()
+
+
+@pytest.mark.parametrize("replay_only", [False, True])
+@pytest.mark.parametrize("original_sqlite", [False, True])
+def test_resume_proven_unsent_preserves_original_task_and_one_request_cap(tmp_path, monkeypatch, replay_only, original_sqlite):
+    task = helpers.make_task("free_agent", "composition-proven-unsent", max_model=1)
+    stopped = ContextPort(task, fail=True)
+    with pytest.raises(engine.SharedEngineInterrupted):
+        engine._execute_with_port(task, SyntheticObservations(stopped), stopped,
+            output=tmp_path / "original-unused-export", session_dir=tmp_path / "original",
+            transport_origin="scripted_wire")
+    checkpoint = tmp_path / "original/checkpoint.json"
+    before = checkpoint.read_bytes()
+    raw = json.loads(before)
+    assert raw["pending_receipt"] is None and raw["state"]["counters"]["model_http"] == 0
+    monkeypatch.setattr(engine, "preflight", lambda *args: {})
+    fresh = ContextPort(task)
+    import iqs_agent_runtime_lab.port
+    monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *a, **kw: fresh)
+    class Unsent(SyntheticObservations):
+        def recover_intent(self, intent):
+            return {"decision": "not_sent", "saved_receipt": None}
+    services = Unsent(fresh)
+    if original_sqlite:
+        # Original SQLite -> original recover_intent -> real checkpoint/Runner
+        # composition. Native admission and wire remain explicit test seams;
+        # this does not grant an owner or physical-send positive.
+        from src.utils.quick_scan_owner_research import OwnerResearchServices
+        from src.utils.quick_scan_result_outbox import canonical_sha256
+        from src.utils.quick_scan_work_store import QuickScanWorkStore
+        from tests.unit.test_quick_scan_work_store import _created
+        store = QuickScanWorkStore(tmp_path / "original-unsent.sqlite")
+        entries = {}
+        for qid in task.question_ids:
+            work_id = _created(store, question_id=qid)["work_item_id"]
+            lease = store.claim(work_id, lease_seconds=300)
+            store.release_unsent(work_id, lease)
+            entries[qid] = dict(kind="work", work_item_id=work_id)
+        class NativeUnsent(OwnerResearchServices):
+            def __init__(self):
+                self.store, self.owner = store, SimpleNamespace(entries=entries)
+                self.questions = dict.fromkeys(task.question_ids)
+                self._task_sha256 = canonical_sha256(task.raw)
+            def _assert_registered_inputs(self, **kwargs):
+                pass  # Scope-classification-only test carrier; never admitted.
+            def attempt_observations(self, **kwargs):
+                return SyntheticObservations(fresh).attempt_observations(**kwargs)
+        services = NativeUnsent()
+    else:
+        monkeypatch.setattr(engine, "inspect_native_recovery", lambda *a, **kw:
+            {"decision": "not_sent", "saved_receipt": None})
+    if replay_only:
+        with pytest.raises(engine.SharedEngineRejected, match="never_resend_unknown"):
+            engine.resume_shared_engine(task, services, {}, checkpoint, tmp_path / "export",
+                session_dir=tmp_path / "resumed", transport_origin="scripted_wire", replay_only=True)
+        assert fresh.calls == 0 and not (tmp_path / "resumed").exists()
+    else:
+        result = engine.resume_shared_engine(task, services, {}, checkpoint, tmp_path / "export",
+            session_dir=tmp_path / "resumed", transport_origin="scripted_wire")
+        assert result["all_slots_completed"] is True and fresh.calls == 1
+        assert result["runtime_summary"]["new_model_http"] == 1
+        resumed = json.loads((tmp_path / "export/checkpoint.json").read_text(encoding="utf8"))
+        assert resumed["state"]["counters"]["model_http"] == 1
+    assert checkpoint.read_bytes() == before
+
+
+def test_resume_unsent_classification_with_pending_receipt_is_still_refused(tmp_path, monkeypatch):
+    task, old_port, checkpoint = _crash_checkpoint(tmp_path, legacy=True)
+    assert json.loads(checkpoint.read_text(encoding="utf8"))["pending_receipt"] is not None
+    monkeypatch.setattr(engine, "preflight", lambda *args: {})
+    monkeypatch.setattr(engine, "inspect_native_recovery", lambda *a, **kw:
+        {"decision": "not_sent", "saved_receipt": None})
+    with pytest.raises(engine.SharedEngineRejected, match="never_resend_unknown"):
+        engine.resume_shared_engine(task, SimpleNamespace(), {}, checkpoint, tmp_path / "export",
+            session_dir=tmp_path / "resumed", transport_origin="scripted_wire")
+    assert not (tmp_path / "resumed").exists() and old_port.calls == 1
 
 
 @pytest.mark.parametrize("legacy", [False, True])

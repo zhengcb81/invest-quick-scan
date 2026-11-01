@@ -23,6 +23,16 @@
 
 保留边界：原登记材料、预算和提供商配置仍须存在并可绑定；删除原route或改写原预算文件时不重造历史许可/客户端。仅时间过期的保全与未知请求重发不同，后者仍拒。生产普通配置与原已交付观察不被这些隔离修复测试改写。
 
+## 继续实测发现并关闭的同节点遗漏
+
+随后真实单题比较暴露 `ResearchChatSession` 仍16k，与已修共享层/Runtime32k矛盾；首段在发送前失败且0新HTTP，却先claim。生产final_json现复用原SDK应用上限，旧工具会话16k保持；纯SDK构造/控件校验移到claim前，实际step仍在原owner/预算/send guard内。有效SDK RED2F→40P、Runtime RED2F→9P；非作者实际构造/撤权/原budget反例通过。
+
+原Store以精确原Lease原子释放确实未发送的claim；已发送、未知、safe、CP与未结预算均拒，不重置epoch或计数。原gen7零attempt/CP的lease已安全释放。旧engine随后把这个原已释放未发送意图也误当unknown；现只从原只读事务和同epoch事件派生not_sent，原native intent/safe/unknown优先，replay_only或任何pending receipt仍禁止新发送。派发仍走原正常claim/CAS/当前owner与预算，不新增许可凭证。最终相关124P、独立not_sent63P/getter27P（有重叠）；真实原Runner单次cap0→1、旧CP不改。
+
+共享部分保存亦已根修：后续题包明确拒绝时，先沿同一真实export的逐成员safe/receipt/语义检查保全成功题到原CP，原entry继续incomplete且不发布完整export。默认全量调用兼容；显式子集返回原分母/剩余题。原owner/SDK两pack32k隔离E2E1P/396.47秒，仅vendor wire脚本化，首CP/ready、次401无CP、再入0HTTP且原CP不变；这份先写E2E不冒签后写的not_sent分支。删除纯构造/私有内存观察的重复current读取，真正发送/写提交不缓存权限。
+
+上述源码集中非作者审查通过；原UI同run第三段真实质量比较仍待终态，不以软件通过授金融准确性。详情与清理限制见根progress；未新发支线或扩大原预算。
+
 ## 方法与边界
 
 - 先查 CodeGraph；文件清单可用，context 在当前混合历史副本的大索引上长时间未返回，停止等待后读取已知源码，并用只读 AST/字面搜索补足。

@@ -12,6 +12,10 @@
 
 ## 现在从哪里继续
 
+**本次正在接续：** [Dashboard NEW-6](reviews/DASHBOARD-NEW6-2026-11-01.md)最终候选定点复测通过，不代签其D00并线/E07。真实CATL IQS_11第一方短证据比较是gen6→7的新比较，不是重发旧已付gen6。准备/原决议已登记，`run-5a03133643e34e60b69d6b9b311b46c0`／`batch-a4a0514b51f04d9fa048f266500a7ec2`；work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`。首段SDK16k构造误拒；第2段误把已证明未发送当unknown；均0新HTTP。SDK32k/Runtime构造前置/原精确release与not_sent/成功子包保全已根修并集中独审；第三段已从原UI提交接续，须取实际终态，不能重做prepare/confirm/apply或新建work。
+
+当前专用policy12/1.3、pack1/thinking/max32768/shared配置和60包；私有编排与原备份在`runs/quality-context-retest-2026-11-01/`。真正完成或安全收尾后执行其中`service.py restore`，只恢复原prepare/原policy11并保留新登记包，勿整文件回滚59包。原账本最后86HTTP/2024863micros，无在途/未结/active；第三段新费用、真实短证据是否进入actual request、回答准确性、ACK与normal缓存须沿原记录验证后另记。本段覆盖下方上一节点59包/普通配置的当时快照。
+
 代码审查整改已完成并集中非作者审查通过，详见[核源与整改报告](reviews/CODE-QUALITY-2026-11-01/report.md)。已付safe保全不再要求新发送委托/租约/手动分类覆盖仍有效；主体/anchor/actor撤权/原response和物理回执/CAS仍严格。普通与共享恢复都只保存原回答；混合范围明确原登记/本次恢复子集。原budget/provider材料仍须存在可绑定，不重造历史。原parser外层日期仅缺key时沿原inner提取，不猜新日期。
 
 共享资源按真实packs派生；旧CP保持原task/证据/控件。多期指标与比较、UI锁/草稿故障/超时、公开owner投影和work快照、模块元数据与import环均已修，旧生成器退役。原8766已重载并只读复验：ready、原观察可见，59包/普通配置不变，总账86HTTP/US$2.024863且无在途，0新增收费。不要重做已交付对象。
