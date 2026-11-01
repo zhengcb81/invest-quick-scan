@@ -258,7 +258,11 @@ def project_history(owner_payload: dict[str, Any], *, limit: int, offset: int) -
     if page.get("limit") != limit or page.get("offset") != offset:
         raise ProjectionError("owner_projection_invalid", "owner history page does not echo the request", 502)
     total = page.get("total")
-    if type(total) is not int or total < len(items) + (offset or 0):
+    if type(total) is not int or total < 0:
+        raise ProjectionError("owner_projection_invalid", "owner history total is malformed", 502)
+    # A page beyond the end is VALID and must be an empty page: only a page
+    # that actually carries rows beyond the reported total is malformed.
+    if items and total < offset + len(items):
         raise ProjectionError("owner_projection_invalid", "owner history total is malformed", 502)
     return {
         "protocol": PROJECTION_PROTOCOL,

@@ -250,6 +250,26 @@ def test_project_history_refuses_a_page_that_ignores_the_request():
         projection.project_history(forged, limit=20, offset=0)
 
 
+def test_project_history_allows_a_valid_past_end_empty_page():
+    # `offset > total` is a legitimate empty page (the owner answers exactly
+    # that); only a page that carries rows beyond the total is malformed.
+    payload = Owner(None).company_history('ENT_A', limit=1, offset=2)
+    payload['owner_payload']['items'] = []
+    payload['owner_payload']['page'] = {'limit': 1, 'offset': 2, 'total': 1}
+    response = projection.project_history(payload, limit=1, offset=2)
+    assert response['items'] == [] and response['page']['total'] == 1
+    empty = Owner(None).company_history('ENT_A', limit=1, offset=1)
+    empty['owner_payload']['items'] = []
+    empty['owner_payload']['page'] = {'limit': 1, 'offset': 1, 'total': 0}
+    assert projection.project_history(empty, limit=1, offset=1)['items'] == []
+    # rows beyond the total stay refused
+    over = Owner(None).company_history('ENT_A', limit=1, offset=1)
+    over['owner_payload']['page'] = {'limit': 1, 'offset': 1, 'total': 1}
+    over['owner_payload']['items'] = over['owner_payload']['items'][:1]
+    with pytest.raises(projection.ProjectionError):
+        projection.project_history(over, limit=1, offset=1)
+
+
 def test_project_result_refuses_a_mismatched_entity():
     item = dict(RESULT_SNAPSHOT, entity_id='ENT_OTHER')
     with pytest.raises(projection.ProjectionError) as error:
