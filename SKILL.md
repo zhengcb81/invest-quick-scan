@@ -21,7 +21,7 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 
 新版评分仅以发布包common中声明的核心构念及类型替代题汇总可比质量分；当前核心数为24，不是架构限制。行业/阶段/属性题保留为专题评分，杜邦及五力始终单列诊断，不因追加题数改变核心权重。使用[统一行业与阶段口径](questions/scoring-contexts.json)，分清当前、正常化、压力和未来假设；新增题义/口径与旧结果不直接连成趋势。
 
-模块独立扩题、证据化路由、发布版本锁与增量补扫的后续实施见[组合式题库设计](docs/modular-question-bank-design.md)及S04—S06/Q13/W15/F06/U04任务卡。现有组合能力可直接使用；设计中的独立升级契约和跨仓接线尚未完成。
+模块独立扩题、证据化路由、版本锁与增量补扫见[组合式题库设计](docs/modular-question-bank-design.md)。当前实现和剩余范围以根[task_plan.md](task_plan.md)为准，不从历史施工卡推断开工门。版本/hash用于记录实际题义与兼容性，不另设逐任务签收或组件审批凭证。
 
 事实画像读[标准输出与事实题库](references/standard-output.md)，按需编排[facts.json](questions/facts.json)中的61题。供应商、客户、设备、材料、上下游、第一/第二曲线及管理层均有稳定字段与关系约束，未知留空、不评分。题库已可离线使用，生产facts执行/入库仍须F02/F04接线。
 
@@ -29,14 +29,14 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 
 1. **确定对象与时间。** 固定公司法定实体、证券代码、交易所／股类、信息截止日；估值另固定报价日期与币种。证券简称或代码有歧义时先消歧，不默认上市地区就是经营地区。
 2. **检查外部工具。** 读 [StockQAbyLLM 接入](references/stockqa-integration.md)、[联网搜索与LLM统一规范](references/search-and-llm-playbook.md)及[搜索接入状态](references/search-policy.md)。区分原生搜索与外部证据context，验证实际执行证明；结果不明先对账，不盲重发。公开CLI的`--require-search`仍仅使用已接入供应商；直连探针不等于生产接通，缺证明或证据不足时留空分数。
-3. **用 LLM 分类。** 依 [路由规则](references/routing.md) 通过同一上游工具发出分类问题。检查实体、类型、行业、阶段及可确认的business_subtype，写入profile；entity_id/security_id由身份拥有者确认，不让模型自由创造。分类是评分和事实的共同入口，不重复收费做两次相同路由。
+3. **复用分类，按需补充。** 优先使用已有且兼容的profile、路由和已核实属性；只有缺少实质分类信息时，才依[路由规则](references/routing.md)通过同一上游工具询问LLM。类型/行业尚未明确也能先做基础36题，不以分类审核阻塞通用扫描。检查实体、类型、行业、阶段及可确认的business_subtype；entity_id/security_id由身份拥有者确认，不让模型自由创造。评分和事实共用分类，不重复收费做相同路由。
 4. **离线编排。** 使用 `scripts/question_sets.py compose`。通用框架先出题，再由类型替换不适用的会计题，加行业、阶段与有实质影响的属性题。只读 [目录](questions/catalog.json) 和命中的模块，不一次性装入全部题库。
 5. **回答并还原逐题结果。** 导出的questions.json复用StockQA的加载/执行接口；标准模式先核实其原生score/fact解析能力，不把旧外层5分协议套到事实题。默认逐题，质量门通过的同期间/口径小包可按既有策略执行，不把事实实验推广成30评分题大包。按[准确性优先实操](references/accuracy-first-operations.md)先修证据、区分约数/精确数与披露版本，再决定复问/第二模型；核引用和文字，不以一致替代核实。保持ID、截止日、锚点/事实关系；只保存短依据和来源，不下载报告。StockQA另附真实执行时间、请求/实际模型及搜索回执；正常fallback成功即停，显式对照另设有预算组。
 6. **验证与画像。** 依 [评分规则](references/scoring.md) 检查来源、日期、口径、反证和上游错误，再用 `normalize` 生成结果。先展示重大问题与未确认的关键事项，再列八个维度、逐题分数、证据和最值得追问的三件事。同时展示`recovery_watch`的状态、优势、原低分与待验证条件；即使质量分为空也不隐藏。企业质量、成长机会、当前估值和恢复观察分开，不能汇成一个买卖结论。
 
-标准模式用`standard_answers.py build`绑定manifest/题面/执行回执，不能交给旧normalize。独立来源审核仍不可省；结构通过默认为unreviewed。存入StockWiki不可变观察，由每次scan快照引用新旧observation_id，保留原时间和模型。比较前检查[全局契约](docs/system-contract.md)，不将模型换代、回溯回答或重新导入解释成公司变化。
+标准模式用`standard_answers.py build`绑定manifest/题面/原执行记录，不能交给旧normalize。自动检查身份、期间、单位、来源归属和数值一致性；重要数值、风险和相互矛盾的回答做定向来源核对。不要求每家公司、每道题先取得独立审核文件或人工签收才能扫描、入库、查看和复用；没有实质核查时仍是未核实模型输出，不标金融已核实。模型/搜索原回执用于追溯与防重发，不另生成工程核查凭证。StockWiki保存不可变观察，每次scan引用新旧observation_id，保留原时间和模型。比较时核题义、期间、口径和模型，不能把模型换代或重新导入解释成公司变化。
 
-模型顺序由用户填写[配置模板](examples/model-policy.template.json)，数组顺序即优先级；配置与运行状态归StockQA。各模型的接口、能力和脱敏探针记录在[提供商连接配置](examples/provider-connectivity-profiles.json)，其中只记录环境变量名，不保存密钥值；该文件是连通性目录，不代表StockQA端到端验收，也不自动决定顺序或启用派发。并行独立题目/获准题包，遵守全局、账户组和单模型上限；共享五小时额度拒绝、逐题检查点及结果不明处理见[模型策略](references/model-policy.md)。本地仅做配置校验，生产并行/接续仍须实施Q04/Q06—Q10。
+模型顺序由用户填写[配置模板](examples/model-policy.template.json)，数组顺序即优先级；配置与运行状态归StockQA。各模型的接口、能力和脱敏探针记录在[提供商连接配置](examples/provider-connectivity-profiles.json)，其中只记录环境变量名，不保存密钥值；该文件是连通性目录，不自动决定顺序或启用派发。并行独立题目/题包，遵守全局、账户组和单模型上限；共享五小时额度拒绝、逐题检查点及结果不明处理见[模型策略](references/model-policy.md)。原入口已支持运行与接续；新可选共享引擎的跨模型顺位降级尚未接完，不能混称已完成。
 
 ## 本地命令
 
@@ -47,16 +47,17 @@ python scripts/question_sets.py validate
 python scripts/question_sets.py basic --output "runs/basic_questions.json"
 python scripts/question_sets.py routing --company "公司全名" --ticker "证券代码" --exchange "交易所" --as-of "2026-09-19" --output "runs/routing_questions.json"
 python scripts/question_sets.py compose --profile "examples/profile.json" --mode quick --out-dir "runs/example"
+# 下面一行仅为历史strict协议兼容，不是新扫描/入库/UI的前置
 python scripts/question_sets.py normalize --manifest "runs/example/manifest.json" --answers "runs/example/raw_answers.json" --review "runs/example/evidence_review.json" --output "runs/example/portrait.json"
 ```
 
-标准评分、事实及三维比较的离线命令见[标准输出](references/standard-output.md)。新模式依赖requirements.txt中的jsonschema；不含客户端、密钥或调度器。已有导出可用 `python -B -X utf8 scripts/view_quick_scan.py --bundle "导出/bundle.json" --open` 复用VIEW只读服务，无需配置PYTHONPATH；只查看既有数据，不能代替扫描/更新。独立目录用`--viewer-root`指定，见[启动与导航实证](docs/implementation/experiments/view-launch-and-navigation-2026-10-15.md)。首次生产运行、自动/手动加公司、持续维护和简洁UI统一由StockWiki入口提供，仍待[跨项目实施包](docs/implementation/README.md)接通，不能把本地编排成功称作一键扫描已上线。
+标准评分、事实及三维比较的离线命令见[标准输出](references/standard-output.md)。新模式依赖requirements.txt中的jsonschema；本skill不另含客户端、密钥或调度器。日常使用原工作台，按[总README](README.md)启动；名单、题库、扫描、入库、比较和历史恢复已经接通，小范围可用，整体剩余范围见当前计划。已有导出也可用 `python -B -X utf8 scripts/view_quick_scan.py --bundle "导出/bundle.json" --open` 只读查看，独立目录用`--viewer-root`指定。
 
 `examples/profile.json` 是虚构的路线演示，使用时替换为真实分类。`quick` 保留完整基础集合与高优先级专属题；`full` 展开所选模块。两种模式都包含杜邦和五力。`compose_company_bank.py` 默认不设题数上限；显式`--max-questions`只能延后选配追问，不能削减基础覆盖及强制风险题。实际题数在manifest中列明，不承诺固定执行分钟数。多业务集团按有实质影响的分部单独选题，不用最大收入分部代表全部业务，也不在本skill中做SOTP。
 
 修改评分问题编辑questions/源JSON，再运行common命令更新兼容导出；事实编辑facts.json，并运行standard_answers.py validate-library。prompt引用的统一口径/schema必须进入manifest hash，不能只更新文字而不记录版本。
 
-当前评分catalog 3.2.1含48模块、222题；基础必做当前36题，核心评分24题，二者均从数据派生。事实题库1.0.0含61题。新manifest为3.1，selection_policy记录basic-required-v1；显式题数预算另记同名budget_policy。历史无selection_policy的profile manifest依据冻结模块版本恢复当时的可选/必做规则，不能套今天的默认模块；旧预算也按原规则只读校验。旧2.1运行保持原汇总，缺执行元数据标legacy_unattributed，不补造时间或模型。股票池数据库、持续运行与生产UI仍按实施路线开发；本skill的离线代码不是外部运行平台。
+当前评分catalog 3.2.1含48模块、222题；基础必做当前36题，核心评分24题，二者均从数据派生。事实题库1.0.0含61题。新manifest为3.1，selection_policy记录basic-required-v1；显式题数预算另记同名budget_policy。历史无selection_policy的profile manifest依据冻结模块版本恢复当时的可选/必做规则，不能套今天的默认模块；旧预算也按原规则只读校验。旧2.1运行保持原汇总，缺执行元数据标legacy_unattributed，不补造时间或模型。StockWiki已有名单/观察库，原UI已连接；200家可靠性、真实事实关系与消费者、完整配套尚未全部验收。
 
 profile组装使用当前profile包；路由组装必须显式绑定路由包，二者不能混用。新路由policy 2.5.0让分类未知时也保留common、杜邦和五力；历史2.4的冻结路由按原规则读取，不回写。生成新路由再组装的离线路线如下（`runs/route-input.json`须由调用方提供已核实实体及verified_facts；空事实只执行基础覆盖，不推断行业）：
 

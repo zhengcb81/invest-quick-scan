@@ -1,12 +1,12 @@
 # 全项目可组合演进与向后兼容实施设计
 
-2026-09-26，计划版本1.9.5。本文把题库模块的发布锁思路扩展到快扫运行、身份路由、答案解释、评分、事实检索、数据迁移和结果消费。它是实施规格，不是功能已上线或测试已通过的声明。具体拥有者、依赖、文件边界和验收用例以同目录的 `tasks.json`、`acceptance-cases.json` 为准。
+当前计划规格1.10.19（2026-11-01）。本文把题库模块的发布锁思路扩展到快扫运行、身份路由、答案解释、评分、事实检索、数据迁移和结果消费。它是实施规格，不是功能已上线或测试已通过的声明。具体拥有者、依赖、文件边界和验收用例以同目录的 `tasks.json`、`acceptance-cases.json` 为准。
 
 ## 先固定边界
 
 不可变的是 Entity/Security/Segment 的已核实身份事件、原始回答、问题/来源/时间/模型/执行回执、观察 ID 与内容 hash、费用和投递记录。可替换的是问题发布包、路由策略、聚合评分尺、事实词表、筛选 lens、逐字段刷新策略、提供商能力适配和查询投影。后者各由唯一 owner 发布独立版本；组合的结果再生成一次不可变 `ScanRecipe`/`RunManifest`。StockWiki 保管身份、股票池、已导入观察及派生视图；StockQA 保管模型配置、搜索执行、尝试、预算和待办；本仓保管题义和跨组件契约。company-wiki 仍是可选深研链接，不保存快扫镜像或公司文档副本。
 
-版本升级遵循 **旧版可验证读取，新派发只用当前获准版本**。旧观察始终按当时发布包和回执解释；新规则可以重建只读投影，但不能改写旧观察、旧评分或 `information_as_of`。题义/锚点发生变化时用新题 ID 和显式 `supersedes`；只变综合权重时用新评分尺 ID；仅改别名或筛选阈值时不调用 LLM。无法证明新旧口径等价的比较必须返回 `incomparable` 和原因，不能画伪趋势或套用旧的“>8”阈值。
+版本升级遵循 **旧版按原口径读取，新写按实际版本和能力兼容**。旧观察始终按当时发布包和回执解释；新规则可以重建只读投影，但不能改写旧观察、旧评分或 `information_as_of`。题义/锚点发生变化时用新题 ID 和显式 `supersedes`；只变综合权重时用新评分尺 ID；仅改别名或筛选阈值时不调用 LLM。无法证明新旧口径等价的比较必须返回 `incomparable` 和原因，不能画伪趋势或套用旧的“>8”阈值。
 
 组合不是任意插件链。只允许少量经审查的声明式组件，并在发包前解析依赖、排斥、必答风险题、预算、提供商搜索能力、身份修订及输出版本；冲突就拒绝并保留未派发待办。每个组件只有一个发布者；其他仓库消费冻结的 ID/hash 或权威查询，不复制可写配置。公司可以同时有多个行业/阶段附加属性和筛选 lens，但不能按公司私下覆写题义或评分尺。对约 2,000 家的长批次，已领取/已发送的 work 保持原 recipe；新策略从新的 run 或明确的新 generation 生效，并只生成受影响字段的缺口。
 
@@ -33,15 +33,15 @@
 | 提供商/搜索 | StockQA 发布模型能力和搜索回执适配；用户模型顺序及预算仍由 StockQA 管理 | 新模型只增能力/适配 release；必须先证明实际执行搜索。能力不等价的备用不接管已要求搜索的题；额度拒绝与结果不明分开，不重试可能已收费的 POST。 |
 | 查询/UI/消费者 | StockWiki 发布带 `schema_version/capabilities/snapshot/watermark` 的只读投影；主题/行业技能只读消费 | 旧 API 在声明的兼容窗可读；新字段缺失回 `unavailable`，不伪装空列表。UI 可按公司/时间/模型/评分尺及 lens 切换，提示不可比与缺口，不在浏览器重新算分。 |
 
-身份和 SQLite 结构本身不是每家公司可装配的插件。它们用明确的数据库迁移、备份、旧版只读适配和事务升级；任何迁移失败都保留原数据、费用和未决请求。安装/启动只接受已核对实际加载 hash 的配套发布集，不能靠相同版本文字认定兼容。
+身份和 SQLite 结构本身不是每家公司可装配的插件。它们用明确的数据库迁移、备份、旧版只读适配和事务升级；任何迁移失败都保留原数据、费用和未决请求。安装组合记录实际加载版本/hash以便诊断兼容；不把全局发布组合变成启动或逐POST审批许可。
 
 ## 可演进组件的发布生命周期与组合边界
 
 不同能力独立升版，但共用一个很薄的发布元数据外壳：`component_id`、稳定`release_id`、专属`schema_version`、规范内容hash、唯一owner、状态、生效时间、`supersedes`、读/写契约范围、能力声明和迁移/退役策略。外壳只统一身份、版本和兼容元数据；题库、router、答案解析、评分尺、事实本体、词表、lens、刷新策略、provider profile、查询API仍保留各自schema，避免把所有配置塞进一个万能插件格式。
 
-组件release的生命周期事件只追加，状态单调经过`draft → candidate → active → deprecated → retired`；不可变的是release工件和hash，任何语义变化必须新建release。只有正反例、历史可读性、兼容矩阵和独立审查齐备后才可具备active资格。**workspace/profile的active ReleaseSet指针是另一条独立状态**：指针一次只指向一个已验证组合，可原子切换；指针切换本身不会隐式把旧release标为deprecated，也不能因指针切回而改写组件生命周期。deprecated由owner显式发布，表示不再接受新派发；retired只读。生产新扫描只接受active指针及仍有新派发资格的所有组件；candidate只做无副作用预览。deprecated组件可以解释历史和结算冻结的旧attempt，但本计划不默认允许其新派发。回退只有在目标ReleaseSet所有组件仍有新派发资格、兼容矩阵成立且隔离回放通过时才可切换；若目标已deprecated/retired或超过资格窗，则维持历史只读并阻断新work，后续只能通过显式审查和新release恢复，不能暗中“复活”。
+组件工件和release ID/hash不可变；语义改变发布新版本，旧观察按当时版本解释。V16只做声明式版本、依赖和读写兼容元数据，不建设draft/candidate/active等资格审批状态机、每组件资格revision或定期续期许可证。
 
-跨仓`ReleaseSet`是一份不可变配套锁，记录各owner发布的精确release ID/hash、实际加载路径hash和producer/consumer兼容结论；它不复制题库/规则/模型配置，也不创建第二个可写注册库。另由StockWiki在每个workspace/profile维护一个带revision的active ReleaseSet指针；指针事件不改变ReleaseSet内容。X07只生成候选锁，X08只安装并记录真实工件hash，X09在隔离workspace中用stub网络验证实际加载，只有独立激活步骤才可切换生产指针。临时E2E可在自己的fixture中置入test-only active指针，但不能授权真实收费请求。单个owner发布工件仍是唯一权威来源。
+跨仓`ReleaseSet`可记录实际安装的各owner版本/hash和支持能力，作为部署说明与兼容诊断；它不复制权威配置，也不授予派发权。X07描述候选工件，X08核对安装内容，X09验证实际运行链路。不要求全局active指针才能启动本来兼容的功能，不由StockWiki为StockQA逐POST再签一次许可证。
 
 组合入口只接受经登记、声明式、可哈希的部件；不支持任意Python插件或模型生成配置直接执行。路由器可由确定性规则给结论，也可由LLM建议行业、生命周期或公司类似属性，但建议要带来源、置信度、策略版本和决策状态；模糊分类回`needs_review`，用户覆盖单独记录。公司可叠加基础、行业、阶段、投资范式模块，必须处理depends-on/excludes、必答风险题、题目预算、重叠构念和作用层。模型无权静默启用新模块、改变题义或绕过困境/关键风险路由。
 
@@ -62,37 +62,19 @@
 3. StockWiki V07/V08发布词表映射及具体评分/lens名单投影，V11在V15完成后发布版本化查询。只有派生索引/名单可以重建，原始回答、观察和旧名单版本保持不可变；真实库迁移先在临时副本演练。主题研究、行业研究和UI经能力协商读取同一snapshot，缺能力明确返回`unavailable`，不以空列表冒充完成。
 4. X05是页面、CLI、快捷方式的统一启动/附着/停止/续扫入口，只消费已解析recipe及权威身份/缺口。X09从这一入口运行真实组件、临时SQLite和网络边界stub，验旧版读取、版本混搭拒绝、增量补问、两个消费者及浏览器；它不能验收真实联网。X10在同一已安装入口、显式预算与隔离清理器下执行EVO-23及E2E-06的有限live全链。快扫正常路径断言零公司文档下载；文件故障优先注入交换/缓存解析边界，只有真实路径允许临时文件时才验证其下载与逐文件清理。
 
-第一轮V01—V15/EVO-01—43落实扫描方案、评分、事实、筛选、刷新、提供商和查询投影；第二轮V16—V18、StockWiki W16、StockQA Q14/Q15及EVO-44—82/LLM-13—18补组件生命周期、版本兼容、变更影响、答案解析release、活动发布指针、组件资格CAS、两阶段dispatch commit和升级回放。V17只从V10真实公开只读快照和固定自身实现生成纯plan；W16只能用实际锁定的active V16 ReleaseSet及已安装、hash匹配的固定V17实现，对当前权威快照确定性重算完整计划，不接受调用方自报hash或本阶段未定义的签名回执。candidate ReleaseSet仅可预览，不能生成生产generation/work/费用/POST。W16在apply和consume_dispatch_permit事务中核对完整输入快照、身份/成员/范围revision、字段generation、recipe、active ReleaseSet ID/status/manifest/pointer revision、V17实现hash及精确组件集合中每个release的lifecycle/dispatch_eligibility revision。StockQA Q15先耐久写入send_intent_prepared，再调用W16单次consume；W16同一owner事务重新核验资格并记录绑定attempt的dispatch_commit receipt，只有该回执授权一次provider POST。资格在consume前改变则拒绝；commit后最多允许已承诺的单次POST。consume后崩溃若无法证明未发送，进入outcome_unknown、保留费用占用并禁止重放/新attempt。X07只核验候选工件，X08核验安装工件，X09核验隔离运行时真实hash；测试profile的active指针不能改变生产状态。V18在真实临时SQLite中回放升版、候选拒绝、切换、回退和旧attempt结算。G6收口完整包，W16/Q15仍须按逐仓授权执行。每卡先写反例、实施owner局部范围、跑受影响回归并独立审查；唯一owner case使局部验收不能冒充后置全链。测试默认虚构实体、固定时钟、真实临时SQLite、双worker屏障和stub网络；live子场景只有在真实入口、显式费用上限与隔离清理器就绪时执行。
+第一轮V01—V15落实评分、事实、筛选、刷新、提供商和查询投影；后续V16/V17/Q14/W16/V18分别处理版本声明、影响计算、解析兼容、字段幂等应用和停派发后的升级回退。真实主体、题义、权限和费用仍只由原owner链负责。普通实现连续推进，独审按产品大节点集中，不为每次字段应用新增凭证。实际200公司规模、消费者、安装与G6完整交付仍需真实验收，删除重复授权不代表这些目标已完成。
 
+## 1.10.19 最小演进边界
 
-## 1.9.3 全局复核补强：验收归属与派发线性化
+- V16只声明不可变版本/hash、依赖与支持的读写能力；兼容判断按实际内容，不新增资格到期续期门。
+- V17从StockWiki公开只读快照确定性计算受影响字段；不派发、不签许可，不把未知影响扩大成全池重扫。
+- W16沿现有owner接口重算目标范围，只对目标主体、范围、题义和字段generation做必要事务CAS与唯一键幂等；无关公司的结算、余额或全局发布变动不阻塞字段应用。
+- StockQA保留原权限、lease/attempt/send_intent、统一预算原子预留与原响应/ACK。取消Q15及跨仓逐POST permit/consume/dispatch_commit，不另造第二授权数据库。
+- 每个work最多一个有效或结果不明attempt；明确未发送或已对账的可重试终态后才能按用户顺位创建下一attempt。outcome_unknown先对账，不盲重发或fallback。
+- 旧已付答案按冻结输入恢复、导入和ACK，不以缺新版本或新花费额度为由阻塞。升级/回退先停止新派发，保留旧attempt、费用和outbox；不承诺无停机热切或跨仓严格线性化。
+- 每个case仍有唯一owner；局部规格测试不能冒充跨仓、真实联网或最终交付。V18与G6保留实际历史可读、目标字段增量、消费者和规模验收。
 
-本节是当前计划版本的权威修订；若旧段落、旧回执模板或历史审查记录仍用单阶段permit/send_intent措辞，按本节和I46/I49/I50执行。历史报告保留其原始时点，不回写成当前结果。
-
-### 任务与case的完成边界
-
-每个验收case只有一个`owner_task`。owner必须把该case列入自己的`case_ids`；前置任务不能引用后置owner的完整行为。后续任务可以在依赖闭包内重复引用已完成case作为回归，但新结果要记录在自己的任务回执中。`requires_tasks`只列owner运行该完整case需要先完成的任务，不能把owner自身写成前置条件。规划校验器将拒绝无owner、owner未引用、非下游引用、owner依赖未闭合、任何没有本地case的任务，以及依赖环。纯契约参考测试须明确使用固定输入/纯函数；完整持久化、UI、安装、公开入口和多仓行为在第一个真实拥有者完成后才成为完整case。
-
-复核已把前置卡的契约/模型边界与实际生产路径拆开：例如C03只验nullable schema，Q03验实际parser；C04只验纯刷新/状态参考函数，W06/Q06/W10各验其持久owner行为；S05验发布包，S06验路由，W14验跨期比较；F02/F03验事实回复和词表，F04/F05验导入与检索；X01—X07验各自API/UI/候选工件，X08安装，X09实际加载和公开入口。完整跨仓用例显式列出必要owner并留给后置任务，阶段review自身另有owner-local review case。
-
-### ReleaseSet资格与资格快照
-
-`active ReleaseSet`指针和其中每个组件的派发资格是不同状态。V16组件生命周期记录不可变、单调；workspace/profile可以原子换活动指针，但单个组件可在指针不变时被独立deprecated/retired。V17影响plan、W16 apply CAS、W16 consume permit都必须核验排序后的精确组件集合、release ID/hash/status、lifecycle revision、dispatch_eligibility revision、manifest hash和pointer revision。只锁pointer是不够的。资格revision变化且pointer没变时，旧预检必须零副作用失败：不建generation/work/outbox，不留费用预留，也不发permit或POST。旧已承诺attempt仍可按冻结recipe结算。
-
-### 两阶段dispatch permit协议
-
-StockWiki和StockQA使用各自owner数据库，不假定可跨仓原子事务。派发采用明确两阶段状态：
-
-1. StockQA创建受控单调`attempt_id`，持久领取逻辑work，并向W16申请绑定work/attempt/recipe/active ReleaseSet和组件资格快照的一次性permit。permit签发本身不授权HTTP。
-2. StockQA本地耐久写入`send_intent_prepared`，然后调用StockWiki W16 `consume_dispatch_permit`。W16在单一owner事务重新CAS活动指针与组件资格revision、核对范围和未消费状态，成功后写入唯一`dispatch_commit`回执并把permit原子标记为已消费。
-3. StockQA只有在本地prepared记录和匹配的耐久dispatch_commit回执均存在后，才允许向transport交付**一次**provider POST。资格在consume前变化则拒绝；commit后资格退役不撤销此前已承诺的单次POST，但不允许创建任何后续attempt。
-4. permit签发/本地prepared/consume任何一步崩溃都不能让旧permit重放。consume提交后若进程崩溃且无法证明provider未收到请求，必须标为`outcome_unknown`，保留费用预留并只允许同attempt对账；不得fallback或创建新attempt。只有明确未发送，或provider返回冻结策略认可且费用完成对账的retryable terminal结果，才可生成下一单调attempt，并重新进行资格和预算校验。
-
-`send_intent_prepared`是必需的本地审计记录，不单独构成跨仓授权。真正的派发线性化点是StockWiki W16的原子permit consume/`dispatch_commit`写入。不得把历史的“send_intent写完即可POST”描述解释成能跳过consume的旁路。
-
-### 版本兼容与扩展验证原则
-
-新的行业/生命周期/投资范式题包仍按独立owner release组合，不改旧ID/题义/分母；新增字段只触发字段级缺口，schema/解释发生改变时用compatibility matrix区分历史只读、投影重建、增量重问、needs_review和blocked。新增能力不能要求所有仓库同步升版；consumer必须显式协商能力，缺失能力返回unavailable而不是空值。每次升级/回退固定同一组冻结样本，并比较旧答案/观察hash、题包/路由/解析release、模型、时间、费用、work、名单和恢复候选；只有能证明等价的派生可自动重建。计划测试仍不是产品测试，表中case未执行前保持`specified_not_executed`。
+旧1.9.3两阶段许可证和组件资格审批提案已取消；历史评审原件保留，不再作为当前任务依赖。下面1.9.4/1.9.5段落只记录当时设计和问题，不构成当前运行或新增凭证要求；现行范围以1.10.19任务/case清单和根PWF为准。
 
 ## 1.9.4 模块依赖闭包与可信历史读取
 
@@ -110,7 +92,7 @@ StockWiki和StockQA使用各自owner数据库，不假定可跨仓原子事务�
 
 1.9.5曾为复杂case定义稳定atomic assertion ID，并为每条断言设计receipt v2、递归依赖凭证和两轮P01人工签收。2026-09-29依据IQS harness lane审计后，工程任务回执引擎、P01任务和这些关闭门在计划1.10.15中退役。旧任务、receipt和review原件保持只读，校验器/schema/规范/专属测试副本留在`archive/task-receipts-v2-legacy/`；不再刷新或把历史`eligible`投影解释成当前产品完成。
 
-atomic assertion和TDD仍保留，用同一批受影响测试验证owner case；`progress.md`记录HEAD、变更路径、测试命令及结果、样本hash、测试根恢复和未解项。普通任务连续实现，独立review集中在G0—G6和重大接口/迁移/收费/派发/安全边界变化。V16的EVO-83兼容窗边界仍在计划中；当前计划为107任务、366验收case、54约束、G6，所有行为case仍是`specified_not_executed`。
+atomic assertion和TDD仍保留，用同一批受影响测试验证owner case；`progress.md`记录HEAD、变更路径、测试命令及结果、样本hash、测试根恢复和未解项。普通任务连续实现，独立review集中在G0—G6和重大接口/迁移/收费/派发/安全边界变化。该段所述EVO-83资格时间窗在1.10.19退役；当前为107任务、359验收case、52约束，保留G6实际交付目标，规格case仍是`specified_not_executed`。
 
 ### 本轮代码与证据状态（不得当作计划验收）
 

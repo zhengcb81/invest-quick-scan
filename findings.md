@@ -38,6 +38,17 @@
 29. **原样保存和重复核查不产生新保护。** 已持久化相同配置直接返回，不写文件、不干扰任务；真实变更保一次运行检查与原CAS，不再写后重复核查。外部不同配置热加载仍按原检查。
 30. **封存是逐题的，不应等整scope。** 导出取消全ready同步屏障，已有封存包可先入库。原检查器会省略未建work的题，现按原请求求差并保持not_exportable/partial，全部缺题也不误报完成；不造work ID、不重发模型，逐包身份/hash及原ACK保持。
 31. **查看状态不用重读一次派发许可。** control(inspect)已只读原工作状态，不再跑额外_registered_permissions子进程或创建内存preview。返回inspected、can_start=false及权限not_checked；start/resume/seal和批次仍按原当前检查。原1.4/1.5范围选择的policy/exposure读取保留，不冒称绕过全部owner验证。
+32. **共享final_json原先没有native搜索。** 原研究SDK只发聊天/函数工具，即使给出完整JSON也不产生真实搜索回执。新可选native分支复用原send_search_request的厂商请求、解析、预算与回执，并在同一record_response保存可恢复公开输出；普通工具会话/external默认不改。此接线正在原owner软件E2E及集中独审中，不能先宣称真实模型或金融验证通过。
+33. **导出目录存在不表示完整。** 原export先建目录后逐文件写，中断可留下残缺目录。新公共入口只在原export完整返回后同根rename发布，残缺candidate保留，按原CP恢复；不重发已付attempt。原SDK可用的MiMo base/plan URL也不能被旧聊天allowlist挡住，native沿原能力解析；原密钥回显拒绝同时沿用。这三处均已定向修复/独审，基础长软件E2E与尾修短回归分开报告。
+34. **可选精确路由接线不等于模型顺位降级。** 共享入口复用原批准route的现成client，尚未消费cascade的失败换模型逻辑；普通入口已有模型策略继续保留。当前只能称软件接线成立，原UI真实复核、共享fallback及金融纠错仍是未完成范围。
+
+
+35. **没消费者的预览票据仍在占状态。** ExecutionGateway.start早已不拿旧preview授权，但preview还生成ID并维护128项内存注册表；已删除这套死状态，保留兼容字段preview_id=null，启动仍实时核原owner。真正承载名单或准备选择的token不属于这个死表，不能一起误删。
+36. **只读查看不需要新扫描输入。** 旧任务检查仍被questions/manifest/authority/owner_config/confirmation等文件缺失挡住。只读分支现只要原查询请求、实体匹配、账本/策略及可运行原CLI；不授予can_start。启动/封存/恢复仍核完整输入。
+37. **新凭证系统与日常金融审核被过度前置。** 取消TIME另建独立核查凭证签发/续期的计划，已有核查信息保持只读兼容；普通扫描/入库/查看/缓存不要求逐题独立审核文件。重要数值与风险仍定向核来源，没有核实就如实显示未核实。已有分类/有效短证据可复用，不强制每次重新问LLM分类或每题另发搜索HTTP。
+
+
+38. **可组合演进被扩成了第二个派发控制面。** 未上线的Q15/W16计划要求每次POST跨仓申请permit、消费并生成dispatch_commit，另有每组件资格revision/CAS和active全局ReleaseSet门，与原StockQA权限/租约/预算/attempt防重重复。1.10.19取消Q15及9个许可证专属场景，解除其任务/发布依赖及校验器硬编码。版本元数据、只读影响分析、原owner字段应用和停新派发后的升级回退保留；不承诺无停机跨仓热切。原attempt/unknown/fallback场景保留或归原任务，G3/G6实际目标不变；旧C07离线full_release标签只作兼容，不作为日常准入。
 
 ## 当前真实风险
 

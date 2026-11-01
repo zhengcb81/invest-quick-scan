@@ -22,7 +22,7 @@ PATH_KEYS = {'stockwiki_root', 'stockwiki_python', 'stockqa_root', 'stockqa_pyth
              'workspace_root', 'runtime_dir', 'state_root', 'model_policy_path', 'iqs_release_root'}
 BUNDLE_PATHS = {'questions', 'manifest', 'identity_snapshot', 'c06_authority', 'owner_config',
                 'admission_config', 'spend_authorization', 'inspection_request', 'search_policy',
-                'runtime_dir', 'package', 'release', 'work_store'}
+                'runtime_dir', 'package', 'release', 'work_store', 'shared_company_config'}
 BUNDLE_KEYS = BUNDLE_PATHS | {'entity_id', 'company', 'provider', 'confirmation_id',
     'inspection_schema_version', 'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'security_scope_id',
     'package_sha256', 'release_sha256', 'work_item_ids', 'company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings', 'recovery_subset', 'execution_question_ids', 'execution_question_count'}
@@ -30,8 +30,8 @@ CONFIG_KEYS = PATH_KEYS | {'schema_version', 'universe_id', 'execution_bundles',
                           'timeout_seconds', 'workspace_kind', 'workspace_label', 'prepare', 'batch'}
 PREPARE_KEYS = {'state_root', 'admission_config', 'module_package_id', 'producer',
     'authorization_reference', 'agent', 'runtime_dir', 'spend_authorization', 'search_policy',
-    'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs'}
-PREPARE_PATHS = {'state_root', 'admission_config', 'runtime_dir', 'spend_authorization', 'search_policy'}
+    'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs', 'shared_company_config'}
+PREPARE_PATHS = {'state_root', 'admission_config', 'runtime_dir', 'spend_authorization', 'search_policy', 'shared_company_config'}
 
 
 class ProductError(Exception):

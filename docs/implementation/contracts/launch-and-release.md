@@ -1,5 +1,8 @@
 # 部署、生命周期与就绪级别契约
 
+> **1.10.19现行说明（2026-11-01）：** 下列第1—5节及C07 v1.0 schema保留为历史交换兼容，不是日常操作的准入凭证要求。原UI/owner实际操作不要求expected_release_set_id、全套readiness_evidence或G0—G6回执才能启动、查询或恢复；取消Q15与逐POST跨仓许可证。新的实现按当前计划、原身份/权限、lease/attempt和预算/防重执行，版本清单只用于兼容及升级回退。
+
+
 **任务**：C07 · M0 · Owner `iqs`  
 **契约版本**：1.0.0（本地协议定义；未实现生产启动器）  
 **机器契约**：[deployment.schema.json](../../../schemas/quick_scan/deployment.schema.json)  
@@ -77,6 +80,8 @@ fixture包含虚构组件、hash、中文/空格安装路径和doctor/verify_liv
 离线检查只冻结协议语义，不能称为真实进程/SQLite/费用/UI/联网结果。DEPLOY/START/E2E相关公共CLI、worker、共享预算和浏览器的实际行为仍由StockWiki、StockQA及X系列owner在各自允许目录中验收；外部仓的写入未获授权时保持只读，不得用本目录测试代替。
 
 
-## 生产资格修订与dispatch commit
+## 1.10.19 启动、版本与原有派发边界
 
-active ReleaseSet指针之外，W16还锁定组合内每个component release的生命周期/dispatch_eligibility revision。release在active pointer不变时被deprecated/retired，会使旧plan/apply/permit consume的CAS失效。只有StockWiki owner事务消费permit并返回与work、StockQA attempt、recipe、active pointer及精确组件资格revision绑定的`dispatch_commit`后，StockQA才允许一个provider POST。permit发行或UI显示ready不够授权网络调用。X09和G6需在隔离fixture中覆盖指针不变资格变化、consume前拒绝、consume后单次提交、崩溃结果不明与fallback新attempt；旧已commit的请求仍按原recipe结算。
+ReleaseSet描述实际安装组合和兼容版本，不是每次启动或POST的授权票据。取消未上线的组件资格审批/CAS、W16/Q15跨仓permit/consume/dispatch_commit。W16只幂等应用目标字段缺口/投影，保留实际主体/题义/范围/字段generation事务检查；StockQA继续独占原权限、lease/attempt/send_intent和预算原子预留、响应/ACK及unknown防重。
+
+升级或回退先停止新派发，再切换兼容配置；原attempt、费用、outbox和观察保留并按冻结输入结算。不承诺无停机热切。原C07完整生产标签仍只描述整套最终验收，不是本机UI启动或零HTTP复用许可。移除重复审批不等于实际规模、消费者和G6目标已验收。

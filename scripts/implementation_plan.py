@@ -315,28 +315,22 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
                                ("V17", {"V01", "V05", "V10", "V16"}),
                                ("W16", {"V16", "V17", "V10", "W15", "W12"}),
                                ("Q14", {"V16", "Q01", "Q03", "Q04", "Q12", "Q13", "C06"}),
-                               ("Q15", {"Q06", "Q08", "Q14", "W16", "C07"}),
-                               ("V18", {"G5", "V16", "V17", "W16", "Q14", "Q15", "V12", "X09"})):
+                               ("V18", {"G5", "V16", "V17", "Q14", "V12", "X09"})):
         if tid in task_map and not prerequisites <= set(dependency_ids(task_map, tid)):
             errors.append(f"{tid}: evolution chain misses {', '.join(sorted(prerequisites))}")
     if "G6" in task_map:
-        evolution_tasks = {"V16", "V17", "W16", "V18", "Q14", "Q15"}
+        evolution_tasks = {"V16", "V17", "W16", "V18", "Q14"}
         if not evolution_tasks <= set(dependency_ids(task_map, "G6")):
-            errors.append("G6 must include component lifecycle, impact consumer, parser and upgrade rehearsal tasks")
-        if not {"EVO-79", "EVO-80", "EVO-81", "EVO-82"} <= set(task_map["G6"].get("case_ids", [])):
-            errors.append("G6 must review component-eligibility races and safe retry/fallback end to end")
+            errors.append("G6 must include version metadata, field impact/application, parser and upgrade rehearsal tasks")
+        if not {"EVO-81", "EVO-82"} <= set(task_map["G6"].get("case_ids", [])):
+            errors.append("G6 must review original attempt deduplication and safe retry/fallback end to end")
     if "Q14" in task_map and task_map["Q14"].get("owner") != "stockqa":
         errors.append("Q14 answer parser/version metadata must remain StockQA-owned")
     if "W16" in task_map and task_map["W16"].get("owner") != "stockwiki":
         errors.append("W16 impact-plan application must remain StockWiki-owned")
-    if "X05" in task_map and "W16" in task_map:
-        if ("W16" not in task_map["X05"].get("depends_on", [])
-                or "EVO-67" not in task_map.get("X09", {}).get("case_ids", [])):
-            errors.append("X05 must consume W16 and X09 must safely settle frozen legacy attempts through the installed public path")
-    if "X07" in task_map and "W16" in task_map:
-        required_release_inputs = {"V16", "V17", "W16", "Q14"}
-        if not required_release_inputs <= set(task_map["X07"].get("depends_on", [])):
-            errors.append("X07 release set must bind V16, V17, W16 and Q14 parser releases")
+    if "X07" in task_map:
+        if not {"V16", "V17", "Q14"} <= set(task_map["X07"].get("depends_on", [])):
+            errors.append("X07 release metadata must bind V16, V17 and Q14 parser versions")
         if "EVO-64" not in task_map["X07"].get("case_ids", []):
             errors.append("X07 must validate candidate parser/schema/evidence hashes before installation")
         if {"DEPLOY-07", "DEPLOY-08", "E2E-04", "E2E-05", "EVO-68", "EVO-69"} & set(task_map["X07"].get("case_ids", [])):
@@ -346,38 +340,22 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
                 or "EVO-68" not in task_map["X08"].get("case_ids", [])
                 or bool({"EVO-69", "EVO-70", "EVO-71"} & set(task_map["X08"].get("case_ids", [])))):
             errors.append("X08 must verify installed parser/schema/evidence hashes against X07's candidate release set")
-    if "X09" in task_map and "W16" in task_map:
-        if ("W16" not in task_map["X09"].get("depends_on", [])
-                or "X05" not in task_map["X09"].get("depends_on", [])
-                or "Q14" not in task_map["X09"].get("depends_on", [])
-                or not {"EVO-67", "EVO-69", "EVO-70", "EVO-71", "EVO-72", "EVO-74", "EVO-80", "EVO-81", "EVO-82"}
+    if "X09" in task_map:
+        if (not {"X05", "Q14", "W16"} <= set(task_map["X09"].get("depends_on", []))
+                or not {"EVO-67", "EVO-69", "EVO-70", "EVO-71", "EVO-72", "EVO-81", "EVO-82"}
                 <= set(task_map["X09"].get("case_ids", []))):
-            errors.append("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+            errors.append("X09 must exercise installed legacy settlement, parser, field application and original concurrency/fallback behavior")
     if "W16" in task_map:
         w16_cases = set(task_map["W16"].get("case_ids", []))
         if "EVO-67" in w16_cases:
             errors.append("W16 owner-local case EVO-67 cannot require downstream X05/X09 integration")
-        if not {"EVO-63", "EVO-65", "EVO-66", "EVO-73", "EVO-75", "EVO-79"} <= w16_cases:
-            errors.append("W16 must cover atomic apply, old settlement, deterministic-plan rejection, candidate gating, active-pointer CAS, and component eligibility CAS")
+        if not {"EVO-63", "EVO-65", "EVO-66"} <= w16_cases:
+            errors.append("W16 must cover atomic field apply, old settlement and target-scope rejection")
         for cid in w16_cases & set(case_map):
             case = case_map[cid]
             trigger = f"{case.get('given', '')} {case.get('when', '')}"
             if "X05" in trigger or "X09" in trigger:
                 errors.append(f"W16 owner-local case {cid} cannot require downstream X05/X09 integration")
-    if "Q15" in task_map:
-        if task_map["Q15"].get("owner") != "stockqa" or not {"LLM-17", "EVO-76", "EVO-81"} <= set(task_map["Q15"].get("case_ids", [])):
-            errors.append("Q15 must own the StockQA pre-POST release fence, permit linearization, and attempt ledger")
-        for tid in ("X05", "X09"):
-            if tid in task_map and "Q15" not in dependency_ids(task_map, tid):
-                errors.append(f"{tid} must depend on Q15 before any public paid dispatch")
-    if "X05" in task_map:
-        if not {"EVO-72", "EVO-74"} <= set(task_map.get("X09", {}).get("case_ids", [])):
-            errors.append("X09 must cover full-entry legacy recovery and candidate-start rejection")
-    if "X07" in task_map:
-        if not {"EVO-64"} <= set(task_map["X07"].get("case_ids", [])):
-            errors.append("X07 must check candidate artifacts only")
-        if {"EVO-68", "EVO-69", "EVO-70", "EVO-71", "EVO-72", "EVO-74", "EVO-76", "EVO-78"} & set(task_map["X07"].get("case_ids", [])):
-            errors.append("X07 cannot claim installed, runtime, dispatch, recovery, or rollback evidence")
     if "G6" in task_map:
         all_predecessors = set(dependency_ids(task_map, "G6"))
         missing = set(task_map) - all_predecessors - {"G6"}

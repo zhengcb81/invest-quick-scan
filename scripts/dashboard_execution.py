@@ -270,7 +270,7 @@ class ExecutionGateway:
         if not isinstance(self.bundles, dict):
             raise DashboardExecutionError("execution_config_invalid", "bundles必须是对象")
         self.state_root = Path(self.config.get("state_root", Path(__file__).resolve().parents[1] / "runs/dashboard-execution"))
-        self._lock, self._processes, self._previews = threading.RLock(), {}, {}
+        self._lock, self._processes = threading.RLock(), {}
         self._owner_snapshots = {}
 
     def _select(self, payload, *, launching=False, recovery=False):
@@ -292,7 +292,7 @@ class ExecutionGateway:
             raise DashboardExecutionError('invalid_work_lease', '新工作租约须为1至86400整秒；不更新已有租约。')
         return bundle_id, bundle
 
-    def _deployment(self, bundle, *, recovery=False):
+    def _deployment(self, bundle, *, recovery=False, inspect_only=False):
         missing = []
         root = Path(self.config.get("stockqa_root", ""))
         runtime = Path(bundle.get("runtime_dir", self.config.get("runtime_dir", "")))
@@ -300,14 +300,15 @@ class ExecutionGateway:
             missing.append("stockqa_root")
         if not runtime.is_absolute() or not runtime.is_dir():
             missing.append("runtime_dir")
-        fields = ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "admission_config", "inspection_request")
-        if not recovery:
+        fields = (("admission_config", "inspection_request") if inspect_only else
+                  ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "admission_config", "inspection_request"))
+        if not recovery and not inspect_only:
             fields += ("spend_authorization",)
         for field in fields:
             path = Path(bundle.get(field, ""))
             if not path.is_absolute() or not path.is_file():
                 missing.append(field)
-        for field in ("entity_id", "company", "provider", "confirmation_id"):
+        for field in (("entity_id",) if inspect_only else ("entity_id", "company", "provider", "confirmation_id")):
             if not isinstance(bundle.get(field), str) or not bundle[field].strip():
                 missing.append(field)
         if not recovery and not (runtime / "llm_apis.json").is_file():
@@ -331,7 +332,7 @@ class ExecutionGateway:
                         missing.append("admission_" + field)
             except (OSError, ValueError, TypeError, AttributeError):
                 missing.append("admission_config_invalid")
-        if "identity_snapshot" not in missing:
+        if not inspect_only and "identity_snapshot" not in missing:
             try:
                 identity=_read(bundle['identity_snapshot'])
                 values=[identity.get('entity_id')]
@@ -349,11 +350,13 @@ class ExecutionGateway:
                 missing.append("inspection_request_invalid")
         if not recovery and bundle.get("search_policy") and (not Path(bundle["search_policy"]).is_absolute() or not Path(bundle["search_policy"]).is_file()):
             missing.append("search_policy")
+        if not recovery and bundle.get('shared_company_config') and not Path(bundle['shared_company_config']).is_file():
+            missing.append('shared_company_config')
         return root, runtime, admission, sorted(set(missing))
 
     def _fingerprint(self, bundle):
         inputs = {}
-        for name in ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "admission_config", "spend_authorization", "inspection_request", "search_policy"):
+        for name in ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "admission_config", "spend_authorization", "inspection_request", "search_policy", "shared_company_config"):
             if name in bundle:
                 try:
                     raw = Path(bundle[name]).read_bytes()
@@ -536,7 +539,7 @@ class ExecutionGateway:
     def preview(self, payload, *, read_only=False):
         key, bundle = self._select(payload, recovery=read_only)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
-        root, runtime, admission, missing = self._deployment(bundle, recovery=read_only)
+        root, runtime, admission, missing = self._deployment(bundle, recovery=read_only, inspect_only=read_only)
         if missing:
             return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"), "status": "blocked", "missing": missing,
                     "bundle_fingerprint": self._fingerprint(bundle),
@@ -556,10 +559,6 @@ class ExecutionGateway:
                     "notice": "仅查看原工作状态；未检查派发权限，也未预留费用。真正启动或恢复时仍由原执行器检查。"}
         permissions = self._registered_permissions(bundle, root, runtime)
         ready = not unknown and (quote.get("budget_available") is True or readonly) and permissions['status'] == 'passed'
-        preview_id = "preview-" + uuid.uuid4().hex
-        self._previews[preview_id] = {"bundle_id": key, "bundle_fingerprint": self._fingerprint(bundle), "inspection_sha256": _digest(inspection)}
-        while len(self._previews) > 128:
-            self._previews.pop(next(iter(self._previews)))
         blocked = []
         if unknown:
             blocked.append("owner_work_unknown")
@@ -568,8 +567,8 @@ class ExecutionGateway:
         if permissions['status'] != 'passed':
             blocked.append(permissions['reason'])
         return {**grouping, "bundle_id": key, "entity_id": bundle["entity_id"], "status": "ready" if ready else "blocked",
-                "bundle_fingerprint": self._previews[preview_id]['bundle_fingerprint'],
-                "preview_id": preview_id, "inspection_sha256": _digest(inspection), "readonly_recovery": readonly,
+                "bundle_fingerprint": self._fingerprint(bundle),
+                "preview_id": None, "inspection_sha256": _digest(inspection), "readonly_recovery": readonly,
                 "can_start": ready, "missing": blocked,
                 "blocked_reasons": blocked, "inspection": inspection, "API_requests": 0, "database_writes": 0,
                 "permissions_check": permissions,
@@ -723,6 +722,8 @@ class ExecutionGateway:
             command.extend(['--work-lease-seconds', str(bundle['work_lease_seconds'])])
         if not recovery and bundle.get("search_policy"):
             command.extend(["--search-policy", str(bundle["search_policy"])])
+        if not recovery and bundle.get('shared_company_config'):
+            command.extend(['--shared-company-config', str(bundle['shared_company_config'])])
         if bundle.get("security_scope_id"):
             command.extend(["--security-scope-id", str(bundle["security_scope_id"])])
         return command

@@ -17,7 +17,7 @@
 ## 可复查基线
 
 - 本次起点IQS已推送`215804dada41148ea79011fbb483e02f9f8d1abe`；接线代码`c1ee64f`、测试基础设施`e8f184c`/`f16da24`。本次源码与文档进展另作正常提交。
-- 当前StockQA `76c9431`已推送并核实HEAD=origin/master；StockWiki `1bde9e0`已提交、无origin；原UI `d3ec24a`已提交、无remote。早期基线保留在下方历史阶段，不再冒作当前HEAD。
+- 当前StockQA `07db665`（含`1825a14`/`76c9431`）已推送并核实HEAD=origin/master；StockWiki `1bde9e0`已提交、无origin；原UI `d3ec24a`已提交、无remote。早期基线保留在下方历史阶段，不再冒作当前HEAD。
 - 215为本机名单独立实体；108为三家公司目标有效题槽；113为原三公司含历史版本的观察；32为回答审计抽样。互不充当对方分母。
 - 81HTTP/US$1.903319是10/30 TTL-B历史累计；84HTTP/US$1.974640是首次fresh复用节点。11/01当前实测85HTTP/US$1.999868，0在途/未结；历史数字不是实时预算承诺。
 
@@ -71,3 +71,23 @@
 04:01:44Z确认准备全部registered/abandoned、交付completed/历史只读、无模型子进程且原账本0在途/未结后，核实原8766进程argv/创建时间并重载；新launcher27116。doctor ready=true、blocked_reasons=[]，仍85HTTP/US$1.999868，本轮新增收费0。StockQA `76c9431`已核HEAD=origin/master；主线仍待共享公共入口和第一方上下文金融纠错，不以此次减负签成已完成。保留其他writer README原hash与全部旧记录。
 
 04:07同节点尾修：只查看旧任务改走preview(read_only=True)，省掉独立_registered_permissions重复子进程、不创建preview凭证、不需新spend或模型配置；明确未检查派发许可，真正start/resume/seal/批次仍原逻辑。有效RED1F后原执行模块147P/0skip，43.19秒；去密钥短TEMP全部清理，独立agent静核无未解问题，不新增审查凭证。此前141P与本批分开报告，不把子测试或重复用例累加为产品完成度。04:06:54Z空闲核实后原8766已加载尾修（launcher33104），账本仍85HTTP/US$1.999868；源码/PWF前一提交`6259d75`已推既有origin/master，尾修及此记录随下一正常提交保存。主线范围不变。
+
+04:29继续主线（上轮为实际进展，非等待）：IQS原设置/准备包已加可选shared_company_config并冻结文件；StockQA原CLI/LLMRunner已贯穿该选择，复用原route client/owner/预算，shared封存后只hydrate。源码尚在本轮验收中，未激活原服务的shared模式，也未新增收费。新增共享配置模板已放examples，旧配置默认保持原工作流。
+
+实查新根因：原ResearchChatSession final_json只声明普通聊天、不请求native搜索。现可选native_search由原runtime桥传入，委托原LLMClient.send_search_request；同一原permit原子保存搜索回执及research_visible_output，非另造厂商请求/账本。默认工具会话和原external路径保持。StockQA/原runtime Lab写前已核无其他源码writer；company-wiki保持只读。SDK/配置定向42P/0skip（4.53秒；仅未选择async标记警告）、原UI透传2P（1.46秒），去密钥禁网副本清理。原owner+SDK+Runner的单个软件E2E正在唯一隔离runtime运行（已核真实进程），只vendor wire脚本化；真实金融纠错仍未通过，不把软件case冒称真实公司或生产成果。独立agent正集中审查此产品节点，不生成新的审查凭证。
+
+本轮终态增量：该原owner+SDK+Runner软件E2E已1P/536.71秒，真实SQL/SDK/engine、只vendor wire脚本化，验证原生搜索工具、思考、原证据摘录进入实际payload、两题原封存/hydrate与第二次0重发；临时五组件runtime已全清理、收费0。此快照先于尾修，未冒称当前完整源码重跑。独审发现并直接修了残缺导出存在误判完成、native复用旧工具端点allowlist和密钥回显三处；现在完整候选导出才同根rename发布，恢复走原CP，原SDK能力与key保护保持。另去掉构造两次完整owner任务的重复，沿同一公开issuer serializer取引用，只构造一次task。
+
+尾修受影响47P后，正常提交钩子发现类型/可选依赖导入问题，已修复而未跳过钩子；最终SDK/配置/原CLI定向66P/0skip（4.88秒），短TEMP去密钥/禁网并清理。早期42/47和子例不累加。StockQA `1825a14`已正常提交/推origin，HEAD同步；原runtime Lab `cb00e4e`已提交且无远端。该Lab未配置Git身份，本次用命令级Codex本地身份，未改全局/仓库配置。独立agent集中尾审无未解阻断；共享跨模型顺位降级是未完功能，README/PWF明示。没有新增收费、未改原数据库/名单/生产配置，下一步只有原UI第一方原数复核及原ACK/缓存验收。
+
+同节点导出尾修另覆盖“原engine完成输出但仍缺题”的情况：只发布all_slots_completed，保留未完成candidate供原CP恢复；最终67P/0skip、4.75秒，副本清理。StockQA尾修`07db665`原hooks全通过且已推origin、0/0同步；此处不把更多测试数或源码提交冒称真实UI/金融完成。
+
+
+继续减负（同日用户新要求）：删除ExecutionGateway已无授权消费者的preview内存票据，原字段保留null兼容；只读检查取消与新扫描有关的题包/manifest/identity快照/authority/owner配置/确认/模型配置前置，原查询实体/账本/策略与原CLI保持，真正start/seal/resume不放宽。原UI调用和批次兼容由不同agent静审，无未解阻断。同步取消TIME另建核查凭证签发/续期计划；SKILL纠正重复LLM分类、逐题独立来源审核文件及旧“UI尚未接通”等误导，搜索说明允许同公司题包共享真实检索。
+
+运行回归：原执行/批次/准备三个模块264P、0失败/错误/skip，pytest59.72秒、含启动清理64.662秒；去密钥、公网拒绝、唯一C:/Temp夹具已清理，新增API/费用0，不改原库/名单/配置。首轮在沙箱内尚未启动pytest即卡在隔离目录准备，已停止该自有会话，按相同用例在授权隔离环境执行上述有效结果；空run目录已删除，不算两轮产品验收。未重跑长native/小时全套，未新增审查凭证。
+
+
+计划减负同步完成：1.10.19退役Q15及9个第二许可证专属场景，现107任务/359场景/52约束；同步任务依赖、最终发布要求、校验器/规格测试与当前设计文档。V16仅版本/兼容元数据、V17仅影响分析、W16沿原owner字段应用/必要CAS、V18停新派发升级回退；原attempt/unknown/fallback场景及真实规模/消费者/安装目标保留。计划定向83P、70subtests、5.05秒，去密钥禁网TEMP清理；不合并成产品测试通过，也未新增日志凭证。校验器planning_valid=true，product_tests_executed=false。
+
+集中独审确认上述取消未削弱原身份/权限/预算/租约/unknown/ACK保护。指出的三项文案尾巴已关闭：test-strategy不再逐任务原子凭证，C07前半页明确旧只读兼容，SKILL --review例明确历史strict；跨项目/作业/一键启动及两通用lane旧授权/许可证说明也已对齐。原冻结施工卡/验收报告不改签，无未解阻断，不新增审查回执。只读原8766仍doctor ready=true、无阻断；账本85HTTP/US$1.999868、0在途/未结/未知工作，准备33 registered+10 abandoned、交付11 completed+2历史只读。本轮未重发模型或修改名单/原观察/配置；真实金融复核继续按唯一Next Step，不拿减负代验收。

@@ -1,7 +1,10 @@
-"""Pure offline reference policy for the C07 deployment/lifecycle contract.
+"""Legacy offline reference for the C07 v1.0 deployment/lifecycle contract.
 
 No filesystem, process, database, network, provider, or credential access is used.
-StockWiki/StockQA must implement these rules at their public owner APIs.
+Retained for reading historical exchange examples, not a runtime admission gate.
+The original dashboard/owners do not call this module. Its full-release evidence
+label must not become a prerequisite for scanning, querying or cache recovery;
+new lifecycle work follows the current implementation plan and owner checks.
 """
 from __future__ import annotations
 

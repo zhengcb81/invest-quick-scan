@@ -1,8 +1,8 @@
-> **当前执行入口（2026-11-01）**：[根计划](../../task_plan.md)。本页是任务/验收规格，不是运行完成表；当前规格1.10.18为108卡、368场景，旧版本描述保留设计脉络，不据卡数算完成率。已有后续必要写授权，不按历史“另获许可”重复索权。1.10.17解除事实、消费者及小样本配套开发对200/2000规模验收的人工串行依赖；保留实际接口依赖和最终规模验收。
+> **当前执行入口（2026-11-01）**：[根计划](../../task_plan.md)。本页是任务/验收规格，不是运行完成表；当前规格1.10.19为107卡、359场景，旧版本描述保留设计脉络，不据卡数算完成率。已有后续必要写授权，不按历史“另获许可”重复索权。1.10.17解除事实、消费者及小样本配套开发对200/2000规模验收的人工串行依赖；保留实际接口依赖和最终规模验收。
 
 # 实施入口：按里程碑连续实施，按owner范围拆分
 
-2026-11-01核对，计划规格版本1.10.18。此包细化[M0—M6路线](../implementation-roadmap.md)，包含108张任务卡、368个验收场景和G0—G6里程碑；这份计划不代表产品功能已实现。任务与验收场景以[tasks.json](tasks.json)、[acceptance-cases.json](acceptance-cases.json)为唯一清单；当前实施状态记在根`task_plan.md`与`progress.md`。逐断言任务回执、P01双重人工签收已经退役，历史原件保留于[归档](archive/task-receipts-v2-legacy/README.md)。1.10.18进一步清掉101处逐卡独审/额外凭证要求：相关测试和产品大节点集中审查即可，不为普通小卡新增完整回归、清理证明或单独review。
+2026-11-01核对，计划规格版本1.10.19。此包细化[M0—M6路线](../implementation-roadmap.md)，包含107张任务卡、359个验收场景和G0—G6里程碑；这份计划不代表产品功能已实现。任务与验收场景以[tasks.json](tasks.json)、[acceptance-cases.json](acceptance-cases.json)为唯一清单；当前实施状态记在根`task_plan.md`与`progress.md`。逐断言任务回执、P01双重人工签收已经退役，历史原件保留于[归档](archive/task-receipts-v2-legacy/README.md)。1.10.18进一步清掉101处逐卡独审/额外凭证要求：相关测试和产品大节点集中审查即可，不为普通小卡新增完整回归、清理证明或单独review。
 
 跨项目分别交什么见[各项目交付](cross-project-delivery.md)，最终如何安装配置和一键开启见[统一启动设计](one-click-launch.md)。企业结果的列表、详情与事实关系视图见[结果UI设计](results-ui.md)，U01—U03和浏览器验收为必交项。全部计划完成的最终判定为G6；G5仍是评分规模交付，不代表所有组件已经配套启动。
 
@@ -12,7 +12,7 @@
 
 先读[全局运行/存储/比较契约](../system-contract.md)。本地已有评分题库3.2.0、事实61题与标准输出校验；这些不替代StockQA/StockWiki的生产接线及最终验收。W13/Q11/W14补齐自动名单维护和三维比较。[组合式题库增补设计](../modular-question-bank-design.md)把现有模块升级为可独立扩题、路由、版本锁定与增量补扫的系统；S04—S06、Q13、W15、F06、U04为新增任务，跨仓写入仍须按用户边界另获许可。
 
-[全项目可组合演进设计](composable-evolution-plan.md)把可组合升级扩展到身份/路由、有限答案解释、评分/事实/筛选/刷新、提供商能力、查询投影和迁移回放。当前计划包含108张任务卡、368个case、56条约束；每个case有唯一`owner_task`，复杂case按atomic assertion绑定真实测试。验证输出用批次记录，不生成逐case任务回执；依赖状态由当前测试结果和G0—G6里程碑审查管理。V01—V18、W16、Q14/Q15分仓实施；EVO-01—83和LLM-13—18固定模块兼容、兼容窗、付费边界、身份、解析器升级、影响范围重算、并发应用、活动发布指针、组件资格CAS、两阶段派发授权及旧账本反例。`scoring_only`不依赖F06或G4；V13/V14/V15仍按既有顺序接入事实版方案、执行/费用记录及StockWiki字段缺口/导入/ACK。V16管理组件生命周期与action-specific兼容窗，workspace/profile active ReleaseSet指针单独维护；V17只读计算影响范围，StockWiki W16确定性重算并CAS应用，且唯一拥有dispatch fence与consume回执。StockQA Q15先耐久写入`send_intent_prepared`，再调用W16 `consume_dispatch_permit`；W16在owner事务中重验组件资格并原子消费permit、写入`dispatch_commit`，只有匹配的耐久回执授权一次POST；结果不明时不得盲目fallback或创建新attempt。candidate只能预览，生产新work只接受active ReleaseSet。X07锁定候选解析schema/parser/证据解释hash，X08验证安装hash，X09核实实际加载hash；旧run和观察按原版本可读，旧已发送请求先安全结算。S04/S05分别验证归档模块依赖图和受信任legacy基线，S06在组合时展开dependencies并阻断selected conflicts。所有这些都是计划与测试规格，不能当作产品已验收。
+[全项目可组合演进设计](composable-evolution-plan.md)保留模块、路由、有限答案、评分/事实/刷新、提供商和查询的独立版本。当前规格为107张任务卡、359个case、52条约束；每个case有唯一owner，规格不是产品完成证据。V16只提供不可变版本/hash和兼容元数据，V17只读计算受影响字段，W16沿现有owner接口幂等应用缺口/投影并保留目标字段CAS，Q14负责原答案解析版本，V18先停止新派发再演练升级/回退。取消未上线的Q15、组件资格审批/资格revision、跨仓逐POST permit/consume/dispatch_commit，以及必须active全局ReleaseSet的启动门。实际收费仍由StockQA原主体/题义/权限、lease/attempt/send_intent、统一预算原子预留与unknown防重负责；旧已付回答恢复/交付不取新花费许可。X07/X08/X09仍核对候选、安装和运行版本并验证真实链路，ReleaseSet只描述安装组合。G3/G5的实际规模、消费者、安装与G6完整交付目标不变。
 
 用户顺位与并行/共享额度/逐题防重见[模型策略](../../references/model-policy.md)，附[可填写配置模板](../../examples/model-policy.template.json)。PAR-01—08是新增生产验收场景，配置校验不能替代运行验证。
 

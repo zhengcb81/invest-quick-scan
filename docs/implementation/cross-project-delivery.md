@@ -29,7 +29,7 @@
 - **交出**：唯一名单与quick_scan库、可用性/规则/关系查询、补扫与导入ACK、公司卡片、一键操作入口和可恢复安装记录。
 - **接入方式**：不自行调用模型。runtime只管理快扫外层，不复制StockQA逐题重试；不调用正式研究scheduler或来源下载来完成快扫。
 - **配置**：保存用户scan profile和组件位置/版本；模型配置保存其引用与版本，不保存第二份可变策略或密钥。
-- **演进接入**：W16只能用固定、已安装且hash匹配的V17实现与当前StockWiki权威快照确定性重算影响范围；不接受调用方自签plan hash或本计划未定义的签名回执。在单一事务CAS完整输入和active ReleaseSet指针后，才按计划新增受影响字段generation/work。candidate仅预览，不产生生产任务、预算或POST；升级先按旧冻结receipt安全结算已授权请求，再检查新派发资格。W16唯一拥有一次性dispatch fence请求/回执schema；StockQA Q15先耐久写入`send_intent_prepared`，再调用W16 `consume_dispatch_permit`，由W16在owner事务内复核组件资格并原子消费permit、写入`dispatch_commit`。只有匹配的耐久commit回执授权一次POST；consume前崩溃/资格变化时POST为0且permit不可重放，commit后结果不明时只对账并禁止fallback/新attempt。X09固定双worker竞态、伪造plan和旧请求恢复案例。
+- **演进接入**：按1.10.19，V17只读计算影响，W16沿原owner接口幂等应用目标字段缺口/投影；事务仅核当前目标主体、字段代次和必要原状态，拒绝错范围或过时计划。原已付attempt先按冻结输入恢复、结算与ACK。取消Q15、组件资格审批和逐POST跨仓许可证/consume/dispatch_commit，不另设派发控制面；真实POST由StockQA原权限、租约/attempt、预算原子预留和未知发送防重控制。升级先停止新派发，再切换兼容组合或回退；X09保留真实双worker、旧请求恢复和原预算/fallback测试。
 
 结果页面规格与浏览器验收见[企业结果UI](results-ui.md)，不允许以CLI或启动状态页代替。
 

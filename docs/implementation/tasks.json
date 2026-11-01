@@ -1,5 +1,5 @@
 {
-  "version": "1.10.18",
+  "version": "1.10.19",
   "status": "implementation_plan_not_product_completion",
   "stage_order": [
     "M0",
@@ -81,12 +81,8 @@
     "I41",
     "I42",
     "I43",
-    "I44",
     "I45",
-    "I46",
-    "I47",
     "I48",
-    "I49",
     "I50",
     "I51",
     "I52",
@@ -110,13 +106,12 @@
     "可变策略按owner发布独立版本；运行前解析并锁定ScanRecipe，原答/费用/身份历史不改写，跨口径结果不可静默比较。",
     "升级阻断只约束新generation/work/费用预留/派发；旧recipe已发送请求必须按冻结receipt安全对账和幂等结算。",
     "安装release_set绑定每个实际加载组件的release ID/hash，包括StockQA答案schema、parser与证据解释；不能只声明版本号。",
-    "V17计划仅由已锁定的固定实现从当前权威快照确定性重算；本阶段不接受自签/外部签名计划作为替代信任根。candidate ReleaseSet只读预览，生产新generation/work/费用/POST要求active ReleaseSet。",
-    "W16唯一拥有dispatch fence请求/回执schema；StockQA先耐久写入send_intent_prepared，再调用StockWiki W16 consume_dispatch_permit；W16在owner事务中复核active指针与组件资格并消费绑定具体work/attempt/recipe的一次性permit；只有耐久dispatch_commit receipt授权一次provider POST。consume前资格变化/崩溃时POST为0且permit不可重放；consume后若不能证明未发送则outcome_unknown，禁止重试/新attempt；只有明确未发送或已对账的retryable终态才可重新核验资格/预算并用单调attempt派发。",
-    "回退切换workspace/profile active ReleaseSet指针与组件生命周期分离；指针切换不隐式改变组件release状态，deprecated须由owner显式发布；只有仍具新派发资格的已验证包可接收新work，过期/退役包仅允许历史读取与原attempt结算。",
     "验收case必须区分owner本地可执行范围与后置全链入口；跨任务集成case声明requires_tasks，前置卡未依赖该任务时不得把它列为完成门或用局部结果标作全案通过。",
-    "兼容矩阵每一条都绑定精确producer/consumer release与动作，UTC窗口按[start,end)判定；缺少边界/歧义时失败关闭，过期不删除或重释历史观察。",
     "每个产品节点只在progress.md集中记录提交、相关测试命令/结果和未解项；独审按产品大节点合并，不逐任务/逐断言留凭证，不为无关HEAD或文档改动重签。普通测试沿用pytest临时目录及finally清理，无需新建清理证明。G0—G6是验收范围标签，不是实现或正常使用的人工许可；真实功能依赖、预算、防重及数据一致性检查保留。",
-    "Issuer IDs are opaque and immutable; alias strings and ticker values are non-unique claims, source identifiers are namespaced, and issuer/security/listing identity resolution fails closed on ambiguity."
+    "Issuer IDs are opaque and immutable; alias strings and ticker values are non-unique claims, source identifiers are namespaced, and issuer/security/listing identity resolution fails closed on ambiguity.",
+    "V16只声明不可变版本、hash及读写兼容能力；V17只计算受影响字段。ReleaseSet可记录安装组合，但不是开工或逐POST授权；不建立组件资格审批、跨仓permit/consume或第二套dispatch commit。",
+    "StockWiki只在应用实际字段缺口/投影时以当前主体、范围和字段generation执行必要事务CAS；StockQA沿原权限、lease/attempt/send_intent及统一预算原子预留派发。outcome_unknown先对账，禁止盲重发或fallback。",
+    "升级/回退先停止新派发，保留原attempt、费用和outbox并按冻结输入结算；不承诺无停机热切或跨仓严格线性化。兼容性按实际版本/能力判断，不增加定期续期许可证。"
   ],
   "known_offline_commands": [
     {
@@ -2060,7 +2055,8 @@
         "LLM-10",
         "PAR-02",
         "PAR-13",
-        "BUD-05"
+        "BUD-05",
+        "EVO-81"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -3636,18 +3632,14 @@
         "W12",
         "C07",
         "V09",
-        "V10",
-        "W16",
-        "Q15"
+        "V10"
       ],
       "invariants": [
         "I09",
         "I11",
         "I12",
         "I23",
-        "I24",
-        "I44",
-        "I46"
+        "I24"
       ],
       "read_first": [
         "docs/implementation/one-click-launch.md",
@@ -3667,7 +3659,7 @@
         "stop停止新派发并保存进行中状态，关闭页面不删除进程/任务；重启沿用费用账本与旧待办。",
         "单次/可选continuous共用生命周期；维护时钟触发StockWiki准入及StockQA待办，关机后接续且只管本workspace。",
         "同一启动入口必须从StockWiki权威身份/缺口和StockQA能力/预算解析并持久绑定ScanRecipe；先按冻结receipt安全对账旧attempt/outbox，再判断新版本兼容性。缺新recipe/lock只能阻断新付费work，不能阻断旧请求的导入/费用结算。",
-        "每次start/resume只接受active ReleaseSet，核对锁定V17实现与W16影响计划；candidate只提供dry-run预览。为实际付费POST必须由StockQA Q15逐attempt消费W16 dispatch fence；任何入口不能直建work或跳过授权。"
+        "start/resume沿现有owner核实主体、题目、当前权限与实际执行范围，并由StockQA原任务/预算路径派发；无缺口复用不依赖新执行配置或全局发布审批。版本元数据仅作兼容解释，不另取逐POST许可证。"
       ],
       "deliverables": [
         "单一生命周期服务",
@@ -3827,7 +3819,6 @@
         "V11",
         "V14",
         "V15",
-        "W16",
         "V16",
         "V17",
         "Q14"
@@ -3905,7 +3896,7 @@
         "tests/干净部署/重复安装/路径测试"
       ],
       "steps": [
-        "从经核实候选release_set调用各自拥有者安装/迁移入口，记录准确安装路径和实际hash；匹配只表示installed/staged，不自动提升为生产active，也不能据此开始生产扫描。",
+        "从配套清单调用各自owner安装/迁移入口，记录准确安装路径和实际hash；安装成功不代表真实搜索、消费者、规模或金融回答质量已经验收，也不另建生产active审批门。",
         "复用宿主技能安装/注册机制并核实实际加载路径/hash；为X06生成可用快捷方式。",
         "安装可重入；正常start不自动拉新代码/升级依赖/破坏性迁移。明确当前安装组合和故障步骤，保留用户数据。"
       ],
@@ -3941,11 +3932,10 @@
         "G4",
         "U03",
         "U04",
-        "W16",
         "Q14",
-        "Q15",
         "V11",
-        "W10"
+        "W10",
+        "W16"
       ],
       "invariants": [
         "I01",
@@ -3954,7 +3944,6 @@
         "I13",
         "I17",
         "I26",
-        "I49",
         "I50"
       ],
       "read_first": [
@@ -3977,9 +3966,9 @@
         "测试重复点击、预算耗尽、已答未入库、旧PID/端口冲突、company-wiki停用，记录生产入口调用路径。",
         "使用真实浏览器走企业列表→筛选→详情→来源/事实→返回及进度→结果，断言具体值/范围和浏览零模型调用，留布局截图。",
         "以两worker+受控网络stub验证真实并发/组共享额度/部分包/迟到回执/重启不重问；记录每次发送唯一键和费用变化，不能只检查最终汇总。",
-        "使用临时隔离workspace中的test-only active指针、真实组件入口和stub网络验收完整运行；核对runtime实际加载hash、dispatch fence、历史回执与隔离清理。该测试激活只存在于临时fixture，不推广候选包到生产active。",
-        "运行EVO-67/69/70/71/72/74/76/80/81/82：经真实X05恢复旧attempt、核验逐题parser回执、UI/CLI双启动竞态、拒绝伪造plan和candidate启动、验证历史无recipe账本/资格CAS/permit consume/attempt退役竞态与安全fallback；旧结算和新generation/work/permit/dispatch_commit/费用预留/HTTP POST分别计数。",
-        "完整联调覆盖active pointer稳定但component eligibility revision被退役、permit签发后与W16 consume之间资格变化、consume提交后到provider传输前崩溃、provider明确额度拒绝与outcome_unknown的双worker屏障；逐个断言generation/work/permit/attempt/dispatch_commit/POST/费用/ACK计数。"
+        "使用临时隔离workspace、真实组件入口和stub网络核对实际加载版本、冻结输入、原任务/费用/响应/ACK链与清理；不需要测试专用active指针或发布授权服务器。",
+        "运行EVO-67/69/70/71/72/81/82：真实入口恢复旧attempt、核对逐题解析与UI/CLI双启动幂等，拒绝伪造范围，验证旧无recipe账本、明确拒绝后的安全fallback与unknown不重发。逐项核对work、attempt、send_intent、POST、费用和ACK。",
+        "以双worker屏障覆盖重复claim、旧lease迟到、同字段代次漂移、原子预算竞争、明确额度拒绝、发送后unknown和ACK重入；不测试已经取消的跨仓许可证协议。"
       ],
       "deliverables": [
         "离线全链测试套件",
@@ -4027,12 +4016,8 @@
         "EVO-67",
         "EVO-69",
         "EVO-70",
-        "EVO-71",
         "MATRIX-08",
         "EVO-72",
-        "EVO-74",
-        "EVO-76",
-        "EVO-80",
         "EVO-82",
         "DEPLOY-03",
         "DEPLOY-04",
@@ -4041,7 +4026,8 @@
         "START-07",
         "START-11",
         "START-12",
-        "EVO-81"
+        "EVO-81",
+        "EVO-71"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -4241,8 +4227,8 @@
         "S08",
         "S09",
         "S10",
-      "A01"
-    ],
+        "A01"
+      ],
       "invariants": [
         "I01",
         "I03",
@@ -4322,14 +4308,7 @@
         "EVO-70",
         "EVO-71",
         "EVO-72",
-        "EVO-73",
-        "EVO-74",
-        "EVO-75",
-        "EVO-76",
-        "EVO-77",
         "EVO-78",
-        "EVO-79",
-        "EVO-80",
         "EVO-81",
         "EVO-82",
         "REV-10"
@@ -5507,7 +5486,7 @@
       "stage": "M4",
       "owner": "iqs",
       "kind": "implementation",
-      "title": "冻结跨层组件发布生命周期与兼容声明",
+      "title": "声明不可变组件版本与读写兼容元数据",
       "depends_on": [
         "S04",
         "S05",
@@ -5522,9 +5501,6 @@
         "I35",
         "I36",
         "I40",
-        "I44",
-        "I47",
-        "I49",
         "I51"
       ],
       "read_first": [
@@ -5536,33 +5512,28 @@
       "allowed_changes": [
         "schemas/quick_scan/component-release.schema.json（新：只定义公共元数据外壳，不统一各域专属schema）",
         "scripts/component_releases.py与tests/test_component_releases.py（新：纯解析/兼容校验，不加载任意插件代码）",
-        "docs/implementation/contracts/component-release-lifecycle.md（新）"
+        "docs/implementation/contracts/component-release-metadata.md（新：版本与兼容声明，无资格审批机）"
       ],
       "steps": [
-        "为问题模块、路由、评分尺、证据/答案解析、事实本体/词表、lens、刷新、提供商能力、查询投影等分别保留owner专属schema；仅统一component_id、release_id、schema_version、内容hash、owner、状态、生效时间、supersedes、支持的读/写契约和能力声明。",
-        "分离组件release生命周期与workspace/profile级ReleaseSet active指针：component release状态单调记录draft→candidate→active→deprecated→retired；candidate只可做纯plan预览，生产新work/付费派发要求active ReleaseSet及其所有component具备新派发资格。ReleaseSet指针原子切换不自动改变component状态；deprecated须由owner显式发布。回退只指向仍获资格的已验证包；旧包若已deprecated/retired或过资格窗则只读、阻断新work，不暗中复活。",
-        "定义组合解析只允许已登记的声明式组件，校验依赖、排斥、适用对象、能力、预算和版本范围；LLM可提议分类/组件，不得自动发布、激活或绕过人工覆盖与风险必答规则。",
-        "验证同一个发布ID内容被替换、非法状态跳转、退役/旧归档包读写边界，以及不兼容release在纯预检中被标为blocked；本卡不执行StockWiki导入/HTTP派发。",
-        "兼容矩阵行绑定精确producer/consumer release与动作，并定义valid_from_utc含端点、valid_until_utc不含端点；必须显式说明null到期字段代表non_expiring。过期按动作分别返回blocked/needs_review；历史只读无法继续解释时标needs_review，绝不删除或改释观察。"
+        "各域保留owner专属schema；薄元数据只记录component_id、release_id、schema_version、内容hash、owner、supersedes、支持的读写契约和能力。",
+        "同一release ID不可替换内容；旧观察继续按归档版本解释。不建立组件资格审批状态机、全局active指针或到期续期许可证。",
+        "组合声明核对依赖、排斥、适用对象与能力；LLM建议不能改变已冻结题义、用户覆盖或必答风险规则。",
+        "按实际producer/consumer版本和动作区分历史只读、投影、新写兼容；未知版本或能力返回明确原因，不执行任意插件或收费请求。"
       ],
       "deliverables": [
-        "通用组件发布元数据schema和确定性生命周期校验器",
-        "跨域兼容声明与状态迁移反例"
+        "不可变组件版本元数据schema及确定性兼容读取器",
+        "同ID篡改、旧版读取与不兼容读写反例"
       ],
       "case_ids": [
         "EVO-44",
         "EVO-45",
         "EVO-46",
-        "EVO-47",
-        "EVO-77",
-        "EVO-83"
+        "EVO-47"
       ],
-      "test_binding": "使用虚构发布包和固定hash；测试真实schema/解析器，断言副作用为零。正例、同ID篡改、退役读写分离及不兼容writer/reader必须分别有可复现断言。",
+      "test_binding": "固定声明与内容hash测试真实解析器；同ID篡改、旧包读取、不兼容reader/writer分别断言，副作用为零。",
       "completion": [
-        "六个case均绑定实际测试且无关键skip；记录候选发布不可被误当active、旧版可读/新派发门控与精确失败原因。",
-        "记录提交与相关隔离测试结果；本卡不改StockQA或StockWiki配置/数据库。",
-        "component状态事件和workspace/profile active ReleaseSet指针分开建模；回退资格与deprecated/retired/资格窗的派发规则有明确正反例。",
-        "EVO-83在固定UTC时钟下逐动作覆盖半开窗口边界、显式non_expiring与到期/非法时钟失败路径。"
+        "所列case绑定实际受影响测试；元数据校验不宣称跨仓运行已完成。",
+        "记录相关测试与未解兼容问题；不改StockQA/StockWiki配置或数据库。"
       ],
       "rollback": "新元数据校验只作为发布前拒绝/警告层；停用新候选即可恢复旧发布路径，不能删除旧包、观察或账本。"
     },
@@ -5584,8 +5555,7 @@
         "I12",
         "I29",
         "I36",
-        "I37",
-        "I49"
+        "I37"
       ],
       "read_first": [
         "docs/implementation/composable-evolution-plan.md",
@@ -5598,7 +5568,7 @@
         "docs/implementation/contracts/evolution-impact.md（新：StockWiki只读观察清单适配契约）"
       ],
       "steps": [
-        "把组件依赖映射到题目/字段、有限答案schema、评分派生、lens名单和查询投影；至少从V10/StockWiki公开只读查询取真实快照，输出no_op、projection_rebuild、selected_field_rescan、needs_review或blocked及逐对象原因，但不创建generation或写owner库。每个plan绑定完整快照hash、范围、active ReleaseSet ID/status/manifest hash/pointer revision、固定V17实现release/hash与规范plan hash。",
+        "从V10/StockWiki公开只读快照计算题目、字段与派生投影的受影响集合，返回no_op、projection_rebuild、selected_field_rescan、needs_review或blocked及逐对象原因。记录计算所用版本、目标范围和相关字段水位，不创建generation、不写owner库，也不签发许可。",
         "规定新增题/模块只生成新字段缺口；改变题义、锚点、身份或适用路由只影响可证明受影响的实体/字段；只改权重、别名、词表索引、阈值或展示投影不调用模型。",
         "对StockWiki只读快照或契约样例计算候选影响集合，不复制名单/观察状态、不直接派发、不写owner库；已领取/已发送work沿用冻结recipe。",
         "依赖图不全时先通过V01既有legacy_without_recipe证据适配器验证旧记录；能证明兼容的旧答仍可只读复用，只有身份/语义/依赖证据不足才needs_review/blocked。绝不将无法定位的影响退化为全池重问，也不删除低分/恢复候选。"
@@ -5692,8 +5662,7 @@
         "Q14",
         "V12",
         "X09",
-        "W16",
-        "Q15"
+        "W16"
       ],
       "invariants": [
         "I08",
@@ -5703,8 +5672,7 @@
         "I36",
         "I37",
         "I38",
-        "I40",
-        "I47"
+        "I40"
       ],
       "read_first": [
         "docs/implementation/composable-evolution-plan.md",
@@ -5720,9 +5688,9 @@
       ],
       "steps": [
         "建立跨题库、路由、解析器、评分尺、词表、lens和查询投影的冻结小样本，至少包含稳定优势的周期低谷公司、多挂牌主体、多个模型和旧版/无recipe历史回执；不含财报或网页正文。",
-        "在隔离副本回放candidate→active ReleaseSet指针切换、字段迁移与回退；分别验证组件生命周期事件不倒退、旧包资格、在途旧attempt结算以及新POST围栏，不能用测试fixture改变生产active指针。",
+        "隔离副本先停止新派发，再更换兼容版本/配置并进行字段迁移与回退；原attempt/outbox按冻结输入结算，未决结果先对账。不承诺无停机热切或跨仓严格线性化。",
         "对升级前后逐对象比较身份、原答案/观察hash、评分方法、名单、费用和待办；经营证据变化、模型变化、解析规则变化必须可区分，恢复候选不得因暂时低分消失。",
-        "升级失败时停止新写/派发，保留旧release与所有账本；从单一公开入口验证离线回放，并与X09跨仓联调报告对照，不冒充X10真实联网或G6上线验收。"
+        "升级失败时停止新写/新派发，保留旧release及所有账本，回到上一兼容安装组合或只读状态；与X09联调对照，不能冒充X10真实联网或G6最终验收。"
       ],
       "deliverables": [
         "可重复执行的升级/回退隔离回放测试夹具",
@@ -5748,7 +5716,7 @@
       "stage": "M5",
       "owner": "stockwiki",
       "kind": "implementation",
-      "title": "将版本影响计划接入权威字段待办与派发预检",
+      "title": "幂等应用受影响字段缺口与派生投影",
       "depends_on": [
         "V16",
         "V17",
@@ -5769,10 +5737,7 @@
         "I40",
         "I42",
         "I43",
-        "I44",
         "I45",
-        "I46",
-        "I49",
         "I50"
       ],
       "read_first": [
@@ -5786,21 +5751,17 @@
         "StockWiki现有隔离SQLite/公开CLI集成测试；不新增第二权威库"
       ],
       "steps": [
-        "StockWiki必须用实际active V16 ReleaseSet、固定V17实现release和当前权威快照确定性重算影响集合；candidate只可预览，不得创建generation/work/费用/HTTP POST；拒绝调用方自带plan hash与未定义签名回执。",
-        "安全对账/幂等导入旧recipe下已派发或已答未ACK的work，沿用原冻结receipt完成费用/结果结算；随后才检查新版本准入。缺失/不兼容lock或plan只阻止新generation/new paid dispatch，不得阻断旧outbox结算。",
-        "同一事务CAS覆盖快照hash、身份/成员/字段scope revision、recipe、generation、active ReleaseSet ID/status/完整manifest hash/pointer revision及V17实现hash；任一竞态都回滚。",
-        "仅在一个owner数据库事务内应用明确的selected_field_rescan（新增逐字段generation/work）或projection_rebuild（只更新可重建视图）；no_op不写，needs_review/blocked不自动派发。",
-        "W16是dispatch fence请求/回执schema及授权状态的唯一owner。dispatch_fence针对精确work_id/attempt_id/recipe hash/active ReleaseSet ID+manifest hash/pointer revision/身份范围revision，在真实POST前重新核对active指针、component资格和work范围，并原子签发短时、单次、不可跨attempt复用的permit。CLI/UI/StockQA不得绕过此门。",
-        "为执行中旧recipe保留原口径；新增模块仅添对应字段，lens/阈值/别名/评分权重升级不创建付费任务，不影响manual_pin、低分/恢复候选和已完成观察。",
-        "在临时真实SQLite注入事务中断、重复plan、过期身份、ACK/重启故障；正式数据库不迁移，跨仓写入执行前须另按当前用户边界获得精确授权。",
-        "将当前active ReleaseSet内精确组件集合的lifecycle/dispatch_eligibility revision、status、manifest hash和资格摘要纳入同一CAS快照；资格可在active指针不变时独立变化，预检与commit/permit边界必须复核。",
-        "在W16自身事务屏障中覆盖组件被retired/deprecated但active pointer未变、资格revision在预检后改变、permit后组件资格改变等竞态；拒绝新work不得阻断旧attempt结算。",
-        "permit issuance与实际传输之间采用两阶段围栏：Q15先耐久写入send_intent_prepared，再调用W16 consume_dispatch_permit；W16在单一owner事务中重新核验active pointer及组件资格revision并将permit绑定为consumed/dispatch_commit。只有返回匹配的耐久dispatch_commit receipt后才允许一次provider POST。",
-        "资格在permit签发后、consume提交前变化时必须拒绝consume；consume提交后生命周期变化不得撤销已承诺的单次POST，但不得创建后续attempt。已消费permit后崩溃且无法证明未发送时进入outcome_unknown，不得重放。"
+        "StockWiki沿现有owner接口读取当前主体、字段和兼容元数据，使用实际安装的V17实现确定性重算目标范围；不信任调用方把no_op改为重扫或扩大为全池。",
+        "先按旧冻结recipe和原attempt/receipt幂等结算已发请求及未ACK outbox；新版本兼容错误只影响新工作，不挡已付回答恢复和交付。",
+        "仅对实际目标主体、范围、题义和字段generation在owner事务内重验/CAS，以唯一键防止并发重复应用；无关公司、全局余额或安装清单变化不使字段计划失效。",
+        "同一事务只应用selected_field_rescan的缺失字段或projection_rebuild的可重建视图；no_op不写，无法定位影响范围时不自动全池重问。",
+        "派发继续由StockQA原权限、lease/attempt/send_intent和统一预算原子预留负责；不新增跨仓permit、consume、dispatch_commit或组件资格revision。",
+        "新增模块仅补新字段；lens/阈值/别名/权重升级不创建付费任务。保留manual_pin、低分/恢复候选、原观察及旧recipe。",
+        "在临时SQLite验证事务中断、同字段双worker、身份/代次漂移、ACK丢失及重启；只跑受影响用例，不迁移正式库。"
       ],
       "deliverables": [
-        "StockWiki权威写入owner对V16/V17影响plan的幂等应用协议",
-        "新增字段/纯投影/冲突阻断/恢复观察保持的真实公开入口回归，以及StockQA消费的一次性dispatch fence请求/回执schema"
+        "现有owner缺口/投影接口上的幂等字段应用",
+        "新增字段、纯投影、身份/代次冲突和旧结果结算回归"
       ],
       "case_ids": [
         "EVO-57",
@@ -5811,79 +5772,14 @@
         "EVO-62",
         "EVO-63",
         "EVO-65",
-        "EVO-66",
-        "EVO-73",
-        "EVO-75",
-        "EVO-79"
+        "EVO-66"
       ],
-      "test_binding": "以V10/W15/W16 owner公开路径、临时SQLite和固定时钟运行真实StockWiki入口；两个worker以测试屏障同步预检后争同一plan，并在事务前注入身份/代次变化；HTTP边界stub且模型/POST/new-work计数精确断言。本卡完成条件仅要求owner接口；统一X05/X09集成由后置任务验收。真实跨仓写入需单独取得用户授权；本卡规格不构成该授权。",
+      "test_binding": "通过现有owner公开路径和临时SQLite测试字段应用；双worker同步争同一字段并注入身份/代次漂移；只在网络边界stub，精确核对work、generation、POST和费用。",
       "completion": [
-        "十二项owner-local case逐一在StockWiki W16 owner公开入口与真实临时SQLite上通过；计划应用原子、幂等、精确限域，冲突无副作用，评分/事实两种模式按已实现能力分别报告。",
-        "记录真实调用路径、相关测试/隔离清理结果；W16本地实现与X05/X09实际集成分别报告，后者在最终交付前完成；遵守当前用户授权。",
-        "只接受active ReleaseSet生成正式work；candidate只能预览；旧已授权attempt仍可按原receipt安全结算。",
-        "EVO-79在真实临时SQLite/公开owner路径通过：active指针不变但组件资格revision改变时CAS零副作用失败；permit签发再次核验当前资格。",
-        "permit签发与consume分离；consume事务的资格CAS、一次性消费回执、并发重放拒绝及崩溃后的unknown处理均有真实临时SQLite反例。"
+        "所列owner-local case在真实临时SQLite验证原子、幂等、精确限域；字段应用与实际X09全链分别记录，不能互代。",
+        "原权限、预算、任务防重及旧响应/ACK路径保持；本任务不引入第二派发授权。"
       ],
       "rollback": "先停止消费新plan，保留owner数据库的旧recipe/观察/费用/outbox和migration前备份；只重建派生projection，不删记录，不清除已生成的付费/待办账本。"
-    },
-    {
-      "id": "Q15",
-      "stage": "M5",
-      "owner": "stockqa",
-      "kind": "implementation",
-      "title": "在真实provider POST前消费StockWiki活动发布围栏",
-      "depends_on": [
-        "Q06",
-        "Q08",
-        "Q14",
-        "W16",
-        "C07"
-      ],
-      "invariants": [
-        "I34",
-        "I43",
-        "I44",
-        "I45",
-        "I46",
-        "I49",
-        "I50"
-      ],
-      "read_first": [
-        "docs/implementation/decision-register.md",
-        "docs/implementation/contracts/providers-and-budget.md",
-        "docs/implementation/contracts/launch-and-release.md",
-        "docs/implementation/composable-evolution-plan.md",
-        "C07",
-        "Q08",
-        "Q14",
-        "W16"
-      ],
-      "allowed_changes": [
-        "仅StockQA公开派发协调/attempt/outbox边界和对应隔离测试；不改V16/V17/W16权威定义，不写StockWiki私有库，不改provider密钥。"
-      ],
-      "steps": [
-        "StockWiki W16是dispatch fence契约与回执schema的唯一owner；StockQA只消费该contract。每次付费HTTP POST前，以work_id、attempt_id、recipe hash、active ReleaseSet ID/hash、active pointer revision、身份/范围revision请求一次性dispatch fence。",
-        "只有与当前work/attempt/recipe/active pointer完全匹配、未过期且未消费的W16 permit才能准备派发；StockQA先本地耐久写入send_intent_prepared，再调用W16 consume_dispatch_permit。W16必须在owner事务中重新核验当前active指针、组件派发资格、revision及work范围并原子消费permit；只有匹配的dispatch_commit receipt耐久返回后，StockQA才可向传输层发出恰好一次POST。",
-        "若permit已签发但send_intent_prepared或W16 consume尚未提交即崩溃，恢复时POST为0，旧permit不可重放；资格仍有效时只能新建本地准备并重新申请/消费新permit。若W16 consume/dispatch_commit已耐久提交后崩溃，则单次POST可能已发生；无法由持久传输回执证明未发送时一律outcome_unknown并阻断重试/新attempt。",
-        "测试lease→资格退役→permit、permit签发→资格变化→consume拒绝、send_intent_prepared→consume提交前崩溃、consume提交→传输前崩溃/未知响应四处屏障；只有未消费permit可因资格复核被拒绝，已消费commit只允许原attempt单次结算。",
-        "冻结attempt状态机：StockQA单调生成attempt_id；每个work最多一个有效或结果不明attempt/permit；重复claim复用现有attempt；新attempt仅在确定未发送或provider冻结策略确认可重试的终态拒绝并完成费用对账后创建。",
-        "未知/超时/连接中断若可能已发送，一律outcome_unknown并阻断fallback及新permit；本地send_intent_prepared只是必要记录，W16 consume_dispatch_permit事务返回dispatch_commit receipt才是跨仓授权线性化点，之后最多允许该attempt一次POST；fallback必须创建新的单调attempt并重新核对资格/预算。"
-      ],
-      "deliverables": [
-        "实际POST前围栏调用图、W16授权回执的消费端校验与状态/重启表、隔离双进程回归与原始日志；不得另行定义StockWiki的权威回执schema。"
-      ],
-      "case_ids": [
-        "LLM-17",
-        "EVO-76",
-        "EVO-81"
-      ],
-      "test_binding": "真实StockQA派发/attempt/outbox类与临时数据库；W16使用真实隔离endpoint或契约stub，provider传输使用stub；分别在permit签发→本地send_intent_prepared、W16 consume提交前/后及transport start处设置崩溃/资格修订屏障，精确断言permit、dispatch_commit、POST、费用和重放次数。",
-      "completion": [
-        "未获permit、资格已变、过期permit、非法状态及consume前崩溃均在POST前拒绝；consume前崩溃恢复后POST为0且permit不可重放；consume后崩溃若不能证明未发送则outcome_unknown并禁止新attempt；旧attempt最多一次POST且只按原recipe结算。",
-        "X05/X09依赖Q15；任何provider POST前均已有本地send_intent_prepared与匹配的W16 durable dispatch_commit receipt；consume时资格CAS失败、候选/退役/过期/越权请求的POST计数为0。",
-        "EVO-81覆盖重复claim、有效permit复用、可安全新attempt、unknown-after-send和伪造/重放attempt_id；与W16授权、费用账本及真实传输边界分别计数。"
-      ],
-      "rollback": "保留授权与attempt审计；如兼容回退，禁用新dispatch fence并只允许旧attempt对账，不回写/删除已记录回执。"
     },
     {
       "id": "S07",
@@ -6154,56 +6050,56 @@
       ],
       "rollback": "如renderer hash、历史manifest读取、route-v2 composition或公开CLI产生漂移，保留红测，恢复question_sets中原选择/校验实现和standard_answers原调用边；不修改已发布包、历史观察或外仓文件。"
     },
-{
-    "id": "A01",
-    "stage": "M3",
-    "owner": "iqs",
-    "kind": "implementation",
-    "title": "公司属性×模块谓词的版本化适用性判定层（APPLIC-RESOLVE-14 支撑交付）",
-    "depends_on": [
-      "S06",
-      "W15"
-    ],
-    "invariants": [
-      "I04",
-      "I08"
-    ],
-    "read_first": [
-      "docs/implementation/parallel-lanes/packages/2026-10-21/APPLIC-RESOLVE-14.md",
-      "docs/implementation/parallel-lanes/packages/2026-10-21/APPLIC-RESOLVE-14-R1.md",
-      "docs/modular-question-bank-design.md",
-      "references/routing.md"
-    ],
-    "allowed_changes": [
-      "iqs-applic-lab/schemas/ 四资产 Schema（冻结，additionalProperties=false）",
-      "iqs-applic-lab/data/attributes/companies.v1.json（公司属性表，verified/assumed/unknown 三级）",
-      "iqs-applic-lab/data/predicates/modules.v1.json（数据化谓词规则，含 provenance.mapped_from 与 decision_ref）",
-      "iqs-applic-lab/data/snapshots/applicsnap_*.json 与 index.json（append-only 适用性快照）",
-      "iqs-applic-lab/data/overrides/overrides.v1.json（所有者覆盖台账，append-only）",
-      "iqs-applic-lab/src/、scripts/、tests/、demo/、design/、review/、docs/（引擎、校验、导出、审查与交接资料）"
-    ],
-    "steps": [
-      "真源为公司属性表×模块谓词，快照仅为派生物：键含 entity_id/module_id/predicate_version/attributes_version，任一侧 bump 自动失配；谓词是数据化 JSON 规则而非存储代码闭包，避免第二真源。",
-      "三值 Kleene 判定：unknown ≠ not_applicable；无出处属性=unknown；not_applicable 仅当谓词判假且全部被解析属性 confidence=verified（G2-3 反证门槛），否则降级 unknown 并记 negative_evidence_not_verified。",
-      "属性分级 verified/assumed/unknown 各带出处或推断依据，UI 呈琥珀「待确认」；override 为一等公民：operator/reason 原话/ttl，过期自动回归 auto 并记 supersede 链。",
-      "快照不可变且幂等可重建（run_eval 两次逐字节一致），同名异容拒绝覆盖（exit 3），失效精确到格。"
-    ],
-    "deliverables": [
-      "四资产 Schema、214 实体属性表、48 模块谓词（45 mapped+3 contract_always）、版本化快照（10272 格）与索引",
-      "纯函数引擎、UI 导出器、parity 检查、158 项测试、G0-G5 交接套件与 R1 整改记录"
-    ],
-    "case_ids": [
-      "AP-01",
-      "AP-02"
-    ],
-    "test_binding": "iqs-applic-lab tests/（158 例）为 AP-01/AP-02 的固定输入与精确断言；红线反例先行（unknown 不塌缩、缺属性不出 applicable/not_applicable）。",
-    "completion": [
-      "主控 CLI（parallel_handoff_cli --verify-references）exit 0；run_eval 幂等重建两次 sha256 一致；失效 demo 实测 21 格变动/2 翻转/目标实体外 0 变动。",
-      "属性全 assumed 的诚实披露（G2-2 所有者裁定）与 not_applicable≈0 的后果写入 signoff known_limitations；production_ready=false 不变。"
-    ],
-    "rollback": "快照 append-only：撤回仅弃新快照并回归上一 snapshot_id；不改写属性表/谓词历史，不影响 S06/W15 已交付物与 UI 仓。"
-  }
-],
+    {
+      "id": "A01",
+      "stage": "M3",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "公司属性×模块谓词的版本化适用性判定层（APPLIC-RESOLVE-14 支撑交付）",
+      "depends_on": [
+        "S06",
+        "W15"
+      ],
+      "invariants": [
+        "I04",
+        "I08"
+      ],
+      "read_first": [
+        "docs/implementation/parallel-lanes/packages/2026-10-21/APPLIC-RESOLVE-14.md",
+        "docs/implementation/parallel-lanes/packages/2026-10-21/APPLIC-RESOLVE-14-R1.md",
+        "docs/modular-question-bank-design.md",
+        "references/routing.md"
+      ],
+      "allowed_changes": [
+        "iqs-applic-lab/schemas/ 四资产 Schema（冻结，additionalProperties=false）",
+        "iqs-applic-lab/data/attributes/companies.v1.json（公司属性表，verified/assumed/unknown 三级）",
+        "iqs-applic-lab/data/predicates/modules.v1.json（数据化谓词规则，含 provenance.mapped_from 与 decision_ref）",
+        "iqs-applic-lab/data/snapshots/applicsnap_*.json 与 index.json（append-only 适用性快照）",
+        "iqs-applic-lab/data/overrides/overrides.v1.json（所有者覆盖台账，append-only）",
+        "iqs-applic-lab/src/、scripts/、tests/、demo/、design/、review/、docs/（引擎、校验、导出、审查与交接资料）"
+      ],
+      "steps": [
+        "真源为公司属性表×模块谓词，快照仅为派生物：键含 entity_id/module_id/predicate_version/attributes_version，任一侧 bump 自动失配；谓词是数据化 JSON 规则而非存储代码闭包，避免第二真源。",
+        "三值 Kleene 判定：unknown ≠ not_applicable；无出处属性=unknown；not_applicable 仅当谓词判假且全部被解析属性 confidence=verified（G2-3 反证门槛），否则降级 unknown 并记 negative_evidence_not_verified。",
+        "属性分级 verified/assumed/unknown 各带出处或推断依据，UI 呈琥珀「待确认」；override 为一等公民：operator/reason 原话/ttl，过期自动回归 auto 并记 supersede 链。",
+        "快照不可变且幂等可重建（run_eval 两次逐字节一致），同名异容拒绝覆盖（exit 3），失效精确到格。"
+      ],
+      "deliverables": [
+        "四资产 Schema、214 实体属性表、48 模块谓词（45 mapped+3 contract_always）、版本化快照（10272 格）与索引",
+        "纯函数引擎、UI 导出器、parity 检查、158 项测试、G0-G5 交接套件与 R1 整改记录"
+      ],
+      "case_ids": [
+        "AP-01",
+        "AP-02"
+      ],
+      "test_binding": "iqs-applic-lab tests/（158 例）为 AP-01/AP-02 的固定输入与精确断言；红线反例先行（unknown 不塌缩、缺属性不出 applicable/not_applicable）。",
+      "completion": [
+        "主控 CLI（parallel_handoff_cli --verify-references）exit 0；run_eval 幂等重建两次 sha256 一致；失效 demo 实测 21 格变动/2 翻转/目标实体外 0 变动。",
+        "属性全 assumed 的诚实披露（G2-2 所有者裁定）与 not_applicable≈0 的后果写入 signoff known_limitations；production_ready=false 不变。"
+      ],
+      "rollback": "快照 append-only：撤回仅弃新快照并回归上一 snapshot_id；不改写属性表/谓词历史，不影响 S06/W15 已交付物与 UI 仓。"
+    }
+  ],
   "release_requirements": {
     "final_gate": "G6",
     "required_gates": [
@@ -6264,7 +6160,6 @@
       "V17",
       "V18",
       "W16",
-      "Q15",
       "S09"
     ],
     "required_components": [

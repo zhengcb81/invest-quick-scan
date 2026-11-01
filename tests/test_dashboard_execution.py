@@ -133,7 +133,7 @@ def test_read_only_inspection_needs_no_new_dispatch_permission_or_model_config(d
     view = gateway.preview({'bundle_id': 'test'}, read_only=True)
     assert view['status'] == 'inspected' and view['inspection']['work_items'][0]['status'] == 'pending'
     assert view['permissions_check']['status'] == 'not_checked' and view['can_start'] is False
-    assert view['preview_id'] is None and not gateway._previews and calls == []
+    assert view['preview_id'] is None and calls == []
     assert gateway.preview({'bundle_id': 'test'})['can_start'] is False and calls == ['permission']
     Path(bundle['spend_authorization']).unlink()
     (runtime/'llm_apis.json').unlink()
@@ -141,12 +141,56 @@ def test_read_only_inspection_needs_no_new_dispatch_permission_or_model_config(d
     assert calls == ['permission'] and not (runtime/'calls.txt').exists()
 
 
+def test_shared_company_config_is_bound_and_forwarded_only_for_execution(deployment):
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    output = runtime/'output.json'
+    assert '--shared-company-config' not in gateway._command(bundle, Path(config['stockqa_root']), output)
+    shared = runtime/'shared-company.json'
+    put(shared, {'schema_version':'1.0.0','evidence_boards':[]})
+    bundle['shared_company_config'] = str(shared)
+    before = gateway._fingerprint(bundle)
+    command = gateway._command(bundle, Path(config['stockqa_root']), output)
+    assert command[command.index('--shared-company-config')+1] == str(shared)
+    assert '--shared-company-config' not in gateway._command(bundle, Path(config['stockqa_root']), output, recovery=True)
+    put(shared, {'schema_version':'1.0.0','evidence_boards':[{'changed':True}]})
+    assert gateway._fingerprint(bundle) != before
+    shared.unlink()
+    assert 'shared_company_config' in gateway._deployment(bundle)[-1]
+
+
+@pytest.mark.parametrize('request_entity', ['ENT_TEST', 'ENT_OTHER'])
+def test_read_only_work_inspection_does_not_require_new_scan_inputs(deployment, monkeypatch, request_entity):
+    config, runtime, bundle = deployment
+    for field in ('questions', 'manifest', 'identity_snapshot', 'c06_authority',
+                  'owner_config', 'spend_authorization'):
+        Path(bundle[field]).unlink()
+    for field in ('provider', 'company', 'confirmation_id'):
+        bundle.pop(field)
+    (runtime/'llm_apis.json').unlink()
+    put(Path(bundle['inspection_request']), {'entity_id': request_entity,
+        'work_items': [{'question_id': 'IQS_11', 'status': 'delivered'}]})
+    gateway = ExecutionGateway(config)
+    monkeypatch.setattr(gateway, '_registered_permissions',
+        lambda *args: pytest.fail('viewing work must not request new dispatch permission'))
+    forbid_model_launch(monkeypatch)
+    view = gateway.preview({'bundle_id': 'test'}, read_only=True)
+    if request_entity == 'ENT_TEST':
+        assert view['status'] == 'inspected'
+        assert view['inspection']['work_items'][0]['status'] == 'delivered'
+        assert view['can_start'] is False and view['permissions_check']['status'] == 'not_checked'
+    else:
+        assert view['status'] == 'blocked' and 'inspection_entity_mismatch' in view['missing']
+    assert gateway.preview({'bundle_id': 'test'})['status'] == 'blocked'
+    assert not (runtime/'calls.txt').exists()
+
+
 def test_start_after_service_restart_does_not_require_old_memory_preview(deployment):
     config, runtime, _ = deployment
     old_gateway = ExecutionGateway(config)
     old_preview = old_gateway.preview({'bundle_id': 'test'})
     restarted = ExecutionGateway(config)
-    assert old_preview['preview_id'] not in restarted._previews
+    assert old_preview['preview_id'] is None
     result = restarted.start({'bundle_id': 'test', 'preview_id': old_preview['preview_id']})
     wait_done(restarted, result['run']['run_id'])
     assert result['process_started'] is True
@@ -220,9 +264,6 @@ def test_original_prewrite_refusal_has_positive_proof_and_never_creates_run(depl
     code='execution_not_ready'
     config,runtime,bundle=deployment
     gateway=ExecutionGateway(config);registration=gateway.bundle_registration('test')
-    if code!='preview_required':
-        gateway._previews['frozen']={'bundle_id':'test','bundle_fingerprint':registration['bundle_fingerprint'],
-            'inspection_sha256':'a'*64}
     preview={**registration,'can_start':code!='execution_not_ready','inspection_sha256':'b'*64,
         'blocked_reasons':['owner_budget_or_original_work_blocked'] if code=='execution_not_ready' else [],
         'API_requests':0,'database_writes':0}

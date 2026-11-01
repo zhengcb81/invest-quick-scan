@@ -575,7 +575,7 @@ class PrepareGateway:
         selected_profile = {key: profile.get(key) for key in ("entity_id", "verified_facts", "user_policy")} if profile else None
         files = {}
         paths = [Path(self.config["workspace_root"]) / "config/quick_scan_refresh.json"]
-        for key in ("admission_config", "spend_authorization", "search_policy"):
+        for key in ("admission_config", "spend_authorization", "search_policy", "shared_company_config"):
             if self.options.get(key):
                 paths.append(Path(self.options[key]))
         if self.options.get("runtime_dir"):
@@ -700,6 +700,9 @@ class PrepareGateway:
                 record['cached_result']=cached
             record["execution_question_ids"] = recovery["execution_question_ids"] if recovery else requested
             record["execution_question_count"] = len(record["execution_question_ids"])
+            if self.options.get('shared_company_config'):
+                _new_raw(directory/'shared-company-config.json', Path(self.options['shared_company_config']).read_bytes())
+                record['files']['shared-company-config.json'] = hashlib.sha256((directory/'shared-company-config.json').read_bytes()).hexdigest()
             if recovery:
                 record["files"]["recovery-projection-request.json"] = hashlib.sha256((directory / "recovery-projection-request.json").read_bytes()).hexdigest()
             record["preview_token"] = _sha(record)
@@ -1193,6 +1196,8 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
         bundle.update(execution_question_ids=[q['id'] for q in selected_questions], execution_question_count=len(selected_questions))
     if options.get("search_policy"):
         bundle["search_policy"] = options["search_policy"]
+    if options.get('shared_company_config'):
+        bundle['shared_company_config'] = str(directory.parent/'shared-company-config.json')
     if 'work_lease_seconds' in options:
         bundle['work_lease_seconds'] = options['work_lease_seconds']
     if subject_ref["scope"] == "security":

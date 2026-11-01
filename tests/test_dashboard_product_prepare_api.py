@@ -98,6 +98,15 @@ def test_prepare_config_rejects_unknown_commands_credentials_and_concurrency(tmp
     with pytest.raises(ProductError): validate_config(addition,tmp_path)
 
 
+def test_shared_company_config_can_be_selected_in_original_settings_and_registered_bundle(tmp_path):
+    value = validate_config({'prepare':{'shared_company_config':'config/shared-company.json'},
+                             'execution_bundles':{'B':{'shared_company_config':'frozen/shared-company.json'}}},tmp_path)
+    assert value['prepare']['shared_company_config'] == str(tmp_path/'config/shared-company.json')
+    assert value['execution_bundles']['B']['shared_company_config'] == str(tmp_path/'frozen/shared-company.json')
+    with pytest.raises(ProductError):
+        validate_config({'prepare':{'shared_company_config':'https://example.invalid/config.json'}},tmp_path)
+
+
 def test_scope_delivery_uses_original_outbox_without_growing_an_all_company_registry(tmp_path):
     events=[]
     class Outbox(Execution):

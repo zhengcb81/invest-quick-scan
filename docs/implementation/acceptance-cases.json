@@ -1,5 +1,5 @@
 {
-  "version": "1.10.18",
+  "version": "1.10.19",
   "status": "acceptance_specifications_not_runtime_results",
   "example_only": true,
   "defaults": {
@@ -3418,7 +3418,7 @@
       "id": "EVO-44",
       "kind": "positive",
       "level": "contract",
-      "given": "一个由唯一owner发布、具有schema/hash/能力/兼容范围的candidate组件release。",
+      "given": "一个由唯一owner发布、具有schema/hash/能力/兼容范围的声明式组件版本。",
       "when": "使用公共release envelope校验并生成不可变release lock。",
       "then": [
         "release ID、内容hash、owner与组件专属schema全部被锁定；同一recipe仅引用该已登记release，不执行任意插件代码。"
@@ -3433,7 +3433,7 @@
       "given": "已发布release ID/hash已进入观察或recipe；有人以相同ID替换题义、兼容范围或能力。",
       "when": "重新校验该组件或加载历史recipe。",
       "then": [
-        "拒绝同ID内容变化并报告hash冲突；旧观察仍按原包读取，新内容必须用新release ID，不自动转active。"
+        "拒绝同ID内容变化并报告hash冲突；旧观察仍按原包读取，新内容必须用新release ID。"
       ],
       "status": "specified_not_executed",
       "owner_task": "V16"
@@ -3442,10 +3442,10 @@
       "id": "EVO-46",
       "kind": "boundary",
       "level": "integration",
-      "given": "本项目真实归档的问题模块发布包早于公共component envelope；历史观察仍引用该包，且另有deprecated/retired release。",
+      "given": "真实归档的问题模块早于公共component元数据；历史观察仍引用该包。",
       "when": "使用归档版本专属reader读取历史包，并分别检查当前候选发布/新recipe是否可用。",
       "then": [
-        "历史包仅在归档hash与旧schema可核实时按legacy_read_only解释；缺少可验证证据时needs_review。deprecated仅在兼容窗内可用，retired禁止新组合/派发；任何情况都不删除旧观察。"
+        "按归档hash和原schema只读解释历史；无法解释时needs_review。新写按实际支持版本/能力判定，不引入组件资格状态或续期窗，不删除旧观察。"
       ],
       "status": "specified_not_executed",
       "owner_task": "V16"
@@ -3457,7 +3457,7 @@
       "given": "producer schema或能力高于consumer声明支持范围，兼容校验器只收到release envelope元数据。",
       "when": "调用公共兼容判定器，分别请求历史读取、新写入和付费派发能力结果。",
       "then": [
-        "分别返回legacy_read_only、adapter_required或blocked等精确动作状态和原因；兼容声明按producer/consumer精确release及动作查找，并遵守EVO-83的UTC半开时间窗。纯校验器不发HTTP、不写数据库、不把未知映射成分数，真实入口阻断由StockWiki W16/X05/X09验证。"
+        "按实际producer/consumer版本、能力与动作返回legacy_read_only、adapter_required或blocked及原因；纯校验器不发HTTP、不写库、不把未知映射成分数。原owner执行入口保留实际主体、题义和权限检查。"
       ],
       "status": "specified_not_executed",
       "owner_task": "V16"
@@ -3562,10 +3562,10 @@
       "id": "EVO-53",
       "kind": "fault",
       "level": "integration",
-      "given": "临时SQLite升级在复制新release锁后、切换active前发生进程中断。",
+      "given": "临时SQLite升级在停止新派发、复制新配置后但提交前发生进程中断。",
       "when": "重启并检查旧/新release、观察、待办、outbox及费用水位。",
       "then": [
-        "失败升级保持旧release可读和active；未提交变更回滚到本run临时副本，已发生费用/POST意图不消失，不触发补偿性付费请求。"
+        "未提交变更回滚，旧版本可读；保留全部既有attempt、费用和send_intent，不触发补偿性收费请求。"
       ],
       "status": "specified_not_executed",
       "owner_task": "V18"
@@ -3658,10 +3658,10 @@
       "id": "EVO-61",
       "kind": "positive",
       "level": "integration",
-      "given": "StockWiki W16 owner API/CLI收到一个V16 lock与V17 plan已核实、仅新增单字段的受控请求，并准备为新work签发绑定精确attempt/recipe/active pointer的派发授权。",
-      "when": "在独立临时SQLite中直接调用W16公开新增/续扫入口并请求该work的一次性dispatch fence。",
+      "given": "现有StockWiki owner入口收到仅新增一个缺失字段的受控请求，当前主体与字段水位有效。",
+      "when": "在独立临时SQLite中直接调用现有owner新增/续扫字段入口。",
       "then": [
-        "owner路径消费同一确定性重算plan，只创建目标新字段generation/work；既有题零重问，字段generation/recipe hash和费用回执可追溯；仅对当前active资格与精确attempt签发短时、单次permit，记录完整绑定字段且重复领取不能签发第二个permit；不访问其他公司或下载文档。X05调用此接口的集成另由后置X09场景验收。"
+        "用当前权威数据确定性计算并只创建目标新字段generation/work；既有题零重问，保留实际题义和版本；派发沿StockQA原权限、lease/attempt及预算链，不签发第二许可证。"
       ],
       "status": "specified_not_executed",
       "owner_task": "W16"
@@ -3670,10 +3670,10 @@
       "id": "EVO-62",
       "kind": "fault",
       "level": "integration",
-      "given": "StockWiki W16 owner入口收到不兼容V16 lock、unknown capability、被篡改/过期的V17 plan，或收到与当前active指针不匹配、过期、已消费/重复消费的dispatch fence请求。",
-      "when": "直接对隔离owner数据库尝试创建新generation/work或重复签发/消费permit。",
+      "given": "owner入口收到不支持的实际版本/能力、被篡改目标或已失效的目标字段水位。",
+      "when": "直接对隔离owner数据库尝试应用错误范围、题义或已失效字段代次。",
       "then": [
-        "owner入口拒绝无效/重放permit，并停止新generation、新work、费用预留和任何LLM/HTTP POST，显示精确blocked/needs_review原因；合法旧冻结attempt仍按原回执幂等对账，不能把结算误判为新版本放行。统一X05启动行为另由EVO-67验收。"
+        "拒绝不兼容写入或错误范围，不创建新generation/work/费用/POST；原已付回答仍按冻结输入幂等恢复、导入和ACK。"
       ],
       "status": "specified_not_executed",
       "owner_task": "W16"
@@ -3706,7 +3706,7 @@
       "id": "EVO-65",
       "kind": "fault",
       "level": "integration",
-      "given": "旧recipe已有provider已答的attempt与未ACK outbox；W16 owner入口收到缺失/不兼容的新V16 lock或失效V17 plan。",
+      "given": "旧recipe已有已答attempt与未ACK outbox；新工作使用不兼容版本或失效目标字段计划。",
       "when": "在临时owner库中分别请求结算旧outbox与应用新版本plan。",
       "then": [
         "W16允许原冻结receipt安全、幂等结算旧attempt，但拒绝新generation/work/费用预留/HTTP POST；旧答案和费用不覆写。只允许旧账本结算所需的行变化；X05恢复时先后顺序由EVO-67另验。"
@@ -3721,7 +3721,7 @@
       "given": "调用方提交一个自洽重算过plan hash的伪造plan，把V17预期no_op改为selected_field_rescan，或将少量受影响对象扩大为全池；其身份revision与当前水位看似匹配。",
       "when": "直接通过StockWiki W16 owner公开入口应用计划。",
       "then": [
-        "W16以已安装且hash匹配的固定V17实现和当前权威快照确定性重算完整计划，拒绝调用方自带plan/hash与伪造范围；不接受本计划未定义的签名回执作为替代信任根。新generation/work/费用预留/HTTP POST均为0，返回plan_provenance_invalid或scope_mismatch。通过X05触发的同类场景由后置X09覆盖。"
+        "W16以实际安装的V17实现和当前权威主体/字段数据重算目标范围，拒绝调用方改写no_op或扩大至全池；不增设签名计划凭证。新generation/work/费用预留/POST均为0；公开入口同类范围校验由X09覆盖。"
       ],
       "status": "specified_not_executed",
       "owner_task": "W16"
@@ -3730,17 +3730,15 @@
       "id": "EVO-67",
       "kind": "fault",
       "level": "integration",
-      "given": "X05统一启动/恢复入口有旧冻结recipe下provider已答未ACK的attempt，当前候选V16/V17不兼容或缺失。",
+      "given": "统一启动/恢复入口有旧冻结recipe下已答未ACK attempt；新工作存在实际版本不兼容。",
       "when": "通过UI和CLI各自触发一次恢复及新版本续扫。",
       "then": [
-        "两入口先调用W16/StockQA公开账本接口，按旧receipt幂等导入并ACK旧结果，再阻止新generation/work/费用预留/HTTP POST；旧答案和费用未变，失败状态可解释，重试不重复结算。"
+        "先经StockQA/StockWiki原公开接口幂等恢复、导入和ACK旧结果；只阻断不兼容的新工作。旧答案、原执行时间及费用不变，重试不重复结算。"
       ],
       "status": "specified_not_executed",
       "owner_task": "X09",
       "requires_tasks": [
-        "X05",
-        "W16",
-        "Q15"
+        "X05"
       ]
     },
     {
@@ -3750,7 +3748,7 @@
       "given": "X07候选release_set已锁StockQA parser/schema/evidence hash；隔离安装目录含匹配版本，以及逐项篡改一个实际安装hash的两个安装排列。",
       "when": "X08通过真实拥有者安装接口部署并核对实际组件文件与宿主加载位置。",
       "then": [
-        "全匹配时才记录installed且hash逐项相同；任一差异使安装组合不可active并阻止付费start，不覆盖用户配置/库，HTTP与模型调用均为0。"
+        "安装工件逐项hash匹配时记录实际安装组合；实际缺少/不支持的parser或schema不能执行相应新写。不覆盖配置/库，不调用HTTP；不设全局active发布许可。"
       ],
       "status": "specified_not_executed",
       "owner_task": "X08"
@@ -4096,113 +4094,28 @@
       "given": "隔离工作区中有300条legacy_without_recipe已完成记录、7条send_intent/未ACK旧attempt，其中含可对账与needs_review样本。",
       "when": "从已安装X05公开入口恢复后启动一次新扫描。",
       "then": [
-        "旧回答hash/费用不变；可证实旧请求先幂等结算；不确定项needs_review且不重发；新扫描只使用active ReleaseSet；记录每类POST/费用/ACK计数。"
+        "旧回答hash/费用不变；可核实的旧请求幂等结算，不确定项待对账且不重发；新扫描使用实际已安装且兼容的版本。分别核对POST/费用/ACK计数。"
       ],
       "status": "specified_not_executed",
       "owner_task": "X09",
       "requires_tasks": [
-        "X05",
-        "W16",
-        "Q15"
+        "X05"
       ]
-    },
-    {
-      "id": "EVO-73",
-      "kind": "negative",
-      "level": "contract",
-      "given": "W16收到candidate ReleaseSet、V17固定实现和权威只读快照。",
-      "when": "仅请求影响计划预览，再尝试应用该candidate。",
-      "then": [
-        "纯预览可返回确定plan；应用被拒绝；数据库无generation/work/费用预留/outbox/HTTP POST变化。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "W16"
-    },
-    {
-      "id": "EVO-74",
-      "kind": "negative",
-      "level": "integration",
-      "given": "X05 public CLI/UI启动请求绑定candidate而非active ReleaseSet。",
-      "when": "经统一启动入口请求新扫描。",
-      "then": [
-        "明确提示candidate仅可预览/测试；生产库不创建run generation/work/费用预留，不调用StockQA或网络。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "X09",
-      "requires_tasks": [
-        "X05",
-        "X07"
-      ]
-    },
-    {
-      "id": "EVO-75",
-      "kind": "race",
-      "level": "integration",
-      "given": "W16完成预检后，active ReleaseSet ID、manifest hash或active pointer revision任一项改变。",
-      "when": "屏障控制下继续应用原plan。",
-      "then": [
-        "同一事务CAS检测完整release指针/哈希/状态及身份、成员、字段代次不匹配并回滚；不创建generation/work/费用预留/outbox/HTTP POST。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "W16"
-    },
-    {
-      "id": "EVO-76",
-      "kind": "race",
-      "level": "integration",
-      "given": "覆盖四种持久状态：StockQA已领取lease但尚未取得permit；W16已签发permit但send_intent_prepared未耐久；send_intent_prepared已耐久但W16 consume_dispatch_permit未提交；W16已返回耐久dispatch_commit但provider尚未开始或已开始而响应未知。分别在组件资格变化/进程崩溃屏障发生。",
-      "when": "执行permit签发、StockQA本地准备、W16单次consume与provider传输的两阶段围栏，并从持久状态恢复。",
-      "then": [
-        "lease/permit未消费或资格在consume前改变：POST为0；已签发permit不能在重启后复用，需按当前资格重新申请。",
-        "本地send_intent_prepared不是充分授权；W16 consume_dispatch_permit必须在同一owner事务复核active pointer、组件资格revision、work范围并记录唯一dispatch_commit receipt。",
-        "资格退役发生在dispatch_commit后，只允许已承诺的那一次POST；consume后崩溃且无法证明未发送时标为outcome_unknown，禁止重放/新attempt；所有旧结果按原recipe结算。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "Q15",
-      "requires_tasks": [
-        "W16"
-      ]
-    },
-    {
-      "id": "EVO-77",
-      "kind": "boundary",
-      "level": "contract",
-      "given": "已有candidate/active/rollback候选ReleaseSet，部分component release处于deprecated或retired；active指针切换本身不应自动改变未被显式退役的组件release状态。",
-      "when": "执行V16生命周期与active pointer静态迁移校验。",
-      "then": [
-        "component状态只追加事件、不因ReleaseSet指针切换而自动变化且不改旧工件；ReleaseSet active pointer按workspace/profile原子切换；回退仅可指向仍获新派发资格的兼容包，退役/过窗包只读并阻断新work。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "V16"
     },
     {
       "id": "EVO-78",
       "kind": "fault",
       "level": "integration",
-      "given": "隔离临时库先激活已验证ReleaseSet A，再候选/安装并切换到B；切换未自动改变A的component lifecycle，A仍有冻结旧attempt。",
+      "given": "临时工作区先运行兼容安装组合A，停止新派发后升级到B；A仍有冻结旧attempt。",
       "when": "切换到B后触发受控回退到A并恢复任务。",
       "then": [
-        "只有仍满足资格且回执齐备的A可重新成为active指针；旧attempt按A原receipt幂等结算；新work在指针稳定后使用A，任何阶段不重复费用/POST或覆写观察；若A已被显式deprecated/retired，则回退只读并阻断新work。"
+        "旧attempt按A原输入和响应幂等结算；升级失败可停止新派发后回退兼容A或只读，不改原观察/费用、不重复POST；未知发送结果先对账。"
       ],
       "status": "specified_not_executed",
       "owner_task": "V18",
       "requires_tasks": [
-        "X09",
-        "W16",
-        "Q15"
+        "X09"
       ]
-    },
-    {
-      "id": "LLM-17",
-      "kind": "negative",
-      "level": "integration",
-      "given": "StockQA拿到与其他work、过期active pointer或candidate ReleaseSet绑定的dispatch fence。",
-      "when": "调用Q15真实POST前置检验。",
-      "then": [
-        "拒绝授权并保留准确blocked/needs_review；provider POST、费用预留和新attempt发送均为0。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "Q15"
     },
     {
       "id": "SC-15",
@@ -4627,63 +4540,21 @@
       ]
     },
     {
-      "id": "EVO-79",
-      "kind": "race",
-      "level": "integration",
-      "given": "W16预检读取active ReleaseSet指针P及组件资格revision r；随后该组件在指针保持P不变时被显式retired/deprecated。",
-      "when": "在应用事务前使用双worker屏障更新组件生命周期，再提交旧V17影响计划。",
-      "then": [
-        "CAS必须核对精确组件集合及资格revision/hash并失败；generation/work/费用预留/outbox/StockQA POST均为0；不得仅因active指针未变就允许新派发。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "W16",
-      "requires_tasks": [
-        "V16",
-        "V17",
-        "V10",
-        "W15",
-        "W12"
-      ]
-    },
-    {
-      "id": "EVO-80",
-      "kind": "race",
-      "level": "integration",
-      "given": "隔离临时workspace中，X09 public start预检后active ReleaseSet指针不变，但组件资格revision已被并发退役。",
-      "when": "从已安装public UI和CLI分别提交新扫描。",
-      "then": [
-        "两入口都经W16 owner CAS及permit consume资格复核；若资格revision在consume前变化，拒绝新generation/work/费用/dispatch_commit/POST；无旁路。",
-        "已提交dispatch_commit后发生退役只允许该attempt单次POST/结算，不产生后续attempt；已发旧attempt仍按冻结receipt安全结算。"
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "X09",
-      "requires_tasks": [
-        "X05",
-        "W16",
-        "Q15",
-        "X06",
-        "X08"
-      ]
-    },
-    {
       "id": "EVO-81",
       "kind": "race",
       "level": "integration",
-      "given": "同一work被两个worker重复claim；首个attempt取得有效permit并耐久写入send_intent_prepared；W16 consume回执分别返回成功/冲突；另有明确未发送终态、已确认retryable provider拒绝、outcome_unknown及伪造attempt_id。",
-      "when": "通过Q15真实attempt/outbox事务依序claim、消费permit、settle费用并尝试创建下一次attempt。",
+      "given": "同一work被两个worker重复claim；存在原lease/attempt/send_intent，以及明确未发送、已对账的retryable终态、outcome_unknown和伪造attempt_id样本。",
+      "when": "经StockQA现有公开待办、attempt与费用接口领取、发送、结算并尝试续接。",
       "then": [
-        "重复claim复用同一有效attempt/permit；只有W16 consume成功且绑定当前资格revision的dispatch_commit receipt才授权一次POST。",
-        "仅StockQA可生成单调attempt序号；下一attempt只在确定未发送，或provider冻结策略确认的终态拒绝完成费用对账后创建，并重新取得新permit/dispatch_commit。",
-        "unknown-after-send及consume后无法证明未发出的崩溃均阻断fallback/新permit；伪造或重放attempt_id拒绝；预算占用不重复释放。"
+        "重复claim附着同一有效attempt；只有当前owner权限、有效lease及原子预算预留满足时才能发送一次。",
+        "attempt_id由StockQA生成；下一attempt仅在明确未发送或冻结策略认可的终态拒绝完成费用对账后创建。",
+        "发送结果不明(outcome_unknown)时保留预留并阻断fallback/新attempt；旧lease迟到和伪造/重放attempt不能覆盖当前状态或重复释放预算。"
       ],
       "status": "specified_not_executed",
-      "owner_task": "Q15",
+      "owner_task": "Q08",
       "requires_tasks": [
         "Q06",
-        "Q08",
-        "Q14",
-        "W16",
-        "C07"
+        "Q04"
       ]
     },
     {
@@ -4700,8 +4571,8 @@
       },
       "when": "通过X09真实组件入口依顺位运行备用路由；另重复测试send outcome unknown。",
       "then": [
-        "收到可核实且按冻结策略属于retryable terminal的额度拒绝后，先完成费用/结果对账，再按冻结顺序创建唯一下一attempt并重新取得W16 dispatch_commit；总预算不突破，备用成功后停止。",
-        "outcome_unknown或consume后无法证明未发送时不触发下一provider POST，保留预留并进入对账状态；全程记录provider、attempt、搜索状态和清理证明。"
+        "明确且符合冻结策略的额度拒绝先完成费用/结果对账，再按用户顺位创建唯一下一attempt并原子预留共享预算；不突破上限，备用成功后停止。",
+        "可能已发送且结果不明时不触发下一provider POST，保留原预留并进入对账；记录实际provider、attempt、搜索状态及相关测试清理。"
       ],
       "status": "specified_not_executed",
       "owner_task": "X09",
@@ -4709,8 +4580,6 @@
         "Q04",
         "Q08",
         "Q09",
-        "Q15",
-        "W16",
         "X05"
       ]
     },
@@ -4818,7 +4687,7 @@
       "id": "REV-10",
       "kind": "fault",
       "level": "review",
-      "given": "G6所有前置阶段门、候选/安装/加载hash、跨仓消费者、permit/attempt账本、真实E2E隔离和升级回退均有最新回执。",
+      "given": "G6前置阶段、实际安装/加载版本、跨仓消费者、原attempt/费用账本、真实E2E及升级回退都有实际结果。",
       "when": "审查一键开启完整交付。",
       "then": [
         "只有所有任务闭合且X10真实全链、清理前后快照、实际收费/来源及升级回滚证据齐备才可完成；任一外仓部分实现或旧版本审查作废均保持partial。"
@@ -4851,68 +4720,6 @@
         "X11",
         "X07"
       ]
-    },
-    {
-      "id": "EVO-83",
-      "kind": "boundary",
-      "level": "contract",
-      "given": {
-        "producer_release": {
-          "id": "producer_r2",
-          "sha256": "p2"
-        },
-        "consumer_release": {
-          "id": "consumer_r3",
-          "sha256": "c3"
-        },
-        "actions": [
-          "historical_read",
-          "projection_rebuild",
-          "new_write",
-          "paid_dispatch",
-          "migration",
-          "rollback"
-        ],
-        "valid_from_utc": "2026-10-01T00:00:00Z",
-        "valid_until_utc": "2026-10-08T00:00:00Z",
-        "explicit_non_expiring_alternative": true
-      },
-      "when": "以注入UTC时钟分别在窗口开始前、恰好开始、结束前、恰好结束及结束后评估各action；另提供缺字段、naive时间、重叠声明和显式non_expiring行。",
-      "then": [
-        "窗口采用左闭右开[start,end)：开始时有效，结束时已过期；每个producer/consumer/action独立判断，不得跨动作借用read兼容。",
-        "过期/未生效的新写入、付费派发、迁移或回退按矩阵blocked/needs_review；历史读取若无仍有效的明确archive reader则needs_review，绝不回退当前schema解释或删除旧观察。",
-        "无到期必须有required且明确的expiry_policy=non_expiring及valid_until_utc=null；缺失、时区不明、倒置/重叠区间或不确定时钟在任何副作用前失败关闭。",
-        "版本号相同不能替代精确release/hash匹配；合法显式non_expiring条目仅对声明的producer/consumer/action生效。"
-      ],
-      "assertions": [
-        {
-          "id": "EVO-83.A01",
-          "entrypoint": "V16 compatibility evaluator",
-          "expected": "UTC valid_from含端点、valid_until不含端点，边界前/恰好/后分别得出预期。"
-        },
-        {
-          "id": "EVO-83.A02",
-          "entrypoint": "V16 compatibility evaluator",
-          "expected": "六种兼容动作分别判定；history_read许可不能放行new_write/paid_dispatch。"
-        },
-        {
-          "id": "EVO-83.A03",
-          "entrypoint": "V16 compatibility evaluator",
-          "expected": "窗口到期后的dispatch/write/migration/rollback阻断；历史无reader时needs_review且原观察保持不变。"
-        },
-        {
-          "id": "EVO-83.A04",
-          "entrypoint": "V16 compatibility evaluator",
-          "expected": "非到期需显式non_expiring；缺失、倒置、重叠、naive时间和未知时钟失败关闭。"
-        },
-        {
-          "id": "EVO-83.A05",
-          "entrypoint": "V16 compatibility evaluator",
-          "expected": "release版本文字相同但ID/hash不一致时不匹配。"
-        }
-      ],
-      "status": "specified_not_executed",
-      "owner_task": "V16"
     },
     {
       "id": "MOD-19",
@@ -5917,39 +5724,39 @@
         }
       ]
     },
-{
-    "id": "AP-01",
-    "kind": "negative",
-    "level": "unit",
-    "given": "公司某属性 confidence=assumed 或 source_ref.kind=none（无仓内出处），对应模块谓词对该公司判假。",
-    "when": "引擎对 (entity, module) 求值。",
-    "then": [
-      "结果必须是 unknown 且 basis=negative_evidence_not_verified。",
-      "禁止输出 not_applicable 或 applicable；反例覆盖 6 种谓词组合与属性缺失形态。"
-    ],
-    "status": "specified_not_executed",
-    "owner_task": "A01",
-    "requires_tasks": [
-      "S06",
-      "W15"
-    ]
-  },
-{
-    "id": "AP-02",
-    "kind": "fault",
-    "level": "unit",
-    "given": "已发布适用性快照的 inputs（attributes_version 或 predicate_version）任一 bump，或快照文件被手改（同名异容）。",
-    "when": "重新校验或重建快照。",
-    "then": [
-      "旧快照必须失效并产出新 snapshot_id（键含双侧版本），单属性 bump 仅重算受影响格。",
-      "同名异容必须拒绝覆盖 exit 3，禁止静默沿用旧判定；两次重建 sha256 必须一致。"
-    ],
-    "status": "specified_not_executed",
-    "owner_task": "A01",
-    "requires_tasks": [
-      "S06",
-      "W15"
-    ]
-  }
-]
+    {
+      "id": "AP-01",
+      "kind": "negative",
+      "level": "unit",
+      "given": "公司某属性 confidence=assumed 或 source_ref.kind=none（无仓内出处），对应模块谓词对该公司判假。",
+      "when": "引擎对 (entity, module) 求值。",
+      "then": [
+        "结果必须是 unknown 且 basis=negative_evidence_not_verified。",
+        "禁止输出 not_applicable 或 applicable；反例覆盖 6 种谓词组合与属性缺失形态。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "A01",
+      "requires_tasks": [
+        "S06",
+        "W15"
+      ]
+    },
+    {
+      "id": "AP-02",
+      "kind": "fault",
+      "level": "unit",
+      "given": "已发布适用性快照的 inputs（attributes_version 或 predicate_version）任一 bump，或快照文件被手改（同名异容）。",
+      "when": "重新校验或重建快照。",
+      "then": [
+        "旧快照必须失效并产出新 snapshot_id（键含双侧版本），单属性 bump 仅重算受影响格。",
+        "同名异容必须拒绝覆盖 exit 3，禁止静默沿用旧判定；两次重建 sha256 必须一致。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "A01",
+      "requires_tasks": [
+        "S06",
+        "W15"
+      ]
+    }
+  ]
 }

@@ -93,10 +93,10 @@ python -X utf8 scripts/implementation_plan.py validate
 契约测试调用`work_contract.py`的纯规则并按格式校验真实schema；不把测试内自造的状态机当作生产队列，不访问其他项目。运行器/数据库/并发/断电故障的生产验收仍分别属于StockQA或StockWiki卡。C04通过不能替代C05/C06/C07和G0冻结审查。
 
 
-## Q15 两阶段授权与attempt恢复（实施边界）
+## 原执行器的attempt与恢复边界（1.10.19）
 
-WorkItem租约和provider attempt分开记录。StockQA为每个work维护单调attempt ID、route/policy hash、permit ID、费用预留状态、`send_intent_prepared`、W16 `dispatch_commit` receipt、transport结果、ACK及对账状态。一个work最多允许一个有效或outcome_unknown attempt；同run重复点击、worker抢占或fallback都不能生成新的逻辑work键。
+WorkItem租约和provider attempt分开记录。StockQA使用原work/attempt、route/policy、费用预留、耐久发送意图、原响应与ACK记录；一个work不能有多个并发有效或outcome_unknown attempt，重复点击/worker抢占不能新建逻辑work绕过原记录。
 
-StockQA先本地耐久写入`send_intent_prepared`，再调用StockWiki W16 `consume_dispatch_permit`；W16在一个owner事务中重新核对active ReleaseSet和每个组件的资格revision、消费一次性permit并返回耐久`dispatch_commit`。此回执是跨仓派发授权线性化点。consume前过期或资格变化直接拒绝；consume后最多允许原attempt一次POST，即使随后退役也只结算该承诺。permit未消费时重启后不可重放；consume后无法证实请求未发出则标`uncertain/outcome_unknown`、保留预算，不自动新建attempt。
+取消另建Q15、StockWiki逐POST许可证与consume/dispatch_commit、组件资格审批。派发前沿原执行器核当前主体/题义/权限、租约、冻结模型/策略与原子预算预留；不以全局ReleaseSet或人工核查凭证代替这些检查。升级先停止新派发，已发送请求继续按原冻结输入结算。
 
-只有明确未发送，或provider给出冻结策略认可的terminal retryable拒绝并完成费用/搜索账本对账，才允许创建下一attempt；其ID递增、预算重新原子预留、资格重新核验、发包再走新permit。结果成功、unknown、费用未知或ACK失败都不允许借“切换模型”重复发送；ACK重试只投递同一observation/hash，不产生模型调用。
+只有明确未发送，或provider明确终态拒绝且原策略允许、费用/搜索账本已对账时，才允许下一attempt并重新预留预算。可能已发送却结果不明、费用未明或ACK失败时不得借换模型重发；ACK重试只投递同一observation/hash，不产生模型调用。

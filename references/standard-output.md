@@ -1,6 +1,6 @@
 # 标准事实、评分与执行回执
 
-本地已提供事实题库1.0.0（61题）、评分题库3.0.0（222题）、标准观察1.0.0和离线编排/验证。它们不调用模型；StockQA原有解析路径尚须Q03/F02适配原生score/fact，不能用外层默认5分装载非评分事实。
+本地已提供事实题库1.0.0（61题）、评分题库3.2.1（222题）、标准观察1.0.0和离线编排/验证。日常在线入口与当前状态见[总README](../README.md)和[当前计划](../task_plan.md)；这里说明数据契约，不要求用户手工制作审核文件后才能使用UI。评分解析/运行/入库已接通，完整事实生产与关系查询仍未验收；非评分事实不能用外层默认5分装载。
 
 ## 题库和字段
 
@@ -36,7 +36,7 @@ python -X utf8 scripts/standard_answers.py compare --left left-observation.json 
 
 编排仍输出StockQA既有`[{category, questions:[字符串]}]`格式，不实现第二套调用器。标准answers输入是`{question_id: 内容对象}`，receipts由StockQA提供；参考[样板](../examples/standard-output.json)中的完整manifest/answers/receipts与标准观察。真实build要求经身份拥有者确认的entity_id，证券题另要求security_id。示例全部为虚构，搜索回执是明确的离线fixture，不证明实际搜索。
 
-旧normalize使用score/description和独立accepted_ids协议，继续保留其证据门槛；未携带执行回执的结果标legacy_unattributed，model/answered_at=null。不能补上当前时间和猜测模型以冒充完整历史。标准观察当前用于验证/交换和逐项比较；StockWiki的入库、批次快照、筛选和UI仍按实施包接线。
+旧normalize使用score/description和独立accepted_ids协议，仅为历史兼容，不作为新扫描前置；未携带执行回执的结果标legacy_unattributed，model/answered_at=null。不能补上当前时间和猜测模型以冒充完整历史。标准观察用于验证/交换和逐项比较；StockWiki入库、历史与原UI已有实际接线，完整范围以当前计划为准。
 
 ## 比较和快照
 

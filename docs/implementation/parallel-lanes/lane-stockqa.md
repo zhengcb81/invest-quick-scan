@@ -4,21 +4,21 @@
 
 **项目目录:** `C:/Users/郑曾波/Projects/StockQAbyLLM/`；一个写入harness独占全仓，禁止另一个agent同时写StockQA。
 
-**授权:** 用户已授权StockQA全仓修改，但每个批次必须在写入前把精确文件清单和目的报备；此lane文档不扩大授权、不授权真实API或费用。
+**当前授权:** 用户已有本项目必要后续跨仓修复、实际模型验证及正常提交推送授权，不按本页旧批次再次逐文件索权；实际调用仍走原配置/预算账本，同仓只允许一个writer。
 
-**第一候选:** Q04；当前Q03结果路径任务级验收通过，但准确StockQA树有55项既有未提交状态，故需先冻结包含Q03修复的准确基线。
+**当前任务:** 只按根PWF的Next Step继续。本页任务簇是owner分工参考，旧Q03/Q04和工作树数字不代表当前未完成状态。
 
 ## 独立上下文与职责
 
-StockQA执行版本化问题，负责模型优先级/故障分类、搜索receipt、逐题任务、预算/并发、重试/检查点/outbox、配置与可控公开运行入口。它消费IQS question/recipe/release与StockWiki的权威身份/dispatch fence/ACK契约；不能复制StockWiki名单、身份映射或正式观察库。公司输入只在prompt/内存处理并产生允许保存的结构化答案和最小来源receipt，不下载或保存财报、网页正文或公司档案。
+StockQA执行版本化问题，负责模型优先级/故障分类、搜索receipt、逐题任务、预算/并发、重试/检查点/outbox、配置与可控公开运行入口。它消费IQS question/recipe/release与StockWiki的权威身份/ACK契约；不能复制StockWiki名单、身份映射或正式观察库。公司输入只在prompt/内存处理并产生允许保存的结构化答案和最小来源receipt，不下载或保存财报、网页正文或公司档案。
 
 ## 任务范围与包内顺序
 
-负责`tasks.json`中owner=`stockqa`的26项：Q01–Q05、Q06–Q12、Q13/Q14/Q15、F02、L01/L03、B01、O02/O04、X01/X03、V06/V09/V14。任务依赖不可跨越；同一执行链内按`depends_on`顺序完成。
+范围以当前`tasks.json`中owner=`stockqa`的条目为准；1.10.19已取消Q15第二派发许可证任务。任务依赖不可跨越；同一执行链内按`depends_on`顺序完成。
 
 重要写入簇共用runner、parser、attempt/outbox、预算与transport，必须由同一线连续实现：
 
-1. Q04/Q05/Q08/Q09/Q11/Q12/Q14/Q15：provider cascade、策略snapshot/revision、失败分类、预算并发、答案parser与dispatch fence。Q04第一阶段只处理LLM-10运行中revision和PAR-11路由槽位等待，并先查明公开CLI真实构造/调用链。
+1. Q04/Q05/Q08/Q09/Q11/Q12/Q14：provider cascade、策略snapshot/revision、失败分类、预算并发、答案parser与原attempt防重。Q04第一阶段只处理LLM-10运行中revision和PAR-11路由槽位等待，并先查明公开CLI真实构造/调用链。
 2. Q06/Q07/Q10/Q13/V09/V14：work store/逐题检查点、结果outbox、recipe与facts执行及回执。
 3. X01/X03/O02/O04/V06：公开runner/配置/能力与公平调度；只能在依赖门通过后接入。
 4. L01/L03/B01：运行试点/搜索分组benchmark是评测包，不与生产数据混跑；只用独立临时目录、用户提供的公司名单和已确认的预算。

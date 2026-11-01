@@ -56,6 +56,6 @@ Q01—Q03与Q12的离线调用契约通过独立复核。Q12定向测试64项通
 python -X utf8 scripts/question_sets.py compose --profile examples/profile.json --mode quick --answer-format screening-1 --out-dir runs/score-screening
 ```
 
-随后由StockQA公开CLI运行该目录的`questions.json`。归档原样结果和输入绑定后，以`question_sets.normalize(manifest, screening_bundle)`或现有`normalize --manifest ... --answers ... --output ...`导入；新模式不传`--review`。这条路径目前还不是最终一键运行器，批量接续、模型顺位/额度调度、统一数据库和结果UI仍按实施计划后续跨仓接线。
+随后由StockQA公开CLI运行该目录的`questions.json`。归档原样结果和输入绑定后，以`question_sets.normalize(manifest, screening_bundle)`或现有`normalize --manifest ... --answers ... --output ...`导入；新模式不传`--review`。这是单独离线交换方式；日常使用[原工作台](../README.md)，原入口的调度、入库、UI和恢复已接通。新可选共享引擎跨模型顺位降级、规模及事实/消费者尚有余项，见[当前计划](../task_plan.md)，不要把旧批次边界再次当作开工门。
 
 本地S02回归在唯一临时工作目录导入真实StockQA类并调用真实公共CLI；只在HTTP `Session.post`边界使用固定虚构Responses API响应，真实搜索响应解析器、provider、runner、CLI和序列化器均实际运行，不发网络请求、不产生LLM费用。API配置、日志、题包、输出均在唯一临时目录，字节码写入被禁止；成功和强制异常路径都验证文件句柄、模块缓存、cwd、参数、环境和临时目录恢复，并核对StockQA源码树的pyc文件零漂移。成功路径检查CLI自行生成的原始问题哈希和每次attempt的HTTP 200，筛选导入得8分，formal research仍为`not_accepted`；负例验证最终attempt回执篡改会失败关闭。真实网络与来源内容准确性另由启用密钥的live验收覆盖；没有密钥时该live验收保持未执行，不能用离线fixture替代。

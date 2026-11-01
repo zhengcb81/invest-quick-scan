@@ -263,6 +263,69 @@ def test_explicit_finalization_uses_actual_external_context_and_original_owner_c
     assert result["runtime_summary"]["owner_authority_verified"] is False
 
 
+@pytest.mark.parametrize("actual", ["1.2.0"], indirect=True)
+def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(actual, tmp_path, monkeypatch):
+    """Synthetic software E2E: real owner/SDK/engine, only vendor HTTP scripted."""
+    from src.core.models import Question
+    from src.core.qa_engine import QAEngine
+    from src.utils.quick_scan_shared_company import run_shared_company_scan
+    from src.utils.http_client import http_client_manager
+    from tests.unit.test_llm_client import _b01_thinking_response
+    from iqs_company_agent_lab import synthfixtures as sf
+    policy = _policy(model="mimo-v2.6-pro", max_cost=25, max_cost_per_attempt=1)
+    prepared = setup_admission(actual, tmp_path, policy=policy, provider="mimo", selected_question_count=2)
+    accepted = RefreshAdmissionService(prepared['deployment_file'], process_env=dict(SAFE_ENV)).admit(prepared['consent']['confirmation_id'])
+    assert accepted['status'] == 'accepted'
+    settings = dict(root=str(tmp_path), deployment=str(prepared['deployment_file']),
+                    confirmation_id=prepared['consent']['confirmation_id'], bundle=str(prepared['bundle']), policy=policy)
+    task, services = construct(settings)
+    excerpt = 'SYNTHETIC-CONTEXT-CANARY: same-period OCF=100; cash capex=40; no real company finding.'
+    record = dict(evidence_id='synthetic-primary', scope='issuer', period_start='2025-01-01', period_end='2025-12-31',
+                  unit='thousand', currency='CNY', accounting_basis='synthetic', source_url='https://example.org/source',
+                  published_at='2026-10-01', retrieved_at_utc='2026-10-13T00:00:00Z', excerpt=excerpt,
+                  excerpt_sha256=hashlib.sha256(excerpt.encode()).hexdigest(), claim_kind='fact',
+                  support_status='supported', supersedes_id=None, limitations=['Synthetic software fixture only.'])
+    config = dict(schema_version='1.0.0', iqs_root=str(CODE), company_agent_root=str(COMPANY),
+                  runtime_bridge_root=str(BRIDGE), state_root=str(tmp_path/'shared'),
+                  evidence_boards=[{'subject_ref': task.raw['owner_binding']['subject_ref'], 'records':[record]}])
+    before_config = copy.deepcopy(config)
+    posts = []
+    class Wire:
+        def post(self, *args, **kwargs):
+            body = kwargs['json']; posts.append(copy.deepcopy(body))
+            assert body['thinking'] == {'type':'enabled'}
+            assert any(t.get('type') == 'web_search' for t in body['tools'])
+            assert excerpt in json.dumps(body)
+            context = json.loads(body['messages'][-1]['content'].splitlines()[-1])
+            selected = context['requested_question_ids']
+            answers = [sf.gen_insufficient(row['question']) for row in task.questions if row['question_id'] in selected]
+            for answer in answers:
+                answer.update(status='not_applicable', information_as_of=task.raw['information_cutoff'],
+                              summary='[Synthetic software fixture] No financial assertion.')
+            response = _b01_thinking_response('mimo_chat_completions','mimo-v2.6-pro',
+                                             final=json.dumps({'answers':answers,'declared_question_ids':selected}))
+            payload = response.json.return_value
+            payload['usage']['prompt_tokens_details'] = {'cached_tokens':0}
+            response.content = json.dumps(payload).encode()
+            return response
+    monkeypatch.setattr(http_client_manager,'get_sync_session',lambda:Wire())
+    questions = [Question(row['question']['prompt'],question_id=row['question_id']) for row in task.questions]
+    arguments = dict(config=config, questions=questions, cost_resolver=services.cost_resolver,
+                     question_pack_size=1, max_output_tokens=4096, transport_origin='scripted_wire')
+    result = run_shared_company_scan(services.lifecycle, services.client, **arguments)
+    assert {row['question_id'] for row in result['checkpoints']} == set(task.question_ids) and len(posts) == 2
+    from types import SimpleNamespace
+    hydrator = QAEngine(SimpleNamespace(get_provider_name=lambda:'hydrate-only'), work_item_lifecycle=services.lifecycle)
+    hydrated = hydrator.hydrate_questions(questions)
+    assert len(hydrated.results) == 2
+    work_ids = [services.owner.existing_work(qid)['work_item_id'] for qid in task.question_ids]
+    original = [services.store.get_answer_checkpoint(w) for w in work_ids]
+    run_shared_company_scan(services.lifecycle, services.client, **arguments)
+    assert len(posts) == 2 and config == before_config
+    assert [services.store.get_answer_checkpoint(w) for w in work_ids] == original
+    assert all(services.store.get_result_delivery(w)['state']=='ready' for w in work_ids)
+
+
 def child_run(config_path, phase):
     config = json.loads(Path(config_path).read_text(encoding="utf8"))
     base = Path(config["root"])

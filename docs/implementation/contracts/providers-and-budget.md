@@ -70,6 +70,6 @@ LLM-03—06、LLM-10、BUD-01—04及PAR-01—03/PAR-06—08在本卡冻结预�
 
 ## 1.9.3 备用路由必须由attempt终态驱动
 
-模型顺位先后与attempt生命周期是两个维度：并发槽满时等待当前首选，不能fallback；只有冻结策略认可的provider故障才允许进入下一顺位。下一attempt仅能在上次请求被明确证明未发送，或provider已返回策略认可的retryable terminal结果且账本完成费用对账后创建。fallback使用新的单调attempt_id、重新预留共享预算，并通过W16获得新的permit/consume/dispatch_commit。HTTP结果不明、超时或consume后崩溃若可能已经发送，必须保留预留并进入`outcome_unknown`，只允许同attempt查单/对账，不能换模型抢答。成功答案即停止顺位；低分、unknown或搜索证据质量不足不构成fallback理由。
+模型顺位先后与attempt生命周期是两个维度：并发槽满时等待当前首选，不能fallback；只有冻结策略认可的provider故障才允许进入下一顺位。下一attempt仅能在上次请求被明确证明未发送，或provider已返回策略认可的retryable terminal结果且账本完成费用对账后创建。fallback使用StockQA新的单调attempt_id，沿原权限、lease/send_intent及共享预算原子预留路径执行，不新增W16跨仓许可证。HTTP结果不明、超时或发送意图记录后崩溃若可能已经发送，必须保留预留并进入`outcome_unknown`，只允许同attempt查单/对账，不能换模型抢答。成功答案即停止顺位；低分、unknown或搜索证据质量不足不构成fallback理由。
 
-StockQA本地`send_intent_prepared`必须在传输前耐久记录，但只有StockWiki W16 consume事务的匹配`dispatch_commit`回执授权一次POST；这用于跨owner数据库无法原子提交的边界。permit发出后未consume不可重放；consume成功后最多执行一条POST。细节和组件资格CAS见[全项目可组合演进设计](../composable-evolution-plan.md)及I46/I49/I50。
+StockQA保留原send_intent、lease/attempt、原子预算预留和已收响应/ACK链；记录发送意图不等于可以绕过原权限或预算。1.10.19取消未上线的W16/Q15第二派发授权和逐POST跨仓permit/consume/dispatch_commit，不要求全局active ReleaseSet或组件资格revision。已付答案的零HTTP恢复和交付不消耗新预算；未知发送结果保留原占用并先对账。兼容升级先停止新派发再切换配置，原attempt按冻结输入结算。

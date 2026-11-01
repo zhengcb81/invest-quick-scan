@@ -68,7 +68,7 @@ class ImplementationPlanTests(unittest.TestCase):
             task_map["F01"]["depends_on"].append("S02")
         for tid in ("X07", "X09", "X10"):
             task_map[tid]["depends_on"] = [dep for dep in task_map[tid]["depends_on"] if dep != "G5"]
-        for tid in ("V16", "V17", "W16", "Q14", "Q15", "X01", "O01", "O02"):
+        for tid in ("V16", "V17", "W16", "Q14", "X01", "O01", "O02"):
             task_map[tid]["depends_on"] = [dep for dep in task_map[tid]["depends_on"] if dep != "G3"]
         task_map["O05"]["depends_on"] = [dep for dep in task_map["O05"]["depends_on"] if dep != "O04"]
         for dep in ("O02", "W12"):
@@ -336,7 +336,7 @@ class ImplementationPlanTests(unittest.TestCase):
 
     def test_atomic_assertion_bindings_are_validated_and_stable(self):
         cases = {case["id"]: case for case in self.cases["cases"]}
-        for case_id in ("MOD-07", "MOD-13", "MOD-14", "MOD-16", "MOD-17", "MOD-18", "MOD-19", "EVO-83"):
+        for case_id in ("MOD-07", "MOD-13", "MOD-14", "MOD-16", "MOD-17", "MOD-18", "MOD-19"):
             with self.subTest(case=case_id):
                 assertions = cases[case_id]["assertions"]
                 self.assertTrue(assertions)
@@ -350,18 +350,18 @@ class ImplementationPlanTests(unittest.TestCase):
         case["assertions"][1]["id"] = case["assertions"][0]["id"]
         self.rejected("MOD-14: duplicate assertion ID")
         self.cases = copy.deepcopy(self.original_cases)
-        case = next(item for item in self.cases["cases"] if item["id"] == "EVO-83")
+        case = next(item for item in self.cases["cases"] if item["id"] == "MOD-14")
         case["assertions"][0]["entrypoint"] = " "
-        self.rejected("EVO-83: assertion missing entrypoint")
+        self.rejected("MOD-14: assertion missing entrypoint")
 
-    def test_compatibility_window_tasks_remain_in_the_delivery_graph_without_receipt_gate(self):
+    def test_version_compatibility_remains_without_expiry_or_receipt_gate(self):
         task_map = {task["id"]: task for task in self.plan["tasks"]}
         required = set(self.plan["release_requirements"]["required_tasks"])
         self.assertNotIn("P01", required)
         self.assertNotIn("P01", self.task("G0")["depends_on"])
         for task_id in ("C01", "C02", "C03", "C04", "C05", "C06", "C07"):
             self.assertNotIn("P01", self.task(task_id)["depends_on"])
-        self.assertIn("EVO-83", self.task("V16")["case_ids"])
+        self.assertIn("EVO-47", self.task("V16")["case_ids"])
         self.assertIn("V16", ip.dependency_ids(task_map, "G6"))
 
     def test_composable_evolution_is_in_release_without_blocking_scoring_on_facts(self):
@@ -429,65 +429,50 @@ class ImplementationPlanTests(unittest.TestCase):
         self.assertIn("B01", self.plan["release_requirements"]["required_tasks"])
         self.assertEqual(case["status"], "specified_not_executed")
 
-    def test_component_evolution_extensions_are_mandatory_and_owner_scoped(self):
+    def test_component_evolution_preserves_owner_functions_without_second_authorization(self):
         task_map = {task["id"]: task for task in self.plan["tasks"]}
-        expected = {"V16", "V17", "W16", "Q14", "Q15", "V18"}
-        ancestors = set(ip.dependency_ids(task_map, "G6"))
-        self.assertTrue(expected <= ancestors)
+        expected = {"V16", "V17", "W16", "Q14", "V18"}
+        self.assertTrue(expected <= set(ip.dependency_ids(task_map, "G6")))
         self.assertTrue(expected <= set(self.plan["release_requirements"]["required_tasks"]))
-        self.assertEqual(self.task("Q14")["owner"], "stockqa")
-        self.assertEqual(self.task("V16")["owner"], "iqs")
-        self.assertEqual(self.task("V17")["owner"], "iqs")
-        self.assertEqual(self.task("W16")["owner"], "stockwiki")
-        self.assertEqual(self.task("Q15")["owner"], "stockqa")
-        self.assertEqual(self.task("V18")["owner"], "iqs")
+        for tid, owner in (("V16", "iqs"), ("V17", "iqs"), ("V18", "iqs"),
+                           ("W16", "stockwiki"), ("Q14", "stockqa")):
+            self.assertEqual(self.task(tid)["owner"], owner)
+        self.assertNotIn("Q15", task_map)
+        self.assertNotIn("Q15", self.plan["release_requirements"]["required_tasks"])
+        self.assertNotIn("W16", self.task("X05")["depends_on"])
+        self.assertNotIn("W16", self.task("X07")["depends_on"])
+        self.assertIn("W16", self.task("X09")["depends_on"])
+        self.assertIn("V17", self.task("W16")["depends_on"])
+        self.assertIn("V16", self.task("Q14")["depends_on"])
         cases = {case["id"]: case for case in self.cases["cases"]}
-        expected_cases = {f"EVO-{number:02}" for number in range(44, 79)} | {
-            "LLM-13", "LLM-14", "LLM-15"
-        }
-        self.assertTrue(expected_cases <= set(cases))
-        self.assertEqual(cases["EVO-56"]["level"], "review")
-        self.assertEqual(cases["EVO-63"]["kind"], "race")
-        self.assertEqual(cases["LLM-14"]["kind"], "negative")
+        for number in (73, 74, 75, 76, 77, 79, 80, 83):
+            self.assertNotIn(f"EVO-{number}", cases)
+        self.assertNotIn("LLM-17", cases)
+        self.assertEqual(cases["EVO-81"]["owner_task"], "Q08")
+        self.assertIn("EVO-81", self.task("Q08")["case_ids"])
+        self.assertIn("outcome_unknown", " ".join(cases["EVO-81"]["then"]))
+        self.assertIn("原子预留共享预算", " ".join(cases["EVO-82"]["then"]))
         self.assertIn("模型调用为零", " ".join(self.task("Q14")["steps"]))
         self.assertIn("needs_review", " ".join(self.task("V17")["steps"]))
-        self.assertIn("V17", self.task("W16")["depends_on"])
-        self.assertIn("W16", self.task("X05")["depends_on"])
-        self.assertIn("W16", self.task("X09")["depends_on"])
-        self.assertIn("Q15", ip.dependency_ids(task_map, "X05"))
-        self.assertIn("Q15", ip.dependency_ids(task_map, "X09"))
-        self.assertIn("V16", self.task("Q14")["depends_on"])
-        self.assertIn("Q14", self.task("X07")["depends_on"])
-        self.assertIn("Q14", self.task("X09")["depends_on"])
-        self.assertIn("X05", self.task("X09")["depends_on"])
-        self.assertIn("EVO-64", self.task("X07")["case_ids"])
-        self.assertIn("EVO-68", self.task("X08")["case_ids"])
-        self.assertTrue({"EVO-67", "EVO-69", "EVO-70", "EVO-71", "EVO-72",
-                         "EVO-74", "EVO-76", "EVO-80", "EVO-81", "EVO-82"}
+        self.assertTrue({"EVO-67", "EVO-69", "EVO-70", "EVO-71", "EVO-72", "EVO-81", "EVO-82"}
                         <= set(self.task("X09")["case_ids"]))
-        self.assertTrue({"EVO-63", "EVO-65", "EVO-66", "EVO-73", "EVO-75"}
-                        <= set(self.task("W16")["case_ids"]))
-        self.assertTrue({"LLM-17", "EVO-76"} <= set(self.task("Q15")["case_ids"]))
-        self.assertIn("EVO-77", self.task("V16")["case_ids"])
+        self.assertTrue({"EVO-63", "EVO-65", "EVO-66"} <= set(self.task("W16")["case_ids"]))
         self.assertIn("EVO-78", self.task("V18")["case_ids"])
 
     def test_component_evolution_cannot_be_dropped_from_final_release(self):
         self.task("G6")["depends_on"].remove("V18")
-        self.rejected("G6 must include component lifecycle, impact consumer, parser and upgrade rehearsal")
+        self.rejected("G6 must include version metadata, field impact/application, parser and upgrade rehearsal")
 
-    def test_public_paid_entry_cannot_bypass_impact_plan_application(self):
-        self.task("X05")["depends_on"].remove("W16")
-        self.rejected("X05 must consume W16 and X09 must safely settle frozen legacy attempts")
-        self.plan = copy.deepcopy(self.original_plan)
+    def test_public_entry_requires_real_settlement_and_field_integration_only(self):
         self.task("X09")["case_ids"].remove("EVO-67")
-        self.rejected("X05 must consume W16 and X09 must safely settle frozen legacy attempts")
+        self.rejected("X09 must exercise installed legacy settlement")
         self.plan = copy.deepcopy(self.original_plan)
         self.task("X09")["depends_on"].remove("X05")
-        self.rejected("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+        self.rejected("X09 must exercise installed legacy settlement")
 
     def test_release_set_cannot_omit_parser_release_or_actual_hash_case(self):
         self.task("X07")["depends_on"].remove("Q14")
-        self.rejected("X07 release set must bind V16, V17, W16 and Q14 parser releases")
+        self.rejected("X07 release metadata must bind V16, V17 and Q14 parser versions")
         self.plan = copy.deepcopy(self.original_plan)
         self.task("X07")["case_ids"].remove("EVO-64")
         self.rejected("X07 must validate candidate parser/schema/evidence hashes before installation")
@@ -503,10 +488,10 @@ class ImplementationPlanTests(unittest.TestCase):
             with self.subTest(case=case_id):
                 self.plan = copy.deepcopy(self.original_plan)
                 self.task("X09")["case_ids"].remove(case_id)
-                self.rejected("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+                self.rejected("X09 must exercise installed legacy settlement")
         self.plan = copy.deepcopy(self.original_plan)
         self.task("W16")["case_ids"].remove("EVO-66")
-        self.rejected("W16 must cover atomic apply, old settlement, deterministic-plan rejection, candidate gating, active-pointer CAS")
+        self.rejected("W16 must cover atomic field apply, old settlement and target-scope rejection")
 
     def test_owner_task_cannot_claim_downstream_integration_cases(self):
         self.task("W16")["case_ids"].append("EVO-67")
@@ -535,53 +520,29 @@ class ImplementationPlanTests(unittest.TestCase):
         case["requires_tasks"] = [{"task": "Q02"}]
         self.rejected("LLM-01: requires_tasks must be unique task IDs")
 
-    def test_active_release_set_and_pre_post_fence_are_in_final_path(self):
-        cases = {case["id"]: case for case in self.cases["cases"]}
-        self.assertEqual(cases["EVO-73"]["kind"], "negative")
-        self.assertEqual(cases["EVO-75"]["kind"], "race")
-        self.assertEqual(cases["EVO-76"]["kind"], "race")
-        self.assertEqual(cases["EVO-77"]["kind"], "boundary")
-        self.assertIn("candidate只可预览", " ".join(self.task("W16")["steps"]))
-        self.assertIn("active ReleaseSet", " ".join(self.task("X05")["steps"]))
-        self.assertIn("dispatch fence", " ".join(self.task("Q15")["steps"]))
-        self.assertIn("Q15", self.plan["release_requirements"]["required_tasks"])
-        self.assertIn("唯一owner", " ".join(self.task("W16")["steps"]))
-        self.assertIn("短时、单次", " ".join(self.task("W16")["steps"]))
-        self.assertIn("send_intent_prepared或W16 consume尚未提交即崩溃", " ".join(self.task("Q15")["steps"]))
-        evo66 = cases["EVO-66"]
-        self.assertIn("固定V17实现", " ".join(evo66["then"]))
-        self.assertNotIn("可信owner回执", " ".join(evo66["then"]))
-        self.assertIn("不应自动改变", cases["EVO-77"]["given"])
-        self.assertIn("send_intent_prepared", cases["EVO-76"]["given"])
-        self.assertIn("跨仓授权线性化点", " ".join(self.task("Q15")["steps"]))
-        self.task("X05")["depends_on"].remove("Q15")
-        self.rejected("X05 must depend on Q15 before any public paid dispatch")
+    def test_current_plan_has_no_second_dispatch_authorization_dependencies(self):
+        self.assertEqual(self.plan["version"], "1.10.19")
+        for task in self.plan["tasks"]:
+            self.assertNotIn("Q15", task["depends_on"])
+        self.assertTrue({"I44", "I46", "I47", "I49"}.isdisjoint(self.plan["invariant_ids"]))
+        self.assertIn("停止新派发", " ".join(self.task("V18")["steps"]))
+        self.assertIn("lease/attempt/send_intent", " ".join(self.plan["global_boundaries"]))
+        self.assertIn("统一预算原子预留", " ".join(self.plan["global_boundaries"]))
+        self.assertIn("outcome_unknown", " ".join(self.plan["global_boundaries"]))
 
-    def test_two_phase_dispatch_contract_is_consistent_across_current_docs(self):
-        boundary = next(item for item in self.plan["global_boundaries"] if item.startswith("W16唯一拥有dispatch fence"))
-        active_docs = (
-            "docs/implementation/README.md",
-            "docs/implementation/composable-evolution-plan.md",
-            "docs/implementation/contracts/freshness-and-jobs.md",
-            "docs/implementation/cross-project-delivery.md",
-            "docs/implementation/decision-register.md",
-            "docs/implementation/one-click-launch.md",
-            "docs/implementation/test-strategy.md",
-        )
-        stale_phrases = (
-            "permit+send_intent",
-            "将permit和本地send_intent耐久提交后才POST",
-            "消费后须先将permit绑定到本地send_intent并耐久提交，再POST",
-        )
-        for token in ("send_intent_prepared", "consume_dispatch_permit", "dispatch_commit", "outcome_unknown"):
-            self.assertIn(token, boundary)
-        for relative_path in active_docs:
-            with self.subTest(path=relative_path):
-                content = (ROOT / relative_path).read_text(encoding="utf-8")
-                self.assertIn("consume_dispatch_permit", content)
-                self.assertIn("dispatch_commit", content)
-                for stale in stale_phrases:
-                    self.assertNotIn(stale, content)
+    def test_current_norms_describe_metadata_not_another_permission_service(self):
+        for path in ("README.md", "composable-evolution-plan.md", "decision-register.md",
+                     "test-strategy.md", "contracts/providers-and-budget.md",
+                     "contracts/launch-and-release.md"):
+            with self.subTest(path=path):
+                content = (ROOT / "docs/implementation" / path).read_text(encoding="utf-8")
+                self.assertIn("1.10.19", content)
+                self.assertTrue("取消" in content or "退役" in content)
+                self.assertIn("预算", content)
+        # An unrelated start does not depend on evolution-field application or a global permit.
+        task_map = {task["id"]: task for task in self.plan["tasks"]}
+        self.assertNotIn("W16", ip.dependency_ids(task_map, "X05"))
+        self.assertTrue({"G3", "G5"} <= set(ip.dependency_ids(task_map, "G6")))
 
     def test_versioned_answer_parser_cannot_be_owned_by_quick_scan(self):
         self.task("Q14")["owner"] = "iqs"
