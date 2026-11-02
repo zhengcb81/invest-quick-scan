@@ -1,6 +1,6 @@
 # 当前接手说明
 
-更新于2026-11-01。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
+更新于2026-11-02。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
 
 ## 当前已经完成什么
 
@@ -12,15 +12,17 @@
 
 ## 现在从哪里继续
 
+**11/02逐项核对覆盖旧“整改已完成”表述：** 原10组中6组在原软件范围已闭合，5/8/9/10仍部分完成；[完整子项表](reviews/CODE-QUALITY-2026-11-01/checklist-2026-11-02.md)给出代码位置、真实反例与测试范围。先补前端坏草稿boot隔离、研究通道capability失真，再补旧one_click的两库透传/HTML/历史标签及engine残余私有调用；随后继续原共享fallback。都挂回原条目，不新发支线/新门。本次核对未改产品源码、配置或原库，原费用及gen6/gen7状态如下保持。
+
 **本次终态已读，不得重发：** [Dashboard NEW-6](reviews/DASHBOARD-NEW6-2026-11-01.md)最终候选定点复测通过，不代签其D00/E07。真实CATL IQS_11 gen7 comparison的`run-5a03133643e34e60b69d6b9b311b46c0`／`batch-a4a0514b51f04d9fa048f266500a7ec2`，work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`：首两段均0HTTP发送前失败，相关根修已集中独审；第三段仅1次真实HTTP，safe完成23:44:40.990609Z、进程23:44:57Z exit1。两条第一方原数已被原payload hash证明实送，FCF算术正确；但未登记metric_id年份后缀导致slot invalid/answer_semantic_contract_rejected。CP/ACK=None，尚不能签该代次缓存。勿重做prepare/confirm/apply、清计数或另建work绕开。
 
-普通policy11及prepare现已精确恢复，pack2/thinking/max32768、shared=null/refs=null，60包保留，doctor ready/无阻塞；**不要再次运行configure或release_unsent.py**。私有编排/原备份及final-ledger、ordinary-restored-check在`runs/quality-context-retest-2026-11-01/`。总账87HTTP/2053896micros，增1HTTP/US$0.029033；0在途/未结，但1个work仍leased/epoch2、attempt=response_available，不能写active=0。原safe/receipt/旧gen6四hash保持；下一步按根Next Step继续原共享顺位接线；本次invalid明确保留，不改raw求绿、不放开任意financial.*、不重问已付请求。canonical投影不是小修，不为此扩建协议或增加后续开发门。金融分红范围等限制见[真实复核](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。
+普通policy11及prepare现已精确恢复，pack2/thinking/max32768、shared=null/refs=null，60包保留，doctor ready/无阻塞；**不要再次运行configure或release_unsent.py**。私有编排/原备份及final-ledger、ordinary-restored-check在`runs/quality-context-retest-2026-11-01/`。总账87HTTP/2053896micros，增1HTTP/US$0.029033；0在途/未结，但1个work仍leased/epoch2、attempt=response_available，不能写active=0。原safe/receipt/旧gen6四hash保持；下一步按根Next Step先补原清单遗漏，再继续原共享顺位接线；本次invalid明确保留，不改raw求绿、不放开任意financial.*、不重问已付请求。canonical投影不是小修，不为此扩建协议或增加后续开发门。金融分红范围等限制见[真实复核](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。
 
-代码审查整改已完成并集中非作者审查通过，详见[核源与整改报告](reviews/CODE-QUALITY-2026-11-01/report.md)。已付safe保全不再要求新发送委托/租约/手动分类覆盖仍有效；主体/anchor/actor撤权/原response和物理回执/CAS仍严格。普通与共享恢复都只保存原回答；混合范围明确原登记/本次恢复子集。原budget/provider材料仍须存在可绑定，不重造历史。原parser外层日期仅缺key时沿原inner提取，不猜新日期。
+此前已实施的局部整改经集中非作者审查通过；11/02核对确认尚有上述4组遗漏，不能把局部通过称为整组完成，详见[核源与整改报告](reviews/CODE-QUALITY-2026-11-01/report.md)。已付safe保全不再要求新发送委托/租约/手动分类覆盖仍有效；主体/anchor/actor撤权/原response和物理回执/CAS仍严格。普通与共享恢复都只保存原回答；混合范围明确原登记/本次恢复子集。原budget/provider材料仍须存在可绑定，不重造历史。原parser外层日期仅缺key时沿原inner提取，不猜新日期。
 
-共享资源按真实packs派生；旧CP保持原task/证据/控件。多期指标与比较、UI锁/草稿故障/超时、公开owner投影和work快照、模块元数据与import环均已修，旧生成器退役。早间59包/86HTTP是历史快照；当前60包/87HTTP及残余work状态以上段为准，不重做已交付对象。
+共享资源按真实packs派生；旧CP保持原task/证据/控件。多期指标/比较、UI锁/后端草稿故障/超时、公开owner投影/work快照、模块风险元数据/import环已修，旧生成器退役；前端boot、engine残余私有接口、研究capability及旧one_click子链仍按核对表补齐。早间59包/86HTTP是历史快照；当前60包/87HTTP及残余work状态以上段为准，不重做已交付对象。
 
-下一工作仍按根计划：回答质量与原共享自动跨模型fallback（尚未接，不能循环client冒签），然后200家可靠性、事实F05、TH/IN正式消费、认可名单扩容与完整配套；不新发支线、不造门。此次工程收尾不是全项目完成。
+下一工作先按11/02核对表补原5/8/9/10遗漏，再按根计划推进回答质量与原共享自动跨模型fallback（尚未接，不能循环client冒签），然后200家可靠性、事实F05、TH/IN正式消费、认可名单扩容与完整配套；不新发支线、不造门。此次工程收尾不是全项目完成。
 
 ## 本机运行与普通配置
 

@@ -1,6 +1,18 @@
 # 当前进度与阶段证据
 
-更新于2026-11-01。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
+更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
+
+## 11/02 整改清单逐子项核对
+
+用户要求原整改一个不漏地核对。主控亲读原报告1—10、实际实现和测试，三名非对应作者交叉查源；复读原124P/154P、两份原owner/SDK E2E及独立尾修日志，按子项区分软件、真实金融与产品范围。完整表见[checklist](docs/implementation/reviews/CODE-QUALITY-2026-11-01/checklist-2026-11-02.md)。原10组有6组按原软件要求闭合，5/8/9/10仍部分完成；此前“整改已完成”表述过宽，已同步根计划、发现、交接和原报告，不改签历史测试或旧原件。
+
+实际遗漏：5后端草稿故障已隔离但UI store启动Promise.all仍要求answers正常，坏JSON/坏结构令main在connect/router前退出；8普通web_search能力被误当研究native final_json能力，OpenAI capability声明true但真实研究构造拒；共享fallback仍未接。9公开task/snapshot/delivery/import环已完成，但生产engine仍读私有context/transport及_assert_registered_inputs。10 one_click未给provenance传两库，仍读旧Alphabet/10月实验；financial_mechanical_check接受--html但不生成，旧入口却链接它；固定10/18 preflight也未标历史。低优先额外限制：旧rubric补同义critical字段聚合不变，但same-method升级仍按原dict差异要求新method_id；旧读取与原风险修复通过，不扩大成当前UI门。
+
+主控纯内存SDK构造探针0HTTP重复确认能力误报；独审直接import实际UI store并mock fetch，合法runs成功、坏JSON/answers数组/runs对象均拒，未改源文件或生产草稿。指标/元数据定向20P/32.07秒（本次工具结果，无独立文件日志），自有C:/Temp/iqs-audit67-*已自动清理，去密钥/禁自动插件/禁pycache；包装器没有额外禁socket，不能称网络隔离经拦截证实，所选测试没有调用模型/搜索/服务。选择为MetricCoordinatesTests、新critical/旧rubric、新diagnostic、三行业route及QA三项实际标准验证。NEW-6再内存核5scope和6条实际TS/JS深链均精确解析，不替代D00/E07/浏览器。
+
+另一个UI/旧工具13函数定向pytest尝试没有得到有效收集/断言输出，已停止，**不报通过**，自有TEMP无遗留；改以实际Node反例、当前源码和已存在针对性测试核对，不能拿旧154P执行模块证明前端boot已测。未再跑小时全套。前次未定位AppContainer临时目录的清理限制保留，原报告全清措辞已收窄。
+
+本次只读原账本仍87HTTP/2053896micros、0在途/未结，gen6 delivered/CP1，gen7 leased/response_available/CP0；无新收费/配置/观察库写入。源版本与工作树已核，原UI实际仓是iqs-question-bank-ui-lab 8fc9072。QA/SW沙箱git status曾误报非worktree，外层只读核实干净；不回滚并发writer。根10/10 README保持。
 
 ## 11/01 接续与 Dashboard NEW-6
 

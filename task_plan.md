@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-01接续整改的软件部分已集中独审通过，Dashboard NEW-6最终候选独立定点复测通过。原UI同run第三段接续gen7实际新增1次HTTP/US$0.029033，两条第一方短证据已由实际出站hash证实送入模型，FCF两年原数及计算正确。但原答使用未登记的年份后缀metric_id，语义校验正确拒绝，23:44:57Z进程退出；safe保留，尚无CP/ACK或该代次缓存。金融分红范围等亦有残余，不签整答准确。普通policy11/pack2/thinking/max32768已恢复，保留60包。当前原账本87HTTP/US$2.053896、0在途/未结，另有1个leased/response_available待处理，不能写active=0。SDK32k/构造顺序/原未发送接续/成功子包保全已修，相关124P，独审not_sent63P/getter27P，原owner/SDK两pack软件E2E1P/396.47秒。跨模型fallback及原五个产品节点未完，不新发支线/新门。
+执行状态：2026-11-02逐项复核原整改清单，10组中6组在原软件范围闭合，5/8/9/10仍部分完成，详见[核对表](docs/implementation/reviews/CODE-QUALITY-2026-11-01/checklist-2026-11-02.md)。新增确认前端可选草稿仍阻boot、研究通道能力误报、engine私有接口残余、旧one_click错库/坏链接/历史标签；不是只剩fallback。此前已通过的124P/两packE2E及NEW-6定点结论保持各自范围，不代签这些遗漏。原gen7仅1次真实HTTP/US$0.029033，短证据实送且FCF算术改善，但命名拒绝、CP0/无ACK；safe不改、不重问。普通policy11/pack2/thinking/max32768已恢复、60包保留；本次RO账本仍87HTTP/US$2.053896、0在途/未结，1个leased/response_available保留。本次核对不改源码、配置或生产库。
 
 ## 当前结论
 
@@ -42,7 +42,7 @@
 
 ## Next Step
 
-**继续原共享模型顺位接线，先补原确认与双模型明确拒绝切换的测试。** [代码整改](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)及[Dashboard NEW-6定点复测](docs/implementation/reviews/DASHBOARD-NEW6-2026-11-01.md)保持通过，后者不代签D00/E07/浏览器。原有序目标须冻结在同一确认中，每attempt记录实际route；旧请求、comparison与paid恢复保持单模型，不能在现有单模型binding下循环client。gen7的命名不合规按invalid保留：已证实短证据实送、FCF算术改善，但没有CP/ACK；不改raw、不放开任意financial命名、不重发已付请求或清计数/另建代次。只读评估确认通用canonical投影牵涉Runner/同源匹配/非pending已付重处理合同，不是小parser修复；本轮不为一个格式错误扩建协议或把它设成所有后续开发的门。以后确需规范化须兼容旧冻结并保存raw与唯一映射。普通配置已复原；后续仍G3/F05/消费者/配套，不新发支线/新门。
+**先补原清单遗漏，随后继续共享顺位接线。** 按[11/02子项表](docs/implementation/reviews/CODE-QUALITY-2026-11-01/checklist-2026-11-02.md)先修原5前端可选answers故障隔离、原8能力声明与实际研究SDK一致性，再收口原10旧链错库/HTML/历史标签及原9私有接口；只复用原实现，不新发支线或加门。原8共享fallback仍须原确认冻结有序目标、逐attempt实际route，旧请求/comparison/paid恢复保持单模型，不能盲循环client。低优先的同义critical元数据升级限制明确保留，不阻当前UI。gen7命名违规按invalid保留、无CP/ACK，不改raw/分数、不清计数/另建代次或重发已付请求；不为单一样本扩建canonical协议。普通配置已复原，NEW-6仍只签最终候选定点范围；G3/F05/消费者/配套按原产品计划保留。
 
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
 - 普通policy11/1.1、successful_scan/24h及prepare原字节设置已恢复；pack2、thinking=true、max32768，shared配置和comparison refs撤回。保留59个登记包及所有旧答。08:35:49Z原UI同实体/合并主体/截止日/模型再预览IQS_11，cached1、执行包0、0API、原owner未变化；复用同一`obs_37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188`，资料日10/29与原成功搜索时间07:33:28.670089Z不变。
