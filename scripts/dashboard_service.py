@@ -277,11 +277,59 @@ class DashboardService:
         from dashboard_execution import ExecutionGateway
         from dashboard_owner import OwnerGateway
         execution=(self._execution_factory or ExecutionGateway)(config)
-        exported=execution.export_delivery({'bundle_id':bundle_id})
-        outcomes=[]
-        for name,bundle in exported['import_bundles'].items():
+        owner_factory=self._owner_factory or OwnerGateway
+        outcomes=[];recovered=set();referenced=[];original=[]
+        # Read accepted ACKs before rebuilding optional UI export archives. A
+        # process may have died after receiver commit but before local ACK save.
+        # Native StockQA still validates the exact original package and target.
+        if callable(getattr(execution,'delivery_receivers',None)):
             try:
-                owner=(self._owner_factory or OwnerGateway)({**config,'bundles':{name:bundle}})
+                snapshot=execution.delivery_receivers(bundle_id)
+                referenced=[row['question_id'] for row in snapshot.get('items',[]) if row.get('status')=='referenced']
+                original=snapshot.get('consumers',[])
+                owner=owner_factory({**config,'bundles':{}})
+                receiver=owner.status()
+                target={'component':'StockWiki','namespace':'quick_scan','store_id':receiver.get('store_id')}
+                groups={}
+                for row in original:
+                    if (receiver.get('available') and target['store_id'] and row.get('consumer')==target
+                        and row.get('package_id') and row.get('observation_id') and row.get('work_store')):
+                        groups.setdefault((row['work_store'],row['package_id']),[]).append(row)
+                for (ledger,package_id),rows in groups.items():
+                    try:
+                        mapping={row['observation_id']:row['work_item_id'] for row in rows}
+                        acks=[row['ack'] for row in owner.delivery_status(package_id).get('receipts',[])
+                            if isinstance(row.get('ack'),dict) and row['ack'].get('observation_id') in mapping
+                            and row['ack'].get('status') in {'accepted','already_present'}]
+                        if not acks: continue
+                        result=execution.acknowledge_delivery({'work_store':ledger,'work_item_ids':mapping},{'acks':acks})
+                        done={row['work_item_id'] for row in result.get('items',[]) if row.get('state')=='delivered'}
+                        if result.get('status')=='delivered': done.update(mapping.values())
+                        recovered.update(done)
+                        if set(mapping.values()) <= done:
+                            outcomes.append({'package_id':package_id,'status':'already_present',
+                                'ack_reconciliation':result})
+                    except Exception:
+                        # Missing/unusable ACKs retain the established import
+                        # path; a successful sibling ACK is already durable.
+                        continue
+            except Exception:
+                pass
+        if original and all(row['work_item_id'] in recovered for row in original):
+            return {'status':'delivered','items':outcomes,'referenced_question_ids':referenced,
+                'API_requests':0,'financial_accuracy_proven':False}
+        try:
+            exported=execution.export_delivery({'bundle_id':bundle_id})
+        except Exception as exc:
+            if not recovered: raise
+            outcomes.append({'status':'pending','error_code':getattr(exc,'code','delivery_interrupted')})
+            return {'status':'partial','items':outcomes,'referenced_question_ids':referenced,
+                'API_requests':0,'financial_accuracy_proven':False}
+        for name,bundle in exported['import_bundles'].items():
+            if bundle.get('work_item_ids') and set(bundle['work_item_ids'].values()) <= recovered:
+                continue
+            try:
+                owner=owner_factory({**config,'bundles':{name:bundle}})
                 result=self._apply_import(owner,bundle,{'bundle_id':name},execution=execution,
                     workspace=config['workspace_root'],automatic=True)
                 outcomes.append({'bundle_id':name,'status':result.get('status'),

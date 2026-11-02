@@ -11,6 +11,7 @@ import argparse
 import copy
 import json
 import os
+import tempfile
 import time
 from pathlib import Path
 from typing import Any
@@ -249,12 +250,26 @@ def _write_atomic(path, payload):
 
     raw = canonical_json(payload).encode("utf8")
     scan_for_secret(raw.decode("utf8"))
-    temp = path.with_name(path.name + ".pending")
-    with temp.open("xb") as stream:
-        stream.write(raw)
-        stream.flush()
-        os.fsync(stream.fileno())
-    _replace_record(temp, path)
+    _publish_atomic(path, lambda temporary: temporary.write_bytes(raw))
+
+
+def _publish_atomic(path, write):
+    """Publish a complete record without reusing private crash leftovers."""
+    descriptor, name = tempfile.mkstemp(prefix=".iqs-", suffix=".pending", dir=path.parent)
+    os.close(descriptor)
+    temporary = Path(name)
+    try:
+        write(temporary)
+        with temporary.open("r+b") as stream:
+            os.fsync(stream.fileno())
+        _replace_record(temporary, path)
+    finally:
+        try:
+            temporary.unlink(missing_ok=True)
+        except OSError:
+            # A private, unreferenced candidate never becomes recovery input.
+            # Antivirus/indexer handles may keep it open until later.
+            pass
 
 
 def _replace_record(temporary, path):
@@ -292,12 +307,7 @@ def _journal(session_dir, run_id, *, start_seq=-1, start_head=None):
             event = super().append(event_type, data, segment_id)
             raw = ("\n".join(canonical_json(row) for row in self.events) + "\n").encode("utf8")
             path = session_dir / "events.jsonl"
-            temporary = session_dir / "events.jsonl.pending"
-            with temporary.open("xb") as stream:
-                stream.write(raw)
-                stream.flush()
-                os.fsync(stream.fileno())
-            _replace_record(temporary, path)
+            _publish_atomic(path, lambda temporary: temporary.write_bytes(raw))
             return event
 
     return DurableOriginalJournal(run_id, start_seq=start_seq, start_head_sha256=start_head)
@@ -313,31 +323,25 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
     class CheckpointedPort:
         def _save(self, intent, receipt=None):
             runner = runner_ref[0]
-            name = "pending-history-" + str(runner.journal.seq) + ".jsonl"
-            history = session_dir / name
+            import hashlib
             events = [
                 e for _, journal in history_journals for e in journal.events
             ] + runner.journal.events
             raw = ("\n".join(canonical_json(e) for e in events) + "\n").encode("utf8")
+            # 128-bit filename discriminator avoids growing Windows paths;
+            # exact bytes and the original full event/checkpoint hashes remain checked.
+            name = "pending-history-" + str(runner.journal.seq) + "-" + hashlib.sha256(raw).hexdigest()[:32] + ".jsonl"
+            history = session_dir / name
             if history.exists():
                 if history.read_bytes() != raw:
                     raise SharedEngineRejected("immutable_pending_history_conflict")
             else:
-                with history.open("xb") as stream:
-                    stream.write(raw)
-                    stream.flush()
-                    os.fsync(stream.fileno())
+                _publish_atomic(history, lambda temporary: temporary.write_bytes(raw))
             checkpoint = build_checkpoint(
                 runner.state, runner.journal, pending_intent=intent, pending_receipt=receipt
             )
             path = session_dir / "checkpoint.json"
-            temporary = session_dir / "checkpoint.json.pending"
-            if temporary.exists():
-                raise SharedEngineRejected("incomplete_checkpoint_requires_inspection")
-            write_checkpoint(temporary, checkpoint, [name])
-            with temporary.open("r+b") as stream:
-                os.fsync(stream.fileno())
-            _replace_record(temporary, path)
+            _publish_atomic(path, lambda temporary: write_checkpoint(temporary, checkpoint, [name]))
 
         def model_step(self, envelope):
             if replay_only:
@@ -478,7 +482,8 @@ def _execute_with_port(task, services, port, *, output, session_dir, transport_o
     try:
         runner.run()
     except RunCrashed as exc:
-        write_checkpoint(session_dir / "checkpoint.json", exc.checkpoint, ["events.jsonl"])
+        _publish_atomic(session_dir / "checkpoint.json",
+                        lambda temporary: write_checkpoint(temporary, exc.checkpoint, ["events.jsonl"]))
         raise SharedEngineInterrupted(session_dir) from exc
     except Exception as exc:
         # The port already saved the original pre-send state, so a real process

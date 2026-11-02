@@ -131,6 +131,82 @@ def test_same_session_orphan_has_explicit_recovery_without_a_new_model_call(tmp_
     assert settled(jobs,job_id)['state']=='completed'
 
 
+def test_deferred_worker_does_not_restart_abandoned_job(tmp_path, monkeypatch):
+    calls, queued = [], []
+    jobs = DeliveryJobs(Execution(), tmp_path, '6'*64,
+        lambda key: calls.append(key) or {'status':'delivered'}, lambda _: None)
+    monkeypatch.setattr(jobs, '_launch', queued.append)
+    jid = jobs.submit({'bundle_id':'A'})['job']['job_id']
+    assert queued == [jid]
+    assert jobs.control(jid, 'abandon')['state'] == 'abandoned'
+    before = jobs._path(jid).read_bytes()
+    # A previously queued worker only reaches its durable lock after abandon.
+    jobs._run(jid)
+    assert calls == []
+    assert jobs.get(jid)['state'] == 'abandoned'
+    assert jobs._path(jid).read_bytes() == before
+
+
+def test_stale_worker_preserves_completed_job_without_new_receiver_io(tmp_path):
+    calls = []
+    jobs = DeliveryJobs(Execution(), tmp_path, '7'*64,
+        lambda key: calls.append(key) or {'status':'delivered'}, lambda _: None)
+    jid = jobs.submit({'bundle_id':'A'})['job']['job_id']
+    assert settled(jobs,jid)['state'] == 'completed'
+    before = jobs._path(jid).read_bytes()
+    jobs.receiver_status = lambda: pytest.fail('Completed worker must not inspect a new receiver')
+    jobs._run(jid)
+    assert jobs._path(jid).read_bytes() == before
+    assert calls == ['A']
+
+
+def test_restart_finishes_durable_delivered_entries_after_final_marker_crash(tmp_path, monkeypatch):
+    calls = []
+    original = DeliveryJobs(Execution(), tmp_path, '8'*64,
+        lambda key: calls.append(key) or {'status':'delivered', 'items':[
+            {'ack_reconciliation':{'status':'delivered'}}]}, lambda _: None,
+        receiver_status=lambda: {'available':True, 'store_id':'original-owner'})
+    write = original._write
+    def crash_final_marker(path, value):
+        if value['state'] == 'completed':
+            raise OSError('Synthetic process death after durable ACK outcome')
+        write(path, value)
+    monkeypatch.setattr(original, '_write', crash_final_marker)
+    jid = original.submit({'bundle_id':'A'})['job']['job_id']
+    assert settled(original, jid)['state'] == 'needs_original_inspection'
+    raw = json.loads(original._path(jid).read_bytes())
+    assert raw['state'] == 'running' and raw['entries'][0]['state'] == 'delivered'
+    receiver_calls = []
+    def unavailable_receiver():
+        receiver_calls.append('read')
+        raise DeliveryJobError('receiver_unavailable', 'Synthetic receiver offline')
+    restarted = DeliveryJobs(Execution(), tmp_path, '8'*64,
+        lambda _: pytest.fail('Durable accepted outcomes must not be imported again'), lambda _: None,
+        receiver_status=unavailable_receiver)
+    restarted.control(jid, 'resume')
+    result = settled(restarted, jid)
+    assert result['state'] == 'completed'
+    assert result['entries'] == raw['entries']
+    assert result['receiver'] == raw['receiver']
+    assert result['receiver_observed_at'] == raw['receiver_observed_at']
+    assert calls == ['A'] and receiver_calls == []
+    before = restarted._path(jid).read_bytes()
+    assert restarted.control(jid, 'resume')['state'] == 'completed'
+    assert restarted._path(jid).read_bytes() == before
+
+
+def test_restart_does_not_close_pending_entries_with_receiver_unavailable(tmp_path):
+    jobs = DeliveryJobs(Execution(), tmp_path, '8'*64, lambda _: {'status':'partial'}, lambda _:None)
+    jid = jobs.submit({'bundle_id':'A'})['job']['job_id']
+    assert settled(jobs, jid)['state'] == 'partial'
+    restarted = DeliveryJobs(Execution(), tmp_path, '8'*64,
+        lambda _: pytest.fail('Unavailable receiver must not import'), lambda _:None,
+        receiver_status=lambda: {'available':False})
+    restarted.control(jid, 'resume')
+    result = settled(restarted, jid)
+    assert result['state'] == 'partial' and result['entries'][0]['state'] == 'pending'
+
+
 def test_delivery_stores_only_counts_not_all_original_ack_details(tmp_path):
     outcome={'status':'delivered','items':[{'bundle_id':f'package-{index}',
         'ack_reconciliation':{'status':'delivered','items':[{'observation_id':'not-copied'}]}} for index in range(36)]}

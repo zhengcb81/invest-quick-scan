@@ -264,6 +264,18 @@ class DeliveryJobs:
         try:
             with control_lock(path.with_suffix('.lock')):
                 record=self._read(path)
+                # A queued worker may acquire this lock only after an explicit
+                # abandon, or after another worker completed the same record.
+                # Terminal durable state wins over a stale in-memory schedule.
+                if record['state'] in {'completed','abandoned'}:
+                    return
+                if self._completed_history({**record,'state':'completed'}):
+                    # All original accepted outcomes were committed before a
+                    # crash writing the job-level marker. Close this reference
+                    # only; no current receiver or new import is involved.
+                    record.update(state='completed',finished_at=record.get('finished_at') or _now())
+                    self._write(path,record)
+                    return
                 record.update(state='running',session=self.session)
                 try:
                     self._check_receiver(record)

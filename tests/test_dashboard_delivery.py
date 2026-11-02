@@ -368,3 +368,132 @@ def test_read_only_export_keeps_layout_and_current_package_validation(delivery,t
         gateway._call([sys.executable,'-B','-X','utf8','-c',_EXPORT,str(SOURCE),str(ledger)],
             SOURCE,tmp_path,input_value=request)
     assert ledger.read_bytes()==before
+
+
+@pytest.mark.parametrize('incomplete', [False, True])
+def test_native_stored_ack_recovers_without_release_and_preserves_partial_sibling(delivery, tmp_path, monkeypatch, incomplete):
+    """Actual original outbox/ACK validator; only remote stored-ACK read is a port."""
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    from dashboard_service import DashboardService
+    from scripts.dashboard_delivery import _EXPORT
+    gateway,bundle,receipt=delivery
+    gateway.bind_delivery_consumer(bundle,TARGET,'isolated-original-target')
+    original_rows=native_delivery_rows(gateway,bundle)
+    replies=copy.deepcopy(receipt['acks'])
+    if incomplete:
+        replies[1]['payload_sha256']='0'*64
+    events=[]
+    class Outbox:
+        def __init__(self, config): pass
+        def delivery_receivers(self, bundle_id):
+            return gateway._call([sys.executable,'-B','-c',_EXPORT,str(SOURCE),bundle['work_store']],
+                SOURCE,tmp_path,input_value={'entity_id':'ENT_BYD','question_ids':['IQS_05'],
+                    'work_ids':list(bundle['work_item_ids'].values()),'receiver_only':True})
+        def acknowledge_delivery(self, mapping, incoming):
+            events.append('native-ack')
+            return gateway.acknowledge_delivery(mapping,incoming)
+        def export_delivery(self, payload):
+            events.append('export')
+            raise OSError('Disposable UI release/archive removed')
+    class Receiver:
+        def __init__(self, config): pass
+        def status(self):return {'available':True,'store_id':TARGET['store_id']}
+        def delivery_status(self, package_id):
+            return {'receipts':[{'ack':ack} for ack in replies if ack['package_id']==package_id]}
+        def import_apply(self, payload): pytest.fail('Accepted stored ACK must never reimport')
+    service=DashboardService(tmp_path,execution_factory=Outbox,owner_factory=Receiver)
+    for attempt in range(2):
+        result=service._deliver_scope('original')
+        assert result['status']==('partial' if incomplete else 'delivered')
+        assert result['API_requests']==0
+        rows=native_delivery_rows(gateway,bundle)
+        first,second=list(bundle['work_item_ids'].values())
+        assert rows[first]['state']=='delivered'
+        if incomplete: assert rows[second]==original_rows[second]
+        else: assert rows[second]['state']=='delivered'
+        if attempt==0:
+            recovered_rows=rows
+            recovered_bytes=Path(bundle['work_store']).read_bytes()
+        else:
+            assert rows==recovered_rows and Path(bundle['work_store']).read_bytes()==recovered_bytes
+    assert events.count('export')==(2 if incomplete else 0)
+
+
+@pytest.mark.parametrize('fault', ['write', 'publish', 'published'])
+@pytest.mark.parametrize('derived', [False, True])
+def test_export_archive_process_death_never_publishes_partial_final_bytes(tmp_path, fault, derived):
+    """Real process death before publication, then repeat original bytes."""
+    from scripts.dashboard_delivery import _immutable
+    raw=b'{"original":"sealed-package"}'
+    import hashlib
+    digest=hashlib.sha256(raw).hexdigest()
+    path=tmp_path/(digest+'.json' if derived else 'original.json')
+    code=r'''
+import hashlib,os,sys
+from pathlib import Path
+sys.path.insert(0,sys.argv[1])
+from scripts import dashboard_delivery as module
+operation='replace' if sys.argv[4]=='derived' else 'link'
+if sys.argv[3]=='write':
+    def interrupted(stream):
+        os._exit(17)
+    module.os.fsync=interrupted
+elif sys.argv[3]=='publish':
+    setattr(module.os,operation,lambda *args:os._exit(17))
+else:
+    publish=getattr(module.os,operation)
+    def interrupted(source,target):
+        publish(source,target);os._exit(17)
+    setattr(module.os,operation,interrupted)
+raw=b'{"original":"sealed-package"}'
+module._immutable(Path(sys.argv[2]),raw,**({'expected_digest':hashlib.sha256(raw).hexdigest()} if sys.argv[4]=='derived' else {}))
+'''
+    from scripts.dashboard_owner import _env
+    result=subprocess.run([sys.executable,'-B','-c',code,str(ROOT),str(path),fault,'derived' if derived else 'generic'],env=_env(),
+        capture_output=True,text=True,encoding='utf8',timeout=20)
+    assert result.returncode==17
+    assert path.exists()==(fault=='published')
+    options={'expected_digest':digest} if derived else {}
+    _immutable(path,raw,**options)
+    assert path.read_bytes()==raw
+    _immutable(path,raw,**options)
+    assert path.read_bytes()==raw
+    with pytest.raises(DashboardExecutionError) as caught:
+        _immutable(path,b'different-original-package',**options)
+    assert caught.value.code==('delivery_byte_hash_mismatch' if derived else 'delivery_archive_changed')
+    assert path.read_bytes()==raw
+    from scripts.dashboard_owner import _bundle
+    digest=hashlib.sha256(raw).hexdigest()
+    original=_bundle({'bundles':{'original':{'package':str(path),'release':str(path),
+        'package_sha256':digest,'release_sha256':digest}}},'original')
+    assert original['package']==original['release']=={'original':'sealed-package'}
+
+
+@pytest.mark.parametrize('release', [False, True])
+def test_exact_content_address_repairs_legacy_torn_derived_cache_without_rewriting_correct_cache(tmp_path, release):
+    import hashlib
+    from scripts.dashboard_delivery import _immutable
+    raw=b'{"original":"sealed-or-frozen-release"}'
+    digest=hashlib.sha256(raw).hexdigest()
+    path=tmp_path/(('release-' if release else '')+digest+'.json')
+    path.write_bytes(raw[:7])
+    _immutable(path,raw,expected_digest=digest)
+    assert path.read_bytes()==raw
+    before=path.stat().st_mtime_ns
+    _immutable(path,raw,expected_digest=digest)
+    assert path.stat().st_mtime_ns==before
+    assert list(tmp_path.iterdir())==[path]
+
+
+@pytest.mark.parametrize('fault', ['raw_digest','target_address'])
+def test_derived_cache_repair_requires_matching_original_bytes_and_content_address(tmp_path, fault):
+    import hashlib
+    from scripts.dashboard_delivery import _immutable
+    raw=b'{"original":"sealed"}'
+    digest=hashlib.sha256(raw).hexdigest()
+    path=tmp_path/(digest+'.json' if fault=='raw_digest' else 'unproven-material.json')
+    path.write_bytes(b'existing-material')
+    with pytest.raises(DashboardExecutionError) as caught:
+        _immutable(path,raw,expected_digest='0'*64 if fault=='raw_digest' else digest)
+    assert caught.value.code=='delivery_byte_hash_mismatch'
+    assert path.read_bytes()==b'existing-material' and list(tmp_path.iterdir())==[path]

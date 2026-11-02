@@ -166,6 +166,70 @@ def test_setup_can_change_future_scan_settings_while_exact_delivery_waits(tmp_pa
         assert status==409 and reply['error']['code']=='delivery_active',reply
 
 
+@pytest.mark.parametrize('remaining', [False, True])
+def test_stored_ack_recovers_before_release_export_and_keeps_partial_progress(tmp_path, remaining):
+    events=[]
+    target={'component':'StockWiki','namespace':'quick_scan','store_id':'original-owner'}
+    class Outbox(Execution):
+        def delivery_receivers(self, bundle_id):
+            return {'items':[{'status':'referenced','question_id':'CACHED'}],
+                'consumers':[{'work_item_id':'W1','consumer':target,'work_store':'original-ledger',
+                    'package_id':'P1','observation_id':'O1'}] + ([{'work_item_id':'W2','consumer':None,
+                        'work_store':'original-ledger','package_id':'P2','observation_id':'O2'}] if remaining else [])}
+        def export_delivery(self,payload):
+            events.append('export')
+            raise OSError('Original release archive missing after remote acceptance')
+        def acknowledge_delivery(self,bundle,receipt):
+            assert bundle['work_store']=='original-ledger' and bundle['work_item_ids']=={'O1':'W1'}
+            assert receipt=={'acks':[{'package_id':'P1','observation_id':'O1','consumer':target,'status':'accepted'}]}
+            events.append('native-ack')
+            return {'status':'delivered','items':[{'work_item_id':'W1','state':'delivered'}]}
+    class Receiver:
+        def __init__(self,config): pass
+        def status(self): return {'available':True,'store_id':'original-owner'}
+        def delivery_status(self,package_id):
+            assert package_id=='P1';events.append('stored-ack')
+            return {'receipts':[{'ack':{'package_id':'P1','observation_id':'O1','consumer':target,'status':'accepted'}}]}
+        def import_preview(self,body): pytest.fail('Existing accepted ACK must not preview/import again')
+        def import_apply(self,body): pytest.fail('Existing accepted ACK must not import again')
+    service=DashboardService(tmp_path,execution_factory=Outbox,owner_factory=Receiver)
+    result=service._deliver_scope('scope')
+    assert result['status']==('partial' if remaining else 'delivered')
+    assert result['items'][0]['ack_reconciliation']['status']=='delivered'
+    assert result['referenced_question_ids']==['CACHED'] and result['API_requests']==0
+    assert events==['stored-ack','native-ack']+(['export'] if remaining else [])
+
+
+def test_mixed_stored_ack_and_missing_ack_import_only_remaining_original_package(tmp_path):
+    events=[]
+    target={'component':'StockWiki','namespace':'quick_scan','store_id':'original-owner'}
+    bundles={f'P{i}':{'work_store':'original-ledger','work_item_ids':{f'O{i}':f'W{i}'}} for i in (1,2)}
+    class Outbox(Execution):
+        def delivery_receivers(self, bundle_id):
+            return {'items':[], 'consumers':[{'work_item_id':f'W{i}','consumer':target,
+                'work_store':'original-ledger','package_id':f'P{i}','observation_id':f'O{i}'} for i in (1,2)]}
+        def export_delivery(self,payload):
+            return {'status':'exported','items':[{'status':'exportable'}]*2,'import_bundles':bundles}
+        def acknowledge_delivery(self,bundle,receipt):
+            work=next(iter(bundle['work_item_ids'].values()));events.append(('ack',work))
+            return {'status':'delivered','items':[{'work_item_id':work,'state':'delivered'}]}
+        def bind_delivery_consumer(self,*args): events.append(('bind','W2'))
+    class Receiver:
+        def __init__(self,config): self.bundles=config['bundles']
+        def status(self): return {'available':True,'store_id':'original-owner'}
+        def delivery_status(self,package_id):
+            return {'receipts':[{'ack':{'status':'accepted','package_id':'P1','observation_id':'O1'}}] if package_id=='P1' else []}
+        def import_preview(self,payload):
+            assert payload['bundle_id']=='P2' and set(self.bundles)=={'P2'}
+            events.append(('preview','W2'));return {'preview_token':'original'}
+        def import_apply(self,payload):
+            assert payload['bundle_id']=='P2'
+            events.append(('import','W2'));return {'status':'imported','receipt':{'package_id':'P2','acks':[]}}
+    result=DashboardService(tmp_path,execution_factory=Outbox,owner_factory=Receiver)._deliver_scope('scope')
+    assert result['status']=='delivered' and len(result['items'])==2
+    assert events==[('ack','W1'),('preview','W2'),('bind','W2'),('import','W2'),('ack','W2')]
+
+
 def test_cache_only_preparation_finishes_without_execution_registration_or_config_write(tmp_path):
     class Cached(Prepare):
         def apply(self,payload):

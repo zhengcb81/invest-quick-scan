@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -77,7 +78,9 @@ try:
         row=store.get_result_delivery(work_id)
         if request.get('receiver_only'):
             binding=None if row is None else row.get('consumer_binding')
-            consumers.append({'work_item_id':work_id,'consumer':None if binding is None else binding['consumer']})
+            consumers.append({'work_item_id':work_id,'consumer':None if binding is None else binding['consumer'],
+                'work_store':str(path.resolve()), 'package_id':None if row is None else row.get('package_id'),
+                'observation_id':None if row is None else row.get('observation_id')})
             continue
         if row is None or row['state'] not in {'ready','delivered','send_uncertain'} or row['package_bytes'] is None:
             items.append({'work_item_id':work_id,'status':'not_exportable','reason':None if row is None else row.get('block_code') or row['state']})
@@ -92,13 +95,39 @@ except Exception:
 '''
 
 
-def _immutable(path, raw):
+def _immutable(path, raw, *, expected_digest=None):
     path.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        with path.open('xb') as stream: stream.write(raw)
-    except FileExistsError:
-        if path.read_bytes()!=raw:
+    derived = expected_digest is not None
+    if derived and (hashlib.sha256(raw).hexdigest()!=expected_digest
+        or path.name not in {expected_digest+'.json','release-'+expected_digest+'.json'}):
+        raise DashboardExecutionError('delivery_byte_hash_mismatch','原字节与派生缓存的内容地址不匹配。',409)
+    if path.exists():
+        if path.read_bytes()==raw:
+            return
+        if not derived:
             raise DashboardExecutionError('delivery_archive_changed','原封存包归档已变化，不能覆盖。',409)
+    temporary = None
+    try:
+        # Publish only complete bytes. A crash writing a cache must not leave a
+        # truncated final name that permanently blocks the original outbox.
+        with tempfile.NamedTemporaryFile(prefix=path.name+'.', suffix='.tmp', dir=path.parent, delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(raw)
+            stream.flush()
+            os.fsync(stream.fileno())
+        if derived:
+            # This is a reproducible cache of already verified original bytes,
+            # not authority. Repair a legacy torn file at this exact address.
+            os.replace(temporary, path)
+        else:
+            try:
+                os.link(temporary, path)
+            except FileExistsError:
+                if path.read_bytes()!=raw:
+                    raise DashboardExecutionError('delivery_archive_changed','原封存包归档已变化，不能覆盖。',409)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def _scope_inputs(bundle):
@@ -160,7 +189,7 @@ def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection
     release_sha=hashlib.sha256(raw_release).hexdigest()
     archive=state_root/'deliveries'
     release_path=archive/('release-'+release_sha+'.json')
-    _immutable(release_path,raw_release)
+    _immutable(release_path,raw_release,expected_digest=release_sha)
     registrations={};items=[]
     for row in result['items']:
         public={k:v for k,v in row.items() if k!='package_json'}
@@ -169,7 +198,7 @@ def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection
             if digest!=row['package_bytes_sha256']:
                 raise DashboardExecutionError('delivery_byte_hash_mismatch','原封存包字节哈希不匹配。',409)
             name='outbox-'+digest[:48]
-            path=archive/(digest+'.json');_immutable(path,raw)
+            path=archive/(digest+'.json');_immutable(path,raw,expected_digest=digest)
             registrations[name]={'entity_id':bundle['entity_id'],'package':str(path.resolve()),'package_sha256':digest,
                 'release':str(release_path.resolve()),'release_sha256':release_sha,
                 'work_store':str(ledger), 'work_item_ids':{row['observation_id']:row['work_item_id']}}
