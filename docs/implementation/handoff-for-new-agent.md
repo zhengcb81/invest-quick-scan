@@ -1,6 +1,6 @@
 # 当前接手说明
 
-**11/02最新接手状态（已完成）：** 门禁清理、集中独审及原UI真实gen7已付恢复/入库全部通过。原work已delivered、原ACK accepted，原safe、score8、模型和11月1日响应时间保持，未新增API费用。不要再按下方旧失败快照重发、改分数或造canonical-v2；当前执行顺序只看根Next Step。普通policy11/pack2/thinking/max32768/shared=null及60包均保持，doctor ready。[本节点终验与具体接口](reviews/GATE-SIMPLIFY-2026-11-02/report.md)。
+**11/02最新接手状态：** 上轮有限范围修复及原UI真实gen7已付恢复/入库已完成并重新核实；所有过度门禁尚未清零。本次新增普通/共享同HTTP缺题全拒、派生指标/计划/嵌套格式误拒，以及普通capture默认耐久性缺口，均待修。按[效果复核与收敛方案](reviews/GATE-SIMPLIFY-2026-11-02/effectiveness-and-convergence.md)和根Next Step统一原逐题保存/恢复，不能又逐个加特殊别名。原work delivered、ACK accepted、原safe/score8/模型/时间保持，不重新提问；普通配置及60包未变，doctor ready。上轮[有界终验](reviews/GATE-SIMPLIFY-2026-11-02/report.md)成果保留。
 
 
 更新于2026-11-02。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
@@ -51,14 +51,14 @@
 
 IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算、任务、检查点与outbox；StockWiki负责身份/名单/观察/ACK/查询。不复制数据库或重试器；company-wiki及其他活动writer保持隔离，不下载财报或网页全文。
 
-|仓库|当前已核实版本|
+|仓库|本次复核的实际基线（不等于全仓新验收）|
 |---|---|
-|IQS|本轮源码e20e1b5（含d168425/da0fbd5）已推origin/master；本文等文档后续commit见Git|
-|StockQA|58fb6ce（含d1d22cc），全部正常hooks通过，已推origin/master|
-|Company Lab|d1d92a2，本地提交、无remote|
+|IQS|16581d0，含上轮源码79b94ce，已推origin/master；本次文档后续commit见Git|
+|StockQA|e2850bd，含6eecce7，原正常hooks通过，已推origin/master|
+|Company Lab|360c7df，本地提交、无remote|
 |Runtime Lab|5839ef4，本地提交、无remote，原codex/agent-run-02分支|
-|原UI|77d372c，本地提交、无remote|
-|StockWiki|dc857a5，本地提交、无remote；含原381811e，不清理其他writer运行数据|
+|原UI|fa7ceb6，本地提交、无remote|
+|StockWiki|本轮只读看到9e8e308后又变f52f257；上轮本线程提交e5a1be6仍在历史。有活动writer，不覆写、不把本轮只读检查当新HEAD全仓验收|
 
 原UI补封透传冻结shared配置和controls；StockQA原recover分支仅重放，缺原safe拒绝新model/search。缺密钥不改变policy eligibility，按原response_available attempt精确route恢复。新pending仍受原发送准入；已有坏检查点不跳过，真实缺文件才回读尚存原pending。来源闭包拒失效ID改名，HTTP只有原投影合格才接受。
 

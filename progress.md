@@ -2,6 +2,14 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 效果复核与整体收敛判断（审查完成，新增问题待修）
+
+按用户要求重新核原UI、Git、代码和证据，并由三个独立agent分别核恢复、内容和整体结构。原doctor就绪、新旧gen6/gen7观察均可读，原响应hash/普通配置不变，账本仍87HTTP/2053896micros、0在途/未结。IQS相关3模块69P+5subtests/34.76秒；QA原3模块独立28P/31.97秒，自有TEMP清理、禁网去密钥。CodeGraph命中历史副本/外仓索引滞后后读取已知实际源；外仓Git初次沙箱只读拒绝后升级只读完成，没有改代码。
+
+新增实证：普通pack恢复2有效/1missing仍全拒且CP0；共享同HTTP2题只答1题因可选声明推断而全拒；合法同比跨年引用误拒；明确forward计划需固定文字前缀；单位说明80字及事实items20上限仍整答拒。总控亲跑内容四组与事实20/21边界，正常对照均成立。上轮paid1/未问1是pack_size1，不能代替同HTTP半包测试。普通pack公开正文默认仍可选capture，本机已enabled，不夸大成真实丢失事故。
+
+只更新PWF、交接及[效果复核](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/effectiveness-and-convergence.md)，没有改产品或收费调用；新问题未标完成。修正findings旧gen7 CP0/顺位待补及交接旧版本表。StockWiki期间HEAD由9e8e308变f52f257，视为活动writer，不作全仓新签收。下一主线按原任务收敛公开响应持久化、逐题解释及保存/质量/比较边界，无新施工包或审查凭证。
+
 ## 11/02 再次清理过度门禁（已完成）
 
 **本节最终终态覆盖下方实施快照：** 通用门禁/单位自审/短证据singleton codec已全部根修并集中独审。原UI第6次launch零API恢复gen7成功exit0，CP `CHECKPOINT_1c5c5d9766b34ddcab8317ac34256b31`；交付job`deliveryjob_03aeb32cc6f07b1525d3a147fb893cc0` completed，原work delivered、11:00:20Z accepted ACK `ack_fd86eacd8b792b505a582f13`。原响应hash/score8/实际mimo-v2.6-pro/原完成时间23:44:40.990609Z保持，原新旧观察在公司详情公开接口并存。总账仍87HTTP/2053896micros，0在途/未结；原普通配置字节hash相同、60包保持、doctor ready。不得再按11/01 CP0/leased或本节早期失败快照重发。
