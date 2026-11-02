@@ -1,5 +1,7 @@
 # 当前接手说明
 
+**11/02最新补充：** [模块解耦审计](reviews/DECOUPLING-2026-11-02/report.md)已完成，发现7组剩余问题，当前只审未实施。优先处理D1公开分类结果兼容和D2总锁，后续收口原恢复/历史资源与UI边界；禁止将审计报告当整改完成。题库/契约、原owner事务与组件注入已经有效，不推倒重来或新增框架/门禁。具体文件/反例/范围和建议均在报告；原CI/真实保存签收保持原范围。
+
 **11/02最新接手状态：** [CI连续失败根修](reviews/CI-ROOT-CAUSE-2026-11-02/report.md)已完成，StockQAee8f49a/0154726推原origin；最终CI41523660779与Documentation41523660825均success，文档实际构建/发布与Python3.10都经远端核。原[完整链路混合/重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)保持完成。下一步回根内容/事实主线，不重问gen7、改配置或新增许可。
 
 

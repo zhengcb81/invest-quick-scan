@@ -2,6 +2,12 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 模块解耦核查完成（发现待修，未实施重构）
+
+用户要求全面核查。主控与三名独立agent分别审题库/契约、核心恢复、跨仓与UI，当前scripts123文件/194静态内部边无非平凡SCC；动态加载不在此无环证明内。确认7组耦合：分类结果复制供应商/回执字段造成实际误拒；慢POST占总锁阻塞GET；静态快照绑全站启动；Company私有恢复及QA私有策略接口；旧任务/题包依赖当前schema与源码文本；比较页复制必答规则；产品服务窥组件字段/文件布局。详见[总报告](docs/implementation/reviews/DECOUPLING-2026-11-02/report.md)。正确的纯域、唯一事务owner、隔离子进程和组件注入边界保留，不因报告新增平台或门禁。
+
+本轮只读产品源码/状态，四文件离线34P、39子测试/15.59秒；真实standard-1 manifest仅在内存修改getsource注释即可复现历史拒绝，再还原可通过。独立agent另有供应商/可选字段、慢命令并发、坏versions、必答扩展和schema升级反例。首次测试包装器误拦本机gethostname、之后长TEMP复制失败均为测试环境问题；修正到短C:/Temp后全过。自有TEMP清理、0API、未改真实配置/库/名单或外仓源码。保留其他writer改动；此前功能/远端CI签收不改签为架构全解耦。
+
 ## 11/02 远端CI连续失败根修完成
 
 亲读StockQA三代实际GitHub日志：black/isort/mypy过、Bandit3处B608阻断pytest。源改固定SQL/绑定JSON列表或固定UNION ALL，不加nosec/关规则；新增实际SQLite11例并入既有daily包。完整default随后实际5F/286P揭露陈旧同值重复负例4项和默认预算绑定未捕获请求指纹导致公开正文落盘失败1项。改真冲突负例+同值CP正例，任何原work/pack/budget绑定共用自动hash，sync/async默认均实际post/journal/费用一次通过，未绑定legacy保持。实现ee8f49a正常hooks过已推；完整default305P/54.73秒（总105.10秒）、非作者SQL/native27P/38.03秒及小尾32P/11.07秒，重叠不加总。
