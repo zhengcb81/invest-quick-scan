@@ -24,9 +24,15 @@ def run(args):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, required=True, help="Explicit workspace for this legacy offline report")
+    parser.add_argument("--work", type=Path, help="Original retrieval work database; omit to report provenance as not checked")
     parser.add_argument("--out", type=Path, default=ROOT / "runs/offline-dashboard")
     parser.add_argument("--links", type=Path, default=DEFAULT_LINKS)
     args = parser.parse_args(argv)
+    # Resolve the caller's choices once before child commands change cwd.
+    for key in ('workspace', 'work', 'out', 'links'):
+        value = getattr(args, key)
+        if value is not None:
+            setattr(args, key, value.expanduser().resolve())
     args.out.mkdir(parents=True, exist_ok=True)
     fin_dir = args.out/"financial-check"
     fin_dir.mkdir(parents=True, exist_ok=True)
@@ -35,8 +41,25 @@ def main(argv=None):
     fin = json.loads((fin_dir/"check.json").read_text(encoding="utf-8"))
     prov_dir = args.out/"provenance-check"
     prov_dir.mkdir(parents=True, exist_ok=True)
-    run([SCRIPTS/"observation_provenance_check.py", "--json", prov_dir/"check.json", "--html", prov_dir/"check.html"])
-    prov = json.loads((prov_dir/"check.json").read_text(encoding="utf-8"))
+    observations = args.workspace / "data/quick_scan/scan_observations.sqlite"
+    if args.work is not None:
+        run([SCRIPTS/"observation_provenance_check.py", "--observations", observations, "--work", args.work,
+             "--json", prov_dir/"check.json", "--html", prov_dir/"check.html"])
+        prov = json.loads((prov_dir/"check.json").read_text(encoding="utf-8"))
+    else:
+        prov = {
+            "protocol": "iqs.observation-provenance-check/1.0.0", "status": "skipped",
+            "reason": "work_store_not_configured", "workspace": str(args.workspace.resolve()),
+            "observations_database": str(observations.resolve()), "work_database": None,
+            "observations": None, "pass": None, "fail": None,
+            "research_only": None, "receipt_missing": None, "results": [],
+        }
+        (prov_dir/"check.json").write_text(json.dumps(prov, ensure_ascii=False, indent=2), encoding="utf-8")
+        (prov_dir/"check.html").write_text(
+            "<!doctype html><meta charset='utf-8'><title>引用溯源未执行</title><h1>引用溯源未执行</h1>"
+            "<p>未配置原工作数据库；请显式传入 --work。未检查不等于通过。</p>"
+            "<p>所选工作区：" + html.escape(prov["workspace"]) + "</p>", encoding="utf-8",
+        )
     profiles = args.out/"profiles"
     run([SCRIPTS/"profile_page.py", "--workspace", args.workspace, "--all", "--include-empty",
          "--output-dir", profiles, "--financial-check", fin_dir/"check.json",
@@ -57,7 +80,11 @@ def main(argv=None):
     prov_card = ('<div class="card"><a href="provenance-check/check.html">Search 引用溯源（'
                  + str(prov.get("observations", 0)) + ' 条观察 · pass ' + str(prov.get("pass", 0))
                  + ' · fail ' + str(prov.get("fail", 0)) + ' · research_only ' + str(prov.get("research_only", 0))
+                 + ' · receipt_missing ' + str(prov.get("receipt_missing", 0))
                  + '）</a><br><span class="muted">搜索型观察的引用 URL 必须在授权它的 retreival receipt 中</span></div>')
+    if prov["status"] == "skipped":
+        prov_card = ('<div class="card"><a href="provenance-check/check.html">引用溯源未执行</a>'
+                     '<br><span class="muted">未配置原工作数据库；请显式传入 --work。未检查不等于通过。</span></div>')
     answer_pages = sorted(ROOT.glob("docs/implementation/reviews/**/answers.html"))
     scored_pages = sorted(ROOT.glob("docs/implementation/reviews/search-scored-*/index.html"))
     preflight_card = ""
@@ -66,7 +93,7 @@ def main(argv=None):
         preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
         failures = [r for r in preflight.get("results", []) if r.get("result") == "fail"]
         detail = "；".join(Path(r["package"]).name + ": " + ",".join(r.get("problems", [])) for r in failures[:3])
-        preflight_card = ('<div class="card"><b>观察导入前置检查</b>：' + str(preflight.get("packages", 0))
+        preflight_card = ('<div class="card"><b>历史观察导入检查（2026-10-18，不代表所选工作区）</b>：' + str(preflight.get("packages", 0))
                           + ' 包 · ' + str(preflight.get("pass", 0)) + ' pass · ' + str(preflight.get("fail", 0))
                           + ' fail<br><span class="muted">' + html.escape(detail) + '</span></div>')
     scored_card = ""
@@ -139,14 +166,17 @@ h1{{font-size:22px;margin:0 0 6px}}.muted{{color:#6b7280}}.card{{border:1px soli
 a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</style></head><body>
 <h1>invest-quick-scan</h1>
 <div class="muted">现有公司列表的本地只读看板 · 生成于 {status.get('protocol','')}</div>
+<p>所选工作区：<code>{html.escape(str(args.workspace.resolve()))}</code></p>
 <div class="card"><b>{status['entities']}</b> 家公司 · <b>{status['verified']}</b> verified · <b>{status['provisional']}</b> provisional<br>
-<span class="muted">可跑画像 {status['by_next_action'].get('ready_for_profile',0)} · 已有观察 {status['by_next_action'].get('has_observations',0)} · search-backed {status.get('search_backed_entities',0)} 家/{status.get('search_backed_observations',0)} 条 · 需要 owner 准入 {status['by_next_action'].get('needs_owner_admission',0)} · 需要 verified {status['by_next_action'].get('needs_verified_identity',0)} · 金融复核 {reviewed} 家</span></div>
+<span class="muted">可跑画像 {status['by_next_action'].get('ready_for_profile',0)} · 已有观察 {status['by_next_action'].get('has_observations',0)} · search-backed {status.get('search_backed_entities',0)} 家/{status.get('search_backed_observations',0)} 条 · 需要 owner 准入 {status['by_next_action'].get('needs_owner_admission',0)} · 需要 verified {status['by_next_action'].get('needs_verified_identity',0)}</span></div>
 <div class="card"><a href="roster.html">打开 Roster（可搜索/筛选/点公司名进画像）</a></div>
 <div class="card"><a href="profiles/index.html">打开公司画像索引（{len(list(profiles.glob('ENT_*.html')))} 页）</a></div>
-{facts_card}
     {fin_card}
     {gaps_card}
     {prov_card}
+<h2>历史项目归档</h2>
+<p class="muted">以下材料来自项目历史归档，不代表所选工作区的当前检查、入库状态或金融准确性。历史金融复核：{reviewed} 家。</p>
+{facts_card}
     {status_card}
     {acceptance_card}
     {answers_card}

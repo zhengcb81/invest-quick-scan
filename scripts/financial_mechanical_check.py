@@ -7,6 +7,7 @@ and bindings, and reports what a human review still has to judge.
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import sqlite3
@@ -171,7 +172,26 @@ def main(argv=None):
     }
     payload = json.dumps(summary, ensure_ascii=False, indent=2)
     if args.json:
+        args.json.parent.mkdir(parents=True, exist_ok=True)
         args.json.write_text(payload, encoding="utf-8")
+    if args.html:
+        rows = "".join(
+            "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+                html.escape(str(row["entity_id"])), html.escape(str(row["question_id"])),
+                "pass" if row["mechanical_pass"] else "fail",
+                html.escape("; ".join(finding["code"] + ": " + finding["detail"] for finding in row["findings"])),
+            ) for row in results
+        )
+        args.html.parent.mkdir(parents=True, exist_ok=True)
+        args.html.write_text(
+            "<!doctype html><meta charset='utf-8'><title>Financial mechanical check</title>"
+            "<h1>Financial mechanical check</h1>"
+            f"<p>workspace: {html.escape(summary['workspace'])}</p>"
+            f"<p>observations {summary['observations']} · pass {summary['mechanical_pass']} · fail {summary['mechanical_fail']}</p>"
+            "<ul>" + "".join("<li>" + html.escape(limit) + "</li>" for limit in summary["declared_limits"]) + "</ul>"
+            "<table border='1' cellpadding='4'><tr><th>entity</th><th>question</th><th>mechanical result</th><th>findings</th></tr>"
+            + rows + "</table>", encoding="utf-8",
+        )
     print(json.dumps({k: summary[k] for k in ("observations", "mechanical_pass", "mechanical_fail")}, ensure_ascii=False, indent=2))
     return 0
 

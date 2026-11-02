@@ -220,9 +220,14 @@ def native_bound(original, monkeypatch):
         get_item=lambda _: {"entity_id": "UNIT_ENTITY"},
         get_observation_context=lambda _: {"context": copy.deepcopy(context), "context_sha256": sha256_hex(context)},
     )
-    from src.runners.llm_runner import QuickScanWorkLifecycle
-    lifecycle = SimpleNamespace(_observation_context=copy.deepcopy(context))
-    lifecycle._standard_transport = lambda text: QuickScanWorkLifecycle._standard_transport(lifecycle, text)
+    # This boundary double deliberately exposes no StockQA private members.
+    # The original owner projection and parser each have their own real tests.
+    lifecycle = object()
+    import src.utils.quick_scan_company_context as company_context
+    def public_inputs(candidate):
+        assert candidate is lifecycle
+        return SimpleNamespace(observation_context=copy.deepcopy(context))
+    monkeypatch.setattr(company_context, "company_scan_inputs", public_inputs)
     services = SimpleNamespace(lifecycle=lifecycle, store=store,
         owner=SimpleNamespace(entries={qid: {"kind": "work", "work_item_id": work_id}}),
         inspect_attempt=lambda ref: {"known": ref == "stockqa:UNIT_SDK_ATTEMPT",

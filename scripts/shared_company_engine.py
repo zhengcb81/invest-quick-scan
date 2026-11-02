@@ -167,8 +167,9 @@ def _production_answer_semantics(task, services):
     # Public production preflight already requires an original owner task.
     if getattr(task, "company_doc", {}).get("origin") != "owner_public":
         return None
-    lifecycle = getattr(services, "lifecycle", None)
-    context = copy.deepcopy(getattr(lifecycle, "_observation_context", None))
+    from src.utils.quick_scan_company_context import company_scan_inputs
+
+    context = company_scan_inputs(services.lifecycle).observation_context
     original = _frozen_answer_semantics(task, context)
 
     def validate_native(answer, question_id, *, attempt_ref, evidence_board):
@@ -188,6 +189,7 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
     from iqs_company_agent_lab.answers import check_citation_closure
     from src.core.models import Answer
     from src.utils.quick_scan_observation_context import validate_standard_answer
+    from src.utils.quick_scan_observation_context import split_standard_answer_transport
     from src.utils.quick_scan_result_outbox import canonical_sha256
     from src.utils.quick_scan_work_transport import project_quick_scan_answer_sources
 
@@ -229,7 +231,7 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
                          evidence_board=evidence_board, verified_source_urls=verified_urls)
     transported = Answer(json.dumps(body, ensure_ascii=False), score=body.get("score"),
                          status=body.get("status"), source="llm", metadata={"execution": execution})
-    summary, standard = services.lifecycle._standard_transport(transported.text)
+    summary, standard = split_standard_answer_transport(transported.text)
     normalized = dict(entity_id=services.store.get_item(work_id)["entity_id"], question_id=question_id,
                       status=transported.status, score=transported.score, description=summary)
     validate_standard_answer(standard, metadata=context["questions"][question_id]["metadata"],
@@ -886,7 +888,7 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
 
     if not isinstance(services, OwnerResearchServices) or services.task is not task:
         raise SharedEngineRejected("original_owner_research_services_required")
-    services._assert_registered_inputs()
+    services.validate_registered_inputs()
     selected_ids = None
     if question_ids is not None:
         if (not isinstance(question_ids, list) or not question_ids
