@@ -542,6 +542,12 @@ class DashboardService:
             response = projection.project_result(owner_payload)
         except projection.ProjectionError as error:
             raise ProductError(error.code, error.message, error.status) from None
+        if result_id is not None and response.get('company_result') is None:
+            # B03-R2: an EXPLICIT pin that does not resolve (absent, cross-ENT)
+            # is a named refusal, never a 200-null that a consumer could read
+            # as "fall back to latest".
+            raise ProductError('company_result_not_found',
+                               '固定的公司结果不存在或不属于该实体。', 404)
         response['iqs_link'] = self._iqs_link(entity_id, return_to)
         return response
 
@@ -830,7 +836,22 @@ class DashboardService:
             if path == 'delivery':
                 return self._gateway('owner').delivery_status(query.get('package_id'))
             if path == 'link':
-                return self._iqs_link(query.get('id', query.get('entity_id', '')), query.get('return'))
+                entity_id = query.get('id', query.get('entity_id', ''))
+                result_pin = query.get('result') or query.get('result_id') or None
+                if result_pin:
+                    # B03-R2: the link context may be composed for an explicit
+                    # old result pin; the pin must resolve for THIS entity or
+                    # the whole request is refused (no silent latest fallback).
+                    import dashboard_company_projection as projection_mod
+                    pin_payload = self._gateway('owner').company_result(entity_id, result_pin)
+                    try:
+                        pin_data = projection_mod.project_result(pin_payload)
+                    except projection_mod.ProjectionError as error:
+                        raise ProductError(error.code, error.message, error.status) from None
+                    if pin_data.get('company_result') is None:
+                        raise ProductError('company_result_not_found',
+                                           '固定的公司结果不存在或不属于该实体。', 404)
+                return self._iqs_link(entity_id, query.get('return'))
             if path == 'company/result':
                 entity_id = query.get('id', query.get('entity_id', ''))
                 if not entity_id:

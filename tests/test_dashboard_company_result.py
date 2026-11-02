@@ -89,6 +89,11 @@ class Owner:
         self.company_calls.append(('result', entity_id, result_id))
         if entity_id == 'ENT_MISSING':
             raise ProductError('entity_not_found', 'No registered entity has this ID', 404)
+        if result_id is not None and result_id != RESULT_SNAPSHOT['result_id']:
+            # The owner filters entity+result: a foreign pin simply does not
+            # resolve (an honest absence, never a latest fallback).
+            return _owner_result_payload(entity_id, result=None,
+                                         reason='company_result_not_registered')
         return _owner_result_payload(entity_id, result=RESULT_SNAPSHOT)
 
     def company_history(self, entity_id, limit=20, offset=0):
@@ -294,6 +299,36 @@ def test_owner_read_envelope_protocol_is_checked():
         projection._checked_owner_read({**good, 'network_calls': 3})
 
 
+# -- explicit result pin (B03-R2) ----------------------------------------------
+
+
+def test_explicit_missing_pin_is_named_refusal_not_200_null(tmp_path):
+    service = service_for(tmp_path, owner=Owner, dashboard_origin='http://127.0.0.1:43219')
+    code, reply = service.dispatch(
+        'GET', '/api/product/company/result?id=ENT_A&result_id=cas_00000000000000000000')
+    assert code == 404, reply
+    assert reply['error']['code'] == 'company_result_not_found'
+
+
+def test_resolved_pin_returns_the_same_immutable_id(tmp_path):
+    service = service_for(tmp_path, owner=Owner, dashboard_origin='http://127.0.0.1:43219')
+    code, reply = service.dispatch(
+        'GET', f'/api/product/company/result?id=ENT_A&result_id={RESULT_SNAPSHOT["result_id"]}')
+    assert code == 200, reply
+    assert reply['data']['company_result']['result_id'] == RESULT_SNAPSHOT['result_id']
+
+
+def test_link_context_with_pin_resolves_for_entity(tmp_path):
+    service = service_for(tmp_path, owner=Owner, dashboard_origin='http://127.0.0.1:43219')
+    code, reply = service.dispatch(
+        'GET', f'/api/product/link?id=ENT_A&result={RESULT_SNAPSHOT["result_id"]}')
+    assert code == 200, reply
+    code, reply = service.dispatch(
+        'GET', '/api/product/link?id=ENT_A&result=cas_00000000000000000000')
+    assert code == 404, reply
+    assert reply['error']['code'] == 'company_result_not_found'
+
+
 # -- dispatch level ------------------------------------------------------------
 
 
@@ -451,13 +486,17 @@ from test_public_company_assessments import (
     _workspace, _manifest, _published_observation, _import_observations,
     _register_request, E01,
 )
-from stockwiki.public_company_assessments import register_company_assessment
+from stockwiki.public_company_assessments import (
+    record_release_authority,
+    register_company_assessment,
+)
 paths = _workspace(Path(r"{root}"))
 manifest = _manifest()
 _import_observations(paths, manifest, [
     _published_observation(E01, qid, f"obs_{{qid.lower()}}", manifest=manifest)
     for qid in manifest["questions"]
 ])
+record_release_authority(paths, manifest)
 outcome = register_company_assessment(paths, _register_request(E01, manifest))
 print(outcome["result_id"])
 '''
