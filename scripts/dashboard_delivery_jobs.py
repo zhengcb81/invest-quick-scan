@@ -359,10 +359,9 @@ class DeliveryJobs:
                 if action=='abandon':
                     record.update(state='abandoned',abandoned_at=_now())
                 else:
-                    for row in record['entries']:
-                        current=self._registration(row['bundle_id'])
-                        if not self._same_scope(row,current,record.get('deployment_fingerprint_profile',LEGACY_DEPLOYMENT_PROFILE)):
-                            raise DeliveryJobError('delivery_bundle_changed','原交付范围已变，不能恢复。')
+                    # Each pending entry is checked in the worker immediately
+                    # before its native import. An unavailable neighbour or an
+                    # old delivered registration cannot block independent work.
                     record.update(state='running',session=self.session)
                 self._write(path,record)
             if action=='resume': self._launch(job_id)

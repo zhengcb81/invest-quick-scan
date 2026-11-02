@@ -107,12 +107,17 @@ def test_shared_company_config_can_be_selected_in_original_settings_and_register
         validate_config({'prepare':{'shared_company_config':'https://example.invalid/config.json'}},tmp_path)
 
 
-def test_scope_delivery_uses_original_outbox_without_growing_an_all_company_registry(tmp_path):
+@pytest.mark.parametrize('references', ['none','mixed','only','missing'])
+def test_scope_delivery_uses_original_outbox_without_growing_an_all_company_registry(tmp_path, references):
     events=[]
     class Outbox(Execution):
         def export_delivery(self,payload):
-            return {'status':'exported','items':[{'status':'exportable'}],
-                'import_bundles':{'original-package':{'work_store':'original','work_item_ids':{'obs':'WORK'}}}}
+            items=[] if references=='only' else [{'status':'exportable'}]
+            if references in {'mixed','only','missing'}:
+                items.append({'status':'not_exportable' if references=='missing' else 'referenced', 'question_id':'CACHED'})
+            return {'status':'partial' if references=='missing' else 'exported','items':items,
+                'referenced_question_ids':['CACHED'] if references in {'mixed','only'} else [],
+                'import_bundles':{} if references=='only' else {'original-package':{'work_store':'original','work_item_ids':{'obs':'WORK'}}}}
         def bind_delivery_consumer(self,bundle,target,source):
             assert target['store_id']=='independent-owner'
             events.append('bind')
@@ -130,8 +135,10 @@ def test_scope_delivery_uses_original_outbox_without_growing_an_all_company_regi
     service=DashboardService(tmp_path,execution_factory=Outbox,owner_factory=Receiver)
     for _ in range(2):
         reply=service._deliver_scope('scope')
-        assert reply['status']=='delivered'
-    assert events==['preview','bind','import','ack']*2
+        assert reply['status']==('partial' if references=='missing' else 'delivered')
+        if references=='only':
+            assert reply['items']==[] and reply['referenced_question_ids']==['CACHED']
+    assert events==([] if references=='only' else ['preview','bind','import','ack']*2)
     assert service.config['import_bundles']=={} and not service.config_path.exists()
 
 

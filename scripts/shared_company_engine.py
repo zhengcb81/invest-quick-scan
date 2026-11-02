@@ -904,6 +904,7 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
     """
     from src.utils.quick_scan_owner_research import OwnerResearchServices
     from src.utils.quick_scan_work_store import WorkConflictError, LeaseFencedError
+    from src.utils.quick_scan_delivery_seal import get_matching_sealed_delivery
 
     if not isinstance(services, OwnerResearchServices) or services.task is not task:
         raise SharedEngineRejected("original_owner_research_services_required")
@@ -1026,10 +1027,13 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
         if existed:
             reused.append(qid)
         delivery = services.store.get_result_delivery(work_id)
+        matching_delivery = get_matching_sealed_delivery(
+            services.store, work_id, authority=services.owner.bundle["authority"])
         result.append(dict(question_id=qid, work_item_id=work_id, native_reference=reference,
                            checkpoint_id=checkpoint["checkpoint_id"], checkpoint_sha256=checkpoint["payload_sha256"],
-                           delivery_state=None if delivery is None else delivery["state"]))
-    pending = [row["question_id"] for row in result if row["delivery_state"] not in {"ready", "delivered"}]
+                           delivery_state=None if delivery is None else delivery["state"],
+                           delivery_matches_authority=matching_delivery is not None))
+    pending = [row["question_id"] for row in result if not row["delivery_matches_authority"]]
     result = dict(protocol="iqs.shared-engine-finalization/1.0.0", run_id=run["run_id"],
                 status="partial" if unsaved else ("checkpointed_delivery_pending" if pending else "completed"),
                 checkpoint_status="partial" if unsaved else "completed", pending_delivery_question_ids=pending,

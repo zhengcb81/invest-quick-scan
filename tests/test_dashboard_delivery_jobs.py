@@ -59,6 +59,46 @@ def test_partial_batch_resume_only_retries_pending_exact_original_packages(tmp_p
     assert settled(jobs,job_id)['state']=='completed' and calls==['A','B','B']
 
 
+@pytest.mark.parametrize('fault', ['delivered_missing', 'pending_missing', 'pending_changed'])
+def test_resume_isolates_unavailable_bundle_and_continues_other_pending_scopes(tmp_path, fault):
+    from scripts.dashboard_errors import DashboardExecutionError
+    class MutableExecution(Execution):
+        broken = None
+        def bundle_registration(self, bundle_id):
+            if self.broken == bundle_id:
+                if fault.endswith('missing'):
+                    raise DashboardExecutionError('bundle_unknown', 'Synthetic original registration unavailable', 404)
+                return {**super().bundle_registration(bundle_id), 'bundle_fingerprint':'0'*64}
+            return super().bundle_registration(bundle_id)
+    execution = MutableExecution()
+    calls, retry = [], {'enabled':False}
+    def deliver(bundle):
+        calls.append(bundle)
+        return {'status':'delivered' if bundle == 'A' or retry['enabled'] else 'partial'}
+    def batch(_):
+        return {'entries':[{**execution.bundle_registration(key),'state':'owner_ready'} for key in ('A','B','C')]}
+    jobs = DeliveryJobs(execution, tmp_path, '7'*64, deliver, batch)
+    jid = jobs.submit({'batch_id':'synthetic-original-batch'})['job']['job_id']
+    assert settled(jobs, jid)['state'] == 'partial'
+    execution.broken = 'A' if fault.startswith('delivered') else 'B'
+    retry['enabled'] = True
+    jobs.control(jid, 'resume')
+    last = settled(jobs, jid)
+    assert calls.count('A') == 1 and calls.count('C') == 2
+    if fault.startswith('pending'):
+        assert last['state'] == 'partial' and last['counts']['delivered_scopes'] == 2
+        failed = next(row for row in last['entries'] if row['bundle_id'] == 'B')
+        assert failed['state'] == 'pending' and failed['error_code'] in {'bundle_unknown','delivery_bundle_changed'}
+        assert calls.count('B') == 1
+        jobs.control(jid, 'resume')
+        assert settled(jobs, jid)['state'] == 'partial' and calls.count('C') == 2
+    else:
+        # Old delivered registration can become historical read-only, but its
+        # immutable accepted outcome is not re-imported or erased.
+        assert last.get('persisted_state', last['state']) == 'completed'
+        assert last['counts']['delivered_scopes'] == 3
+
+
 def test_restart_never_automatically_resends_and_original_fingerprint_drift_blocks(tmp_path):
     execution=Execution();calls=[]
     jobs=DeliveryJobs(execution,tmp_path,'c'*64,lambda bundle:calls.append(bundle) or {'status':'partial'},lambda _:None)
@@ -66,7 +106,9 @@ def test_restart_never_automatically_resends_and_original_fingerprint_drift_bloc
     restarted=DeliveryJobs(execution,tmp_path,'c'*64,lambda _:None,lambda _:None)
     assert restarted.list()['jobs'][0]['state']=='partial' and calls==['A']
     execution.revision='changed'
-    with pytest.raises(DeliveryJobError,match='范围已变'):restarted.control(job_id,'resume')
+    restarted.control(job_id,'resume')
+    blocked = settled(restarted, job_id)
+    assert blocked['state'] == 'partial' and blocked['entries'][0]['error_code'] == 'delivery_bundle_changed'
     assert calls==['A']
     assert restarted.control(job_id,'abandon')['state']=='abandoned' and not restarted.active()
 

@@ -14,6 +14,24 @@ SOURCE = ROOT.parent/'StockQAbyLLM'
 TARGET = {'component':'StockWiki','namespace':'quick_scan','store_id':'stockwiki-test-store'}
 
 
+def native_delivery_rows(gateway, bundle):
+    """Read only the original fixture's outbox state, including exact byte hashes."""
+    script = r'''
+import hashlib,json,pathlib,sys
+sys.path.insert(0,sys.argv[1])
+from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
+request=json.load(sys.stdin)
+store=ReadOnlyWorkView(pathlib.Path(sys.argv[2]))
+def binary(value):
+    if isinstance(value,bytes):return {'bytes_sha256':hashlib.sha256(value).hexdigest()}
+    raise TypeError(type(value).__name__)
+print(json.dumps({'rows':{work:store.get_result_delivery(work) for work in request['work_ids']},'API_requests':0},default=binary,sort_keys=True))
+'''
+    return gateway._call([sys.executable,'-B','-c',script,str(SOURCE),bundle['work_store']],
+                         SOURCE,Path(bundle['work_store']).parent,
+                         input_value={'work_ids':list(bundle['work_item_ids'].values())})['rows']
+
+
 def journal_read_port(work_id, fault=None):
     """Mock only a native reader, never generate owner/admission authority."""
     return r'''
@@ -141,15 +159,21 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
 
 
 @pytest.mark.parametrize('mutation', ['store','hash'])
-def test_original_owner_rejects_foreign_store_or_hash_without_mutation(delivery,mutation):
+def test_original_owner_rejects_bad_ack_without_mutating_its_work_or_blocking_good_ack(delivery,mutation):
     gateway,bundle,receipt=delivery
     gateway.bind_delivery_consumer(bundle,TARGET,'operator-config:isolated-dashboard-test')
     wrong=copy.deepcopy(receipt)
     if mutation=='store':wrong['acks'][0]['consumer']['store_id']='other-store'
     else:wrong['acks'][0]['payload_sha256']='0'*64
-    before=Path(bundle['work_store']).read_bytes()
-    with pytest.raises(DashboardExecutionError):gateway.acknowledge_delivery(bundle,wrong)
-    assert Path(bundle['work_store']).read_bytes()==before
+    before=native_delivery_rows(gateway,bundle)
+    result=gateway.acknowledge_delivery(bundle,wrong)
+    assert result['status']=='owner_rejected'
+    assert [row['state'] for row in result['items']]==['ack_rejected','delivered']
+    after=native_delivery_rows(gateway,bundle)
+    bad_work,good_work=list(bundle['work_item_ids'].values())
+    assert after[bad_work]==before[bad_work] and after[good_work]['state']=='delivered'
+    assert gateway.acknowledge_delivery(bundle,wrong)==result
+    assert native_delivery_rows(gateway,bundle)==after
 
 
 def test_observation_mapping_cannot_retarget_original_work(delivery):
@@ -165,7 +189,9 @@ def test_partial_ack_batch_is_retriable_without_reapplying_completed_work(delive
     gateway,bundle,receipt=delivery
     gateway.bind_delivery_consumer(bundle,TARGET,'operator-config:isolated-dashboard-test')
     wrong=copy.deepcopy(receipt);wrong['acks'][1]['payload_sha256']='0'*64
-    with pytest.raises(DashboardExecutionError):gateway.acknowledge_delivery(bundle,wrong)
+    partial=gateway.acknowledge_delivery(bundle,wrong)
+    assert partial['status']=='owner_rejected'
+    assert [row['state'] for row in partial['items']]==['delivered','ack_rejected']
     assert gateway.acknowledge_delivery(bundle,receipt)['status']=='delivered'
 
 
@@ -207,7 +233,8 @@ def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(del
     assert ledger.read_bytes()==before
 
 
-def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(delivery, tmp_path, monkeypatch):
+@pytest.mark.parametrize('cached_reference', [False, True, 'only'])
+def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(delivery, tmp_path, monkeypatch, cached_reference):
     import hashlib
     monkeypatch.syspath_prepend(str(ROOT/'scripts'))
     import frozen_release_projection
@@ -220,6 +247,16 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
     call = gateway._call
     from scripts.dashboard_delivery import _EXPORT
     journal_port = journal_read_port(original_ids[0])
+    qids = ['IQS_05']
+    if cached_reference:
+        reference_qid = 'IQS_05' if cached_reference == 'only' else 'CACHED_Q'
+        references = [{'question_id': reference_qid, 'subject_ref':
+            {'entity_id': 'ENT_BYD', 'scope': 'entity', 'scope_id': 'ENT_BYD'}}]
+        journal_port = journal_port.replace("'references':[]", "'references':" + repr(references))
+        if cached_reference == 'only':
+            journal_port = journal_port.replace("'items':[row]", "'items':[]")
+        else:
+            qids.append(reference_qid)
     def recorded_action(command, *args, **kwargs):
         command = list(command)
         if '-c' in command and command[command.index('-c')+1] == _EXPORT:
@@ -231,8 +268,8 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
     admission.write_text(json.dumps({'work_store': str(ledger),
                                     'budget_policy_file': str(tmp_path/'removed-policy.json')}), encoding='utf8')
     request = tmp_path/'request.json'
-    request.write_text(json.dumps({'entity_id': 'ENT_BYD', 'question_ids': ['IQS_05'],
-        'scope_bindings': {'IQS_05': {'scope': 'entity', 'scope_id': 'ENT_BYD'}}}), encoding='utf8')
+    request.write_text(json.dumps({'entity_id': 'ENT_BYD', 'question_ids': qids,
+        'scope_bindings': {qid: {'scope': 'entity', 'scope_id': 'ENT_BYD'} for qid in qids}}), encoding='utf8')
     manifest = tmp_path/'manifest.json'
     manifest.write_text('{}', encoding='utf8')
     bundle = {'entity_id': 'ENT_BYD', 'admission_config': str(admission),
@@ -244,7 +281,9 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
     before = ledger.read_bytes()
     result = gateway.export_delivery({'bundle_id': 'ORIGINAL'})
     assert result['status'] == 'exported' and result['API_requests'] == 0
-    assert len(result['import_bundles']) == 1
+    assert len(result['import_bundles']) == (0 if cached_reference == 'only' else 1)
+    if cached_reference:
+        assert result['referenced_question_ids'] == [reference_qid]
     for registration in result['import_bundles'].values():
         raw = Path(registration['package']).read_bytes()
         assert hashlib.sha256(raw).hexdigest() == registration['package_sha256']
@@ -253,7 +292,10 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
     assert ledger.read_bytes() == before and not (tmp_path/'removed-policy.json').exists()
     read = gateway.preview({'bundle_id': 'ORIGINAL'}, read_only=True)
     assert read['status'] == 'inspected' and read['API_requests'] == 0
-    assert read['inspection']['work_items'][0]['status'] == 'result_ready'
+    if cached_reference == 'only':
+        assert read['inspection']['work_items'] == []
+    else:
+        assert read['inspection']['work_items'][0]['status'] == 'result_ready'
     assert ledger.read_bytes() == before
 
 

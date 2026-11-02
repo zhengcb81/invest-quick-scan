@@ -1165,13 +1165,15 @@ class ExecutionGateway:
             or not ledger.is_absolute() or not ledger.is_file() or not isinstance(mapping, dict) or not mapping):
             raise DashboardExecutionError('ack_owner_unconfigured', '缺少原StockQA账本及逐观察work引用', 409)
         acks = receipt.get('acks') if isinstance(receipt, dict) else None
-        if (not isinstance(acks, list) or not acks or len(acks) != len(mapping)
-            or {ack.get('observation_id') for ack in acks if isinstance(ack, dict)} != set(mapping)):
+        if (not isinstance(acks, list) or not acks or any(not isinstance(ack, dict) for ack in acks)
+            or any(not isinstance(ack.get('observation_id'), str) for ack in acks)
+            or len({ack['observation_id'] for ack in acks}) != len(acks)
+            or not {ack['observation_id'] for ack in acks} <= set(mapping)):
             raise DashboardExecutionError('ack_scope_mismatch', '回执与已登记观察范围不一致', 409)
         helper = r'''
 import json, pathlib, sys
 sys.path.insert(0, sys.argv[1])
-from src.utils.quick_scan_work_store import QuickScanWorkStore
+from src.utils.quick_scan_work_store import QuickScanWorkStore, WorkConflictError, LeaseFencedError
 request=json.load(sys.stdin)
 def offline(event,args):
     if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}: raise RuntimeError('network_forbidden')
@@ -1181,8 +1183,16 @@ try:
     rows=[]
     for ack in request['receipt']['acks']:
         work=request['work_item_ids'][ack['observation_id']]
-        result=store.apply_result_delivery_ack(work,ack)
-        rows.append({'work_item_id':work,'observation_id':ack['observation_id'],'state':result['state']})
+        try:
+            result=store.apply_result_delivery_ack(work,ack)
+            rows.append({'work_item_id':work,'observation_id':ack['observation_id'],'state':result['state']})
+        except (ValueError,WorkConflictError,LeaseFencedError) as error:
+            rows.append({'work_item_id':work,'observation_id':ack['observation_id'],
+                'state':'ack_rejected','error_type':type(error).__name__})
+    present={ack['observation_id'] for ack in request['receipt']['acks']}
+    for observation,work in request['work_item_ids'].items():
+        if observation not in present:
+            rows.append({'work_item_id':work,'observation_id':observation,'state':'ack_missing'})
     print(json.dumps({'status':'delivered' if all(r['state']=='delivered' for r in rows) else 'owner_rejected',
         'items':rows,'API_requests':0,'network_calls':0}))
 except Exception:

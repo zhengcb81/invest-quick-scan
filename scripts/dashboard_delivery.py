@@ -52,7 +52,7 @@ try:
         if covered|references != set(qids): raise ValueError('original_registered_scope_mismatch')
         work_ids=list(registered)
         for qid in references-covered:
-            items.append({'question_id':qid,'work_item_id':None,'status':'not_exportable','reason':'original_observation_reference'})
+            items.append({'question_id':qid,'work_item_id':None,'status':'referenced','reason':'original_observation_reference'})
     elif work_ids is None:
         if not request.get('read_only_scope'):
             raise ValueError('original_refresh_action_required')
@@ -175,6 +175,8 @@ def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection
                 'work_store':str(ledger), 'work_item_ids':{row['observation_id']:row['work_item_id']}}
             public['bundle_id']=name
         items.append(public)
-    return {'status':'exported' if len(registrations)==len(items) else 'partial','import_bundles':registrations,
+    referenced=[row['question_id'] for row in items if row['status']=='referenced']
+    return {'status':'exported' if len(registrations)+len(referenced)==len(items) else 'partial','import_bundles':registrations,
+        'referenced_question_ids':referenced,
         'items':items,'API_requests':0,'model_calls':0,'financial_accuracy_proven':False,
         'notice':'只复制原outbox已封存的精确字节；未重新评分、补齐或改写原包。'}

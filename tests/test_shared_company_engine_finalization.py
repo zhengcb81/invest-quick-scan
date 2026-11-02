@@ -28,7 +28,7 @@ class MapperOnlyServices(OwnerResearchServices):
     def __init__(self, task, *, expired=False, proof_bad=False):
         self.task, self.saves, self.restores = task, [], []
         self.expired, self.proof_bad = expired, proof_bad
-        self.owner = SimpleNamespace(entries={q: {"kind": "work", "work_item_id": "WORK_" + q} for q in task.question_ids})
+        self.owner = SimpleNamespace(bundle={"authority": {}}, entries={q: {"kind": "work", "work_item_id": "WORK_" + q} for q in task.question_ids})
         self.rows, self.checkpoints, self.standards = {}, {}, {}
         for q in task.question_ids:
             self.rows["WORK_" + q] = {"work_item_id": "WORK_" + q, "question_id": q, "status": "leased"}
@@ -80,6 +80,11 @@ def answer(q):
 
 @pytest.fixture
 def bound(monkeypatch):
+    from src.utils import quick_scan_delivery_seal
+    # The native helper's actual SQLite/authority match is tested in StockQA.
+    # This fixture isolates composition only, never grants native authority.
+    monkeypatch.setattr(quick_scan_delivery_seal, "get_matching_sealed_delivery",
+                        lambda store, wid, *, authority: store.get_result_delivery(wid))
     task = SimpleNamespace(question_ids=["IQS_05", "IQS_06"], raw={"run_id": "synthetic-finalize"})
     run = {"run_id": task.raw["run_id"], "slots": [{"question_id": q, "execution_status": "completed", "answer": answer(q), "attempt_refs": ["stockqa:native_" + q]} for q in task.question_ids]}
     monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: (copy.deepcopy(run), EvidenceBoard(2000)))
@@ -175,6 +180,24 @@ def test_saved_checkpoints_with_failed_seal_do_not_claim_finalization_complete(b
     assert completed["status"] == "completed" and completed["pending_delivery_question_ids"] == []
     assert completed["reused_question_ids"] == task.question_ids
     assert completed["new_model_http"] == 0 and services.saves == task.question_ids
+
+
+def test_old_ready_package_is_not_current_authority_completion(bound, monkeypatch):
+    from src.utils import quick_scan_delivery_seal
+    task, services, _ = bound
+    current = {"matched": False}
+    monkeypatch.setattr(quick_scan_delivery_seal, "get_matching_sealed_delivery",
+        lambda store, wid, *, authority: store.get_result_delivery(wid) if current["matched"] else None)
+    first = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
+    assert first["checkpoint_status"] == "completed"
+    assert first["status"] == "checkpointed_delivery_pending"
+    assert all(row["delivery_state"] == "ready" and not row["delivery_matches_authority"] for row in first["checkpoints"])
+    assert first["pending_delivery_question_ids"] == task.question_ids
+    before = copy.deepcopy(services.checkpoints)
+    current["matched"] = True
+    again = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
+    assert again["status"] == "completed" and again["whole_task_finalized"]
+    assert services.checkpoints == before and again["new_model_http"] == 0
 
 
 @pytest.mark.parametrize("stage", ["restore", "commit", "seal", "after_success"])

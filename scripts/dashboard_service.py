@@ -289,8 +289,13 @@ class DashboardService:
                     'ack_reconciliation':result.get('ack_reconciliation')})
             except Exception as exc:
                 outcomes.append({'bundle_id':name,'status':'pending','error_code':getattr(exc,'code','delivery_interrupted')})
-        delivered=bool(outcomes) and exported['status']=='exported' and all(row.get('ack_reconciliation',{}).get('status')=='delivered' for row in outcomes)
+        referenced=exported.get('referenced_question_ids',[])
+        reference_only=(bool(referenced) and not exported['import_bundles']
+            and len(exported['items'])==len(referenced)
+            and all(row.get('status')=='referenced' for row in exported['items']))
+        delivered=(bool(outcomes) or reference_only) and exported['status']=='exported' and all(row.get('ack_reconciliation',{}).get('status')=='delivered' for row in outcomes)
         return {'status':'delivered' if delivered else 'partial' if outcomes else 'pending','items':outcomes,
+            'referenced_question_ids':referenced,
             'API_requests':0,'financial_accuracy_proven':False}
 
     def _register_prepared(self, result, deployment):
