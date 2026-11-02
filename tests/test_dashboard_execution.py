@@ -57,10 +57,10 @@ import json, pathlib
 class LLMConfig:
  def __init__(self, path): self.path=pathlib.Path(path)
  @staticmethod
- def _validate_quick_scan_policy(value):
+ def validate_quick_scan_model_policy(value):
   if not isinstance(value,dict) or set(value)!={"models"}: raise ValueError("invalid")
  def save_quick_scan_model_policy(self, policy):
-  self._validate_quick_scan_policy(policy)
+  self.validate_quick_scan_model_policy(policy)
   data=json.loads(self.path.read_text());data["quick_scan_model_policy"]=policy;self.path.write_text(json.dumps(data))
 ''', encoding="utf-8")
     (source / "src/utils/quick_scan_refresh_admission.py").write_text('''

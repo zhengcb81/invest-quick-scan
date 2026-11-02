@@ -34,6 +34,10 @@ class PreparationJobs:
         self._threads = {}
         self._mutex = threading.RLock()
 
+    @staticmethod
+    def has_records(state_root):
+        return next(Path(state_root).glob('prepjob_*.json'), None) is not None
+
     def _path(self, job_id):
         if not isinstance(job_id, str) or not re.fullmatch('prepjob_[a-f0-9]{32}', job_id):
             raise DashboardJobError('job_id_invalid', '准备任务ID无效。')
@@ -172,7 +176,7 @@ class PreparationJobs:
         return {'jobs':[self.get(path.stem) for path in paths[:50]], 'total':len(paths), 'API_requests':0}
 
     def active(self):
-        return any(self.get(path.stem)['state'] in {'preparing','registration_in_progress','needs_original_inspection','owner_prepared','registration_pending'}
+        return any(self._read(path)['state'] in {'preparing','registration_in_progress','needs_original_inspection','owner_prepared','registration_pending'}
             for path in self.state_root.glob('prepjob_*.json')) if self.state_root.exists() else False
 
     def reconcile(self, job_id):

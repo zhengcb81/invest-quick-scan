@@ -21,6 +21,8 @@ from question_prompts import (
     render_question,
     render_screening_question as _prompt_renderer,
     renderer_rules_sha256 as _renderer_rules_sha256,
+    renderer_for_release,
+    RENDERER_VERSION,
     standard_prompt,
 )
 from question_fingerprints import question_fingerprint
@@ -37,7 +39,6 @@ METRIC_CONTRACT_VERSION = manifest_contract.METRIC_CONTRACT_VERSION
 STATUSES = {'scored', 'insufficient_evidence', 'not_applicable', 'search_unavailable'}
 SCREENING_PROTOCOL_VERSION = '1.0.0'
 SCREENING_STATUSES = {'scored', 'unknown', 'insufficient_evidence', 'not_applicable', 'error'}
-RENDERER_VERSION = '1.0.0'
 
 
 def validate_manifest_metric_contract(manifest):
@@ -140,12 +141,13 @@ def render_screening_question(q, profile, contexts=None):
     return _prompt_renderer(q, profile, contexts)
 
 
-def export_questions(questions, profile=None, answer_format='legacy', contexts=None):
+def export_questions(questions, profile=None, answer_format='legacy', contexts=None, *, prompts=None):
     categories = {}
-    for q in questions:
+    for index, q in enumerate(questions):
         category = {'dupont': '追加诊断·杜邦分解', 'porter': '追加诊断·五力'}.get(
             q.get('framework'), DIMENSIONS[q['dimension']])
-        prompt = (render_screening_question(q, profile, contexts) if answer_format == 'screening-1'
+        prompt = (prompts[index] if prompts is not None else
+                  render_screening_question(q, profile, contexts) if answer_format == 'screening-1'
                   else render_question(q, profile, contexts))
         exported = {'question_id': q['id'], 'text': prompt} if answer_format == 'screening-1' else prompt
         categories.setdefault(category, []).append(exported)
@@ -216,8 +218,7 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         package, modules, release, contexts = module_registry.load_current(root=ROOT)
     else:
         package, modules, release, contexts = module_registry.load_package(package_id, root=ROOT)
-    if package['renderer_rules_sha256'] != renderer_rules_sha256():
-        raise ValueError('historical renderer implementation unavailable for prompt verification')
+    renderer = renderer_for_release(release['renderer_version'], package['renderer_rules_sha256'])
     if answer_format == 'standard-1' and not module_registry.observation_ingest_ready(package):
         raise ValueError('module package cannot issue standard observations; historical read only')
     route_v2 = route_decision is not None and route_decision.get('schema_version') == '2.0.0'
@@ -249,12 +250,12 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
     manifest_questions = []
     for question, mapping in zip(chosen, metric_mappings):
         if answer_format == 'standard-1':
-            prompt = standard_prompt(question, profile, contexts=contexts,
+            prompt = renderer.standard_prompt(question, profile, contexts=contexts,
                                      resources=package['format_resources'])
         elif answer_format == 'screening-1':
-            prompt = render_screening_question(question, profile, contexts)
+            prompt = renderer.render_screening_question(question, profile, contexts)
         else:
-            prompt = render_question(question, profile, contexts)
+            prompt = renderer.render_question(question, profile, contexts)
         prompts.append(prompt)
         canonical_question = next(
             item for item in modules[question['module_id']]['questions']
@@ -324,7 +325,7 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
     output_dir = Path(output_dir)
     if any((output_dir / name).exists() for name in ('questions.json', 'manifest.json')):
         raise ValueError('output already contains a question run; use a fresh directory')
-    question_groups = (export_questions(chosen, profile, answer_format, contexts)
+    question_groups = (export_questions(chosen, profile, answer_format, contexts, prompts=prompts)
                        if answer_format in ('legacy', 'screening-1')
                        else [{'category': '标准化评分', 'questions': prompts}])
     write_json(output_dir / 'questions.json', question_groups)

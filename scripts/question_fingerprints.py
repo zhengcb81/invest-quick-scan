@@ -1,14 +1,15 @@
 """Stable semantic fingerprints for question answers across published releases."""
 
 import module_contract
-from question_prompts import applied_contexts
+from question_prompts import renderer_for_release
 
 
 def question_fingerprint(question, profile, contexts, package, release, answer_format):
     """Return the immutable fingerprint used by manifests and observations."""
+    renderer = renderer_for_release(release["renderer_version"], package["renderer_rules_sha256"])
     payload = {
         "definition": module_contract.question_definition_sha256(question),
-        "applied_contexts": applied_contexts(question, profile, contexts),
+        "applied_contexts": renderer.applied_contexts(question, profile, contexts),
         "renderer_rules_sha256": package["renderer_rules_sha256"],
         "renderer_version": release["renderer_version"],
         "answer_format": answer_format,

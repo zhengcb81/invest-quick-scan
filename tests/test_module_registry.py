@@ -381,13 +381,54 @@ class ModuleRegistryTests(unittest.TestCase):
     def test_unavailable_historical_renderer_fails_closed_without_losing_archive(self):
         published = self.publish()
         manifest = self.manifest("old", {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"})
-        with mock.patch.object(manifest_contract, "renderer_rules_sha256", return_value="f" * 64):
+        import question_prompts
+        with mock.patch.dict(question_prompts._RENDERERS, {}, clear=True):
             with self.assertRaisesRegex(ValueError, "historical renderer implementation unavailable"):
                 qs.validate_manifest_metric_contract(manifest)
         # Stored release and questions remain readable even when the local
         # renderer implementation cannot verify an old prompt.
         _, modules, _, _ = registry.load_package(published["package_id"], root=self.root)
         self.assertEqual(len(modules), 48)
+
+    def test_new_renderer_keeps_original_prompt_reader_and_tamper_detection(self):
+        import question_prompts
+        published = self.publish()
+        original = self.manifest("old-renderer", {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"}, answer_format="standard-1")
+        old = question_prompts.renderer_for_release("1.0.0", qs.renderer_rules_sha256())
+        changed = old._replace(rules_sha256="f" * 64,
+            standard_prompt=lambda *a, **kw: old.standard_prompt(*a, **kw) + "\nVersion two instruction.",
+            render_question=lambda *a, **kw: old.render_question(*a, **kw) + "\nVersion two instruction.",
+            render_screening_question=lambda *a, **kw: old.render_screening_question(*a, **kw) + "\nVersion two instruction.")
+        with mock.patch.dict(question_prompts._RENDERERS, {"2.0.0": changed}):
+            registry.publish(root=self.root, renderer_version="2.0.0", router_version="1.0.0",
+                             renderer_rules_sha256=changed.rules_sha256)
+            current = self.manifest("new-renderer", {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"}, answer_format="standard-1")
+            self.assertEqual(current["renderer_version"], "2.0.0")
+            self.assertTrue(current["questions"][0]["prompt"].endswith("Version two instruction."))
+            self.assertEqual(len(qs.validate_manifest_metric_contract(original)), original["question_count"])
+            self.assertEqual(len(qs.validate_manifest_metric_contract(current)), current["question_count"])
+            forged = copy.deepcopy(original)
+            forged["questions"][0]["prompt"] += " forged"
+            forged["questions"][0]["prompt_sha256"] = hashlib.sha256(forged["questions"][0]["prompt"].encode()).hexdigest()
+            with self.assertRaisesRegex(ValueError, "prompt or semantic fingerprint mismatch"):
+                qs.validate_manifest_metric_contract(forged)
+            for answer_format in ("legacy", "screening-1"):
+                manifest = self.manifest("new-" + answer_format,
+                    {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"}, answer_format=answer_format)
+                groups = qs.read_json(self.root / "outputs" / ("new-" + answer_format) / "questions.json")
+                actual = [q["text"] if isinstance(q, dict) else q for group in groups for q in group["questions"]]
+                self.assertEqual(sorted(actual), sorted(q["prompt"] for q in manifest["questions"]))
+                self.assertTrue(all(prompt.endswith("Version two instruction.") for prompt in actual))
+        self.assertEqual(original["module_package_id"], published["package_id"])
+
+    def test_source_text_is_not_a_release_compatibility_requirement(self):
+        import inspect
+        self.publish()
+        original = self.manifest("source-neutral", {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"})
+        with mock.patch.object(inspect, "getsource", side_effect=OSError("source moved/comment changed")):
+            self.assertEqual(len(qs.validate_manifest_metric_contract(original)), original["question_count"])
+            again = self.manifest("source-neutral-again", {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"})
+        self.assertEqual(again["questions"], original["questions"])
 
     def test_prior_package_without_observation_schema_is_readable_but_cannot_issue_observations(self):
         published = self.publish()
@@ -504,7 +545,9 @@ class ModuleRegistryTests(unittest.TestCase):
         profile = {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"}
         package, modules, release, contexts = registry.load_current(root=self.root)
         chosen, _, _ = qs.select_questions(profile, "quick", modules, contexts)
-        mandatory = sum(q["comparison_role"] == "core" or q.get("critical", False) for q in chosen)
+        mandatory = sum(q["comparison_role"] == "core" or q.get("critical", False)
+                        or q.get("module_id") in ("common", *qs.library.ALWAYS_APPLICABLE_DIAGNOSTICS)
+                        for q in chosen)
         self.assertGreater(len(chosen), mandatory)
         with self.assertRaisesRegex(ValueError, "below mandatory"):
             self.manifest("too-small", profile, max_questions=mandatory - 1)
@@ -514,6 +557,7 @@ class ModuleRegistryTests(unittest.TestCase):
         self.assertTrue(manifest["deferred_questions"])
         self.assertEqual(len(manifest["deferred_questions"]), len(chosen) - mandatory)
         self.assertTrue(all(q["comparison_role"] == "core" or q.get("critical")
+                            or q.get("module_id") in ("common", *qs.library.ALWAYS_APPLICABLE_DIAGNOSTICS)
                             for q in manifest["questions"]))
         self.assertEqual(len(qs.validate_manifest_metric_contract(manifest)), mandatory)
 
@@ -586,7 +630,8 @@ class ModuleRegistryTests(unittest.TestCase):
 
         package, modules, release, _ = registry.load_current(root=self.root)
         selected = {"common", "operating", "industrial", "mature", "cyclical",
-                    "cross_border", "universal_extension", "pricing_lens"}
+                    "cross_border", "universal_extension", "pricing_lens",
+                    *qs.library.ALWAYS_APPLICABLE_DIAGNOSTICS}
         source = {"title": "fixture", "url": "https://example.com/route", "published_at": "2026-09-01"}
         decisions = [{"module_id": entry["module_id"], "module_version": entry["version"],
                       "decision": "selected" if entry["module_id"] in selected else "rejected",
@@ -642,7 +687,7 @@ class ModuleRegistryTests(unittest.TestCase):
                    "as_of": "2026-09-19", "entity_id": "ENTITY_PARTIAL"}
         source = {"title": "fixture", "url": "https://example.com/route", "published_at": "2026-09-01"}
         decisions = [{"module_id": entry["module_id"], "module_version": entry["version"],
-                      "decision": "selected" if entry["module_id"] in {"common", "distressed"} else "uncertain",
+                      "decision": "selected" if entry["module_id"] in {"common", "distressed", *qs.library.ALWAYS_APPLICABLE_DIAGNOSTICS} else "uncertain",
                       "basis": "deterministic", "confidence": "high", "rationale": "fixture route",
                       "sources": [source]} for entry in release["modules"]]
         route = mc.seal_route_decision({"schema_version": "1.0.0", "release_id": release["release_id"],
@@ -652,7 +697,7 @@ class ModuleRegistryTests(unittest.TestCase):
                                         "module_decisions": decisions})
         manifest = self.manifest("partial", profile, package_id=package["package_id"],
                                  route_decision=route)
-        self.assertEqual(manifest["modules"], ["common", "distressed"])
+        self.assertEqual(set(manifest["modules"]), {"common", "distressed", *qs.library.ALWAYS_APPLICABLE_DIAGNOSTICS})
         self.assertNotIn("company_type", manifest["profile"])
         self.assertNotIn("stage", manifest["profile"])
         self.assertIn("分类待核实", manifest["questions"][0]["prompt"])

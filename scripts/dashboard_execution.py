@@ -213,7 +213,7 @@ try:
             LLMConfig(str(path)).save_quick_scan_model_policy(policy)
         else:
             if policy is not None:
-                LLMConfig._validate_quick_scan_policy(policy)
+                LLMConfig.validate_quick_scan_model_policy(policy)
         revision = hashlib.sha256(path.read_bytes()).hexdigest()
         providers = document.get("providers")
         choices = []
@@ -279,18 +279,27 @@ class ExecutionGateway:
         self._lock, self._processes = threading.RLock(), {}
         self._owner_snapshots = {}
 
+    def replace_registered_bundles(self, bundles):
+        """Publish an append-only registry without waiting for owner I/O."""
+        self.bundles = dict(bundles)
+
+    @staticmethod
+    def has_records(state_root):
+        return next(Path(state_root).glob('run-*.json'), None) is not None
+
     def _select(self, payload, *, launching=False, recovery=False):
         if not isinstance(payload, dict) or set(payload) - ({"bundle_id", "entity_id", "preview_id"} if launching else {"bundle_id", "entity_id"}):
             raise DashboardExecutionError("selection_invalid", "只允许选择已注册的公司和执行包")
         bundle_id = payload.get("bundle_id")
+        bundles = self.bundles
         if bundle_id is None:
-            choices = [key for key, bundle in self.bundles.items() if bundle.get("entity_id") == payload.get("entity_id")]
+            choices = [key for key, bundle in bundles.items() if bundle.get("entity_id") == payload.get("entity_id")]
             if len(choices) != 1:
                 raise DashboardExecutionError("bundle_selection_required", "该公司需要选择一个已配置执行包", 409)
             bundle_id = choices[0]
-        if not isinstance(bundle_id, str) or re.fullmatch(r"[A-Za-z0-9_.-]{1,100}", bundle_id) is None or bundle_id not in self.bundles:
+        if not isinstance(bundle_id, str) or re.fullmatch(r"[A-Za-z0-9_.-]{1,100}", bundle_id) is None or bundle_id not in bundles:
             raise DashboardExecutionError("bundle_unknown", "未注册的执行包", 404)
-        bundle = self.bundles[bundle_id]
+        bundle = bundles[bundle_id]
         if not isinstance(bundle, dict) or payload.get("entity_id", bundle.get("entity_id")) != bundle.get("entity_id"):
             raise DashboardExecutionError("entity_mismatch", "公司身份与执行包不一致", 409)
         if not recovery and 'work_lease_seconds' in bundle and (type(bundle['work_lease_seconds']) is not int
@@ -1109,6 +1118,18 @@ class ExecutionGateway:
                 return {"run": record, "state": "running", "process_started": True, "paid_dispatch_started": None,
                         "notice": "仅恢复同一原owner登记范围；原执行器复用已保存答案，未知HTTP不重发"}
             raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume", "retire", "seal"]})
+
+    @contextmanager
+    def process_control(self, action):
+        """Use the executor's existing process-control exclusion for a batch operation."""
+        with self._control_lock(action):
+            yield
+
+    def process_stop_evidence(self, record):
+        """Project stop evidence from the original run, including owned child handles."""
+        if record['run_id'] in self._processes:
+            return 'present'
+        return _process_recovery_evidence(record, False)
 
     @contextmanager
     def _control_lock(self, action):

@@ -67,6 +67,11 @@ def external_search_urls(receipt: dict, *, entity_id: str, question_id: str,
     Only StockQA can authenticate the persisted retrieval/use/HTTP chain. A
     self-consistent caller dictionary or hash is not independently certified
     evidence, and this pure consumer never upgrades the answer's check level.
+
+    Provider names and optional native receipt fields belong to that producer.
+    Consumers validate the stable identity/source bindings below and hash the
+    WHOLE receipt, including opaque extensions; they do not keep a second
+    provider registry or copy the producer's private receipt allowlist.
     """
     binding = receipt.get("search_binding")
     fields = {"schema", "entity_id", "question_id", "identity_snapshot_sha256", "external_context_use", "native_receipt"}
@@ -92,11 +97,7 @@ def external_search_urls(receipt: dict, *, entity_id: str, question_id: str,
         raise ValueError("external search use digest mismatch")
     for key in ("use_id", "work_item_id", "work_attempt_id", "provider", "actual_model"):
         _required_text(proof[key], key)
-    native_fields = {"provider", "request_id", "response_id", "actual_model", "requested_model", "search_protocol",
-        "response_sha256", "response_json_basis", "model_resolution_sha256", "search_status", "response_status",
-        "http_status_code", "attempt_id", "prompt_sha256", "search_receipt_id", "failure_type", "provider_error_code",
-        "retry_after_seconds", "completed_at", "source_urls", "usage"}
-    if not isinstance(native, dict) or set(native) - native_fields:
+    if not isinstance(native, dict):
         raise ValueError("invalid external original receipt")
     native_sha = hashlib.sha256(json.dumps(native, ensure_ascii=True, sort_keys=True,
         separators=(",", ":"), allow_nan=False).encode()).hexdigest()
@@ -137,7 +138,7 @@ def external_search_urls(receipt: dict, *, entity_id: str, question_id: str,
     for ref in refs:
         for key in ("operation_id", "query_id", "route_id", "route_kind"):
             _required_text(ref[key], key)
-        if (ref["operation_id"] in operations or ref["route_kind"] not in {"brave", "tavily", "zai_rest", "zai_mcp_streamable"}
+        if (ref["operation_id"] in operations
                 or not isinstance(ref["receipt_sha256"], str) or not _SHA256.fullmatch(ref["receipt_sha256"])
                 or _instant(ref["retrieved_at"]) > _instant(native["completed_at"])):
             raise ValueError("external retrieval reference or time mismatch")

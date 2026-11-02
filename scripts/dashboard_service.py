@@ -160,6 +160,7 @@ class DashboardService:
         self.ui_root = Path(ui_root or self.root.parent/'iqs-question-bank-ui-lab').resolve()
         self.csrf_token = secrets.token_urlsafe(32)
         self._lock = threading.RLock()
+        self._commands_in_flight = 0
         self._owner_factory, self._execution_factory = owner_factory, execution_factory
         self._prepare_factory = prepare_factory
         self._config_revision = None
@@ -168,7 +169,7 @@ class DashboardService:
         self._snapshots = {}
         self._load()
 
-    def _load(self, *, inactive_checked_config=None):
+    def _load(self, *, inactive_checked_config=None, keep_active_revision=False):
         raw = self.config_path.read_bytes() if self.config_path.is_file() else b''
         revision = hashlib.sha256(raw).hexdigest()
         if revision == self._config_revision:
@@ -181,6 +182,8 @@ class DashboardService:
         old = getattr(self, 'config', None)
         additive = old is not None and self._append_only(old, config)
         if old is not None and not additive:
+            if keep_active_revision and self._commands_in_flight:
+                return
             if config != inactive_checked_config:
                 self._assert_inactive(next_config=config)
             if self._batch is not None:
@@ -189,9 +192,8 @@ class DashboardService:
         self._config_revision = revision
         self._owner = None
         if additive:
-            if self._execution is not None:
-                self._execution.bundles = self.config['execution_bundles']
-                self._execution.config.update(self.config, bundles=self.config['execution_bundles'])
+            if self._execution is not None and old['execution_bundles'] != config['execution_bundles']:
+                self._execution.replace_registered_bundles(config['execution_bundles'])
         else:
             self._execution = self._prepare = self._jobs = self._batch = self._delivery = None
         self._snapshots.clear()
@@ -203,26 +205,28 @@ class DashboardService:
             and all(all(new[key].get(name) == row for name, row in old[key].items()) for key in maps))
 
     def _assert_inactive(self, *, next_config=None):
+        if self._commands_in_flight:
+            raise ProductError('execution_active', '原操作正在处理，请等当前操作结束再切换工作区。', 409)
+        from dashboard_batches import BatchGateway
+        from dashboard_delivery_jobs import DeliveryJobs
+        from dashboard_execution import ExecutionGateway
+        from dashboard_jobs import PreparationJobs
         state=Path(self.config['state_root'])
-        if self._jobs is None and any((state/'preparation-jobs').glob('prepjob_*.json')):
+        if self._execution is None and ExecutionGateway.has_records(state):
+            self._gateway('execution')
+        if self._jobs is None and PreparationJobs.has_records(state/'preparation-jobs'):
             self._preparation_jobs()
-        if self._delivery is None and any((state/'delivery-jobs').glob('deliveryjob_*.json')):
+        if self._delivery is None and DeliveryJobs.has_records(state/'delivery-jobs'):
             self._delivery_jobs()
-        if self._batch is None and any((state/'batches').glob('batch-*.json')):
+        if self._batch is None and BatchGateway.has_records(state/'batches'):
             self._batches()
         if self._execution is not None:
             execution = self._execution
             refs = execution.active_references() if hasattr(execution, 'active_references') else execution.tasks(inspect_owner=False, limit=2000)
             if any(row.get('process_state') in {'running', 'starting', 'needs_original_inspection'} for row in refs.get('items', refs.get('tasks', []))):
                 raise ProductError('execution_active', '运行期间不切换工作区；请等待当前公司安全结束。', 409)
-        if self._batch is not None:
-            offset = 0
-            while True:
-                page = self._batch.list(limit=100, offset=offset)
-                if any(row.get('state') in {'running','draining','needs_original_inspection'} for row in page['batches']):
-                    raise ProductError('batch_active', '批扫描尚未安全结束；先暂停并核对原任务。', 409)
-                offset += len(page['batches'])
-                if offset >= page['total'] or not page['batches']: break
+        if self._batch is not None and self._batch.active():
+            raise ProductError('batch_active', '批扫描尚未安全结束；先暂停并核对原任务。', 409)
         if self._jobs is not None and self._jobs.active():
             raise ProductError('preparation_active', '准备结果尚未处理；先查看或核对原准备记录。', 409)
         if self._delivery is not None:
@@ -264,10 +268,15 @@ class DashboardService:
             previous={profile:delivery_deployment_fingerprint(self.config,profile=profile)
                 for profile in (LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE)}
             self._delivery=DeliveryJobs(self._gateway('execution'),Path(self.config['state_root'])/'delivery-jobs',digest,
-                lambda bundle_id:self._deliver_scope(bundle_id),lambda batch_id:self._batches().get(batch_id),
+                self._deliver_scope,self._delivery_batch,
                 fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,deployment_fingerprints=previous,
                 receiver_status=self._gateway('owner').status)
         return self._delivery
+
+    def _delivery_batch(self, batch_id):
+        with self._lock:
+            batch = self._batches()
+        return batch.get(batch_id)
 
     def _deliver_scope(self, bundle_id):
         # Capture trusted local references briefly; all slow native I/O runs
@@ -472,8 +481,8 @@ class DashboardService:
                           draft_source_label='历史薄草稿暂不可用；正式结果仍可查看')
         return result
 
-    def _read_view(self, target):
-        """Capture one deployment and its existing adapters before slow read I/O.
+    def _request_view(self, target):
+        """Capture one deployment and its existing adapters before slow I/O.
 
         This lightweight request view never saves or reloads configuration. The
         original adapters retain their task/process state; config replacement
@@ -486,18 +495,21 @@ class DashboardService:
                     self._gateway(kind)
                 except Exception:
                     pass  # _safe_status reports this adapter's error in the view.
-        elif path in {'results', 'coverage', 'entity-view', 'entity', 'history', 'facts', 'universe', 'delivery'}:
+        elif (path in {'results', 'coverage', 'entity-view', 'entity', 'history', 'facts', 'universe', 'delivery'}
+                or path.startswith(('universe/', 'import/'))):
             self._gateway('owner')
-        elif path in {'settings', 'tasks'}:
+            if path == 'import/apply':
+                self._gateway('execution')
+        elif (path in {'settings', 'tasks'} or path.startswith('tasks/')) and path != 'tasks/deliver':
             self._gateway('execution')
         elif path in {'prepare/status', 'prepare/preview'}:
             self._preparer()
-        elif path == 'prepare/jobs' or re.fullmatch(r'prepare/jobs/prepjob_[a-f0-9]{32}', path):
+        elif path in {'prepare/jobs', 'prepare/apply'} or path.startswith('prepare/jobs/'):
             self._preparation_jobs()
-        elif path == 'batches':
-            self._batches()
-        elif path == 'delivery/jobs':
+        elif path == 'tasks/deliver' or path.startswith('delivery/jobs') or re.fullmatch(r'batches/[^/]+/deliver', path):
             self._delivery_jobs()
+        elif path == 'batches' or path.startswith('batches/'):
+            self._batches()
         view = copy.copy(self)
         view.config = copy.deepcopy(self.config)
         return view
@@ -522,17 +534,24 @@ class DashboardService:
     def dispatch(self, method, target, body=None):
         """Return an HTTP status and JSON envelope; authentication is transport-owned."""
         started = time.monotonic()
+        registered = False
+        body = {} if body is None else body
         try:
+            path = urlsplit(target).path.rstrip('/')
             with self._lock:
-                self._load()
-                readonly = method == 'GET' or (method == 'POST'
-                    and urlsplit(target).path.rstrip('/') == '/api/product/prepare/preview')
-                if readonly:
-                    view = self._read_view(target)
+                self._load(keep_active_revision=method == 'GET')
+                if method == 'PUT' and path == '/api/product/setup':
+                    result = self._dispatch(method, target, body)
+                    view = None
                 else:
-                    result = self._dispatch(method, target, {} if body is None else body)
-            if readonly:
-                result = view._dispatch(method, target, {} if body is None else body)
+                    view = self._request_view(target)
+                    read_only_post = method == 'POST' and path.removeprefix('/api/product/') in {
+                        'prepare/preview', 'tasks/preview', 'batches/preview', 'universe/preview', 'import/preview'}
+                    if method != 'GET' and not read_only_post:
+                        self._commands_in_flight += 1
+                        registered = True
+            if view is not None:
+                result = view._dispatch(method, target, body)
             return 200, {'ok': True, 'data': redact(result), 'elapsed_ms': round((time.monotonic()-started)*1000)}
         except Exception as exc:
             known = isinstance(exc, ProductError) or hasattr(exc, 'code')
@@ -540,6 +559,10 @@ class DashboardService:
                 'code': getattr(exc, 'code', 'internal_error'),
                 'message': str(exc)[:500] if known else '本地组件处理失败，请检查doctor与组件状态。',
                 'details': redact(getattr(exc, 'details', {}))}}
+        finally:
+            if registered:
+                with self._lock:
+                    self._commands_in_flight -= 1
 
     def _dispatch(self, method, target, body):
         parsed = urlsplit(target)

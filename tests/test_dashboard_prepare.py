@@ -19,7 +19,7 @@ import pytest
 from scripts.dashboard_prepare import DashboardPrepareError, PrepareGateway, _env, _new, _apply_guard, _control_path, _native_cli, _timeouts, _sha, _snapshot_sha
 
 
-def test_work_binding_transport_uses_only_public_snapshot(monkeypatch, capsys):
+def test_work_binding_transport_uses_only_public_projection(monkeypatch, capsys):
     import io
     import types
     from scripts.dashboard_prepare import _WORK_BANK_BINDING_READER
@@ -27,21 +27,17 @@ def test_work_binding_transport_uses_only_public_snapshot(monkeypatch, capsys):
         identity_revision=1, information_cutoff='2026-11-01', scope='entity', scope_id='ENT_EXAMPLE',
         manifest_raw_sha256='b'*64)
     calls = []
-    class PublicView:
-        def __init__(self, path):
-            assert path == 'not-opened.sqlite'
-        def __getattr__(self, name):
-            raise AssertionError('consumer accessed private owner implementation: ' + name)
-        def continuation_binding_snapshot(self, **request):
-            calls.append(request)
-            return {'Q1': {'work': {'work_item_id': 'WORK_EXAMPLE', 'generation': 1},
-                           'binding_record': {'binding': binding}}}
+    def project(path, request):
+        calls.append((path, request))
+        return {'protocol': 'iqs.original_work_bank_bindings/1.0.0',
+                'rows': [{'work_item_id': 'WORK_EXAMPLE', 'generation': 1, 'question_id': 'Q1',
+                          'manifest_raw_sha256': 'b'*64, 'binding_sha256': _sha(binding)}],
+                'database_writes': 0, 'API_requests': 0}
     modules = {
         'src': types.ModuleType('src'),
         'src.utils': types.ModuleType('src.utils'),
         'src.utils.quick_scan_refresh_admission': types.SimpleNamespace(safe_read=lambda p: None),
-        'src.utils.quick_scan_refresh_inspect': types.SimpleNamespace(ReadOnlyWorkView=PublicView),
-        'src.utils.quick_scan_result_outbox': types.SimpleNamespace(canonical_sha256=_sha),
+        'src.utils.quick_scan_refresh_inspect': types.SimpleNamespace(continuation_bank_bindings=project),
     }
     for name, value in modules.items():
         monkeypatch.setitem(sys.modules, name, value)
@@ -54,8 +50,8 @@ def test_work_binding_transport_uses_only_public_snapshot(monkeypatch, capsys):
     monkeypatch.setattr(sys, 'path', list(sys.path))
     exec(compile(_WORK_BANK_BINDING_READER, '<work-binding-transport>', 'exec'), {})
     result = json.loads(capsys.readouterr().out)
-    assert calls == [dict(entity_id='ENT_EXAMPLE', question_ids=['Q1'],
-        scope_bindings=request['scope_bindings'], comparison_refs=set())]
+    assert calls == [(Path('not-opened.sqlite'), {key: value for key, value in request.items()
+                                                if key != 'readonly_config'})]
     assert result['rows'][0]['work_item_id'] == 'WORK_EXAMPLE'
     assert result['database_writes'] == result['API_requests'] == 0
 

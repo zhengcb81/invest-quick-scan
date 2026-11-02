@@ -42,7 +42,10 @@ def test_company_dashboard_plan_and_failure_do_not_report_success(tmp_path):
     ui = tmp_path/'ui'
     (ui/'scripts').mkdir(parents=True)
     (ui/'scripts'/'serve.py').write_text('raise SystemExit(7)\n', encoding='utf8')
-    command = [sys.executable, '-B', str(DASHBOARD), '--ui-root', str(ui)]
+    data = tmp_path/'product-only'
+    (data/'scripts').mkdir(parents=True)
+    (data/'scripts'/'dashboard_service.py').touch()
+    command = [sys.executable, '-B', str(DASHBOARD), '--ui-root', str(ui), '--data-root', str(data)]
     planned = subprocess.run(command + ['--plan'], cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
     assert planned.returncode == 0 and json.loads(planned.stdout)['tests'] is False
     failed = subprocess.run(command, cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)

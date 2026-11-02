@@ -293,7 +293,8 @@ def native_bound(original, monkeypatch):
     import src.utils.quick_scan_company_context as company_context
     def public_inputs(candidate):
         assert candidate is lifecycle
-        return SimpleNamespace(observation_context=copy.deepcopy(context))
+        return SimpleNamespace(observation_context=copy.deepcopy(context), input_raw={
+            "owner-config.json": json.dumps({"iqs_release_root": str(ROOT)}).encode("utf8")})
     monkeypatch.setattr(company_context, "company_scan_inputs", public_inputs)
     services = SimpleNamespace(lifecycle=lifecycle, store=store,
         owner=SimpleNamespace(entries={qid: {"kind": "work", "work_item_id": work_id}}),

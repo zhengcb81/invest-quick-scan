@@ -17,6 +17,7 @@ from question_prompts import (
     render_question,
     render_screening_question,
     renderer_rules_sha256,
+    renderer_for_release,
     standard_prompt,
 )
 from question_selection import (
@@ -134,8 +135,7 @@ def _published_method_id(questions, profile, contexts, package, release, answer_
 def _validate_published_manifest(manifest, *, root):
     package, modules, release, contexts = module_registry.load_package(
         manifest['module_package_id'], root=root)
-    if package['renderer_rules_sha256'] != renderer_rules_sha256():
-        raise ValueError('historical renderer implementation unavailable for prompt verification')
+    renderer = renderer_for_release(release['renderer_version'], package['renderer_rules_sha256'])
     if (manifest.get('module_release_id') != release['release_id']
             or manifest.get('template_version') != release['catalog_version']
             or manifest.get('renderer_version') != release['renderer_version']):
@@ -212,12 +212,12 @@ def _validate_published_manifest(manifest, *, root):
     if answer_format not in ('legacy', 'standard-1', 'screening-1'):
         raise ValueError('unknown released answer format')
     if answer_format == 'standard-1':
-        expected_prompts = [standard_prompt(q, profile, contexts=contexts,
+        expected_prompts = [renderer.standard_prompt(q, profile, contexts=contexts,
                                             resources=package['format_resources']) for q in expected]
     elif answer_format == 'screening-1':
-        expected_prompts = [render_screening_question(q, profile, contexts) for q in expected]
+        expected_prompts = [renderer.render_screening_question(q, profile, contexts) for q in expected]
     else:
-        expected_prompts = [render_question(q, profile, contexts) for q in expected]
+        expected_prompts = [renderer.render_question(q, profile, contexts) for q in expected]
     extras = {'metric_contract', 'prompt', 'prompt_sha256', 'semantic_sha256', 'definition_sha256'}
     for observed, source, mapping, expected_prompt in zip(questions, expected,
                                                            expected_mappings, expected_prompts):

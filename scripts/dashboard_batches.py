@@ -18,12 +18,6 @@ import threading
 import time
 import uuid
 
-try:
-    from .dashboard_execution import _process_recovery_evidence
-except ImportError:
-    from dashboard_execution import _process_recovery_evidence
-
-
 # One byte bound for both sides of the atomic record protocol. Synthetic
 # 5,000-scope engineering DTOs, including completed launch references, are
 # exercised below this limit; raw owner work/answer payloads never belong here.
@@ -163,6 +157,13 @@ class BatchGateway:
                         fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
             finally:
                 stream.close()
+
+    @staticmethod
+    def has_records(state_root):
+        return next(Path(state_root).glob('batch-*.json'), None) is not None
+
+    def active(self):
+        return any(row['state'] in {'running', 'draining', 'needs_original_inspection'} for row in self._records())
 
     def _records(self):
         if not self.state_root.is_dir():
@@ -882,15 +883,13 @@ class BatchGateway:
                     or re.fullmatch(r'run-[a-f0-9]{32}', str(task.get('run_id', ''))) is None
                     or task.get('process_state') not in {'running', 'starting', 'needs_original_inspection', 'process_exited', 'launch_failed'}):
                     raise DashboardBatchError('batch_abandon_reference_unresolved', '原启动引用范围不匹配。', 409)
-                if task['run_id'] in getattr(self.execution, '_processes', {}):
-                    raise DashboardBatchError('batch_abandon_process_unresolved', '原执行进程仍在本机运行。', 409)
-                proof = _process_recovery_evidence(task, False)
+                proof = self.execution.process_stop_evidence(task)
                 if proof not in {'known_local_exit', 'absent', 'original_pid_reused'}:
                     raise DashboardBatchError('batch_abandon_process_unresolved', '原进程尚未证明已退出，不能结束编排。', 409)
                 evidence.append({'run_id': task['run_id'], 'evidence': proof})
             return evidence
 
-        with self.execution._control_lock('batch-abandon'):
+        with self.execution.process_control('batch-abandon'):
             stopped()
             inspections = []
             for entry in record['entries']:

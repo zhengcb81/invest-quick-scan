@@ -37,8 +37,13 @@ class FakeExecution:
         return {"bundle_id": bundle_id, "entity_id": value["entity_id"], "bundle_fingerprint": fingerprint(value["version"]),
             **{name: value.get(name) for name in ("company_preparation_id", "scope", "scope_id", "security_id", "expected_scope_bindings")}}
 
-    def _control_lock(self, action):
+    def process_control(self, action):
         return nullcontext()
+
+    @staticmethod
+    def process_stop_evidence(record):
+        from dashboard_execution import _process_recovery_evidence
+        return _process_recovery_evidence(record, False)
 
     def preview(self, payload, **kwargs):
         with self.lock:
@@ -1467,7 +1472,7 @@ def test_abandon_never_releases_unknown_or_extant_process(setup, monkeypatch, ev
     gateway, execution = setup
     batch_id = retirement_fixture(gateway, execution)
     next(iter(execution.runs.values())).update(process_state='needs_original_inspection', pid=12345)
-    monkeypatch.setattr(dashboard_batches, '_process_recovery_evidence', lambda *_: evidence)
+    monkeypatch.setattr(execution, 'process_stop_evidence', lambda _: evidence)
     before = gateway._path(batch_id).read_bytes()
     with pytest.raises(DashboardBatchError) as raised:
         gateway.control(batch_id, 'abandon')
@@ -1479,7 +1484,7 @@ def test_abandon_absent_process_still_refuses_original_unknown_work(setup, monke
     gateway, execution = setup
     batch_id = retirement_fixture(gateway, execution)
     next(iter(execution.runs.values())).update(process_state='needs_original_inspection', pid=12345)
-    monkeypatch.setattr(dashboard_batches, '_process_recovery_evidence', lambda *_: 'absent')
+    monkeypatch.setattr(execution, 'process_stop_evidence', lambda _: 'absent')
     execution.bundles['a']['unknown'] = True
     before = gateway._path(batch_id).read_bytes()
     with pytest.raises(DashboardBatchError) as raised:

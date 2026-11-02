@@ -122,7 +122,63 @@ def preflight(task, services, session_config):
     return config
 
 
-def _frozen_answer_semantics(task, context):
+def _original_answer_resources(context, root):
+    """Resolve resources already named by the original owner, not current files.
+
+    Production contexts name an immutable module package. Older research
+    contexts carry only the two original digests; retain that format by looking
+    up matching existing resources, without requiring new fields or rewriting
+    the task. An unrelated new registry entry cannot change old semantics.
+    """
+    import module_registry
+    import standard_answers
+
+    names = {"answer_schema_sha256": "schemas/answer-content.schema.json",
+             "metric_registry_sha256": "questions/metric-registry.json"}
+    if not isinstance(context, dict):
+        raise SharedEngineRejected("original_answer_context_required")
+
+    def matches(resources):
+        return all(standard_answers.digest(resources[name]) == context.get(key)
+                   for key, name in names.items())
+
+    ids = {row.get("metadata", {}).get("module_package_id")
+           for row in context.get("questions", {}).values() if isinstance(row, dict)} - {None}
+    if ids:
+        if len(ids) != 1:
+            raise SharedEngineRejected("original_answer_resource_package_mismatch")
+        package, _, _, _ = module_registry.load_package(next(iter(ids)), root=root)
+        resources = package["format_resources"]
+        return copy.deepcopy(resources)
+
+    # Legacy research contexts have no package ID. Resource hashes are lookup
+    # keys, not a requirement that today's catalog still has the same hash.
+    legacy_resources = None
+    try:
+        resources = {name: standard_answers.library.read_json(root / name) for name in names.values()}
+        legacy_resources = resources
+        if matches(resources):
+            return resources
+    except (OSError, ValueError, KeyError, TypeError):
+        # An unavailable current authoring tree is not a prerequisite for
+        # reading an old, independently verified resource package.
+        pass
+    for path in sorted((root / "questions/releases/packages").glob("pkg_*.json")):
+        try:
+            package, _, _, _ = module_registry.load_package(path.stem, root=root)
+        except (OSError, ValueError, KeyError, TypeError):
+            continue  # An unrelated broken package must not hide the original.
+        if matches(package["format_resources"]):
+            return copy.deepcopy(package["format_resources"])
+    # Original research-only contexts did not bind a package. Their descriptive
+    # whole-resource hashes were never an admission gate. Keep that old reader
+    # when no original archive can be identified, rather than inventing one.
+    if legacy_resources is not None:
+        return legacy_resources
+    raise SharedEngineRejected("original_answer_resources_unavailable")
+
+
+def _frozen_answer_semantics(task, context, *, release_root=None):
     """Validate original questions; whole registry hashes are provenance only.
 
     Adding an unrelated metric or schema annotation must not invalidate an
@@ -140,11 +196,10 @@ def _frozen_answer_semantics(task, context):
     if (Path(standard_answers.__file__).resolve() != scripts / "standard_answers.py"
         or Path(question_prompts.__file__).resolve() != scripts / "question_prompts.py"):
         raise SharedEngineRejected("original_standard_answer_validator_required")
-    root = scripts.parent
-    schema = standard_answers.library.read_json(root / "schemas/answer-content.schema.json")
-    registry = standard_answers.library.read_json(root / "questions/metric-registry.json")
-    if not isinstance(context, dict):
-        raise SharedEngineRejected("original_answer_context_required")
+    root = Path(release_root) if release_root is not None else scripts.parent
+    resources = _original_answer_resources(context, root)
+    schema = resources["schemas/answer-content.schema.json"]
+    registry = resources["questions/metric-registry.json"]
     questions = {row["question_id"]: copy.deepcopy(row["question"]) for row in task.questions}
     if (len(questions) != len(task.questions)
         or set(questions) != set(task.question_ids)
@@ -163,6 +218,8 @@ def _frozen_answer_semantics(task, context):
 
     validate_original.prompt_rules = tuple(question_prompts.typed_semantic_rules(q)
                                             for q in questions.values())
+    validate_original.legacy_prompt_rules = tuple(question_prompts.legacy_typed_semantic_rules(q)
+                                                   for q in questions.values())
     return validate_original
 
 
@@ -173,8 +230,11 @@ def _production_answer_semantics(task, services):
         return None
     from src.utils.quick_scan_company_context import company_scan_inputs
 
-    context = company_scan_inputs(services.lifecycle).observation_context
-    original = _frozen_answer_semantics(task, context)
+    inputs = company_scan_inputs(services.lifecycle)
+    context = inputs.observation_context
+    owner_config = json.loads(inputs.input_raw["owner-config.json"])
+    original = _frozen_answer_semantics(task, context,
+        release_root=owner_config["iqs_release_root"])
 
     def validate_native(answer, question_id, *, attempt_ref, evidence_board):
         original(answer, question_id)
@@ -184,6 +244,7 @@ def _production_answer_semantics(task, services):
     validate_native.semantic_version = 2
     validate_native.base_semantic_validator = original
     validate_native.prompt_rules = original.prompt_rules
+    validate_native.legacy_prompt_rules = original.legacy_prompt_rules
     return validate_native
 
 
@@ -393,7 +454,7 @@ def _export(
 ):
     from iqs_company_agent_lab.checkpoint import build_checkpoint
     from iqs_company_agent_lab.export import write_run_export
-    from iqs_company_agent_lab.provenance import _evidence_origin, runtime_evidence_document
+    from iqs_company_agent_lab.provenance import evidence_origin, runtime_evidence_document
     from iqs_company_agent_lab.runner import input_manifest_sha256
 
     journals = journals or [("events.jsonl", runner.journal)]
@@ -403,7 +464,7 @@ def _export(
         input_manifest_sha256=input_manifest_sha256(task.raw),
         events=events,
         attempts=services.attempt_observations(transport_origin=transport_origin),
-        evidence_origin=_evidence_origin(task.evidence_board_doc, runner.state.board.snapshot()),
+        evidence_origin=evidence_origin(task.evidence_board_doc, runner.state.board.snapshot()),
     )
     checkpoint = build_checkpoint(runner.state, runner.journal)
     return write_run_export(
@@ -536,10 +597,8 @@ def resume_shared_engine(
     """
     from iqs_agent_runtime_lab.port import create_runtime_port
     from iqs_company_agent_lab.canonical import sha256_hex
-    from iqs_company_agent_lab.checkpoint import load_checkpoint
-    from iqs_company_agent_lab.events import EventJournal
-    from iqs_company_agent_lab.pathsafety import check_traceable_links, ensure_safe_output_dir
-    from iqs_company_agent_lab.resume import _verify_snapshot_against_history, journals_for_export
+    from iqs_company_agent_lab.pathsafety import ensure_safe_output_dir
+    from iqs_company_agent_lab.resume import RecoveryMismatch, load_verified_recovery, reconcile_saved_receipt
     from iqs_company_agent_lab.runner import Runner
     from iqs_company_agent_lab.task import task_bundle
 
@@ -547,22 +606,15 @@ def resume_shared_engine(
     if transport_origin not in {"stockqa_live", "scripted_wire"}:
         raise SharedEngineRejected("explicit_transport_origin_required")
     checkpoint_path, output, session_dir = Path(checkpoint_path), Path(output), Path(session_dir)
-    check_traceable_links(checkpoint_path)
-    checkpoint = load_checkpoint(checkpoint_path)
-    expected_checkpoint = (
-        "iqs.company-scan-checkpoint/1.0.0"
-        if task.raw.get("protocol") == "iqs.company-scan-task/1.0.0"
-        else "iqs.company-agent-lab.checkpoint/1.1.0"
-    )
-    if checkpoint.get("protocol") != expected_checkpoint:
-        raise SharedEngineRejected("original_revision_two_checkpoint_required")
-    if sha256_hex(checkpoint["task_bundle"]) != sha256_hex(task_bundle(task)):
-        raise SharedEngineRejected("checkpoint_differs_from_original_registered_task")
     semantic_validator = _production_answer_semantics(task, services)
-    _verify_snapshot_against_history(checkpoint_path, checkpoint, task,
-        answer_semantic_rules=getattr(semantic_validator, "prompt_rules", ()))
-    history = journals_for_export(checkpoint_path, checkpoint, [])[:-1]
-    pending_intent, pending = checkpoint.get("pending_intent"), checkpoint.get("pending_receipt")
+    try:
+        recovery = load_verified_recovery(checkpoint_path, task,
+            answer_semantic_rules=getattr(semantic_validator, "legacy_prompt_rules",
+                                          getattr(semantic_validator, "prompt_rules", ())))
+    except RecoveryMismatch as error:
+        raise SharedEngineRejected(str(error)) from error
+    checkpoint, history = recovery.checkpoint, recovery.history_journals
+    pending_intent, pending = recovery.pending_intent, recovery.pending_receipt
     if pending_intent is not None:
         if pending_intent.get("kind") != "model_step":
             raise SharedEngineRejected("non_model_pending_recovery_not_supported")
@@ -585,49 +637,16 @@ def resume_shared_engine(
         # A missing response stays an open slot. In read-only mode it must not
         # hide earlier completed slots or authorize resending this pending one.
         native_saved = None if unsent or unavailable_read else recovered["saved_receipt"]
-        original_events = [
-            event
-            for _, journal in history
-            for event in journal.events
-            if event["event_type"] == "receipt_model"
-            and native_saved is not None
-            and event["data"]["attempt_ref"] == native_saved["runtime_attempt_ref"]
-        ]
-        if original_events:
-            # Native reconstruction intentionally has no private session and
-            # may use native timestamps rather than bridge host observations.
-            # Preserve the EXACT original journal receipt for strict physical
-            # deduplication; native safe output and usage must still agree.
-            from iqs_company_agent_lab.checkpoint import _receipt_from_event
-
-            original = _receipt_from_event(original_events[-1]["data"])
-            core = (
-                "runtime_attempt_ref",
-                "outcome",
-                "planned_model",
-                "actual_model",
-                "final_content",
-                "tool_calls",
-                "usage",
-                "finish_reason",
-            )
-            if any(original.get(key) != native_saved.get(key) for key in core):
-                raise SharedEngineRejected("native_saved_output_conflicts_with_original_journal")
-            if pending is not None and pending != original:
-                raise SharedEngineRejected("checkpoint_receipt_conflicts_with_original_journal")
-            pending = original
-        else:
-            # For a store-proven unsent scope this stays None. The original
-            # Runner opens a new segment and accounts only an actual receipt.
-            pending = native_saved
+        try:
+            pending = reconcile_saved_receipt(recovery, native_saved)
+        except RecoveryMismatch as error:
+            raise SharedEngineRejected(str(error)) from error
     elif pending is not None:
         raise SharedEngineRejected("orphan_pending_receipt")
     # Observe historical native receipts from their original source. No session,
     # hidden reasoning, response regeneration or model HTTP is involved.
-    for _, journal in history:
-        for event in journal.events:
-            if event["event_type"] == "receipt_model":
-                services.inspect_attempt(event["data"]["attempt_ref"])
+    for reference in recovery.attempt_refs:
+        services.inspect_attempt(reference)
     if (
         output.absolute() == session_dir.absolute()
         or output.absolute() in session_dir.absolute().parents
@@ -640,12 +659,11 @@ def resume_shared_engine(
         session_dir / "parent-checkpoint.json",
         {
             "checkpoint_sha256": sha256_hex(checkpoint_path.read_bytes()),
-            "event_head_sha256": checkpoint["event_chain"]["head_sha256"],
+            "event_head_sha256": recovery.event_head_sha256,
         },
     )
-    chain = checkpoint["event_chain"]
     journal = _journal(
-        session_dir, task.raw["run_id"], start_seq=chain["seq"], start_head=chain["head_sha256"]
+        session_dir, task.raw["run_id"], start_seq=recovery.event_seq, start_head=recovery.event_head_sha256
     )
     port = create_runtime_port(services, task=task, session_config=config)
     runner_ref = []
@@ -659,7 +677,7 @@ def resume_shared_engine(
         journal,
         answer_semantic_validator=semantic_validator,
         answer_semantic_validator_version=getattr(semantic_validator, "semantic_version", 1),
-        answer_semantic_rules=getattr(semantic_validator, "prompt_rules", ()),
+        answer_semantic_rules=recovery.answer_semantic_rules,
     )
     runner_ref.append(runner)
     try:
@@ -786,55 +804,15 @@ def _scan_preflight(task, services, session_config):
 
 
 def _verified_finalization_export(task, export_dir, answer_semantic_rules=()):
-    """Revalidate original task/checkpoint/journals before native publication.
+    """Consume the Company's verified slot projection, not its file internals."""
+    from iqs_company_agent_lab.resume import RecoveryMismatch, read_verified_answer_export
 
-    This reads existing artifacts only. It does not run a strategy, create a
-    model session, or infer authority from a report's observational booleans.
-    """
-    from iqs_company_agent_lab.checkpoint import load_checkpoint
-    from iqs_company_agent_lab.pathsafety import check_traceable_links
-    from iqs_company_agent_lab.provenance import read_runtime_summary
-    from iqs_company_agent_lab.resume import _verify_snapshot_against_history
-    from iqs_company_agent_lab.runner import input_manifest_sha256
-    from iqs_company_agent_lab.schemalib import validate
-    from iqs_company_agent_lab.strictjson import loads
-    from iqs_company_agent_lab.task import task_bundle
-
-    export_dir = Path(export_dir)
-    checkpoint_path = export_dir / "checkpoint.json"
-    run_path = export_dir / "research-run.json"
-    check_traceable_links(checkpoint_path)
-    check_traceable_links(run_path)
-    checkpoint = load_checkpoint(checkpoint_path)
-    if (
-        checkpoint.get("pending_intent") is not None
-        or checkpoint.get("pending_receipt") is not None
-        or checkpoint.get("task_bundle") != task_bundle(task)
-    ):
-        raise SharedEngineRejected("finalization_requires_original_completed_checkpoint")
-    _verify_snapshot_against_history(checkpoint_path, checkpoint, task,
-        answer_semantic_rules=answer_semantic_rules)
-    raw = run_path.read_bytes()
-    run = loads(raw)
-    scan = task.raw.get("protocol") == "iqs.company-scan-task/1.0.0"
-    validate("scan-run" if scan else "research-run-v1.1", run)
-    if (
-        run.get("run_id") != task.raw["run_id"]
-        or run.get("company_ref") != task.company_ref
-        or run.get("information_cutoff") != task.raw["information_cutoff"]
-        or run.get("input_manifest_sha256") != input_manifest_sha256(task.raw)
-        or run.get("slots") != checkpoint["state"]["slots"]
-        or [row["question_id"] for row in run["slots"]] != task.question_ids
-    ):
-        raise SharedEngineRejected("finalization_export_original_task_or_slots_mismatch")
-    # Sidecars recompute their native observations from the byte-bound original
-    # journals and board. Their owner/financial booleans remain unchanged.
-    summary = read_runtime_summary(export_dir, run, raw)
-    if summary is None or summary["input_manifest_sha256"] != input_manifest_sha256(task.raw):
-        raise SharedEngineRejected("finalization_original_runtime_evidence_required")
-    from iqs_company_agent_lab.evidence import EvidenceBoard
-
-    return run, EvidenceBoard.from_snapshot(copy.deepcopy(checkpoint["state"]["board"]))
+    try:
+        slots, board = read_verified_answer_export(task, export_dir,
+            answer_semantic_rules=answer_semantic_rules)
+    except RecoveryMismatch as error:
+        raise SharedEngineRejected(str(error)) from error
+    return {"slots": slots}, board
 
 
 def _native_final_answer(saved, question_id, expected_answer, *, evidence_board=None,
@@ -925,7 +903,8 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
     semantic_validator = _production_answer_semantics(task, services)
     if semantic_validator is None:
         raise SharedEngineRejected("original_production_answer_semantics_required")
-    run, evidence_board = _verified_finalization_export(task, export_dir, getattr(semantic_validator, "prompt_rules", ()))
+    run, evidence_board = _verified_finalization_export(task, export_dir,
+        getattr(semantic_validator, "legacy_prompt_rules", getattr(semantic_validator, "prompt_rules", ())))
     slots = run["slots"] if selected_ids is None else [
         row for row in run["slots"] if row["question_id"] in selected_ids
     ]

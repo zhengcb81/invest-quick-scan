@@ -1,8 +1,8 @@
 # 当前接手说明
 
-**11/02最新补充：** [模块解耦审计](reviews/DECOUPLING-2026-11-02/report.md)已完成，发现7组剩余问题，当前只审未实施。优先处理D1公开分类结果兼容和D2总锁，后续收口原恢复/历史资源与UI边界；禁止将审计报告当整改完成。题库/契约、原owner事务与组件注入已经有效，不推倒重来或新增框架/门禁。具体文件/反例/范围和建议均在报告；原CI/真实保存签收保持原范围。
+**11/02最新补充。** [解耦 D1–D7 整改](reviews/DECOUPLING-2026-11-02/remediation.md)已通过独立复核。恢复使用原登记发布根、原语义资源及原请求规则。以后新增 renderer 或答案资源时登记新版本并保留原版本读路径。UI 与 Company Lab 为本地组件仓，提交与 StockQA 版本见报告。接下来按根计划回到小池内容质量和事实主线。
 
-**11/02最新接手状态：** [CI连续失败根修](reviews/CI-ROOT-CAUSE-2026-11-02/report.md)已完成，StockQAee8f49a/0154726推原origin；最终CI41523660779与Documentation41523660825均success，文档实际构建/发布与Python3.10都经远端核。原[完整链路混合/重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)保持完成。下一步回根内容/事实主线，不重问gen7、改配置或新增许可。
+**11/02 上一节点的 CI 证据。** [CI 连续失败根修](reviews/CI-ROOT-CAUSE-2026-11-02/report.md)在 StockQA `0154726` 的 CI 41523660779 与 Documentation 41523660825 通过，文档构建和发布均已核实。[完整链路混合与重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)仍是既有真实恢复证据。
 
 
 更新于2026-11-02。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。

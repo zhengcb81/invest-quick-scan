@@ -15,81 +15,15 @@ except ImportError:
 
 
 _EXPORT = r'''
-import hashlib,json,pathlib,sys
+import json,pathlib,sys
 sys.path.insert(0,sys.argv[1])
 def offline(event,args):
     if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}: raise RuntimeError('network_forbidden')
 sys.addaudithook(offline)
-from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
-request=json.load(sys.stdin)
+from src.utils.quick_scan_refresh_inspect import delivery_scope_projection
 try:
-    path=pathlib.Path(sys.argv[2])
-    if not path.is_file(): raise ValueError('ledger_missing')
-    store=ReadOnlyWorkView(path);items=[];work_items=[];consumers=[]
-    qids=request['question_ids']
-    if not isinstance(qids,list) or not qids or len(set(qids))!=len(qids):
-        raise ValueError('original_work_scope_invalid')
-    bindings=request.get('scope_bindings') or {
-        qid:{'scope':'entity','scope_id':request['entity_id']} for qid in qids}
-    if (set(bindings)!=set(qids) or any(not isinstance(value,dict)
-        or set(value)!={'scope','scope_id'} or value['scope'] not in {'entity','security','segment'}
-        or not isinstance(value['scope_id'],str) or not value['scope_id']
-        or value['scope']=='entity' and value['scope_id']!=request['entity_id']
-        for value in bindings.values())):
-        raise ValueError('original_work_scope_invalid')
-    work_ids=request.get('work_ids')
-    registered={}
-    if request.get('confirmation_id'):
-        record=store.get_registered_refresh_action(request['confirmation_id'])
-        if record is None or record['receipt']['confirmation_id']!=request['confirmation_id']:
-            raise ValueError('original_refresh_action_missing')
-        registered={row['work_item_id']:row for row in record['receipt']['items']
-            if row['entity_id']==request['entity_id'] and row['question_id'] in qids
-            and all(row[key]==bindings[row['question_id']][key] for key in ('scope','scope_id'))}
-        references={row['question_id'] for row in record['inputs'].get('references',[])
-            if row['subject_ref']['entity_id']==request['entity_id'] and row['question_id'] in qids
-            and all(row['subject_ref'][key]==bindings[row['question_id']][key] for key in ('scope','scope_id'))}
-        covered={row['question_id'] for row in registered.values()}
-        if covered|references != set(qids): raise ValueError('original_registered_scope_mismatch')
-        work_ids=list(registered)
-        for qid in references-covered:
-            items.append({'question_id':qid,'work_item_id':None,'status':'referenced','reason':'original_observation_reference'})
-    elif work_ids is None:
-        if not request.get('read_only_scope'):
-            raise ValueError('original_refresh_action_required')
-        projection=store.owner_refresh_projection(entity_id=request['entity_id'],
-            question_ids=qids,scope_bindings=bindings)
-        work_ids=[projection[qid]['work_item_id'] for qid in qids if qid in projection]
-        for qid in qids:
-            if qid not in projection:
-                work_items.append({'question_id':qid,'work_item_id':None,'status':'missing'})
-                items.append({'question_id':qid,'work_item_id':None,'status':'not_exportable','reason':'missing'})
-    for work_id in work_ids:
-        work=store.get_item(work_id)
-        qid=work['question_id']
-        if (work['entity_id']!=request['entity_id'] or qid not in qids
-            or any(work[key]!=bindings[qid][key] for key in ('scope','scope_id'))):
-            raise ValueError('original_work_scope_mismatch')
-        if work_id in registered and any(work[key]!=registered[work_id][key]
-                for key in ('work_item_id','entity_id','question_id','generation','scope','scope_id')):
-            raise ValueError('original_registered_work_mismatch')
-        work_items.append({key:work[key] for key in ('question_id','work_item_id','status','generation')})
-        if request.get('read_only_scope'): continue
-        row=store.get_result_delivery(work_id)
-        if request.get('receiver_only'):
-            binding=None if row is None else row.get('consumer_binding')
-            consumers.append({'work_item_id':work_id,'consumer':None if binding is None else binding['consumer'],
-                'work_store':str(path.resolve()), 'package_id':None if row is None else row.get('package_id'),
-                'observation_id':None if row is None else row.get('observation_id')})
-            continue
-        if row is None or row['state'] not in {'ready','delivered','send_uncertain'} or row['package_bytes'] is None:
-            items.append({'work_item_id':work_id,'status':'not_exportable','reason':None if row is None else row.get('block_code') or row['state']})
-            continue
-        raw=row['package_bytes']
-        items.append({'work_item_id':work_id,'status':'exportable','observation_id':row['observation_id'],
-            'package_id':row['package_id'],'package_json':raw.decode('utf8'),
-            'package_bytes_sha256':hashlib.sha256(raw).hexdigest(),'delivery_state':row['state']})
-    print(json.dumps({'items':items,'work_items':work_items,'consumers':consumers,'API_requests':0,'network_calls':0},ensure_ascii=False))
+    result = delivery_scope_projection(pathlib.Path(sys.argv[2]), json.load(sys.stdin))
+    print(json.dumps(result, ensure_ascii=False))
 except Exception:
     print(json.dumps({'error_code':'original_delivery_export_rejected','API_requests':0}));raise SystemExit(2)
 '''

@@ -81,6 +81,8 @@ def test_typed_pending_resume_export_and_report_reuse_original_hashes_without_ne
         engine._execute_with_port(task, composition.SyntheticObservations(old_port), old_port,
             output=tmp_path / "unused-export", session_dir=tmp_path / "cold", transport_origin="scripted_wire")
     checkpoint = tmp_path / "cold/checkpoint.json"
+    # A later prompt-policy revision must not rewrite the request already sent.
+    validator.prompt_rules = ("New current-generation rule.",)
     saved = copy.deepcopy(old_port.receipts[0])
     saved["session_handle"] = None
     from iqs_company_agent_lab.receipts import finalize_receipt_digest
@@ -108,6 +110,8 @@ def test_typed_pending_resume_export_and_report_reuse_original_hashes_without_ne
     assert result["runtime_summary"]["new_model_http"] == 0
     assert report["runtime_observations"] == result["runtime_summary"]
     assert result["runtime_summary"]["owner_authority_verified"] is False
+    automatic = generate_report(tmp_path / "export", tmp_path / "automatic-report")
+    assert automatic["runtime_observations"] == result["runtime_summary"]
     with pytest.raises(ProtocolIllegalError, match="runtime context diverges"):
         generate_report(tmp_path / "export", tmp_path / "wrong-rule-report", answer_semantic_rules=("wrong",))
 

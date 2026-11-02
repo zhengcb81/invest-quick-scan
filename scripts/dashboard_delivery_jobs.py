@@ -62,6 +62,10 @@ class DeliveryJobs:
         self.session=uuid.uuid4().hex; self._threads={}
         self.receiver_status = receiver_status
 
+    @staticmethod
+    def has_records(state_root):
+        return next(Path(state_root).glob('deliveryjob_*.json'), None) is not None
+
     def _receiver(self):
         if not callable(self.receiver_status):
             raise DeliveryJobError('delivery_original_target_unavailable', '未配置原接收者只读status，不能猜测目标。')

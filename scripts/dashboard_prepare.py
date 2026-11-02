@@ -220,34 +220,14 @@ import contextlib, json, sys
 sys.path.insert(0, sys.argv[1])
 with contextlib.redirect_stdout(sys.stderr):
     from src.utils.quick_scan_refresh_admission import safe_read
-    from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
-    from src.utils.quick_scan_result_outbox import canonical_sha256
+    from pathlib import Path
+    from src.utils.quick_scan_refresh_inspect import continuation_bank_bindings
     request = json.load(sys.stdin)
     config = safe_read(sys.argv[2]) if sys.argv[2] != '-' else request.pop('readonly_config')
     if config.get("protocol") != "stockqa.refresh_admission_config/1.0.0":
         raise ValueError("existing_work_deployment_invalid")
-    view = ReadOnlyWorkView(config["work_store"])
-    result = []
-    controls = request.get('controlled_work_refs', [])
-    controlled_refs = {(ref['work_item_id'], ref['decision_id']) for ref in controls}
-    snapshot = view.continuation_binding_snapshot(entity_id=request["entity_id"],
-        question_ids=list(request["scope_bindings"]), scope_bindings=request["scope_bindings"],
-        comparison_refs=controlled_refs)
-    for qid, entry in snapshot.items():
-        row, record = entry["work"], entry["binding_record"]
-        if record is None:
-            raise ValueError("existing_work_binding_unavailable")
-        binding = record["binding"]
-        if any(binding.get(k) != request[k] for k in (
-            "entity_id", "subject_key", "perimeter_sha256", "identity_revision", "information_cutoff")):
-            raise ValueError("existing_work_subject_binding_changed")
-        if any(binding.get(k) != v for k, v in request["scope_bindings"][qid].items()):
-            raise ValueError("existing_work_scope_changed")
-        result.append({"question_id":qid,"work_item_id":row["work_item_id"],
-            "generation":row["generation"],"manifest_raw_sha256":binding["manifest_raw_sha256"],
-            "binding_sha256":canonical_sha256(binding)})
-print(json.dumps({"protocol":"iqs.original_work_bank_bindings/1.0.0", "rows":result,
-    "API_requests":0,"database_writes":0}, allow_nan=False))
+    result = continuation_bank_bindings(Path(config["work_store"]), request)
+print(json.dumps(result, allow_nan=False))
 '''
 
 
@@ -942,17 +922,18 @@ def _snapshot(config, payload):
             "selected_listing": listing, "listing_binding": listing_binding}
 
 
-def _native_cli(config, kind, module, arguments):
+def _native_cli(config, kind, module, arguments, *, input_value=None):
     code_root = config["stockwiki_root" if kind == "wiki" else "stockqa_root"]
     interpreter = config.get("stockwiki_python" if kind == "wiki" else "stockqa_python") or sys.executable
     env = _env()
     env["PYTHONPATH"] = code_root
     cwd = config.get("prepare", {}).get("runtime_dir", code_root) if kind == "qa" else code_root
     timeout = _timeouts(config)[1]
-    stage = [value for value in arguments if value in {"--request", "--install-delegation", "--confirm-delegated", "--confirmation-id"}]
+    stage = [value for value in arguments if value in {"--request", "--install-delegation", "--confirm-delegated", "--confirmation-id", "--input-locations"}]
     details = {"native_module": module, "native_selectors": stage, "timeout_seconds": timeout}
     try:
         done = subprocess.run([interpreter, "-B", "-X", "utf8", "-m", module, *arguments], cwd=cwd, env=env,
+                              input=_bytes(input_value) if input_value is not None else None,
                               capture_output=True, timeout=timeout, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         raise DashboardPrepareError("native_preparation_timeout_unknown",
@@ -1094,18 +1075,22 @@ def _apply(config, payload):
         ref = authority["observation_context"]["questions"][question["id"]]["subject_binding"]["subject_ref"]
         grouped.setdefault(_sha(ref), {"ref": ref, "questions": []})["questions"].append(question)
     executions, cached_scopes, scope_records = [], [], []
-    for index, group in enumerate(grouped.values(), 1):
+    locations = _native_cli(config, 'qa', 'src.utils.quick_scan_refresh_admission_cli',
+        ['--config', options['admission_config'], '--input-locations'],
+        input_value=[group['ref'] for group in grouped.values()])['locations']
+    if not isinstance(locations, list) or len(locations) != len(grouped):
+        raise DashboardPrepareError('native_response_invalid', 'Original admission did not return every input location', 502)
+    question_config = create_question_config(manifest, root=Path(expected['iqs_release_root']))
+    for index, (group, target) in enumerate(zip(grouped.values(), locations, strict=True), 1):
         subject_ref = group["ref"]
-        target = Path(admission["execution_inputs_root"]) / ("subject_" + _sha(subject_ref))
-        target.mkdir(parents=True, exist_ok=True)
         owner_config = {"protocol": "stockqa.owner_refresh_config/1.0.0", **expected, "subject_key": binding["subject_key"],
                         "scope": "entity", "scope_id": record["bank"]["entity_id"], "ttl_hours": policy["ttl_hours"], "runs_dir": str(directory / "owner-transport")}
         Path(owner_config["runs_dir"]).mkdir(parents=True, exist_ok=True)
-        for name in ("manifest.json", "identity.json"):
-            _new_raw(target / name, (frozen_dir / name).read_bytes())
-        for name, value in {"authority.json": authority, "owner-config.json": owner_config,
-                            "questions.json": create_question_config(manifest, root=Path(expected["iqs_release_root"]))}.items():
-            _new(target / name, value)
+        _new_raw(target['manifest'], (frozen_dir / 'manifest.json').read_bytes())
+        _new_raw(target['identity_snapshot'], (frozen_dir / 'identity.json').read_bytes())
+        _new(target['c06_authority'], authority)
+        _new(target['owner_config'], owner_config)
+        _new(target['questions'], question_config)
         scope_dir = directory / ("scope-" + str(index) + "-" + subject_ref["scope"])
         scope_dir.mkdir(parents=True, exist_ok=True)
         item = _prepare_scope(config, scope_dir, record, manifest, group["questions"], target, subject_ref, policy,
@@ -1204,8 +1189,8 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     bundle = {"entity_id": record["bank"]["entity_id"], "company": record["bank"]["company"], "provider": policy["provider"],
               "company_preparation_id": record["preview_id"], "scope": subject_ref["scope"],
               "scope_id": subject_ref["scope_id"], "security_id": subject_ref["security_id"],
-              "confirmation_id": confirmation["confirmation_id"], "questions": str(target / "questions.json"), "manifest": str(target / "manifest.json"),
-              "identity_snapshot": str(target / "identity.json"), "c06_authority": str(target / "authority.json"), "owner_config": str(target / "owner-config.json"),
+              "confirmation_id": confirmation["confirmation_id"],
+              **{key: target[key] for key in ('questions', 'manifest', 'identity_snapshot', 'c06_authority', 'owner_config')},
               "admission_config": options["admission_config"], "inspection_request": str(directory / "inspection-request.json"), "inspection_schema_version": dialect,
               "spend_authorization": options["spend_authorization"], "runtime_dir": options["runtime_dir"], "pack_size": options.get("pack_size", 1),
               "thinking": options.get("thinking", True), "max_output_tokens": options.get("max_output_tokens", 8192)}

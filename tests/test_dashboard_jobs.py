@@ -77,6 +77,21 @@ def test_read_after_restart_never_reapplies_unknown_preparation(setup):
     assert preparer.apply_count==1
 
 
+def test_active_reads_persisted_state_without_asking_the_owner(setup, monkeypatch):
+    jobs, preparer, _ = setup
+    job_id = jobs.submit(SELECTION)['job']['job_id']
+    assert preparer.entered.wait(2)
+    calls = []
+    monkeypatch.setattr(preparer, 'preparation', lambda preview_id: calls.append(preview_id))
+    restarted = PreparationJobs(preparer, jobs.state_root, jobs.on_prepared)
+    assert restarted.has_records(jobs.state_root)
+    assert restarted.active()
+    assert calls == []
+    preparer.release.set()
+    assert finish(jobs, job_id)['state'] == 'registered'
+    assert not restarted.active()
+
+
 def test_registration_failure_reconciles_without_original_apply_again(setup):
     jobs,preparer,_=setup
     def fail(result):raise DashboardJobError('config_changed','Original configuration changed',409)

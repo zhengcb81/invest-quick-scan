@@ -37,10 +37,10 @@ def journal_read_port(work_id, fault=None):
     return r'''
 import sys
 sys.path.insert(0,sys.argv[1])
-from src.utils import quick_scan_refresh_admission_journal as journal
-def original_action(connection, confirmation_id):
+from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
+def original_action(self, confirmation_id):
     if confirmation_id != 'rc2_'+'1'*64 or FAULT == 'missing': return None
-    original=store.get_item(ORIGINAL_ID)
+    original=self.get_item(ORIGINAL_ID)
     row={key:original[key] for key in ('work_item_id','entity_id','question_id','generation','scope','scope_id')}
     if FAULT == 'entity': row['entity_id']='ENT_OTHER'
     if FAULT == 'question': row['question_id']='OTHER_Q'
@@ -49,7 +49,7 @@ def original_action(connection, confirmation_id):
     if FAULT == 'work_id': row['work_item_id']='WORK_MISSING'
     return {'receipt':{'confirmation_id': 'rc2_'+('2' if FAULT=='confirmation' else '1')*64,
         'items':[row]},'inputs':{'references':[]}}
-journal.read_record=original_action
+ReadOnlyWorkView.get_registered_refresh_action=original_action
 '''.replace('ORIGINAL_ID', repr(work_id)).replace('FAULT', repr(fault))
 
 

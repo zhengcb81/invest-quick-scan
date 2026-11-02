@@ -4,6 +4,7 @@ import hashlib
 import http.client
 import http.server
 import json
+import socketserver
 import sys
 import threading
 
@@ -36,7 +37,13 @@ def product(tmp_path):
             self.send_response(200); self.end_headers(); self.wfile.write(b'static')
         def log_message(self, *args): pass
     handler = product_handler(Static, service)
-    with http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler) as server:
+    class LoopbackServer(http.server.ThreadingHTTPServer):
+        def server_bind(self):
+            # Keep this listener literal-loopback under the offline runner.
+            socketserver.TCPServer.server_bind(self)
+            self.server_name, self.server_port = self.server_address
+
+    with LoopbackServer(('127.0.0.1', 0), handler) as server:
         thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
         yield service, server.server_address[1], tmp_path
         server.shutdown(); thread.join(timeout=5)
@@ -254,6 +261,63 @@ def test_slow_owner_read_does_not_block_setup_or_pause(tmp_path):
         reader.join(3)
     assert not reader.is_alive()
     assert all(status == 200 for status, _ in replies)
+
+
+@pytest.mark.parametrize('action', ['preview', 'start'])
+def test_slow_execution_leaves_reads_available_and_protects_mutation_target(tmp_path, action):
+    entered, release, read_done = threading.Event(), threading.Event(), threading.Event()
+    replies = {}
+
+    class SlowExecution(Execution):
+        def active_references(self):
+            return {'items': []}
+
+        def preview(self, body):
+            entered.set()
+            assert release.wait(5)
+            return {'workspace': self.config['workspace_root']}
+
+        start = preview
+
+    service = DashboardService(tmp_path, owner_factory=Owner, execution_factory=SlowExecution)
+    original = service.config['workspace_root']
+    replacement = str(tmp_path / 'replacement')
+    setup_body = {'config': {**service.config, 'workspace_root': replacement},
+                  'revision_sha256': service._config_revision}
+
+    def command():
+        replies['command'] = service.dispatch('POST', '/api/product/tasks/' + action)
+
+    def read_and_switch():
+        replies['read'] = service.dispatch('GET', '/api/product/setup')
+        replies['results'] = service.dispatch('GET', '/api/product/results')
+        replies['switch'] = service.dispatch('PUT', '/api/product/setup', setup_body)
+        read_done.set()
+
+    worker = threading.Thread(target=command)
+    reader = threading.Thread(target=read_and_switch)
+    worker.start()
+    try:
+        assert entered.wait(2)
+        reader.start()
+        assert read_done.wait(2), 'slow execution blocked unrelated reads or configuration handling'
+        assert replies['read'][0] == replies['results'][0] == 200
+        assert replies['read'][1]['data']['config']['workspace_root'] == original
+        if action == 'start':
+            assert replies['switch'][0] == 409
+            assert replies['switch'][1]['error']['code'] == 'execution_active'
+        else:
+            assert replies['switch'][0] == 200
+    finally:
+        release.set()
+        worker.join(6)
+        if reader.ident is not None:
+            reader.join(6)
+    assert not worker.is_alive() and not reader.is_alive()
+    assert replies['command'][0] == 200
+    assert replies['command'][1]['data']['workspace'] == original
+    if action == 'start':
+        assert service.dispatch('PUT', '/api/product/setup', setup_body)[0] == 200
 
 
 def test_read_keeps_original_deployment_during_config_change_and_snapshot_cannot_cross(tmp_path):

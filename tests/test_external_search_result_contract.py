@@ -76,6 +76,41 @@ def external_result(*, hybrid=False, identity=None, candidates=None, question_sh
 
 
 class ExternalSearchAdapterTests(unittest.TestCase):
+    def test_provider_metadata_and_additive_native_fields_are_opaque_and_hash_bound(self):
+        for hybrid in (False, True):
+            for route_kind in ("brave", "tavily", "zai_rest", "zai_mcp_streamable",
+                               "deepseek_search", "deepseek_fetch", "future_search_adapter"):
+                with self.subTest(hybrid=hybrid, route_kind=route_kind):
+                    result = external_result(hybrid=hybrid)
+                    binding = result["execution_receipts"]["ROUTE_02"]["search_binding"]
+                    native, proof = binding["native_receipt"], binding["external_context_use"]
+                    native.update(request_payload_sha256="1" * 64,
+                                  research_visible_output_sha256="2" * 64,
+                                  research_intent_binding_sha256="3" * 64,
+                                  future_owner_metadata={"revision": 2, "observed": True})
+                    proof["retrievals"][0].update(route_kind=route_kind, route_id=route_kind + "-primary")
+                    proof["llm_receipt_sha256"] = _native_hash(native)
+                    _rehash(proof)
+                    original = copy.deepcopy(result)
+                    adapted = stockqa_adapter.adapt_quick_scan_result(result, native_fixtures.IDENTITY)
+                    self.assertEqual(adapted["execution_receipt"]["search_binding"], binding)
+                    self.assertEqual(result, original)
+                    self.assertEqual(result["answers"]["ROUTE_02"]["check_level"], "unverified_model_output")
+                    # Extension bytes still belong to the original receipt hash.
+                    native["future_owner_metadata"]["revision"] = 3
+                    with self.assertRaisesRegex(ValueError, "receipt digest mismatch"):
+                        stockqa_adapter.adapt_quick_scan_result(result, native_fixtures.IDENTITY)
+
+    def test_route_metadata_is_required_without_becoming_a_provider_registry(self):
+        for value in (None, "", "   ", 1, {}):
+            with self.subTest(value=value):
+                result = external_result()
+                proof = result["execution_receipts"]["ROUTE_02"]["search_binding"]["external_context_use"]
+                proof["retrievals"][0]["route_kind"] = value
+                _rehash(proof)
+                with self.assertRaises(ValueError):
+                    stockqa_adapter.adapt_quick_scan_result(result, native_fixtures.IDENTITY)
+
     def test_external_and_hybrid_keep_native_events_separate(self):
         for hybrid in (False, True):
             with self.subTest(hybrid=hybrid):

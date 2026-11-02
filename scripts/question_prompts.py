@@ -1,13 +1,12 @@
 """Pure prompt rendering shared by the question composer and answer validator.
 
-The module has no CLI, provider, network, or persistence dependency. Keep the
-renderer source stable: published packages fingerprint these exact functions.
+The module has no CLI, provider, network, or persistence dependency. Released
+renderers retain their output semantics; comments and source layout are not an API.
 """
 import json
-import hashlib
-import inspect
 from pathlib import Path
 from types import SimpleNamespace
+from typing import NamedTuple, Callable
 
 from json_io import read_json
 
@@ -87,9 +86,8 @@ def render_question(q, profile=None, contexts=None):
             + '；'.join(q['evidence']) + f'\n评分锚点：{anchors}。{adjustment}\n口径：' + '；'.join(standards) + f'\n{ANSWER_RULE}')
 
 
-# Keep the original standard_prompt implementation text because it is part of
-# renderer_rules_sha256; this local namespace provides the old helper surface
-# without importing either orchestration or answer-builder module.
+# Keep the v1 output semantics; this local namespace provides the old helper
+# surface without importing either orchestration or answer-builder module.
 qs = SimpleNamespace(read_json=read_json, render_question=render_question, ANSWER_RULE=ANSWER_RULE)
 
 
@@ -118,8 +116,8 @@ def standard_prompt(question, profile, contexts=None, resources=None):
                          ensure_ascii=False, separators=(',', ':')))
 
 
-def typed_semantic_rules(question):
-    """Explicit new-request rules; historical renderer fingerprints stay intact."""
+def _typed_semantic_rules_v1(question):
+    """Retained initial shared-request rules; do not edit for a newer revision."""
     citation_rule = (
         ' evidence[].url引用本次实际检索得到的真实来源，不编造链接；优先使用提供的原URL。'
         '保留证券、文章、年度、语言或文档类型等语义定位参数；'
@@ -162,6 +160,16 @@ def typed_semantic_rules(question):
     raise ValueError('unknown original question response kind')
 
 
+def typed_semantic_rules(question):
+    """Current new-request rules; changes get a separate retained implementation."""
+    return _typed_semantic_rules_v1(question)
+
+
+def legacy_typed_semantic_rules(question):
+    """Original fallback for checkpoints predating stored request-rule bytes."""
+    return _typed_semantic_rules_v1(question)
+
+
 def render_screening_question(q, profile, contexts=None):
     """Render the explicit StockQA Q01-Q03 screening protocol, separate from legacy strict."""
     prompt = render_question(q, profile, contexts)
@@ -184,8 +192,38 @@ def render_screening_question(q, profile, contexts=None):
     return prompt.replace(ANSWER_RULE, rule)
 
 
-def renderer_rules_sha256():
-    """Fingerprint prompt-producing code, including the standard format adapter."""
-    source = ''.join(inspect.getsource(fn) for fn in (
-        applied_contexts, render_question, render_screening_question, standard_prompt))
-    return hashlib.sha256((ANSWER_RULE + source).encode('utf-8')).hexdigest()
+class ReleasedRenderer(NamedTuple):
+    """One retained implementation of an explicit published rendering version."""
+    rules_sha256: str
+    applied_contexts: Callable
+    render_question: Callable
+    render_screening_question: Callable
+    standard_prompt: Callable
+
+
+# The historical source digest remains the identity recorded in existing
+# releases. It is not recalculated from source text at runtime. An actual output
+# change gets a new version and implementation, retaining this v1 reader.
+RENDERER_VERSION = "1.0.0"
+_RENDERERS = {
+    "1.0.0": ReleasedRenderer(
+        "6b221598394f5c23a5f724c0b9bac895bcb44eee87c9189285eb605a6ebf21fe",
+        applied_contexts, render_question, render_screening_question, standard_prompt,
+    ),
+}
+
+
+def renderer_for_release(version, rules_sha256):
+    """Select by the original release, never by today's renderer or source hash."""
+    renderer = _RENDERERS.get(version)
+    if renderer is None or renderer.rules_sha256 != rules_sha256:
+        raise ValueError('historical renderer implementation unavailable for prompt verification')
+    return renderer
+
+
+def renderer_rules_sha256(version=RENDERER_VERSION):
+    """Return the stable rules identity of a supported rendering version."""
+    renderer = _RENDERERS.get(version)
+    if renderer is None:
+        raise ValueError('unknown renderer version')
+    return renderer.rules_sha256

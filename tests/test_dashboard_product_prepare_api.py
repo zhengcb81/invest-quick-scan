@@ -14,6 +14,9 @@ from dashboard_service import DashboardService, validate_config, ProductError
 class Execution:
     def __init__(self, config):
         self.config, self.bundles, self.processes = config, config['bundles'], {'old':'preserved'}
+
+    def replace_registered_bundles(self, bundles):
+        self.bundles = dict(bundles)
     def status(self): return {'available':False}
     def active_references(self): return {'items':[]}
     def tasks(self, **kwargs): return {'tasks':[]}

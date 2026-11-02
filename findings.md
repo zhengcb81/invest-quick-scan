@@ -1,6 +1,8 @@
 # 当前发现、风险与决策
 
-**11/02解耦核查：职责已分，尚未充分解耦。** [总报告](docs/implementation/reviews/DECOUPLING-2026-11-02/report.md)含三独立审查与反例：ROUTE_02消费者重复供应商/回执白名单已误拒合法扩展，慢POST总锁阻塞GET；UI启动故障域、Company私有恢复函数、历史schema/renderer源码绑定、比较必答规则与组件文件布局仍耦合。34P/39子测试及离线探针支持各自范围，0API。本轮只审未修，不取消主体/题义/预算/事务校验，也不以无静态import环代替运行边界。此前“公开seam闭合”只指原生产company输入/transport范围，不代表所有私有接口消失。
+**11/02 解耦七组已整改。** 公共结果字段由生产者定义，消费者不再复制供应商名单。服务短锁保护部署与配置，耗时工作保持原组件互斥。已付恢复使用原发布目录、原题义资源和原请求规则。UI 数据源故障留在受影响页面，迟到请求保留未保存表单。组件继续拥有状态、账本和投影。独立反例和本地、远端验证见[整改报告](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)。
+
+**11/02 解耦整改前核查。** [原报告](docs/implementation/reviews/DECOUPLING-2026-11-02/report.md)记录了七组源码与离线反例，34 项和 39 子用例通过。当时的功能验收不能代替架构边界核查，后续整改状态以上方新报告为准。
 
 **11/02远端CI已根修并实核通过：** 连续失败是StockQA原B608动态SQL，CI阻断后另查出同值重复旧断言及普通预算默认缺request hash的真实落盘漏洞；统一静态参数SQL、native绑定自动hash、正反测试和daily11例。文档新鲜解析另有插件不兼容，已固定支持3.10的5件版本。实现ee8f49a/0154726已推，最终CI41523660779与Documentation41523660825（build/deploy）均success。本地305P、非作者27/32及全新venv构建过，0API/TEMP清；normal hooks≠远端CI，曾漏核真实结果已纠正，不把Bandit加回每commit或新增门禁。见[CI根修](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。
 

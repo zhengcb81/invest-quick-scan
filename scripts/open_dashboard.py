@@ -26,8 +26,8 @@ def main(argv=None):
     serve = ui_root / "scripts" / "serve.py"
     if not serve.is_file():
         parser.exit(2, "UI source is missing; provide --ui-root pointing to iqs-question-bank-ui-lab.\n")
-    if not (data_root / "questions" / "catalog.json").is_file():
-        parser.exit(2, "Data root has no questions/catalog.json; provide --data-root.\n")
+    if not (data_root / "scripts" / "dashboard_service.py").is_file():
+        parser.exit(2, "Data root has no dashboard service; provide --data-root.\n")
     command = [sys.executable, "-u", "-B", "-X", "utf8", str(serve), "--no-test", "--port", str(args.port)]
     if args.no_refresh:
         command.append("--no-build")
