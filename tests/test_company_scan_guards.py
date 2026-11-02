@@ -150,7 +150,8 @@ def test_pure_scan_construction_does_not_recheck_current_permissions(monkeypatch
     original = SimpleNamespace(
         input_raw={name: b"{}" for name in ("identity.json", "manifest.json", "authority.json", "owner-config.json", "questions.json")},
         observation_context={"questions": {"ORIGINAL_1": {"subject_binding": {"subject_ref": subject}}}},
-        plan={"provider": "synthetic", "model": "m"}, bundle={"manifest": {"module_locks": []}}, route_id="r")
+        plan={"provider": "synthetic", "model": "m"}, bundle={"manifest": {"module_locks": []}},
+        route_id="r", route_provider="synthetic", route_model="m")
     refs = native_input_references(original.input_raw)
     binding = dict(protocol="iqs.native-company-owner-binding/1.0.0", synthetic=False,
                    subject_ref=subject, authority_ref=refs["authority.json"],

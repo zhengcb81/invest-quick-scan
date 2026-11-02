@@ -86,11 +86,16 @@ def construct(config):
             )
         },
         process_env=dict(SAFE_ENV),
+        recovery_only=config.get("recovery_only", False),
     )
+    if config.get("llm_config_file"):
+        owner.assert_executor_policy(config["llm_config_file"], config["policy"],
+                                     executor_store=owner.service.store)
     first = owner.requested_question_ids[0]
     ref = owner.native.observation_context["questions"][first]["subject_binding"]["subject_ref"]
     policy = config["policy"]
-    route = policy["routes"][0]
+    route = (owner.execution_routes(policy)[0] if config.get("recovery_only")
+             else policy["routes"][0])
     external = None
     if config.get("external_policy"):
         from src.config.quick_scan_search_policy import load_search_policy
@@ -113,7 +118,7 @@ def construct(config):
         transport_managed=True,
         route_id=route["id"],
         provider_name=route["provider_config_ref"],
-        model_requested="mimo-v2.6-pro",
+        model_requested=route["model"],
         budget_policy=policy,
         budget_route=route,
         owner_refresh_session=owner,
@@ -133,7 +138,7 @@ def construct(config):
     )
     client = LLMClient(
         "SCRIPTED-NOT-A-SECRET",
-        "mimo-v2.6-pro",
+        route["model"],
         "https://api.xiaomimimo.com/v1/chat/completions",
         provider_name="mimo",
         timeout=10,

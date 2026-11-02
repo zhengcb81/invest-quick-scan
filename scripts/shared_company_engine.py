@@ -721,8 +721,8 @@ def _scan_preflight(task, services, session_config):
     expected_runtime = dict(
         protocol="iqs.company-scan-runtime/1.0.0",
         synthetic=False,
-        provider=original.plan["provider"],
-        model=original.plan["model"],
+        provider=original.route_provider,
+        model=original.route_model,
         native_inputs_sha256=sha256_hex(refs),
     )
     binding = dict(

@@ -113,10 +113,32 @@ def _recovery_refs(config):
     return copy.deepcopy(refs)
 
 
+def _ordered_route_targets(policy):
+    """Use the original explicit owner choice; older approvals stay single-model."""
+    if policy.get("protocol") != "stockwiki.refresh_owner_policy/1.6.0":
+        return None
+    try:
+        # IQS's original contract modules import their peers as CLI modules.
+        # Support both dashboard package imports and the existing worker CLI.
+        scripts_path = str(ROOT / "scripts")
+        if scripts_path not in sys.path:
+            sys.path.insert(0, scripts_path)
+        from refresh_contract import validate_route_targets
+        targets = validate_route_targets(policy.get("ordered_route_targets"),
+                                         provider=policy["provider"], model=policy["model"])
+        if any(targets[0][key] != policy["qa"][key]
+               for key in ("route_id", "provider_config_ref")):
+            raise ValueError("refresh_ordered_primary_mismatch")
+    except (KeyError, TypeError, ValueError) as error:
+        raise DashboardPrepareError("native_prepare_owner_policy_invalid",
+                                    "Original owner model order is invalid", 409) from error
+    return targets
+
+
 def _recovery_subset(config, directory, manifest, native, policy):
     refs = _recovery_refs(config)
     dialect = policy["protocol"].split("/")[-1]
-    if refs is None and dialect in {"1.0.0", "1.1.0"}:
+    if refs is None and dialect in {"1.0.0", "1.1.0", "1.6.0"}:
         return None
     if refs is None or dialect not in {"1.2.0", "1.3.0"}:
         raise DashboardPrepareError("recovery_policy_refs_required", "Explicit controlled policy and original finite retry references must be selected together", 409)
@@ -528,10 +550,12 @@ class PrepareGateway:
                 protocol = original_policy.get("protocol") if isinstance(original_policy, dict) else None
                 if not isinstance(protocol, str) or not protocol.startswith("stockwiki.refresh_owner_policy/"):
                     missing.append("native_prepare_owner_policy_invalid")
-                elif protocol not in {"stockwiki.refresh_owner_policy/1.0.0", "stockwiki.refresh_owner_policy/1.1.0", "stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0"}:
+                elif protocol not in {"stockwiki.refresh_owner_policy/1.0.0", "stockwiki.refresh_owner_policy/1.1.0", "stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0", "stockwiki.refresh_owner_policy/1.6.0"}:
                     missing.append("native_prepare_owner_dialect_not_supported")
                 elif (protocol in {"stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0"}) != (_recovery_refs(self.config) is not None):
                     missing.append("recovery_policy_refs_required")
+                else:
+                    _ordered_route_targets(original_policy)
             except (OSError, ValueError, TypeError):
                 missing.append("native_prepare_owner_policy_invalid")
         for key in ("admission_config", "runtime_dir", "spend_authorization"):
@@ -1115,8 +1139,9 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     from stockwiki.quick_scan_refresh_records import RefreshRecordStore
     options = config["prepare"]
     dialect = policy["protocol"].split("/")[-1]
+    targets = _ordered_route_targets(policy)
     field_ids = sorted({row.get("field_id", row["metric_id"]) for row in selected_questions})
-    query = {"message_type": "request", "schema_version": "2.6.0" if dialect in {"1.1.0", "1.2.0", "1.3.0"} else "2.0.0", "request_id": run_id + "-query",
+    query = {"message_type": "request", "schema_version": "2.6.0" if dialect in {"1.1.0", "1.2.0", "1.3.0", "1.6.0"} else "2.0.0", "request_id": run_id + "-query",
              "consumer_id": admission["consumer_id"], "operation": "get_profiles", "requested_at": _now(),
              "payload": {"subject_refs": [subject_ref], "field_ids": field_ids, "information_cutoff": record["bank"]["information_cutoff"],
                          "include_history": True, "model_filter": None, "snapshot_id": None}}
@@ -1171,6 +1196,8 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     inspect = {"entity_id": record["bank"]["entity_id"], "question_ids": [row["id"] for row in selected_questions],
                "scope_bindings": {row["id"]: {"scope": subject_ref["scope"], "scope_id": subject_ref["scope_id"]} for row in selected_questions},
                "policy_id": policy["qa"]["policy_id"], "route_id": policy["qa"]["route_id"], "provider_config_ref": policy["qa"]["provider_config_ref"], "model": policy["model"]}
+    if targets is not None:
+        inspect["ordered_route_targets"] = targets
     if recovery:
         inspect.update(cohort_id=run_id, work_decision_refs=scope_refs)
     _new(directory / "inspection-request.json", inspect)

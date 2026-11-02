@@ -351,8 +351,8 @@ def create_company_scan_task(
     profile = dict(
         protocol="iqs.company-scan-runtime/1.0.0",
         synthetic=False,
-        provider=owner.plan["provider"],
-        model=owner.plan["model"],
+        provider=owner.route_provider,
+        model=owner.route_model,
         native_inputs_sha256=sha256_hex(native_inputs),
     )
     from iqs_company_agent_lab.scan_profile import scan_limits

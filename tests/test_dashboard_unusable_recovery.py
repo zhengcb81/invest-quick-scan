@@ -186,14 +186,12 @@ def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch
     calls = []
     class View:
         def __init__(self, path): pass
-        def _connect(self):
-            return types.SimpleNamespace(execute=lambda *args: None, close=lambda: None)
-        def owner_refresh_projection(self, **kwargs):
+        def continuation_binding_snapshot(self, **kwargs):
             calls.append(kwargs)
-            return {'IQS_11': copy.deepcopy(row)}
-        def get_owner_refresh_binding(self, work):
-            assert work == 'WORK_source'
-            return {'binding': dict(binding)}
+            if (row['status'] == 'delivered'
+                and (row['work_item_id'], row['retry_decision_id']) not in kwargs['comparison_refs']):
+                return {}
+            return {'IQS_11': {'work': copy.deepcopy(row), 'binding_record': {'binding': dict(binding)}}}
     for name in ('src', 'src.utils'):
         module = types.ModuleType(name); module.__path__ = []
         monkeypatch.setitem(sys.modules, name, module)
@@ -215,7 +213,7 @@ def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch
         exec(p._WORK_BANK_BINDING_READER, {})
         return json.loads(capsys.readouterr().out)['rows']
     assert run()[0]['manifest_raw_sha256'] == binding['manifest_raw_sha256']
-    assert calls[-1]['include_owner_decisions'] is True
+    assert calls[-1]['comparison_refs'] == {('WORK_source', 'owd1_original')}
     request['controlled_work_refs'][0]['decision_id'] = 'owd1_other'
     assert run() == []
     request.pop('controlled_work_refs')
