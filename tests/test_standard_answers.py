@@ -450,6 +450,53 @@ if __name__ == '__main__':
 
 
 class VisibleExplanationCompatibilityTests(unittest.TestCase):
+    def test_fact_display_limit_does_not_discard_supported_rows(self):
+        manifest, answers, receipt = fixture(True)
+        question = manifest['questions'][0]
+        answer = answers[question['id']]
+        answer['items'] = [dict(copy.deepcopy(answer['items'][0]), name=f'Synthetic customer {i}')
+                           for i in range(question['max_items'] + 1)]
+        before = copy.deepcopy(answer)
+        record = sa.build_observations(manifest, answers, receipt)['observations'][0]
+        self.assertEqual(record['answer'], before)
+        self.assertEqual(sa.validate_observation(record), record)
+        answer['items'][-1]['evidence_ids'] = ['missing']
+        with self.assertRaisesRegex(ValueError, 'evidence binding'):
+            sa.validate_content(answer, question, manifest['profile']['as_of'])
+
+    def test_nested_explanation_lengths_are_not_acceptance_limits(self):
+        manifest, answers, receipt = fixture()
+        answer = next(iter(answers.values()))
+        answer['metrics'] = [dict(metric_id='custom.synthetic', value=1, unit='ratio',
+            currency=None, unit_detail='口径说明。' * 100, definition='定义。' * 200,
+            period_start=None, period_end=None, basis='current', evidence_ids=['e1'])]
+        answer['evidence'][0]['claim'] = '有据可查的公开解释。' * 150
+        before = copy.deepcopy(answer)
+        record = sa.build_observations(manifest, answers, receipt)['observations'][0]
+        self.assertEqual(record['answer'], before)
+        self.assertEqual(sa.validate_observation(record), record)
+
+    def test_forward_period_is_distinct_from_future_information(self):
+        manifest, answers, receipt = fixture()
+        question = manifest['questions'][0]
+        answer = answers[question['id']]
+        answer.update(basis='forward', period_start='2027-01-01', period_end='2027-12-31')
+        before = copy.deepcopy(answer)
+        sa.validate_content(answer, question, '2026-09-22')
+        self.assertEqual(answer, before)
+        record = sa.build_observations(manifest, answers, receipt)['observations'][0]
+        self.assertEqual(sa.validate_observation(record)['answer'], before)
+        for fault in ('actual', 'future_publication', 'future_information'):
+            bad = copy.deepcopy(answer)
+            if fault == 'actual':
+                bad['basis'] = 'current'
+            elif fault == 'future_publication':
+                bad['evidence'][0]['published_at'] = '2027-01-01'
+            else:
+                bad['information_as_of'] = '2027-01-01'
+            with self.subTest(fault=fault), self.assertRaises(ValueError):
+                sa.validate_content(bad, question, '2026-09-22')
+
     def test_long_and_extended_visible_explanation_preserves_raw_observation(self):
         manifest, answers, receipt = fixture()
         answer = next(iter(answers.values()))

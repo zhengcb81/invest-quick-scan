@@ -33,7 +33,29 @@ def visible_answer_schema(schema):
     """A compatible read view; frozen schema bytes and answer data stay intact."""
     view = copy.deepcopy(schema)
     view["additionalProperties"] = True
-    view["properties"]["summary"].pop("maxLength", None)
+    # Fact-list cardinality and prose lengths are generation/display preferences. The
+    # transport's byte ceiling bounds resources; these must not discard a paid
+    # answer. Identifier bounds, types, enums and financial coordinates remain.
+    prose = {"summary", "unit_detail", "definition", "description", "claim",
+             "counterevidence", "reason", "title", "name", "segment"}
+
+    def relax(node, field=None):
+        if isinstance(node, dict):
+            if field == "items":
+                node.pop("maxItems", None)
+            if field in prose:
+                node.pop("maxLength", None)
+            for key, value in node.items():
+                if key == "properties" and isinstance(value, dict):
+                    for name, child in value.items():
+                        relax(child, name)
+                else:
+                    relax(value, field)
+        elif isinstance(node, list):
+            for child in node:
+                relax(child, field)
+
+    relax(view)
     return view
 
 
@@ -98,8 +120,6 @@ def validate_content(
             raise ValueError('facts must not carry a score')
         if any(i['relation'] not in question['relations'] for i in answer['items']):
             raise ValueError('fact relation not allowed for field')
-        if len(answer['items']) > question['max_items']:
-            raise ValueError('fact item limit exceeded')
     elif answer['items'] or answer['status'] == 'answered':
         raise ValueError('score answer must use score/metrics, not fact rows')
     if kind == 'score' and ((answer['status'] == 'scored') != (answer['score'] is not None)):
@@ -114,9 +134,10 @@ def validate_content(
         raise ValueError('successful answer needs evidence')
     if kind == 'fact' and successful and not answer['items']:
         raise ValueError('fact answer needs structured rows; unknown is not an empty asserted list')
-    for value in (answer['information_as_of'], answer['period_end']):
-        if value and value > cutoff:
-            raise ValueError('answer information after cutoff')
+    if answer['information_as_of'] and answer['information_as_of'] > cutoff:
+        raise ValueError('answer information after cutoff')
+    if answer['period_end'] and answer['period_end'] > cutoff and answer['basis'] != 'forward':
+        raise ValueError('future historical answer period')
     if answer['period_start'] and answer['period_end'] and answer['period_start'] > answer['period_end']:
         raise ValueError('reversed period')
     ids = [e['id'] for e in answer['evidence']]
@@ -443,7 +464,7 @@ def build_observations(manifest, answers, receipts):
     return {'schema_version': '1.0.0', 'assembled_at': datetime.now(timezone.utc).isoformat(),
             'manifest_sha256': digest(manifest), 'observations': records,
             'missing_question_ids': sorted(set(known) - set(answers)),
-            'notice': 'Structural checks only; independent source review and StockWiki import still required.'}
+            'notice': 'Structural checks only; financial claims may remain unverified. StockWiki delivery status is separate.'}
 
 
 def period_shape(value):
