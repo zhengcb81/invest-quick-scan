@@ -24,12 +24,61 @@ request=json.load(sys.stdin)
 try:
     path=pathlib.Path(sys.argv[2])
     if not path.is_file(): raise ValueError('ledger_missing')
-    store=ReadOnlyWorkView(path);items=[]
-    for work_id in request['work_ids']:
+    store=ReadOnlyWorkView(path);items=[];work_items=[];consumers=[]
+    qids=request['question_ids']
+    if not isinstance(qids,list) or not qids or len(set(qids))!=len(qids):
+        raise ValueError('original_work_scope_invalid')
+    bindings=request.get('scope_bindings') or {
+        qid:{'scope':'entity','scope_id':request['entity_id']} for qid in qids}
+    if (set(bindings)!=set(qids) or any(not isinstance(value,dict)
+        or set(value)!={'scope','scope_id'} or value['scope'] not in {'entity','security','segment'}
+        or not isinstance(value['scope_id'],str) or not value['scope_id']
+        or value['scope']=='entity' and value['scope_id']!=request['entity_id']
+        for value in bindings.values())):
+        raise ValueError('original_work_scope_invalid')
+    work_ids=request.get('work_ids')
+    registered={}
+    if request.get('confirmation_id'):
+        record=store.get_registered_refresh_action(request['confirmation_id'])
+        if record is None or record['receipt']['confirmation_id']!=request['confirmation_id']:
+            raise ValueError('original_refresh_action_missing')
+        registered={row['work_item_id']:row for row in record['receipt']['items']
+            if row['entity_id']==request['entity_id'] and row['question_id'] in qids
+            and all(row[key]==bindings[row['question_id']][key] for key in ('scope','scope_id'))}
+        references={row['question_id'] for row in record['inputs'].get('references',[])
+            if row['subject_ref']['entity_id']==request['entity_id'] and row['question_id'] in qids
+            and all(row['subject_ref'][key]==bindings[row['question_id']][key] for key in ('scope','scope_id'))}
+        covered={row['question_id'] for row in registered.values()}
+        if covered|references != set(qids): raise ValueError('original_registered_scope_mismatch')
+        work_ids=list(registered)
+        for qid in references-covered:
+            items.append({'question_id':qid,'work_item_id':None,'status':'not_exportable','reason':'original_observation_reference'})
+    elif work_ids is None:
+        if not request.get('read_only_scope'):
+            raise ValueError('original_refresh_action_required')
+        projection=store.owner_refresh_projection(entity_id=request['entity_id'],
+            question_ids=qids,scope_bindings=bindings)
+        work_ids=[projection[qid]['work_item_id'] for qid in qids if qid in projection]
+        for qid in qids:
+            if qid not in projection:
+                work_items.append({'question_id':qid,'work_item_id':None,'status':'missing'})
+                items.append({'question_id':qid,'work_item_id':None,'status':'not_exportable','reason':'missing'})
+    for work_id in work_ids:
         work=store.get_item(work_id)
-        if work['entity_id']!=request['entity_id'] or work['question_id'] not in request['question_ids']:
+        qid=work['question_id']
+        if (work['entity_id']!=request['entity_id'] or qid not in qids
+            or any(work[key]!=bindings[qid][key] for key in ('scope','scope_id'))):
             raise ValueError('original_work_scope_mismatch')
+        if work_id in registered and any(work[key]!=registered[work_id][key]
+                for key in ('work_item_id','entity_id','question_id','generation','scope','scope_id')):
+            raise ValueError('original_registered_work_mismatch')
+        work_items.append({key:work[key] for key in ('question_id','work_item_id','status','generation')})
+        if request.get('read_only_scope'): continue
         row=store.get_result_delivery(work_id)
+        if request.get('receiver_only'):
+            binding=None if row is None else row.get('consumer_binding')
+            consumers.append({'work_item_id':work_id,'consumer':None if binding is None else binding['consumer']})
+            continue
         if row is None or row['state'] not in {'ready','delivered','send_uncertain'} or row['package_bytes'] is None:
             items.append({'work_item_id':work_id,'status':'not_exportable','reason':None if row is None else row.get('block_code') or row['state']})
             continue
@@ -37,7 +86,7 @@ try:
         items.append({'work_item_id':work_id,'status':'exportable','observation_id':row['observation_id'],
             'package_id':row['package_id'],'package_json':raw.decode('utf8'),
             'package_bytes_sha256':hashlib.sha256(raw).hexdigest(),'delivery_state':row['state']})
-    print(json.dumps({'items':items,'API_requests':0,'network_calls':0},ensure_ascii=False))
+    print(json.dumps({'items':items,'work_items':work_items,'consumers':consumers,'API_requests':0,'network_calls':0},ensure_ascii=False))
 except Exception:
     print(json.dumps({'error_code':'original_delivery_export_rejected','API_requests':0}));raise SystemExit(2)
 '''
@@ -52,6 +101,35 @@ def _immutable(path, raw):
             raise DashboardExecutionError('delivery_archive_changed','原封存包归档已变化，不能覆盖。',409)
 
 
+def _scope_inputs(bundle):
+    for field in ('admission_config', 'inspection_request'):
+        path = Path(bundle.get(field, ''))
+        if not path.is_absolute() or not path.is_file():
+            raise DashboardExecutionError('delivery_not_configured', '缺少原只读交付输入。', 409, {'missing': [field]})
+    admission = json.loads(Path(bundle['admission_config']).read_text(encoding='utf-8-sig'))
+    ledger = Path(admission.get('work_store', ''))
+    if not ledger.is_absolute() or not ledger.is_file():
+        raise DashboardExecutionError('delivery_not_configured', '原账本不存在；不会创建空库。', 409)
+    request = json.loads(Path(bundle['inspection_request']).read_text(encoding='utf-8-sig'))
+    if request.get('entity_id') != bundle.get('entity_id'):
+        raise DashboardExecutionError('delivery_entity_mismatch', '交付请求与原实体不一致。', 409)
+    return ledger, request
+
+
+def read_work_scope(*, bundle, config, call, runtime):
+    """Observe native work rows without requiring today's spending policy."""
+    ledger, request = _scope_inputs(bundle)
+    root = Path(config['stockqa_root'])
+    result = call([str(config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8',
+                   '-c', _EXPORT, str(root), str(ledger)], root, runtime,
+                  input_value={'entity_id': request['entity_id'], 'question_ids': request['question_ids'],
+                      'scope_bindings': request.get('scope_bindings'),
+                      **({'confirmation_id': bundle['confirmation_id']} if bundle.get('confirmation_id') else {}),
+                      'read_only_scope': True})
+    return {**result, 'protocol': 'stockqa.read_only_work_projection/1.0.0',
+            'reservation_created': False}
+
+
 def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection_work_items):
     key = bundle_id
     # Reading an already sealed result does not require a new spending grant,
@@ -59,52 +137,22 @@ def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection
     root=Path(config.get('stockqa_root',''))
     if not root.is_absolute() or not (root/'src/utils/quick_scan_work_store.py').is_file():
         raise DashboardExecutionError('delivery_not_configured','原交付代码根缺失。',409)
-    for field in ('admission_config','inspection_request','manifest'):
+    for field in ('manifest',):
         if not Path(bundle.get(field,'')).is_absolute() or not Path(bundle[field]).is_file():
             raise DashboardExecutionError('delivery_not_configured','缺少原只读交付输入。',409,{'missing':[field]})
-    admission=json.loads(Path(bundle['admission_config']).read_text(encoding='utf-8-sig'))
-    for field in ('work_store','budget_policy_file'):
-        if not Path(admission.get(field,'')).is_absolute() or not Path(admission[field]).is_file():
-            raise DashboardExecutionError('delivery_not_configured','原账本或策略不存在；不会创建空库。',409)
-    request=json.loads(Path(bundle['inspection_request']).read_text(encoding='utf-8-sig'))
-    if request.get('entity_id')!=bundle.get('entity_id'):
-        raise DashboardExecutionError('delivery_entity_mismatch','交付请求与原实体不一致。',409)
+    ledger, request = _scope_inputs(bundle)
+    confirmation = bundle.get('confirmation_id')
+    if not isinstance(confirmation, str) or not confirmation:
+        raise DashboardExecutionError('delivery_original_scope_unavailable', '缺少原confirmation，不能用最新一代工作替代原交付范围。', 409)
     interpreter=str(config.get('stockqa_python',sys.executable))
-    command=[interpreter,'-B','-X','utf8','-m','src.utils.quick_scan_refresh_inspect_cli',
-        '--ledger',admission['work_store'],'--policy',admission['budget_policy_file'],
-        '--request',bundle['inspection_request'],'--schema-version',bundle.get('inspection_schema_version','1.0.0')]
-    if bundle.get('inspection_schema_version') in {'1.4.0','1.5.0'}:
-        command.extend(['--admission-config',bundle['admission_config']])
     state_root.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='delivery-read-',dir=state_root) as runtime:
-        inspection=call(command,root,runtime)
-        rows=inspection_work_items(inspection)
-        if (inspection.get('protocol')!='stockqa.refresh_inspection/'+bundle.get('inspection_schema_version','1.0.0')
-            or inspection.get('reservation_created') is not False or not isinstance(rows,list)
-            or any(not isinstance(row,dict) or row.get('status') not in
-                   {'result_ready','delivered','pending','failed','leased','uncertain','missing'} for row in rows)):
-            raise DashboardExecutionError('delivery_not_ready','原执行范围不可核实；不会重新封存或发模型请求。',409)
         # Each original sealed package is independently exportable. Unfinished
         # questions remain not_exportable, without holding completed answers.
-        expected=request.get('question_ids')
-        actual=[row.get('question_id') for row in rows]
-        if (not isinstance(expected,list) or not expected
-            or any(not isinstance(qid,str) or not qid for qid in expected+actual)
-            or len(set(expected))!=len(expected) or len(set(actual))!=len(actual)
-            or not set(actual)<=set(expected)):
-            raise DashboardExecutionError('delivery_work_mapping_missing','原检查范围与所选题目不一致。',409)
-        missing=[row for row in rows if row.get('status')=='missing' and row.get('work_item_id') is None]
-        # The native projection omits questions with no original work row.
-        # Report those gaps without inventing an ID or marking them delivered.
-        missing.extend({'question_id':qid} for qid in expected if qid not in actual)
-        work_ids=[row.get('work_item_id') for row in rows if row not in missing]
-        if any(not isinstance(work,str) or not work for work in work_ids) or len(set(work_ids))!=len(work_ids):
-            raise DashboardExecutionError('delivery_work_mapping_missing','原检查器未提供唯一逐题work引用。',409)
         result=call([interpreter,'-B','-X','utf8','-c',_EXPORT,
-            str(root),str(admission['work_store'])],root,runtime,input_value={
-            'entity_id':bundle['entity_id'],'question_ids':request['question_ids'],'work_ids':work_ids})
-        result['items'].extend({'question_id':row['question_id'],'work_item_id':None,
-                                'status':'not_exportable','reason':'missing'} for row in missing)
+            str(root),str(ledger)],root,runtime,input_value={
+                'entity_id': request['entity_id'], 'question_ids': request['question_ids'],
+                'scope_bindings': request.get('scope_bindings'), 'confirmation_id': confirmation})
     from frozen_release_projection import create_projection
     manifest=json.loads(Path(bundle['manifest']).read_text(encoding='utf-8-sig'))
     release=create_projection(manifest,root=Path(config['iqs_release_root']))
@@ -124,7 +172,7 @@ def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection
             path=archive/(digest+'.json');_immutable(path,raw)
             registrations[name]={'entity_id':bundle['entity_id'],'package':str(path.resolve()),'package_sha256':digest,
                 'release':str(release_path.resolve()),'release_sha256':release_sha,
-                'work_store':str(admission['work_store']), 'work_item_ids':{row['observation_id']:row['work_item_id']}}
+                'work_store':str(ledger), 'work_item_ids':{row['observation_id']:row['work_item_id']}}
             public['bundle_id']=name
         items.append(public)
     return {'status':'exported' if len(registrations)==len(items) else 'partial','import_bundles':registrations,

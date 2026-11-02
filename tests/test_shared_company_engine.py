@@ -35,7 +35,7 @@ def load(name, path):
 engine = load("shared_company_engine_candidate", PACKAGE / "scripts/shared_company_engine.py")
 helpers = load("composition_company_helpers", COMPANY / "tests/conftest.py")
 from iqs_company_agent_lab import synthfixtures as sf
-from iqs_company_agent_lab.runtime import SyntheticReplayPort, SyntheticCrash
+from iqs_company_agent_lab.runtime import SyntheticReplayPort, SyntheticCrash, SavedResponseBoundary
 from iqs_company_agent_lab.events import load_events
 from iqs_company_agent_lab.runner import Runner
 from iqs_company_agent_lab.provenance import runtime_evidence_document
@@ -72,7 +72,7 @@ def test_replay_only_port_never_calls_live_transport(tmp_path, monkeypatch, kind
     guarded = engine._pending_port(port, [], tmp_path, recover_intent=lambda i: None,
                                    replay_only=True)
     monkeypatch.setattr(guarded, '_save', lambda *args: None)
-    with pytest.raises(engine.SharedEngineRejected, match='replay_only'):
+    with pytest.raises(SavedResponseBoundary, match='replay_only'):
         getattr(guarded, 'model_step' if kind == 'model' else 'search')({'intent': {}})
     assert calls == []
 
@@ -98,7 +98,7 @@ def test_pending_port_proven_unsent_still_uses_normal_send_guard(tmp_path, monke
         replay_only=replay_only)
     monkeypatch.setattr(guarded, "_save", lambda *args: None)
     if replay_only:
-        with pytest.raises(engine.SharedEngineRejected):
+        with pytest.raises(SavedResponseBoundary):
             guarded.model_step({"intent": {}})
         assert calls == []
     else:
@@ -352,10 +352,11 @@ def test_resume_proven_unsent_preserves_original_task_and_one_request_cap(tmp_pa
         monkeypatch.setattr(engine, "inspect_native_recovery", lambda *a, **kw:
             {"decision": "not_sent", "saved_receipt": None})
     if replay_only:
-        with pytest.raises(engine.SharedEngineRejected, match="never_resend_unknown"):
-            engine.resume_shared_engine(task, services, {}, checkpoint, tmp_path / "export",
-                session_dir=tmp_path / "resumed", transport_origin="scripted_wire", replay_only=True)
-        assert fresh.calls == 0 and not (tmp_path / "resumed").exists()
+        result = engine.resume_shared_engine(task, services, {}, checkpoint, tmp_path / "export",
+            session_dir=tmp_path / "resumed", transport_origin="scripted_wire", replay_only=True)
+        assert not result["all_slots_completed"] and fresh.calls == 0
+        assert result["runtime_summary"]["new_model_http"] == 0
+        assert all(row["execution_status"] != "completed" for row in result["run"]["slots"])
     else:
         result = engine.resume_shared_engine(task, services, {}, checkpoint, tmp_path / "export",
             session_dir=tmp_path / "resumed", transport_origin="scripted_wire")

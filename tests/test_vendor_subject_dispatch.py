@@ -111,3 +111,53 @@ def test_query26_unsupported_wire_profile_does_not_become_empty_coverage(values)
     row['observation_wire_profile']='stockwiki-portable-observation/1.0.0'
     response=vendor.seal_response(response,request=request)
     with pytest.raises(ValueError):vendor.validate_response(response,expected_request=request,expected_owner=owner)
+
+
+def test_stockwiki_fixed_cli_preserves_long_explanation_and_extensions(values, tmp_path):
+    import os
+    from pathlib import Path
+    import sys
+
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root.parent / "StockWiki"))
+    from stockwiki.quick_scan_subject_authority import IqsSubjectContract
+    from stockwiki.quick_scan_observations import ObservationImportError
+
+    _, observation, _ = copy.deepcopy(values)
+    observation["answer"].update(
+        summary="Synthetic public explanation. " * 220,
+        confidence_rationale={"text": "Partial coverage; synthetic only"},
+    )
+    observation["observation_id"] = "obs_" + qc._digest(
+        {k: v for k, v in observation.items() if k != "observation_id"}
+    )
+    original = copy.deepcopy(observation)
+    allowed = {
+        "SYSTEMROOT",
+        "WINDIR",
+        "PATH",
+        "PATHEXT",
+        "COMSPEC",
+        "USERPROFILE",
+        "APPDATA",
+        "LOCALAPPDATA",
+        "SYSTEMDRIVE",
+    }
+    env = {k: v for k, v in os.environ.items() if k.upper() in allowed}
+    contract = IqsSubjectContract(root, runs_dir=tmp_path / "public-cli", process_env=env)
+    assert contract.validate_vendor_original(observation) == original
+    assert observation == original
+    for fault in ("private", "entity", "score"):
+        bad = copy.deepcopy(observation)
+        if fault == "private":
+            bad["answer"]["confidence_rationale"] = {"thinking_content": "SYNTHETIC_PRIVATE"}
+        elif fault == "entity":
+            bad["answer"]["entity_id"] = "ANOTHER_ISSUER"
+        else:
+            bad["answer"]["score"] = 11
+        bad["observation_id"] = "obs_" + qc._digest(
+            {k: v for k, v in bad.items() if k != "observation_id"}
+        )
+        with pytest.raises(ObservationImportError):
+            contract.validate_vendor_original(bad)
+    assert not list((tmp_path / "public-cli").iterdir())

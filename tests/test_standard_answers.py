@@ -111,11 +111,16 @@ class StandardAnswerTests(unittest.TestCase):
             else: answer['items'][0]['evidence_ids'] = []
             with self.subTest(mutation=mutation), self.assertRaises(ValueError): sa.build_observations(m, bad, r)
 
-    def test_model_self_report_and_long_documents_rejected(self):
+    def test_visible_model_note_never_overrides_receipt_and_document_bodies_stay_rejected(self):
         m, a, r = fixture()
-        for key, value in [('model', 'self-claimed-model'), ('summary', 'x' * 801)]:
-            bad = copy.deepcopy(a); next(iter(bad.values()))[key] = value
-            with self.assertRaises(Exception): sa.build_observations(m, bad, r)
+        body = next(iter(a.values()))
+        body.update(model='self-claimed-model', summary='x' * 801)
+        record = sa.build_observations(m, a, r)['observations'][0]
+        self.assertEqual(record['answer'], body)
+        self.assertEqual(record['execution']['model_resolved'], 'EXAMPLE_MODEL_A')
+        self.assertNotEqual(record['execution']['model_resolved'], body['model'])
+        body['raw_html'] = '<html>whole document body</html>'
+        with self.assertRaises(ValueError): sa.build_observations(m, a, r)
 
     def test_future_sources_and_invalid_dates_rejected(self):
         m, a, r = fixture()
@@ -335,6 +340,33 @@ class MetricCoordinatesTests(unittest.TestCase):
     def validate(self, question, body):
         return sa.validate_content(body, question, '2026-09-22')
 
+    def test_unregistered_metric_name_is_preserved_without_claiming_comparability(self):
+        manifest, answers, receipt = fixture()
+        body = next(iter(answers.values()))
+        body["metrics"] = self.answer()[1]["metrics"]
+        body["metrics"][0]["metric_id"] = "financial.fcf_2024"
+        before = copy.deepcopy(body)
+        record = sa.build_observations(manifest, answers, receipt)["observations"][0]
+        result = sa.compare(record, record, "time")
+        self.assertEqual(body, before)
+        self.assertEqual(record["answer"]["metrics"][0]["metric_id"], "financial.fcf_2024")
+        self.assertFalse(result["metrics"][0]["mapped"])
+        self.assertFalse(result["metrics"][0]["comparable"])
+        self.assertIn("financial.fcf_2024", result["unmapped_metric_ids"])
+        self.assertTrue(any("unmapped" in warning for warning in result["warnings"]))
+
+    def test_exact_repeated_metric_and_evidence_records_do_not_discard_answer(self):
+        manifest, answers, receipt = fixture()
+        body = next(iter(answers.values()))
+        body["metrics"] = self.answer()[1]["metrics"]
+        body["metrics"].append(copy.deepcopy(body["metrics"][0]))
+        body["evidence"].append(copy.deepcopy(body["evidence"][0]))
+        before = copy.deepcopy(body)
+        record = sa.build_observations(manifest, answers, receipt)["observations"][0]
+        self.assertEqual(record["answer"], before)
+        self.assertEqual(body, before)
+        self.assertEqual(len(sa.compare(record, record, "time")["metrics"]), 1)
+
     def test_same_metric_retains_each_explicit_year_even_when_values_equal(self):
         question, body = self.answer()
         body['metrics'].append(dict(body['metrics'][0], period_start='2025-01-01', period_end='2025-12-31'))
@@ -390,7 +422,6 @@ class MetricCoordinatesTests(unittest.TestCase):
         self.assertEqual({row['left']['period_end'] for row in rows}, {'2024-12-31', '2025-12-31'})
         self.assertTrue(all(row['comparable'] for row in rows))
 
-
     def test_compare_keeps_unmatched_years_when_series_overlap_only_partially(self):
         manifest, answers, receipt = fixture()
         body = next(iter(answers.values()))
@@ -416,3 +447,47 @@ class MetricCoordinatesTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class VisibleExplanationCompatibilityTests(unittest.TestCase):
+    def test_long_and_extended_visible_explanation_preserves_raw_observation(self):
+        manifest, answers, receipt = fixture()
+        answer = next(iter(answers.values()))
+        answer.update(
+            summary="公开业务理由。" * 160,
+            confidence_rationale={
+                "text": "The evidence is partial.",
+                "limitations": ["Synthetic example"],
+            },
+        )
+        raw = copy.deepcopy(answer)
+        record = sa.build_observations(manifest, answers, receipt)["observations"][0]
+        self.assertEqual(record["answer"], raw)
+        self.assertEqual(sa.validate_observation(record), record)
+
+    def test_historical_answer_schema_is_compatibly_read_without_rewriting_it(self):
+        manifest, answers, _ = fixture()
+        answer = next(iter(answers.values()))
+        old = sa.library.read_json(ROOT / "schemas/answer-content.schema.json")
+        old["properties"]["summary"]["maxLength"] = 800
+        old["additionalProperties"] = False
+        before = copy.deepcopy(old)
+        answer.update(summary="公开业务理由。" * 160, confidence_rationale="Business rationale")
+        sa.validate_content(
+            answer, manifest["questions"][0], manifest["profile"]["as_of"], answer_schema=old
+        )
+        self.assertEqual(old, before)
+
+    def test_visible_extensions_do_not_hide_actual_private_or_subject_conflicts(self):
+        for fault in ("private", "entity"):
+            manifest, answers, receipt = fixture()
+            answer = next(iter(answers.values()))
+            answer["confidence_rationale"] = (
+                {"thinking_content": "SYNTHETIC_PRIVATE"}
+                if fault == "private"
+                else "Business rationale"
+            )
+            if fault == "entity":
+                answer["entity_id"] = "A_DIFFERENT_ISSUER"
+            with self.subTest(fault=fault), self.assertRaises(ValueError):
+                sa.build_observations(manifest, answers, receipt)

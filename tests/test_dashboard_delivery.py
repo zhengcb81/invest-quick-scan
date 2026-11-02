@@ -14,6 +14,27 @@ SOURCE = ROOT.parent/'StockQAbyLLM'
 TARGET = {'component':'StockWiki','namespace':'quick_scan','store_id':'stockwiki-test-store'}
 
 
+def journal_read_port(work_id, fault=None):
+    """Mock only a native reader, never generate owner/admission authority."""
+    return r'''
+import sys
+sys.path.insert(0,sys.argv[1])
+from src.utils import quick_scan_refresh_admission_journal as journal
+def original_action(connection, confirmation_id):
+    if confirmation_id != 'rc2_'+'1'*64 or FAULT == 'missing': return None
+    original=store.get_item(ORIGINAL_ID)
+    row={key:original[key] for key in ('work_item_id','entity_id','question_id','generation','scope','scope_id')}
+    if FAULT == 'entity': row['entity_id']='ENT_OTHER'
+    if FAULT == 'question': row['question_id']='OTHER_Q'
+    if FAULT == 'scope': row['scope']='security';row['scope_id']='SEC_OTHER'
+    if FAULT == 'generation': row['generation']+=1
+    if FAULT == 'work_id': row['work_item_id']='WORK_MISSING'
+    return {'receipt':{'confirmation_id': 'rc2_'+('2' if FAULT=='confirmation' else '1')*64,
+        'items':[row]},'inputs':{'references':[]}}
+journal.read_record=original_action
+'''.replace('ORIGINAL_ID', repr(work_id)).replace('FAULT', repr(fault))
+
+
 @pytest.fixture
 def delivery(tmp_path):
     if not (SOURCE/'tests/unit/test_quick_scan_work_store.py').is_file():
@@ -59,6 +80,16 @@ def test_original_target_binding_and_exact_ack_replay(delivery):
     assert Path(bundle['work_store']).read_bytes()==before
 
 
+def test_same_native_receiver_reuses_original_binding_when_locator_label_changes(delivery):
+    gateway, bundle, receipt = delivery
+    gateway.bind_delivery_consumer(bundle, TARGET, 'dashboard-owner-status:original-workspace-path')
+    before = Path(bundle['work_store']).read_bytes()
+    result = gateway.bind_delivery_consumer(bundle, TARGET, 'dashboard-owner-status:moved-same-data-store')
+    assert result['status'] == 'bound' and result['API_requests'] == 0
+    assert Path(bundle['work_store']).read_bytes() == before
+    assert gateway.acknowledge_delivery(bundle, receipt)['status'] == 'delivered'
+
+
 @pytest.mark.parametrize('ready_count,missing_work', [(n, missing) for n in [0, 1, 2]
                                                     for missing in [False, 'row', 'omitted']] + [(0, 'all')])
 def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers(tmp_path, monkeypatch, ready_count, missing_work):
@@ -72,19 +103,15 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
         (tmp_path/name).write_text(json.dumps(value), encoding='utf8')
     (tmp_path/'ledger').write_bytes(b'test boundary')
     (tmp_path/'policy').write_text('{}', encoding='utf8')
-    bundle = {'entity_id': 'ENT_TEST', 'admission_config': str(tmp_path/'admission'),
+    bundle = {'entity_id': 'ENT_TEST', 'admission_config': str(tmp_path/'admission'), 'confirmation_id': 'rc2_'+'1'*64,
               'inspection_request': str(tmp_path/'request'), 'manifest': str(tmp_path/'manifest')}
     gateway = ExecutionGateway({'stockqa_root': str(SOURCE), 'iqs_release_root': str(ROOT),
                                 'state_root': str(tmp_path/'state'), 'bundles': {'B': bundle}})
     calls = []
     def native(command, root, runtime, *, input_value=None):
         calls.append(command)
-        if len(calls) == 1:
-            return {'protocol': 'stockqa.refresh_inspection/1.0.0', 'reservation_created': False,
-                    'API_requests': 0, 'work_items': [] if missing_work=='all' else [{'question_id': f'Q{i+1}', 'work_item_id': f'WORK_{i}',
-                        'status': 'result_ready' if i < ready_count else 'pending'} for i in range(2)] +
-                        ([{'question_id':'Q3','status':'missing','work_item_id':None}] if missing_work=='row' else [])}
-        assert input_value['work_ids'] == ([] if missing_work=='all' else ['WORK_0', 'WORK_1'])
+        assert '-c' in command and '--policy' not in command
+        assert input_value['question_ids'] == ['Q1', 'Q2'] + (['Q3'] if missing_work in {'row', 'omitted'} else [])
         rows = []
         for i in range(0 if missing_work=='all' else 2):
             if i >= ready_count:
@@ -93,6 +120,11 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
                 raw = json.dumps({'fixture': i})
                 rows.append({'work_item_id': f'WORK_{i}', 'status': 'exportable', 'observation_id': f'obs_{i}',
                              'package_json': raw, 'package_bytes_sha256': hashlib.sha256(raw.encode()).hexdigest()})
+        if missing_work in {'row', 'omitted'}:
+            rows.append({'question_id': 'Q3', 'work_item_id': None, 'status': 'not_exportable', 'reason': 'missing'})
+        if missing_work == 'all':
+            rows.extend({'question_id': qid, 'work_item_id': None, 'status': 'not_exportable', 'reason': 'missing'}
+                        for qid in input_value['question_ids'])
         return {'items': rows, 'API_requests': 0, 'network_calls': 0}
     monkeypatch.setattr(gateway, '_call', native)  # Native process boundary; SQL/package validation is tested separately.
     _, selected = gateway._select({'bundle_id': 'B'})
@@ -102,7 +134,7 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
     extra = int(missing_work in {'row','omitted'})
     assert len(result['items']) == 2+extra and len(result['import_bundles']) == ready_count
     assert sum(row['status'] == 'not_exportable' for row in result['items']) == 2-ready_count+extra
-    assert result['API_requests'] == result['model_calls'] == 0 and len(calls) == 2
+    assert result['API_requests'] == result['model_calls'] == 0 and len(calls) == 1
     for registration in result['import_bundles'].values():
         raw = Path(registration['package']).read_bytes()
         assert hashlib.sha256(raw).hexdigest() == registration['package_sha256']
@@ -173,6 +205,74 @@ def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(del
     with pytest.raises(DashboardExecutionError):
         gateway._call(command,SOURCE,tmp_path,input_value={**request,'entity_id':'ENT_FOREIGN'})
     assert ledger.read_bytes()==before
+
+
+def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(delivery, tmp_path, monkeypatch):
+    import hashlib
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    import frozen_release_projection
+    monkeypatch.setattr(frozen_release_projection, 'create_projection', lambda *a, **kw: {'fixture': 'release'})
+    gateway, original, _ = delivery
+    original_ids = list(original['work_item_ids'].values())
+    # Mock only the native journal read port. The two real SQLite checkpoints,
+    # sealed bytes and their integrity reader remain ORIGINAL code. This is no
+    # owner/admission qualification or producer-positive receipt fixture.
+    call = gateway._call
+    from scripts.dashboard_delivery import _EXPORT
+    journal_port = journal_read_port(original_ids[0])
+    def recorded_action(command, *args, **kwargs):
+        command = list(command)
+        if '-c' in command and command[command.index('-c')+1] == _EXPORT:
+            command[command.index('-c')+1] = journal_port + _EXPORT
+        return call(command, *args, **kwargs)
+    monkeypatch.setattr(gateway, '_call', recorded_action)
+    ledger = Path(original['work_store'])
+    admission = tmp_path/'admission.json'
+    admission.write_text(json.dumps({'work_store': str(ledger),
+                                    'budget_policy_file': str(tmp_path/'removed-policy.json')}), encoding='utf8')
+    request = tmp_path/'request.json'
+    request.write_text(json.dumps({'entity_id': 'ENT_BYD', 'question_ids': ['IQS_05'],
+        'scope_bindings': {'IQS_05': {'scope': 'entity', 'scope_id': 'ENT_BYD'}}}), encoding='utf8')
+    manifest = tmp_path/'manifest.json'
+    manifest.write_text('{}', encoding='utf8')
+    bundle = {'entity_id': 'ENT_BYD', 'admission_config': str(admission),
+              'inspection_request': str(request), 'manifest': str(manifest), 'work_lease_seconds': -1,
+              'confirmation_id': 'rc2_'+'1'*64}
+    gateway.config.update(iqs_release_root=str(ROOT), runtime_dir=str(tmp_path))
+    gateway.bundles['ORIGINAL'] = bundle
+    gateway.state_root = tmp_path/'state'
+    before = ledger.read_bytes()
+    result = gateway.export_delivery({'bundle_id': 'ORIGINAL'})
+    assert result['status'] == 'exported' and result['API_requests'] == 0
+    assert len(result['import_bundles']) == 1
+    for registration in result['import_bundles'].values():
+        raw = Path(registration['package']).read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == registration['package_sha256']
+        assert set(registration['work_item_ids'].values()) == {original_ids[0]}
+        assert original_ids[1] not in registration['work_item_ids'].values()
+    assert ledger.read_bytes() == before and not (tmp_path/'removed-policy.json').exists()
+    read = gateway.preview({'bundle_id': 'ORIGINAL'}, read_only=True)
+    assert read['status'] == 'inspected' and read['API_requests'] == 0
+    assert read['inspection']['work_items'][0]['status'] == 'result_ready'
+    assert ledger.read_bytes() == before
+
+
+@pytest.mark.parametrize('fault', ['missing', 'confirmation', 'entity', 'question', 'scope', 'generation', 'work_id'])
+def test_original_action_scope_cannot_select_foreign_or_later_work(delivery, tmp_path, fault):
+    """Actual readonly SQLite/outbox, explicit mock of immutable journal port."""
+    from scripts.dashboard_delivery import _EXPORT
+    gateway, original, _ = delivery
+    ledger = Path(original['work_store'])
+    ids = list(original['work_item_ids'].values())
+    request = {'entity_id': 'ENT_BYD', 'question_ids': ['IQS_05'],
+               'scope_bindings': {'IQS_05': {'scope': 'entity', 'scope_id': 'ENT_BYD'}},
+               'confirmation_id': 'rc2_'+'1'*64,
+               'work_ids': [ids[1]]}  # Cannot override the original action with today's ID.
+    before = ledger.read_bytes()
+    with pytest.raises(DashboardExecutionError):
+        gateway._call([sys.executable, '-B', '-X', 'utf8', '-c', journal_read_port(ids[0], fault)+_EXPORT,
+                       str(SOURCE), str(ledger)], SOURCE, tmp_path, input_value=request)
+    assert ledger.read_bytes() == before
 
 
 def test_export_uses_layout_checked_read_only_view_without_history_audit(delivery, tmp_path):

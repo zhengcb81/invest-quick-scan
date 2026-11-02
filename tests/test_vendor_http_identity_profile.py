@@ -73,7 +73,7 @@ class VendorIdentityProfileTests(unittest.TestCase):
         resources={path:json.loads((root/path).read_bytes())
                    for path in catalog['profiles'][profiles.VENDOR_HTTP_IDENTITY]['base_resource_sha256']}
         profiles.schema_for('1.2.0',resources)
-        bad=copy.deepcopy(resources);bad['schemas/answer-content.schema.json']['$comment']='changed archived schema'
+        bad=copy.deepcopy(resources);bad['schemas/observation.schema.json']['$comment']='changed archived execution envelope'
         with self.assertRaisesRegex(ValueError,'archived_base_mismatch'):profiles.schema_for('1.2.0',bad)
         with tempfile.TemporaryDirectory(prefix='iqs-execution-profile-drift-') as own:
             temporary=Path(own);(temporary/'schemas').mkdir()
@@ -115,3 +115,35 @@ class VendorIdentityProfileTests(unittest.TestCase):
         with self.assertRaises(ValueError):sa.validate_observation(r)
 
 if __name__=='__main__':unittest.main()
+
+
+def test_compatible_answer_schema_extension_keeps_old_and_new_profile_descriptor():
+    catalog=profiles._read("schemas/observation-execution-profiles.json")["profiles"][profiles.VENDOR_HTTP_IDENTITY]
+    resources={path:profiles._read(path) for path in catalog["base_resource_sha256"]}
+    old=copy.deepcopy(resources)
+    old["schemas/answer-content.schema.json"]["properties"]["summary"]["maxLength"]=800
+    old["schemas/answer-content.schema.json"]["additionalProperties"]=False
+    current=copy.deepcopy(resources)
+    current["schemas/answer-content.schema.json"]["$comment"]="Additive display metadata is provenance only"
+    assert profiles.profile_descriptor(old)==profiles.profile_descriptor(current)
+
+
+def test_additive_metric_registry_is_provenance_and_known_units_still_validate():
+    import pytest
+    from test_standard_answers import fixture
+    catalog=profiles._read("schemas/observation-execution-profiles.json")["profiles"][profiles.VENDOR_HTTP_IDENTITY]
+    resources={path:profiles._read(path) for path in catalog["base_resource_sha256"]}
+    before=copy.deepcopy(resources)
+    extended=copy.deepcopy(resources)
+    registry=extended["questions/metric-registry.json"]
+    registry["metrics"]["new.unrelated_metric"]={"unit":"ratio","definition":"Synthetic extension"}
+    assert profiles.profile_descriptor(extended)==profiles.profile_descriptor(resources)
+    assert resources==before
+    manifest,answers,_=fixture()
+    body=next(iter(answers.values()))
+    body["metrics"]=[dict(metric_id="financial.net_margin",value=10,unit="currency",currency="USD",unit_detail="USD",period_start=None,period_end=None,basis="current",definition="Incorrect known canonical unit",evidence_ids=["e1"])]
+    with pytest.raises(ValueError,match="unit"):
+        sa.validate_content(body,manifest["questions"][0],manifest["profile"]["as_of"],metric_registry=registry)
+    malformed=copy.deepcopy(extended)
+    malformed["questions/metric-registry.json"]["metrics"]=[]
+    with pytest.raises(ValueError):profiles.profile_descriptor(malformed)

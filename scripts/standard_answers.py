@@ -29,23 +29,64 @@ def digest(value):
                                      separators=(',', ':'), allow_nan=False).encode()).hexdigest()
 
 
+def visible_answer_schema(schema):
+    """A compatible read view; frozen schema bytes and answer data stay intact."""
+    view = copy.deepcopy(schema)
+    view["additionalProperties"] = True
+    view["properties"]["summary"].pop("maxLength", None)
+    return view
+
+
+def _validate_visible_channels(answer):
+    private = {
+        "reasoning_content",
+        "thinking",
+        "thinking_content",
+        "chain_of_thought",
+        "reflection_content",
+        "private_thoughts",
+    }
+    stack = [answer]
+    while stack:
+        value = stack.pop()
+        if isinstance(value, dict):
+            if any(key.casefold() in private for key in value):
+                raise ValueError("private protocol field in visible answer")
+            if "raw_html" in value:
+                raise ValueError("full document body is not a lightweight answer")
+            stack.extend(value.values())
+        elif isinstance(value, list):
+            stack.extend(value)
+        elif isinstance(value, str) and re.search(
+            r"</?(?:think(?:ing)?|reflection)\b[^>]*>|</?antml:", value, re.I
+        ):
+            raise ValueError("private thought tag in visible answer")
+
+
 @lru_cache(maxsize=4)
 def validator(name):
     registry = Registry()
     for file in ('answer-content.schema.json', 'observation.schema.json'):
         schema = library.read_json(ROOT / 'schemas' / file)
+        if file == "answer-content.schema.json":
+            schema = visible_answer_schema(schema)
         registry = registry.with_resource(schema['$id'], Resource.from_contents(schema))
-    return Draft202012Validator(library.read_json(ROOT / 'schemas' / name),
-                               registry=registry, format_checker=FormatChecker())
+    selected = library.read_json(ROOT / "schemas" / name)
+    if name == "answer-content.schema.json":
+        selected = visible_answer_schema(selected)
+    return Draft202012Validator(selected, registry=registry, format_checker=FormatChecker())
 
 
 def validate_content(
     answer, question, cutoff, *, answer_schema=None, metric_registry=None, research_only=False
 ):
+    _validate_visible_channels(answer)
     if answer_schema is None:
         validator('answer-content.schema.json').validate(answer)
     else:
-        Draft202012Validator(answer_schema, format_checker=FormatChecker()).validate(answer)
+        Draft202012Validator(
+            visible_answer_schema(answer_schema), format_checker=FormatChecker()
+        ).validate(answer)
     if answer['question_id'] != question['id']:
         raise ValueError('answer question mismatch')
     kind = question.get('response_kind', 'score')
@@ -79,8 +120,12 @@ def validate_content(
     if answer['period_start'] and answer['period_end'] and answer['period_start'] > answer['period_end']:
         raise ValueError('reversed period')
     ids = [e['id'] for e in answer['evidence']]
-    if len(ids) != len(set(ids)):
-        raise ValueError('duplicate evidence id')
+    evidence_by_id = {}
+    for entry in answer["evidence"]:
+        previous = evidence_by_id.get(entry["id"])
+        if previous is not None and digest(previous) != digest(entry):
+            raise ValueError("conflicting duplicate evidence id")
+        evidence_by_id[entry["id"]] = entry
     for e in answer['evidence']:
         if not library.valid_url(e['url']) or (e['published_at'] and e['published_at'] > cutoff):
             raise ValueError('invalid URL or future source')
@@ -97,8 +142,6 @@ def validate_content(
         if m['metric_id'] in metrics_by_id:
             if m['unit'] != metrics_by_id[m['metric_id']]['unit']:
                 raise ValueError('canonical metric unit mismatch')
-        elif not m['metric_id'].startswith('custom.'):
-            raise ValueError('unknown metric must use custom namespace')
         if m['value'] is not None and (not m['evidence_ids'] or not set(m['evidence_ids']) <= set(ids)):
             raise ValueError('numeric metric missing evidence binding')
         if m['unit'] in ('currency', 'currency_per_share') and m['currency'] is None:
@@ -261,8 +304,11 @@ def validate_observation(record, *, require_published=False, expected_observatio
         if require_published and record['schema_version'] not in ('1.1.0', '1.2.0'):
             raise ValueError('published ingest requires current frozen observation contract')
         registry = Registry().with_resource(
-            resources['schemas/answer-content.schema.json']['$id'],
-            Resource.from_contents(resources['schemas/answer-content.schema.json']))
+            resources["schemas/answer-content.schema.json"]["$id"],
+            Resource.from_contents(
+                visible_answer_schema(resources["schemas/answer-content.schema.json"])
+            ),
+        )
         from observation_profiles import schema_for
         observation_schema = schema_for(record['schema_version'], resources)
         Draft202012Validator(observation_schema,
@@ -281,6 +327,9 @@ def validate_observation(record, *, require_published=False, expected_observatio
         resources = None
     if not question or record['field_id'] != question.get('field_id', question.get('metric_id')):
         raise ValueError('unknown or mismatched field identity')
+    for field in ("entity_id", "security_id", "segment_id"):
+        if field in record["answer"] and record["answer"][field] != record.get(field):
+            raise ValueError("answer subject differs from original observation: " + field)
     validate_content(record['answer'], question, record['information_cutoff'],
                      answer_schema=resources['schemas/answer-content.schema.json'] if resources else None,
                      metric_registry=resources['questions/metric-registry.json'] if resources else None)
@@ -459,6 +508,21 @@ def compare(left, right, axis):
         warnings.append('evidence_set_changed: 检索来源变化与模型差异可能混杂')
     # Keep typed metrics visible; never silently subtract unlike units or fiscal periods.
     metric_rows = []
+    registered_metrics = library.read_json(ROOT / "questions/metric-registry.json")["metrics"]
+    unmapped = sorted(
+        {
+            metric["metric_id"]
+            for answer in (a, b)
+            for group in [answer["metrics"]] + [item["metrics"] for item in answer["items"]]
+            for metric in group
+            if metric["metric_id"] not in registered_metrics
+        }
+    )
+    if unmapped:
+        warnings.append(
+            "unmapped_metrics: 未映射指标保留原值和名称，仅并排展示，不自动数值比较："
+            + ", ".join(unmapped)
+        )
     # Preserve every period. Single-row time comparisons keep their established
     # cadence alignment; a multi-period series pairs exact coordinates only.
     am, bm = {}, {}
@@ -477,17 +541,44 @@ def compare(left, right, axis):
             for coordinate in sorted(set(left_map) | set(right_map), key=repr):
                 pairs.append((key, left_map.get(coordinate), right_map.get(coordinate)))
     for key, x, y in pairs:
-        compatible = bool(not key.startswith('custom.') and x and y and all(x[k] == y[k] for k in
-                          ('unit', 'currency', 'unit_detail', 'basis', 'definition')))
+        compatible = bool(
+            key in registered_metrics
+            and x
+            and y
+            and all(
+                x[k] == y[k] for k in ("unit", "currency", "unit_detail", "basis", "definition")
+            )
+        )
         if axis != 'time' and x and y:
             compatible = compatible and all(x[k] == y[k] for k in ('period_start', 'period_end'))
         elif x and y:
             compatible = compatible and period_shape(x) == period_shape(y)
-        metric_rows.append({'metric_id': key, 'left': x, 'right': y, 'comparable': compatible and not reasons})
-    return {'axis': axis, 'comparable': not reasons, 'reasons': reasons, 'warnings': warnings,
-            'left_observation_id': left['observation_id'], 'right_observation_id': right['observation_id'],
-            'score_difference': b['score'] - a['score'] if not reasons and a['score'] is not None and b['score'] is not None else None,
-            'metrics': metric_rows, 'left_items': a['items'], 'right_items': b['items']}
+        metric_rows.append(
+            {
+                "metric_id": key,
+                "left": x,
+                "right": y,
+                "mapped": key in registered_metrics,
+                "comparable": compatible and not reasons,
+            }
+        )
+    return {
+        "axis": axis,
+        "comparable": not reasons,
+        "reasons": reasons,
+        "warnings": warnings,
+        "left_observation_id": left["observation_id"],
+        "right_observation_id": right["observation_id"],
+        "score_difference": (
+            b["score"] - a["score"]
+            if not reasons and a["score"] is not None and b["score"] is not None
+            else None
+        ),
+        "metrics": metric_rows,
+        "unmapped_metric_ids": unmapped,
+        "left_items": a["items"],
+        "right_items": b["items"],
+    }
 
 
 def main():

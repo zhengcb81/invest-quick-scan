@@ -128,14 +128,72 @@ def test_new_scan_settings_do_not_change_the_sealed_delivery_destination():
     del config['prepare']['recovery_work_decision_refs']
     assert delivery_deployment_fingerprint(config)==first
     assert before['prepare']['recovery_work_decision_refs']
-    for key in ('workspace_root','stockwiki_root','stockqa_root'):
+    for key in ('workspace_root',):
         changed=copy.deepcopy(config);changed[key]+='-different'
         assert delivery_deployment_fingerprint(changed)!=first
     changed=copy.deepcopy(config)
     changed.update(model_policy_path='model-B',runtime_dir='runtime-B',workspace_label='renamed',
+                   stockwiki_root='different-wiki-code',stockqa_root='different-qa-code',
+                   stockwiki_python='different-wiki-python',stockqa_python='different-qa-python',iqs_release_root='different-code',
                    batch={'max_concurrency':3},timeout_seconds=120)
     changed['prepare'].update(pack_size=4,thinking=True,shared_company_config='shared-B')
     assert delivery_deployment_fingerprint(changed)==first
+
+
+@pytest.mark.parametrize('actual_store,has_original_binding,expected', [
+    ('owner-A', True, 'completed'), ('owner-B', True, 'delivery_receiver_changed'),
+    ('owner-A', False, 'delivery_original_target_unavailable')])
+def test_opaque_stable_job_uses_original_native_receiver_data_not_interpreter_hash(
+        tmp_path, actual_store, has_original_binding, expected):
+    """Native reader ports are explicit unit doubles, never owner qualifications."""
+    from scripts.dashboard_delivery_jobs import STABLE_DEPLOYMENT_PROFILE, delivery_deployment_fingerprint
+    original_receiver = {'component':'StockWiki','namespace':'quick_scan','store_id':'owner-A'}
+    class Native(Execution):
+        def delivery_receivers(self, bundle_id):
+            return {'consumers': [{'work_item_id':'WORK_ORIGINAL','consumer':original_receiver if has_original_binding else None}]}
+    execution = Native()
+    old = DeliveryJobs(execution, tmp_path, 'a'*64, lambda _:{'status':'partial'}, lambda _:None,
+                       fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
+    job_id = old.submit({'bundle_id':'A'})['job']['job_id']
+    settled(old,job_id)
+    calls=[]
+    current = DeliveryJobs(execution, tmp_path,
+        delivery_deployment_fingerprint({'workspace_root':'same-data','stockwiki_python':'new-interpreter'}),
+        lambda selected:calls.append(selected) or {'status':'delivered'}, lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,
+        receiver_status=lambda:{'available':True,'store_id':actual_store})
+    current.control(job_id,'resume')
+    result=settled(current,job_id)
+    if expected == 'completed':
+        assert result['state']=='completed' and calls==['A']
+        assert result['receiver']==original_receiver
+    else:
+        assert result['state']=='partial' and calls==[]
+        assert result['entries'][0]['error_code']==expected
+
+
+def test_receiver_status_is_read_in_worker_and_replaced_database_cannot_receive(tmp_path):
+    from scripts.dashboard_delivery_jobs import STABLE_DEPLOYMENT_PROFILE
+    entered, release = threading.Event(), threading.Event()
+    calls=[]
+    def receiver():
+        entered.set();assert release.wait(5)
+        return {'available':True,'store_id':'owner-A'}
+    jobs=DeliveryJobs(Execution(),tmp_path,'b'*64,lambda selected:calls.append(selected) or {'status':'partial'},
+        lambda _:None,fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,receiver_status=receiver)
+    result=jobs.submit({'bundle_id':'A'})
+    try:
+        assert entered.wait(2) and calls==[]
+        assert jobs.get(result['job']['job_id'])['state']=='running'
+    finally:release.set()
+    first=settled(jobs,result['job']['job_id'])
+    assert first['receiver']['store_id']=='owner-A'
+    replacement=DeliveryJobs(jobs.execution,tmp_path,'b'*64,lambda _:pytest.fail('foreign receiver import'),lambda _:None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,
+        receiver_status=lambda:{'available':True,'store_id':'owner-B'})
+    replacement.control(first['job_id'],'resume')
+    last=settled(replacement,first['job_id'])
+    assert last['state']=='partial' and last['entries'][0]['error_code']=='delivery_receiver_changed'
 
 
 def test_pending_delivery_survives_new_model_settings_but_not_a_new_receiver(tmp_path):
@@ -178,7 +236,12 @@ def test_old_delivery_digest_remains_usable_only_with_its_actual_matching_config
         lambda _:pytest.fail('opaque legacy digest cannot attest the changed configuration'),lambda _:None,
         fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,
         deployment_fingerprints={profile:delivery_deployment_fingerprint(changed,profile=profile)})
-    with pytest.raises(DeliveryJobError):incompatible.get(jid)
+    history = incompatible.get(jid)
+    assert history['state'] == 'historical_read_only' and history['persisted_state'] == 'partial'
+    assert history['allowed_actions'] == [] and history['current_target_verified'] is False
+    with pytest.raises(DeliveryJobError) as caught:
+        incompatible.control(jid, 'resume')
+    assert caught.value.code == 'delivery_original_target_unavailable'
     assert old._path(jid).read_bytes()==before
 
 
@@ -225,7 +288,8 @@ def test_unfinished_foreign_deployment_is_blocked_and_bad_record_does_not_hide_g
     old=DeliveryJobs(execution,tmp_path,'e'*64,lambda _:{'status':'partial'},lambda _:None)
     jid=old.submit({'bundle_id':'A'})['job']['job_id'];settled(old,jid)
     current=DeliveryJobs(execution,tmp_path,'f'*64,lambda _:pytest.fail('no import'),lambda _:None)
-    with pytest.raises(DeliveryJobError):current.get(jid)
+    history = current.get(jid)
+    assert history['state'] == 'historical_read_only' and history['persisted_state'] == 'partial'
     assert current.active() is True
     with pytest.raises(DeliveryJobError):current.control(jid,'resume')
     good=DeliveryJobs(execution,tmp_path,'f'*64,lambda _:{'status':'delivered'},lambda _:None)
@@ -234,7 +298,8 @@ def test_unfinished_foreign_deployment_is_blocked_and_bad_record_does_not_hide_g
     page=current.list()
     assert next(row for row in page['jobs'] if row['job_id']==good_id)['state']=='completed'
     errors=[row for row in page['jobs'] if row.get('reference_error')]
-    assert len(errors)==2 and all(row['allowed_actions']==[] for row in errors)
+    assert len(errors)==1 and all(row['allowed_actions']==[] for row in errors)
+    assert next(row for row in page['jobs'] if row['job_id'] == jid)['state'] == 'historical_read_only'
     assert current.active() is True
 
 

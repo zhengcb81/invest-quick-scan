@@ -184,11 +184,12 @@ def test_finished_process_allows_setup_and_unknown_process_blocks_even_on_first_
 
 
 @pytest.mark.parametrize('mapping', [False, True])
-def test_import_reconciles_exact_receipt_and_declares_missing_mapping(tmp_path, mapping):
+@pytest.mark.parametrize('can_apply', [True, False])
+def test_import_reconciles_exact_receipt_and_declares_missing_mapping(tmp_path, mapping, can_apply):
     events=[]
     class ImportOwner(Owner):
         def status(self): return {'available':True,'store_id':'independent-owner-store'}
-        def import_preview(self, body): return {'can_apply':True,'preview_token':'bound-preview'}
+        def import_preview(self, body): return {'can_apply':can_apply,'preview_token':'bound-preview'}
         def import_apply(self, body):
             events.append('import')
             return {'status':'rejected_or_conflict','receipt':{'acks':[{'status':'rejected'}]}}

@@ -100,11 +100,12 @@ def test_original_callback_preserves_valid_answer_and_frozen_inputs(original):
 
 
 @pytest.mark.parametrize("field", ["answer_schema_sha256", "metric_registry_sha256"])
-def test_missing_original_resource_version_refused(original, field):
-    task, _, _, context = original
+def test_resource_digest_is_provenance_not_whole_answer_permission(original, field):
+    task, qid, body, context = original
     context[field] = "0" * 64
-    with pytest.raises(engine.SharedEngineRejected, match="frozen.*resource"):
-        engine._frozen_answer_semantics(task, context)
+    callback = engine._frozen_answer_semantics(task, context)
+    callback(body, qid)
+    assert context[field] == "0" * 64
 
 
 def test_company_callback_cannot_rewrite_original_answer(original):

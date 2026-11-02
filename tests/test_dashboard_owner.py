@@ -327,6 +327,44 @@ def test_bundle_import_uses_original_ack_and_idempotent_replay(owner):
     assert gateway.import_preview({"bundle_id": "TEST_BUNDLE"})["replay"] is True
 
 
+def test_import_does_not_require_a_precreated_repository_scratch_directory(owner, tmp_path):
+    gateway, _, _ = owner
+    absent = tmp_path/'not-precreated-scratch'
+    gateway.config['scratch_root'] = str(absent)
+    preview = gateway.import_preview({'bundle_id': 'TEST_BUNDLE'})
+    assert preview['can_apply'] is True
+    result = gateway.import_apply({'bundle_id': 'TEST_BUNDLE', 'preview_token': preview['preview_token']})
+    assert result['receipt']['summary'] == {'accepted': 1}
+    assert not absent.exists()
+
+
+def test_mixed_item_import_preserves_native_partial_ack_and_replay(owner, tmp_path):
+    gateway, workspace, bundle = owner
+    script = r'''
+import json,sys
+from pathlib import Path
+sys.path[:0]=[sys.argv[1],str(Path(sys.argv[1])/'tests')]
+from test_quick_scan_observations import _observation,_package
+from test_quick_scan_profiles import E01
+package=_package([
+ _observation('mixed_good',entity_id=E01,request_id='MIX_GOOD',attempt_id='MIX_GOOD_ATT'),
+ _observation('mixed_missing_entity',entity_id='ENT_33333333-3333-4333-8333-333333333333',request_id='MIX_BAD',attempt_id='MIX_BAD_ATT')])
+Path(sys.argv[2]).write_text(json.dumps(package),encoding='utf8')
+'''
+    done = subprocess.run([sys.executable, '-B', '-c', script, str(STOCKWIKI), str(bundle/'package.json')],
+                          cwd=tmp_path, capture_output=True, text=True, encoding='utf8', timeout=30, env=_env())
+    assert done.returncode == 0, done.stderr
+    preview = gateway.import_preview({'bundle_id': 'TEST_BUNDLE'})
+    assert preview['can_apply'] is False
+    assert {item['status'] for item in preview['items']} == {'accepted', 'rejected'}
+    result = gateway.import_apply({'bundle_id': 'TEST_BUNDLE', 'preview_token': preview['preview_token']})
+    assert result['receipt']['summary'] == {'accepted': 1, 'rejected': 1}
+    assert {ack['status'] for ack in result['receipt']['acks']} == {'accepted', 'rejected'}
+    before = _tree(workspace)
+    replay = gateway.import_apply({'bundle_id': 'TEST_BUNDLE', 'preview_token': preview['preview_token']})
+    assert replay['receipt'] == result['receipt'] and _tree(workspace) == before
+
+
 def test_bundle_preview_token_binds_bytes_and_browser_paths_are_rejected(owner):
     gateway, workspace, bundle = owner
     initial = gateway.import_preview({"bundle_id": "TEST_BUNDLE"})

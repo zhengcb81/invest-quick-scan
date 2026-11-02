@@ -41,7 +41,7 @@ class MapperOnlyServices(OwnerResearchServices):
             get_result_delivery=lambda w: {"state": "ready"} if w in self.checkpoints and not getattr(self, "delivery_pending", False) else None,
             get_external_context_use=lambda a: {"proof": {"use_id": "tampered"}} if self.proof_bad else None,
         )
-    def _assert_registered_inputs(self):
+    def _assert_registered_inputs(self, *, check_current=True):
         pass
     def _response(self, attempt_id):
         q = attempt_id.removeprefix("ATTEMPT_")

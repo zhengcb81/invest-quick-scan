@@ -128,6 +128,10 @@ def _original(row,*,validator=None):
         obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
         module_contract.canonical_bytes(obs)
         (ORIGINAL_VALIDATOR if validator is None else validator).validate(obs)
+        standard_answers._validate_visible_channels(obs["answer"])
+        for field in ("entity_id", "security_id", "segment_id"):
+            if field in obs["answer"] and obs["answer"][field] != obs.get(field):
+                raise ValueError("query_original_answer_subject_mismatch")
         if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
             raise ValueError('query_original_reference_mismatch')
         if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):

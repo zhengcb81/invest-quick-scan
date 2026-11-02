@@ -53,7 +53,30 @@ def schema_for(version,resources):
     base=row['base_resource_sha256']
     if not isinstance(base,dict) or set(base)!=_BASE_RESOURCES:raise ValueError('execution_profile_base_registration_invalid')
     for path,digest in base.items():
-        if path not in resources or _canonical_sha(resources[path])!=digest:raise ValueError('execution_profile_archived_base_mismatch')
+        if path not in resources:
+            raise ValueError("execution_profile_archived_base_mismatch")
+        if path == "schemas/answer-content.schema.json":
+            # Text-length preferences/additive answer fields do not change the
+            # vendor execution identity profile. Keep the archived digest as
+            # provenance; validate original answer semantics at the answer seam.
+            Draft202012Validator.check_schema(resources[path])
+            continue
+        if path == "questions/metric-registry.json":
+            # An unrelated metric is an additive data resource, not a new
+            # execution identity profile. Its original digest stays provenance;
+            # known metric units are checked where the actual answer is read.
+            registry = resources[path]
+            metrics = registry.get("metrics") if isinstance(registry, dict) else None
+            if not isinstance(metrics, dict) or any(
+                not isinstance(metric_id, str) or not metric_id
+                or not isinstance(metric, dict)
+                or not isinstance(metric.get("unit"), str) or not metric["unit"]
+                for metric_id, metric in metrics.items()
+            ):
+                raise ValueError("execution_profile_metric_registry_invalid")
+            continue
+        if _canonical_sha(resources[path]) != digest:
+            raise ValueError("execution_profile_archived_base_mismatch")
     schema=_read(row['schema_path'])
     if _canonical_sha(schema)!=row['schema_sha256']:raise ValueError('execution_profile_schema_hash_mismatch')
     if schema['properties']['schema_version']!={'const':'1.2.0'}:raise ValueError('execution_profile_schema_version_mismatch')

@@ -23,6 +23,12 @@ def put(path, value):
     return str(path)
 
 
+def work_rows(bundle, rows):
+    """Mutable ledger port in the typed fake owner, separate from frozen input."""
+    admission = json.loads(Path(bundle['admission_config']).read_text())
+    put(Path(admission['work_store']), {'work_items': rows})
+
+
 @pytest.fixture
 def deployment(tmp_path):
     source, runtime, bundle_dir = (tmp_path / name for name in ("source", "runtime", "bundle"))
@@ -60,7 +66,7 @@ class LLMConfig:
     (source / "src/utils/quick_scan_refresh_admission.py").write_text('''
 import json, pathlib
 class RefreshAdmissionService:
- def __init__(self, path): self.path=pathlib.Path(path)
+ def __init__(self, path, *, recovery_only=False): self.path=pathlib.Path(path)
  def read_registered(self, confirmation_id, *, recovery_only=False):
   data=json.loads(self.path.read_text())
   if data.get("permission_error"):
@@ -70,11 +76,32 @@ class RefreshAdmissionService:
   assert confirmation_id == "rc2_" + "a"*64
   return {"confirmation":{"confirmation_id":confirmation_id}}, {}, {}
 ''', encoding="utf-8")
+    (source / "src/utils/quick_scan_refresh_inspect.py").write_text('''
+import json,pathlib
+class ReadOnlyWorkView:
+ def __init__(self,path):
+  request=json.loads((pathlib.Path(path).parent/'bundle/inspection_request.json').read_text())
+  rows=json.loads(pathlib.Path(path).read_text()).get('work_items',request.get('work_items',[]))
+  if isinstance(rows,dict): rows=[dict(row,question_id=qid) for qid,row in rows.items()]
+  self.rows={row.get('work_item_id',str(i)):dict(row,question_id=row.get('question_id',request['question_ids'][i]),work_item_id=row.get('work_item_id',str(i))) for i,row in enumerate(rows)}
+ def owner_refresh_projection(self,**kwargs):
+  return {row.get('question_id',str(i)):row for i,row in enumerate(self.rows.values())}
+ def get_item(self,work):
+  row=self.rows[work]
+  return {'entity_id':'ENT_TEST','scope':'entity','scope_id':'ENT_TEST','generation':1,**row}
+ def get_registered_refresh_action(self,confirmation_id):
+  if confirmation_id != 'rc2_'+'a'*64: return None
+  return {'receipt':{'confirmation_id':confirmation_id,'items':[
+   {key:row[key] for key in ('work_item_id','entity_id','question_id','scope','scope_id','generation')}
+   for row in (self.get_item(work) for work in self.rows)]},'inputs':{'references':[]}}
+''', encoding='utf8')
     llm = put(runtime / "llm_apis.json", {"providers": {"test": {"api_key": "never-return-this"}}, "quick_scan_model_policy": {"models": ["first", "second"]}})
     ledger, policy = put(tmp_path / "ledger.sqlite", {}), put(tmp_path / "policy.json", {})
     bundle = {"entity_id": "ENT_TEST", "company": "Test Corporation", "provider": "test", "confirmation_id": "rc2_" + "a"*64}
     for key in ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "spend_authorization", "inspection_request"):
         bundle[key] = put(bundle_dir / (key + ".json"), {"entity_id": "ENT_TEST"} if key in {"identity_snapshot", "inspection_request"} else {})
+    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'question_ids': ['Q1'],
+        'work_items': [{'question_id': 'Q1', 'work_item_id': 'original-work', 'status': 'pending'}]})
     bundle["admission_config"] = put(bundle_dir / "admission.json", {"work_store": ledger, "budget_policy_file": policy})
     config = {"stockqa_root": str(source), "stockqa_python": sys.executable, "runtime_dir": str(runtime),
               "state_root": str(tmp_path / "state"), "model_policy_path": llm, "bundles": {"test": bundle}}
@@ -141,7 +168,7 @@ def test_start_without_optional_preview_checks_current_owner_and_launches_once(d
 def test_read_only_inspection_needs_no_new_dispatch_permission_or_model_config(deployment, monkeypatch):
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
-    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'available': False,
+    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'available': False, 'question_ids': ['Q1'],
         'work_items': [{'status': 'pending', 'work_item_id': 'original-work'}]})
     admission = json.loads(Path(bundle['admission_config']).read_text())
     admission['permission_error'] = 'delegation_revoked'
@@ -194,7 +221,7 @@ def test_read_only_work_inspection_does_not_require_new_scan_inputs(deployment, 
     for field in ('provider', 'company', 'confirmation_id'):
         bundle.pop(field)
     (runtime/'llm_apis.json').unlink()
-    put(Path(bundle['inspection_request']), {'entity_id': request_entity,
+    put(Path(bundle['inspection_request']), {'entity_id': request_entity, 'question_ids': ['IQS_11'],
         'work_items': [{'question_id': 'IQS_11', 'status': 'delivered'}]})
     gateway = ExecutionGateway(config)
     monkeypatch.setattr(gateway, '_registered_permissions',
@@ -465,6 +492,8 @@ def native_progress_run(deployment, work_items):
     inspector.write_text(inspector.read_text().replace('[{"status":"pending"}]','request.get("work_items", [])'))
     request=json.loads(Path(bundle['inspection_request']).read_text())
     request['work_items']=work_items
+    request['question_ids'] = (list(work_items) if isinstance(work_items, dict) else
+        [row.get('question_id', f'Q{i}') for i, row in enumerate(work_items, 1)])
     put(Path(bundle['inspection_request']),request)
     record=json.loads(path.read_text());record['bundle_fingerprint']=gateway._fingerprint(bundle);put(path,record)
     return gateway,run_id,path
@@ -481,7 +510,7 @@ def test_native_keyed_work_progress_is_visible_while_lease_blocks_dispatch(deplo
     assert task['owner_preview']['can_start'] is False
     assert task['status_counts']=={'result_ready':8,'leased':4,'pending':21}
     assert task['counts']==task['status_counts']
-    assert task['status_counts_source']=='stockqa.refresh_inspection/1.0.0'
+    assert task['status_counts_source']=='stockqa.read_only_work_projection/1.0.0'
     assert task['status_counts_is_cached_projection'] is False
     assert task['inspection_observed_at']==task['status_counts_observed_at']
     assert '原scope' in task['progress_label'] and '已保存8' in task['progress_label'] and '在途4' in task['progress_label']
@@ -601,6 +630,8 @@ def test_retire_refuses_unknown_original_work_even_if_pid_absent(deployment, mon
     gateway, run_id, path = retirement_pending_run(deployment)
     inspector = Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
     inspector.write_text(inspector.read_text().replace('"status":"pending"',f'"status":"{state}"'))
+    scope = Path(deployment[2]['inspection_request'])
+    put(scope, {**json.loads(scope.read_text()), 'work_items': [{'question_id': 'Q1', 'status': state}]})
     monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
     before=path.read_bytes()
     assert 'retire' not in gateway.tasks()['tasks'][0]['allowed_actions']
@@ -627,19 +658,20 @@ def test_retire_never_uses_readonly_checkpoint_shortcut_to_bypass_os_unknown(dep
     assert path.read_bytes()==before and not (runtime/'calls.txt').exists()
 
 
-@pytest.mark.parametrize('fault',['owned_child','bundle_changed','incomplete_scope'])
+@pytest.mark.parametrize('fault',['owned_child','incomplete_scope'])
 def test_retire_never_overrides_original_process_inputs_or_scope(deployment,monkeypatch,fault):
     config,runtime,bundle=deployment
     gateway,run_id,path=retirement_pending_run(deployment)
     if fault=='owned_child':gateway._processes[run_id]=object()
-    elif fault=='bundle_changed':Path(bundle['questions']).write_text('changed')
     else:
         inspector=Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
         inspector.write_text(inspector.read_text().replace('"question_id":"Q1"','"question_id":"OTHER"'))
+        scope = Path(bundle['inspection_request'])
+        put(scope, {**json.loads(scope.read_text()), 'work_items': [{'question_id': 'OTHER', 'status': 'pending'}]})
     monkeypatch.setattr(gateway_module,'_probe_process',lambda _:'absent')
     before=path.read_bytes()
     with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
-    assert error.value.code=={'owned_child':'company_still_draining','bundle_changed':'bundle_changed','incomplete_scope':'retirement_work_unknown'}[fault]
+    assert error.value.code=={'owned_child':'company_still_draining','incomplete_scope':'original_delivery_export_rejected'}[fault]
     assert path.read_bytes()==before and not (runtime/'calls.txt').exists()
 
 
@@ -662,23 +694,42 @@ def test_retire_rechecks_original_work_after_cached_offer(deployment,monkeypatch
     assert 'retire' in gateway.tasks()['tasks'][0]['allowed_actions']
     inspector=Path(config['stockqa_root'])/'src/utils/quick_scan_refresh_inspect_cli.py'
     inspector.write_text(inspector.read_text().replace('"status":"pending"','"status":"leased"'))
+    scope = Path(deployment[2]['inspection_request'])
+    put(scope, {**json.loads(scope.read_text()), 'work_items': [{'question_id': 'Q1', 'status': 'leased'}]})
     before=path.read_bytes()
     with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
     assert error.value.code=='retirement_work_unknown'
     assert path.read_bytes()==before and not(runtime/'calls.txt').exists()
 
 
-def test_retire_rechecks_fingerprint_after_native_inspection(deployment,monkeypatch):
+def test_local_retire_ignores_new_scan_content_after_native_inspection(deployment,monkeypatch):
     _,runtime,bundle=deployment
     gateway,run_id,path=retirement_pending_run(deployment)
     def stopped(record,readonly):
         Path(bundle['questions']).write_text('changed while reading original state')
         return 'absent'
     monkeypatch.setattr(gateway_module,'_process_recovery_evidence',stopped)
-    before=path.read_bytes()
-    with pytest.raises(DashboardExecutionError) as error:gateway.control(run_id,'retire')
-    assert error.value.code=='bundle_changed'
-    assert path.read_bytes()==before and not(runtime/'calls.txt').exists()
+    result = gateway.control(run_id, 'retire')
+    assert result['run']['launcher_state'] == 'retired'
+    assert not (runtime/'calls.txt').exists()
+
+
+def test_work_display_and_local_retire_ignore_current_send_policy(deployment, monkeypatch):
+    gateway, run_id, path = retirement_pending_run(deployment)
+    _, runtime, bundle = deployment
+    bundle.update(work_lease_seconds=-1, pack_size=-1, search_policy=str(runtime/'missing-search.json'))
+    admission = json.loads(Path(bundle['admission_config']).read_text())
+    ledger = Path(admission['work_store'])
+    before = ledger.read_bytes()
+    Path(admission['budget_policy_file']).unlink()
+    (runtime/'llm_apis.json').unlink()
+    monkeypatch.setattr(gateway_module, '_probe_process', lambda _: 'absent')
+    task = gateway.tasks(run_ids=[run_id])['tasks'][0]
+    assert task['status_counts'] == {'pending': 1}
+    assert task['owner_preview']['permissions_check']['status'] == 'not_checked'
+    result = gateway.control(run_id, 'retire')
+    assert result['run']['launcher_state'] == 'retired'
+    assert ledger.read_bytes() == before and not (runtime/'calls.txt').exists()
 
 
 def test_retire_cached_task_projection_does_not_spawn_another_inspector(deployment,monkeypatch):
@@ -702,8 +753,9 @@ def test_retired_reference_rejects_corrupt_local_proof_and_late_finish_cannot_un
     gateway._finish(LateProcess(),path,stale)
     assert path.read_bytes()==before
     record=json.loads(before);record['retirement']['process_evidence']='unknown';put(path,record)
-    with pytest.raises(DashboardExecutionError) as error:gateway.active_references()
-    assert error.value.code=='process_reference_corrupt'
+    view = gateway.active_references()
+    assert view['tasks'][0]['reference_error'] == 'process_reference_corrupt'
+    assert view['tasks'][0]['process_state'] == 'needs_original_inspection'
 
 
 def test_retire_product_api_unlocks_settings_only_after_explicit_safe_retirement(deployment,tmp_path,monkeypatch):
@@ -795,8 +847,9 @@ def test_orphaned_absent_pid_does_not_override_changed_bundle_or_original_owner(
         inspector.write_text(inspector.read_text().replace('request.get("available", True)', 'False'))
     else:
         inspector.write_text(inspector.read_text().replace('"status":"pending"', f'"status":"{change}"'))
+        work_rows(bundle, [{'question_id': 'Q1', 'status': change}])
     before = path.read_bytes()
-    assert 'resume' not in gateway.tasks()['tasks'][0]['allowed_actions']
+    assert ('resume' in gateway.tasks()['tasks'][0]['allowed_actions']) is (change in {'bundle','budget'})
     with pytest.raises(DashboardExecutionError) as raised:
         gateway.control(run_id, 'resume')
     assert raised.value.code == ('bundle_changed' if change == 'bundle' else 'resume_blocked')
@@ -804,12 +857,13 @@ def test_orphaned_absent_pid_does_not_override_changed_bundle_or_original_owner(
 
 
 def test_orphaned_readonly_recovery_remains_compatible_with_unknown_pid(deployment, monkeypatch):
-    config, runtime, _ = deployment
+    config, runtime, bundle = deployment
     gateway, run_id, _ = orphaned_pending_run(deployment, pid=None)
     monkeypatch.setattr(gateway_module, '_probe_process', lambda pid: 'unknown')
     inspector = Path(config['stockqa_root']) / 'src/utils/quick_scan_refresh_inspect_cli.py'
     inspector.write_text(inspector.read_text().replace('"status":"pending"', '"status":"result_ready"')
         .replace('request.get("available", True)', 'False'))
+    work_rows(bundle, [{'question_id': 'Q1', 'status': 'result_ready'}])
     assert 'resume' in gateway.tasks()['tasks'][0]['allowed_actions']
     assert gateway.control(run_id, 'resume')['process_started'] is True
     wait_done(gateway, run_id)
@@ -1089,12 +1143,14 @@ def test_pause_drains_company_then_resume_rechecks_original(deployment):
     source = Path(config["stockqa_root"]) / "src/utils/quick_scan_refresh_inspect_cli.py"
     original = source.read_text()
     source.write_text(original.replace('request.get("work_items", [])', '[{"status":"uncertain"}]'))
+    work_rows(bundle, [{'question_id': 'Q1', 'status': 'uncertain'}])
     assert "resume" not in gateway.tasks()["tasks"][0]["allowed_actions"]
     with pytest.raises(DashboardExecutionError) as raised:
         gateway.control(run_id, "resume")
     assert raised.value.code == "resume_blocked"
     assert len((runtime / "calls.txt").read_text().splitlines()) == 1
     source.write_text(original.replace('request.get("available", True)', 'False').replace('request.get("work_items", [])', '[{"status":"result_ready"}]'))
+    work_rows(bundle, [{'question_id': 'Q1', 'status': 'result_ready'}])
     assert "resume" in gateway.tasks()["tasks"][0]["allowed_actions"]
     assert gateway.control(run_id, "resume")["state"] == "running"
     wait_done(gateway, run_id)
@@ -1102,7 +1158,7 @@ def test_pause_drains_company_then_resume_rechecks_original(deployment):
 
 
 def test_known_failed_process_pauses_without_resend_and_resume_requires_original_safety(deployment):
-    config, runtime, _ = deployment
+    config, runtime, bundle = deployment
     child = Path(config['stockqa_root']) / 'main_with_llm.py'
     child.write_text(child.read_text(encoding='utf8') + '\nsys.exit(1)\n', encoding='utf8')
     gateway = ExecutionGateway(config)
@@ -1123,8 +1179,11 @@ def test_known_failed_process_pauses_without_resend_and_resume_requires_original
         original.replace('request.get("work_items", [])', '[{"status":"uncertain"}]'),
     ):
         inspector.write_text(blocked_source, encoding='utf8')
+        status = 'uncertain' if '[{"status":"uncertain"}]' in blocked_source else 'pending'
+        work_rows(bundle, [{'question_id': 'Q1', 'status': status}])
         before = state_path.read_bytes()
-        assert 'resume' not in gateway.tasks()['tasks'][0]['allowed_actions']
+        # This read-only button offers a fresh check; it is not a spending permit.
+        assert ('resume' in gateway.tasks()['tasks'][0]['allowed_actions']) is (status == 'pending')
         with pytest.raises(DashboardExecutionError) as raised:
             gateway.control(run_id, 'resume')
         assert raised.value.code == 'resume_blocked'
@@ -1132,6 +1191,7 @@ def test_known_failed_process_pauses_without_resend_and_resume_requires_original
         assert (runtime / 'calls.txt').read_text().splitlines() == ['1']
 
     inspector.write_text(original, encoding='utf8')
+    work_rows(bundle, [{'question_id': 'Q1', 'status': 'pending'}])
     assert gateway.control(run_id, 'resume')['process_started'] is True
     wait_done(gateway, run_id)
     assert (runtime / 'calls.txt').read_text().splitlines() == ['1', '1']
@@ -1251,12 +1311,92 @@ def test_corrupt_launch_reference_cannot_turn_into_new_start(deployment):
     config, runtime, _ = deployment
     state = Path(config["state_root"])
     state.mkdir()
-    (state / ("run-" + "a"*32 + ".json")).write_text("{broken")
+    (state / ("run-" + "a"*32 + ".json")).write_text(json.dumps({'bundle_id': 'test', 'broken': True}))
     gateway = ExecutionGateway(config)
     with pytest.raises(DashboardExecutionError) as raised:
         start(gateway)
     assert raised.value.code == "process_reference_corrupt"
     assert not (runtime / "calls.txt").exists()
+
+
+def test_unrelated_unreadable_reference_is_local_warning_not_global_outage(deployment):
+    config, runtime, _ = deployment
+    state = Path(config['state_root'])
+    state.mkdir()
+    corrupt = state / ('run-' + 'a'*32 + '.json')
+    corrupt.write_text('{broken', encoding='utf8')
+    gateway = ExecutionGateway(config)
+    before = corrupt.read_bytes()
+    view = gateway.tasks(inspect_owner=False)
+    assert view['tasks'][0]['reference_error'] == 'process_reference_corrupt'
+    assert view['tasks'][0]['work_completion_authoritative'] is False
+    with pytest.raises(DashboardExecutionError) as caught:
+        gateway.control(corrupt.stem, 'resume')
+    assert caught.value.code == 'process_reference_corrupt'
+    # This is a fresh original owner preview/claim, not permission from skipping
+    # the damaged local reference. The native ledger still owns send fencing.
+    result = gateway.start({'bundle_id': 'test'})
+    wait_done(gateway, result['run']['run_id'])
+    assert corrupt.read_bytes() == before
+    assert len(gateway.tasks(inspect_owner=False)['tasks']) == 2
+
+
+def test_paid_seal_uses_original_locator_after_switching_future_config(deployment):
+    config, runtime, bundle = deployment
+    original = put(runtime/'original-shared.json', {'original_state': 'only locator'})
+    bundle['shared_company_config'] = original
+    gateway = ExecutionGateway(config)
+    started = gateway.start({'bundle_id': 'test'})
+    run_id = started['run']['run_id']
+    wait_done(gateway, run_id)
+    bundle.update(shared_company_config=str(runtime/'different-future-shared.json'),
+                  pack_size=-1, max_output_tokens=-1, thinking='invalid-new-setting')
+    bundle['admission_config'] = str(runtime/'different-future-admission.json')
+    bundle['inspection_request'] = str(runtime/'different-future-request.json')
+    result = gateway.control(run_id, 'seal')
+    assert result['paid_dispatch_started'] is False
+    wait_done(gateway, run_id)
+    record = json.loads((gateway.state_root/(run_id+'.json')).read_text(encoding='utf8'))
+    command = json.loads(Path(record['result_path']).read_text(encoding='utf8'))['argv']
+    assert command[command.index('--shared-company-config')+1] == original
+    assert command[command.index('--refresh-admission-config')+1] == started['run']['recovery_inputs']['admission_config']
+    assert '--question-pack-size' not in command and '--max-output-tokens' not in command
+    assert '--thinking-enabled' not in command
+
+
+@pytest.mark.parametrize('legacy_entry', [False, True])
+def test_pending_native_delivery_ignores_future_scan_controls_but_keeps_original_scope(deployment, legacy_entry):
+    from scripts.dashboard_delivery_jobs import DeliveryJobs, STABLE_DEPLOYMENT_PROFILE
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    original_full = gateway.bundle_registration('test')
+    calls = []
+    jobs = DeliveryJobs(gateway, runtime/'deliveries', 'a'*64,
+        lambda selected: calls.append(selected) or {'status': 'partial'}, lambda _: None,
+        fingerprint_profile=STABLE_DEPLOYMENT_PROFILE)
+    job_id = jobs.submit({'bundle_id': 'test'})['job']['job_id']
+    deadline = time.monotonic() + 5
+    while jobs._threads and time.monotonic() < deadline: time.sleep(.01)
+    assert jobs.get(job_id)['state'] == 'partial'
+    if legacy_entry:
+        value = json.loads(jobs._path(job_id).read_text(encoding='utf8'))
+        value['entries'][0].pop('delivery_scope', None)
+        value['entries'][0]['bundle_fingerprint'] = original_full['bundle_fingerprint']
+        jobs._write(jobs._path(job_id), value)
+    bundle.update(work_lease_seconds=-1, pack_size=-1, shared_company_config='future-shared.json')
+    admission = json.loads(Path(bundle['admission_config']).read_text())
+    Path(admission['budget_policy_file']).unlink()
+    jobs.control(job_id, 'resume')
+    deadline = time.monotonic() + 5
+    while jobs._threads and time.monotonic() < deadline: time.sleep(.01)
+    assert jobs.get(job_id)['state'] == 'partial' and calls == ['test', 'test']
+    if not legacy_entry:
+        changed = runtime/'different-ledger.sqlite'
+        changed.write_bytes(b'different temporary source')
+        put(Path(bundle['admission_config']), {**admission, 'work_store': str(changed)})
+        with pytest.raises(Exception, match='范围已变'):
+            jobs.control(job_id, 'resume')
+        assert calls == ['test', 'test']
 
 
 def test_process_log_is_redacted_and_visible_while_child_is_still_running(tmp_path, monkeypatch):
@@ -1403,18 +1543,65 @@ def test_shared_seal_keeps_original_scope_and_passes_frozen_replay_inputs(deploy
     assert command[command.index('--shared-company-config')+1] == bundle['shared_company_config']
     assert '--seal-deliveries' in command and '--recover-checkpoints' in command
     assert '--spend-authorization' not in command
-    assert command[command.index('--max-output-tokens')+1] == '16384'
+    assert '--max-output-tokens' not in command and '--thinking-enabled' not in command
+
+
+def test_paid_seal_ignores_later_new_send_settings_and_missing_budget(deployment):
+    gateway, run_id, path = sealable_reference(deployment)
+    _, runtime, bundle = deployment
+    # The original run/fingerprint stays unchanged; only future-send settings change.
+    original_record = json.loads(path.read_text())
+    bundle.update(pack_size=19, max_output_tokens=32000, thinking=True,
+                  work_lease_seconds=7200, shared_company_config=str(runtime/'future-shared.json'),
+                  search_policy=str(runtime/'future-search.json'))
+    put(Path(bundle['spend_authorization']), {'future_grant': True})
+    admission = json.loads(Path(bundle['admission_config']).read_text())
+    Path(admission['budget_policy_file']).unlink()
+    result = gateway.control(run_id, 'seal')
+    assert result['paid_dispatch_started'] is False
+    wait_done(gateway, run_id)
+    command = json.loads(Path(json.loads(path.read_text())['result_path']).read_text())['argv']
+    assert '--seal-deliveries' in command and '--spend-authorization' not in command
+    assert json.loads(path.read_text())['bundle_fingerprint'] == original_record['bundle_fingerprint']
+
+
+def test_successful_partial_paid_recovery_keeps_original_scan_resumable(deployment):
+    gateway, run_id, path = sealable_reference(deployment, statuses=('result_ready', 'pending'))
+    record = json.loads(path.read_text())
+    record.update(operation='seal', process_state='running', launcher_state='running')
+    put(path, record)
+    result = Path(record['result_path'])
+    put(result.with_suffix(result.suffix+'.scope.json'), {
+        'recovery_mode': 'received_original_response', 'status': 'partial',
+        'saved_question_ids': ['Q1'], 'remaining_question_ids': ['Q2'],
+        'original_question_count': 2, 'restored_question_count': 1, 'API_requests': 0,
+        'dispatch_started': False})
+    class Finished:
+        stdout = []
+        def wait(self): return 0
+    gateway._finish(Finished(), path, record)
+    stored = json.loads(path.read_text(encoding='utf8'))
+    assert stored['process_state'] == 'process_exited' and stored['exit_code'] == 0
+    assert stored['launcher_state'] == 'paused' and stored['work_completion_authoritative'] is False
+    assert '恢复完成但扫描部分未完成' in stored['completion_notice']
+    assert '1 / 2' in stored['completion_notice'] and '待问1' in stored['completion_notice']
+    task = gateway.tasks(run_ids=[run_id])['tasks'][0]
+    assert task['status_counts'] == {'result_ready': 1, 'pending': 1}
+    assert 'resume' in task['allowed_actions'] and not (deployment[1]/'calls.txt').exists()
 
 
 @pytest.mark.parametrize('status',['uncertain','inflight','pending','unknown'])
 def test_seal_never_dispatches_for_active_or_unknown_original_work(deployment,monkeypatch,status):
     gateway,run_id,path=sealable_reference(deployment,statuses=(status,))
+    admission = json.loads(Path(deployment[2]['admission_config']).read_text())
+    admission['permission_error'] = 'paid_recovery_original_response_required'
+    put(Path(deployment[2]['admission_config']), admission)
     monkeypatch.setattr(gateway_module.subprocess,'Popen',
         (lambda original:lambda command,*a,**kw:pytest.fail('recovery must not launch') if str(Path(deployment[0]['stockqa_root'])/'main_with_llm.py') in command else original(command,*a,**kw))(gateway_module.subprocess.Popen))
     before=path.read_bytes()
     assert 'seal' not in gateway.tasks(run_ids=[run_id])['tasks'][0]['allowed_actions']
     with pytest.raises(DashboardExecutionError) as caught:gateway.control(run_id,'seal')
-    assert caught.value.code=='seal_work_unknown'
+    assert caught.value.code=='seal_permissions_blocked'
     assert path.read_bytes()==before
 
 
@@ -1427,7 +1614,12 @@ def test_seal_rechecks_stopped_process_registered_permission_and_exact_input(dep
         put(path,record)
         monkeypatch.setattr(gateway_module,'_probe_process',lambda pid:'unknown')
     elif fault=='active_process':gateway._processes[run_id]=object()
-    elif fault=='changed_input':Path(deployment[2]['manifest']).write_text('{"changed":true}')
+    elif fault=='changed_input':
+        Path(deployment[2]['manifest']).write_text('{"changed":true}')
+        # The native registered-input validator owns this refusal, not a hash
+        # over unrelated future-send UI settings.
+        native = Path(deployment[2]['admission_config'])
+        put(native, {**json.loads(native.read_text()), 'permission_error': 'refresh_admission_execution_input_changed'})
     else:
         config=json.loads(Path(deployment[2]['admission_config']).read_text())
         config['permission_error']='delegation_revoked'
@@ -1437,7 +1629,7 @@ def test_seal_rechecks_stopped_process_registered_permission_and_exact_input(dep
     before=path.read_bytes()
     with pytest.raises(DashboardExecutionError) as caught:gateway.control(run_id,'seal')
     assert caught.value.code=={'unknown_process':'original_process_unknown','active_process':'company_still_draining',
-        'changed_input':'bundle_changed','permission':'seal_permissions_blocked'}[fault]
+        'changed_input':'seal_permissions_blocked','permission':'seal_permissions_blocked'}[fault]
     assert path.read_bytes()==before
 
 
@@ -1487,5 +1679,5 @@ def test_unverified_leased_scope_cannot_enter_paid_capture_recovery(deployment, 
     bundle = deployment[2]
     monkeypatch.setattr(gateway, '_registered_permissions', lambda *a, **kw: {
         'status': 'passed', 'received_response_scope_verified': False})
-    with pytest.raises(DashboardExecutionError, match='原范围含'):
+    with pytest.raises(DashboardExecutionError, match='原登记范围'):
         gateway._seal_preflight(json.loads(path.read_text()), bundle)

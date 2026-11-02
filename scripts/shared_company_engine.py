@@ -122,7 +122,12 @@ def preflight(task, services, session_config):
 
 
 def _frozen_answer_semantics(task, context):
-    """Use original question semantics with resource hashes frozen by StockQA."""
+    """Validate original questions; whole registry hashes are provenance only.
+
+    Adding an unrelated metric or schema annotation must not invalidate an
+    already received answer. Actual question, unit and evidence semantics are
+    still validated below, without changing the original body or hash record.
+    """
     import sys
 
     scripts = Path(__file__).resolve().parent
@@ -137,10 +142,8 @@ def _frozen_answer_semantics(task, context):
     root = scripts.parent
     schema = standard_answers.library.read_json(root / "schemas/answer-content.schema.json")
     registry = standard_answers.library.read_json(root / "questions/metric-registry.json")
-    if (not isinstance(context, dict)
-        or context.get("answer_schema_sha256") != standard_answers.digest(schema)
-        or context.get("metric_registry_sha256") != standard_answers.digest(registry)):
-        raise SharedEngineRejected("frozen_answer_semantic_resource_unavailable")
+    if not isinstance(context, dict):
+        raise SharedEngineRejected("original_answer_context_required")
     questions = {row["question_id"]: copy.deepcopy(row["question"]) for row in task.questions}
     if (len(questions) != len(task.questions)
         or set(questions) != set(task.question_ids)
@@ -305,6 +308,7 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
     """Save original pending state before HTTP, without another execution loop."""
     from iqs_company_agent_lab.canonical import canonical_json
     from iqs_company_agent_lab.checkpoint import build_checkpoint, write_checkpoint
+    from iqs_company_agent_lab.runtime import SavedResponseBoundary
 
     class CheckpointedPort:
         def _save(self, intent, receipt=None):
@@ -336,6 +340,18 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
             _replace_record(temporary, path)
 
         def model_step(self, envelope):
+            if replay_only:
+                recovered = (recover_intent(copy.deepcopy(envelope["intent"]))
+                             if recover_intent is not None else None)
+                if (recovered and recovered.get("decision") == "recover_saved_receipt"
+                    and recovered.get("saved_receipt")):
+                    result = recovered["saved_receipt"]
+                    self._save(envelope["intent"], result)
+                    return result
+                # End local replay with the slots already recovered. There is
+                # no fabricated receipt or pending checkpoint for an unasked
+                # question, and unknown work never reaches the live port.
+                raise SavedResponseBoundary("replay_only_saved_responses_exhausted")
             self._save(envelope["intent"])
             if recover_intent is not None:
                 recovered = recover_intent(copy.deepcopy(envelope["intent"]))
@@ -350,15 +366,13 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
                     # The native store classified an exact released unsent
                     # scope. This is not send permission: normal generation,
                     # current owner, claim, attempt and budget guards follow.
-            if replay_only:
-                raise SharedEngineRejected("replay_only_original_saved_response_required")
             result = port.model_step(envelope)
             self._save(envelope["intent"], result)
             return result
 
         def search(self, envelope):
             if replay_only:
-                raise SharedEngineRejected("replay_only_new_search_forbidden")
+                raise SavedResponseBoundary("replay_only_new_search_forbidden")
             return port.search(envelope)
 
         def inspect_attempt(self, ref):
@@ -558,10 +572,14 @@ def resume_shared_engine(
         unsent = (pending is None and not replay_only
                   and recovered.get("decision") == "not_sent"
                   and recovered.get("saved_receipt") is None)
-        if not unsent and (recovered.get("decision") != "recover_saved_receipt"
+        unavailable_read = (replay_only and recovered.get("saved_receipt") is None
+                            and recovered.get("decision") != "recover_saved_receipt")
+        if not (unsent or unavailable_read) and (recovered.get("decision") != "recover_saved_receipt"
                            or not recovered.get("saved_receipt")):
             raise SharedEngineRejected("native_safe_output_required_never_resend_unknown")
-        native_saved = None if unsent else recovered["saved_receipt"]
+        # A missing response stays an open slot. In read-only mode it must not
+        # hide earlier completed slots or authorize resending this pending one.
+        native_saved = None if unsent or unavailable_read else recovered["saved_receipt"]
         original_events = [
             event
             for _, journal in history

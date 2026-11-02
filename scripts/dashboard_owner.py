@@ -452,24 +452,20 @@ def _owner_worker(config, operation, payload):
             raise DashboardOwnerError("preview_stale", "Refresh and review the registered bundle before importing", 409)
         # Subject-bound vendor validation uses only original IQS code. Validator
         # scratch belongs to an owned temporary root, never the owner workspace.
-        scratch = Path(config.get("scratch_root", Path(config["iqs_root"]) / "runs"))
-        if not scratch.is_dir():
-            raise DashboardOwnerError("owner_scratch_missing", "Configured validator scratch root is absent", 503)
-        with tempfile.TemporaryDirectory(prefix="iqs-dashboard-owner-", dir=scratch) as temporary:
+        with tempfile.TemporaryDirectory(prefix="iqs-dashboard-owner-") as temporary:
             from stockwiki.quick_scan_subject_authority import IqsSubjectContract
             from stockwiki.quick_scan_subject_dispatch import SubjectBoundObservationStore
             contract = IqsSubjectContract(Path(config["iqs_root"]), runs_dir=Path(temporary),
                                           release_root=Path(config.get("iqs_release_root", config["iqs_root"])))
             bound_store = SubjectBoundObservationStore(paths, contract=contract)
-            preview = bound_store.preview_import(package, frozen_release=release, identity_store=identity)
             if operation == "import_apply":
-                if not preview["can_apply"]:
-                    raise DashboardOwnerError("owner_import_preview_rejected", "Original owner refused this bundle", 409,
-                                              {"items": preview["items"], "store_id": preview["store_id"]})
+                # Native import owns package integrity and per-item decisions.
+                # A rejected neighbour must not discard another item's ACK.
                 receipt = import_package(bound_store, package, frozen_release=release, identity_store=identity)
                 accepted = all(ack["status"] in {"accepted", "already_present"} for ack in receipt["acks"])
                 return {"protocol": PROTOCOL, "status": "imported" if accepted else "rejected_or_conflict", "receipt": receipt,
                         "financial_accuracy_proven": False, "network_calls": 0, "llm_calls": 0}
+            preview = bound_store.preview_import(package, frozen_release=release, identity_store=identity)
             return {"protocol": PROTOCOL, "status": "preview", "bundle_id": bundle_id,
                     "package_id": package["package_id"], "items": preview["items"], "item_count": preview["item_count"],
                     "can_apply": preview["can_apply"], "owner_preview": preview,

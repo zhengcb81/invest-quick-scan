@@ -39,8 +39,7 @@ STABLE_DEPLOYMENT_PROFILE='iqs.delivery-deployment/1.2.0'
 def delivery_deployment_fingerprint(config, *, profile=STABLE_DEPLOYMENT_PROFILE):
     """Bind delivery to its owners and destination, not future scan settings."""
     if profile==STABLE_DEPLOYMENT_PROFILE:
-        frozen={key:config.get(key) for key in ('workspace_root','stockwiki_root','stockwiki_python',
-            'stockqa_root','stockqa_python','iqs_release_root','iqs_root')}
+        frozen={'workspace_root':config.get('workspace_root')}
     elif profile in {LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE}:
         frozen=copy.deepcopy({k:v for k,v in config.items() if k not in {'execution_bundles','import_bundles'}})
     else:
@@ -52,7 +51,7 @@ def delivery_deployment_fingerprint(config, *, profile=STABLE_DEPLOYMENT_PROFILE
 
 class DeliveryJobs:
     def __init__(self, execution, state_root, deployment_sha256, deliver_scope, resolve_batch,
-                 *, fingerprint_profile=LEGACY_DEPLOYMENT_PROFILE, deployment_fingerprints=None):
+                 *, fingerprint_profile=LEGACY_DEPLOYMENT_PROFILE, deployment_fingerprints=None, receiver_status=None):
         self.execution,self.state_root=execution,Path(state_root)
         self.deployment_sha256,self.deliver_scope,self.resolve_batch=deployment_sha256,deliver_scope,resolve_batch
         profiles={LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE,STABLE_DEPLOYMENT_PROFILE}
@@ -61,6 +60,58 @@ class DeliveryJobs:
         self.fingerprint_profile=fingerprint_profile
         self.deployment_fingerprints={**(deployment_fingerprints or {}),fingerprint_profile:deployment_sha256}
         self.session=uuid.uuid4().hex; self._threads={}
+        self.receiver_status = receiver_status
+
+    def _receiver(self):
+        if not callable(self.receiver_status):
+            raise DeliveryJobError('delivery_original_target_unavailable', '未配置原接收者只读status，不能猜测目标。')
+        status = self.receiver_status()
+        if not status.get('available') or not isinstance(status.get('store_id'), str) or not status['store_id']:
+            raise DeliveryJobError('delivery_receiver_unavailable', '原StockWiki接收者status缺少实际store_id。')
+        return {'component':'StockWiki','namespace':'quick_scan','store_id':status['store_id']}
+
+    def _receiver_recheck_available(self, record):
+        return (record.get('deployment_fingerprint_profile') == STABLE_DEPLOYMENT_PROFILE
+                and callable(self.receiver_status) and callable(getattr(self.execution, 'delivery_receivers', None)))
+
+    def _check_receiver(self, record):
+        """Native data identities only; never infer a receiver from code paths."""
+        if not callable(self.receiver_status):
+            return  # Historical integration ports retain their original target checks.
+        actual = self._receiver()
+        expected = record.get('receiver')
+        profile = record.get('deployment_fingerprint_profile', LEGACY_DEPLOYMENT_PROFILE)
+        original_digest = self.deployment_fingerprints.get(profile)
+        if expected is None and record['deployment_sha256'] != original_digest:
+            found = []
+            for entry in record['entries']:
+                rows = self.execution.delivery_receivers(entry['bundle_id']).get('consumers', [])
+                found.extend(row['consumer'] for row in rows if row.get('consumer') is not None)
+            if not found or any(value != found[0] for value in found):
+                raise DeliveryJobError('delivery_original_target_unavailable',
+                    '旧记录没有可证实的唯一原outbox接收者；原sealed包可只读导出，再用现有明确导入动作选择目标。')
+            expected = found[0]
+        if expected is not None and expected != actual:
+            raise DeliveryJobError('delivery_receiver_changed', '当前StockWiki store_id与原outbox接收者不同；未导入到新目标。')
+        record.update(receiver=actual, receiver_observed_at=_now())
+
+    def _registration(self, bundle_id):
+        reader = getattr(self.execution, 'delivery_registration', self.execution.bundle_registration)
+        return reader(bundle_id)
+
+    @staticmethod
+    def _same_scope(original, current, profile):
+        if 'delivery_scope' in original:
+            return original['delivery_scope'] == current.get('delivery_scope')
+        if profile == STABLE_DEPLOYMENT_PROFILE and 'delivery_scope' in current:
+            # Old stable-target jobs stored a hash of unrelated send settings.
+            # Preserve their original identity/scope; the native export and ACK
+            # transaction validate actual work, manifest and receiver facts.
+            fields = ('entity_id', 'scope', 'scope_id', 'security_id',
+                      'company_preparation_id', 'expected_scope_bindings')
+            return (isinstance(original.get('entity_id'), str)
+                    and all(original[key] == current.get(key) for key in fields if key in original))
+        return original.get('bundle_fingerprint') == current.get('bundle_fingerprint')
 
     def _path(self,job_id):
         if not isinstance(job_id,str) or not re.fullmatch('deliveryjob_[a-f0-9]{32}',job_id):
@@ -74,6 +125,7 @@ class DeliveryJobs:
                 if len(raw)>16*1024*1024: raise ValueError('large')
                 value=json.loads(raw.decode('utf8'))
                 if (value.get('protocol')!='iqs.delivery_job/1.0.0' or value.get('job_id')!=path.stem
+                    or re.fullmatch('[a-f0-9]{64}',str(value.get('deployment_sha256',''))) is None
                     or value.get('state') not in {'running','partial','completed','abandoned'}
                     or not isinstance(value.get('entries'),list) or not value['entries']
                     or any(not isinstance(row,dict) or row.get('state') not in {'selected','importing','pending','delivered'}
@@ -87,18 +139,34 @@ class DeliveryJobs:
                 if value['state']=='completed' and not self._completed_history(value):
                     raise ValueError('invalid_completed_summary')
                 expected=self.deployment_fingerprints.get(profile)
-                same_target=isinstance(expected,str) and value.get('deployment_sha256')==expected
+                receiver = value.get('receiver')
+                if receiver is not None and (not isinstance(receiver, dict)
+                    or set(receiver) != {'component','namespace','store_id'}
+                    or receiver.get('component') != 'StockWiki' or receiver.get('namespace') != 'quick_scan'
+                    or not isinstance(receiver.get('store_id'), str) or not receiver['store_id']):
+                    raise ValueError('invalid_receiver')
+                same_target=(isinstance(expected,str) and value.get('deployment_sha256')==expected
+                    or profile == STABLE_DEPLOYMENT_PROFILE and receiver is not None)
                 verified=True
                 if value['state']=='completed':
                     for entry in value['entries']:
                         try:
-                            current=self.execution.bundle_registration(entry['bundle_id'])
-                            verified=verified and current['bundle_fingerprint']==entry['bundle_fingerprint']
+                            current=self._registration(entry['bundle_id'])
+                            verified=verified and self._same_scope(entry,current,profile)
                         except Exception:
                             verified=False
                 if not same_target or not verified:
-                    if not allow_completed_history or not self._completed_history(value):
-                        raise ValueError('changed_target_or_bundle')
+                    if not verified:
+                        if not allow_completed_history:
+                            raise DeliveryJobError('delivery_bundle_changed', '原交付范围已变，不能恢复。')
+                    elif self._receiver_recheck_available(value) and value['state'] in {'running','partial'}:
+                        # Only schedules a fresh native identity check in the
+                        # background; no import can run before _check_receiver.
+                        value['current_target_verified'] = False
+                        return value
+                    if not allow_completed_history:
+                        raise DeliveryJobError('delivery_original_target_unavailable',
+                            '无法核实此旧记录的原接收目标；可只读查看，或独立导出原sealed包，不能猜测目标并导入。')
                     value.update(persisted_state=value['state'],state='historical_read_only',
                         read_only_history=True,current_target_verified=False,allowed_actions=[])
                     value['history_bundle_references_verified']=verified
@@ -108,7 +176,9 @@ class DeliveryJobs:
                 raise DeliveryJobError('delivery_reference_busy','交付记录暂不可读；不会按空任务重做。') from None
             except FileNotFoundError:
                 raise DeliveryJobError('delivery_job_unknown','没有该交付任务。',404) from None
-            except (OSError,ValueError,TypeError,AttributeError):
+            except (OSError,ValueError,TypeError,AttributeError) as error:
+                if isinstance(error, DeliveryJobError):
+                    raise
                 raise DeliveryJobError('delivery_reference_invalid','交付引用损坏或目标已变，先核原状态。') from None
 
     @staticmethod
@@ -157,8 +227,8 @@ class DeliveryJobs:
             original=candidates=[{'bundle_id':payload['bundle_id']}]
         entries=[]
         for row in candidates:
-            registration=self.execution.bundle_registration(row['bundle_id'])
-            if row.get('bundle_fingerprint',registration['bundle_fingerprint'])!=registration['bundle_fingerprint']:
+            registration=self._registration(row['bundle_id'])
+            if 'bundle_fingerprint' in row and not self._same_scope(row,registration,self.fingerprint_profile):
                 raise DeliveryJobError('delivery_bundle_changed','原批次输入已变，不能交付到另一范围。')
             entries.append({**registration,'state':'selected'})
         selection={'target':self.deployment_sha256,'selection':payload,
@@ -175,6 +245,8 @@ class DeliveryJobs:
                     'selection':payload,'entries':entries,'state':'running','session':self.session,
                     'created_at':_now(),'partial_batch_selection':len(candidates)!=len(original),
                     'model_calls':0,'financial_accuracy_proven':False}
+                if callable(self.receiver_status):
+                    record['receiver'] = None  # Frozen by actual status in the worker, outside the UI lock.
                 self._write(path,record)
                 self._launch(job_id)
                 return {'attached':False,'job':record,'status':'accepted','API_requests':0}
@@ -193,12 +265,21 @@ class DeliveryJobs:
             with control_lock(path.with_suffix('.lock')):
                 record=self._read(path)
                 record.update(state='running',session=self.session)
+                try:
+                    self._check_receiver(record)
+                except Exception as error:
+                    for entry in record['entries']:
+                        if entry['state'] != 'delivered':
+                            entry.update(state='pending', error_code=getattr(error, 'code', 'delivery_receiver_unavailable'))
+                    record.update(state='partial',finished_at=_now())
+                    self._write(path,record)
+                    return
                 self._write(path,record)
                 for entry in record['entries']:
                     if entry['state']=='delivered': continue
                     try:
-                        current=self.execution.bundle_registration(entry['bundle_id'])
-                        if current['bundle_fingerprint']!=entry['bundle_fingerprint']:
+                        current=self._registration(entry['bundle_id'])
+                        if not self._same_scope(entry,current,record.get('deployment_fingerprint_profile',LEGACY_DEPLOYMENT_PROFILE)):
                             raise DeliveryJobError('delivery_bundle_changed','交付输入发生变化。')
                         entry.update(state='importing')
                         self._write(path,record)
@@ -227,7 +308,7 @@ class DeliveryJobs:
         record['counts']={'scopes':len(record['entries']),'delivered_scopes':sum(row['state']=='delivered' for row in record['entries'])}
         record['notice']='交付只复用原封存字节与ACK；completed表示所选范围已对账，不等于全池或金融审查通过。'
         if record.get('read_only_history'):
-            record['notice']='配置已变，此处仅保留历史签收摘要；当前部署未重验原ACK，不能据此恢复、导入或认定当前范围完成。'
+            record['notice']='无法核实原接收目标，此处只读保留历史交付记录；当前部署未重验原ACK，不能据此恢复、导入或认定当前范围完成。原sealed包仍可独立导出。'
         return record
 
     def list(self):
@@ -258,6 +339,8 @@ class DeliveryJobs:
         for path in self.state_root.glob('deliveryjob_*.json'):
             try:
                 record=self.get(path.stem)
+                if record.get('read_only_history') and record.get('persisted_state') in {'running','partial'}:
+                    return True  # Unknown old receiver is not a new import destination.
                 if (record['state']=='partial' and record.get('deployment_fingerprint_profile')==STABLE_DEPLOYMENT_PROFILE
                     and compatible_target_sha256==self.deployment_sha256):
                     continue  # No I/O is running; changing future scans preserves this exact destination.
@@ -277,8 +360,8 @@ class DeliveryJobs:
                     record.update(state='abandoned',abandoned_at=_now())
                 else:
                     for row in record['entries']:
-                        current=self.execution.bundle_registration(row['bundle_id'])
-                        if current['bundle_fingerprint']!=row['bundle_fingerprint']:
+                        current=self._registration(row['bundle_id'])
+                        if not self._same_scope(row,current,record.get('deployment_fingerprint_profile',LEGACY_DEPLOYMENT_PROFILE)):
                             raise DeliveryJobError('delivery_bundle_changed','原交付范围已变，不能恢复。')
                     record.update(state='running',session=self.session)
                 self._write(path,record)

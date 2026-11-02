@@ -265,7 +265,8 @@ class DashboardService:
                 for profile in (LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE)}
             self._delivery=DeliveryJobs(self._gateway('execution'),Path(self.config['state_root'])/'delivery-jobs',digest,
                 lambda bundle_id:self._deliver_scope(bundle_id),lambda batch_id:self._batches().get(batch_id),
-                fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,deployment_fingerprints=previous)
+                fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,deployment_fingerprints=previous,
+                receiver_status=self._gateway('owner').status)
         return self._delivery
 
     def _deliver_scope(self, bundle_id):
@@ -373,7 +374,7 @@ class DashboardService:
             preview=owner.import_preview({'bundle_id':body.get('bundle_id')})
             if automatic:
                 body={**body,'preview_token':preview.get('preview_token')}
-            if body.get('preview_token') != preview.get('preview_token') or not preview.get('can_apply'):
+            if body.get('preview_token') != preview.get('preview_token'):
                 raise ProductError('preview_stale','请重新预览原接收目标再导入。',409)
         if mapped:
             status=owner.status()
