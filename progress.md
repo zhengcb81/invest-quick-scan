@@ -2,7 +2,17 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 保存、补封、入库接续复查及整改完成
+
+实际发现并修复：旧diagnostic路径提前阻DBjournal恢复；公共batch typed补封中断/旧ready错判当前目标；job.resume重复全entry预检；cached引用误计待入库包；ACK坏/缺成员阻合法回执。保存/目标封包/ACK分层，局部问题仅保本项，原receiver/绑定/全局权限仍保留。QAe5a2781正常hooks过并推原origin，IQS源码d7ec166由总控集中提交（10代码/测试文件），StockWiki/Company/UIlab未写。
+
+作者QA15P/31.48秒、IQS最终相关五模块123P/308.20秒；非作者QA12P/34.92秒、IQS22P/180.90秒均过，分组重叠不加总。原SDK五组件禁网冷E2E1P/419.97秒，两新进程删除当日model/budget且无key时恢复原CP/响应，0新API，自有副本清理。core wire脚本化，非金融证明。QA4F3P、resume3F、cached2F及ACK4F原反例均有效；AppContainer长路径、测试辅助漏API_requests信封等setup问题已在短TEMP/合法fixture修正，不算产品RED。peer首logger句柄延迟清理已进程退出后精确核实删除；root/author其他自有TEMP均自动清。
+
+未扩任意getter typed防御（核源码后撤回候选），不加许可或新回执体系。原服务精确重载，ledger仍87HTTP/2053896micros、0在途/未结，配置与旧答保持。新结果status按实际持久化且符合原目标的包，不用错误日志作完成门。详见[本轮范围/命令/局限](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/persistence-chain-remediation.md)，回根Next Step既有主线。
+
 ## 11/02 三个问题的相邻复查及整改完成
+
+**保存/补封/入库接续的新一轮独立检查进行中：** 仅沿本链查相邻状态，不扩日期或模型研究。QA核原journal恢复是否仍被无关旧diagnostic路径及批量补封边界阻断；IQS核多entry交付job恢复是否存在重复全范围预检。候选以实际复现为准，真实库/名单/收费API均未动；由非作者peer_persistence_chain在最终代码上集中审查，当前尚未签本轮完成。
 
 新独立agent发现：普通/共享单题补封冲突会阻后项，实际成功后的诊断可能误报pending，已有CP快捷路径漏原绑定；期间只有end判断漏未来start/倒序，以及父forecast给未知日期子指标回填造成误拒。沿原单题工作边界、实际持久化状态及共用期间语义修复，无新许可/平台/收费调用。实现IQS7a241ba、QA9b66f10已推原origin、Company639582a本地无remote。
 

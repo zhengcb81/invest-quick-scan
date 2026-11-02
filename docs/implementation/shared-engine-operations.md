@@ -15,6 +15,8 @@
 
 普通与共享受绑定扫描现在复用StockQA原响应journal保存公开最终正文，写入与原response/费用记录同事务，早于题目解析。新扫描无需启用额外diagnostic才能恢复；旧记录先读journal，没有journal时兼容原已保留的diagnostic。旧记录若两者都没有正文，仅有hash无法恢复，不能新造正文或重发冒充恢复。
 
+旧diagnostic路径只在确需该fallback时读取/验证，已有DBjournal不受无关坏诊断路径影响。正常写入诊断的安全规则不变。补封完成度复用原native公共`get_matching_sealed_delivery`，核本次原冻结authority目标，不读新配置或签新许可；旧ready若仍待原格式/目标修复，不能冒称本次已补封完成。
+
 原 StockQA 公开入口的已付恢复使用 `--seal-deliveries --recover-checkpoints`，共享扫描再提供原 `--shared-company-config` 路径作为历史位置，其他原登记输入路径及 confirmation 继续使用原任务的值。不要为了保存旧答案重新 prepare/confirm 或创建新 work。缺少原始输入/响应时明确报告缺项，不用同名公司或最新一代结果代替。
 
 一批题只答完一部分时，输出 `.scope.json` 的 `status=partial`，并分别列 `saved_question_ids`、`remaining_question_ids` 和原题数。退出成功表示本次保存操作成功，不表示剩余题已经问过或整个扫描完成。未知请求不能重发。逐项入库沿 StockWiki 原 ACK 记录接收与拒绝，单项拒绝不等于整批没有成果。
@@ -22,6 +24,8 @@
 普通已付恢复还按原工作和物理包隔离：pending、已领取未发送、unknown或in-flight工作保持未恢复，其他有原响应的独立包继续保存。单个原包缺正文或正文绑定不符时单独列入`recovery_errors`，不得据它中止无关包或把该包标为已保存。`remaining_work_item_ids`从原范围减去实际保存结果求得；全部都无响应时仍为partial，不伪报完成。全局访问检查及Store整体完整性异常仍会报告失败，恢复全程不发送请求。
 
 补封也按单工作隔离，单题工作冲突不阻止后续题。普通`remaining_work_item_ids`是尚无可确认原CP的工作；`delivery_pending_work_item_ids`是已有CP但实际封包未ready/delivered的工作。共享结果相应看`checkpoint_status`、`unfinalized_question_ids`和`pending_delivery_question_ids`。重读原CP/原答案/实际封包已成功时，冲突诊断可保留，但不因此强制pending；全部CP保存不等于StockWiki已ACK。
+
+交付job接续由原worker逐pending范围核验，已交付或单项坏记录不先阻断整job。原登记缓存引用以referenced满足原范围，无需新包或ACK，混合范围只导入新work，缺失工作仍partial。ACK逐观察应用：无效hash/接收库ACK不改变其work且不阻合法邻居；合法非空ACK子集可先承接，缺项ack_missing待补，foreign/重复观察ID仍拒绝。重复完整receipt复用原记录，不重问模型；本地owner_rejected容器不等同远端真实rejected ACK，须按items看已交付/拒收/缺项。
 
 未登记指标名称按原文保留，并标记为未映射，不能猜改名称后用于标准指标横比。普通业务文字、无害扩展字段、JSON fence、同值冗余和正常长理由可以读取；错误主体、冲突分数、期间/单位冲突、实际私有思考或凭据仍不能当作合格标准答案。原正文、score、模型与原响应时间不因兼容读取而改写；工程保存成功也不是金融准确性背书。
 
