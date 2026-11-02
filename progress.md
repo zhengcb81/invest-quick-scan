@@ -2,6 +2,16 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 保存—补封—入库—回执完整链路再复查完成
+
+根修5组：补封limit被旧匹配ready/不可修复项占用而后项饥饿；共享固定staging/直接checkpoint写的中断窗口；迟到worker复活终态与全entry确认后本地标记中断；远端stored ACK被缺release/cache阻挡；派生内容地址缓存半截不能重建。沿原Store有限ID快照、原codec原子发布、原接收库/StockQA ACK逐项验证和原字节缓存修复，不加调度器/许可/数据库或核查回执。实现IQSe24c359（8文件）、QA4cffabc（4文件），均已推原origin，QA正常hooks过。
+
+作者QA61P/25.77秒、共享3模块36P/16.86秒，错误类型收窄后新4P/1.67秒；IQS jobs30P/2.80秒、最终相关focused48P/43.07秒。非作者fullchain_peer QA19P/12.54秒、root5P/1.61秒另真实os._exit、IQS主链40P与最终archive10P/1.75秒，最终无开放阻断。组间有重叠不加总，不冒称最终94全模块跑过。AppContainer3项hardlink权限错误在授权C:/Temp重跑全过；新增fsync mock和无效CLI参数的fixture错误已修，不当产品RED或放宽产品规则。
+
+原SDK五组件两个新冷进程1P/323.82秒（runner325.38），副本生产源码与最终提交字节相同，去密钥并删除当天model/budget配置后恢复原回答/CP，未问项仍缺；0新API，TEMP已自动删。vendor wire脚本化，不是新真实公司内容测试。storedACK定向正反/重复使用原SQLite/原验证器，远端读取为明确port，不冒称本轮重跑真实StockWiki服务。所有自有TEMP均清理，真实库/名单未写。
+
+原UI确认37任务exited/stopped及0在途后精确重载，doctor ready，新旧观察可读，原配置hash相同；账本仍87HTTP/2053896micros、0在途/未结。详情/命令/局限见[本轮全链整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)。本节点完成，回根Next Step，不重问gen7、不扩支线。
+
 ## 11/02 保存、补封、入库接续复查及整改完成
 
 实际发现并修复：旧diagnostic路径提前阻DBjournal恢复；公共batch typed补封中断/旧ready错判当前目标；job.resume重复全entry预检；cached引用误计待入库包；ACK坏/缺成员阻合法回执。保存/目标封包/ACK分层，局部问题仅保本项，原receiver/绑定/全局权限仍保留。QAe5a2781正常hooks过并推原origin，IQS源码d7ec166由总控集中提交（10代码/测试文件），StockWiki/Company/UIlab未写。

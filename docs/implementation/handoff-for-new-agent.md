@@ -1,6 +1,6 @@
 # 当前接手说明
 
-**11/02最新接手状态：** [保存/补封/入库接续整改](reviews/GATE-SIMPLIFY-2026-11-02/persistence-chain-remediation.md)已独审通过：IQS源码d7ec166，QAe5a2781已推。123P整合+独审+原SDK两个新进程冷恢复1P/419.97秒、0API、TEMP清理。原缓存引用无新包/ACK，局部坏或缺回执按项待接续；按根Next Step回既有内容/事实主线，不重问gen7或增加门禁。
+**11/02最新接手状态：** 新一轮[完整链路混合/重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)源码IQS e24c359、QA4cffabc均已独审通过并推原origin。已修limit饥饿、迟到job worker、checkpoint中断发布、storedACK先恢复和派生cache半截。原SDK两个新冷进程1P/323.82秒、0API、自有TEMP清理，原UI已加载修复、doctor ready；本轮完成，回根计划既有内容/事实主线。无需重问gen7、改原配置或新增许可。
 
 
 更新于2026-11-02。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
@@ -53,8 +53,8 @@ IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算
 
 |仓库|本次复核的实际基线（不等于全仓新验收）|
 |---|---|
-|IQS|d7ec166本轮接续源码/测试，PWF与文档最终提交见Git，推原origin/master|
-|StockQA|e5a2781，正常hooks通过并推原origin/master，tracked clean|
+|IQS|e24c359完整链路源码/测试，PWF与文档最终提交见Git，已推原origin/master|
+|StockQA|4cffabc，正常hooks通过并推原origin/master，tracked clean|
 |Company Lab|639582a，本地提交、无remote，tracked clean|
 |Runtime Lab|5839ef4，本地提交、无remote，原codex/agent-run-02分支|
 |原UI|fa7ceb6，本地提交、无remote|

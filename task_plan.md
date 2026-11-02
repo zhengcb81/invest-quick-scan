@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-02保存/补封/入库接续复查及整改完成，独审通过。QAe5a2781已推，IQS源码d7ec166；123P整合、QA12/IQS22独审及原SDK冷进程1P/419.97秒均过，自有TEMP已清理、0新API。无新许可/审查回执，详见[本轮接续整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/persistence-chain-remediation.md)；完整产品未完范围仍如下表。
+执行状态：2026-11-02完整链路混合状态/中断重启/重复接续整改完成，独审通过。IQSe24c359、QA4cffabc已推原origin；QA61P、共享36P、非作者定向复核及原SDK两个新冷进程1P/323.82秒均过，0新API、自有TEMP清理。原UI已加载修复、配置/历史回答/费用不变；详见[本轮全链整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)。完整产品未完范围仍如下表。
 
 ## 当前结论
 
@@ -42,7 +42,7 @@
 
 ## Next Step
 
-**本轮保存/补封/入库接续已收口，回原小池内容质量与事实主线。** 定向核原数与会计范围，补真实事实/查询/研究使用链。不重问gen7、不重做相同接续实例、不扩支线或加门禁。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口。
+**本轮保存/补封/入库/回执混合状态及重启接续已收口，回原小池内容质量与事实主线。** 定向核原数与会计范围，补真实事实/查询/研究使用链。不重问gen7、不重做相同接续实例、不扩支线或加门禁。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
