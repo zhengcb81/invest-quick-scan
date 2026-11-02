@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-01接续整改的软件部分已集中独审通过，真实单题质量比较仍在运行。Dashboard NEW-6最终候选独立定点复测通过。此次根修实际SDK32k漏接、构造前先claim、原未发送意图误判和部分已付题包未落CP；最终相关124P，独立not_sent63P/getter27P，原owner/SDK两pack32k软件E2E1P/396.47秒。原UI同run第三段接续gen7，不重建work/清计数；前两段均发送前失败、0新HTTP/费用。当前原部署临时policy12/1.3、pack1/thinking/max32768/shared配置用于这一题，保留60包；结束后须恢复普通policy11/pack2并保新包。最后原账本86HTTP/US$2.024863、0在途/未结/active；尚未签真实短证据实送或金融准确性。跨模型fallback及原五个产品节点未完，不新发支线/新门。
+执行状态：2026-11-01接续整改的软件部分已集中独审通过，Dashboard NEW-6最终候选独立定点复测通过。原UI同run第三段接续gen7实际新增1次HTTP/US$0.029033，两条第一方短证据已由实际出站hash证实送入模型，FCF两年原数及计算正确。但原答使用未登记的年份后缀metric_id，语义校验正确拒绝，23:44:57Z进程退出；safe保留，尚无CP/ACK或该代次缓存。金融分红范围等亦有残余，不签整答准确。普通policy11/pack2/thinking/max32768已恢复，保留60包。当前原账本87HTTP/US$2.053896、0在途/未结，另有1个leased/response_available待处理，不能写active=0。SDK32k/构造顺序/原未发送接续/成功子包保全已修，相关124P，独审not_sent63P/getter27P，原owner/SDK两pack软件E2E1P/396.47秒。跨模型fallback及原五个产品节点未完，不新发支线/新门。
 
 ## 当前结论
 
@@ -23,7 +23,7 @@
 |---|---|---|
 |题库与组合|已实现并接UI|48评分模块/222题；另61信息题。所有公司基础36题=核心24+杜邦7+五力5，数量派生，非硬编码24上限|
 |身份/名单/比较/UI|原UI已接|215实体；手动增删/恢复、TXT/CSV审阅、模型/时间对比已接。并非全池有答案|
-|原部署|当前可用|本轮原GET doctor `ready=true`、`blocked_reasons=[]`；未做付费连通测试。入口`http://127.0.0.1:8766/`|
+|原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；本轮gen7的1次真实模型请求与内容拒绝见顶部。入口`http://127.0.0.1:8766/`|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|本节点同一已付请求零API补封、原ACK1/1、普通配置直接cached1；默认路径保持。未证明共享全公司36题/规模/金融全对；共享跨模型fallback仍待接|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -42,7 +42,7 @@
 
 ## Next Step
 
-**继续原小池质量验证，不重做已完整改。** [代码审查及整改结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)保持通过。Dashboard NEW-6已按最终四仓候选完成[独立定点复测](docs/implementation/reviews/DASHBOARD-NEW6-2026-11-01.md)，不代替Dashboard D00组合并线/E07/浏览器验收。当前执行第一方短证据的真实单题质量比较：从原已交付generation6申请明确comparison后继，旧答/分数/时间与费用保持，新的候选不得标成旧请求恢复。完成后恢复普通配置并核原账本。共享跨模型fallback另沿原合同继续：先在原确认内冻结有序目标，每个attempt保存实际模型；旧请求、comparison与已付恢复保持单模型。不能在现有单模型binding下循环client。后续顺序仍是G3/F05/消费者/配套，不新发支线或新增门禁。
+**继续原共享模型顺位接线，先补原确认与双模型明确拒绝切换的测试。** [代码整改](docs/implementation/reviews/CODE-QUALITY-2026-11-01/report.md)及[Dashboard NEW-6定点复测](docs/implementation/reviews/DASHBOARD-NEW6-2026-11-01.md)保持通过，后者不代签D00/E07/浏览器。原有序目标须冻结在同一确认中，每attempt记录实际route；旧请求、comparison与paid恢复保持单模型，不能在现有单模型binding下循环client。gen7的命名不合规按invalid保留：已证实短证据实送、FCF算术改善，但没有CP/ACK；不改raw、不放开任意financial命名、不重发已付请求或清计数/另建代次。只读评估确认通用canonical投影牵涉Runner/同源匹配/非pending已付重处理合同，不是小parser修复；本轮不为一个格式错误扩建协议或把它设成所有后续开发的门。以后确需规范化须兼容旧冻结并保存raw与唯一映射。普通配置已复原；后续仍G3/F05/消费者/配套，不新发支线/新门。
 
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
 - 普通policy11/1.1、successful_scan/24h及prepare原字节设置已恢复；pack2、thinking=true、max32768，shared配置和comparison refs撤回。保留59个登记包及所有旧答。08:35:49Z原UI同实体/合并主体/截止日/模型再预览IQS_11，cached1、执行包0、0API、原owner未变化；复用同一`obs_37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188`，资料日10/29与原成功搜索时间07:33:28.670089Z不变。

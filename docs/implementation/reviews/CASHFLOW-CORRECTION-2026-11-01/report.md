@@ -1,6 +1,20 @@
 # 现金流期间错误与原生定向复核接线
 
-## 2026-11-01 本节点最终收口
+## 2026-11-01 晚间真实短证据比较：实送和算术改善，标准化未通过
+
+本节覆盖下节早间节点的“当前”快照，不改签其已交付gen6。原UI`run-5a03133643e34e60b69d6b9b311b46c0`第三段仍同一gen7/work，前两段纯发送前失败；本段仅新增1次实际MiMo Pro HTTP，原账本增29033micros=US$0.029033，累计87HTTP/US$2.053896，0在途/未结。原safe在23:44:40.990609Z完成，23:44:57Z进程exit1；work仍leased/epoch2、attempt=response_available、无CP/ACK或本代次缓存。不能用进程退出或HTTP200代签入库。
+
+非作者用原预发送CP/原task、原request builder与SDK纯构造重建出站JSON，与原research_intent实际payload hash`36568c62…`相同；动态context确实含两条官方短原数，board2554字节/hash`fdcb5d…`，未知发布日期仍null。实际thinking开启、max32768。仅公开薄摘要留档，不保存公司文档、全文prompt或中间思考。
+
+独立核算确认：2024 CFO96,990,345−购建31,179,943=65,810,402千元，代理FCF658.10402亿元；2025 CFO133,219,982−购建42,344,558=90,875,424千元，即908.75424亿元；均同年合并现金流数据、币种单位正确。原披露仍见[公司2025年报](https://www.catl.com/uploads/1/file/public/202603/20260310105829_c5p2l3q9ll.pdf)，仅在线查阅，无本地下载。
+
+本次不能签整答金融准确：合并CFO与归母净利归属范围不同；分红先用截尾每股数估算31,528,335,424元，虽已标估算，仍应优先精确末期31,532,206,318.17元；2025年度含中期总分配36,100,640,883.92元，2.88倍只覆盖末期方案，全年约2.52倍；3月原方案“尚需股东会审议”未核后来状态。维护/增长资本支出及租赁亦未完整拆清，代理FCF不能直接称所有者收益。原评分8不是正确性的证据，不改历史分数。
+
+真正阻止CP的是原标准内容校验：模型用了未登记`financial.fcf_2024/2025`，正确ID为`financial.fcf`配两组period坐标。独立纯内存重放报`unknown metric must use custom namespace`；只临时映射两处ID后内容层通过，但原safe/库/原slot不改，slot仍invalid。未把此探针冒充完整来源闭包或保存成功，也没有重新收费提问。若后续规范化，必须是所有公司通用、唯一可证的raw→canonical派生并兼容原native exact-match；不能为个案放宽标准。
+
+普通policy11/1.1、pack2/thinking/max32768、shared配置及comparison refs已恢复原设置，保留60个登记包；原doctor ready=true/无阻塞。gen6原四hash、ACK和时间保持。软件根修及提交见[代码审查结果](../CODE-QUALITY-2026-11-01/report.md)，原未发送接续及部分成功题包保存已通过集中独审，未给本次内容拒绝造绿色回执。
+
+## 2026-11-01 早间节点收口（历史）
 
 原UI已付共享回答已按同一attempt零API恢复、原CP保存并由StockWiki签收1/1。原score7、资料日2026-10-29、完成时间07:33:28.670089Z及原receipt/response hash保持；ACK08:28:19Z accepted。原账本始终86HTTP/US$2.024863，0在途/未结/active。原failed重放诊断保留，未重问或新建预算。
 

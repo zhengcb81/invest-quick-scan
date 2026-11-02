@@ -59,6 +59,8 @@
 
 ## 当前真实风险
 
+- 11/01晚间gen7真实短证据已实送，FCF两年原数/算术改善，但模型把年度写进未登记metric_id导致标准化拒绝；raw/receipt保留、无CP/ACK。这是内容命名不合规，不是传输未知或数值再次算错。通用指标ID应通过period坐标复用，不能为一家公司加别名或放开所有financial.*。即使后续规范化可行，分红年度范围、合并CFO对归母净利、原方案最新状态等金融限制仍独立存在；工程通过不消除这些限制。
+
 - 共享顺位切换的根因不是少一个循环：原owner确认/immutable work binding/research intent/CP均固定provider-model。底层已有同work明确拒绝后切route以及unknown禁止切换；后续须沿原合同冻结有序目标、逐attempt保实际模型，避免费用与缓存归属错配。比较与paid恢复保持精确原模型，不新增许可平台。
 - Dashboard NEW-6在最终独立外包候选已复测通过；这是另一Dashboard项目的交付候选，不自动证明本仓原UI已加载它或E07整体通过。原UI不依赖其公司级authority或额外review回执才能日常查看/扫描。
 

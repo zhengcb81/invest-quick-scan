@@ -27,11 +27,11 @@
 
 随后真实单题比较暴露 `ResearchChatSession` 仍16k，与已修共享层/Runtime32k矛盾；首段在发送前失败且0新HTTP，却先claim。生产final_json现复用原SDK应用上限，旧工具会话16k保持；纯SDK构造/控件校验移到claim前，实际step仍在原owner/预算/send guard内。有效SDK RED2F→40P、Runtime RED2F→9P；非作者实际构造/撤权/原budget反例通过。
 
-原Store以精确原Lease原子释放确实未发送的claim；已发送、未知、safe、CP与未结预算均拒，不重置epoch或计数。原gen7零attempt/CP的lease已安全释放。旧engine随后把这个原已释放未发送意图也误当unknown；现只从原只读事务和同epoch事件派生not_sent，原native intent/safe/unknown优先，replay_only或任何pending receipt仍禁止新发送。派发仍走原正常claim/CAS/当前owner与预算，不新增许可凭证。最终相关124P、独立not_sent63P/getter27P（有重叠）；真实原Runner单次cap0→1、旧CP不改。
+原Store以精确原Lease原子释放确实未发送的claim；已发送、未知、safe、CP与未结预算均拒，不重置epoch或计数。原gen7零attempt/CP的lease已安全释放。旧engine随后把这个原已释放未发送意图也误当unknown；现只从原只读事务和同epoch事件派生not_sent，原native intent/safe/unknown优先，replay_only或任何pending receipt仍禁止新发送。派发仍走原正常claim/CAS/当前owner与预算，不新增许可凭证。最终相关124P、独立not_sent63P/getter27P（有重叠）；真实原Runner的cap1保持、counter0→1，旧CP不改。
 
 共享部分保存亦已根修：后续题包明确拒绝时，先沿同一真实export的逐成员safe/receipt/语义检查保全成功题到原CP，原entry继续incomplete且不发布完整export。默认全量调用兼容；显式子集返回原分母/剩余题。原owner/SDK两pack32k隔离E2E1P/396.47秒，仅vendor wire脚本化，首CP/ready、次401无CP、再入0HTTP且原CP不变；这份先写E2E不冒签后写的not_sent分支。删除纯构造/私有内存观察的重复current读取，真正发送/写提交不缓存权限。
 
-上述源码集中非作者审查通过；原UI同run第三段真实质量比较仍待终态，不以软件通过授金融准确性。详情与清理限制见根progress；未新发支线或扩大原预算。
+上述源码集中非作者审查通过，软件已提交：IQS db0b432/StockQA 2e4f01b已推既有origin，Runtime5839ef4本地。第三段真实请求终态已取：1HTTP/US$0.029033，官方短证据由原出站hash证实实送，FCF两年原数与算术正确；但模型把年份加进未登记metric_id，标准内容层正确拒绝，原safe保留、无CP/ACK。未因此削弱命名合同或重发已付请求；分红范围等金融限制仍在。普通policy11/pack2已恢复，60包保持；账本87HTTP/US$2.053896、0在途/未结，另1个leased/response_available原工作待处理，不误写active=0。详情见[实际复核](../CASHFLOW-CORRECTION-2026-11-01/report.md)和根progress；未新发支线或扩大原预算。
 
 ## 方法与边界
 

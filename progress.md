@@ -4,6 +4,18 @@
 
 ## 11/01 接续与 Dashboard NEW-6
 
+**本节后续终态（23:54Z）：** 第三段原请求已返回，23:44:57Z进程退出，原safe/receipt保存成功；仅新增1模型HTTP、29033micros（US$0.029033）。原账本87HTTP/2053896micros、in_flight=0/unsettled=0，work仍leased/epoch2、attempt=response_available、CP=None；不得写已入库、active=0或新缓存通过。普通原policy11及prepare已精确恢复，doctor ready/无阻塞、pack2/thinking/max32768/shared=null/refs=null，全部60包保留。后文“第三段待终态/临时配置/86HTTP”为先前执行快照，由此覆盖。
+
+非作者从原pre-send checkpoint和实际SDK纯构造重建HTTP JSON，hash与原research_intent的`36568c62…`精确相同；2554字节board/hash`fdcb5d…`包含2024/2025两条原短证据、原URL/hash及published_at:null。真实request thinking enabled/max32768/json_object，不保存完整上下文或中间思考。证明证据实送，不只配置存在。原gen6的provider attempt/receipt/response/CP payload四hash仍等于初始原快照。
+
+真实回答审查：两年CFO/购建现金/代理FCF及同年算术与官方原表一致；2024为658.10402亿元、2025为908.75424亿元，改善了旧跨年错误。仍有CFO合并总额/归母利润归属范围差、优先用了每股截尾推算分红而非原披露总额、2.88倍只覆盖末期方案（全年分配约2.52倍）、3月“尚待股东会审议”未核后来状态等内容限制；不能称整答金融全对或所有者收益已算明白。原答/分数不改。
+
+该回答未保存CP的确切原因经独立纯内存重放为`unknown metric must use custom namespace`：模型用了`financial.fcf_2024/2025`，原registry要求同一`financial.fcf`用各自period字段分年。只在内存临时映射这两个ID后标准内容层通过，未改safe/库，亦未据此宣称来源闭包或整条入库通过。原slot保持invalid/answer_semantic_contract_rejected；不能伪成transport未知、重发收费或把当前分数8当改进依据。只读评估确认完整canonical投影牵涉Runner不改输入/原safe exact-match及非pending已付重处理合同，不能顺手改parser补绿；本轮不扩建协议、不以这个invalid样本阻塞后续原共享顺位开发，不造本公司特例。
+
+本组软件提交：IQS `db0b432`与StockQA `2e4f01b`均已推既有origin/master；Runtime Lab `5839ef4`本地原分支、无远端。QA正常hooks全部通过，无绕过；保留IQS外来10/10 README。以下保留真实前后顺序，不改写早期失败。
+
+非作者最终再次只读核普通prepare与备份对象相等、owner policy原字节相等、gen6四hash及gen7receipt/response/safe三hash不变；6份当前文档无CP/ACK/金融误签。3处措辞（付费测试历史、早间gen6缓存标记、cap1与counter0→1）已顺手修正。原UI本次仅核状态，显示leased逻辑工作在途1，不代表供应商HTTP仍在途；画面在忽略目录`runs/quality-context-retest-2026-11-01/ui-terminal-state.png`。未再次收费或写观察库。
+
 亲读外包B03最终交接及原独审报告，另派未参与实现agent复测最终Dashboard代码e7ce9ae（文档HEAD edd964b）/service3eb99cd/UI6f0391e/SWb3084ff。5类scope判断、6条实际UI模块深链均通过，原StockWiki32P/11.28秒覆盖run/scan引用与缺run拒绝；0收费/0服务/0生产写，自有TEMP移除。[定点结论](docs/implementation/reviews/DASHBOARD-NEW6-2026-11-01.md)不代签E07、浏览器或D00并线，也未把外包owner authority合入本仓。
 
 本次原8766最初停止：sandbox网络Win10013，外层只读确认10061无监听后才启动原no-refresh配置，未杀其他PID；新launcher18544为当时记录。doctor ready/无阻断、账本仍86HTTP/2024863micros且0在途/未结/unknown。只读核原gen6真实回答：明确原数不足，未继续断言错误FCF，旧板仍空，不能追认为短证据实送。
