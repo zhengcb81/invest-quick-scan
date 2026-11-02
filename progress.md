@@ -2,6 +2,26 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 四组整改完成（原软件范围）
+
+**最终终态：** 四组已按原软件范围闭合、独审通过。新增safe无CP→无当天模型配置的paid-only零发送恢复/原hydrate/普通owner冷重建E2E1P/656.77秒（总runner661.77秒），TEMP五仓副本移除，0收费。最终peer亲读log/最终测试及28P尾项，无未解阻断。该例仅脚本化vendor wire，复用已有client，不授真实供应商/全新进程keyless SDK/ACK/UI三市场资格。IQS代码e20e1b5与前段d168425/da0fbd5、QA58fb6ce（此前d1d22cc）已推各自origin；SW dc857a5/UI77d372c无remote，本地提交。正常hooks曾自动修行尾/Black，精确重暂存后全部通过，未跳过。原服务精确核无子任务后按旧参数隐藏重载，GET doctor ready/阻塞空，main实际store.js 200含新逻辑；配置60包/原普通参数保持。重载后账本仍87HTTP/2053896micros、0在途/未结，gen6 delivered/CP1、gen7 leased/CP0不变。参见[最终结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/remediation-2026-11-02.md)。以下保留同日各阶段过程，待验/正在运行仅是当时快照，不能覆盖本终态。
+
+按用户最新要求实施原5/8/9/10。第一阶段QA能力与公开薄接口已独审通过并正常提交推送d1d22cc（原8文件精确范围）；有效RED4F，相关124P/4.47秒、非作者93P/4.51秒及原transport28种输入/上下文返回/异常一致。hooks首轮isort改两文件后精确重暂存，重试全部通过含mypy/secrets。研究通道由原SDK单一纯能力函数与constructor共用，普通搜索不冒称native研究可用；tools16k/final_json32k保留。公开context/transport/validation供原engine复用，不复制规则、不新权限。
+
+主控IQS生产private边界有效RED2F后改接公开seam，含原1.5 task验证的私有穿透一并收口；相关71P/2.56秒，独立公开/旧工具最终81P/8.70秒（重叠不加总）。语义单位fixture刻意无QA私有字段。旧工具原6F及HTML缺失1F已修，原17P；独审追加实际CLI相对路径错位RED后，主控resolve caller四路径，新增真实CLI回归至18P/7.00秒。两次包装器导入错误/Windows父进程chdir阻止TEMP删除已纠正，不冒作产品失败；所有本轮自有TEMP确认移除。
+
+UI嵌套容器及未知正文尾项经实际ESM有效RED5F后修复，作者37P/51子测试，非作者最终7P/16子测试，五个实际页面反例均无crash/假无记录，必需bank损坏与原子load保留。UI精确7文件正常提交77d372c，无remote未造远端。IQS公开边界/旧工具精确8文件正常提交并推送d168425，外来README/其他未跟踪保留；QA d1d22cc已推送。
+
+共享顺位仍实施中：IQS新1.6有效RED6F/1P后原合同组51P；SW原W06多模型组合/preview/权限/CLI已冻结，作者53P及原permission7P，非作者SW+IQS合同105P/17.79秒，额外SQLite8反例验证active/unknown优先及fallback原模型/时间与TTL边界；原SQLite bytes均不变。只签规划/contract范围，不冒签真实共享fallback整链。QA正在补1.6 inspector/consent/binding5，主控接原SDK共享控制器/原lease/预算；UI准备仅显式1.6启用targets，旧请求/comparison/paid恢复不放大。未调用收费API或改生产库；原gen7 raw/safe/CP不变。
+
+顺位阶段增量：IQS1.6四文件已独审提交推送da0fbd5；SW六文件dc857a5正常hooks通过，本仓无远端。准备1.6四文件作者23P/248.26秒（含原36题双scope/重放、恢复和比较），非作者新16P；原沙箱PermissionError在外层同一隔离环境消失，没有改产品绕过。根主控新增原Store只读物理计数有效RED1F→10P；binding5已结拒绝原lease接续有效RED1F后与原组48P。原预算事务内检查总scope请求上限，物理pack DISTINCT计一次，跨重启不归零；原route单调CAS阻止并发重发已拒模型。新增过期epoch、未结拒绝、并发不同work争1个cap及2题pack计1次通过。组合117例116P/1F（94.32秒），唯一失败是旧v16夹具漏删24/未还原25 CHECK，复用原历史helper修后定点1P；不是新迁移DDL。本轮没有新增表或schema版本。
+
+独审预读提出已付fallback任务根、unsent顺位、原scope顺序与cap来源，主控已纳入修复：原1.6按批准scope固定顺序，已收答优先原route零发送恢复，任务limits固定且原预算原子检查。尚待完整两模型原owner/SDK scripted-wire E2E与集中终审，不预报整组闭合。一次sandbox测试包装器无child/TEMP卡启动，经精确PID核对停止，外层9P；未计有效RED。root初版staticmethod self错误已定向修正，不冒作历史产品错误。
+
+最终同节点验证增量：root公共/entry/route投影110P/4.86秒；授权新25P及原216P/125.48秒，非作者consent策略漂移等7新增反例合32P/5.14秒。共享执行非作者79P/6.38秒；已付尾修又28P/6.53秒，属于重叠组不累加。首次唯一两模型原owner/SDK E2E1P/491.08秒（两题pack2，a401→b两CP、原outbox ready、原owner冷重建0HTTP），五仓自有副本自动删除；不是真实供应商/金融/ACK或三市场新验收。新增safe尚无CP中断→keyless paid恢复/原hydrate最终E2E正在运行，等真实结果，不借前一次通过冒签。
+
+正常QA commit首轮停于isort格式与2个Optional类型问题，另因部分暂存stash导致未跟踪新routes引用旧shared的6个假错；未绕hooks。root修真实类型问题、将耦合执行接线最终一起提交，现all-files原mypy通过。探针第一轮编码别名/字段/doctor路径错误已纠正，最终公开GET /api/product/doctor ready、blocked空；普通1.1 successful_scan24h、pack2/thinking/max32768/shared/refs为空、execution_bundles60。原账本只读87HTTP/2053896micros、inflight/未结0；gen6 delivered/CP1、gen7 leased epoch2/CP0保持，未收费或写生产库。
+
 ## 11/02 整改清单逐子项核对
 
 用户要求原整改一个不漏地核对。主控亲读原报告1—10、实际实现和测试，三名非对应作者交叉查源；复读原124P/154P、两份原owner/SDK E2E及独立尾修日志，按子项区分软件、真实金融与产品范围。完整表见[checklist](docs/implementation/reviews/CODE-QUALITY-2026-11-01/checklist-2026-11-02.md)。原10组有6组按原软件要求闭合，5/8/9/10仍部分完成；此前“整改已完成”表述过宽，已同步根计划、发现、交接和原报告，不改签历史测试或旧原件。

@@ -4,7 +4,7 @@
 
 ## 总结
 
-**原10组中，6组按原软件范围已闭合，4组仍部分完成：5、8、9、10。** 上轮把这些项合称“源码整改已完成”过宽，现更正。测试通过不代表测试没覆盖到的整条链已完成；以下每个子项分别判断。这不是全项目完成率。
+**原10组已全部按原发现的软件范围闭合；本轮补齐原5/8/9/10，最终safe无CP恢复原owner/SDK E2E1P/656.77秒及集中独审通过。** 上轮把这些项合称“源码整改已完成”过宽，现更正。测试通过不代表测试没覆盖到的整条链已完成；以下每个子项分别判断。这不是全项目完成率。
 
 |原发现|准确状态|尚缺什么|
 |---|---|---|
@@ -12,14 +12,14 @@
 |2 共享额度|已完成原软件范围|没有真实共享整公司36题/18包完成证据；请求数足额不保证未知token和网络耗时|
 |3 UI锁及分页|已完成原软件范围|锁外慢读、冻结部署、写CAS及跨工作区分页已有覆盖|
 |4 超时冲突|已完成|设置与owner使用同一规则|
-|5 可选草稿故障隔离|**部分完成**|后端已隔离；前端boot仍被坏answers.json阻断|
+|5 可选草稿故障隔离|**已完成**|可选读取/形状/嵌套坏容器局部降级，原子快照与未知文案；必需bank仍正常失败|
 |6 跨期间指标|已完成原软件范围|未知指标ID仍应拒绝，不能把本次模型命名违规当坐标修复失败|
 |7 模块元数据|已完成原发现要求|旧读取兼容；同义critical元数据补齐的same-method升级另有限制，见下|
-|8 模型能力及顺位|**部分完成**|SDK研究通道能力声明失真；共享自动跨模型fallback仍未实现|
-|9 薄边界|**部分完成**|公开投影/快照和import环已修；生产engine仍穿透3处QA私有接口|
-|10 实验假设与旧工具|**部分完成**|旧one_click链仍错选库、链接不存在，并误把历史preflight当当前检查展示|
+|8 模型能力及顺位|**已完成本轮软件范围**|SDK同源能力；原1.6顺位、真实route/预算原子cap与已付safe无CP恢复E2E通过，旧确认不扩权|
+|9 薄边界|**已完成**|生产task/engine全部改接QA公开context/transport/validation；AST边界与语义回归|
+|10 实验假设与旧工具|**已完成**|指定workspace/work库与caller相对路径、真实HTML、历史检查标签；未指定work则明确未检查|
 
-核对源版本：IQS `758ee3b`；StockQA `2e4f01b`；StockWiki `381811e`包含本组`719520b`；Company Lab `d1d92a2`；Runtime Lab `5839ef4`；原UI `iqs-question-bank-ui-lab`为`8fc9072`。IQS外来10/10 README保留，其他本组所核源仓tracked干净。沙箱git status误报非worktree后用已授权外层只读核实，没有checkout/reset。
+整改前核对源版本（历史基线，最终提交见PWF）：IQS `758ee3b`；StockQA `2e4f01b`；StockWiki `381811e`包含本组`719520b`；Company Lab `d1d92a2`；Runtime Lab `5839ef4`；原UI `iqs-question-bank-ui-lab`为`8fc9072`。IQS外来10/10 README保留，其他本组所核源仓tracked干净。沙箱git status误报非worktree后用已授权外层只读核实，没有checkout/reset。
 
 ## 逐子项核对
 
@@ -42,7 +42,7 @@
 |3 分页不得跨工作区|完成|同文件`:568–586`及old/unbound snapshot、cross-workspace测试|
 |4 设置与owner超时一致|完成|`dashboard_owner.py:24–29,111`公开同一规则，service `:115`复用；saved_timeout与bounds_agree参数测试|
 |5 后端草稿局部降级|完成|service `_drafts:403–419`；HTTP坏JSON/坏结构/读取异常9例保正式结果|
-|5 前端启动隔离同一坏草稿|**未完成**|UI `src/app/store.js:40–43`把可选answers放必需Promise.all，`:51`无防护遍历runs；`main.js:66–71`先load再connect，失败直接return。实际store模块mock fetch：好runs成功，坏JSON/answers数组/runs对象均reject。后端9例没有覆盖browser boot|
+|5 前端启动隔离同一坏草稿|**完成**|UI77d372c：读取/JSON/形状/嵌套容器局部降级；坏可选源不崩溃、不显示假无记录；原子重载，必需bank坏仍失败。独审真实ESM5反例及7P/16子例|
 |6 IQS与QA统一指标坐标|完成|IQS `metric_coordinates.py:12–34`与QA同名规则AST一致；ID/period_start/end/basis/currency共同定位|
 |6 真重复和模糊期间仍拒绝|完成|standard_answers `validate_content`及原QA验证：同坐标换措辞/证据仍拒，重复缺日期/单位冲突仍拒；旧单行未知期间可读|
 |6 多期比较不再取最后一行|完成|standard_answers `compare:412–490`按ID聚list再按完整坐标配；2023/24对24/25保留3行；原部分重叠及完整双年测试|
@@ -51,23 +51,23 @@
 |7 新diagnostic中性映射|完成|question_manifest `metric_mapping:33–69`保留framework、新未知归diagnostic；旧冻结schema保留原读法；新framework及旧manifest测试|
 |7 新critical冻结、缺整行仍风险|完成|scoring_rubrics `aggregate:226–288`读冻结critical，缺行仍unresolved；新critical core、旧rubric fallback测试|
 |7 旧profile入口边界明确|完成|旧profile数量限制保持兼容入口说明，多业务引导原route；未宣称旧profile本身已无限扩容|
-|8 共享入口消费SDK能力|**部分**|QA `quick_scan_company_context.py:53–60`仅看supports_web_search/方法存在；而research SDK `llm_research_client.py:224–260`native final_json仍只接已实现协议。主控及独审纯构造反例：OpenAI声明true/true/32768但构造拒research_native_search_endpoint_not_qualified；MiMo同参接受，0HTTP|
+|8 共享入口消费SDK能力|**完成**|QA d1d22cc：研究SDK构造与公开能力复用同一纯函数；普通web_search不冒称final_json研究可用，native/external通道分别验证；新顺位发送前跳过确定不兼容目标|
 |8 32k贯通、旧tools16k兼容|完成|QA ResearchChatSession`:269–283`沿原应用上限，Runtime新1.1/旧1.0分支；SDK40P、独立实际函数4P、两pack32k软件E2E|
-|8 共享自动跨模型顺位|**未完成**|QA runner `:3012–3035`只选原单route/client，engine capability明确automatic_cross_model_fallback=False；必须沿原确认/binding/intent/逐attempt实际route，不能盲循环client|
+|8 共享自动跨模型顺位|**完成本轮软件范围**|1.6原确认/完整targets与binding5冻结；原runner实际route，已结拒绝才继续，已完CP不重问，原budget原子总cap不重置。两模型E2E1P及最终无CP已付恢复E2E1P/656.77秒；旧确认不扩权|
 |9 UI不管理QA私有连接|完成|dashboard_prepare `:211`调用公开continuation_binding_snapshot；QA原RO事务自管。atomic/detached/failure closes transaction用例|
 |9 公开脱离对象的task输入|完成|QA `quick_scan_company_context.py:13–50`纯copy投影，production factory/preflight消费；projection detached/no I/O测试。QA仓内私有读取及legacy研究路径不误算跨界|
-|9 生产engine全部私有接口收口|**未完成**|shared_company_engine `:171`读lifecycle._observation_context，`:232`调lifecycle._standard_transport，`:889`调services._assert_registered_inputs；已有公开context投影可复用，transport应公开原实现薄接口，不在IQS再复制规则|
+|9 生产engine全部私有接口收口|**完成**|生产factory/engine改用company_scan_inputs、split_standard_answer_transport、validate_registered_inputs、validate_company_scan_task；AST禁止私有穿透，原transport28种结果/异常一致。legacy研究task保留旧合同|
 |9 delivery明确参数及两import环|完成|dashboard_delivery `:55`不再拿整个Gateway；error拆dashboard_errors；module_registry/routing共同依赖纯routing_contract，无上述反向环|
 |9 纯构造/getter去重复current核验|完成限定范围|QA bind_task_owner_binding/client_for/attempt_observations、engine纯preflight减少重复；真正generation/commit仍核当前权限，不声称所有检查只运行一次|
 |10 新部署中性默认与模板|完成|dashboard_service defaults `:65–78`工作区/发布目录留显式未配置；原defaults/template测试不再指Alphabet实验|
 |10 旧subject写生成器退役|完成|owner_admission_subject只解析旧参数后明确retired，无读库/写库；legacy_apply测试|
 |10 机械检查复用原合同|完成此子项|financial_mechanical_check接受显式workspace，HTTP来源、多期和成功fact items与标准一致；HTTP/多期、fact、pure import三例|
 |10 身份审计无公司或000002豁免|完成|verified_evidence_audit导入纯化，删除PRE_EXISTING/公司名例外；原roster案例明确无证据仍拒|
-|10 旧one_click的provenance两库|**未完成**|one_click `:38`未传库；observation_provenance_check `:16–17,28–29`仍默认旧Alphabet观察库和10月实验work库。指定workspace B仍查A，或旧路径不存在即失败|
-|10 旧金融HTML链接|**未完成**|financial_mechanical_check `:145`接受--html但`:174`只写JSON；one_click `:34,124`传参并链接不存在check.html。现有测试只查纯函数，未覆盖CLI产物|
-|10 旧preflight标签|**未完成**|one_click `:64`仍读固定10/18报告并显示“观察导入前置检查”，没有当前workspace绑定或历史标记；不可当今天的扫描门或当前验证|
+|10 旧one_click的provenance两库|**完成**|IQS d168425：显式workspace推导观察库，--work透原work库；无work明确skipped/未知不假通过；caller相对路径先resolve，原SQLite/CLI正反例与字节不变|
+|10 旧金融HTML链接|**完成**|显式--html实际生成并建输出目录，字段HTML转义；测试运行真实CLI核产物，仍仅机械检查不授金融资格|
+|10 旧preflight标签|**完成**|旧固定实验检查单列标历史，不当当前工作区检查或日常扫描门；真实入口回归|
 
-## 后续实测遗漏与交付范围
+## 后续实测遗漏与交付范围（整改前核对记录）
 
 |项目|结论与证据|
 |---|---|
@@ -91,4 +91,4 @@
 
 ## 接续顺序
 
-先补原5的前端可选草稿隔离、原8的能力声明一致性；再收口原10旧链的错库/坏链接/历史标签及原9剩余公开薄接口。原8共享fallback继续原模型确认/逐attempt合同，不新增客户端、队列、许可证或审查门。以上是原清单遗漏，不另发一批施工卡；金融/规模/F05/消费者等未完范围仍由根计划保留。
+本轮四组已完成，不再重复实现或重跑长例。新增paid窗口真实原owner/SDK测试1P/656.77秒，独审尾组28P；边界与提交见[最终结果](remediation-2026-11-02.md)。下一主线按根PWF回到原小池回答质量。金融/gen7内容、规模、F05与消费者/配套仍未完成，不用本轮软件测试代签，不新发支线或增加门。

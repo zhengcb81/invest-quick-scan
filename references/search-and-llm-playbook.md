@@ -12,7 +12,7 @@
 
 # 联网搜索与LLM统一使用规范
 
-规范版本：1.6.1；日期：2026-11-01。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
+规范版本：1.6.2；日期：2026-11-02。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
 
 StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检查点和费用账本；IQS只维护题面与规范；StockWiki提供名单、缺口及观察入库，不能另包请求重试。[配置参考模板](../examples/search-and-llm-policy.template.json)仅供填写需求，执行器尚不读取；`template_only=true`、`execution_enabled=false`保持不变，不是第二份生效配置或调用授权。
 
@@ -23,6 +23,8 @@ StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检
 | 原生搜索 | 模型供应商执行搜索，再形成答案 | 精确endpoint/协议/请求及实际模型支持搜索，能验证回执并形成最终答案 |
 | 外部搜索→context→LLM | 独立检索，给模型题目相关短证据；默认不再开原生搜索 | 外部adapter已接线，来源/实体/时点检查与证据包绑定完成 |
 | 显式混合 | 事先计划的定向补充取证 | 首个答案产生前冻结步骤、触发条件和预算，分别记录两类调用，不自动双搜/投票 |
+
+共享公司分支的顺位由原 owner `1.6` 明确冻结；普通搜索、研究 final_json 通道的能力必须分别从原 SDK 判断。只有原账本已结算的明确拒绝才继续下个已批准模型，未知或内容问题不自动重问。缓存与恢复保留实际模型/来源/时间，跨模型共用原预算和公司请求 cap，旧确认保持原单模型。配置与详细拒绝分类见[共享引擎实操](../docs/implementation/shared-engine-operations.md#共享扫描的模型顺位)。本机普通配置不自动开启该可选模式。
 
 回答模型顺序由用户配置；外部检索器顺序另由用户给定，不能按清单排列擅定顺位。相同primary题不同时发给多个模型抢答；首选只是容量满时等待，明确不可用才转下一合格路由。直连阳性而尚未接入公开CLI的接口不能靠模板启用。
 

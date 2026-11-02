@@ -4,7 +4,7 @@
 
 ## 本次纠正的实质问题
 
-**11/02逐项核对纠正完成范围：** 原10组中6组按原发现的软件要求闭合，5、8、9、10仍部分完成，见[完整子项表](docs/implementation/reviews/CODE-QUALITY-2026-11-01/checklist-2026-11-02.md)。后端草稿降级未覆盖前端boot；普通搜索能力不等于研究native final_json已接；生产engine仍调用QA私有接口；旧one_click下游仍选实验库、金融HTML链接不存在并混入未标历史的preflight。此前测试/独审通过的局部根修保留，不能推广为整组全部完成。共享fallback、gen7内容标准化/金融范围、200家/事实/消费者等未完仍在原计划。此次不改源码/配置/生产库，不新发支线或凭证。
+**11/02原5/8/9/10四组软件整改已全部闭合：** 前端坏草稿、SDK研究能力失真、生产跨仓私有seam与旧工具错库/缺HTML/历史混淆均根修；原1.6确认冻结模型顺位，复用原SDK/lease/预算，已付fallback safe无CP窗口原owner/SDK E2E1P/656.77秒及非作者尾组28P通过。今日模型顺位/配置不再误阻原已付恢复，原scope和首cap跨模型/重启不重置。没有新客户端、预算/队列/许可证库，未新增真实收费；本轮工程通过不授金融准确性。完整范围和提交见[本轮结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/remediation-2026-11-02.md)，原6闭合/4部分是整改前快照。
 
 以下编号是各阶段的发现和当时处理经过；出现“正在/待验”等旧状态时，以根task_plan和11/02核对表为准，不把原始过程当最新结论。
 
@@ -44,7 +44,7 @@
 31. **查看状态不用重读一次派发许可。** control(inspect)已只读原工作状态，不再跑额外_registered_permissions子进程或创建内存preview。返回inspected、can_start=false及权限not_checked；start/resume/seal和批次仍按原当前检查。原1.4/1.5范围选择的policy/exposure读取保留，不冒称绕过全部owner验证。
 32. **共享final_json原先没有native搜索。** 原研究SDK只发聊天/函数工具，即使给出完整JSON也不产生真实搜索回执。新可选native分支复用原send_search_request的厂商请求、解析、预算与回执，并在同一record_response保存可恢复公开输出；普通工具会话/external默认不改。此接线正在原owner软件E2E及集中独审中，不能先宣称真实模型或金融验证通过。
 33. **导出目录存在不表示完整。** 原export先建目录后逐文件写，中断可留下残缺目录。新公共入口只在原export完整返回后同根rename发布，残缺candidate保留，按原CP恢复；不重发已付attempt。原SDK可用的MiMo base/plan URL也不能被旧聊天allowlist挡住，native沿原能力解析；原密钥回显拒绝同时沿用。这三处均已定向修复/独审，基础长软件E2E与尾修短回归分开报告。
-34. **可选精确路由接线不等于模型顺位降级。** 共享入口复用原批准route的现成client，尚未消费cascade的失败换模型逻辑；普通入口已有模型策略继续保留。当前只能称软件接线成立，原UI真实复核、共享fallback及金融纠错仍是未完成范围。
+34. **可选精确路由接线不等于模型顺位降级。** 当时共享入口只有精确route client。11/02已沿原1.6确认和账本补齐顺位并完成原owner/SDK中断恢复验收；当前本轮软件已闭合，真实金融纠错与全池资格仍不能从接线推断。
 
 
 35. **没消费者的预览票据仍在占状态。** ExecutionGateway.start早已不拿旧preview授权，但preview还生成ID并维护128项内存注册表；已删除这套死状态，保留兼容字段preview_id=null，启动仍实时核原owner。真正承载名单或准备选择的token不属于这个死表，不能一起误删。

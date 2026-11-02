@@ -12,17 +12,15 @@
 
 ## 现在从哪里继续
 
-**11/02逐项核对覆盖旧“整改已完成”表述：** 原10组中6组在原软件范围已闭合，5/8/9/10仍部分完成；[完整子项表](reviews/CODE-QUALITY-2026-11-01/checklist-2026-11-02.md)给出代码位置、真实反例与测试范围。先补前端坏草稿boot隔离、研究通道capability失真，再补旧one_click的两库透传/HTML/历史标签及engine残余私有调用；随后继续原共享fallback。都挂回原条目，不新发支线/新门。本次核对未改产品源码、配置或原库，原费用及gen6/gen7状态如下保持。
+**11/02原四组软件整改已收口：** 前端启动、SDK能力、公开seam、旧工具和显式1.6共享顺位全部根修并集中独审通过。最终safe无CP→原route paid-only恢复/原hydrate/普通owner冷复入E2E1P/656.77秒，原TEMP已清、0收费；不是真实供应商、全新进程keyless SDK构建、ACK或新UI三市场验收。详见[最终结果](reviews/CODE-QUALITY-2026-11-01/remediation-2026-11-02.md)。下一步按根Next Step回原小池内容质量，不重新开四组、不为旧gen7重发。
 
 **本次终态已读，不得重发：** [Dashboard NEW-6](reviews/DASHBOARD-NEW6-2026-11-01.md)最终候选定点复测通过，不代签其D00/E07。真实CATL IQS_11 gen7 comparison的`run-5a03133643e34e60b69d6b9b311b46c0`／`batch-a4a0514b51f04d9fa048f266500a7ec2`，work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`：首两段均0HTTP发送前失败，相关根修已集中独审；第三段仅1次真实HTTP，safe完成23:44:40.990609Z、进程23:44:57Z exit1。两条第一方原数已被原payload hash证明实送，FCF算术正确；但未登记metric_id年份后缀导致slot invalid/answer_semantic_contract_rejected。CP/ACK=None，尚不能签该代次缓存。勿重做prepare/confirm/apply、清计数或另建work绕开。
 
-普通policy11及prepare现已精确恢复，pack2/thinking/max32768、shared=null/refs=null，60包保留，doctor ready/无阻塞；**不要再次运行configure或release_unsent.py**。私有编排/原备份及final-ledger、ordinary-restored-check在`runs/quality-context-retest-2026-11-01/`。总账87HTTP/2053896micros，增1HTTP/US$0.029033；0在途/未结，但1个work仍leased/epoch2、attempt=response_available，不能写active=0。原safe/receipt/旧gen6四hash保持；下一步按根Next Step先补原清单遗漏，再继续原共享顺位接线；本次invalid明确保留，不改raw求绿、不放开任意financial.*、不重问已付请求。canonical投影不是小修，不为此扩建协议或增加后续开发门。金融分红范围等限制见[真实复核](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。
+普通policy11及prepare现已精确恢复，pack2/thinking/max32768、shared=null/refs=null，60包保留，doctor ready/无阻塞；**不要再次运行configure或release_unsent.py**。私有编排/原备份及final-ledger、ordinary-restored-check在`runs/quality-context-retest-2026-11-01/`。总账87HTTP/2053896micros，增1HTTP/US$0.029033；0在途/未结，但1个work仍leased/epoch2、attempt=response_available，不能写active=0。原safe/receipt/旧gen6四hash保持；下一步按根Next Step回原小池内容质量；本次invalid明确保留，不改raw求绿、不放开任意financial.*、不重问已付请求。canonical投影不是小修，不为此扩建协议或增加后续开发门。金融分红范围等限制见[真实复核](reviews/CASHFLOW-CORRECTION-2026-11-01/report.md)。
 
-此前已实施的局部整改经集中非作者审查通过；11/02核对确认尚有上述4组遗漏，不能把局部通过称为整组完成，详见[核源与整改报告](reviews/CODE-QUALITY-2026-11-01/report.md)。已付safe保全不再要求新发送委托/租约/手动分类覆盖仍有效；主体/anchor/actor撤权/原response和物理回执/CAS仍严格。普通与共享恢复都只保存原回答；混合范围明确原登记/本次恢复子集。原budget/provider材料仍须存在可绑定，不重造历史。原parser外层日期仅缺key时沿原inner提取，不猜新日期。
+本轮原四组已收口：共享原1.6确认/targets/binding5保留实际模型与原scope/cap，复用原SDK、lease/CAS和预算；已结明确拒绝才换下个模型，未知/内容错误不重问，已完成CP不重复恢复或计费。QA与SW按原successful_scan规则统一缓存时钟，资料日与原来源仍不改。配置见[实操](shared-engine-operations.md#共享扫描的模型顺位)。旧1.0–1.5、comparison、原已付记录保持原合同；本机普通配置不自动升级1.6。
 
-共享资源按真实packs派生；旧CP保持原task/证据/控件。多期指标/比较、UI锁/后端草稿故障/超时、公开owner投影/work快照、模块风险元数据/import环已修，旧生成器退役；前端boot、engine残余私有接口、研究capability及旧one_click子链仍按核对表补齐。早间59包/86HTTP是历史快照；当前60包/87HTTP及残余work状态以上段为准，不重做已交付对象。
-
-下一工作先按11/02核对表补原5/8/9/10遗漏，再按根计划推进回答质量与原共享自动跨模型fallback（尚未接，不能循环client冒签），然后200家可靠性、事实F05、TH/IN正式消费、认可名单扩容与完整配套；不新发支线、不造门。此次工程收尾不是全项目完成。
+本轮未扩专用人工work-decision为1.6，也不冒称金融质量、200家、事实F05、TH/IN或配套完成。这些仍按根计划推进，不新发支线、不造门。
 
 ## 本机运行与普通配置
 
@@ -50,16 +48,18 @@ IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算
 
 |仓库|当前已核实版本|
 |---|---|
-|IQS|软件及NEW-6交付db0b432已推origin/master；晚间终态文档的准确commit见Git最新记录|
-|StockQA|2e4f01b，正常hooks全过，已推origin/master|
+|IQS|本轮源码e20e1b5（含d168425/da0fbd5）已推origin/master；本文等文档后续commit见Git|
+|StockQA|58fb6ce（含d1d22cc），全部正常hooks通过，已推origin/master|
 |Company Lab|d1d92a2，本地提交、无remote|
 |Runtime Lab|5839ef4，本地提交、无remote，原codex/agent-run-02分支|
-|原UI|8fc9072，本地提交、无remote|
-|StockWiki|本组719520b已被其他harness合入381811e，五个本组文件未改；无remote。该HEAD为本次快照，后续以Git实际状态为准|
+|原UI|77d372c，本地提交、无remote|
+|StockWiki|dc857a5，本地提交、无remote；含原381811e，不清理其他writer运行数据|
 
 原UI补封透传冻结shared配置和controls；StockQA原recover分支仅重放，缺原safe拒绝新model/search。缺密钥不改变policy eligibility，按原response_available attempt精确route恢复。新pending仍受原发送准入；已有坏检查点不跳过，真实缺文件才回读尚存原pending。来源闭包拒失效ID改名，HTTP只有原投影合格才接受。
 
 ## 测试、审查与未完成边界
+
+本轮11/02四组以[最终报告](reviews/CODE-QUALITY-2026-11-01/remediation-2026-11-02.md)为准：QA授权216P/独审32P、执行独审79P与paid尾28P、SW/IQS合同独审105P、准备作者23P及非作者16P、UI独审7P/16子例；重叠不加总。两个原owner/SDK E2E分别491.08秒与656.77秒，最后一个才覆盖新增1.6无CP已付窗口，临时五仓副本自动移除。以下744秒/154P等是前一节点证据。
 
 本轮完整原owner/SDK E2E1P/744.04秒（仅vendor wire脚本化、0收费、TEMP移除），最后paid-only尾修用实际session/SQLite和原parser118P验证。最终完整UI执行模块154P，UI其它72P、题库87个不同测试、QA指标/原子快照117P、共享17P、Lab22P/Runtime6P；测试有重叠不加总。独审最终QA32P/1S与UI3P，关键过期override实际1P并非skip；其余详细命令/局限见progress。原701.62秒是前一节点证据，不冒签当前paid-only分支。
 

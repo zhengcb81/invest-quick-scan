@@ -1,6 +1,6 @@
 # 共享引擎运行与恢复实操（2026-10-25）
 
-本页描述当前公开接口。当前执行状态以根 `task_plan.md` 顶部 R1–R5 为准；10/18 实验文档是历史快照。研究导出、原工作检查点、封包完成、StockWiki 接收是四个不同结果，必须分别记录。
+本页描述当前公开接口。当前执行状态以根 `task_plan.md` 为准；10/18 实验文档是历史快照。研究导出、原工作检查点、封包完成、StockWiki 接收是四个不同结果，必须分别记录。
 
 ## 入口与分工
 
@@ -8,6 +8,27 @@
 - StockQA 的 `OwnerResearchServices` 使用原 owner、SDK、安全响应、请求/检索账本和标准答案存储。身份来自 StockWiki 公共主体/挂牌绑定，名称只用于显示。
 - `execute_shared_engine(...)` / `resume_shared_engine(...)` 产生研究导出；显式调用 `finalize_shared_engine(task, services, export_dir)` 才尝试写原标准答案检查点。
 - CLI `capabilities` 可独立使用；当前 CLI 不构造 owner。实际执行通过 Python API 消费原公开入口准备的服务，不从散装 JSON 或任意 callback 取得执行权。默认 CLI `report` 使用空的附加语义规则，只适用于原本未注入这类规则的产物；带 typed rules 的产物须用下述显式 Python 报告接口。
+
+## 共享扫描的模型顺位
+
+新扫描可以显式使用原 owner policy `1.6.0`，在原 `qa.quote_schema_version` 填 `1.6.0`，并增加 `ordered_route_targets`。下面只是并入原策略的字段片段；账户、route、模型、quota group 必须与 StockQA 生效模型策略逐项相同，首项还须与原 policy 的 `provider/model` 和 `qa.route_id/provider_config_ref` 相同。密钥继续只放环境变量，不改已经确认的原包。
+
+```json
+{
+  "ordered_route_targets": [
+    {"provider": "mimo", "model": "mimo-v2.6-pro", "route_id": "YOUR_PRO_ROUTE", "provider_config_ref": "YOUR_ACCOUNT", "quota_group": "YOUR_QUOTA_GROUP"},
+    {"provider": "mimo", "model": "mimo-v2.6-flash", "route_id": "YOUR_FLASH_ROUTE", "provider_config_ref": "YOUR_ACCOUNT", "quota_group": "YOUR_QUOTA_GROUP"}
+  ]
+}
+```
+
+修改原策略后，沿原 UI 重新准备新扫描，预览会冻结这一顺序，没有额外许可系统。旧 `1.0–1.5` 确认、比较和已付任务保持原模型。普通本机配置不会因为代码升级自动切到 `1.6` 或扩大预算。1.6 的范围是普通自动顺位、缓存与原回答恢复；既有专用人工 work-decision 协议仍按其支持版本使用，不把 1.6 冒充 comparison/continuation。
+
+StockQA 原 runner 先跳过没有本地客户端或原 SDK 未实现当前 `final_json` 研究通道的目标，这一步不发送请求。普通 `web_search` 可用不代表该研究通道可用。实际尝试只在原账本确认并已结算的 401/403、404、已识别 429 拒绝后向下一目标继续。未知结果、超时、5xx、收到但内容不合格、低分，都不会自动换模型重问。
+
+每个目标保存自己的不可变 task、实际 route/账户/模型和原响应。前面完成的题目写原 CP 并排除于后续提问，只有剩余原题继续。原公司 scope 的顺序与首个 task 请求上限固定，换模型、改 UI 设置或重启均不重新获得额度；物理 pack 在原预算事务内只计一次。原共享费用、总请求与并发限制继续原子生效，不把各目标余额相加。
+
+最近成功扫描与资料日期分别保留。多模型缓存按批准顺序选择第一个原策略允许的新鲜观察，原模型、来源、日期不改；未决原工作优先按原 owner 处理。已付恢复只重放尚缺 CP 的实际收到回答的原 route/task，已保存的部分结果不重复恢复，更不重复付费；缺原 safe 则停止。
 
 ## 首次运行顺序
 
