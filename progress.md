@@ -2,6 +2,12 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 实施后独立复核
+
+由三名新独立agent核恢复、内容和运行/审查门；原39P/43.22秒与19P短模块通过，自有TEMP均清理。总控重跑原反例均绿，并亲复现历史基数forward年份误拒。另scope混入claimed但无attempt的未发送题使原完整3题paid包CP0，独立真实SQLite/parser组件反例已确认；不冒称真实owner事故。Company嵌套item metric证据缺失在独立组件被接受，生产IQS会拒，属于一致性缺口。详见[本次独检](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/post-implementation-independent-check.md)。
+
+本轮只检查并纠正文档，未改产品或收费调用；doctor ready，账本仍87HTTP/2053896micros、0在途/未结。现行B01/V18逐断言/逐文件清理残留已删，手册lease范围澄清，任务卡数/行为范围不变。最新开放项覆盖下方有界终验的外推，不撤销其原通过实例。
+
 ## 11/02 收敛实施完成
 
 普通/共享已付公开正文复用原SQLite journal，写入与receipt/费用同事务；normal/replay共用成员解释、逐成员事务。Company按题处理缺/坏/重复回答，共用binding_findings处理跨期与预测。IQS/QA兼容读规则有一致性测试，旧schema不改，资料日与预测期间分别核验。实现IQS209d9dc、QA9648aef已推原origin、Company0af8902无remote本地提交。

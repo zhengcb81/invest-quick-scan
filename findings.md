@@ -1,6 +1,6 @@
 # 当前发现、风险与决策
 
-**11/02最新实施结论：** 效果复核确认的普通/共享同HTTP缺题全拒、派生指标/计划/嵌套说明与事实展示误拒均已修；普通公开正文默认进入原journal，与共享统一。正常与恢复共用逐题解释，校验与自审共用binding_findings。独审通过，原冷CLI两个新进程0API，TEMP清理；详见[实施收口](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/implementation-convergence.md)。原记录未保留正文时无法追溯补造；金融质量和完整产品剩余范围仍未完成。
+**11/02最新独检结论：** 原实例修复有效，新39P/19P相关测试通过；但跨工作scope的未发送成员仍阻其他paid保存，forward从历史基数推导仍被年份门拒，Company独立组件嵌套指标引用闭包也不完整。它们是新增组合，尚未修，不用旧终验覆盖。本轮已对齐现行规格逐断言/逐文件清理要求及手册lease描述；详见[独立效果检查](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/post-implementation-independent-check.md)。
 
 
 核对于2026-11-02。历史发现[原字节保留](docs/implementation/archive/pwf-through-2026-10-31/README.md)；本页不重复进度日志。

@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-02本轮收敛已实施并通过集中独审：普通/共享复用原公开响应journal；同HTTP部分答复逐题保存和恢复；跨期、预测及说明/事实展示误拒已修。IQS209d9dc、QA9648aef（已推）、Company0af8902（无remote）为实现提交。原冷CLI1P/206.91秒，两个新进程0API恢复；相关软件测试与局限见[实施收口](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/implementation-convergence.md)。不把软件通过当金融内容或全项目完成。
+执行状态：2026-11-02实施后新独立复核：原同HTTP部分保存、默认公开journal及原跨期/计划/格式反例均通过；但新增跨工作scope中未发送题阻已付保存、历史基数推导forward仍误拒两项待修，另有Company嵌套指标引用闭包差异。原39P/19P短模块、新反例与范围见[独立效果检查](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/post-implementation-independent-check.md)。不宣称同类问题全部清零，完整产品仍按原范围推进。
 
 ## 当前结论
 
@@ -42,7 +42,7 @@
 
 ## Next Step
 
-**本轮逐题持久化和恢复已收口，回到既有小池内容质量与事实主线。** 普通/共享已付正文沿原journal耐久保存，正常/恢复共用成员解释，已确认的跨期/计划/格式误拒已修。下一步固定日常配置，定向核查已有回答的关键原数和会计范围，补真实事实与查询使用链，不重问已完成gen7、不再扩大支线或增加许可。200家、消费者与配套仍依下方原范围推进。
+**下一步集中修本轮两个残留组合：按工作状态隔离普通paid恢复，以及区分历史输入和预测输出期间。** 同时补Company嵌套指标引用与生产规则一致性；保持已修同HTTP逐题保存/原journal及历史答案。见[最新独检](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/post-implementation-independent-check.md)。完成后回原小池内容质量和事实链，不新开支线、加门禁或重问gen7。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
