@@ -135,6 +135,36 @@ def test_production_fact_semantics_validate_nested_metric_references(original):
         callback(invalid, qid)
 
 
+@pytest.mark.parametrize("layer", ["answer", "metric", "nested_metric"])
+@pytest.mark.parametrize("basis", ["current", "forward"])
+@pytest.mark.parametrize("dates", [("2027-01-01", None), (None, "2027-12-31"),
+                                  ("2025-12-31", "2025-01-01"), (None, None)])
+def test_period_endpoint_rules_are_consistent_at_all_answer_layers(original, layer, basis, dates):
+    task, qid, body, context = original
+    if layer == "answer":
+        row = body
+    else:
+        row = metric()
+        if layer == "nested_metric":
+            task.questions[0]["question"].update(response_kind="fact", relations=["customer"], max_items=20)
+            fact = item()
+            fact["metrics"] = [row]
+            body.update(response_kind="fact", status="answered", score=None, items=[fact])
+        else:
+            body["metrics"] = [row]
+    row.update(basis=basis, period_start=dates[0], period_end=dates[1])
+    before = copy.deepcopy(body)
+    callback = engine._frozen_answer_semantics(task, context)
+    reversed_dates = all(dates) and dates[0] > dates[1]
+    future_actual = basis != "forward" and any(d and d > task.raw["information_cutoff"] for d in dates)
+    if reversed_dates or future_actual:
+        with pytest.raises(ValueError):
+            callback(body, qid)
+    else:
+        callback(body, qid)
+    assert body == before
+
+
 @pytest.mark.parametrize("field", ["answer_schema_sha256", "metric_registry_sha256"])
 def test_resource_digest_is_provenance_not_whole_answer_permission(original, field):
     task, qid, body, context = original

@@ -903,6 +903,7 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
     the result reports the entire original task scope, never full completion.
     """
     from src.utils.quick_scan_owner_research import OwnerResearchServices
+    from src.utils.quick_scan_work_store import WorkConflictError, LeaseFencedError
 
     if not isinstance(services, OwnerResearchServices) or services.task is not task:
         raise SharedEngineRejected("original_owner_research_services_required")
@@ -988,24 +989,41 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
                 or checkpoint["payload"]["provenance"].get("provider_attempt_id") != native["attempt_id"]
             ):
                 raise SharedEngineRejected("finalization_existing_checkpoint_conflict")
-        plan.append((qid, body, work_id, reference, checkpoint))
+        plan.append((qid, body, work_id, reference, checkpoint, attempt_id, native["attempt_id"]))
     # Inspect every selected original member/answer before the first save.
     # The native commit then independently rechecks lease, context, receipt and
     # schema atomically. This never grants or renews a work item.
-    for qid, _, _, reference, checkpoint in plan:
-        if checkpoint is None:
-            services.restore_finalization_handle(qid, native_reference=reference)
-    result, reused = [], []
-    for qid, body, work_id, reference, checkpoint in plan:
+    result, reused, errors, unsaved = [], [], [], []
+    for qid, body, work_id, reference, checkpoint, attempt_id, native_id in plan:
         # The original service also repairs a prior checkpoint->seal crash.
         # Its idempotent branch validates the same full answer and receipt and
         # reseals through the native lifecycle, without another lease or send.
-        services.commit_standard_answers([copy.deepcopy(body)], native_reference=reference)
+        existed = checkpoint is not None
+        stage, failed = "restore", False
+        try:
+            if not existed:
+                services.restore_finalization_handle(qid, native_reference=reference)
+            stage = "commit"
+            services.commit_standard_answers([copy.deepcopy(body)], native_reference=reference)
+        except (WorkConflictError, LeaseFencedError) as error:
+            failed = True
+            errors.append(dict(question_id=qid, work_item_id=work_id, stage=stage,
+                               error_type=type(error).__name__))
+        checkpoint = services.store.get_answer_checkpoint(work_id)
         if checkpoint is None:
-            checkpoint = services.store.get_answer_checkpoint(work_id)
-            if checkpoint is None:
-                raise SharedEngineRejected("finalization_native_checkpoint_not_persisted")
-        else:
+            if failed:
+                unsaved.append(qid)
+                continue
+            raise SharedEngineRejected("finalization_native_checkpoint_not_persisted")
+        standard = services.store.get_standard_answer(work_id)
+        if (checkpoint["attempt_id"] != attempt_id or not isinstance(standard, dict)
+            or standard.get("answer") != body
+            or checkpoint["payload"]["provenance"].get("provider_attempt_id") != native_id):
+            if failed:
+                unsaved.append(qid)
+                continue
+            raise SharedEngineRejected("finalization_existing_checkpoint_conflict")
+        if existed:
             reused.append(qid)
         delivery = services.store.get_result_delivery(work_id)
         result.append(dict(question_id=qid, work_item_id=work_id, native_reference=reference,
@@ -1013,12 +1031,14 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
                            delivery_state=None if delivery is None else delivery["state"]))
     pending = [row["question_id"] for row in result if row["delivery_state"] not in {"ready", "delivered"}]
     result = dict(protocol="iqs.shared-engine-finalization/1.0.0", run_id=run["run_id"],
-                status="checkpointed_delivery_pending" if pending else "completed",
-                checkpoint_status="completed", pending_delivery_question_ids=pending,
+                status="partial" if unsaved else ("checkpointed_delivery_pending" if pending else "completed"),
+                checkpoint_status="partial" if unsaved else "completed", pending_delivery_question_ids=pending,
+                finalization_errors=errors, unfinalized_question_ids=unsaved,
+                whole_task_finalized=not unsaved and not pending,
                 checkpoints=result, reused_question_ids=reused,
                 new_model_http=0, financial_accuracy_assessed=False)
     if selected_ids is not None:
-        remaining = [qid for qid in task.question_ids if qid not in selected_ids]
+        remaining = [qid for qid in task.question_ids if qid not in selected_ids or qid in unsaved]
         result.update(selected_question_ids=selected_ids,
                       selected_question_count=len(selected_ids),
                       original_question_count=len(task.question_ids),

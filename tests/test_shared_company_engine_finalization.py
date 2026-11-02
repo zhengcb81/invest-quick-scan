@@ -38,7 +38,7 @@ class MapperOnlyServices(OwnerResearchServices):
             get_attempt_response=self._response,
             get_answer_checkpoint=lambda w: copy.deepcopy(self.checkpoints.get(w)),
             get_standard_answer=lambda w: copy.deepcopy(self.standards.get(w)),
-            get_result_delivery=lambda w: {"state": "ready"} if w in self.checkpoints and not getattr(self, "delivery_pending", False) else None,
+            get_result_delivery=lambda w: {"state": "ready"} if w in self.checkpoints and not getattr(self, "delivery_pending", False) and w not in getattr(self, "delivery_pending_work_ids", set()) else None,
             get_external_context_use=lambda a: {"proof": {"use_id": "tampered"}} if self.proof_bad else None,
         )
     def _assert_registered_inputs(self, *, check_current=True):
@@ -177,6 +177,49 @@ def test_saved_checkpoints_with_failed_seal_do_not_claim_finalization_complete(b
     assert completed["new_model_http"] == 0 and services.saves == task.question_ids
 
 
+@pytest.mark.parametrize("stage", ["restore", "commit", "seal", "after_success"])
+@pytest.mark.parametrize("error_name", ["WorkConflictError", "LeaseFencedError"])
+def test_work_local_finalization_conflict_preserves_other_members(bound, stage, error_name):
+    from src.utils import quick_scan_work_store as native_store
+    task, _, run = bound
+    task.question_ids.append("IQS_07")
+    run["slots"].append(dict(question_id="IQS_07", execution_status="completed",
+        answer=answer("IQS_07"), attempt_refs=["stockqa:native_IQS_07"]))
+    services = MapperOnlyServices(task)
+    restore, commit = services.restore_finalization_handle, services.commit_standard_answers
+    fault = {"enabled": True}
+    error_type = getattr(native_store, error_name)
+
+    def restore_member(qid, **kwargs):
+        if fault["enabled"] and stage == "restore" and qid == "IQS_06":
+            raise error_type("synthetic member changed")
+        return restore(qid, **kwargs)
+
+    def commit_member(bodies, **kwargs):
+        if fault["enabled"] and stage in {"commit", "seal", "after_success"} and bodies[0]["question_id"] == "IQS_06":
+            if stage in {"seal", "after_success"}:
+                commit(bodies, **kwargs)
+                services.delivery_pending_work_ids = {"WORK_IQS_06"} if stage == "seal" else set()
+            raise error_type("synthetic member changed")
+        return commit(bodies, **kwargs)
+
+    services.restore_finalization_handle, services.commit_standard_answers = restore_member, commit_member
+    result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
+    assert {"IQS_05", "IQS_07"} <= set(services.saves)
+    assert result["finalization_errors"][0]["question_id"] == "IQS_06"
+    assert (result["status"] == "completed") == (stage == "after_success")
+    assert result["whole_task_finalized"] == (stage == "after_success")
+    assert result["unfinalized_question_ids"] == ([] if stage in {"seal", "after_success"} else ["IQS_06"])
+    assert result["pending_delivery_question_ids"] == (["IQS_06"] if stage == "seal" else [])
+    assert result["new_model_http"] == 0
+    before = copy.deepcopy(services.checkpoints)
+    fault["enabled"], services.delivery_pending_work_ids = False, set()
+    again = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
+    assert again["status"] == "completed" and again["whole_task_finalized"]
+    assert all(services.checkpoints[k] == v for k, v in before.items())
+    assert services.saves.count("IQS_05") == services.saves.count("IQS_07") == 1
+
+
 def test_native_bare_single_answer_preserves_all_fields():
     body = answer("IQS_05")
     engine._native_final_answer({"final_content": json.dumps(body), "tool_calls": None}, "IQS_05", body)
@@ -201,7 +244,7 @@ def test_native_bare_or_pack_rejects_conflicting_originals(case):
 def test_native_answer_replays_original_citation_ids_without_mutating_inputs():
     from iqs_company_agent_lab.answers import check_citation_closure
     from iqs_company_agent_lab.evidence import EvidenceBoard
-    body = dict(answer("IQS_05"), evidence=[{"id": "model-local-id", "url": "https://example.invalid/original"}],
+    body = dict(answer("IQS_05"), evidence=[{"id": "model-local-id", "url": "https://example.invalid/original", "claim": "Synthetic original source."}],
                 metrics=[{"evidence_ids": ["model-local-id"]}], items=[{"evidence_ids": ["model-local-id"]}])
     board = EvidenceBoard(2000)
     board_before = copy.deepcopy(board.snapshot())

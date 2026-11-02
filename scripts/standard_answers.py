@@ -136,7 +136,9 @@ def validate_content(
         raise ValueError('fact answer needs structured rows; unknown is not an empty asserted list')
     if answer['information_as_of'] and answer['information_as_of'] > cutoff:
         raise ValueError('answer information after cutoff')
-    if answer['period_end'] and answer['period_end'] > cutoff and answer['basis'] != 'forward':
+    if answer['basis'] != 'forward' and any(
+        answer[key] and answer[key] > cutoff for key in ('period_start', 'period_end')
+    ):
         raise ValueError('future historical answer period')
     if answer['period_start'] and answer['period_end'] and answer['period_start'] > answer['period_end']:
         raise ValueError('reversed period')
@@ -171,7 +173,9 @@ def validate_content(
             raise ValueError('other unit needs definition')
         if m['period_start'] and m['period_end'] and m['period_start'] > m['period_end']:
             raise ValueError('reversed metric period')
-        if m['period_end'] and m['period_end'] > cutoff and m['basis'] != 'forward':
+        if m['basis'] != 'forward' and any(
+            m[key] and m[key] > cutoff for key in ('period_start', 'period_end')
+        ):
             raise ValueError('future historical metric')
     digest(answer)  # Reject NaN/Infinity that JSON parsers may otherwise accept.
     return answer
