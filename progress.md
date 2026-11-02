@@ -2,7 +2,17 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 收敛实施完成
+
+普通/共享已付公开正文复用原SQLite journal，写入与receipt/费用同事务；normal/replay共用成员解释、逐成员事务。Company按题处理缺/坏/重复回答，共用binding_findings处理跨期与预测。IQS/QA兼容读规则有一致性测试，旧schema不改，资料日与预测期间分别核验。实现IQS209d9dc、QA9648aef已推原origin、Company0af8902无remote本地提交。
+
+作者IQS最终72P+8subtests/12.49秒；Company94P/4.97秒及补事实21条后新模块10P；QA70P/51.14秒。非作者Company19P、QA35P/48.37秒与预测尾4P/0.93秒均过，集中独审无开放阻断。测试有重叠不加总。冷CLI原五仓隔离1P/206.91秒、两个新进程在无当日模型/预算配置下保原CP/响应，0API、TEMP removed；副本早于QA预测尾修，该尾项由独立4P覆盖，不混称同次全链。既有schema迁移测试陈旧fixture已修，不改生产迁移逻辑；QA正常hooks含101源码mypy通过，未skip。所有自有TEMP已清理。
+
+上轮原内容反例总控亲跑现均通过；原UI重载只核验精确PID/创建时间/argv，未改配置或重新问模型。真实账本仍87HTTP/2053896micros、0在途/未结。详情及局限见[本节点实施](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/implementation-convergence.md)。这是软件范围完成，金融内容、规模/事实/消费者仍按根计划推进，无新施工包或门禁。
+
 ## 11/02 效果复核与整体收敛判断（审查完成，新增问题待修）
+
+**后续实施已启动：** 用户要求按收敛方案直接修复。QA单writer统一原公开响应journal及普通逐题恢复，Company单writer统一槽/语义校验，总控负责IQS兼容读、跨层验证与PWF。独立review_convergence同步核设计并在最终代码上审查。IQS首轮相关测试72P+8subtests/14.93秒，自有TEMP已清理；其他部分仍实施中，尚未签完成，不新增收费请求。
 
 按用户要求重新核原UI、Git、代码和证据，并由三个独立agent分别核恢复、内容和整体结构。原doctor就绪、新旧gen6/gen7观察均可读，原响应hash/普通配置不变，账本仍87HTTP/2053896micros、0在途/未结。IQS相关3模块69P+5subtests/34.76秒；QA原3模块独立28P/31.97秒，自有TEMP清理、禁网去密钥。CodeGraph命中历史副本/外仓索引滞后后读取已知实际源；外仓Git初次沙箱只读拒绝后升级只读完成，没有改代码。
 
