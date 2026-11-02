@@ -99,6 +99,42 @@ def test_original_callback_preserves_valid_answer_and_frozen_inputs(original):
     callback(body, qid)  # Original construction snapshot; no current-question drift.
 
 
+def test_production_semantics_accept_forecast_derived_from_historical_input(original):
+    task, qid, body, context = original
+    body.update(basis="forward", period_start="2027-01-01", period_end="2027-12-31",
+                summary="Synthetic analyst scenario; assumptions are not realized revenue.")
+    body["evidence"][0]["claim"] = "Synthetic historical 2025 revenue: 120."
+    forecast = metric()
+    forecast.update(value=145.2, unit="currency", currency="CNY", basis="forward",
+                    period_start="2027-01-01", period_end="2027-12-31",
+                    definition="Analyst assumption: historical 120 * 1.1 * 1.1; not company guidance.")
+    body["metrics"] = [forecast]
+    callback = engine._frozen_answer_semantics(task, context)
+    before = copy.deepcopy(body)
+    callback(body, qid)
+    assert body == before
+    invalid = copy.deepcopy(body)
+    invalid["metrics"][0]["basis"] = "current"
+    with pytest.raises(ValueError, match="future historical metric"):
+        callback(invalid, qid)
+
+
+def test_production_fact_semantics_validate_nested_metric_references(original):
+    task, qid, body, context = original
+    task.questions[0]["question"].update(response_kind="fact", relations=["customer"], max_items=20)
+    nested = item()
+    nested["metrics"] = [metric()]
+    body.update(response_kind="fact", status="answered", score=None, items=[nested], metrics=[])
+    callback = engine._frozen_answer_semantics(task, context)
+    before = copy.deepcopy(body)
+    callback(body, qid)
+    assert body == before
+    invalid = copy.deepcopy(body)
+    invalid["items"][0]["metrics"][0]["evidence_ids"] = ["MISSING"]
+    with pytest.raises(ValueError, match="numeric metric missing evidence binding"):
+        callback(invalid, qid)
+
+
 @pytest.mark.parametrize("field", ["answer_schema_sha256", "metric_registry_sha256"])
 def test_resource_digest_is_provenance_not_whole_answer_permission(original, field):
     task, qid, body, context = original
