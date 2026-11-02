@@ -43,6 +43,9 @@ PROFILE_EXPOSURE_SCHEMA = json.loads(
         Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.5.schema.json"
     ).read_bytes()
 )
+ORDERED_SCHEMA = json.loads(
+    (Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.6.schema.json").read_bytes()
+)
 from query_vendor_contract import SCHEMA as VENDOR_QUERY_SCHEMA
 
 REGISTRY = Registry().with_resources(
@@ -55,6 +58,7 @@ REGISTRY = Registry().with_resources(
             TARGET_SCHEMA,
             EXPOSURE_SCHEMA,
             PROFILE_EXPOSURE_SCHEMA,
+            ORDERED_SCHEMA,
             query.SCHEMA,
             VENDOR_QUERY_SCHEMA,
         )
@@ -89,9 +93,14 @@ def _shape(
     control_dialect=False,
     target_dialect=False,
     exposure_dialect=False,
-    profile_exposure_dialect=False
+    profile_exposure_dialect=False,
+    ordered_dialect=False,
 ):
     if kind != "OwnerState":
+        ordered_dialect = isinstance(value, dict) and value.get("protocol") in {
+            "iqs.refresh_request/1.6.0", "stockwiki.refresh_preview/1.6.0",
+            "stockwiki.refresh_owner_policy/1.6.0",
+        }
         profile_exposure_dialect = isinstance(value, dict) and value.get("protocol") in {
             "iqs.refresh_request/1.5.0",
             "stockwiki.refresh_preview/1.5.0",
@@ -134,6 +143,8 @@ def _shape(
             )
         )
     )
+    if ordered_dialect:
+        schema = ORDERED_SCHEMA
     try:
         if len(module_contract.canonical_bytes(value)) > MAX_BYTES:
             raise ValueError("refresh_input_too_large")
@@ -156,6 +167,7 @@ def validate_request(request):
             "iqs.refresh_request/1.1.0",
             "iqs.refresh_request/1.4.0",
             "iqs.refresh_request/1.5.0",
+            "iqs.refresh_request/1.6.0",
             "iqs.refresh_request/1.2.0",
             "iqs.refresh_request/1.3.0",
         }
@@ -177,9 +189,39 @@ def validate_request(request):
         raise ValueError("refresh_request_before_query")
 
 
+def validate_route_targets(targets, *, provider=None, model=None):
+    """Validate a frozen ordered choice, never authenticate or dispatch it."""
+    try:
+        Draft202012Validator(
+            {"$ref": ORDERED_SCHEMA["$id"] + "#/$defs/OrderedRouteTargets"},
+            registry=REGISTRY, format_checker=FormatChecker(),
+        ).validate(targets)
+    except (ValidationError, TypeError, ValueError, RecursionError) as error:
+        raise ValueError("refresh_ordered_targets_invalid") from error
+    ids, accounts = set(), set()
+    for target in targets:
+        identity = (target["provider_config_ref"], target["model"])
+        if (target["route_id"] in ids or identity in accounts
+            or any(value != value.strip() for value in target.values())):
+            raise ValueError("refresh_ordered_targets_ambiguous")
+        ids.add(target["route_id"])
+        accounts.add(identity)
+    first = targets[0]
+    if ((provider is not None and first["provider"] != provider)
+        or (model is not None and first["model"] != model)):
+        raise ValueError("refresh_ordered_primary_mismatch")
+    return copy.deepcopy(targets)
+
+
 def validate_policy(policy):
     """Validate owner-configured structure, never a consumer permission claim."""
     _shape(policy, "OwnerPolicy")
+    if policy["protocol"] == "stockwiki.refresh_owner_policy/1.6.0":
+        targets = validate_route_targets(policy["ordered_route_targets"],
+                                         provider=policy["provider"], model=policy["model"])
+        if any(targets[0][key] != policy["qa"][key]
+               for key in ("route_id", "provider_config_ref")):
+            raise ValueError("refresh_ordered_primary_mismatch")
     if type(policy["policy_version"]) is not int or type(policy["ttl_hours"]) is not int:
         raise ValueError("refresh_integer_required")
     dynamic_routes = policy.get("route_resolution", "explicit_routes") == "current_owner_members"
@@ -224,7 +266,11 @@ def _check_state(request, state):
         target_dialect=targeted,
         exposure_dialect=request["protocol"] == "iqs.refresh_request/1.4.0",
         profile_exposure_dialect=request["protocol"] == "iqs.refresh_request/1.5.0",
+        ordered_dialect=request["protocol"] == "iqs.refresh_request/1.6.0",
     )
+    if request["protocol"] == "iqs.refresh_request/1.6.0":
+        validate_route_targets(state["ordered_route_targets"],
+                               provider=state["provider"], model=state["model"])
     numbers = [
         state["policy_version"],
         state["ttl_hours"],
@@ -301,6 +347,9 @@ def _check_state(request, state):
         if observed != requested:
             raise ValueError("refresh_owner_control_scope_mismatch")
     source_filter = request["source_query"]["payload"]["model_filter"]
+    if (request["protocol"] == "iqs.refresh_request/1.6.0"
+        and len(state["ordered_route_targets"]) > 1 and source_filter is not None):
+        raise ValueError("refresh_ordered_models_require_unfiltered_capture")
     if source_filter is not None and source_filter != {
         "provider": state["provider"],
         "model_resolved": state["model"],
@@ -415,6 +464,8 @@ def create_preview(request, owner_state, *, created_at, expires_at):
         dispatch_started=False,
         API_requests=0
     )
+    if request["protocol"] == "iqs.refresh_request/1.6.0":
+        result["ordered_route_targets"] = copy.deepcopy(state["ordered_route_targets"])
     result["preview_id"] = "rv1_" + digest(result)
     _shape(result, "Preview")
     return result

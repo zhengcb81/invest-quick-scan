@@ -11,14 +11,19 @@ PROTOCOL='iqs.refresh_validation/1.0.0'
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input',type=Path,required=True)
-    parser.add_argument('--operation',choices=('request','policy','preview','validate-preview'),required=True)
+    parser.add_argument('--operation',choices=('request','policy','preview','validate-preview','targets'),required=True)
     args=parser.parse_args(argv)
     try:
         with args.input.open('rb') as handle:raw=handle.read(contract.MAX_BYTES+1)
         if len(raw)>contract.MAX_BYTES:raise ValueError('refresh_input_too_large')
         value=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=module_contract._unique_object)
         if not isinstance(value,dict):raise ValueError('refresh_object_required')
-        if args.operation=='policy':
+        if args.operation=='targets':
+            if set(value)-{'ordered_route_targets','provider','model'} or 'ordered_route_targets' not in value:
+                raise ValueError('refresh_input_fields')
+            result=contract.validate_route_targets(value['ordered_route_targets'],
+                provider=value.get('provider'),model=value.get('model'))
+        elif args.operation=='policy':
             if set(value)!={'policy'}:raise ValueError('refresh_input_fields')
             result=contract.validate_policy(value['policy'])
         elif args.operation=='request':
