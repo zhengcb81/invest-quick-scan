@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-02完整链路混合状态/中断重启/重复接续整改完成，独审通过。IQSe24c359、QA4cffabc已推原origin；QA61P、共享36P、非作者定向复核及原SDK两个新冷进程1P/323.82秒均过，0新API、自有TEMP清理。原UI已加载修复、配置/历史回答/费用不变；详见[本轮全链整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)。完整产品未完范围仍如下表。
+执行状态：2026-11-02远端CI连续失败根修完成并经独审。StockQAee8f49a/0154726已推；最终0154726的GitHub CI41523660779与Documentation41523660825均success（构建及原发布均过）。本地完整默认305P/105.10秒、独审与新鲜venv文档构建通过，自有TEMP清理、0API；没有关闭规则/新增门禁，详见[CI根修](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。上轮完整链路保持完成。
 
 ## 当前结论
 
@@ -24,6 +24,7 @@
 |题库与组合|已实现并接UI|48评分模块/222题；另61信息题。所有公司基础36题=核心24+杜邦7+五力5，数量派生，非硬编码24上限|
 |身份/名单/比较/UI|原UI已接|215实体；手动增删/恢复、TXT/CSV审阅、模型/时间对比已接。并非全池有答案|
 |原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；11/01 gen7的1次真实HTTP及11/02零API恢复/入库见本节点终验。入口`http://127.0.0.1:8766/`|
+|远端持续集成|最终master已绿|StockQA0154726的CI41523660779与Documentation41523660825均success；本地normal hooks不等于远端通过，节点使用既有default短包，不添加每commit重门|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -42,7 +43,7 @@
 
 ## Next Step
 
-**本轮保存/补封/入库/回执混合状态及重启接续已收口，回原小池内容质量与事实主线。** 定向核原数与会计范围，补真实事实/查询/研究使用链。不重问gen7、不重做相同接续实例、不扩支线或加门禁。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。
+**本轮CI与完整链路整改均已收口，回原小池内容质量与事实主线。** 定向核原数与会计范围，补真实事实/查询/研究使用链。不重问gen7、不重做相同接续实例、不扩支线或加门禁。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。

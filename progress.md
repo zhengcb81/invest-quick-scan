@@ -2,6 +2,16 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 远端CI连续失败根修完成
+
+亲读StockQA三代实际GitHub日志：black/isort/mypy过、Bandit3处B608阻断pytest。源改固定SQL/绑定JSON列表或固定UNION ALL，不加nosec/关规则；新增实际SQLite11例并入既有daily包。完整default随后实际5F/286P揭露陈旧同值重复负例4项和默认预算绑定未捕获请求指纹导致公开正文落盘失败1项。改真冲突负例+同值CP正例，任何原work/pack/budget绑定共用自动hash，sync/async默认均实际post/journal/费用一次通过，未绑定legacy保持。实现ee8f49a正常hooks过已推；完整default305P/54.73秒（总105.10秒）、非作者SQL/native27P/38.03秒及小尾32P/11.07秒，重叠不加总。
+
+ee8f49a真实远端CI41522697950通过302P/3个Windows cmd平台skip/33.78秒；同提交Documentation失败源于Python3.10解析mkdocstrings1.0.6+pymdown12.3接口不兼容。按上游及官方PyPI核不抬Python基线，pyproject docs5项与原lock固定兼容组合，修复0154726两文件正常hooks过已推。全新自有TEMPvenv安装+pipcheck+Highlighter+完整离线MkDocs11.65秒通过（wrapper109.56秒），API HTML存在；本机3.13不代签3.10。非作者核源码/实际日志与依赖兼容通过，无开放问题。
+
+**最终远端亲核：** 0154726的CI41523660779、Documentation41523660825均completed/success；文档Build及Deploy to GitHub Pages两job均success，实际工作流Python3.10。旧红记录保留，不重跑旧提交伪改历史。详情/链接见[CI根修报告](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。先前只核hooks/推送而未追远端是本线程遗漏，README和交接已纠正；不增加hook或新凭证。
+
+所有测试用自有隔离源码副本、去密钥；实际pip安装仅官方依赖，venv/下载和构建文件结束清理，无真实公司文件或收费API/生产DB/配置变动。首guard误阻Windows socketpair后只允许loopback；首组件copy漏IQS纯合同依赖后独立27例覆盖，不算产品失败。IQS本轮仅PWF/报告/交接，原独立README及其他仓活动writer保留。回根Next Step既有主线。
+
 ## 11/02 保存—补封—入库—回执完整链路再复查完成
 
 根修5组：补封limit被旧匹配ready/不可修复项占用而后项饥饿；共享固定staging/直接checkpoint写的中断窗口；迟到worker复活终态与全entry确认后本地标记中断；远端stored ACK被缺release/cache阻挡；派生内容地址缓存半截不能重建。沿原Store有限ID快照、原codec原子发布、原接收库/StockQA ACK逐项验证和原字节缓存修复，不加调度器/许可/数据库或核查回执。实现IQSe24c359（8文件）、QA4cffabc（4文件），均已推原origin，QA正常hooks过。

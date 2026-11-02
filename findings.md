@@ -1,5 +1,7 @@
 # 当前发现、风险与决策
 
+**11/02远端CI已根修并实核通过：** 连续失败是StockQA原B608动态SQL，CI阻断后另查出同值重复旧断言及普通预算默认缺request hash的真实落盘漏洞；统一静态参数SQL、native绑定自动hash、正反测试和daily11例。文档新鲜解析另有插件不兼容，已固定支持3.10的5件版本。实现ee8f49a/0154726已推，最终CI41523660779与Documentation41523660825（build/deploy）均success。本地305P、非作者27/32及全新venv构建过，0API/TEMP清；normal hooks≠远端CI，曾漏核真实结果已纠正，不把Bandit加回每commit或新增门禁。见[CI根修](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。
+
 **11/02本次完整链路再复查已修复并通过独审：** limit按实际补封进度计数、有限候选ID快照；原codec原子发布避免中断损毁；终态job不复活/全entry只补本地标记；原storedACK先验证承接；派生cache仅凭原精确字节完整sha重建。实现IQSe24c359/QA4cffabc已推；原SDK两新进程冷恢复1P/323.82秒、0API、TEMP清，原服务/配置/历史/费用保持。原已发布history损坏仍报错，未新增审批或回执。详见[本轮全链整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)，不是金融/规模全产品完成。
 
 **11/02上一节点接续整改结论：** 已修已付journal被无关diagnostic挡住、公共batch补封局部错误、交付resume重复全scope预检、缓存引用误计partial及ACK逐项接续遗漏。原authority目标匹配共用nativehelper；无新配置许可。123P整合、独审与原SDK冷恢复0API均过，见[接续整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/persistence-chain-remediation.md)。不把软件通过当金融或全产品完成。

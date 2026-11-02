@@ -1,6 +1,6 @@
 # 当前接手说明
 
-**11/02最新接手状态：** 新一轮[完整链路混合/重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)源码IQS e24c359、QA4cffabc均已独审通过并推原origin。已修limit饥饿、迟到job worker、checkpoint中断发布、storedACK先恢复和派生cache半截。原SDK两个新冷进程1P/323.82秒、0API、自有TEMP清理，原UI已加载修复、doctor ready；本轮完成，回根计划既有内容/事实主线。无需重问gen7、改原配置或新增许可。
+**11/02最新接手状态：** [CI连续失败根修](reviews/CI-ROOT-CAUSE-2026-11-02/report.md)已完成，StockQAee8f49a/0154726推原origin；最终CI41523660779与Documentation41523660825均success，文档实际构建/发布与Python3.10都经远端核。原[完整链路混合/重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)保持完成。下一步回根内容/事实主线，不重问gen7、改配置或新增许可。
 
 
 更新于2026-11-02。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
@@ -54,13 +54,17 @@ IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算
 |仓库|本次复核的实际基线（不等于全仓新验收）|
 |---|---|
 |IQS|e24c359完整链路源码/测试，PWF与文档最终提交见Git，已推原origin/master|
-|StockQA|4cffabc，正常hooks通过并推原origin/master，tracked clean|
+|StockQA|0154726（ee8f49a源修+文档依赖兼容），正常hooks/完整default/最终远端CI与文档成功，已推原origin/master|
 |Company Lab|639582a，本地提交、无remote，tracked clean|
 |Runtime Lab|5839ef4，本地提交、无remote，原codex/agent-run-02分支|
 |原UI|fa7ceb6，本地提交、无remote|
 |StockWiki|本轮只读看到9e8e308后又变f52f257；上轮本线程提交e5a1be6仍在历史。有活动writer，不覆写、不把本轮只读检查当新HEAD全仓验收|
 
 原UI补封透传冻结shared配置和controls；StockQA原recover分支仅重放，缺原safe拒绝新model/search。缺密钥不改变policy eligibility，按原response_available attempt精确route恢复。新pending仍受原发送准入；已有坏检查点不跳过，真实缺文件才回读尚存原pending。来源闭包拒失效ID改名，HTTP只有原投影合格才接受。
+
+## 工程检查如何交接
+
+日常每commit继续轻量hooks；一个实现节点使用StockQA原 `python -B scripts/checks.py` 默认短包（black/isort/mypy/Bandit/daily pytest/smoke）。不要用正常hooks或push成功冒称CI通过：查看对应commit的GitHub Actions真实结论，pending明确写pending。README/pyproject变化还可能触发Documentation，须看实际build/deploy结果；不重跑旧commit消除历史红。只有新变化、失败或覆盖问题才追加相关测试，不机械重跑小时full。
 
 ## 测试、审查与未完成边界
 
