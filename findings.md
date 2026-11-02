@@ -1,6 +1,6 @@
 # 当前发现、风险与决策
 
-**11/02最新独检结论：** 原实例修复有效，新39P/19P相关测试通过；但跨工作scope的未发送成员仍阻其他paid保存，forward从历史基数推导仍被年份门拒，Company独立组件嵌套指标引用闭包也不完整。它们是新增组合，尚未修，不用旧终验覆盖。本轮已对齐现行规格逐断言/逐文件清理要求及手册lease描述；详见[独立效果检查](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/post-implementation-independent-check.md)。
+**11/02最新整改结论：** 混合scope无响应工作阻paid保存、历史输入forward误拒、Company嵌套指标引用遗漏均完成有界修复并独审。分类与错误按原work/pack隔离；共用指标遍历贯穿引用/alias/期间/自审；预测输入不需未来已有实际披露。详见[三个残留整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/three-residuals-remediation.md)。不把组件测试当金融准确性或全项目完成。
 
 
 核对于2026-11-02。历史发现[原字节保留](docs/implementation/archive/pwf-through-2026-10-31/README.md)；本页不重复进度日志。

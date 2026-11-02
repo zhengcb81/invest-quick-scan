@@ -2,7 +2,17 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 三个残留整改完成
+
+按work/physicalpack隔离恢复范围与局部错误，remaining按wanted减实际saved求差；未发送/未知仍不派发，坏包不伪造CP。Company用统一指标遍历修nested引用/alias/自审，并让forward输出期间独立于历史输入。实现QA79746de、Company2f3718e；IQS入口回归9b62b7f。
+
+作者QA55P/99.72秒、typed尾4P/18.52秒及含同包中间成员的6P/16.85秒（重叠）；Company50P/0.95秒；IQS74P+8subtests/21.12秒。独审Company/生产入口29例、QA19P/44.27秒及typed尾4P/11.51秒、最终member尾2P/5.05秒，无开放阻断；互相重叠不加总。去密钥禁网、自有TEMP清理，QA正常hooks未skip。新第二包fixture初漏subject dispatch和原假时钟，已用原API及正确时点修fixture，未放宽生产证明；文档首patch未命中原文，读取定位后更正，无产品影响。没有跑小时全套或新付费实验。
+
+原doctor ready，账本仍87HTTP/2053896micros、0在途/未结。真实库、普通配置及原回答保持；[完整范围与局限](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/three-residuals-remediation.md)。回根计划原内容/事实主线，不新发卡或新增门禁。
+
 ## 11/02 实施后独立复核
+
+**三个残留的后续整改已启动：** QA按原work/物理包隔离恢复候选，Company共用输入/输出期间及嵌套指标遍历，总控补IQS实际语义入口的预测/嵌套引用一致性测试；独立review_three_residuals集中审查。IQS新增及原共享语义模块31P/2.63秒，TEMP已清理。当前仅此部分验证通过，未先签其他整改完成，无新收费API。
 
 由三名新独立agent核恢复、内容和运行/审查门；原39P/43.22秒与19P短模块通过，自有TEMP均清理。总控重跑原反例均绿，并亲复现历史基数forward年份误拒。另scope混入claimed但无attempt的未发送题使原完整3题paid包CP0，独立真实SQLite/parser组件反例已确认；不冒称真实owner事故。Company嵌套item metric证据缺失在独立组件被接受，生产IQS会拒，属于一致性缺口。详见[本次独检](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/post-implementation-independent-check.md)。
 

@@ -1,6 +1,6 @@
 # 当前接手说明
 
-**11/02最新接手状态：** [实施后独检](reviews/GATE-SIMPLIFY-2026-11-02/post-implementation-independent-check.md)确认原实例已修，但新发现两个待修组合：未发送工作混入scope阻paid保存、历史输入forward误拒；另补Company嵌套指标引用一致性。按根Next Step集中处理，不重问gen7或重复做已完成实例。默认journal/同HTTP逐题保存及原UI已保持有效，完整产品未完范围不变。
+**11/02最新接手状态：** [三个残留整改](reviews/GATE-SIMPLIFY-2026-11-02/three-residuals-remediation.md)已通过集中独审：混合恢复范围、历史输入forward及嵌套引用共用遍历已修；QA79746de、Company2f3718e、IQS入口测试9b62b7f。按根Next Step回原小池内容/事实主线，不重问gen7或重开本轮通过实例。无新许可/审查回执，完整产品剩余范围不变。
 
 
 更新于2026-11-02。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
@@ -53,9 +53,9 @@ IQS负责题库/路由和薄接线；StockQA负责原客户端、搜索、预算
 
 |仓库|本次复核的实际基线（不等于全仓新验收）|
 |---|---|
-|IQS|209d9dc实现；本次PWF/文档后续提交见Git，推既有origin/master|
-|StockQA|9648aef，正常hooks通过并推origin/master，tracked clean|
-|Company Lab|0af8902，本地提交、无remote，tracked clean|
+|IQS|9b62b7f本轮入口回归（含209d9dc），PWF/文档后续提交见Git，推原origin/master|
+|StockQA|79746de，正常hooks通过并推原origin/master，tracked clean|
+|Company Lab|2f3718e，本地提交、无remote，tracked clean|
 |Runtime Lab|5839ef4，本地提交、无remote，原codex/agent-run-02分支|
 |原UI|fa7ceb6，本地提交、无remote|
 |StockWiki|本轮只读看到9e8e308后又变f52f257；上轮本线程提交e5a1be6仍在历史。有活动writer，不覆写、不把本轮只读检查当新HEAD全仓验收|
