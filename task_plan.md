@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-02本轮原5/8/9/10四组按原软件范围全部完成，集中独立审查通过。UI启动、SDK能力、公开边界、旧工具链及显式1.6共享顺位均已根修；最终safe无CP→零发送恢复/原hydrate/冷复入原owner/SDK E2E1P/656.77秒，临时副本已清理。IQS代码e20e1b5、QA58fb6ce已推原origin；SW dc857a5/UI77d372c本地提交（无remote）。原8766已重载并GET ready，60包/普通配置/原87HTTP与旧paid对象保持。详见[本轮结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/remediation-2026-11-02.md)。不是全项目完成，不授金融准确性。
+执行状态：2026-11-02过度门禁清理完成，针对性回归和集中非作者审查通过。原UI真实gen7已沿原已付响应0API恢复、保存、补封、入库并取得accepted ACK；原答/score8/模型/响应时间保持，总账仍87HTTP/US$2.053896、0在途/未结，普通配置及60包不变。新发送控制与历史保存/读取/逐项交付已解耦，单位文字、资源白名单和重复旧codec等误拒已修；账户访问、真实数据冲突和接收库边界保留。详见[本节点终验](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/report.md)。
 
 ## 当前结论
 
@@ -23,8 +23,8 @@
 |---|---|---|
 |题库与组合|已实现并接UI|48评分模块/222题；另61信息题。所有公司基础36题=核心24+杜邦7+五力5，数量派生，非硬编码24上限|
 |身份/名单/比较/UI|原UI已接|215实体；手动增删/恢复、TXT/CSV审阅、模型/时间对比已接。并非全池有答案|
-|原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；本轮gen7的1次真实模型请求与内容拒绝见顶部。入口`http://127.0.0.1:8766/`|
-|共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|本节点同一已付请求零API补封、原ACK1/1、普通配置直接cached1；默认路径保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
+|原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；11/01 gen7的1次真实HTTP及11/02零API恢复/入库见本节点终验。入口`http://127.0.0.1:8766/`|
+|共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
 |真实过期刷新|已验收|A/B两次单题刷新均原ACK；信息日旧，按原24h规则仍不fresh|
@@ -42,8 +42,9 @@
 
 ## Next Step
 
-**本轮四组已收口，下一主线回到原小池回答质量收尾。** 不重复本轮源码修复、已通过的长E2E或原已付请求。gen7仍按原invalid保留，未取得CP/ACK；分红范围等金融限制继续如实标记，不改raw/分数或为求绿重发。按下方既有产品步骤完善内容纠错与规模/事实/消费者/配套，不新发支线、不造额外许可/审查凭证。新共享顺位仅原owner显式1.6新确认使用，旧确认/comparison不扩大；本机普通1.1 successful_scan24h、pack2/thinking/max32768/shared/refs为空保持。
+**本次门禁清理已完成，回到原小池回答质量主线。** 不再为gen7重做prepare/confirm、重发API或修改原答求绿。原work已delivered，原观察及旧gen6均保留；命名未映射的指标不参与标准聚合，分红范围等金融口径仍需核对。后续只沿既有主线补齐实际内容与覆盖，不新发支线或增加资格/人工审核门。新POST继续用原预算/身份/租约，历史恢复不需要今天的发送配置。
 
+- **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
 - 普通policy11/1.1、successful_scan/24h及prepare原字节设置已恢复；pack2、thinking=true、max32768，shared配置和comparison refs撤回。保留全部60个登记包及所有旧答（59为旧快照）。08:35:49Z原UI同实体/合并主体/截止日/模型再预览IQS_11，cached1、执行包0、0API、原owner未变化；复用同一`obs_37dc46500bdffc1cb28152df715fe576290af3cb8c6ca84db10f9036deed3188`，资料日10/29与原成功搜索时间07:33:28.670089Z不变。
 - **短证据验证的准确边界：** 新unknown-published短证据确实进入原SDK实际HTTP载荷的dynamic evidence，并通过原intent/CP/封包/复用软件链；只有vendor wire脚本化、0真实收费。原这笔已付请求的两条原数当时被过滤，旧板仍empty、provided_context_sources仍空，不能追认；本节点也不声明现金流/估值等金融内容已核实。

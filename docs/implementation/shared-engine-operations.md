@@ -9,6 +9,16 @@
 - `execute_shared_engine(...)` / `resume_shared_engine(...)` 产生研究导出；显式调用 `finalize_shared_engine(task, services, export_dir)` 才尝试写原标准答案检查点。
 - CLI `capabilities` 可独立使用；当前 CLI 不构造 owner。实际执行通过 Python API 消费原公开入口准备的服务，不从散装 JSON 或任意 callback 取得执行权。默认 CLI `report` 使用空的附加语义规则，只适用于原本未注入这类规则的产物；带 typed rules 的产物须用下述显式 Python 报告接口。
 
+## 已付回答、只读操作与新发送分开处理
+
+同一原任务的“检查并恢复”先读取原工作状态。已收到的响应可以单独保存、补封和导出；不需要重新配置今天的 API key、费用表或预算，也不因后续模型顺位、题包大小、思考参数和诊断开关变化重新提问。原账户访问与接收库校验仍保留。
+
+原 StockQA 公开入口的已付恢复使用 `--seal-deliveries --recover-checkpoints`，共享扫描再提供原 `--shared-company-config` 路径作为历史位置，其他原登记输入路径及 confirmation 继续使用原任务的值。不要为了保存旧答案重新 prepare/confirm 或创建新 work。缺少原始输入/响应时明确报告缺项，不用同名公司或最新一代结果代替。
+
+一批题只答完一部分时，输出 `.scope.json` 的 `status=partial`，并分别列 `saved_question_ids`、`remaining_question_ids` 和原题数。退出成功表示本次保存操作成功，不表示剩余题已经问过或整个扫描完成。未知请求不能重发。逐项入库沿 StockWiki 原 ACK 记录接收与拒绝，单项拒绝不等于整批没有成果。
+
+未登记指标名称按原文保留，并标记为未映射，不能猜改名称后用于标准指标横比。普通业务文字、无害扩展字段、JSON fence、同值冗余和正常长理由可以读取；错误主体、冲突分数、期间/单位冲突、实际私有思考或凭据仍不能当作合格标准答案。原正文、score、模型与原响应时间不因兼容读取而改写；工程保存成功也不是金融准确性背书。
+
 ## 共享扫描的模型顺位
 
 新扫描可以显式使用原 owner policy `1.6.0`，在原 `qa.quote_schema_version` 填 `1.6.0`，并增加 `ordered_route_targets`。下面只是并入原策略的字段片段；账户、route、模型、quota group 必须与 StockQA 生效模型策略逐项相同，首项还须与原 policy 的 `provider/model` 和 `qa.route_id/provider_config_ref` 相同。密钥继续只放环境变量，不改已经确认的原包。

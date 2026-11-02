@@ -2,6 +2,22 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 再次清理过度门禁（已完成）
+
+**本节最终终态覆盖下方实施快照：** 通用门禁/单位自审/短证据singleton codec已全部根修并集中独审。原UI第6次launch零API恢复gen7成功exit0，CP `CHECKPOINT_1c5c5d9766b34ddcab8317ac34256b31`；交付job`deliveryjob_03aeb32cc6f07b1525d3a147fb893cc0` completed，原work delivered、11:00:20Z accepted ACK `ack_fd86eacd8b792b505a582f13`。原响应hash/score8/实际mimo-v2.6-pro/原完成时间23:44:40.990609Z保持，原新旧观察在公司详情公开接口并存。总账仍87HTTP/2053896micros，0在途/未结；原普通配置字节hash相同、60包保持、doctor ready。不得再按11/01 CP0/leased或本节早期失败快照重发。
+
+单位/state尾修118P、非作者89P；singleton共享codec54P、独立新旧hash和8篡改负例过；原冷公开CLI1P/298.03秒及各相关组详见[终验报告](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/report.md)。没有重写原答或授金融准确性，分红/利润归属等原内容限制仍保留。QA正常hooks已过并推e2850bd；IQS实现79b94ce，Company360c7df、SW e5a1be6、UI fa7ceb6已本地提交。PWF/交接本次统一收口，回既有内容质量主线。
+
+
+本轮原owner冷公开CLI最终1P/298.03秒，删今天budget/model后冷进程重复恢复paid1/未问1、原CP/响应不变、0新增HTTP；自有副本已清。集中非作者审查root/A54P、B15P与C尾部均过；QA正常hooks通过后6eecce7已推origin/master，IQS实现79b94ce已本地提交；SW e5a1be6、Company 937454b、UI fa7ceb6本地提交（无远端）。随后原UI真实gen7零APIseal实际发现thousand/千元人民币及派生比率纯文本单位误拒，最后同因校验/自审修复在进行，不提前签CP/ACK。原普通配置与87HTTP/US$2.053896、原响应保持。
+
+
+集中回归已实际通过root边界260P/55.44秒、后续部分导出99P/15.11秒（有重叠不累加），内容域421P含1平台junction skip，dashboard阶段262P和DOM56P后仍在收最后独审反例。新原公开CLI冷启动实验首轮是fresh夹具遗漏模型配置，第二轮实际揭露StockWiki历史委托仍读今天预算文件；已补原记录有效RED并仅改原预算hash读取，不绕当前OS账户/consumer/撤销检查。曾拟放宽这些访问边界被自动审批拒绝，未执行；采用保留访问校验的更安全替代。本机0新增收费、0生产数据写，冷实验最终版及独审未完成时不提前记通过。
+
+
+用户再次要求全面核查并清除。已读现行PWF、Git与原真实/隔离报告；CodeGraph root search命中历史副本，QA指定project search无结果，后续读取已知源，不反复查旧索引。仅保留外来10/10 README未提交改动。三名已授权agent分别只读核：QA已付依赖/partial；UI/导出/StockWiki逐item；内容格式与命名。已复现预算文件变化令read_registered recovery idempotency_conflict、同一已付Q1旁边未问Q2导致整批paid_required；其他明确候选为旧1.4/1.5 control时效泄漏、seal全bundle fingerprint、outbox导出依赖今日budget/inspect、部分导入all-can_apply与analysis文本/未知metric_id。均尚未签修复或生产恢复，无收费/原库写入。
+
+
 ## 11/02 四组整改完成（原软件范围）
 
 **最终终态：** 四组已按原软件范围闭合、独审通过。新增safe无CP→无当天模型配置的paid-only零发送恢复/原hydrate/普通owner冷重建E2E1P/656.77秒（总runner661.77秒），TEMP五仓副本移除，0收费。最终peer亲读log/最终测试及28P尾项，无未解阻断。该例仅脚本化vendor wire，复用已有client，不授真实供应商/全新进程keyless SDK/ACK/UI三市场资格。IQS代码e20e1b5与前段d168425/da0fbd5、QA58fb6ce（此前d1d22cc）已推各自origin；SW dc857a5/UI77d372c无remote，本地提交。正常hooks曾自动修行尾/Black，精确重暂存后全部通过，未跳过。原服务精确核无子任务后按旧参数隐藏重载，GET doctor ready/阻塞空，main实际store.js 200含新逻辑；配置60包/原普通参数保持。重载后账本仍87HTTP/2053896micros、0在途/未结，gen6 delivered/CP1、gen7 leased/CP0不变。参见[最终结果](docs/implementation/reviews/CODE-QUALITY-2026-11-01/remediation-2026-11-02.md)。以下保留同日各阶段过程，待验/正在运行仅是当时快照，不能覆盖本终态。
