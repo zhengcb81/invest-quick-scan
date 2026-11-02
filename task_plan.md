@@ -1,6 +1,6 @@
 # invest-quick-scan 当前实施计划
 
-执行状态：2026-11-02三个残留整改完成并通过集中独审：混合scope按工作/物理包及单成员隔离，forward允许历史输入，嵌套指标共用引用/映射/自审。QA79746de、Company2f3718e、IQS入口测试9b62b7f；相关验证与局限见[本轮整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/three-residuals-remediation.md)。无新收费API或门禁，完整产品剩余范围仍按下表。
+执行状态：2026-11-02相邻场景复查/整改完成并独审通过：普通及共享补封逐题隔离、完成度依实际CP/封包、已有CP复核原绑定，期间两端/倒序及未知子指标不继承父预测日期。IQS7a241ba、QA9b66f10（已推）、Company639582a（无remote），见[相邻整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/adjacent-remediation.md)。无新门禁或收费调用；完整产品未完范围仍如下表。
 
 ## 当前结论
 
@@ -42,7 +42,7 @@
 
 ## Next Step
 
-**三个残留已按本轮范围修复并独审，回原小池内容质量与事实主线。** 固定日常配置，定向核已有回答的关键原数、期间及会计范围，补真实事实/查询/研究使用链；不重问gen7，不重做已通过的同一恢复实例，不扩大支线或加门禁。200家、消费者与配套仍按原范围推进。
+**本轮三个问题的相邻整改已完成，回原小池内容质量与事实主线。** 固定日常配置，定向核原数、期间及会计范围，补真实事实/查询/研究使用链；不重问gen7或反复重做相同恢复实例，不扩大支线或加门禁。普通saved/remaining与delivery_pending、共享checkpoint与delivery分开，不用诊断日志作为完成许可。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。

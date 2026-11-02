@@ -1,6 +1,6 @@
 # 当前发现、风险与决策
 
-**11/02最新整改结论：** 混合scope无响应工作阻paid保存、历史输入forward误拒、Company嵌套指标引用遗漏均完成有界修复并独审。分类与错误按原work/pack隔离；共用指标遍历贯穿引用/alias/期间/自审；预测输入不需未来已有实际披露。详见[三个残留整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/three-residuals-remediation.md)。不把组件测试当金融准确性或全项目完成。
+**11/02最新相邻整改结论：** 原三个反例保持通过；本次独立发现的补封跨成员中断、成功后诊断误报pending、已有CP快捷分支漏原绑定、未来起点/倒序及父预测日期回填均完成有界修复。完成度依原CP及实际封包，期间未知仍保null；独审通过。见[相邻整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/adjacent-remediation.md)，不授金融准确性或全项目完成。
 
 
 核对于2026-11-02。历史发现[原字节保留](docs/implementation/archive/pwf-through-2026-10-31/README.md)；本页不重复进度日志。

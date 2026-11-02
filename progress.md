@@ -2,7 +2,17 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 11/02 三个问题的相邻复查及整改完成
+
+新独立agent发现：普通/共享单题补封冲突会阻后项，实际成功后的诊断可能误报pending，已有CP快捷路径漏原绑定；期间只有end判断漏未来start/倒序，以及父forecast给未知日期子指标回填造成误拒。沿原单题工作边界、实际持久化状态及共用期间语义修复，无新许可/平台/收费调用。实现IQS7a241ba、QA9b66f10已推原origin、Company639582a本地无remote。
+
+作者root最终139P+8subtests/13.95秒，逐题delivery fixture尾8P/1.34秒；Company75例，QA87P/136.93秒及成功后诊断尾2P/5.63秒。非作者终审Company56、root65P/1.56秒、QA28P/32.60秒，无开放阻断；重叠不累加。去密钥禁网，自有TEMP均清理。根共享先6个typed反例RED；旧测试缺claim与新finding字段读取的fixture问题已修，不放宽产品规则。未跑小时全套或不覆盖本节点的旧单包长E2E。
+
+原服务核PID/创建时间/argv且无任务子进程、0在途后精确重载；配置不改，原账本87HTTP/2053896micros。操作与局限见[相邻整改](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-02/adjacent-remediation.md)，不能据此宣称金融内容/规模已完成。回根Next Step既有主线。
+
 ## 11/02 三个残留整改完成
+
+**相邻场景复查/直接整改正在进行：** 新独立agent发现保存后的逐题补封中断，以及缺结束日的实际值未来起点/倒序、父forecast总览回填未知子指标日期等相邻遗漏；沿原单题边界及共用期间判断修复。Company639582a已独审本地提交；总控共享finalizer先6个typed冲突RED后修逐题handle/commit/已保存但未封分开，并以实际已持久化状态决定完成度，诊断错误本身不作门。QA正同步补封与期间端点测试，最终节点未收口。不加许可或收费调用。
 
 按work/physicalpack隔离恢复范围与局部错误，remaining按wanted减实际saved求差；未发送/未知仍不派发，坏包不伪造CP。Company用统一指标遍历修nested引用/alias/自审，并让forward输出期间独立于历史输入。实现QA79746de、Company2f3718e；IQS入口回归9b62b7f。
 
