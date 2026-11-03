@@ -95,3 +95,7 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 ## 2026-11-03 B03 Dashboard公司结果服务接入
 
 D00隔离分支完成服务端精确结果pin与主体范围路由：显式请求pin与owner返回ID必须一致；/link拒绝空pin、重复参数及别名冲突；精确结果链接携带结果ID和owner snapshot的listing/subject范围。只读映射不写生产库。目标分支测试37项通过，独立Dashboard/UI组合复审已关闭。此为候选服务实现，未部署到原8766生产服务，未运行真实owner扫描。
+
+### B03交付引用
+
+服务候选提交ec86605位于codex/d00-b03-iqs-service，并已推送至既有origin同名分支；未部署到原8766运行实例。Dashboard/UI隔离候选分支分别提交04756ca、47d5354，其中后两分支没有配置远端。

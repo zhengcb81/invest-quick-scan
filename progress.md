@@ -367,3 +367,7 @@ provided-v5原owner整链1P/468.81秒、0skip、0付费，唯一五组件runtime
 ## 2026-11-03 B03 Dashboard服务配套收尾
 
 在独立D00分支完成Dashboard公司结果接口配套：精确pin防止静默跳到其他最新结果；/link对空值、重复result/result_id及两别名同时出现给出明确拒绝；按精确owner snapshot返回结果ID及可用listing/subject路由范围。服务定向测试37项通过。整体D00 UI/服务/Dashboard候选通过独立非作者审查，最终history链接回归关闭。未做生产部署、数据库写入、真实模型/API调用或真实owner扫描；需与Dashboard候选一并进入实际产品发布后再做真实UI验收。
+
+## 2026-11-03 B03提交与远端
+
+IQS服务候选已提交ec86605，并推送至既有origin分支codex/d00-b03-iqs-service；Dashboard候选04756ca和UI候选47d5354已提交在各自本地隔离分支。Dashboard/UI仓没有配置远端，且canonical Dashboard主工作树未改动。三项仍属于待产品main整合/部署的候选，不代表原8766或真实owner端到端已更新。
