@@ -16,6 +16,7 @@ import os
 import subprocess
 import sys
 import threading
+from urllib.parse import parse_qs, urlsplit
 
 import pytest
 
@@ -316,6 +317,27 @@ def test_resolved_pin_returns_the_same_immutable_id(tmp_path):
         'GET', f'/api/product/company/result?id=ENT_A&result_id={RESULT_SNAPSHOT["result_id"]}')
     assert code == 200, reply
     assert reply['data']['company_result']['result_id'] == RESULT_SNAPSHOT['result_id']
+    route = reply['data']['iqs_link']['routes']['results']
+    route_query = parse_qs(urlsplit(route).fragment.partition('?')[2])
+    assert route_query['result_id'] == [RESULT_SNAPSHOT['result_id']]
+    assert route_query['listing'] == ['LST_1']
+
+
+def test_owner_result_id_must_equal_explicit_pin(tmp_path):
+    class IgnoresPinOwner(Owner):
+        def company_result(self, entity_id, result_id=None):
+            self.company_calls.append(('result', entity_id, result_id))
+            other = copy.deepcopy(RESULT_SNAPSHOT)
+            other['result_id'] = 'cas_aaaaaaaaaaaaaaaaaaaa'
+            return _owner_result_payload(entity_id, result=other)
+
+    service = service_for(tmp_path, owner=IgnoresPinOwner,
+                          dashboard_origin='http://127.0.0.1:43219')
+    requested = 'cas_bbbbbbbbbbbbbbbbbbbb'
+    code, reply = service.dispatch(
+        'GET', f'/api/product/company/result?id=ENT_A&result_id={requested}')
+    assert code == 502
+    assert reply['error']['code'] == 'company_result_pin_mismatch'
 
 
 def test_link_context_with_pin_resolves_for_entity(tmp_path):
@@ -323,10 +345,78 @@ def test_link_context_with_pin_resolves_for_entity(tmp_path):
     code, reply = service.dispatch(
         'GET', f'/api/product/link?id=ENT_A&result={RESULT_SNAPSHOT["result_id"]}')
     assert code == 200, reply
+    route = reply['data']['routes']['results']
+    route_query = parse_qs(urlsplit(route).fragment.partition('?')[2])
+    assert route_query['result_id'] == [RESULT_SNAPSHOT['result_id']]
     code, reply = service.dispatch(
         'GET', '/api/product/link?id=ENT_A&result=cas_00000000000000000000')
     assert code == 404, reply
     assert reply['error']['code'] == 'company_result_not_found'
+
+
+def test_subject_result_link_carries_exact_subject_even_without_legacy_subject_rows(tmp_path):
+    class SubjectResultOwner(Owner):
+        def company_result(self, entity_id, result_id=None):
+            self.company_calls.append(('result', entity_id, result_id))
+            snapshot = copy.deepcopy(RESULT_SNAPSHOT)
+            snapshot['analysis_subject_id'] = 'THEME_AI'
+            return _owner_result_payload(entity_id, result=snapshot)
+
+    service = service_for(tmp_path, owner=SubjectResultOwner,
+                          dashboard_origin='http://127.0.0.1:43219')
+    exact_id = RESULT_SNAPSHOT['result_id']
+    code, reply = service.dispatch(
+        'GET', f'/api/product/link?id=ENT_A&result={exact_id}')
+    assert code == 200, reply
+    route = reply['data']['routes']['results']
+    route_query = parse_qs(urlsplit(route).fragment.partition('?')[2])
+    assert route_query['result_id'] == [exact_id]
+    assert route_query['listing'] == ['LST_1']
+    assert route_query['subject'] == ['THEME_AI']
+    assert 'subject' in reply['data']['supported_context']
+
+    code, reply = service.dispatch(
+        'GET', f'/api/product/company/result?id=ENT_A&result_id={exact_id}')
+    assert code == 200, reply
+    result_route = reply['data']['iqs_link']['routes']['results']
+    result_query = parse_qs(urlsplit(result_route).fragment.partition('?')[2])
+    assert result_query['result_id'] == [exact_id]
+    assert result_query['listing'] == ['LST_1']
+    assert result_query['subject'] == ['THEME_AI']
+    assert 'subject' in reply['data']['iqs_link']['supported_context']
+
+
+def test_link_owner_result_id_must_equal_explicit_pin(tmp_path):
+    class IgnoresPinOwner(Owner):
+        def company_result(self, entity_id, result_id=None):
+            self.company_calls.append(('result', entity_id, result_id))
+            other = copy.deepcopy(RESULT_SNAPSHOT)
+            other['result_id'] = 'cas_aaaaaaaaaaaaaaaaaaaa'
+            return _owner_result_payload(entity_id, result=other)
+
+    service = service_for(tmp_path, owner=IgnoresPinOwner,
+                          dashboard_origin='http://127.0.0.1:43219')
+    requested = 'cas_bbbbbbbbbbbbbbbbbbbb'
+    code, reply = service.dispatch(
+        'GET', f'/api/product/link?id=ENT_A&result={requested}')
+    assert code == 502
+    assert reply['error']['code'] == 'company_result_pin_mismatch'
+
+
+@pytest.mark.parametrize('query', [
+    'result=',
+    'result_id=',
+    'result=cas_aaaaaaaaaaaaaaaaaaaa&result=cas_bbbbbbbbbbbbbbbbbbbb',
+    'result_id=cas_aaaaaaaaaaaaaaaaaaaa&result_id=cas_bbbbbbbbbbbbbbbbbbbb',
+    'result=cas_aaaaaaaaaaaaaaaaaaaa&result_id=cas_aaaaaaaaaaaaaaaaaaaa',
+])
+def test_link_route_rejects_empty_repeated_or_ambiguous_pin_without_owner_read(tmp_path, query):
+    service = service_for(tmp_path, dashboard_origin='http://127.0.0.1:43219')
+    owner = service._gateway('owner')
+    code, reply = service.dispatch('GET', '/api/product/link?id=ENT_A&' + query)
+    assert code == 400
+    assert reply['error']['code'] == 'invalid_query'
+    assert owner.company_calls == []
 
 
 # -- dispatch level ------------------------------------------------------------
@@ -430,11 +520,11 @@ def _serve(tmp_path, owner=Owner):
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), product_handler(Static, service))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    return server, server.server_address[1]
+    return server, server.server_address[1], service
 
 
 def test_company_routes_over_real_http(tmp_path):
-    server, port = _serve(tmp_path)
+    server, port, service = _serve(tmp_path)
     try:
         connection = http.client.HTTPConnection('127.0.0.1', port, timeout=10)
         connection.request('GET', '/api/product/company/history?id=ENT_A&limit=5',
@@ -444,6 +534,39 @@ def test_company_routes_over_real_http(tmp_path):
         body = json.loads(response.read().decode('utf-8'))
         assert body['ok'] is True
         assert body['data']['items'][0]['result_id'] == RESULT_SNAPSHOT['result_id']
+        owner = service._gateway('owner')
+        exact_id = RESULT_SNAPSHOT['result_id']
+        connection.request('GET', f'/api/product/company/result?id=ENT_A&result_id={exact_id}',
+                           headers={'Host': f'127.0.0.1:{port}'})
+        pinned_response = connection.getresponse()
+        assert pinned_response.status == 200
+        pinned_body = json.loads(pinned_response.read().decode('utf-8'))
+        assert pinned_body['data']['company_result']['result_id'] == exact_id
+        assert owner.company_calls[-1] == ('result', 'ENT_A', exact_id)
+        connection.request('GET', f'/api/product/link?id=ENT_A&result={exact_id}',
+                           headers={'Host': f'127.0.0.1:{port}'})
+        link_response = connection.getresponse()
+        assert link_response.status == 200
+        link_body = json.loads(link_response.read().decode('utf-8'))
+        result_route = link_body['data']['routes']['results']
+        assert parse_qs(urlsplit(result_route).fragment.partition('?')[2])['result_id'] == [exact_id]
+        before_bad_pins = list(owner.company_calls)
+        for bad_query in ('result_id=', 'result_id=cas_first&result_id=cas_second'):
+            connection.request('GET', f'/api/product/company/result?id=ENT_A&{bad_query}',
+                               headers={'Host': f'127.0.0.1:{port}'})
+            refused = connection.getresponse()
+            assert refused.status == 400
+            refusal = json.loads(refused.read().decode('utf-8'))
+            assert refusal['error']['code'] == 'invalid_query'
+        for bad_query in ('result=', 'result_id=cas_first&result_id=cas_second',
+                          'result=cas_first&result_id=cas_first'):
+            connection.request('GET', f'/api/product/link?id=ENT_A&{bad_query}',
+                               headers={'Host': f'127.0.0.1:{port}'})
+            refused = connection.getresponse()
+            assert refused.status == 400
+            refusal = json.loads(refused.read().decode('utf-8'))
+            assert refusal['error']['code'] == 'invalid_query'
+        assert owner.company_calls == before_bad_pins
         # cross-site origin stays refused on the new GET route too
         connection.request('GET', '/api/product/company/history?id=ENT_A', headers={
             'Host': f'127.0.0.1:{port}', 'Origin': 'http://evil.example',
@@ -527,7 +650,7 @@ def test_company_reads_through_the_real_owner_worker(tmp_path):
     snapshot = answer['owner_payload']['result']
     assert snapshot['result_id'] == result_id
     assert snapshot['aggregate_score'] is None
-    assert snapshot['status'] == 'reference'
+    assert snapshot['status'] == 'formal'
     history = gateway.company_history('ENT_11111111-1111-4111-8111-111111111111', limit=5, offset=0)
     assert history['owner_payload']['page']['total'] == 1
     absent = gateway.company_result('ENT_11111111-1111-4111-8111-111111111111',

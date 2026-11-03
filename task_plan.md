@@ -91,3 +91,7 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 保留其他writer的`docs/implementation/parallel-lanes/packages/2026-10-10/README.md`，不清理历史未跟踪文件。
 
 同节点尾修也已完成：查看旧任务状态不再重复运行独立派发许可检查或创建preview凭证，明确标记未检查启动权限；真正派发/恢复仍原检查。原执行模块147P、短TEMP清理、独审通过。04:06:54Z原8766已重载，费用无新增；不因本次精简追加小节点验收材料。
+
+## 2026-11-03 B03 Dashboard公司结果服务接入
+
+D00隔离分支完成服务端精确结果pin与主体范围路由：显式请求pin与owner返回ID必须一致；/link拒绝空pin、重复参数及别名冲突；精确结果链接携带结果ID和owner snapshot的listing/subject范围。只读映射不写生产库。目标分支测试37项通过，独立Dashboard/UI组合复审已关闭。此为候选服务实现，未部署到原8766生产服务，未运行真实owner扫描。

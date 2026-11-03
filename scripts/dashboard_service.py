@@ -13,7 +13,7 @@ import re
 import secrets
 import threading
 import time
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, urlencode, urlsplit
 from dashboard_locks import control_lock, ControlBusyError
 from dashboard_owner import valid_timeout_seconds, TIMEOUT_SECONDS_MAX
 
@@ -43,6 +43,33 @@ class ProductError(Exception):
     def __init__(self, code, message, status=400, details=None):
         super().__init__(message)
         self.code, self.status, self.details = code, status, details or {}
+
+
+def _pin_company_result_route(iqs_link, snapshot):
+    """Attach one validated owner snapshot's exact identity and scope to results."""
+    routes = iqs_link.get('routes') if isinstance(iqs_link, dict) else None
+    route = routes.get('results') if isinstance(routes, dict) else None
+    result_id = snapshot.get('result_id') if isinstance(snapshot, dict) else None
+    if not isinstance(route, str) or not isinstance(result_id, str) or not result_id:
+        return iqs_link
+    parts = urlsplit(route)
+    route_path, _, route_query = parts.fragment.partition('?')
+    params = parse_qs(route_query, keep_blank_values=True)
+    params['result_id'] = [result_id]
+    listing_id = snapshot.get('listing_id')
+    if isinstance(listing_id, str) and listing_id:
+        params['listing'] = [listing_id]
+    subject_id = snapshot.get('analysis_subject_id')
+    if isinstance(subject_id, str) and subject_id:
+        params['subject'] = [subject_id]
+        supported = iqs_link.get('supported_context')
+        if isinstance(supported, list) and 'subject' not in supported:
+            # The result page enforces exact subject scope from this pinned
+            # owner snapshot even if legacy observation history has no subject.
+            supported.append('subject')
+    fragment = route_path + '?' + urlencode(params, doseq=True)
+    routes['results'] = parts._replace(fragment=fragment).geturl()
+    return iqs_link
 
 
 def redact(value):
@@ -548,7 +575,16 @@ class DashboardService:
             # as "fall back to latest".
             raise ProductError('company_result_not_found',
                                '固定的公司结果不存在或不属于该实体。', 404)
+        if (result_id is not None
+                and response['company_result'].get('result_id') != result_id):
+            # The owner accepted a pin but returned a different snapshot.
+            # Never publish that response under the requested immutable ID.
+            raise ProductError('company_result_pin_mismatch',
+                               '公司结果所有者返回的结果ID与请求固定ID不一致。', 502)
         response['iqs_link'] = self._iqs_link(entity_id, return_to)
+        if result_id is not None:
+            response['iqs_link'] = _pin_company_result_route(
+                response['iqs_link'], response['company_result'])
         return response
 
     def _company_assessment_history(self, entity_id, limit, offset):
@@ -837,7 +873,16 @@ class DashboardService:
                 return self._gateway('owner').delivery_status(query.get('package_id'))
             if path == 'link':
                 entity_id = query.get('id', query.get('entity_id', ''))
-                result_pin = query.get('result') or query.get('result_id') or None
+                result_values = raw_query.get('result', [])
+                result_id_values = raw_query.get('result_id', [])
+                supplied_pin = bool(result_values or result_id_values)
+                if (len(result_values) > 1 or len(result_id_values) > 1
+                        or (result_values and result_id_values)
+                        or (supplied_pin and (result_values + result_id_values)[0] == '')):
+                    raise ProductError('invalid_query', '公司结果ID必须唯一且非空。')
+                result_pin = ((result_values or result_id_values)[0]
+                              if supplied_pin else None)
+                pin_data = None
                 if result_pin:
                     # B03-R2: the link context may be composed for an explicit
                     # old result pin; the pin must resolve for THIS entity or
@@ -851,7 +896,14 @@ class DashboardService:
                     if pin_data.get('company_result') is None:
                         raise ProductError('company_result_not_found',
                                            '固定的公司结果不存在或不属于该实体。', 404)
-                return self._iqs_link(entity_id, query.get('return'))
+                    if pin_data['company_result'].get('result_id') != result_pin:
+                        raise ProductError('company_result_pin_mismatch',
+                                           '公司结果所有者返回的结果ID与请求固定ID不一致。', 502)
+                result = self._iqs_link(entity_id, query.get('return'))
+                if result_pin:
+                    result = _pin_company_result_route(
+                        result, pin_data['company_result'])
+                return result
             if path == 'company/result':
                 entity_id = query.get('id', query.get('entity_id', ''))
                 if not entity_id:

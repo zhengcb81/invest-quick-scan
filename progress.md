@@ -363,3 +363,7 @@ provided-v5原owner整链1P/468.81秒、0skip、0付费，唯一五组件runtime
 原comparison控制已真实ready→原委托confirmed→StockQA apply recorded：owd1_b19b257a3b5982b4613dfa660a90b64ca98c2bb89c82d1f9c5884e7e4fa09f03，gen5→6、0模型HTTP。IQS25cad52已提交推送，QA7b3814f已推。实际首次writer将原work库25→26，之前用SQLite backup保存一致私有备份；只核相关原列，85预算attempt、244原响应、0旧research intent全保留，未做全仓快照。
 
 从原UI保存prepare.shared_company_config、pack1/thinking/max16384及精确新refs，58原执行包保留，原账本仍85HTTP/$1.999868。初次填定向IQS11与原受控范围选择冲突，按公开契约清空可选字段，由原决议确定IQS11单题；没有改产品校验。原UI确认预览本次1/完整36、group ASJ_02f60cec@1、唯一真实SZSE300750后，点击登记得到prepjob_490615d422a3424497cb16fa609f1432（preparing，原后台在运行）。登记未启动模型，勿重复提交。当前临时policy12/1.3与专用prepare仍在，完成或失败收尾后恢复普通配置并保留新登记包。
+
+## 2026-11-03 B03 Dashboard服务配套收尾
+
+在独立D00分支完成Dashboard公司结果接口配套：精确pin防止静默跳到其他最新结果；/link对空值、重复result/result_id及两别名同时出现给出明确拒绝；按精确owner snapshot返回结果ID及可用listing/subject路由范围。服务定向测试37项通过。整体D00 UI/服务/Dashboard候选通过独立非作者审查，最终history链接回归关闭。未做生产部署、数据库写入、真实模型/API调用或真实owner扫描；需与Dashboard候选一并进入实际产品发布后再做真实UI验收。
