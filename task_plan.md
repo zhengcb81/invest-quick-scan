@@ -79,6 +79,8 @@
 4. **TH/IN正式消费与G4。** 只接原查询/固定快照分页/画像/元数据/原补扫，保留池外发现和各自研究方法；核实源仓及实际加载镜像，实际原入口E2E。原包中的G3串行门已由1.10.17取消，按真实F05/W11接口准备实施，不能因此声称G3/F05已关。
 5. **扩容、运维和配套G5/G6。** 用户认可名单逐步扩至目标容量，完成覆盖/费用/维护与配套安装、加载、升级回退、统一操作入口的实际验收。当前本机一键开UI不等于全部安装发布已验。
 
+**2026-11-04 可外包支撑包（已编制，未实施/未验收）：** [F05-FACT-QUERY-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/F05-FACT-QUERY-01.md) 在 StockWiki 隔离克隆补真实事实/关系查询；[G3-BATCH-RESUME-HARNESS-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/G3-BATCH-RESUME-HARNESS-01.md) 建立合成200主体的批次接续E2E工装。两包可并行，后者仅为软件验证支撑，不代签真实G3。分派索引见[施工包README](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/README.md)。
+
 PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；现有结论可用，不再让每批支撑交付重开已完成主线。TIME独立核查凭证体系已取消；真正需要的字段时效改进沿原缓存策略实施，保持旧版本和真实日期。
 
 ## 实施和审查节奏

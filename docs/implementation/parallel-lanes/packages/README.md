@@ -1,5 +1,7 @@
 # 可分派的独立施工包（2026-09-30 基线）
 
+**当前最新施工包：** [2026-11-04 主线支撑包](2026-11-04-mainline-support/README.md)。F05-FACT-QUERY-01 与 G3-BATCH-RESUME-HARNESS-01 写入目录互不重叠，可并行交付。前者在 StockWiki 隔离克隆实现事实/关系只读查询；后者只做 IQS 合成批次接续工装，不改 IQS 产品代码，也不替代 200 家真实 G3 试点。旧索引和接收历史保留为历史记录。
+
 **当前分派入口：** [2026-10-07新一轮施工包](2026-10-07/README.md)。QA-NET-01与SW-READY-01可进行离线实施；消费者实施包继续等待G3/F05和真实公共query/golden。以下保留旧包及接收历史，不重新分派QA-04/SW-IDENT或重做已验收预研。
 
 这四份文档可以分别交给不同 harness。它们是**下一段施工指令**，不是已完成证明，也不扩大外仓写入、联网或费用授权。总任务/依赖以 [`tasks.json`](../../tasks.json) 为准；五条 owner 线见 [总控计划](../README.md)。交付统一使用 [handoff schema](../handoff.schema.json) 和 [大节点审查规范](../review-protocol.md)。

@@ -379,3 +379,7 @@ Dashboard候选合入investment-dashboard main（merge f501f32，合同0.1.2-d�
 合并后复验：IQS核心公司结果接口37 passed；核心加owner/HTTP/实体视图相邻测试103 passed；UI结果页、返回链接、深链、pin和服务运行时来源测试29 passed。Dashboard定向适配/历史链接和相邻身份测试通过，OpenAPI生成检查通过，synthetic smoke 27 checks PASS，TypeScript typecheck与生产build通过。生产build在隔离临时目录运行成功；提示JS包体超过500KB。分类测试分组存在覆盖重叠，不累加为全项目测试总数。
 
 独立非作者复审在并入前已针对最终payload关闭。真实owner/API扫描、原8766重启、数据库正式写入未做，因此真实扫描到入库/缓存恢复链路仍是主线未完成项。工作区其他未提交/未跟踪文件保留，没有加入本次提交。
+
+## 2026-11-04 独立施工包准备
+
+编制 F05-FACT-QUERY-01（StockWiki 隔离克隆，基线 `d8d3303`）与 G3-BATCH-RESUME-HARNESS-01（独立 IQS 合成测试工装，基线 `da557350`）。确认复用 LOAD-CASE-01（SHA-256 `99E7A7D3…35E2431`），避免重复建设负载场景。两包尚未实施；测试工装不能代替真实200家公司 G3，F05需总控验真实 owner golden 与 IQS互操作后签收。

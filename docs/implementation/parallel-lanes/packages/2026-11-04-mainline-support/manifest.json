@@ -1,0 +1,43 @@
+{
+  "format_version": "1.0.0",
+  "observed_at": "2026-11-04",
+  "status": "ready_for_dispatch",
+  "package_spec_review": {
+    "document": "package-design-review.md",
+    "reviewer_agent": "/root/review_package_cards",
+    "status": "approved"
+  },
+  "packages": [
+    {
+      "id": "F05-FACT-QUERY-01",
+      "lane_id": "stockwiki",
+      "document": "F05-FACT-QUERY-01.md",
+      "task_ids": ["F05"],
+      "base_commit": "d8d3303cb4b91fb6bfc8db6202ea3919276f833e",
+      "source_repository": "C:/Users/郑曾波/Projects/StockWiki",
+      "work_directory": "C:/Users/郑曾波/Projects/iqs-stockwiki-f05-query-lab",
+      "write_scope": "isolated local clone only; stockwiki/quick_scan_* and corresponding query tests/schemas/handoff",
+      "readiness": "ready_for_dispatch",
+      "depends_on": [],
+      "does_not_close": ["F05 acceptance until real owner golden and IQS interoperability are verified"]
+    },
+    {
+      "id": "G3-BATCH-RESUME-HARNESS-01",
+      "lane_id": "iqs",
+      "document": "G3-BATCH-RESUME-HARNESS-01.md",
+      "task_ids": [],
+      "base_commit": "da557350b0dd11ea92382ad22479f874026d4ad8",
+      "source_repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "work_directory": "C:/Users/郑曾波/Projects/iqs-g3-batch-resume-harness-lab",
+      "write_scope": "isolated clone only; g3_harness/, tests/g3_harness/, handoff",
+      "readiness": "ready_for_dispatch",
+      "depends_on": [],
+      "support_for": ["G3", "L03"],
+      "reuses": {
+        "path": "docs/implementation/parallel-lanes/packages/2026-10-11/LOAD-CASE-01.md",
+        "sha256": "99E7A7D3C98A07A2F70F7BD6C99E0137CE39F60238EE7AECB9C6E805135E2431"
+      },
+      "does_not_close": ["real 200-company G3 pilot", "production G3 qualification"]
+    }
+  ]
+}
