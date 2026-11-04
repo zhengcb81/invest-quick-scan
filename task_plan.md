@@ -8,7 +8,7 @@
 
 **已到“小范围可用、规模化与研究联动未完”的阶段。** 原8766工作台能够维护名单、组合题库、真实扫描、入库、查看与比较结果并恢复历史任务；不是还没接通模型或数据库。原工作区明确为`isolated_research`，不是全池正式投产。
 
-本文件是唯一当前状态与执行顺序；[progress.md](progress.md)只记阶段证据，[findings.md](findings.md)只记结论/风险，[交接](docs/implementation/handoff-for-new-agent.md)只说明如何接手。原数千行记录已[原字节归档](docs/implementation/archive/pwf-through-2026-10-31/README.md)。历史日期报告和施工卡是当时的范围/证据，不能覆盖本表；也不能因本表更新而改签旧验收。
+截至2026-11-04，B03公司结果读取代码已合入investment-dashboard main和IQS master；只读UI候选也已合入其UI仓master。代码链合入不代表原8766已重载或真实owner扫描已完成。本文件是唯一当前状态与执行顺序；[progress.md](progress.md)只记阶段证据，[findings.md](findings.md)只记结论/风险，[交接](docs/implementation/handoff-for-new-agent.md)只说明如何接手。原数千行记录已[原字节归档](docs/implementation/archive/pwf-through-2026-10-31/README.md)。历史日期报告和施工卡是当时的范围/证据，不能覆盖本表；也不能因本表更新而改签旧验收。
 
 ## 目标和不可变边界
 
@@ -46,7 +46,7 @@
 
 ## Next Step
 
-**回到小池内容质量与事实主线。** 定向核原数和会计范围，补真实事实、查询与研究使用链。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。
+**回到小池内容质量与事实主线。** 定向核原数和会计范围，补真实事实、查询与研究使用链。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。B03接口代码现已合入Dashboard与IQS主线，生产服务尚未重载，真实owner扫描/三市场UI验收仍待完成。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
@@ -94,8 +94,16 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 
 ## 2026-11-03 B03 Dashboard公司结果服务接入
 
-D00隔离分支完成服务端精确结果pin与主体范围路由：显式请求pin与owner返回ID必须一致；/link拒绝空pin、重复参数及别名冲突；精确结果链接携带结果ID和owner snapshot的listing/subject范围。只读映射不写生产库。目标分支测试37项通过，独立Dashboard/UI组合复审已关闭。此为候选服务实现，未部署到原8766生产服务，未运行真实owner扫描。
+服务端精确结果pin与主体范围路由已在B03合入IQS master：显式请求pin与owner返回ID必须一致；/link拒绝空pin、重复参数及别名冲突；精确结果链接携带结果ID和owner snapshot的listing/subject范围。只读映射不写生产库。独立Dashboard/UI组合复审已关闭；原8766服务未重载，未运行真实owner扫描。
 
 ### B03交付引用
 
-服务候选提交ec86605位于codex/d00-b03-iqs-service，并已推送至既有origin同名分支；未部署到原8766运行实例。Dashboard/UI隔离候选分支分别提交04756ca、47d5354，其中后两分支没有配置远端。
+服务代码ec86605及收尾提交fb262e0已合入IQS master（master从5211f00快进）；Dashboard合并f501f32，合同0.1.2-d；UI lab master合入47d5354。IQS原8766服务仍未重载，真实owner扫描未运行。
+
+## 2026-11-04 B03跨仓主线合并状态
+
+- Dashboard：investment-dashboard main已合入f501f32，合同0.1.2-d。
+- IQS服务：master从5211f00快进至fb262e0，包含精确公司结果pin、链接范围和查询投影；目前原8766未重载。
+- 只读UI：iqs-question-bank-ui-lab master快进至47d5354；该仓没有配置远端。
+- 合并后验证：IQS公司结果核心37项通过；公司结果、owner、HTTP及实体视图相邻组103项通过；UI公司结果/返回链接/深链/pin/运行时组29项通过。Dashboard适配与身份回归、OpenAPI生成检查、27项synthetic smoke、TypeScript与生产构建通过。分组有重叠，不将计数相加。
+- 真实owner调用、真实公司扫描、数据库新增写入均未发生。剩余主线是原8766实际入口接线与真实三市场扫描、入库、恢复验收。

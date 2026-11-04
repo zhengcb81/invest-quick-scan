@@ -371,3 +371,11 @@ provided-v5原owner整链1P/468.81秒、0skip、0付费，唯一五组件runtime
 ## 2026-11-03 B03提交与远端
 
 IQS服务候选已提交ec86605，并推送至既有origin分支codex/d00-b03-iqs-service；Dashboard候选04756ca和UI候选47d5354已提交在各自本地隔离分支。Dashboard/UI仓没有配置远端，且canonical Dashboard主工作树未改动。三项仍属于待产品main整合/部署的候选，不代表原8766或真实owner端到端已更新。
+
+## 2026-11-04 B03跨仓主线合并与主线复验
+
+Dashboard候选合入investment-dashboard main（merge f501f32，合同0.1.2-d）；IQS服务分支以快进方式合入master（5211f00→fb262e0）；只读UI候选合入iqs-question-bank-ui-lab master（47d5354）。没有改变生产部署配置或原8766进程。
+
+合并后复验：IQS核心公司结果接口37 passed；核心加owner/HTTP/实体视图相邻测试103 passed；UI结果页、返回链接、深链、pin和服务运行时来源测试29 passed。Dashboard定向适配/历史链接和相邻身份测试通过，OpenAPI生成检查通过，synthetic smoke 27 checks PASS，TypeScript typecheck与生产build通过。生产build在隔离临时目录运行成功；提示JS包体超过500KB。分类测试分组存在覆盖重叠，不累加为全项目测试总数。
+
+独立非作者复审在并入前已针对最终payload关闭。真实owner/API扫描、原8766重启、数据库正式写入未做，因此真实扫描到入库/缓存恢复链路仍是主线未完成项。工作区其他未提交/未跟踪文件保留，没有加入本次提交。
