@@ -390,3 +390,9 @@ Dashboard候选合入investment-dashboard main（merge f501f32，合同0.1.2-d�
 - **F05-FACT-QUERY-01：部分交付，未关闭 F05。** payload `63a6ffcf23f8d16f47acf44bdbcf3e567a85458e`，新增声明运行依赖 `jsonschema>=4.21`。独立审查后复跑定向测试34 passed、0 failed、1 skipped（该集成模块因本次未提供三组件 owner runtime 而跳过）。owner 侧 schema/handoff 校验通过，精确19个导入失败模块已由 collect-only 复核：未过滤时19 collection errors，精确忽略后0 errors、1616 tests collected；没有执行这些测试体。
 - F05 的历史离线全套记录为1519 passed、55 failed、39 skipped并另称10 errors，旧运行原始日志未保留；字段计数合计1613，与1616 collect-only不一致。总控尝试整套复跑后因长测超出聚焦验收范围而中止，临时目录已清理。本项继续标 failed/unresolved，不宣称总控复现其基线等价结论。
 - F05 保持 `status=partial`，阻塞是预期的实际产品前置：没有受支持的只读真实 owner 数据入口/真实 owner golden，IQS 侧 facts 查询契约尚未部署并做公开消费端互操作。G3 handoff 标 `status=complete` 仅指工装；`production_G3_status=not_closed`。两份 handoff 的详细路径和最终元数据见 `task_plan.md` 的2026-11-04支撑包段落。
+
+## 2026-11-05 F05 IQS 消费端施工包准备
+
+针对 F05 handoff 明确遗留的 IQS consumer contract，已编制独立包 F05-IQS-CONSUMER-01。冻结 IQS 输入为 `aca0f4be5adcb96f0c7d8f58e0c4a205e6c17981`，F05 owner 输入为 `63a6ffcf23f8d16f47acf44bdbcf3e567a85458e`；owner facts schema SHA-256 为 `CD3E03417289A99F5194263603EAD6D954FD601B875CD3D5C08A74505BA8CBAD`。目标 Lab 为 `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab`，当前状态为已备妥、未分派。
+
+施工卡把范围限制在 IQS facts 合约/CLI/capability 声明和离线契约测试；明确四种 F05 调用、2.7.0 wire、旧 2.0–2.6 兼容、strict/explore 与 unknown/empty 区分、最终独立 agent 审查及交接字段。不得访问生产 owner、真实 golden 或收费 API。代码包完成只关闭该包，不关闭 F05；总控仍需后续真实 owner 公共 CLI 互操作和真实 golden 验收。施工卡与索引见 `task_plan.md`。
