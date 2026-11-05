@@ -866,6 +866,23 @@ class DashboardService:
                 result = getattr(self._gateway('owner'), path)(entity_id)
                 if path == 'entity':
                     result.update(self._drafts(entity_id))
+                    # G-IQS-01: the frozen `IQSLink` travels with the entity so
+                    # a consumer reads one declaration instead of guessing. An
+                    # unconfigured or unreadable owner still yields an explicit
+                    # link whose `unavailable`/`unreadable` reason says which
+                    # it was, rather than a null the UI would misread as "no
+                    # declaration".
+                    #
+                    # B03 LIVE-OWNER-VERIFY-REPAIR-01: this declaration must be
+                    # present on the entity route. Without it the Dashboard
+                    # `get_result` composition falls back to the legacy partial
+                    # declaration and the composed deep link loses the latest
+                    # company result's `result_id` pin, the first-observation
+                    # anchor and the return context. The declaration is
+                    # entity-scoped by construction (see `_iqs_link`), so it is
+                    # rebuilt for THIS entity on every read and never cached
+                    # across entities.
+                    result['iqs_link'] = self._iqs_link(entity_id, query.get('return'))
                 return result
             if path == 'universe':
                 return self._gateway('owner').universe_list(query.get('universe_id', self.config['universe_id']))
