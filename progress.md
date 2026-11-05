@@ -396,3 +396,11 @@ Dashboard候选合入investment-dashboard main（merge f501f32，合同0.1.2-d�
 针对 F05 handoff 明确遗留的 IQS consumer contract，已编制独立包 F05-IQS-CONSUMER-01。冻结 IQS 输入为 `aca0f4be5adcb96f0c7d8f58e0c4a205e6c17981`，F05 owner 输入为 `63a6ffcf23f8d16f47acf44bdbcf3e567a85458e`；owner facts schema SHA-256 为 `CD3E03417289A99F5194263603EAD6D954FD601B875CD3D5C08A74505BA8CBAD`。目标 Lab 为 `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab`，当前状态为已备妥、未分派。
 
 施工卡把范围限制在 IQS facts 合约/CLI/capability 声明和离线契约测试；明确四种 F05 调用、2.7.0 wire、旧 2.0–2.6 兼容、strict/explore 与 unknown/empty 区分、最终独立 agent 审查及交接字段。不得访问生产 owner、真实 golden 或收费 API。代码包完成只关闭该包，不关闭 F05；总控仍需后续真实 owner 公共 CLI 互操作和真实 golden 验收。施工卡与索引见 `task_plan.md`。
+
+## 2026-11-05 F05 IQS 消费端交付验收
+
+施工包最终提交为 Lab HEAD `08e5b4d660bd09cfbb6fe9cba0d7ec7aad31d388`（本地隔离分支，无 remote），状态为隔离代码包完成。验收在原范围内直接修复：导出自哈希原先不能绑定原查询与 owner profile；公开导出 presenter 响应现在由 `facts-export-response` 重建 profile 投影与导出体后比对。导出跨日 snapshot replay 原先会按新请求日期误算 cutoff；现在在 request cutoff 为空且带 snapshot 时沿用响应所绑定的历史 cutoff，并由 query hash 和原 snapshot ID 校验。capability 1.2 的 2.6/2.7 wire 顺序已修正，施工卡也纠正了与冻结 owner 冲突的哈希表述：query_facts/export_facts 共用逻辑查询哈希。
+
+独立代码审查未发现实现阻断；审查员提出的“保留原 snapshot ID、改 cutoff 并重算 query/dataset/candidate 哈希仍应拒绝”反例也已加入并通过。最终 facts/capabilities/public CLI 定向套件 82 passed、0 failed/skip；exchange/query 与 deployment 相邻套件 30 passed、7 子测试通过。旧 query v2 套件为64 passed、1 failed，失败仍是冻结基线的 `model_self_qualification`，本包未触及其逻辑，报告原始失败，不称全套通过。所有测试使用合成数据，无生产数据、网络或收费 API。
+
+F05 整体仍为 `partial`。下一步仍是正式产品接线，取得受支持的真实 owner 只读入口/真实 golden，再由总控跑 StockWiki 公共 CLI 的真实互操作；此隔离包的通过不能替代这项验收。

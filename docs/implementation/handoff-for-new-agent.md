@@ -1,11 +1,13 @@
 # 当前接手说明
 
+**11/05 当前 F05 进展。** 独立包 [F05-IQS-CONSUMER-01](parallel-lanes/packages/2026-11-05-f05-iqs-consumer/README.md) 已在隔离 IQS Lab 完成、直接修复并通过独立代码复审，最终 Lab HEAD `08e5b4d660bd09cfbb6fe9cba0d7ec7aad31d388`；facts/capabilities/public CLI 定向 82 passed，exchange/query 与 deployment 相邻组 30 passed、7 subtests passed。已补公开导出查询/owner/snapshot 完整绑定、跨日 snapshot cutoff 回放和相应篡改反例。旧 query v2 有一项冻结基线失败，保留原失败记录。**这只关闭隔离代码包，不关闭 F05**；尚需正式产品接线、支持的真实 owner 只读入口、真实 golden 和 StockWiki 公共 CLI 互操作。详情见根 [task_plan.md](../../task_plan.md)、[progress.md](../../progress.md) 和 Lab handoff `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab\docs\handoff\F05-IQS-CONSUMER-01\report.md`。
+
 **11/02最新补充。** [解耦 D1–D7 整改](reviews/DECOUPLING-2026-11-02/remediation.md)已通过独立复核。恢复使用原登记发布根、原语义资源及原请求规则。以后新增 renderer 或答案资源时登记新版本并保留原版本读路径。UI 与 Company Lab 为本地组件仓，提交与 StockQA 版本见报告。接下来按根计划回到小池内容质量和事实主线。
 
 **11/02 上一节点的 CI 证据。** [CI 连续失败根修](reviews/CI-ROOT-CAUSE-2026-11-02/report.md)在 StockQA `0154726` 的 CI 41523660779 与 Documentation 41523660825 通过，文档构建和发布均已核实。[完整链路混合与重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)仍是既有真实恢复证据。
 
 
-更新于2026-11-02。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
+更新于2026-11-05。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
 
 ## 当前已经完成什么
 

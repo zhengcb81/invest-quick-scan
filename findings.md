@@ -108,3 +108,12 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - G3 合成200主体批次接续工装交付与独立审查通过，但不代表真实200家公司试点、真实入库链或生产 G3 已完成。
 - F05 owner 查询候选的代码与定向测试可用，仍缺 IQS 消费端事实契约/公开入口互操作和受支持的真实 owner golden 来源；因此保留 `partial`，不拿 synthetic runtime 当真实 golden。
 - F05 历史全套离线计数记录存在差异：1519+55+39=1613，另有“10 errors”说法；总控 collect-only 得到1616项。精确的19个导入错误模块列表已复核，但未重跑整套以核对旧运行数字。旧全套结果保持 failed/unresolved，不扩大门禁，也不宣称与基线的运行结果已由总控重验。
+
+## 2026-11-05 F05-IQS-CONSUMER-01 总控验收
+
+- 原交付的 `verify_export()` 只重算导出体自哈希，不能证明候选来自请求绑定的 owner profile；即使攻击者改候选后重算自哈希，也缺少公开 presenter 响应校验入口。总控直接补 `validate_export_response()` 与公开 CLI `facts-export-response`：用请求、owner provenance 和 profile 重新构造 sealed query result，再构造 expected export，比较完整响应；自哈希只作为一层，不能替代来源/查询绑定。
+- 独审另发现 capability 1.2 把 wire 2.7 排在 2.6 前；现按版本顺序输出并精确测试。
+- 施工卡曾要求 operation 改变时查询哈希也改变，与冻结 owner 的规范化规则冲突。已改为明确：query_facts 与 export_facts 是同一逻辑查询的两种呈现，共用 query hash；冻结 owner 与测试作为依据。
+- 继续相邻场景复审时发现：`information_cutoff=null` 的跨日 snapshot replay 应取已存 snapshot cutoff。现新增 `_materialize_for_response()` 从 response watermark 取 cutoff，再让重建 query hash/snapshot id 绑定验证它，普通响应验证共用同一规则。独立审查已要求重点复核被篡改 cutoff 不能借此绕过旧 snapshot ID。
+- 独立审查确认导出来源/查询/快照绑定和跨日 cutoff 回放均未发现实现阻断。审查员建议直接覆盖保留原 snapshot ID、篡改 cutoff 并重算所有导出哈希；该反例已在最终提交 `08e5b4d6` 中加入且 targeted test 通过。审查员受 Lab Git ACL 限制不能自己执行 `rev-parse`，总控已核实本机 HEAD 与 handoff 一致。
+- 最终 facts/capabilities/public CLI 为82 passed；exchange/query+deployment为30 passed、7 subtests passed；旧 query v2 为64 passed、1 failed，仍为冻结基线已知 `model_self_qualification`。隔离代码包可签收，F05整体仍partial，待正式产品接线/真实owner golden/公开CLI互操作。

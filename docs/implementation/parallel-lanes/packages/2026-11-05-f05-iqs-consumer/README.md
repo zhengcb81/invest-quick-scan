@@ -6,6 +6,8 @@
 |---|---|---|---|
 | [F05-IQS-CONSUMER-01](F05-IQS-CONSUMER-01.md) | C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab | IQS aca0f4be5adcb96f0c7d8f58e0c4a205e6c17981；F05 owner candidate 63a6ffcf23f8d16f47acf44bdbcf3e567a85458e | IQS facts 请求/响应合约、固定 CLI 分派、2.7.0 wire 能力兼容和离线跨边界合约测试 |
 
-状态：**已备妥，尚未分派/实施。**
+状态：**隔离代码包已完成并通过独立复审；F05 整体仍为 partial。** 最终 IQS Lab HEAD：`08e5b4d660bd09cfbb6fe9cba0d7ec7aad31d388`。facts/capabilities/CLI 定向测试 82 passed；exchange/query 与 deployment 相邻组 30 passed、7 subtests passed。
 
-本包的完成状态只表示 IQS 消费端合约代码完成。F05 仍是 partial，直到总控取得受支持的真实 owner 只读入口与真实 owner golden，并完成真实公共 CLI 互操作验收。不要将本包的合成测试称为真实 owner 验收。
+总控验收修复了公开导出只校验自哈希却未绑定原查询/owner profile，以及跨日 snapshot replay 错用新请求日期的问题；增加在重算哈希后仍拒绝候选、查询、截止日、snapshot 和错误 owner 篡改的反例。测试仅用合成数据。旧查询兼容组仍有一个在冻结基线已存在的 `model_self_qualification` 失败，单独记录为已知基线失败。
+
+本包的完成状态只表示隔离 IQS 消费端合约代码、测试和复审完成。F05 仍是 partial，直到总控取得受支持的真实 owner 只读入口与真实 owner golden，正式接线后完成真实公共 CLI 互操作验收。不要将本包的合成测试称为真实 owner 验收。

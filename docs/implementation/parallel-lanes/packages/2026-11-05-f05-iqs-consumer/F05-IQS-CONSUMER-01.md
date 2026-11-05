@@ -47,7 +47,8 @@
   - facts-request：验证请求。
   - facts-query-hash：计算请求语义哈希。
   - facts-build：从已校验的基础 profile、facts 请求和 owner provenance 构建 wire 响应。
-  - facts-response：验证 facts 响应及其与请求、owner 的绑定。
+  - facts-response：验证 facts 构建响应及其与请求、owner 的绑定。
+- 另提供消费端专用的 facts-export-response：验证 StockWiki presenter 返回的公开导出响应，并用原请求、快照和 owner profile 重建校验；它不是第五个 owner wrapper 调用。
 - F05 schema 和冻结代码是协议事实来源；本包不得另造字段、枚举、方向表或状态含义。
 
 ## 允许改动范围
@@ -55,7 +56,7 @@
 在独立 IQS Lab 中，新增或修改仅限于实现及直接测试这些职责所需的文件：
 
 1. 新增 scripts/query_facts_contract.py：facts 合约纯函数。
-2. 修改 scripts/query_contract_cli.py：只新增四个 facts-* operation 的 CLI 选择和分派；沿用现有 JSON 读取、重复键拒绝、canonical 校验、大小上限、标准输出和命名拒绝模式。
+2. 修改 scripts/query_contract_cli.py：新增四个 owner wrapper 使用的 facts-* operation，以及消费端专用 facts-export-response 校验入口；沿用现有 JSON 读取、重复键拒绝、canonical 校验、大小上限、标准输出和命名拒绝模式。
 3. 新增 schemas/quick_scan/query-facts-v2.7.schema.json：从冻结 F05 owner schema 原样复制；内容必须与指定 SHA-256 一致。
 4. 如 capability wire 的诚实声明需要，最小修改 scripts/query_capabilities_contract.py、scripts/query_capabilities_vendor_contract.py 及实际使用的 query-capabilities schema。只添加 2.7.0 / query_facts / export_facts 对应声明，保持旧版本响应内容与既有闭合校验不变。
 5. 新增 tests/test_query_facts_contract.py、tests/test_query_capabilities_facts_wire.py 和 tests/test_f05_facts_cli_conformance.py；只有确有必要时，才在 tests/test_query_contract_v2.py 添加公开 CLI 回归。
@@ -68,14 +69,14 @@
 
 - IQS schema 文件逐字节复制冻结 owner schema；测试必须验证该文件的 SHA-256 与本卡固定值。
 - 不依赖网络 schema resolver；所有 JSON Schema 引用在本地可解析。
-- CLI operation 名称与 F05 IqsQueryContract 的四个调用完全一致。
+- CLI operation 名称与 F05 IqsQueryContract 的四个调用完全一致；facts-export-response 只用于验证 presenter 生成的公开导出 envelope，不改变 owner wrapper 接口。
 - 每个 CLI 输入必须检查精确允许字段；重复 JSON key、超限输入、错误 wire、额外 envelope 字段按既有 CLI 规则拒绝。
 - Unsupported operation/version、owner 明确拒绝、无事实、coverage gap、unknown 必须保留不同语义；任何 unsupported 或 rejected 均不得回退成空结果。
 
 ### B. 请求哈希与重放语义
 
 - 按冻结 F05 contract 实现 query hash 的规范化规则。
-- page/cursor 和 snapshot 仅是呈现/重放参数时，不得错误地拆成不同逻辑查询；改变筛选条件、信息截止日、实体范围、strict/explore 模式或 operation 必须改变相应查询身份。
+- page/cursor 和 snapshot 仅是呈现/重放参数时，不得错误地拆成不同逻辑查询；筛选条件、信息截止日、实体范围或 strict/explore 模式改变时查询身份应改变。query_facts 与 export_facts 代表同一逻辑查询及其不同呈现，必须共享查询哈希；以冻结 owner contract 为准。
 - information_cutoff 的 materialize/default/replay 规则必须和冻结 wire 一致，保证同一快照重放可复现。
 - 游标和 snapshot 必须绑定正确 query hash；跨查询、跨 snapshot 或非法 offset 的游标必须拒绝。
 
@@ -106,7 +107,7 @@
 至少覆盖：
 
 - schema 对合法 request/response/export 和错误版本、未知 operation、缺字段、额外字段、重复 JSON key 的接受/拒绝。
-- facts-request、query-hash、facts-build、facts-response 四个 operation 的正反例。
+- facts-request、query-hash、facts-build、facts-response 四个 owner wrapper operation 的正反例；facts-export-response 另需覆盖公开导出响应验证正反例。
 - query hash 对页大小/游标/快照呈现参数的稳定性，以及对真实筛选条件变化的敏感性。
 - 信息截止日默认值和同一快照重放；跨查询 snapshot/cursor 误用拒绝。
 - strict 与 explore 的状态边界；unknown、not_applicable、expired、conflict、coverage_gap、empty、unavailable 不混淆。
@@ -117,7 +118,7 @@
 
 ### 公开 CLI 集成测试
 
-用临时 JSON 文件分别通过公开 scripts/query_contract_cli.py 调用四种 facts-* operation；断言退出码、protocol、operation、status、错误码及 canonical JSON 结果。另用合成能力响应覆盖 capabilities 1.1.0 / 1.2.0 的新旧 wire。
+用临时 JSON 文件分别通过公开 scripts/query_contract_cli.py 调用四种 owner wrapper operation 和 facts-export-response；断言退出码、protocol、operation、status、错误码及 canonical JSON 结果。公开导出正例须来自合成的 owner presenter 形状，负例至少要在重算自校验哈希后仍因候选集/查询/快照绑定不符而拒绝。另用合成能力响应覆盖 capabilities 1.1.0 / 1.2.0 的新旧 wire。
 
 还必须用冻结 F05 候选的 IqsQueryContract 实例实际调用四个 wrapper，构造参数与返回验证均使用合成 fixture，并断言 native_supported=True。F05 候选代码只读，不传 owner root、不访问其运行数据。再用冻结 F05 的 FactsContractAdapter 包装上述 IqsQueryContract 实例，通过无效 facts request 触发 IQS native rejection；用 spy/monkeypatch 证明 StockWiki 本地 fallback 确实未执行，且 rejection 原样传播。若需要从提交中恢复 F05 调用代码，只能在 IQS Lab 自有临时目录恢复冻结提交 63a6ffcf23f8d16f47acf44bdbcf3e567a85458e 的 tracked 代码，结束后清理；不得改动候选仓。
 
