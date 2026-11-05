@@ -6,12 +6,12 @@
 
 | 包 | 独立工作目录 | 冻结输入 | 交付目标 |
 |---|---|---|---|
-| [F05-FACT-QUERY-01](F05-FACT-QUERY-01.md) | `C:\Users\郑曾波\Projects\iqs-stockwiki-f05-query-lab` | StockWiki `d8d3303cb4b91fb6bfc8db6202ea3919276f833e` | 在 StockWiki 本地隔离克隆中补齐版本化事实/关系检索、可解释候选导出与测试。 |
-| [G3-BATCH-RESUME-HARNESS-01](G3-BATCH-RESUME-HARNESS-01.md) | `C:\Users\郑曾波\Projects\iqs-g3-batch-resume-harness-lab` | IQS `da557350b0dd11ea92382ad22479f874026d4ad8`；`LOAD-CASE-01` SHA-256 `99E7A7D3C98A07A2F70F7BD6C99E0137CE39F60238EE7AECB9C6E805135E2431` | 给现有批处理入口增加独立的合成端到端接续测试工装；不改 IQS 产品代码。 |
+| [F05-FACT-QUERY-01](F05-FACT-QUERY-01.md) | `C:\Users\郑曾波\Projects\iqs-stockwiki-f05-query-lab` | StockWiki `d8d3303cb4b91fb6bfc8db6202ea3919276f833e` | 已交付 owner 侧事实/关系查询候选，payload `63a6ffcf23f8d16f47acf44bdbcf3e567a85458e`；handoff `partial`，缺真实 owner golden 与 IQS 消费端互操作。 |
+| [G3-BATCH-RESUME-HARNESS-01](G3-BATCH-RESUME-HARNESS-01.md) | `C:\Users\郑曾波\Projects\iqs-g3-batch-resume-harness-lab` | IQS `da557350b0dd11ea92382ad22479f874026d4ad8`；`LOAD-CASE-01` SHA-256 `99E7A7D3C98A07A2F70F7BD6C99E0137CE39F60238EE7AECB9C6E805135E2431` | 合成200主体接续工装已交付，payload `c9fd6c54274ef05f40676db2cce5a13c20bcfc04`；工装 `complete`，生产 G3 `not_closed`。 |
 
 ## 两包如何协作
 
-F05 可以独立推进；G3 工装只用 IQS 冻结快照和合成数据，不消费 StockWiki 运行数据。因此两边不写同一仓库、数据库、名单或配置。`TH-IMPL-01`、`IN-IMPL-01` 消费者施工包仍按当前计划等待真实 F05/W11 公共接口；本批任何一包交付都不自动关闭 F05、G3 或消费者验收。
+F05 与 G3 已分别在隔离工作目录交付。F05 只完成 owner 侧查询候选；G3 工装只用 IQS 冻结快照和合成数据，不消费 StockWiki 运行数据。因此两边不写同一仓库、数据库、名单或配置。`TH-IMPL-01`、`IN-IMPL-01` 消费者仍需接真实 F05/W11 公共接口；本批交付不会自动关闭生产 F05、G3 或消费者验收。
 
 尤其注意：G3 的合成批处理工装用于发现接续、幂等和恢复缺陷，不能替代 200 家真实公司试点，也不授予 G3 通过状态。真实试点仍由总控按 PWF 执行。
 

@@ -1,8 +1,10 @@
 # invest-quick-scan 当前实施计划
 
-本轮任务（2026-11-02）：[D1–D7 解耦整改](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)已通过定向测试和独立对抗审查。公共结果接受合法扩展，慢命令与读取隔离，旧任务选择原发布资源和原请求规则，UI保留未保存草稿，执行和存储投影由各组件负责。此前的实际业务验收范围以原记录为准。
+本轮历史任务（2026-11-02）：[D1–D7 解耦整改](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)已通过定向测试和独立对抗审查。公共结果接受合法扩展，慢命令与读取隔离，旧任务选择原发布资源和原请求规则，UI保留未保存草稿，执行和存储投影由各组件负责。此前的实际业务验收范围以原记录为准。
 
 执行状态：StockQA `01f20d6` 已推，GitHub CI 41532137887 已完成且成功，本地默认检查306项通过。上一节点的文档构建和发布通过证据见[CI根修](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。
+
+**2026-11-05 外包支撑包验收更新：** G3 合成批次接续工装已独立审查并接受（31 passed）；它只证明测试工装可用，真实200家公司试点/G3仍未完成。F05 owner 侧事实查询候选状态为 partial；定向验收34 passed/0 failed/1 skipped，真实 owner golden 与 IQS 消费端互操作仍缺。F05全套离线旧运行计数有未解决差异，见下表和进度记录；不把旧报告写成通过。
 
 ## 当前结论
 
@@ -38,8 +40,8 @@
 |ANSWER-AUDIT-30|审计范围签收|51源全尝试，35可读/16不可读；63外部命题22支持/25部分/16不可评，不宣称评分金融全对|
 |IMPORT-PERF-30|研究范围签收，未启用|68不同测试、24合成测量；36包候选更慢，不作为基线发布阻塞|
 |评分校准/G2|受限范围已签|G2 r2 `verified_for_local_gate_scope`；原60家+20重复配方未全完成，实际为获准6家缩样，不能称60家校准完毕|
-|200家可靠性/L03/G3|未完成|三公司、合成负载、组件测试均不替代200家真实试点或正式G3|
-|事实数据/关系查询/F05|部分基础存在，整体未验收|61题面、查询契约/软件不等于真实事实填充与strict/explore关系检索验收|
+|200家可靠性/L03/G3|未完成|G3合成批次接续工装已验收（31 passed/0 failed/0 skipped），仅属软件支撑；不替代200家真实试点、真实 owner ACK 或正式G3|
+|事实数据/关系查询/F05|部分基础存在，整体未验收|隔离候选 `63a6ffcf` 定向复验34 passed/0 failed/1 skipped，独立审查通过；真实 owner golden、IQS facts 消费契约/互操作仍缺。旧全套离线数字未核清，不作为通过证据|
 |主题/行业消费者|预研已签，正式集成未验收|依赖真实F05/W11等功能接口，不再等待200家G3；不是缺用户写权限|
 |全池与完整配套/G4—G6|未完成|2000覆盖、事实/两消费、配套安装/升级回退不能由本机启动成功代签|
 
@@ -79,7 +81,7 @@
 4. **TH/IN正式消费与G4。** 只接原查询/固定快照分页/画像/元数据/原补扫，保留池外发现和各自研究方法；核实源仓及实际加载镜像，实际原入口E2E。原包中的G3串行门已由1.10.17取消，按真实F05/W11接口准备实施，不能因此声称G3/F05已关。
 5. **扩容、运维和配套G5/G6。** 用户认可名单逐步扩至目标容量，完成覆盖/费用/维护与配套安装、加载、升级回退、统一操作入口的实际验收。当前本机一键开UI不等于全部安装发布已验。
 
-**2026-11-04 可外包支撑包（已编制，未实施/未验收）：** [F05-FACT-QUERY-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/F05-FACT-QUERY-01.md) 在 StockWiki 隔离克隆补真实事实/关系查询；[G3-BATCH-RESUME-HARNESS-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/G3-BATCH-RESUME-HARNESS-01.md) 建立合成200主体的批次接续E2E工装。两包可并行，后者仅为软件验证支撑，不代签真实G3。分派索引见[施工包README](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/README.md)。
+**2026-11-04 主线支撑包（2026-11-05 已验收交付）：** [F05-FACT-QUERY-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/F05-FACT-QUERY-01.md) 在 StockWiki 隔离克隆交付 owner 侧事实/关系查询候选，`status=partial`；[G3-BATCH-RESUME-HARNESS-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/G3-BATCH-RESUME-HARNESS-01.md) 合成200主体批次接续工装已交付，工装包完成但生产 G3 `not_closed`。handoff 分别位于 `C:\Users\郑曾波\Projects\iqs-stockwiki-f05-query-lab\docs\handoff\F05-FACT-QUERY-01\handoff.json` 与 `C:\Users\郑曾波\Projects\iqs-g3-batch-resume-harness-lab\docs\handoff\G3-BATCH-RESUME-HARNESS-01\handoff.json`。两包均不改 canonical StockWiki/IQS 产品代码、不调用收费 API；详情见[施工包索引](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/README.md)及[进度记录](progress.md)。
 
 PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；现有结论可用，不再让每批支撑交付重开已完成主线。TIME独立核查凭证体系已取消；真正需要的字段时效改进沿原缓存策略实施，保持旧版本和真实日期。
 

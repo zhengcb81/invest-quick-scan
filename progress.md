@@ -383,3 +383,10 @@ Dashboard候选合入investment-dashboard main（merge f501f32，合同0.1.2-d�
 ## 2026-11-04 独立施工包准备
 
 编制 F05-FACT-QUERY-01（StockWiki 隔离克隆，基线 `d8d3303`）与 G3-BATCH-RESUME-HARNESS-01（独立 IQS 合成测试工装，基线 `da557350`）。确认复用 LOAD-CASE-01（SHA-256 `99E7A7D3…35E2431`），避免重复建设负载场景。两包尚未实施；测试工装不能代替真实200家公司 G3，F05需总控验真实 owner golden 与 IQS互操作后签收。
+
+## 2026-11-05 F05 / G3 支撑包验收
+
+- **G3-BATCH-RESUME-HARNESS-01：工装交付通过，生产 G3 未关闭。** payload `c9fd6c54274ef05f40676db2cce5a13c20bcfc04`，冻结基线 `da557350b0dd11ea92382ad22479f874026d4ad8`。修复 subprocess 捕获的 UTF-8 解码问题后重跑完整工装：31 passed、0 failed、0 skipped，无解码告警；独立审查通过。另一个冻结产品回归控制 `tests/test_dashboard_batches.py` 为101 passed/1 failed，失败在冻结基线可复现，记录为 failed 而非工装通过。合成工装仍不代表真实200公司试点或生产 G3。
+- **F05-FACT-QUERY-01：部分交付，未关闭 F05。** payload `63a6ffcf23f8d16f47acf44bdbcf3e567a85458e`，新增声明运行依赖 `jsonschema>=4.21`。独立审查后复跑定向测试34 passed、0 failed、1 skipped（该集成模块因本次未提供三组件 owner runtime 而跳过）。owner 侧 schema/handoff 校验通过，精确19个导入失败模块已由 collect-only 复核：未过滤时19 collection errors，精确忽略后0 errors、1616 tests collected；没有执行这些测试体。
+- F05 的历史离线全套记录为1519 passed、55 failed、39 skipped并另称10 errors，旧运行原始日志未保留；字段计数合计1613，与1616 collect-only不一致。总控尝试整套复跑后因长测超出聚焦验收范围而中止，临时目录已清理。本项继续标 failed/unresolved，不宣称总控复现其基线等价结论。
+- F05 保持 `status=partial`，阻塞是预期的实际产品前置：没有受支持的只读真实 owner 数据入口/真实 owner golden，IQS 侧 facts 查询契约尚未部署并做公开消费端互操作。G3 handoff 标 `status=complete` 仅指工装；`production_G3_status=not_closed`。两份 handoff 的详细路径和最终元数据见 `task_plan.md` 的2026-11-04支撑包段落。
