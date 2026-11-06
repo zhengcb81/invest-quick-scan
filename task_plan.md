@@ -6,6 +6,8 @@
 
 **2026-11-06 主线更新：** G3 合成批次接续工装已独立审查并接受（31 passed）；它只证明测试工装可用，真实200家公司试点/G3仍未完成。F05 IQS 消费端代码现已合入本仓 `master`，提交 `da34654`；新增 facts 查询契约/公开CLI、2.7 wire 能力声明及测试。F05 定向82 passed；加入相邻 exchange/query 回归共97 passed、7子测试通过。测试使用合成内容与冻结 owner 候选代码，不访问生产库或收费API。F05 仍为 partial：当前产品尚未接入实际 StockWiki owner runtime，也未完成真实 owner golden 与当前公开 CLI 互操作。旧全套离线计数仍未解决，不据此声称全套通过。
 
+**2026-11-06 独立主线施工包已备妥、未分派：** [F05-OWNER-MAINLINE-02](docs/implementation/parallel-lanes/packages/2026-11-06-mainline-consumer-wave/F05-OWNER-MAINLINE-02.md)、[TH-IMPL-02](docs/implementation/parallel-lanes/packages/2026-11-06-mainline-consumer-wave/TH-IMPL-02.md)、[IN-IMPL-02](docs/implementation/parallel-lanes/packages/2026-11-06-mainline-consumer-wave/IN-IMPL-02.md)。独立 agent 已复审包边界和依赖说明，`approved / open_findings=[]`；其沙箱无法重取外仓 Git 元数据，源仓基线由总控读取核实。三个新 Lab 各属一个源仓；只读使用 IQS `acb03e3` / facts 2.7 契约，源仓 baseline 与 StockWiki 未跟踪路径锁在 [inputs.lock.json](docs/implementation/parallel-lanes/packages/2026-11-06-mainline-consumer-wave/inputs.lock.json)。消费者代码可先按 synthetic contract 完成，不代表真实 owner/F05/G3验收。真实 G3 试点留总控执行，不作为并行施工包。
+
 ## 当前结论
 
 **已到“小范围可用、规模化与研究联动未完”的阶段。** 原8766工作台能够维护名单、组合题库、真实扫描、入库、查看与比较结果并恢复历史任务；不是还没接通模型或数据库。原工作区明确为`isolated_research`，不是全池正式投产。

@@ -412,3 +412,13 @@ F05 整体仍为 `partial`。下一步仍是正式产品接线，取得受支持
 主线重跑：`tests/test_query_facts_contract.py`、`tests/test_query_capabilities_facts_wire.py`、`tests/test_f05_facts_cli_conformance.py` 为82 passed；加 `tests/test_exchange_and_query_contract.py` 后97 passed、7 subtests passed。Windows 运行需 `PYTHONPATH=scripts`、`PYTHONUTF8=1`；冻结 owner wrapper 测试需读取 StockWiki F05 隔离候选 Git 对象，并把代码归档到测试自动清理的临时目录。测试全用合成输入，不写 owner 数据、不联网、不调收费 API。
 
 旧 `tests/test_query_contract_v2.py` 的 `test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[model_self_qualification]` 仍失败；本轮合并前的隔离验收已记录同一失败。本轮不把它算成本次回归，也不将旧兼容组说成全绿。F05 从“消费者代码仅在 Lab”推进为“消费者契约/CLI在 IQS 主线”，仍为 `partial`：尚未把普通产品/共享引擎流程连接到真实 StockWiki owner 只读运行时，也未完成真实 owner golden 与当前公开 CLI 正反互操作；真实UI扫描、数据库写入及生产部署都未执行。
+
+## 2026-11-06 独立主线施工包准备
+
+准备了三份可以交给不同 Harness 的独立施工卡，均为可分派、尚未开工：F05-OWNER-MAINLINE-02（StockWiki owner producer）、TH-IMPL-02（analyze-theme-value-chain consumer）、IN-IMPL-02（industry-research consumer）。每包使用新建 Lab、独立分支和单一 owner；本仓 IQS `master@acb03e3c084f61ca2b49181180195118077d43e3` 只作只读协议输入，facts wire 2.7 schema SHA-256 `cd3e03417289a99f5194263603ead6d954fd601b875cd3d5c08a74505ba8cbad`。
+
+开卡时核实 StockWiki 当前 `master@6d1e40bcdcde5e99488e22c38d57bd8e1b33c27e`，tracked tree clean，但存在四个需保护的 untracked data 路径：`data/companies/688012.SH/research_source_links.sqlite`、`data/dashboard_onboarding/`、`data/dashboard_research_binding/`、`runs/c16b/`。owner 包必须从锁定 tracked commit 建孤立克隆，不读/复制/改动这些路径。Theme 源 `master@3c9a49c7ce86f3e60eb9a6c8e6c835164cb8a903`、Industry 源 `main@98640a9a1f52fc87ba9813676a3cc5ab9bf045c9` 均 clean。三个 Lab 编卡时都不存在。
+
+新卡明确：TH/IN 可依固定合同和 synthetic response 独立完成消费端开发，不再被真实200家 G3 或真实 owner golden 阻挡；不得把 synthetic 测试写成真实互操作。Owner query 可能持久化 snapshot/capture，因此测试只能把 owner root 指向各自临时目录。本批不分派真实 G3 扫描，该流程需要总控独占原 UI/额度/运行库。每个包交付前做一次独立 reviewer 大节点审查并修完 findings，不要求小节点重复审查。具体边界、测试案例、操作命令与共同交接规则见 [施工包索引](docs/implementation/parallel-lanes/packages/2026-11-06-mainline-consumer-wave/README.md)。
+
+独立 agent 对本批施工包的依赖口径、目录边界、隔离和交接完整性复审通过（`approved / open_findings=[]`）。复核限制：子代理沙箱无法读取 StockWiki/Theme/Industry Git 元数据；这些冻结提交和工作树状态由总控在编卡时只读核实。README、六份交付文件及相对链接均已核验；IQS facts schema 哈希与锁值一致。

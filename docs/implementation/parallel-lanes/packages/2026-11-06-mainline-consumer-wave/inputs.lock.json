@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "observed_at": "2026-11-06",
+  "iqs_contract": {
+    "repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+    "branch": "master",
+    "commit": "acb03e3c084f61ca2b49181180195118077d43e3",
+    "facts_schema": {
+      "path": "schemas/quick_scan/query-facts-v2.7.schema.json",
+      "version": "2.7.0",
+      "sha256": "cd3e03417289a99f5194263603ead6d954fd601b875cd3d5c08a74505ba8cbad"
+    },
+    "facts_contract": {
+      "path": "scripts/query_facts_contract.py",
+      "sha256": "d534332ebf08654b66f9413748d570eda622a36b3b3fbecfbe0a558eb4ea610f"
+    },
+    "consumer_cli": {
+      "path": "scripts/query_contract_cli.py",
+      "sha256": "3e16fe8e24813221f905fc1fbe8fc59c05e44b083617ad4e147b7dcc64f6a60b"
+    },
+    "capabilities_schema_sha256": {
+      "1.1.0": "7f77c3da10d255b45cc04986486b8270e49e8240397da1da15c241ed3484c5d4",
+      "1.2.0": "430d261d15b8054f15959988f611139d3eef11d5a5da95c5a2b1e5f577da56db"
+    }
+  },
+  "f05_owner_reference": {
+    "repository": "C:/Users/郑曾波/Projects/iqs-stockwiki-f05-query-lab",
+    "accepted_payload_commit": "63a6ffcf23f8d16f47acf44bdbcf3e567a85458e",
+    "reference_head_at_lock": "5bdb54fe828856a9d69c4857caca737ca775321a",
+    "status": "partial",
+    "facts_schema_path": "config/quick_scan_facts_query.schema.json",
+    "facts_schema_sha256": "cd3e03417289a99f5194263603ead6d954fd601b875cd3d5c08a74505ba8cbad",
+    "note": "Behavioral reference only. Do not write this repository or claim it is the canonical StockWiki runtime."
+  },
+  "source_repositories": [
+    {
+      "package_id": "F05-OWNER-MAINLINE-02",
+      "repository": "C:/Users/郑曾波/Projects/StockWiki",
+      "branch": "master",
+      "base_commit": "6d1e40bcdcde5e99488e22c38d57bd8e1b33c27e",
+      "tracked_worktree": "clean",
+      "untracked_paths_do_not_read_or_copy": [
+        "data/companies/688012.SH/research_source_links.sqlite",
+        "data/dashboard_onboarding/",
+        "data/dashboard_research_binding/",
+        "runs/c16b/"
+      ],
+      "lab": "C:/Users/郑曾波/Projects/iqs-stockwiki-f05-mainline-lab"
+    },
+    {
+      "package_id": "TH-IMPL-02",
+      "repository": "C:/Users/郑曾波/Projects/analyze-theme-value-chain",
+      "branch": "master",
+      "base_commit": "3c9a49c7ce86f3e60eb9a6c8e6c835164cb8a903",
+      "worktree": "clean",
+      "lab": "C:/Users/郑曾波/Projects/iqs-th-impl-02-lab"
+    },
+    {
+      "package_id": "IN-IMPL-02",
+      "repository": "C:/Users/郑曾波/Projects/industry-research",
+      "branch": "main",
+      "base_commit": "98640a9a1f52fc87ba9813676a3cc5ab9bf045c9",
+      "worktree": "clean",
+      "lab": "C:/Users/郑曾波/Projects/iqs-in-impl-02-lab"
+    }
+  ],
+  "authorization": {
+    "scope": "User-authorized implementation in each newly created isolated Lab and its allowlisted paths only.",
+    "not_authorized_by_this_package": [
+      "writes to any source repository",
+      "writes to StockWiki production or untracked data",
+      "writes to IQS, StockQA, company-wiki, installation mirrors, or another package Lab",
+      "remote push or production deployment",
+      "company-list changes",
+      "paid API calls or downloads"
+    ]
+  }
+}

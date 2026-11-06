@@ -2,6 +2,8 @@
 
 **11/06 当前 F05 进展。** 独立包 [F05-IQS-CONSUMER-01](parallel-lanes/packages/2026-11-05-f05-iqs-consumer/README.md) 的已审查 payload `08e5b4d6` 已合入本仓 `master`（`da34654`）。主线 facts/capabilities/public CLI 定向82 passed；加相邻 exchange/query 回归97 passed、7子测试。旧 query v2 的 `model_self_qualification` 冻结基线失败在合并前已出现，本轮仍保留为非本次引入的失败。**F05 仍为 partial**：主线有消费者契约和校验CLI，但普通产品/共享引擎尚未接上实际 StockWiki owner runtime，真实 owner golden 和当前公开 CLI 正反互操作也未完成；未运行生产UI、数据库写入或收费API。详情见根 [task_plan.md](../../task_plan.md)、[progress.md](../../progress.md) 和 Lab handoff `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab\docs\handoff\F05-IQS-CONSUMER-01\report.md`。
 
+**2026-11-06 可分派施工包（尚未开工）：** [F05-OWNER-MAINLINE-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/F05-OWNER-MAINLINE-02.md) 只在新的 StockWiki Lab 适配当前 owner 代码；[TH-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/TH-IMPL-02.md) 与 [IN-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/IN-IMPL-02.md) 各自在独立 skill Lab 消费固定 2.7 contract。消费者离线实现不等 G3/真实 owner golden；真实 owner 数据互操作和 G3 由总控另行完成。StockWiki 原仓有四个未跟踪数据路径，owner 卡明确禁止读取或复制，并从锁定的 tracked commit 建新 Lab。
+
 **11/02最新补充。** [解耦 D1–D7 整改](reviews/DECOUPLING-2026-11-02/remediation.md)已通过独立复核。恢复使用原登记发布根、原语义资源及原请求规则。以后新增 renderer 或答案资源时登记新版本并保留原版本读路径。UI 与 Company Lab 为本地组件仓，提交与 StockQA 版本见报告。接下来按根计划回到小池内容质量和事实主线。
 
 **11/02 上一节点的 CI 证据。** [CI 连续失败根修](reviews/CI-ROOT-CAUSE-2026-11-02/report.md)在 StockQA `0154726` 的 CI 41523660779 与 Documentation 41523660825 通过，文档构建和发布均已核实。[完整链路混合与重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)仍是既有真实恢复证据。

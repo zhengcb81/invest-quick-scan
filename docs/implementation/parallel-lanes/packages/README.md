@@ -1,10 +1,12 @@
-# 可分派的独立施工包（2026-09-30 基线）
+# 可分派的独立施工包
 
-**当前最新施工包：** [2026-11-04 主线支撑包](2026-11-04-mainline-support/README.md)。F05-FACT-QUERY-01 与 G3-BATCH-RESUME-HARNESS-01 写入目录互不重叠，可并行交付。前者在 StockWiki 隔离克隆实现事实/关系只读查询；后者只做 IQS 合成批次接续工装，不改 IQS 产品代码，也不替代 200 家真实 G3 试点。旧索引和接收历史保留为历史记录。
+**当前可分派批次：** [2026-11-06 主线消费者并行施工包](2026-11-06-mainline-consumer-wave/README.md)。三条线分别负责 StockWiki F05 owner 当前基线适配、主题研究消费者、行业研究消费者，工作目录互不重叠；均在新隔离 Lab 写入。两个消费者依据 IQS 2.7 已冻结契约并行开发，不等待 G3/真实 owner golden 才开工；生产 owner golden/真实接口验收仍由总控完成。
 
-**当前分派入口：** [2026-10-07新一轮施工包](2026-10-07/README.md)。QA-NET-01与SW-READY-01可进行离线实施；消费者实施包继续等待G3/F05和真实公共query/golden。以下保留旧包及接收历史，不重新分派QA-04/SW-IDENT或重做已验收预研。
+**历史记录：** [2026-11-04 主线支撑包](2026-11-04-mainline-support/README.md)、[2026-10-07 消费者包](2026-10-07/README.md)和下方旧包保留原始范围与状态，不代表当前开工门；本批新卡只更新其消费端代码实施范围，不改写旧验收或预研结论。不要再派发旧版 TH-IMPL-01 / IN-IMPL-01。
 
-这四份文档可以分别交给不同 harness。它们是**下一段施工指令**，不是已完成证明，也不扩大外仓写入、联网或费用授权。总任务/依赖以 [`tasks.json`](../../tasks.json) 为准；五条 owner 线见 [总控计划](../README.md)。交付统一使用 [handoff schema](../handoff.schema.json) 和 [大节点审查规范](../review-protocol.md)。
+以下旧卡是**历史施工指令**，不能代表当前实现状态或授权。总任务/依赖以 [`tasks.json`](../../tasks.json) 为准；五条 owner 线见 [总控计划](../README.md)。交付统一使用 [handoff schema](../handoff.schema.json) 和 [大节点审查规范](../review-protocol.md)。
+
+## 历史施工包记录（不作为当前分派状态）
 
 | 包 | 独占写入目录 | 现在可做什么 | 开工门 |
 |---|---|---|---|
