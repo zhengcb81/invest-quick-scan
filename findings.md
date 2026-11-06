@@ -117,3 +117,9 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - 继续相邻场景复审时发现：`information_cutoff=null` 的跨日 snapshot replay 应取已存 snapshot cutoff。现新增 `_materialize_for_response()` 从 response watermark 取 cutoff，再让重建 query hash/snapshot id 绑定验证它，普通响应验证共用同一规则。独立审查已要求重点复核被篡改 cutoff 不能借此绕过旧 snapshot ID。
 - 独立审查确认导出来源/查询/快照绑定和跨日 cutoff 回放均未发现实现阻断。审查员建议直接覆盖保留原 snapshot ID、篡改 cutoff 并重算所有导出哈希；该反例已在最终提交 `08e5b4d6` 中加入且 targeted test 通过。审查员受 Lab Git ACL 限制不能自己执行 `rev-parse`，总控已核实本机 HEAD 与 handoff 一致。
 - 最终 facts/capabilities/public CLI 为82 passed；exchange/query+deployment为30 passed、7 subtests passed；旧 query v2 为64 passed、1 failed，仍为冻结基线已知 `model_self_qualification`。隔离代码包可签收，F05整体仍partial，待正式产品接线/真实owner golden/公开CLI互操作。
+
+## 2026-11-06 F05 消费端主线接入
+
+- 消费端 payload 已并入 IQS `master`（`da34654`），事实契约、公开校验CLI和2.7能力声明不再只是隔离Lab代码。主线 F05 专项82 passed；加相邻 exchange/query 回归97 passed、7子测试。
+- 合并没有接入 StockWiki 当前部署或实际 owner query runtime。测试中的 owner wrapper 来自冻结候选 Git 提交，临时归档后清理；它证明协议/CLI合约可互通，不等同当前 owner 真实运行、真实 golden 或生产接线。F05 状态继续为 `partial`。
+- `model_self_qualification` 旧 query v2 失败在合并前的隔离验证已出现，当前主线合并回归再次出现；它不是本次增量引入的错误，仍应作为独立历史缺口跟踪。

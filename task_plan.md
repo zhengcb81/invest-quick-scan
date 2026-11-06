@@ -4,7 +4,7 @@
 
 执行状态：StockQA `01f20d6` 已推，GitHub CI 41532137887 已完成且成功，本地默认检查306项通过。上一节点的文档构建和发布通过证据见[CI根修](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。
 
-**2026-11-05 外包支撑包验收更新：** G3 合成批次接续工装已独立审查并接受（31 passed）；它只证明测试工装可用，真实200家公司试点/G3仍未完成。F05 owner 侧事实查询候选仍为 partial；IQS 消费端代码包已在隔离 Lab 完成独审验收（最终提交 `08e5b4d6`，定向82 passed，跨仓/部署相邻30 passed+7子测试）。这只关闭隔离代码包；正式产品接线、真实 owner golden 与公开 CLI 互操作仍缺。F05全套离线旧运行计数有未解决差异，见下表和进度记录；不把旧报告写成通过。
+**2026-11-06 主线更新：** G3 合成批次接续工装已独立审查并接受（31 passed）；它只证明测试工装可用，真实200家公司试点/G3仍未完成。F05 IQS 消费端代码现已合入本仓 `master`，提交 `da34654`；新增 facts 查询契约/公开CLI、2.7 wire 能力声明及测试。F05 定向82 passed；加入相邻 exchange/query 回归共97 passed、7子测试通过。测试使用合成内容与冻结 owner 候选代码，不访问生产库或收费API。F05 仍为 partial：当前产品尚未接入实际 StockWiki owner runtime，也未完成真实 owner golden 与当前公开 CLI 互操作。旧全套离线计数仍未解决，不据此声称全套通过。
 
 ## 当前结论
 
@@ -41,7 +41,7 @@
 |IMPORT-PERF-30|研究范围签收，未启用|68不同测试、24合成测量；36包候选更慢，不作为基线发布阻塞|
 |评分校准/G2|受限范围已签|G2 r2 `verified_for_local_gate_scope`；原60家+20重复配方未全完成，实际为获准6家缩样，不能称60家校准完毕|
 |200家可靠性/L03/G3|未完成|G3合成批次接续工装已验收（31 passed/0 failed/0 skipped），仅属软件支撑；不替代200家真实试点、真实 owner ACK 或正式G3|
-|事实数据/关系查询/F05|部分基础存在，整体未验收|owner 候选 `63a6ffcf` 状态 partial；IQS 消费端隔离包最终提交 `08e5b4d6`，独立复审未发现阻断，82项定向测试通过、30项相邻/部署测试及7子测试通过。真实 owner golden、正式产品接线/公开 CLI 互操作仍缺。旧全套离线数字未核清，不作为通过证据|
+|事实数据/关系查询/F05|部分基础存在，整体未验收|IQS 消费端已合入 `master`：`da34654`；facts/capabilities/public CLI 82项定向测试通过，连同相邻 exchange/query 组97项及7子测试通过。owner 候选 `63a6ffcf` 仍为 partial；实际运行时接线、当前真实 owner golden 与公开 CLI 互操作仍缺。旧全套离线数字未核清，不作为通过证据|
 |主题/行业消费者|预研已签，正式集成未验收|依赖真实F05/W11等功能接口，不再等待200家G3；不是缺用户写权限|
 |全池与完整配套/G4—G6|未完成|2000覆盖、事实/两消费、配套安装/升级回退不能由本机启动成功代签|
 
@@ -49,7 +49,7 @@
 
 ## Next Step
 
-**回到小池内容质量与事实主线。** 定向核原数和会计范围，补真实事实、查询与研究使用链。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。B03接口代码现已合入Dashboard与IQS主线，生产服务尚未重载，真实owner扫描/三市场UI验收仍待完成。
+**回到小池内容质量与事实主线。** 定向核原数和会计范围，补真实事实、查询与研究使用链。F05 的 IQS facts 合约/校验CLI已进入主线，但还需连接受支持的 StockWiki 只读运行时并用真实 owner golden 做正反互操作验收。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。B03接口代码现已合入Dashboard与IQS主线，生产服务尚未重载，真实owner扫描/三市场UI验收仍待完成。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
@@ -77,13 +77,15 @@
 
 1. **完成小池使用闭环与质量修复。** 已完成上述fresh正例；先按Next Step统一逐题保存/恢复和共用语义，再处理ANSWER已发现的错期间/错公司/复合命题支持不足。按字段/命题保留缺口与定向查证，不把质量标签再次变成整答保存门。原历史不覆写，不承诺样本外零错误；原校准配方不足要如实报告，不拿测试数量换准确率。
 2. **批量可靠性与G3。** 复用已绿的软件和已认可池，核L03原前置/预算，分批累计原200家真实试点、中断恢复/导入幂等/额度切换/成本与时效证据；合并一次正式审查。三家真实流程不重做成新成果。200家是规模验收目标，不再作为事实、消费者和小样本配套功能开发的前置。
-3. **事实与F05。** 按原F任务补真实事实及方向/分部/商业化/时点/证据关系查询，取得真实owner query/capabilities/golden与可重复生成命令；严格与探索正反例完成后签收。IQS 消费端施工包 [F05-IQS-CONSUMER-01](docs/implementation/parallel-lanes/packages/2026-11-05-f05-iqs-consumer/F05-IQS-CONSUMER-01.md) 已在隔离 Lab 完成并通过独立复审；新增的公开导出校验与跨日快照回放仍是纯离线消费者实现，不是产品合并。下一步是正式产品接线，并由总控用受支持的真实 owner 入口做公开 CLI 互操作和 golden 验收。可与G3独立实施，不必先完成200家试点；真实功能验收保留。
+3. **事实与F05。** 按原F任务补真实事实及方向/分部/商业化/时点/证据关系查询，取得真实owner query/capabilities/golden与可重复生成命令；严格与探索正反例完成后签收。IQS 消费端 [F05-IQS-CONSUMER-01](docs/implementation/parallel-lanes/packages/2026-11-05-f05-iqs-consumer/F05-IQS-CONSUMER-01.md) 已完成独立复审并合入 `master`（`da34654`）；新增公开导出校验、跨日快照回放、facts CLI/capability 2.7 均已在本仓测试。下一步不再是重复合并，而是把主线消费者接到受支持的真实 owner 只读运行时，并由总控用真实 owner golden 对公开 CLI 做正反互操作验收。可与G3独立实施，不必先完成200家试点；真实功能验收保留。
 4. **TH/IN正式消费与G4。** 只接原查询/固定快照分页/画像/元数据/原补扫，保留池外发现和各自研究方法；核实源仓及实际加载镜像，实际原入口E2E。原包中的G3串行门已由1.10.17取消，按真实F05/W11接口准备实施，不能因此声称G3/F05已关。
 5. **扩容、运维和配套G5/G6。** 用户认可名单逐步扩至目标容量，完成覆盖/费用/维护与配套安装、加载、升级回退、统一操作入口的实际验收。当前本机一键开UI不等于全部安装发布已验。
 
 **2026-11-04 主线支撑包（2026-11-05 已验收交付）：** [F05-FACT-QUERY-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/F05-FACT-QUERY-01.md) 在 StockWiki 隔离克隆交付 owner 侧事实/关系查询候选，`status=partial`；[G3-BATCH-RESUME-HARNESS-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/G3-BATCH-RESUME-HARNESS-01.md) 合成200主体批次接续工装已交付，工装包完成但生产 G3 `not_closed`。handoff 分别位于 `C:\Users\郑曾波\Projects\iqs-stockwiki-f05-query-lab\docs\handoff\F05-FACT-QUERY-01\handoff.json` 与 `C:\Users\郑曾波\Projects\iqs-g3-batch-resume-harness-lab\docs\handoff\G3-BATCH-RESUME-HARNESS-01\handoff.json`。两包均不改 canonical StockWiki/IQS 产品代码、不调用收费 API；详情见[施工包索引](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/README.md)及[进度记录](progress.md)。
 
 **2026-11-05 F05 IQS 消费端施工包：** [F05-IQS-CONSUMER-01](docs/implementation/parallel-lanes/packages/2026-11-05-f05-iqs-consumer/F05-IQS-CONSUMER-01.md) 使用冻结输入 IQS `aca0f4be5adcb96f0c7d8f58e0c4a205e6c17981`、F05 owner `63a6ffcf23f8d16f47acf44bdbcf3e567a85458e`，在独立 IQS Lab 完成事实查询合约、四个 owner wrapper CLI、消费端公开导出验证入口与 2.7.0 能力兼容。总控修复了导出自哈希与原查询/owner profile 解绑、跨日 snapshot cutoff 误拒，并纠正了 query/export 共用查询哈希的施工卡语义；能力1.2 wire 现在按版本排序。最终 Lab HEAD `08e5b4d660bd09cfbb6fe9cba0d7ec7aad31d388`，定向82 passed、相邻/部署30 passed+7子测试；旧兼容组仍有1个冻结基线失败，不冒称全套绿。独立复审未发现实现阻断。该交付只关闭隔离代码包，不改变 F05 partial：正式产品接线、受支持的真实 owner 只读入口、真实 golden 与公开 CLI 互操作仍待完成。包索引见[施工包目录](docs/implementation/parallel-lanes/packages/2026-11-05-f05-iqs-consumer/README.md)，交接报告在隔离Lab `docs/handoff/F05-IQS-CONSUMER-01/`。
+
+**2026-11-06 F05 消费端并入主线：** 隔离 payload `08e5b4d6` 已整合进 IQS `master`，主线提交 `da34654`。新增5个文件并修改6个现有文件：facts 2.7 schema/本地消费契约、CLI operation 路由、能力声明及兼容测试；冻结 owner schema SHA-256 保持 `cd3e03417289a99f5194263603ead6d954fd601b875cd3d5c08a74505ba8cbad`。本仓事实/能力/owner wrapper CLI 测试82 passed；加相邻 exchange/query 回归97 passed、7子测试。旧 query v2 的 `model_self_qualification` 仍有1个已知基线失败，未由本包引入。上述 owner wrapper 测试读取冻结候选提交并用自动清理的临时目录；没有访问正式 StockWiki 数据、收费API或生产 UI。F05 仍 partial，待实际 owner runtime 接线、真实 golden 和当前公开 CLI 正反互操作。
 
 PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；现有结论可用，不再让每批支撑交付重开已完成主线。TIME独立核查凭证体系已取消；真正需要的字段时效改进沿原缓存策略实施，保持旧版本和真实日期。
 

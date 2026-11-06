@@ -404,3 +404,11 @@ Dashboard候选合入investment-dashboard main（merge f501f32，合同0.1.2-d�
 独立代码审查未发现实现阻断；审查员提出的“保留原 snapshot ID、改 cutoff 并重算 query/dataset/candidate 哈希仍应拒绝”反例也已加入并通过。最终 facts/capabilities/public CLI 定向套件 82 passed、0 failed/skip；exchange/query 与 deployment 相邻套件 30 passed、7 子测试通过。旧 query v2 套件为64 passed、1 failed，失败仍是冻结基线的 `model_self_qualification`，本包未触及其逻辑，报告原始失败，不称全套通过。所有测试使用合成数据，无生产数据、网络或收费 API。
 
 F05 整体仍为 `partial`。下一步仍是正式产品接线，取得受支持的真实 owner 只读入口/真实 golden，再由总控跑 StockWiki 公共 CLI 的真实互操作；此隔离包的通过不能替代这项验收。
+
+## 2026-11-06 F05 IQS 消费端并入主线
+
+已将隔离 Lab 的已验收 payload `08e5b4d660bd09cfbb6fe9cba0d7ec7aad31d388` 合入本仓 `master`，代码提交 `da34654`。只纳入 F05 consumer 的11个文件；未暂存工作区内其他外包材料、运行记录或未提交README。实现包括 owner facts 2.7 schema 的字节锁定副本、IQS facts 查询/响应与导出响应校验、CLI operation 路由，以及 capability wire 2.7 声明；1.2 vendor wire 2.6/2.7 按版本排序。没有改 StockWiki 或生产数据。
+
+主线重跑：`tests/test_query_facts_contract.py`、`tests/test_query_capabilities_facts_wire.py`、`tests/test_f05_facts_cli_conformance.py` 为82 passed；加 `tests/test_exchange_and_query_contract.py` 后97 passed、7 subtests passed。Windows 运行需 `PYTHONPATH=scripts`、`PYTHONUTF8=1`；冻结 owner wrapper 测试需读取 StockWiki F05 隔离候选 Git 对象，并把代码归档到测试自动清理的临时目录。测试全用合成输入，不写 owner 数据、不联网、不调收费 API。
+
+旧 `tests/test_query_contract_v2.py` 的 `test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[model_self_qualification]` 仍失败；本轮合并前的隔离验收已记录同一失败。本轮不把它算成本次回归，也不将旧兼容组说成全绿。F05 从“消费者代码仅在 Lab”推进为“消费者契约/CLI在 IQS 主线”，仍为 `partial`：尚未把普通产品/共享引擎流程连接到真实 StockWiki owner 只读运行时，也未完成真实 owner golden 与当前公开 CLI 正反互操作；真实UI扫描、数据库写入及生产部署都未执行。

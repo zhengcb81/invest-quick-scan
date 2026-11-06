@@ -1,6 +1,6 @@
 # 当前接手说明
 
-**11/05 当前 F05 进展。** 独立包 [F05-IQS-CONSUMER-01](parallel-lanes/packages/2026-11-05-f05-iqs-consumer/README.md) 已在隔离 IQS Lab 完成、直接修复并通过独立代码复审，最终 Lab HEAD `08e5b4d660bd09cfbb6fe9cba0d7ec7aad31d388`；facts/capabilities/public CLI 定向 82 passed，exchange/query 与 deployment 相邻组 30 passed、7 subtests passed。已补公开导出查询/owner/snapshot 完整绑定、跨日 snapshot cutoff 回放和相应篡改反例。旧 query v2 有一项冻结基线失败，保留原失败记录。**这只关闭隔离代码包，不关闭 F05**；尚需正式产品接线、支持的真实 owner 只读入口、真实 golden 和 StockWiki 公共 CLI 互操作。详情见根 [task_plan.md](../../task_plan.md)、[progress.md](../../progress.md) 和 Lab handoff `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab\docs\handoff\F05-IQS-CONSUMER-01\report.md`。
+**11/06 当前 F05 进展。** 独立包 [F05-IQS-CONSUMER-01](parallel-lanes/packages/2026-11-05-f05-iqs-consumer/README.md) 的已审查 payload `08e5b4d6` 已合入本仓 `master`（`da34654`）。主线 facts/capabilities/public CLI 定向82 passed；加相邻 exchange/query 回归97 passed、7子测试。旧 query v2 的 `model_self_qualification` 冻结基线失败在合并前已出现，本轮仍保留为非本次引入的失败。**F05 仍为 partial**：主线有消费者契约和校验CLI，但普通产品/共享引擎尚未接上实际 StockWiki owner runtime，真实 owner golden 和当前公开 CLI 正反互操作也未完成；未运行生产UI、数据库写入或收费API。详情见根 [task_plan.md](../../task_plan.md)、[progress.md](../../progress.md) 和 Lab handoff `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab\docs\handoff\F05-IQS-CONSUMER-01\report.md`。
 
 **11/02最新补充。** [解耦 D1–D7 整改](reviews/DECOUPLING-2026-11-02/remediation.md)已通过独立复核。恢复使用原登记发布根、原语义资源及原请求规则。以后新增 renderer 或答案资源时登记新版本并保留原版本读路径。UI 与 Company Lab 为本地组件仓，提交与 StockQA 版本见报告。接下来按根计划回到小池内容质量和事实主线。
 
