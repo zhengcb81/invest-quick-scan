@@ -19,7 +19,9 @@ def main(argv=None):
             'pool-field-assessment','qualified-pool-index','qualified-pool-response',
             'review-lead-request','review-lead-response','research-request','research-query-hash',
             'research-build','research-response','scoped-pool-index','scoped-pool-response',
-            'capabilities-request','capabilities-build','capabilities-response'))
+            'capabilities-request','capabilities-build','capabilities-response',
+            'facts-request','facts-query-hash','facts-build','facts-response',
+            'facts-export-response'))
     args=parser.parse_args(argv)
     try:
         with Path(args.input).open('rb') as handle:raw=handle.read(MAX_BYTES+1)
@@ -41,6 +43,22 @@ def main(argv=None):
                 if set(value)!={'response','request','source_context','index','scope_context'}:
                     raise ValueError('query_contract_input_fields')
                 result=capabilities.validate_response(**value)
+        elif args.operation.startswith('facts-'):
+            import query_facts_contract as facts
+            if args.operation in {'facts-request','facts-query-hash'}:
+                if set(value)!={'request'}:raise ValueError('query_contract_input_fields')
+                result=(facts.validate_request(value['request']) if args.operation=='facts-request'
+                    else facts.query_sha256(value['request']))
+            elif args.operation=='facts-build':
+                if set(value)!={'profile_result','request','owner','read_at'}:raise ValueError('query_contract_input_fields')
+                result=facts.build_response(**value)
+            elif args.operation=='facts-export-response':
+                if set(value)!={'response','request','owner'}:raise ValueError('query_contract_input_fields')
+                result=facts.validate_export_response(response=value['response'],
+                    request=value['request'],owner=value['owner'])
+            else:
+                if set(value)!={'response','request','owner'}:raise ValueError('query_contract_input_fields')
+                result=facts.validate_response(**value)
         elif args.operation.startswith('research-'):
             import query_research_contract as research
             if args.operation in {'research-request','research-query-hash'}:

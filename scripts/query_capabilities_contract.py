@@ -15,8 +15,10 @@ WIRES = [dict(schema_version='2.0.0', operations=['get_profiles']),
     dict(schema_version='2.2.0', operations=['search', 'candidate_set']),
     dict(schema_version='2.3.0', operations=['nominate', 'report_conflict']),
     dict(schema_version='2.4.0', operations=['research_context']),
-    dict(schema_version='2.5.0', operations=['search', 'candidate_set'])]
-OPERATIONS = ['get_profiles', 'search', 'candidate_set', 'nominate', 'report_conflict', 'research_context']
+    dict(schema_version='2.5.0', operations=['search', 'candidate_set']),
+    dict(schema_version='2.7.0', operations=['query_facts', 'export_facts'])]
+OPERATIONS = ['get_profiles', 'search', 'candidate_set', 'nominate', 'report_conflict', 'research_context',
+    'query_facts', 'export_facts']
 MARKETS = ['CN', 'HK', 'US']
 INTERFACES = [
     dict(component='StockWiki', entry_type='module', entry_point='stockwiki.quick_scan_refresh_owner_cli',

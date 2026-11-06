@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:stockwiki:quick-scan-facts-query:1.0.0",
+  "title": "StockWiki C06 facts query wire 2.7.0 (stockwiki.c06_facts_query/1.0.0)",
+  "type": "object",
+  "oneOf": [{"$ref": "#/$defs/Request"}, {"$ref": "#/$defs/Response"}],
+  "$defs": {
+    "Date": {"type": "string", "format": "date"},
+    "Timestamp": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"},
+    "Sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "ObservationId": {"type": "string", "pattern": "^obs_[a-f0-9]{64}$"},
+    "Mode": {"enum": ["strict", "explore"]},
+    "Direction": {"enum": ["outgoing", "incoming"]},
+    "ResolvedDirection": {"enum": ["outgoing", "incoming", "symmetric", "denial", "unresolved"]},
+    "CommercialStage": {"enum": ["research", "pilot", "qualified", "commercial", "discontinued", "unknown", "not_applicable"]},
+    "StatusDetail": {
+      "enum": [
+        "strict", "unverified_provenance", "qualification_rejected", "qualification_conflict",
+        "assertion_conflict_pending_review", "superseded", "evidence_unreviewed",
+        "insufficient_evidence", "missing_evidence", "unknown_direction", "unknown_commercial_stage",
+        "expired", "period_unknown", "evidence_unresolved", "answer_status_insufficient_evidence",
+        "answer_status_not_applicable", "answer_status_search_unavailable"
+      ]
+    },
+    "EvidenceReviewStatus": {"enum": ["unreviewed", "reviewed"]},
+    "Counterparty": {
+      "type": "object",
+      "properties": {
+        "text": {"type": "string", "minLength": 1, "maxLength": 160},
+        "entity_ids": {"type": "array", "minItems": 1, "maxItems": 50, "items": {"type": "string", "minLength": 1, "maxLength": 160}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "PeriodSelection": {
+      "oneOf": [
+        {"type": "object", "properties": {"as_of": {"$ref": "#/$defs/Date"}}, "required": ["as_of"], "additionalProperties": false},
+        {"type": "object", "properties": {"start": {"$ref": "#/$defs/Date"}, "end": {"$ref": "#/$defs/Date"}}, "required": ["start", "end"], "additionalProperties": false}
+      ]
+    },
+    "QualityCondition": {
+      "type": "object",
+      "properties": {
+        "field": {"enum": ["confidence_rank", "evidence_count", "observation_sequence"]},
+        "op": {"enum": [">", ">=", "<", "<=", "==", "!="]},
+        "value": {"type": "integer"}
+      },
+      "required": ["field", "op", "value"],
+      "additionalProperties": false
+    },
+    "Page": {
+      "type": "object",
+      "properties": {
+        "page_size": {"type": "integer", "minimum": 1, "maximum": 100},
+        "cursor": {"type": ["string", "null"], "minLength": 1, "maxLength": 512}
+      },
+      "required": ["page_size", "cursor"],
+      "additionalProperties": false
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "message_type": {"const": "request"},
+        "schema_version": {"const": "2.7.0"},
+        "request_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "consumer_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "operation": {"enum": ["query_facts", "export_facts"]},
+        "requested_at": {"$ref": "#/$defs/Timestamp"},
+        "label": {"type": ["string", "null"], "minLength": 1, "maxLength": 160},
+        "payload": {
+          "type": "object",
+          "properties": {
+            "mode": {"$ref": "#/$defs/Mode"},
+            "entity_ids": {"type": "array", "minItems": 1, "maxItems": 200, "items": {"type": "string", "minLength": 1, "maxLength": 160}, "uniqueItems": true},
+            "markets": {"type": "array", "minItems": 0, "maxItems": 3, "items": {"enum": ["CN", "HK", "US"]}, "uniqueItems": true},
+            "listing_ids": {"type": "array", "minItems": 0, "maxItems": 200, "items": {"type": "string", "minLength": 1, "maxLength": 160}, "uniqueItems": true},
+            "field_ids": {"type": "array", "minItems": 1, "maxItems": 200, "items": {"type": "string", "minLength": 1, "maxLength": 160}, "uniqueItems": true},
+            "information_cutoff": {
+              "anyOf": [{"$ref": "#/$defs/Date"}, {"type": "null"}],
+              "description": "null means the query date (requested_at); the effective value is materialized once and travels in the hash and watermark"
+            },
+            "model_filter": {
+              "anyOf": [
+                {"type": "null"},
+                {"type": "object", "properties": {"provider": {"type": "string", "minLength": 1, "maxLength": 160}, "model_resolved": {"type": "string", "minLength": 1, "maxLength": 160}}, "required": ["provider", "model_resolved"], "additionalProperties": false}
+              ]
+            },
+            "relation_types": {"type": "array", "minItems": 0, "maxItems": 50, "items": {"type": "string", "minLength": 1, "maxLength": 80}, "uniqueItems": true},
+            "direction": {"anyOf": [{"$ref": "#/$defs/Direction"}, {"type": "null"}]},
+            "counterparty": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/Counterparty"}]},
+            "commercial_stages": {"type": "array", "minItems": 0, "maxItems": 6, "items": {"$ref": "#/$defs/CommercialStage"}, "uniqueItems": true},
+            "segment_ids": {"type": "array", "minItems": 0, "maxItems": 200, "items": {"type": "string", "minLength": 1, "maxLength": 160}, "uniqueItems": true},
+            "period": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/PeriodSelection"}]},
+            "evidence": {"enum": ["require_resolved", "any"], "default": "require_resolved"},
+            "quality_conditions": {
+              "anyOf": [
+                {"type": "null"},
+                {"type": "object", "properties": {"leaves": {"type": "array", "minItems": 1, "maxItems": 20, "items": {"$ref": "#/$defs/QualityCondition"}}, "combine": {"enum": ["all", "any"]}}, "required": ["leaves", "combine"], "additionalProperties": false}
+              ]
+            },
+            "page": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/Page"}]},
+            "snapshot_id": {"type": ["string", "null"], "pattern": "^fsnap1_[a-f0-9]{64}$"}
+          },
+          "required": ["mode", "entity_ids", "field_ids", "information_cutoff", "model_filter",
+            "markets", "listing_ids", "relation_types", "direction", "counterparty",
+            "commercial_stages", "segment_ids", "period", "evidence", "quality_conditions",
+            "page", "snapshot_id"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["message_type", "schema_version", "request_id", "consumer_id", "operation", "requested_at", "payload"],
+      "additionalProperties": false
+    },
+    "EvidenceRef": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 60},
+        "title": {"type": "string", "minLength": 1, "maxLength": 200},
+        "url": {"type": "string", "minLength": 1, "maxLength": 1800},
+        "published_at": {"anyOf": [{"$ref": "#/$defs/Date"}, {"type": "null"}]}
+      },
+      "required": ["id", "title", "url", "published_at"],
+      "additionalProperties": false
+    },
+    "SubjectScope": {
+      "type": "object",
+      "properties": {
+        "entity_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "scope": {"enum": ["entity", "security", "segment"]},
+        "scope_id": {"type": ["string", "null"], "minLength": 1, "maxLength": 160},
+        "security_id": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 160}, {"type": "null"}]},
+        "listing_id": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 160}, {"type": "null"}]},
+        "segment_id": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 160}, {"type": "null"}]}
+      },
+      "required": ["entity_id", "scope", "scope_id", "security_id", "listing_id", "segment_id"],
+      "additionalProperties": false
+    },
+    "HitPath": {
+      "type": "object",
+      "properties": {
+        "attribute": {"enum": ["counterparty_name", "counterparty_alias", "counterparty_entity_id", "item_segment", "item_description", "relation"]},
+        "value": {"type": "string", "minLength": 1, "maxLength": 180}
+      },
+      "required": ["attribute", "value"],
+      "additionalProperties": false
+    },
+    "FactRow": {
+      "type": "object",
+      "properties": {
+        "fact_id": {"type": "string", "pattern": "^fact_[a-f0-9]{24}$"},
+        "qualification": {"enum": ["strict", "candidate"]},
+        "status_detail": {"$ref": "#/$defs/StatusDetail"},
+        "subject_ref": {"$ref": "#/$defs/SubjectScope"},
+        "canonical_name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "matched_listings": {"type": "array", "maxItems": 50, "items": {"type": "object", "properties": {"market": {"type": ["string", "null"], "maxLength": 40}, "ticker": {"type": ["string", "null"], "maxLength": 60}, "listing_id": {"type": ["string", "null"], "maxLength": 160}}, "required": ["market", "ticker", "listing_id"], "additionalProperties": false}},
+        "observation_id": {"$ref": "#/$defs/ObservationId"},
+        "payload_sha256": {"$ref": "#/$defs/Sha256"},
+        "observation_sequence": {"type": "integer", "minimum": 1},
+        "ack_sequence": {"type": "integer", "minimum": 1},
+        "binding_status": {"enum": ["bound", "legacy_unbound"]},
+        "qualification_status": {"type": "string", "minLength": 1, "maxLength": 60},
+        "field_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "question_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "answer_status": {"type": "string", "minLength": 1, "maxLength": 60},
+        "information_cutoff": {"$ref": "#/$defs/Date"},
+        "observed_at": {"$ref": "#/$defs/Timestamp"},
+        "item_index": {"type": "integer", "minimum": 0},
+        "counterparty": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string", "minLength": 1, "maxLength": 180},
+            "canonical_entity_id": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 120}, {"type": "null"}]},
+            "aliases": {"type": "array", "maxItems": 8, "items": {"type": "string", "minLength": 1, "maxLength": 100}}
+          },
+          "required": ["name", "canonical_entity_id", "aliases"],
+          "additionalProperties": false
+        },
+        "relation": {"type": "string", "minLength": 1, "maxLength": 80},
+        "role": {"type": "string", "minLength": 1, "maxLength": 40},
+        "direction": {"$ref": "#/$defs/ResolvedDirection"},
+        "direction_convention_version": {"type": "string", "minLength": 1, "maxLength": 60},
+        "commercial_stage": {"$ref": "#/$defs/CommercialStage"},
+        "valid_from": {"anyOf": [{"$ref": "#/$defs/Date"}, {"type": "null"}]},
+        "valid_to": {"anyOf": [{"$ref": "#/$defs/Date"}, {"type": "null"}]},
+        "period_qualification": {"enum": ["active_at_as_of", "overlaps_requested_period", "expired", "period_unknown"]},
+        "answer_period": {
+          "type": "object",
+          "properties": {"start": {"$ref": "#/$defs/Date"}, "end": {"$ref": "#/$defs/Date"}, "basis": {"type": ["string", "null"], "maxLength": 40}, "information_as_of": {"$ref": "#/$defs/Date"}},
+          "required": ["start", "end", "basis", "information_as_of"],
+          "additionalProperties": false
+        },
+        "item_segment": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 150}, {"type": "null"}]},
+        "evidence_ids": {"type": "array", "maxItems": 20, "items": {"type": "string", "minLength": 1, "maxLength": 60}},
+        "evidence": {"type": "array", "maxItems": 20, "items": {"$ref": "#/$defs/EvidenceRef"}},
+        "evidence_review_status": {"$ref": "#/$defs/EvidenceReviewStatus"},
+        "confidence": {"enum": ["high", "medium", "low", null]},
+        "confidence_rank": {"type": ["integer", "null"], "minimum": 1, "maximum": 3},
+        "quality_outcome": {"anyOf": [{"enum": ["pass", "fail", "unknown", "not_requested"]}, {"type": "null"}]},
+        "quality_explanations": {"type": "array", "maxItems": 40, "items": {"type": "object"}},
+        "hit_paths": {"type": "array", "maxItems": 40, "items": {"$ref": "#/$defs/HitPath"}}
+      },
+      "required": ["fact_id", "qualification", "status_detail", "subject_ref", "canonical_name", "matched_listings",
+        "observation_id", "payload_sha256", "observation_sequence", "ack_sequence", "binding_status",
+        "qualification_status", "field_id", "question_id", "answer_status", "information_cutoff", "observed_at",
+        "item_index", "counterparty", "relation", "role", "direction", "direction_convention_version",
+        "commercial_stage", "valid_from", "valid_to", "period_qualification", "answer_period", "item_segment",
+        "evidence_ids", "evidence", "evidence_review_status", "confidence", "confidence_rank",
+        "quality_outcome", "quality_explanations", "hit_paths"],
+      "additionalProperties": false
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "protocol": {"const": "stockwiki.c06_facts_query/1.0.0"},
+        "status": {"enum": ["ok", "empty", "coverage_gap", "partial", "unavailable"]},
+        "mode": {"$ref": "#/$defs/Mode"},
+        "operation": {"enum": ["query_facts", "export_facts"]},
+        "store_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "facts": {"type": "array", "maxItems": 5000, "items": {"$ref": "#/$defs/FactRow"}},
+        "page_facts": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/FactRow"}},
+        "total": {"type": "integer", "minimum": 0},
+        "candidate_total": {"type": "integer", "minimum": 0},
+        "next_cursor": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 512}, {"type": "null"}]},
+        "missing_subject_ids": {"type": "array", "maxItems": 200, "items": {"type": "string", "minLength": 1, "maxLength": 160}},
+        "missing_subject_refs": {"type": "array", "maxItems": 400, "items": {"type": "object"}},
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "status": {"enum": ["complete", "partial", "not_covered", "unknown"]},
+            "reason_codes": {"type": "array", "maxItems": 40, "items": {"type": "string", "minLength": 1, "maxLength": 120}},
+            "inference_policy": {"const": "no_cross_fact_join"},
+            "market_wide_claim": {"const": false},
+            "fact_relation_available": {"type": "boolean"},
+            "empty_reason": {"anyOf": [{"enum": ["no_fact_match", "no_bound_fact_observations", "subject_unavailable", "source_unavailable", "not_requested"]}, {"type": "null"}]}
+          },
+          "required": ["status", "reason_codes", "inference_policy", "market_wide_claim", "fact_relation_available", "empty_reason"],
+          "additionalProperties": false
+        },
+        "export": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/ExportBody"}]},
+        "query_sha256": {"$ref": "#/$defs/Sha256"},
+        "profile_result": {
+          "type": "object",
+          "properties": {
+            "profiles": {"type": "array", "items": {"type": "object"}},
+            "legacy_unbound_observations": {"type": "array", "items": {"type": "object"}},
+            "missing_subject_refs": {"type": "array", "items": {"type": "object"}},
+            "classification_gap": {"type": "boolean"},
+            "watermark": {"type": "object"}
+          },
+          "required": ["profiles", "legacy_unbound_observations", "missing_subject_refs", "watermark"],
+          "additionalProperties": false
+        },
+        "watermark": {
+          "type": "object",
+          "properties": {
+            "store_id": {"type": "string", "minLength": 1, "maxLength": 160},
+            "snapshot_id": {"type": "string", "pattern": "^fsnap1_[a-f0-9]{64}$"},
+            "query_sha256": {"$ref": "#/$defs/Sha256"},
+            "information_cutoff": {"$ref": "#/$defs/Date"},
+            "observation_sequence": {"type": "integer", "minimum": 0},
+            "read_at": {"$ref": "#/$defs/Timestamp"},
+            "source_consistency": {"const": "sequential_owner_reads"},
+            "source_watermarks": {"type": "array", "maxItems": 8, "items": {"type": "object"}}
+          },
+          "required": ["store_id", "snapshot_id", "query_sha256", "information_cutoff", "observation_sequence", "read_at", "source_consistency", "source_watermarks"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["protocol", "status", "mode", "operation", "store_id", "facts", "page_facts", "total",
+        "candidate_total", "next_cursor", "missing_subject_ids", "missing_subject_refs", "coverage",
+        "export", "query_sha256", "profile_result", "watermark"],
+      "additionalProperties": false
+    },
+    "ExportBody": {
+      "type": "object",
+      "properties": {
+        "protocol": {"const": "stockwiki.c06_facts_export/1.0.0"},
+        "export_version": {"const": "1.0.0"},
+        "candidate_set_id": {"type": "string", "pattern": "^fexp1_[a-f0-9]{64}$"},
+        "dataset_sha256": {"$ref": "#/$defs/Sha256"},
+        "operation": {"const": "export_facts"},
+        "mode": {"$ref": "#/$defs/Mode"},
+        "label": {"anyOf": [{"type": "string", "minLength": 1, "maxLength": 160}, {"type": "null"}]},
+        "query": {"type": "object"},
+        "query_sha256": {"$ref": "#/$defs/Sha256"},
+        "information_cutoff": {"$ref": "#/$defs/Date"},
+        "watermark": {"type": "object"},
+        "candidates": {"type": "array", "maxItems": 5000, "items": {"$ref": "#/$defs/FactRow"}},
+        "candidate_entity_ids": {"type": "array", "maxItems": 200, "items": {"type": "string", "minLength": 1, "maxLength": 160}},
+        "coverage": {"type": "object"},
+        "generated_at": {"$ref": "#/$defs/Timestamp"},
+        "direction_convention_version": {"type": "string", "minLength": 1, "maxLength": 60}
+      },
+      "required": ["protocol", "export_version", "candidate_set_id", "dataset_sha256", "operation", "mode",
+        "label", "query", "query_sha256", "information_cutoff", "watermark", "candidates",
+        "candidate_entity_ids", "coverage", "generated_at", "direction_convention_version"],
+      "additionalProperties": false
+    },
+    "Response": {
+      "type": "object",
+      "properties": {
+        "message_type": {"const": "response"},
+        "schema_version": {"const": "2.7.0"},
+        "request_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "operation": {"enum": ["query_facts", "export_facts"]},
+        "response_at": {"$ref": "#/$defs/Timestamp"},
+        "result": {"$ref": "#/$defs/Result"}
+      },
+      "required": ["message_type", "schema_version", "request_id", "operation", "response_at", "result"],
+      "additionalProperties": false
+    }
+  }
+}

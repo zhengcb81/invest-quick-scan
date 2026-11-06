@@ -22,6 +22,7 @@ def validate_request(request):
 def _result(request,source_context,index,scope_context):
     result=base._result(request,source_context,index,scope_context)
     wires=result['supported_query_wires']+[dict(schema_version='2.6.0',operations=['get_profiles'])]
+    wires.sort(key=lambda row:tuple(int(part) for part in row['schema_version'].split('.')))
     result['supported_query_wires']=wires
     requirement=result['capability_requirements'];supported={row['schema_version'] for row in wires}
     requirement['missing_query_versions']=[v for v in request['payload']['required_query_versions'] if v not in supported]
