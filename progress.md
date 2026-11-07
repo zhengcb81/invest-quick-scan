@@ -2,6 +2,10 @@
 
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
+## 2026-11-07 OWNERPKG-INVEST-QUICK-SCAN-01 job façade施工包（分支交付，未并线）
+
+交付于独立worktree分支 `codex/iqs-job-facade-01`（基线 `fb0a254`，head `23d20b8`）；本主线PWF此节为§8-3-2交接登记，分支上另有一份逐G条目详细progress（并线时随分支带入）。摘要：Dashboard命令→既有ExecutionGateway.start授权链的公共job面（HTTP四路由+iqs-job/1 CLI+语义契约文档），durable命令账本/12字段JobView投影/命令级幂等/有界JobPage/深链绑定。定向40项通过；§8-1独立重审两轮后 0 OPEN P1/P2/P3；真实formal付费演练=NR-1 NOT_RUN（红线§3-1待操作者预算确认）。基线先存失败登记：test_dashboard_execution.py 32项与 test_dashboard_unusable_recovery.py 1项在本主线（无本包）同样失败。交接文件：分支 `planning/iqs-job-facade-01/handoff.md`/`handoff.json`；Dashboard消费候选commit `4d420a0bb524da886db85ad344c67721e3d5de5e`。
+
 ## 11/02 模块解耦 D1–D7 整改
 
 按原审计优先修复分类结果误拒和服务锁阻塞，随后收口 Company 恢复、原题库和请求规则、UI 启动与比较、任务活动和 StockQA 只读投影。独立对抗审查复现并关闭原发布根、规则漂移、损坏异常被包装、迟到数据重绘草稿及慢构建阻塞等相邻问题。原服务195项，交付投影15项，跨仓结果119项及42子用例，历史独审72项和最终尾测135项，原UI 228项（6跳过）。三种原出题格式的6份产物逐字节一致。StockQA 默认306项及原静态检查通过。范围、提交与实际CI见[整改报告](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)。隔离临时环境清理，收费API为0。

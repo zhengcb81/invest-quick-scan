@@ -8,6 +8,10 @@
 
 **2026-11-07 主线消费者施工包验收：** 三包已交付并由总控查收；三份正式回执均通过 IQS `parallel_handoff_cli.py --verify-references`。F05 owner Lab 实现提交 `6449917c`，独立复审通过，定向 82、受影响回归 226、静态检查、日常检查337及公开 CLI 隔离 E2E 9 步通过；交接仍 `partial`，真实 owner golden 和 IQS consumer public CLI 正反互操作未完成。TH-IMPL-02 实现提交 `54773536`，四项复审备注均已根修，默认 Windows CP936 环境54项通过，最终独立增量审查通过；仅为离线消费者实现。IN-IMPL-02 实现提交 `ba54e00f`，161项测试与独立审查通过；`0ab50e9` 仅更新交接元数据。IQS 新包登记与防回归测试13项通过。包级代码交付不等于 canonical 源仓合并、真实 owner 集成、G3 或 G4 产品验收。详细状态、目录清理及剩余事项见[施工包索引](docs/implementation/parallel-lanes/packages/2026-11-06-mainline-consumer-wave/README.md)与[进度记录](progress.md)。
 
+**2026-11-07 OWNERPKG-INVEST-QUICK-SCAN-01（job façade施工包）交接登记（未并线）：** Dashboard发件（G-m8-IQS-01…05+COMMON-01/02/03）已交付于独立worktree分支 `codex/iqs-job-facade-01`（基线 `fb0a254`，worktree `../iqs-job-facade-wt01`，未push）。§8-1独立重审两轮：第一轮0 P1+2 P2+4 P3，修复后复测 **6/6 RESOLVED、0 OPEN P1/P2/P3**（记录在分支 `planning/iqs-job-facade-01/review-retest.md`）。定向40项通过；引擎/网关9文件零diff，既有文件仅 `dashboard_service.py` 纯新增路由。真实formal付费演练按红线§3-1未执行（NOT_RUN NR-1，待操作者确认预算边界/E12一并执行）。**按§7本分支不并入主线**，走§8-3-2交接：见下方并线交接任务。Dashboard侧消费候选commit见 `planning/iqs-job-facade-01/handoff.json`（在分支上）。
+
+**§8-3-2 显式并线交接任务：** `OWNERPKG-INVEST-QUICK-SCAN-01` 分支 `codex/iqs-job-facade-01` head_commit `23d20b832a6bd8587b05abe737a8a96549704436` 已通过独立重审（0 OPEN），**待【Dashboard E12真实隔离命令验收通过 + 主线在途WIP落账（当前 schemas/scripts/tests 的F05-query改动已提交或清除）+ 并线前在该分支重跑定向40项与相邻回归绿】三条件满足后，由总控/主线任务执行并线**；并线时注意 worktree 本地有6个 `questions/releases/artifacts/*.json` 的CRLF字节修复（autocrlf幻影，不入提交）。Dashboard侧E12消费以候选commit `4d420a0bb524da886db85ad344c67721e3d5de5e` 为准（不按分支名追踪）。
+
 ## 当前结论
 
 **已到“小范围可用、规模化与研究联动未完”的阶段。** 原8766工作台能够维护名单、组合题库、真实扫描、入库、查看与比较结果并恢复历史任务；不是还没接通模型或数据库。原工作区明确为`isolated_research`，不是全池正式投产。

@@ -1,5 +1,7 @@
 # 当前发现、风险与决策
 
+**2026-11-07 job façade施工包环境发现（来自OWNERPKG-INVEST-QUICK-SCAN-01，分支交付）。** (1) 全仓环境风险：任何新clone/worktree在 `core.autocrlf=true` 下会把 `questions/releases/artifacts/*.json`（release锁hash锁定）转成CRLF导致锁校验失败（prepare套件16项红）；修法=按 `questions/releases/locks/*.json` 的artifact_sha256从主检出复制字节一致工件。根治建议未来加 `.gitattributes` 标记该目录 `-text`（未做，避免与施工包scope混淆，留给主线决策）。(2) 基线先存失败：test_dashboard_execution.py 32项、test_dashboard_unusable_recovery.py 1项在master主检出同现（2026-11-07实测），非任何施工包引入，待主线排查。(3) 真实formal付费演练按红线§3-1留待操作者确认预算边界（NOT_RUN NR-1）；job面的软件级全链证据与两轮独审记录在分支 `planning/iqs-job-facade-01/`。
+
 **11/02 解耦七组已整改。** 公共结果字段由生产者定义，消费者不再复制供应商名单。服务短锁保护部署与配置，耗时工作保持原组件互斥。已付恢复使用原发布目录、原题义资源和原请求规则。UI 数据源故障留在受影响页面，迟到请求保留未保存表单。组件继续拥有状态、账本和投影。独立反例和本地、远端验证见[整改报告](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)。
 
 **11/02 解耦整改前核查。** [原报告](docs/implementation/reviews/DECOUPLING-2026-11-02/report.md)记录了七组源码与离线反例，34 项和 39 子用例通过。当时的功能验收不能代替架构边界核查，后续整改状态以上方新报告为准。
