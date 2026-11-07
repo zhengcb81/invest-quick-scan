@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "locked_at": "2026-11-07",
+  "shared_read_only_contract": {
+    "repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+    "commit": "acb03e3c084f61ca2b49181180195118077d43e3",
+    "facts_wire": "2.7.0",
+    "schema_path": "schemas/quick_scan/query-facts-v2.7.schema.json",
+    "schema_sha256": "cd3e03417289a99f5194263603ead6d954fd601b875cd3d5c08a74505ba8cbad",
+    "consumer_contract_path": "scripts/query_facts_contract.py",
+    "note": "Only this committed input is in scope. Do not read or use the in-progress, uncommitted 2.8 work in the IQS root."
+  },
+  "packages": [
+    {
+      "package_id": "TH-SOURCE-INTEGRATION-01",
+      "lane_id": "theme",
+      "source_repository": "C:/Users/郑曾波/Projects/analyze-theme-value-chain",
+      "source_branch": "master",
+      "source_base_commit": "3c9a49c7ce86f3e60eb9a6c8e6c835164cb8a903",
+      "accepted_consumer_repository": "C:/Users/郑曾波/Projects/iqs-th-impl-02-lab",
+      "accepted_consumer_commit": "5477353649bd86385bc9261bdb2a9f2b30ef63a1",
+      "lab": "C:/Users/郑曾波/Projects/iqs-th-source-integration-01-lab",
+      "writable_paths": [
+        "SKILL.md",
+        "references/quick-scan-integration.md",
+        "scripts/quick_scan_client.py",
+        "tests/test_quick_scan_integration.py",
+        "tests/fixtures/quick_scan/**",
+        "docs/handoff/TH-SOURCE-INTEGRATION-01/**"
+      ]
+    },
+    {
+      "package_id": "IN-SOURCE-INTEGRATION-01",
+      "lane_id": "industry",
+      "source_repository": "C:/Users/郑曾波/Projects/industry-research",
+      "source_branch": "main",
+      "source_base_commit": "98640a9a1f52fc87ba9813676a3cc5ab9bf045c9",
+      "accepted_consumer_repository": "C:/Users/郑曾波/Projects/iqs-in-impl-02-lab",
+      "accepted_consumer_commit": "ba54e00f5356831b9bb3ded952c06d43c4c01606",
+      "lab": "C:/Users/郑曾波/Projects/iqs-in-source-integration-01-lab",
+      "writable_paths": [
+        "SKILL.md",
+        "modules/company-evaluation.md",
+        "modules/report-generation.md",
+        "tools/quick_scan_client.py",
+        "tests/test_quick_scan_integration.py",
+        "tests/fixtures/quick_scan/**",
+        "docs/handoff/IN-SOURCE-INTEGRATION-01/**"
+      ]
+    }
+  ],
+  "lab_rules": {
+    "create_each_lab_from_the_exact_source_base_commit": true,
+    "never_write_or_clean_source_worktrees": true,
+    "never_overwrite_an_existing_lab": true,
+    "if_any_locked_git_object_is_unavailable": "return status=blocked; do not retarget the baseline",
+    "no_remote_push": true,
+    "network_calls": false,
+    "paid_calls": false,
+    "production_or_real_owner_roots": false
+  }
+}

@@ -432,3 +432,9 @@ F05 整体仍为 `partial`。下一步仍是正式产品接线，取得受支持
 - **Industry：** 实现 `ba54e00f5356831b9bb3ded952c06d43c4c01606`，handoff/report元数据提交 `0ab50e9eefbe23fda2d46dea2952b0e532456a7e`；161项隔离测试及独立delta review通过。仅离线消费者实现，未整合至canonical技能源仓。
 - **边界与下一步：** 三个Lab各自本地提交且工作树clean；本轮没有改写StockWiki、Theme、Industry canonical源仓，没有真实公司扫描、数据库写入、模型/搜索请求或费用。接下来按根task_plan先只读核实当前源仓HEAD/工作区是否有并行writer，再把F05 owner适配到当前StockWiki主线，建立受支持只读runtime与真实golden、完成IQS公开CLI真实正反互操作；接口稳定后再整合TH/IN并跑各自技能入口E2E。离线包交付不等于F05/W11/G3/G4产品完成。
 - **提交流程：** 默认沙箱无法创建 IQS `.git/index.lock`，未产生暂存或提交；将在核对精确暂存范围后按既有授权重试提交。
+
+## 2026-11-07 主题/行业源仓接线施工包准备
+
+新增 TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 两张并行卡，分别将已验收的离线消费者移植进各自冻结源仓的隔离副本。它们仅共用 IQS 已提交 facts wire 2.7 只读输入，不写 IQS、StockWiki、StockQA 或对方技能仓；目标 Lab 各自唯一。独立只读审查确认边界可并行。卡片与冻结输入清单见 `docs/implementation/parallel-lanes/packages/2026-11-07-source-integration-wave/`。
+
+IQS 的未提交 2.8 改动被明确排除；卡片交付只代表离线源仓候选，真实 owner、F05/W11互操作与G4仍由总控验收。编卡时两个 canonical skill 仓的 `git status` 都报“must be run in a work tree”，无法确认最新工作树状态；因此要求从精确锁定 commit 建立全新隔离 Lab，不覆盖已存在 Lab，不写 canonical source。两包目前只是已备妥，尚未分派/开工。

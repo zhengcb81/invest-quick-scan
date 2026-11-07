@@ -80,7 +80,7 @@
 1. **完成小池使用闭环与质量修复。** 已完成上述fresh正例；先按Next Step统一逐题保存/恢复和共用语义，再处理ANSWER已发现的错期间/错公司/复合命题支持不足。按字段/命题保留缺口与定向查证，不把质量标签再次变成整答保存门。原历史不覆写，不承诺样本外零错误；原校准配方不足要如实报告，不拿测试数量换准确率。
 2. **批量可靠性与G3。** 复用已绿的软件和已认可池，核L03原前置/预算，分批累计原200家真实试点、中断恢复/导入幂等/额度切换/成本与时效证据；合并一次正式审查。三家真实流程不重做成新成果。200家是规模验收目标，不再作为事实、消费者和小样本配套功能开发的前置。
 3. **事实与F05。** F05 owner 隔离实现包已验收（`6449917c`，状态 partial）；IQS consumer 合同已在 `da34654`。下一步是把 owner 代码按 StockWiki 当前主线适配/合入 canonical 源仓，在受支持只读 runtime 采集真实 golden，并由总控对 IQS public CLI 完成真实正反互操作。隔离 E2E 不能代签这项产品验收。可与 G3 独立，不必先完成200家试点。
-4. **TH/IN正式消费与G4。** 两个离线消费者包已验收（TH `54773536`、IN `ba54e00f`），但还未合并各自 canonical skill 源仓。真实 F05/W11接口稳定后，分别沿原查询/固定快照分页/画像/元数据/原补扫入口整合；保留池外发现和各自研究方法，完成实际技能入口 E2E。原包中的G3串行门已由1.10.17取消，不能因此声称G3/F05已关。
+4. **TH/IN正式消费与G4。** 两个离线消费者包已验收（TH `54773536`、IN `ba54e00f`），但还未合并各自 canonical skill 源仓。真实 F05/W11接口稳定后，分别沿原查询/固定快照分页/画像/元数据/原补扫入口整合；保留池外发现和各自研究方法，完成实际技能入口 E2E。原包中的G3串行门已由1.10.17取消，不能因此声称G3/F05已关。2026-11-07另准备了两张隔离源仓候选包，允许分别用锁定的已发布 facts wire 2.7 完成代码接线和合成验证；它们不接入当前 canonical 工作树，也不替代 F05/W11 稳定后的真实互操作与G4验收。
 5. **扩容、运维和配套G5/G6。** 用户认可名单逐步扩至目标容量，完成覆盖/费用/维护与配套安装、加载、升级回退、统一操作入口的实际验收。当前本机一键开UI不等于全部安装发布已验。
 
 **2026-11-04 主线支撑包（2026-11-05 已验收交付）：** [F05-FACT-QUERY-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/F05-FACT-QUERY-01.md) 在 StockWiki 隔离克隆交付 owner 侧事实/关系查询候选，`status=partial`；[G3-BATCH-RESUME-HARNESS-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/G3-BATCH-RESUME-HARNESS-01.md) 合成200主体批次接续工装已交付，工装包完成但生产 G3 `not_closed`。handoff 分别位于 `C:\Users\郑曾波\Projects\iqs-stockwiki-f05-query-lab\docs\handoff\F05-FACT-QUERY-01\handoff.json` 与 `C:\Users\郑曾波\Projects\iqs-g3-batch-resume-harness-lab\docs\handoff\G3-BATCH-RESUME-HARNESS-01\handoff.json`。两包均不改 canonical StockWiki/IQS 产品代码、不调用收费 API；详情见[施工包索引](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/README.md)及[进度记录](progress.md)。
@@ -118,3 +118,9 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 - 只读UI：iqs-question-bank-ui-lab master快进至47d5354；该仓没有配置远端。
 - 合并后验证：IQS公司结果核心37项通过；公司结果、owner、HTTP及实体视图相邻组103项通过；UI公司结果/返回链接/深链/pin/运行时组29项通过。Dashboard适配与身份回归、OpenAPI生成检查、27项synthetic smoke、TypeScript与生产构建通过。分组有重叠，不将计数相加。
 - 真实owner调用、真实公司扫描、数据库新增写入均未发生。剩余主线是原8766实际入口接线与真实三市场扫描、入库、恢复验收。
+
+## 2026-11-07 主题/行业源仓接线包准备
+
+新增 [TH-SOURCE-INTEGRATION-01](docs/implementation/parallel-lanes/packages/2026-11-07-source-integration-wave/TH-SOURCE-INTEGRATION-01.md) 与 [IN-SOURCE-INTEGRATION-01](docs/implementation/parallel-lanes/packages/2026-11-07-source-integration-wave/IN-SOURCE-INTEGRATION-01.md)，总索引见[施工包 README](docs/implementation/parallel-lanes/packages/2026-11-07-source-integration-wave/README.md)。两包分别移植已验收的 TH/IN 离线 consumer 到独立冻结源仓副本，唯一写入 Lab 不重叠；共享输入仅为 IQS 已提交 2.7 facts contract。独立只读审查确认了拆分边界。当前 IQS 2.8 改动仍未提交，不纳入两包；交付只代表隔离源仓候选，不代表 canonical 合并、真实 owner互操作或 G4 完成。
+
+卡片使用2026-11-06已记录的源仓 commit 与消费者 payload commit，不复制当前 source 工作树。此次只读核查中，两个 skill 仓的 `git status` 均返回“must be run in a work tree”，无法确认其当前未提交状态；所以施工卡严格要求新建冻结 commit 的隔离 Lab，若目标 Lab 已存在或锁定 Git 对象缺失则不覆盖/不漂移，交回阻塞。包尚未分派或开工。
