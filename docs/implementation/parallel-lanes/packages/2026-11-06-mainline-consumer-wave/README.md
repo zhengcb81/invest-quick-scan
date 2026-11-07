@@ -1,6 +1,6 @@
 # 2026-11-06 主线消费者并行施工包
 
-**状态：** 可分派，尚未开工。三包按三个独立代码 owner 拆分，工作目录互不重叠：StockWiki owner 端、analyze-theme-value-chain 消费端、industry-research 消费端。不是把同一功能拆成多包。
+**状态（2026-11-07）：** 三包均已完成隔离实现、独立复审和总控交接校验。F05 owner 包的代码交付已验收但保持 `partial`，因为真实 owner golden 与 IQS consumer public CLI 正反互操作尚未完成；TH/IN 两包是离线消费者实现，不代表已合并到各自源仓或完成真实入口验收。三个包的工作目录彼此独立，均未改 canonical 源仓。
 
 ## 施工包
 
@@ -10,7 +10,17 @@
 | [TH-IMPL-02](TH-IMPL-02.md) | `C:\Users\郑曾波\Projects\iqs-th-impl-02-lab` | analyze-theme-value-chain `master@3c9a49c7ce86f3e60eb9a6c8e6c835164cb8a903`；IQS `acb03e3…` | 在主题候选/公司资料流程中可选消费 F05 facts；只写主题技能新 Lab。 |
 | [IN-IMPL-02](IN-IMPL-02.md) | `C:\Users\郑曾波\Projects\iqs-in-impl-02-lab` | industry-research `main@98640a9a1f52fc87ba9813676a3cc5ab9bf045c9`；IQS `acb03e3…` | 在行业公司评估/报告中可选消费 F05 facts；只写行业研究新 Lab。 |
 
-精确输入与状态见 [inputs.lock.json](inputs.lock.json)。这些 Lab 路径在编卡时均不存在；Harness 开工时如已出现，先保留并报告现有 owner，不能删除或复用未知目录。
+## 总控验收结果
+
+| 包 | 实现提交 / Lab 交接提交 | 验收证据 | 交付结论 |
+|---|---|---|---|
+| F05-OWNER-MAINLINE-02 | 实现 `6449917cfe38a5c3abb53c056d654ee876182ebe`；交接元数据 `4911b7e117cb462ee5ad36dde0f4a2e48cc02c7b` | 定向82、受影响回归226、static-only、日常检查337；独立 reviewer `/root/review_f05_owner02` 对最终公开 CLI 隔离 E2E 复跑9步，均通过；`parallel_handoff_cli.py --verify-references` 为 valid | **代码包接受，产品 `partial`**。真实 owner golden、与 IQS consumer public CLI 的真实正反互操作、canonical StockWiki 合并仍待总控。Lab runtime links、额外基线 clone 与 `f05-capture-0qtex5ju` 已核验清理；历史外部副本创建如实记录。 |
+| TH-IMPL-02 | 实现 `5477353649bd86385bc9261bdb2a9f2b30ef63a1`；交接文档提交 `14039094521ba13bba3a43392d426326326dbc8d` | CP936 默认 Windows 环境54项通过；四条初审备注修复并由非作者 reviewer 对最终提交复核；引用校验 valid | **离线代码包接受**。真实 StockWiki owner 与技能入口整合未做。 |
+| IN-IMPL-02 | 实现 `ba54e00f5356831b9bb3ded952c06d43c4c01606`；报告/交接元数据提交 `0ab50e9eefbe23fda2d46dea2952b0e532456a7e` | 161项隔离测试、独立 delta review approved；handoff schema 与 `--verify-references` valid | **离线代码包接受**。真实 StockWiki owner 与技能入口整合未做。 |
+
+IQS 总控 package catalog 已登记以上 ID；官方接收 CLI 对三份回执均返回 `status=valid, errors=[]`。`--verify-references` 只验证可复核的提交、路径和哈希，不替代代码独立审查或产品集成验收。完整测试/清理记录分别见三个 Lab 的 `docs/handoff/<PACKAGE-ID>/report.md` 与 `handoff.json`。
+
+精确输入与冻结基线见 [inputs.lock.json](inputs.lock.json)。这些 Lab 在编卡时均不存在，后已按包建立并交付；接手时应保留现有 Lab 和提交，不得把它们当成待初始化目录。
 
 ## 三包共享的公开接口
 

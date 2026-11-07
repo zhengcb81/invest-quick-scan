@@ -207,6 +207,27 @@ class ParallelHandoffCliTests(unittest.TestCase):
                     self.assertEqual(code, 0)
                     self.assertEqual(answer["validation_scope"], "handoff_shape_and_declared_scope_only")
 
+    def test_current_mainline_wave_packages_are_registered_for_handoff_intake(self):
+        packages = (
+            ("F05-OWNER-MAINLINE-02", "stockwiki", "F05", "stockwiki/quick_scan_facts_contract.py",
+             "C:/Users/郑曾波/Projects/iqs-stockwiki-f05-mainline-lab"),
+            ("TH-IMPL-02", "theme", "T01", "scripts/quick_scan_client.py",
+             "C:/Users/郑曾波/Projects/iqs-th-impl-02-lab"),
+            ("IN-IMPL-02", "industry", "T02", "tools/quick_scan_client.py",
+             "C:/Users/郑曾波/Projects/iqs-in-impl-02-lab"),
+        )
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-mainline-wave-") as temp:
+            for package_id, lane, task_id, changed_path, lab_root in packages:
+                with self.subTest(package=package_id):
+                    report = _report(package_id, lane)
+                    report["snapshot"]["repository"] = lab_root
+                    report["scope"]["task_ids"] = [task_id]
+                    report["scope"]["authorized_paths"] = [changed_path]
+                    report["scope"]["changed_paths"] = [changed_path]
+                    code, answer = self.run_cli(Path(temp), report, package_id=package_id)
+                    self.assertEqual(code, 0)
+                    self.assertEqual(answer["status"], "valid")
+
     def test_malformed_local_catalog_does_not_emit_its_content(self):
         package_root = ROOT / "docs/implementation/parallel-lanes/packages"
         with tempfile.TemporaryDirectory(prefix=".iqs-catalog-test-", dir=package_root) as selected:

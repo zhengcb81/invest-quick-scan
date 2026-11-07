@@ -422,3 +422,13 @@ F05 整体仍为 `partial`。下一步仍是正式产品接线，取得受支持
 新卡明确：TH/IN 可依固定合同和 synthetic response 独立完成消费端开发，不再被真实200家 G3 或真实 owner golden 阻挡；不得把 synthetic 测试写成真实互操作。Owner query 可能持久化 snapshot/capture，因此测试只能把 owner root 指向各自临时目录。本批不分派真实 G3 扫描，该流程需要总控独占原 UI/额度/运行库。每个包交付前做一次独立 reviewer 大节点审查并修完 findings，不要求小节点重复审查。具体边界、测试案例、操作命令与共同交接规则见 [施工包索引](docs/implementation/parallel-lanes/packages/2026-11-06-mainline-consumer-wave/README.md)。
 
 独立 agent 对本批施工包的依赖口径、目录边界、隔离和交接完整性复审通过（`approved / open_findings=[]`）。复核限制：子代理沙箱无法读取 StockWiki/Theme/Industry Git 元数据；这些冻结提交和工作树状态由总控在编卡时只读核实。README、六份交付文件及相对链接均已核验；IQS facts schema 哈希与锁值一致。
+
+
+## 2026-11-07 三个主线消费者施工包验收
+
+- **正式接收：** F05-OWNER-MAINLINE-02、TH-IMPL-02、IN-IMPL-02 已登记到 IQS package catalog；三份 handoff 经 `python -B -X utf8 scripts/parallel_handoff_cli.py --input <handoff.json> --package-id <id> --verify-references` 均返回 `status=valid, errors=[]`。登记回归 `python -B -m unittest discover -s tests -p test_parallel_handoff_cli.py -q`：13 项通过。
+- **F05 owner：** 隔离 Lab 实现 `6449917cfe38a5c3abb53c056d654ee876182ebe`，交接元数据 `4911b7e117cb462ee5ad36dde0f4a2e48cc02c7b`。验收记录82项定向、226项受影响回归、static-only、日常337项及公共CLI隔离E2E 9步；独立非作者 agent `/root/review_f05_owner02` 对最终增量复跑E2E并通过。旧wire哈希已改为锁定源码文件可复算锚点。确认并清理Lab junction、E2E/TEMP根、baseline clone和 `f05-capture-0qtex5ju`；报告与JSON保留历史外部临时克隆创建事实。F05产品状态仍partial：真实owner golden、IQS public CLI真实正反互操作和canonical StockWiki合并/部署未完成。
+- **Theme：** 实现 `5477353649bd86385bc9261bdb2a9f2b30ef63a1`，交接文档提交 `14039094521ba13bba3a43392d426326326dbc8d`。总控按独审意见修复非法UTF-8处理、stale_owner_data文档、无用常量与cursor预传输反例。默认Windows CP936环境54项通过；非作者 agent `/root/review_theme02` 对最终提交独立复核通过。仅离线消费者实现，未声称真实owner接线。
+- **Industry：** 实现 `ba54e00f5356831b9bb3ded952c06d43c4c01606`，handoff/report元数据提交 `0ab50e9eefbe23fda2d46dea2952b0e532456a7e`；161项隔离测试及独立delta review通过。仅离线消费者实现，未整合至canonical技能源仓。
+- **边界与下一步：** 三个Lab各自本地提交且工作树clean；本轮没有改写StockWiki、Theme、Industry canonical源仓，没有真实公司扫描、数据库写入、模型/搜索请求或费用。接下来按根task_plan先只读核实当前源仓HEAD/工作区是否有并行writer，再把F05 owner适配到当前StockWiki主线，建立受支持只读runtime与真实golden、完成IQS公开CLI真实正反互操作；接口稳定后再整合TH/IN并跑各自技能入口E2E。离线包交付不等于F05/W11/G3/G4产品完成。
+- **提交流程：** 默认沙箱无法创建 IQS `.git/index.lock`，未产生暂存或提交；将在核对精确暂存范围后按既有授权重试提交。

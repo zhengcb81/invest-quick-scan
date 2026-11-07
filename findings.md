@@ -123,3 +123,11 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - 消费端 payload 已并入 IQS `master`（`da34654`），事实契约、公开校验CLI和2.7能力声明不再只是隔离Lab代码。主线 F05 专项82 passed；加相邻 exchange/query 回归97 passed、7子测试。
 - 合并没有接入 StockWiki 当前部署或实际 owner query runtime。测试中的 owner wrapper 来自冻结候选 Git 提交，临时归档后清理；它证明协议/CLI合约可互通，不等同当前 owner 真实运行、真实 golden 或生产接线。F05 状态继续为 `partial`。
 - `model_self_qualification` 旧 query v2 失败在合并前的隔离验证已出现，当前主线合并回归再次出现；它不是本次增量引入的错误，仍应作为独立历史缺口跟踪。
+
+
+## 2026-11-07 主线消费者施工包接收结论
+
+- IQS 的中心 package catalog 漏登新包，是三份正式 handoff 首次被拒绝的根因；现在登记了 F05-OWNER-MAINLINE-02 / TH-IMPL-02 / IN-IMPL-02，并用一条参数化回归防止重复。13项 intake CLI 单测通过。
+- 三份 handoff 的结构、范围与已引用提交/哈希现均通过公共 `--verify-references`。这只证明接收资料可复核，不代替 reviewer 审查或真实产品集成。
+- F05 owner 隔离代码包已接受但仍 `partial`：真实 owner golden、受支持的只读 runtime、当前 IQS public CLI 正反互操作、canonical StockWiki 合并和部署仍未完成。Theme 与 Industry 只完成固定 facts 2.7 合同下的离线消费者代码包，尚未写入各自 canonical skill 源仓。
+- F05 Lab 中发现的临时 junction、额外 baseline clone 和 `f05-capture-0qtex5ju` 均经精确归属核对并清理；报告/JSON保留其历史创建事实。后续验收若再次发现外部临时产物，应先核归属并只清理本包明确创建的目标。

@@ -2,14 +2,14 @@
 
 **11/06 当前 F05 进展。** 独立包 [F05-IQS-CONSUMER-01](parallel-lanes/packages/2026-11-05-f05-iqs-consumer/README.md) 的已审查 payload `08e5b4d6` 已合入本仓 `master`（`da34654`）。主线 facts/capabilities/public CLI 定向82 passed；加相邻 exchange/query 回归97 passed、7子测试。旧 query v2 的 `model_self_qualification` 冻结基线失败在合并前已出现，本轮仍保留为非本次引入的失败。**F05 仍为 partial**：主线有消费者契约和校验CLI，但普通产品/共享引擎尚未接上实际 StockWiki owner runtime，真实 owner golden 和当前公开 CLI 正反互操作也未完成；未运行生产UI、数据库写入或收费API。详情见根 [task_plan.md](../../task_plan.md)、[progress.md](../../progress.md) 和 Lab handoff `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab\docs\handoff\F05-IQS-CONSUMER-01\report.md`。
 
-**2026-11-06 可分派施工包（尚未开工）：** [F05-OWNER-MAINLINE-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/F05-OWNER-MAINLINE-02.md) 只在新的 StockWiki Lab 适配当前 owner 代码；[TH-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/TH-IMPL-02.md) 与 [IN-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/IN-IMPL-02.md) 各自在独立 skill Lab 消费固定 2.7 contract。消费者离线实现不等 G3/真实 owner golden；真实 owner 数据互操作和 G3 由总控另行完成。StockWiki 原仓有四个未跟踪数据路径，owner 卡明确禁止读取或复制，并从锁定的 tracked commit 建新 Lab。
+**2026-11-07 三个独立施工包已验收：** [F05-OWNER-MAINLINE-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/F05-OWNER-MAINLINE-02.md) 在隔离 StockWiki Lab 的实现提交 `6449917c` 已独立审查；交接状态 `partial`，真实 owner golden、IQS public CLI 正反互操作和 canonical StockWiki 合并仍未做。[TH-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/TH-IMPL-02.md) 的离线消费者提交 `54773536`（54项测试，CP936 默认编码独立复审通过）和 [IN-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/IN-IMPL-02.md) 提交 `ba54e00f`（161项测试，独立复审通过）已验收；两者还未整合进各自 canonical skill 源仓。三份 handoff 经 IQS CLI `--verify-references` 均为 valid。总控下一步按根 [task_plan.md](../../task_plan.md) 继续 F05 真实 owner 接线与 golden/互操作，再整合 TH/IN；不把离线包完成误报为产品闭环。
 
 **11/02最新补充。** [解耦 D1–D7 整改](reviews/DECOUPLING-2026-11-02/remediation.md)已通过独立复核。恢复使用原登记发布根、原语义资源及原请求规则。以后新增 renderer 或答案资源时登记新版本并保留原版本读路径。UI 与 Company Lab 为本地组件仓，提交与 StockQA 版本见报告。接下来按根计划回到小池内容质量和事实主线。
 
 **11/02 上一节点的 CI 证据。** [CI 连续失败根修](reviews/CI-ROOT-CAUSE-2026-11-02/report.md)在 StockQA `0154726` 的 CI 41523660779 与 Documentation 41523660825 通过，文档构建和发布均已核实。[完整链路混合与重启整改](reviews/GATE-SIMPLIFY-2026-11-02/full-chain-restart-remediation.md)仍是既有真实恢复证据。
 
 
-更新于2026-11-05。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
+更新于2026-11-07。本页只说明如何接手；唯一执行顺序是根[task_plan.md](../../task_plan.md)，实际阶段证据见[progress.md](../../progress.md)。更早长文已[归档](archive/pwf-through-2026-10-31/README.md)，历史日期段不能覆盖当前结论。
 
 ## 当前已经完成什么
 

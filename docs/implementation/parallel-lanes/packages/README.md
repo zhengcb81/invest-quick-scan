@@ -1,6 +1,6 @@
-# 可分派的独立施工包
+# 独立施工包索引
 
-**当前可分派批次：** [2026-11-06 主线消费者并行施工包](2026-11-06-mainline-consumer-wave/README.md)。三条线分别负责 StockWiki F05 owner 当前基线适配、主题研究消费者、行业研究消费者，工作目录互不重叠；均在新隔离 Lab 写入。两个消费者依据 IQS 2.7 已冻结契约并行开发，不等待 G3/真实 owner golden 才开工；生产 owner golden/真实接口验收仍由总控完成。
+**最新施工包状态（2026-11-07）：** [2026-11-06 主线消费者并行施工包](2026-11-06-mainline-consumer-wave/README.md)三包均已交付并通过总控接收校验；目前没有本批待分派包。F05 owner 隔离代码已验收但产品状态仍 `partial`（真实 owner golden、public CLI 真实互操作和 canonical StockWiki 合并未完成）；TH/IN 仅完成离线消费者实现，尚未并入各自 canonical skill 源仓。包级提交、测试、独审及未完成边界见批次索引。
 
 **历史记录：** [2026-11-04 主线支撑包](2026-11-04-mainline-support/README.md)、[2026-10-07 消费者包](2026-10-07/README.md)和下方旧包保留原始范围与状态，不代表当前开工门；本批新卡只更新其消费端代码实施范围，不改写旧验收或预研结论。不要再派发旧版 TH-IMPL-01 / IN-IMPL-01。
 

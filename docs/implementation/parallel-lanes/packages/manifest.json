@@ -1,6 +1,6 @@
 {
   "format_version": "1.0.0",
-  "observed_at": "2026-09-30",
+  "observed_at": "2026-11-07",
   "task_source": "../../tasks.json",
   "packages": [
     {
@@ -42,6 +42,36 @@
       "write_scope": "C:/Users/郑曾波/Projects/local-skills/industry-research",
       "readiness": "read_only_preparation",
       "authorization": "not_authorized_for_write"
+    },
+    {
+      "id": "F05-OWNER-MAINLINE-02",
+      "lane_id": "stockwiki",
+      "document": "2026-11-06-mainline-consumer-wave/F05-OWNER-MAINLINE-02.md",
+      "task_ids": ["F05"],
+      "depends_on": ["F03", "F04", "W09", "V07"],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-stockwiki-f05-mainline-lab",
+      "readiness": "writable_isolated_lab",
+      "authorization": "package-card-scoped isolated Lab only; no StockWiki source, production, remote, or paid calls"
+    },
+    {
+      "id": "TH-IMPL-02",
+      "lane_id": "theme",
+      "document": "2026-11-06-mainline-consumer-wave/TH-IMPL-02.md",
+      "task_ids": ["T01"],
+      "depends_on": ["F05", "W11"],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-th-impl-02-lab",
+      "readiness": "writable_isolated_lab",
+      "authorization": "package-card-scoped isolated Lab only; source repo remains read-only; no remote or paid calls"
+    },
+    {
+      "id": "IN-IMPL-02",
+      "lane_id": "industry",
+      "document": "2026-11-06-mainline-consumer-wave/IN-IMPL-02.md",
+      "task_ids": ["T02"],
+      "depends_on": ["F05", "W11"],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-in-impl-02-lab",
+      "readiness": "writable_isolated_lab",
+      "authorization": "package-card-scoped isolated Lab only; source repo remains read-only; no remote or paid calls"
     }
   ]
 }
