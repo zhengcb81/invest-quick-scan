@@ -441,4 +441,10 @@ F05 整体仍为 `partial`。下一步仍是正式产品接线，取得受支持
 
 新增 TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 两张并行卡，分别将已验收的离线消费者移植进各自冻结源仓的隔离副本。它们仅共用 IQS 已提交 facts wire 2.7 只读输入，不写 IQS、StockWiki、StockQA 或对方技能仓；目标 Lab 各自唯一。独立只读审查确认边界可并行。卡片与冻结输入清单见 `docs/implementation/parallel-lanes/packages/2026-11-07-source-integration-wave/`。
 
-IQS 的未提交 2.8 改动被明确排除；卡片交付只代表离线源仓候选，真实 owner、F05/W11互操作与G4仍由总控验收。编卡时两个 canonical skill 仓的 `git status` 都报“must be run in a work tree”，无法确认最新工作树状态；因此要求从精确锁定 commit 建立全新隔离 Lab，不覆盖已存在 Lab，不写 canonical source。两包目前只是已备妥，尚未分派/开工。
+IQS 的未提交 2.8 改动被明确排除；卡片交付只代表离线源仓候选，真实 owner、F05/W11互操作与G4仍由总控验收。编卡时两个 canonical skill 仓的 `git status` 都报“must be run in a work tree”，无法确认最新工作树状态；因此要求从精确锁定 commit 建立全新隔离 Lab，不覆盖已存在 Lab，不写 canonical source。编卡时两包已备妥、尚未分派；最终交付状态见下方2026-11-08更新。
+
+## 2026-11-08 TH/IN 源仓接线施工包查收
+
+TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并在独立 Lab 内修正缺口；最终独立 reviewer 均 ACCEPT，IQS 公共交接 verifier 两包均为 `valid / errors=[]`。TH 最终 commit `dde51cdd1431a106af2a3f03467bd3423511256b`、59项通过；IN 代码结果 commit `ce7434bd46a9c74b2c1156e61ca56fc670d62c9`，整目录176项通过并另复跑 CWD 用例1项通过。IN 回执原有的单一组合 hash 无法指向实际交付文件，现以三个精确 commit-bound 文件 hash替代。交接文件 SHA-256、测试范围、审查人结论见 `task_plan.md` 的同日验收条目及对应隔离 Lab handoff。
+
+本轮未改 canonical Theme/Industry 技能源仓、StockWiki、StockQA或生产数据库；未做真实 owner、收费模型/搜索或真实公司扫描。隔离交付通过不等于 F05/W11、G3/G4 或真实主线接线完成。主线仍按 task_plan 的 F05/W11 稳定接线和真实技能入口互操作验收推进。

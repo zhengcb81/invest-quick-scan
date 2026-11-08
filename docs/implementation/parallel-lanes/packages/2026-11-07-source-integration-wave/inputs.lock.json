@@ -8,7 +8,18 @@
     "schema_path": "schemas/quick_scan/query-facts-v2.7.schema.json",
     "schema_sha256": "cd3e03417289a99f5194263603ead6d954fd601b875cd3d5c08a74505ba8cbad",
     "consumer_contract_path": "scripts/query_facts_contract.py",
-    "note": "Only this committed input is in scope. Do not read or use the in-progress, uncommitted 2.8 work in the IQS root."
+    "note": "Only this committed input is in scope. Do not read or use the in-progress, uncommitted 2.8 work in the IQS root.",
+    "capability_schemas": {
+      "1.1.0": {
+        "path": "schemas/quick_scan/query-capabilities.schema.json",
+        "sha256": "a631e52d0e6a543d34482f04b59370ba04e833444c45ef45ba6dd014b1d50e8e"
+      },
+      "1.2.0": {
+        "path": "schemas/quick_scan/query-capabilities-v1.2.schema.json",
+        "sha256": "88a7e7fe1649d20ec7f36aa23b769eea6a1a24a1410b0c17bc59e0a632fb1f7d"
+      }
+    },
+    "capability_hash_basis": "SHA-256 of exact Git blob bytes at commit acb03e3c084f61ca2b49181180195118077d43e3"
   },
   "packages": [
     {

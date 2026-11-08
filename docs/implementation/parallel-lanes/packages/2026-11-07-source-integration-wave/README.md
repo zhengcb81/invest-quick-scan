@@ -1,6 +1,6 @@
 # 2026-11-07 主题与行业源仓接线包
 
-**状态：** 两张卡已备妥，尚未分派/开工。独立只读审查确认两条线可并行，工作目录、源仓和写入路径不重叠。
+**状态：** 两张卡均已在隔离 Lab 完成交付、修复验收问题并通过最终独立审查；IQS 公共 handoff verifier 对两份回执均返回 `valid, errors=[]`。这只关闭两个隔离候选包，不代表 canonical 技能源仓合并、F05/W11 真实 owner 互操作或 G4 完成。
 
 这批只把已验收的离线消费者移植进各自技能源仓的**隔离副本**，让真实技能流程能选择性调用公开 facts CLI。它不修改两个 canonical 工作树，也不写 IQS、StockWiki 或 StockQA。F05/W11 真实服务和当前 CLI 互操作仍由总控主线验收。
 
@@ -11,7 +11,7 @@
 | TH-SOURCE-INTEGRATION-01 | `C:\Users\郑曾波\Projects\iqs-th-source-integration-01-lab` | analyze-theme-value-chain `master@3c9a49c7ce86f3e60eb9a6c8e6c835164cb8a903` | TH-IMPL-02 `5477353649bd86385bc9261bdb2a9f2b30ef63a1` | [TH-SOURCE-INTEGRATION-01.md](TH-SOURCE-INTEGRATION-01.md) |
 | IN-SOURCE-INTEGRATION-01 | `C:\Users\郑曾波\Projects\iqs-in-source-integration-01-lab` | industry-research `main@98640a9a1f52fc87ba9813676a3cc5ab9bf045c9` | IN-IMPL-02 `ba54e00f5356831b9bb3ded952c06d43c4c01606` | [IN-SOURCE-INTEGRATION-01.md](IN-SOURCE-INTEGRATION-01.md) |
 
-两张卡只共享 IQS 的已提交只读 facts wire 2.7 输入。包的依据和逐仓保护边界见 [inputs.lock.json](inputs.lock.json)；共用交接要求见 [handoff-rules.md](handoff-rules.md)。
+两张卡只共享 IQS 已提交只读输入：facts wire 2.7.0 与 capabilities schema 1.1.0/1.2.0；路径和精确 Git blob SHA-256 见 [inputs.lock.json](inputs.lock.json)。逐仓保护边界也在该锁文件中，共用交接要求见 [handoff-rules.md](handoff-rules.md)。
 
 ## 当前可做与最终验收的边界
 

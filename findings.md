@@ -133,3 +133,10 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - 三份 handoff 的结构、范围与已引用提交/哈希现均通过公共 `--verify-references`。这只证明接收资料可复核，不代替 reviewer 审查或真实产品集成。
 - F05 owner 隔离代码包已接受但仍 `partial`：真实 owner golden、受支持的只读 runtime、当前 IQS public CLI 正反互操作、canonical StockWiki 合并和部署仍未完成。Theme 与 Industry 只完成固定 facts 2.7 合同下的离线消费者代码包，尚未写入各自 canonical skill 源仓。
 - F05 Lab 中发现的临时 junction、额外 baseline clone 和 `f05-capture-0qtex5ju` 均经精确归属核对并清理；报告/JSON保留其历史创建事实。后续验收若再次发现外部临时产物，应先核归属并只清理本包明确创建的目标。
+
+
+## 2026-11-08 TH/IN source-integration acceptance findings
+
+- TH capability routing assumed every JSON `operations` array member was a string before converting to `set`; valid JSON with a non-string member could raise `TypeError` and abort discovery. The isolated source Lab now validates the list element types first, returns an explicit unsupported/gap result for malformed entries, and still finds later valid entries. Regression suite: 59 passed.
+- IN handoff described three delivered skill files with one combined hash. The public verifier hashes actual delivered files and could not resolve that aggregate. The handoff now exposes each produced file as a separate interface, pinned to the result commit and exact Git-blob SHA-256; public verification passes.
+- These are distinct from F05/W11 production integration. Both accepted outputs remain isolated skill-source candidates; neither canonical skill tree was modified.
