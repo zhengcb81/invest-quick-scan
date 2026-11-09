@@ -1080,9 +1080,11 @@ class ExecutionGateway:
                     _write(path, record)
                     raise DashboardExecutionError("launch_failed", "无法恢复原执行器", 503) from None
                 record.update(process_state="running", pid=process.pid)
-                _write(path, record)
                 self._processes[run_id] = process
-                threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
+                try:
+                    _write(path, record)
+                finally:
+                    threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
                 return {"run": record, "state": "running", "process_started": True, "paid_dispatch_started": None,
                         "notice": "仅恢复同一原owner登记范围；原执行器复用已保存答案，未知HTTP不重发"}
             raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume", "retire", "seal"]})

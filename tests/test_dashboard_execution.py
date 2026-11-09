@@ -1645,11 +1645,11 @@ def test_seal_uses_background_original_cli_without_credentials_new_spend_or_budg
     assert '--max-output-tokens' not in command and '--work-lease-seconds' not in command
     assert '--thinking-enabled' not in command and '--search-policy' not in command
     assert not any('KEY' in key or 'TOKEN' in key or 'SECRET' in key for key in env)
-    final=json.loads(path.read_text())
+    final=json.loads(path.read_text(encoding='utf-8'))
     assert final['result_path']!=prior and final['original_result_path']==prior
     assert final['process_state']=='process_exited'
-    assert json.loads(Path(final['result_path']).read_text())['argv'].count('--seal-deliveries')==1
-    assert 'key=none' in Path(final['log_path']).read_text()
+    assert json.loads(Path(final['result_path']).read_text(encoding='utf-8'))['argv'].count('--seal-deliveries')==1
+    assert 'key=none' in Path(final['log_path']).read_text(encoding='utf-8')
     assert not Path(bundle['spend_authorization']).exists()
 
 
@@ -1683,7 +1683,7 @@ def test_paid_seal_ignores_later_new_send_settings_and_missing_budget(deployment
     result = gateway.control(run_id, 'seal')
     assert result['paid_dispatch_started'] is False
     wait_done(gateway, run_id)
-    command = json.loads(Path(json.loads(path.read_text())['result_path']).read_text())['argv']
+    command = json.loads(Path(json.loads(path.read_text(encoding='utf-8'))['result_path']).read_text(encoding='utf-8'))['argv']
     assert '--seal-deliveries' in command and '--spend-authorization' not in command
     assert json.loads(path.read_text())['bundle_fingerprint'] == original_record['bundle_fingerprint']
 

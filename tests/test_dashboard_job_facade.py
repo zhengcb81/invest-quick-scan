@@ -341,6 +341,23 @@ def test_crash_window_resubmit_binds_same_run_without_double_start(tmp_path, gat
     assert again["command"]["owner_job_id"] == result["command"]["owner_job_id"]
 
 
+def test_command_read_recovers_reference_after_process_exit_without_resubmission(tmp_path, gates, monkeypatch):
+    gateway = gates['execution']
+    native_start = gateway.start
+
+    def crashed_after_start(payload):
+        native_start(payload)
+        raise SystemExit(1)
+
+    monkeypatch.setattr(gateway, 'start', crashed_after_start)
+    with pytest.raises(SystemExit):
+        submit(make_facade(tmp_path, gates))
+    reopened = make_facade(tmp_path, gates)
+    receipt = reopened.get_command('cmd-1')
+    assert receipt['job_view']['owner_job_id'] == next(iter(gateway.runs))
+    assert len(gateway.start_calls) == 1
+
+
 def test_owner_refusal_records_durable_refusal_and_unavailable_recovery(tmp_path, gates):
     from dashboard_errors import DashboardExecutionError
     def refuse(payload):
@@ -608,6 +625,29 @@ def test_resume_prepjob_unsupported(tmp_path, gates):
     assert caught.value.code == "resume_unsupported"
 
 
+def test_resume_unknown_replays_durable_intent_without_second_owner_call(tmp_path, gates, monkeypatch):
+    facade = make_facade(tmp_path, gates)
+    submit(facade)
+    gateway = gates['execution']
+    run_id = next(iter(gateway.runs))
+    gateway.runs[run_id].update(process_state='process_exited', launcher_state='paused', launch_attempt=1)
+    effects = []
+
+    def lost_running_reference(job_id, action):
+        assert job_id == run_id and action == 'resume'
+        gateway.runs[run_id]['launch_attempt'] += 1
+        effects.append(gateway.runs[run_id]['launch_attempt'])
+        raise OSError('process started before reference write failed')
+
+    monkeypatch.setattr(gateway, 'control', lost_running_reference)
+    body = {'action': 'resume', 'idempotency_key': 'resume-once'}
+    first = facade.act(run_id, body)
+    assert first['action_result']['outcome'] == 'unknown'
+    replay = make_facade(tmp_path, gates).act(run_id, body)
+    assert replay['replayed'] and replay['action_result'] == first['action_result']
+    assert effects == [2]
+
+
 # --------------------------------------------------------------- G-m8-IQS-04
 
 def test_list_jobs_bounded_page_cursor_and_authoritative_flag(tmp_path, gates):
@@ -639,6 +679,26 @@ def test_bound_command_projects_jobview_command_id(tmp_path, gates):
     page = facade.list_jobs(limit=50)
     bound = [view for view in page["items"] if view["owner_job_id"] == run_id]
     assert len(bound) == 1 and bound[0]["command_id"] == "cmd-1"
+
+
+def test_job_catalog_keeps_annotations_aligned_when_one_owner_read_fails(tmp_path, gates, monkeypatch):
+    facade = make_facade(tmp_path, gates)
+    broken = submit(facade)['job_view']['owner_job_id']
+    healthy = 'run-' + '1' * 32
+    gateway = gates['execution']
+    gateway.launch(healthy, {'process_state': 'running', 'launcher_state': 'running'})
+    tasks = gateway.tasks
+
+    def one_unreadable(*args, **kwargs):
+        if kwargs.get('run_ids') == [broken]:
+            raise OSError('owner reference temporarily unavailable')
+        return tasks(*args, **kwargs)
+
+    monkeypatch.setattr(gateway, 'tasks', one_unreadable)
+    page = facade.list_jobs()
+    assert page['page']['total_status'] == 'estimate'
+    assert [row['owner_job_id'] for row in page['annotations']] == [row['owner_job_id'] for row in page['items']]
+    assert {row['owner_job_id']: row['status'] for row in page['items']} == {broken: 'unknown', healthy: 'running'}
 
 
 # --------------------------------------------------------------- G-m8-IQS-05

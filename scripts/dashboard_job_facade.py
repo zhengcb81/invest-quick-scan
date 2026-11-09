@@ -752,7 +752,7 @@ class OwnerJobFacade:
     def _job_view_for_command(self, record):
         """Project the command's bound job; a refused command has no owner job."""
         owner_job_id, kind = record.get("owner_job_id"), record.get("owner_kind")
-        if record.get("state") == "submitting":
+        if record.get("state") == "submitting" and not owner_job_id:
             return self._job_view(command_id=record["command_id"], owner_job_id=None,
                 kind="run", status="queued", status_known=True,
                 started_at=record.get("created_at"), updated_at=record["updated_at"],
@@ -854,7 +854,7 @@ class OwnerJobFacade:
     def get_command(self, command_id):
         """G-m8-IQS-05: the durable command_id <-> owner_job_id binding."""
         record = self._load_command(command_id)
-        if record["state"] == "needs_original_inspection":
+        if record["state"] in {"submitting", "needs_original_inspection"} and record.get("registration"):
             observed = self._read_start_reference(self._execution(), record)
             if observed is not None:
                 # Expose a positively identified reference on GET without
@@ -908,8 +908,19 @@ class OwnerJobFacade:
                         return {"protocol": WIRE_PROTOCOL, "replayed": True,
                                 "action_result": replay["action_result"],
                                 "job_view": view, "annotation": annotation, "API_requests": 0}
-                    result = self._dispatch_action(kind, owner_job_id, action)
-                    self._record_action(owner_job_id, action, idempotency_key, result)
+                    mutates_owner = action == 'resume' and kind != 'prepjob'
+                    if mutates_owner:
+                        unknown = {'action': 'resume', 'outcome': 'unknown',
+                                   'notice': '恢复结果待核对原任务。相同请求不会再次恢复。'}
+                        self._record_action(owner_job_id, action, idempotency_key, unknown)
+                    try:
+                        result = self._dispatch_action(kind, owner_job_id, action)
+                    except Exception:
+                        if not mutates_owner:
+                            raise
+                        result = unknown
+                    else:
+                        self._record_action(owner_job_id, action, idempotency_key, result, replace=mutates_owner)
                 break
             except ControlBusyError:
                 if time.monotonic() >= deadline:
@@ -1008,13 +1019,7 @@ class OwnerJobFacade:
             call = lambda: self._delivery_jobs().control(owner_job_id, "resume")
         else:
             call = lambda: self._batches().control(owner_job_id, "resume")
-        try:
-            result = call()
-        except Exception as exc:
-            code = getattr(exc, "code", "resume_refused")
-            raise OwnerJobError("resume_refused",
-                "原owner拒绝恢复；保持当前状态，不并发重发。", getattr(exc, "status", 409),
-                details={"error_code": str(code)[:200]}) from None
+        result = call()
         return {"action": "resume", "outcome": "requested",
                 "notice": "恢复请求已交原owner链路；原owner复用已保存答案，未知HTTP不重发。",
                 "result_digest": _digest(result) if isinstance(result, dict) else None}
@@ -1041,9 +1046,9 @@ class OwnerJobFacade:
             raise OwnerJobError("action_record_unavailable", "原动作记录不匹配，需核对原任务。", 409)
         return record
 
-    def _record_action(self, owner_job_id, action, idempotency_key, result):
+    def _record_action(self, owner_job_id, action, idempotency_key, result, *, replace=False):
         path = self._action_path(owner_job_id, action, idempotency_key)
-        if path.exists():
+        if path.exists() and not replace:
             return  # Kernel lock held by the caller; first writer wins.
         path.parent.mkdir(parents=True, exist_ok=True)
         _write(path, {"protocol": PROTOCOL, "owner_job_id": owner_job_id,
@@ -1096,23 +1101,22 @@ class OwnerJobFacade:
                 if row["source"] == "command":
                     record = row["record"]
                     view = self._job_view_for_command(record)
-                    annotations.append({"owner_job_id": record.get("owner_job_id"),
+                    annotation = {"owner_job_id": record.get("owner_job_id"),
                         "owner_kind": record.get("owner_kind") or "command",
                         "command_id": record["command_id"],
                         "command_bound": record.get("owner_job_id") is not None,
                         "work_completion_authoritative": False,
-                        "command_state": record.get("state")})
+                        "command_state": record.get("state")}
                 else:
                     view, annotation = self.project_job(row["owner_job_id"],
                         command_id=bound.get(row["owner_job_id"], ""))
-                    annotations.append(annotation)
             except OwnerJobError as error:
                 # One unreadable row must not hide the rest or fake a status.
                 self._catalog_degraded = True
                 view, annotation = self._unreachable_row(row, error)
             items.append(view)
-            annotations[-1]["command_id"] = annotations[-1].get("command_id",
-                bound.get(row.get("owner_job_id"), ""))
+            annotation.setdefault("command_id", bound.get(row.get("owner_job_id"), ""))
+            annotations.append(annotation)
         next_cursor = None
         if offset + limit < total:
             next_cursor = "v1:" + base64.urlsafe_b64encode(
@@ -1132,7 +1136,7 @@ class OwnerJobFacade:
     def _unreachable_row(row, error):
         owner_job_id = row.get("owner_job_id")
         view = {"command_id": "", "owner": OWNER_ID, "owner_job_id": owner_job_id,
-                "status": "unknown", "status_known": False, "allowed_actions": ["reconcile"],
+                "status": "unknown", "status_known": False, "allowed_actions": ["reconcile"] if owner_job_id else [],
                 "started_at": None, "updated_at": _now(), "cost": None,
                 "cost_state": "unknown",
                 "error": _api_error(error.code, error.message, owner_job_id or ""),
