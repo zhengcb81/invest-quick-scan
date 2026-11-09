@@ -20,6 +20,12 @@ E12 `59c1dd5` 和 Dashboard 浏览器实际 `POST /api/v1/commands` 202、接续
 
 Dashboard 保留并行增加的 `beeba6c` 及其父提交，E12 验收代码与隔离部署一致。首次推送因历史范围未获确认被自动审批拒绝。用户于 2026-11-09 明确授权后，逐项核对 `ced8b88..efad14f` 的 119 个提交和 634 个跟踪路径（含生产演练证据），按锁定 SHA 将既有 `origin/main` 非强推快进至 `efad14ff6292924b90a030d8ab87365ca66db8b4`，并以 `git ls-remote` 核对。清单冻结后新增的本地 `main@0dcf61f` 留在本地。本机原清单 `runs/e12-dashboard-closeout-20261109/dashboard-pending-push.txt`。IQS 和 StockQA 已实际推送，StockWiki 无远端。
 
+## 2026-11-09 Dashboard M6 测试包验收与发布
+
+复核 Dashboard `0dcf61f59595ebe4b64d9bd8ea490087ed62f7fd`：父提交为 `efad14f`，改动恰为18个测试/交接文件、零生产代码。隔离定向验证结果：后端 QuickScan+smoke **61 passed、20 subtests passed**；QuickScan 前端 **7 passed**；TypeScript `--noEmit` 通过；synthetic 浏览器 E2E **3 passed**。全量前端测试另有 **75 passed、1 failed**：失败位于并行未提交的 `apps/web/src/shared/capabilities.test.tsx` 旧响应覆盖断言，当前同一工作树的能力缓存实现正在并行修改；它不在 `0dcf61f` 的文件范围内，本次未改动该并行文件。
+
+推送前确认 Dashboard `origin/main` 为父提交 `efad14ff6292924b90a030d8ab87365ca66db8b4`，随后只将 `0dcf61f` 非强推快进推至 `refs/heads/main`。推送后 `git ls-remote origin refs/heads/main` 返回 `0dcf61f59595ebe4b64d9bd8ea490087ed62f7fd`。Dashboard 工作树中的能力/UI相关并行改动未纳入此次推送。E2E 为 synthetic 测试，不代表真实 owner 链验收。
+
 ## 2026-11-09 模块边界整改候选
 
 先从反例复现工作台外仓源码依赖、串公司回复、错误 pin、B03 溢出数字、交付映射部分改写和共享引擎穿透 owner 内部状态，再修改公开边界。IQS 查询与刷新 309 项及 53 项子测试通过，`9540ea8` 已推 `master`。StockWiki 公开查询与公司评估 `bf3cf3d` 已快进本地主线，该仓无远端。B03 独立复测 61 项 IQS 和 69 项 StockWiki 通过，包含本机 HTTP 和超过 50 条参考记录后仍能选中正式结果。StockQA 交付、接续和配置 `d5294fb` 已推 `master`，原仓 hooks 全通过。交付初轮 StockQA 196 项及 IQS 216 项通过，随后独立复查发现并关闭 ACK 缺失、串单和汇总状态不一致。最新共享任务与最终保存定向 138 项通过。
