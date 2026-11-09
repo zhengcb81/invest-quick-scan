@@ -329,7 +329,7 @@ def test_original_answer_reference_integrity(mutation):
 
 @pytest.mark.parametrize('mutation',['future_cutoff','future_information','reversed_time','different_observed',
  'future_answer','missing_actual_model','wrong_question','bool_score','unknown_with_score',
- 'source_after_cutoff','detached_fact','model_self_qualification'])
+ 'source_after_cutoff','detached_fact','model_self_qualification','model_fabricated_receipt'])
 def test_bad_original_answer_remains_bad_with_new_self_consistent_presentation(mutation):
     req,res,owner=advanced_pair()
     row=res['result']['profiles'][0]['observations'][0]
@@ -346,7 +346,10 @@ def test_bad_original_answer_remains_bad_with_new_self_consistent_presentation(m
     elif mutation=='unknown_with_score': obs['answer']['status']='insufficient_evidence'
     elif mutation=='source_after_cutoff': obs['answer']['evidence'][0]['published_at']='2026-10-10'
     elif mutation=='detached_fact': obs['answer']['response_kind']='fact'
-    else: obs['answer']['check_level']='independently_checked'
+    elif mutation == 'model_self_qualification':
+        obs['answer']['check_level'] = 'independently_checked'
+    else:
+        obs['answer']['check_level_receipt_id'] = 'receipt_' + 'f' * 32
     # An independent bad-row fixture deliberately grants the presented address:
     # semantic defects must still be refused, not hidden behind a hash mismatch.
     obs['observation_id']='obs_'+digest({k:v for k,v in obs.items() if k!='observation_id'})

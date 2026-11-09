@@ -67,6 +67,10 @@ def _validate_visible_channels(answer):
         "chain_of_thought",
         "reflection_content",
         "private_thoughts",
+        # Trust metadata belongs to the validated observation envelope, never
+        # to model-authored answer content (including additive schema fields).
+        "check_level",
+        "check_level_receipt_id",
     }
     stack = [answer]
     while stack:
