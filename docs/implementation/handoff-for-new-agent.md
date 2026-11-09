@@ -1,6 +1,8 @@
 # 当前接手说明
 
-**2026-11-09 F05/E12 接续。** IQS `3f085bc` 已合并 F05 查询端，`19b5478` 保留 2.8 原施工。定向 174 项、独立复审与真实 StockWiki 2.7 公开互操作通过。真实 owner 暂无事实，下一步贯通原发布、StockQA 保存和 owner 入库，再验收一条实际事实。E12 在隔离候选修复任务提交、登记包选择和同任务接续；最终需从 Dashboard 按钮实际执行，原已付响应复用和新付费派发分别记录。以根 [task_plan.md](../../task_plan.md) 与 [progress.md](../../progress.md) 的最新段为准。
+**2026-11-09 F05/E12 交接。** IQS `7446b5f` 与 `59c1dd5`、StockQA `4c24789`、StockWiki `93b2592`。F05 使用真实宁德时代 `FACT_10`，原授权登记、MiMo、原观察、StockWiki 导入及原 ACK 接通。公开 2.7 查询和导出各有自己的快照，分页沿原查询快照，Strict 当前排除待审核的 19 条候选。原观察库保持原样。启用事实时可用 `python scripts/question_sets.py publish-facts --module-package-id <现有发布包>`，配置 `prepare.module_package_id`，通过既有准备入口选 `question_ids`。发布归档不切换评分默认包。需要临时真公司验收时新建观察库，不能搬用原库绑定。
+
+Dashboard 公司页选择已登记包，通过 `iqs-job/1` 提交并核对原任务。中微浏览器实际返回成功和已交付一题，零新增模型调用。部署要配置同一 IQS 产品服务的 `DASHBOARD_IQS_JOBS_*`，以及可解析当前挂牌的 StockWiki `DASHBOARD_STOCKWIKI_IDENTITY_*`，其中已验代码根为 `dashboard-owner-stockwiki-b-integration`。实际模型新派发的 NR-1 和公司级正式完整结果单独看。以根 [task_plan.md](../../task_plan.md) 与 [progress.md](../../progress.md) 的最新段为准。
 
 **2026-11-09 模块边界推进。** StockWiki 工作台查询、B03 公司评估和原生准备已并入本地主线 `c2c65c6`。StockQA 交付与配置 `d5294fb`、原生生命周期 `7eebaae`，以及 IQS 查询方言 `9540ea8`、主实现 `25dc299` 均已推主线。部署先更新两个所有者，再更新 IQS 消费者。工作台旧 `--worker` 转发原 JSON 入口，StockQA 保持旧任务工厂兼容。339 项合跑、独立复核和原生零重发证据见 [progress.md](../../progress.md)。F05 公开接口候选已推 `18a8ad7`，根工作树 2.8 改动保持独立。外部 Dashboard 消费者在 `codex/iqs-public-reply-boundary-20261109`，任务命令实际接通仍依赖原 IQS `owner_job_cli.py` 包。
 

@@ -8,6 +8,14 @@ F05 合并落账于 `3f085bc`，父提交 `19b5478` 保留 2.8 施工内容，�
 
 实际 StockWiki `c2c65c6` 从配置的 owner 库通过公开 CLI 返回 CATL 客户事实覆盖不足，事实总数为零。公开 1.0 能力确认消费者已部署、生产者未就绪，1.1 与 1.2 对 2.8 请求返回缺版本，实际 2.8 请求拒绝。真实 2.7 响应经 IQS `facts-response` 验证。五个 owner 数据库前后 SHA-256 一致，六个公开命令零出站请求，独立临时捕获已清理。真实正例尚待原生产者贯通。
 
+正式事实使用公开入口启用独立观察库。复制原观察库会把旧 PRE 收据带到新 `store_id`，44 条旧收据在原身份有效，新库会正确拒绝；因此只读复用真实身份、主体、名单和路由，用 `stockwiki.quick_scan_subject_dispatch_cli --operation initialize` 初始化原生 schema 3。原生准备仅登记 `FACT_10`，沿原 StockQA 预算运行。`run-e4966e9be5294168a03ecea72c8055f8` 返回 `answered`、`fact`、空分数。封存原包、StockWiki `imported`、StockQA `delivered`，共一条原观察。执行 1 次 MiMo HTTP、1 次原生搜索。19 条候选由同一观察投影。官方年报验证特斯拉等历史客户披露，[原文](https://static.cninfo.com.cn/finalpage/2022-04-22/1213027750.PDF)。尚未逐条审定这 19 条的持续有效性。
+
+StockWiki 2.7 的真实 Explore 查询、每页 5 条的第二页重开、独立导出快照及再开均通过 IQS `facts-response` 或 `facts-export-response`。改字段复用游标拒绝 `snapshot_query_mismatch`，跨操作快照拒绝 `facts_snapshot_operation_mismatch`。Strict 为 `empty`。读操作前后隔离库和正式 owner 库的 SQLite 摘要一致，查询临时目录清理。薄结果 `runs/f05-real-facts-20261109/fact-query-summary.json`，原回答与数据库留本机。
+
+F05 定向消费者 174 项，补 vendor 1.2 后兼容读取组 101 项，独立 IQS 142 项及 8 子测试通过。StockQA `4c24789` 独立 185 项、相邻 137 项通过，已推主线。StockWiki `93b2592` 本地主线，独立核对首次导入和混合 1.1/1.2 原记录重开，无远端。三个保护场景先红后绿，包括篡改简版事实交付、漏报事实题、真实 vendor 观察被旧查询漏掉。整体测试计数不相加。
+
+E12 `59c1dd5` 和 Dashboard 浏览器实际 `POST /api/v1/commands` 202、接续动作 200。中微原任务 `run-4205968bd06a48edbfd5b3ea1463fe9b` 从未知到成功，原任务的一题已交付，原模型结果 SHA-256 保持 `c748cd4c265cf9023f27802ef40fed28f78ef27af2016026b583856531047cae`。只写隔离命令账本，测试服务未携带模型密钥，`process_started=false`。用户界面的公司级完整总评仍显示未登记。独立 IQS 201 项执行与作业回归和最终 39 项定向通过；Dashboard 后端 45 项及 27 子测试、前端 52 项和静态构建通过。本机证据 `runs/e12-dashboard-closeout-20261109/summary.json`。
+
 ## 2026-11-09 模块边界整改候选
 
 先从反例复现工作台外仓源码依赖、串公司回复、错误 pin、B03 溢出数字、交付映射部分改写和共享引擎穿透 owner 内部状态，再修改公开边界。IQS 查询与刷新 309 项及 53 项子测试通过，`9540ea8` 已推 `master`。StockWiki 公开查询与公司评估 `bf3cf3d` 已快进本地主线，该仓无远端。B03 独立复测 61 项 IQS 和 69 项 StockWiki 通过，包含本机 HTTP 和超过 50 条参考记录后仍能选中正式结果。StockQA 交付、接续和配置 `d5294fb` 已推 `master`，原仓 hooks 全通过。交付初轮 StockQA 196 项及 IQS 216 项通过，随后独立复查发现并关闭 ACK 缺失、串单和汇总状态不一致。最新共享任务与最终保存定向 138 项通过。
