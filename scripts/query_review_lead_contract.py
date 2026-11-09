@@ -29,7 +29,7 @@ def _strings(value):
 
 
 def validate_request(value):
-    _shape(value,'request');_strings(value);core._utc(value['requested_at'])
+    _shape(value,'request');_strings(value);core.parse_utc_timestamp(value['requested_at'])
     return copy.deepcopy(value)
 
 
@@ -38,7 +38,7 @@ def claim(request):
     return dict(consumer_id=request['consumer_id'],operation=request['operation'],payload=copy.deepcopy(request['payload']))
 
 
-def claim_sha256(request):return core._digest(claim(request))
+def claim_sha256(request):return module_contract.digest(claim(request))
 
 
 def validate_response(response,*,request,owner):
@@ -56,7 +56,7 @@ def validate_response(response,*,request,owner):
             raise ValueError('review_lead_nomination_mismatch')
     elif result['conflict_id']!=payload['conflict_id'] or result['entity_ids']!=payload['entity_ids']:
         raise ValueError('review_lead_conflict_mismatch')
-    if (core._utc(response['response_at'])<core._utc(request['requested_at'])
-        or core._utc(response['response_at'])<core._utc(result['recorded_at'])):
+    if (core.parse_utc_timestamp(response['response_at'])<core.parse_utc_timestamp(request['requested_at'])
+        or core.parse_utc_timestamp(response['response_at'])<core.parse_utc_timestamp(result['recorded_at'])):
         raise ValueError('review_lead_time_mismatch')
     return copy.deepcopy(response)

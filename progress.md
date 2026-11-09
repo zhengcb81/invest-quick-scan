@@ -1,5 +1,9 @@
 # 当前进度与阶段证据
 
+## 2026-11-09 模块边界整改候选
+
+先从反例复现工作台外仓源码依赖、串公司回复、错误 pin、B03 溢出数字、交付映射部分改写和共享引擎穿透 owner 内部状态，再修改公开边界。已跑 StockWiki 公开工作台接口 11 项、IQS 工作台及边界 58 项、IQS 查询与刷新 309 项及 53 项子测试、交付首轮 StockQA 196 项及 IQS 216 项、共享任务与最终保存定向 137 项。真实配置经隔离 StockWiki 代码只读查到 215 个实体，宁德时代详情 42 条时间视图记录，五个原 SQLite 文件哈希保持相同，未调用收费 API。共享引擎原生接续、扫描准备和独立终审仍在运行，本条记录阶段证据。
+
 更新于2026-11-02。执行顺序唯一来源：[task_plan.md](task_plan.md)。原完整日志见[历史原件](docs/implementation/archive/pwf-through-2026-10-31/README.md)，不能把当时的“当前/等待”当今天的状态。
 
 ## 2026-11-07 OWNERPKG-INVEST-QUICK-SCAN-01 job façade施工包（分支交付，未并线）
@@ -448,3 +452,21 @@ IQS 的未提交 2.8 改动被明确排除；卡片交付只代表离线源仓�
 TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并在独立 Lab 内修正缺口；最终独立 reviewer 均 ACCEPT，IQS 公共交接 verifier 两包均为 `valid / errors=[]`。TH 最终 commit `dde51cdd1431a106af2a3f03467bd3423511256b`、59项通过；IN 代码结果 commit `ce7434bd46a9c74b2c1156e61ca56fc670d62c9`，整目录176项通过并另复跑 CWD 用例1项通过。IN 回执原有的单一组合 hash 无法指向实际交付文件，现以三个精确 commit-bound 文件 hash替代。交接文件 SHA-256、测试范围、审查人结论见 `task_plan.md` 的同日验收条目及对应隔离 Lab handoff。
 
 本轮未改 canonical Theme/Industry 技能源仓、StockWiki、StockQA或生产数据库；未做真实 owner、收费模型/搜索或真实公司扫描。隔离交付通过不等于 F05/W11、G3/G4 或真实主线接线完成。主线仍按 task_plan 的 F05/W11 稳定接线和真实技能入口互操作验收推进。
+
+## 2026-11-09 当前主线复核、F05 候选与解耦审计
+
+- **真实代码和历史问题复核：** IQS canonical `master` 从 `130dc31` 增加精确提交 `3d2bf44` 并成功推送；只改 `scripts/standard_answers.py` 与 `tests/test_query_contract_v2.py`。重跑发现旧失败确实仍存在：模型答案可通过扩展字段伪造 `check_level=independently_checked`。根因是答案 schema 为向后兼容接受扩展字段，但答案语义校验没有把信任等级与可见答案隔离。现在通用可见答案校验递归拒绝 `check_level` 与 `check_level_receipt_id`；新增自授等级与伪造回执两种反例，并在重新封装、重算观察ID/owner引用后检查拒绝。最终 `tests/test_query_contract_v2.py` 66 passed；与 `tests/test_standard_answers.py` 合跑 106 passed、8 subtests passed。独立审查 ACCEPT。普通模型答案不承载审批/资格，信任等级继续由本地受信 observation envelope 控制。
+- **IQS F05 消费端候选：** 隔离分支 `codex/f05-query-paged-response-01` 的提交为 `8b7d80f`（分页/响应验证）、`1df3bdd`（语义能力声明）、`16c7b1a`（移除对 StockWiki 私有模块及缺失 Git 对象的 IQS 测试依赖，改用 F05 公共 CLI 边界测试），分支已推到 origin。候选专测 74 passed。此分支不等于并入 canonical master。
+- **StockWiki F05 owner：** 独立分支 `codex/f05-owner-runtime-01` 提交 `3799b43` 已由总控 fast-forward 并入 canonical `master`。公开能力声明、分页及 snapshot 绑定校验、公开 export-response CLI、旧消费者回退、范围内 AST 边界防回归均进入主线；路由集成以 manifest question IDs 检查题目数量、唯一性和集合相等。候选较广测试组 92 passed、ruff 检查通过；合并后 canonical 六文件 F05/路由组 **45 passed、2 skipped**；最终路由测试独立审查 ACCEPT。StockWiki 没有配置 remote，所以只完成本地 canonical 并线，不能推远端；既有运行数据 untracked 保留。
+- **真实 owner 的限制：** 对 CATL 的公开查询得到 `coverage_gap / no_bound_fact_observations`、0条事实观察、无 owner 引用、0 API 请求。这说明当前 owner 没有可供本接口消费的事实行；不构成 positive golden，也不能伪造 F05 正例。F05 仍 partial，接下来需要真实可绑定的 owner facts、公开 CLI 正反互操作和按协议复用恢复。
+- **跨仓实际版本：** Theme canonical `master` `e35ab39`、Industry canonical `main` `169c200`，本轮只读看到两个 tracked tree clean；之前 PWF 所写“整合仍待办”已过时。真正未验的是 F05/W11 可用后的技能入口端到端调用，不是源代码尚未合入。
+- **解耦与门禁检查：** D1–D7 的具体行为整改仍按其当时范围有效；它们不是全项目解耦证明。F05 有限域静态规则只防该边界中的内部导入，不可外推为整个 IQS/StockWiki 架构已封装。没有必要恢复此前移除的重复许可/审核链；保留身份、owner 来源、预算、幂等/未知发送、锁和 ACK 等正确性/经济安全约束。Python 私有命名不能运行时阻止访问；应以明确 facade、版本化协议和静态边界测试实现。
+- **当前主要卡点：** 真实 owner 没有事实行；IQS consumer 候选尚未并入，而 IQS canonical 根目录含其他并行 2.8 WIP，因此不能整目录回滚或直接覆盖。第一步是在单写者下解决 IQS 候选与 WIP 的版本衔接，再获得真实 owner facts 完成 F05；随后做 TH/IN 技能入口实服务 E2E 和 G4。200家真实 G3、2000家覆盖、G5/G6 配套仍未完成。
+
+## 2026-11-09 公开接口与测试整改
+
+- IQS 工作台走 `describe_delivery_scope`、`read_delivery_receivers`、`parse_recovery_refs`、`normalize_loopback_origin` 和 TIME 包公开读取、解释操作。交付模块负责构造原范围请求，TIME 包负责时点计算及目录资源的读取。原注册指纹、接收方与日期语义由相邻测试复核。
+- TDD 首次复现工作台调用私有符号和运行器遗漏 14 个已有测试文件。新增边界测试后将全 130 个文件归入现有分组，`fast --plan` 正常列出 60 个文件。离线回归最初暴露旧测试夹具仍模拟 StockQA 内部类、准备目标参数形状过时，以及后台校验被错误断言为同步抛出。更新夹具后，最终 13 个文件 366 passed、1 skipped，耗时 179.65 秒。跳过项需显式原三方恢复环境。Windows 沙箱的硬链接及环回限制用现有离线测试器在正常本机权限下复核，正式回归的自有临时根已清理。
+- Theme `3352b58` 本地快进进入 `master`，无 remote。独立审查发现 Python 入口可绕过目录检查，且文件硬链接可改写 owner 工件。修复覆盖预检、解析实际路径、原子发布、失败时去除上一轮响应及导出标签。76 项定向测试通过，无跳过。
+- Industry `7d49ca3` 已进入并推送原 `origin/main`。独立审查复现错快照的首屏和导出结果可被接收。修复验证主水位和导出水位的快照 ID，拒绝页不参与事实聚合，已校验的前页仍可用。全套 186 passed、5 subtests。两仓均以独立子进程验证公开 CLI 参数及消费者目录的复用，独立复审通过，隔离候选目录已清理。
+- F05 基准 `130dc31`，主线 `30a841c`，候选 `16c7b1a`。三个重叠文件在冻结 2.8 WIP 的隔离副本三方合并无冲突，87 项 IQS 定向用例通过，临时副本清理。真实配置的 owner `--capabilities` 认可候选，`API_requests=0`。只读观察库计数为 120 条总记录、120 条主体绑定、0 条事实。2.8 尚需原写入方并线，真实正例仍待原采集和入库。旧 F05 离线集成组的六条用例仍需原缺失外仓对象，由候选的独立 CLI 回归接替。

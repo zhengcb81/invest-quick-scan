@@ -1,7 +1,6 @@
 """Pure scoped research lead projection; missing provenance never proves independence."""
 import copy
 import json
-import re
 from pathlib import Path
 from urllib.parse import urlsplit
 from jsonschema import Draft202012Validator,FormatChecker,ValidationError
@@ -45,7 +44,7 @@ def query_sha256(request):
     validate_request(request)
     semantic=dict(consumer_id=request['consumer_id'],operation=request['operation'],
         payload={k:v for k,v in request['payload'].items() if k!='snapshot_id'})
-    return core._digest(semantic)
+    return module_contract.digest(semantic)
 
 
 def _owner(owner):
@@ -88,7 +87,7 @@ def _project(profile,request,owner):
             oid=row['observation_id']
             if wanted and oid not in wanted:continue
             if oid in seen:raise ValueError('research_duplicate_original')
-            seen.add(oid);original=core._original(row)
+            seen.add(oid);original=core.original_observation(row)
             upstream,status=_closure(oid,graph)
             by_target={}
             for target in request['payload']['target_observation_ids']:
@@ -115,7 +114,7 @@ def _project(profile,request,owner):
 
 def seal_response(response,*,request):
     result=copy.deepcopy(response['result']);result['query_sha256']=query_sha256(request)
-    result.pop('snapshot_id',None);result['snapshot_id']='rsnap1_'+core._digest(result)
+    result.pop('snapshot_id',None);result['snapshot_id']='rsnap1_'+module_contract.digest(result)
     return dict(response,result=result)
 
 

@@ -40,9 +40,11 @@ def _read(relative):
     with p.open('rb') as f:raw=f.read(1048577)
     if len(raw)>1048576:raise ValueError('execution_profile_resource_too_large')
     return json.loads(raw.decode('utf-8'),object_pairs_hook=_unique,parse_constant=_constant,parse_float=_finite_float)
-def schema_for(version,resources):
-    """Choose only an explicit known profile against the actual archived package."""
+def schema_for(version, resources=None):
+    """Select a profile using archived resources, or this deployment's resources."""
     if not isinstance(version,str) or version not in SUPPORTED_VERSIONS:raise ValueError('unsupported_observation_execution_profile')
+    if resources is None:
+        resources = {path: _read(path) for path in _BASE_RESOURCES}
     if version in ('1.0.0','1.1.0'):return copy.deepcopy(resources['schemas/observation.schema.json'])
     catalog=_read('schemas/observation-execution-profiles.json')
     if not isinstance(catalog,dict) or set(catalog)!={'protocol','profiles'} or catalog['protocol']!='iqs.observation_execution_profiles/1.0.0':raise ValueError('execution_profile_registry_invalid')
@@ -86,7 +88,6 @@ def schema_for(version,resources):
 
 def profile_descriptor(resources=None):
     """Actual registered descriptor, never fields trusted from a request."""
-    resources = ({path: _read(path) for path in _BASE_RESOURCES} if resources is None else resources)
     schema = schema_for('1.2.0', resources)
     return dict(profile_id=VENDOR_HTTP_IDENTITY, observation_schema_version='1.2.0',
                 observation_schema_sha256=_canonical_sha(schema))

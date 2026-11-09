@@ -14,6 +14,8 @@ Unknown policy families/versions are named refusals, never silent fallbacks.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
 
 from .errors import bad
@@ -27,6 +29,14 @@ CANDIDATE_VERSION = "0.1.0-candidate"
 POLICY_FAMILIES = (LEGACY_FAMILY, CANDIDATE_FAMILY)
 
 CLOCK_RULE_KEYS = ("max_age_hours", "on_missing", "rationale")
+
+
+def load_observation_clock_policies():
+    """Return display policies and their frozen definition bindings by question ID."""
+    resources = Path(__file__).resolve().parent
+    catalog = json.loads((resources / "time-policy-catalog.json").read_bytes())
+    bindings = json.loads((resources / "question-bindings.json").read_bytes())["bindings"]
+    return {entry["question_id"]: entry for entry in catalog["entries"]}, bindings
 
 
 def _validate_clock_rule(clock: str, rule: dict[str, Any]) -> None:

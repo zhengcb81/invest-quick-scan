@@ -234,7 +234,7 @@ def safe_return_to(value: object) -> str:
     return FALLBACK_RETURN
 
 
-def _base_origin(value: object) -> str | None:
+def normalize_loopback_origin(value: object) -> str | None:
     """Only a concrete loopback http(s) origin is a usable deeplink base."""
     if not isinstance(value, str):
         return None
@@ -301,7 +301,7 @@ def capability(
     two cases are distinguishable inside the frozen schema instead of being
     collapsed. No key is added.
     """
-    origin = _base_origin(base_origin)
+    origin = normalize_loopback_origin(base_origin)
     if observation_state not in {"counted", "unreadable", "unconfigured"}:
         observation_state = "counted" if isinstance(observation_count, int) else "unreadable"
     has_observations = (

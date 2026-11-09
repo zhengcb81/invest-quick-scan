@@ -1,5 +1,7 @@
 # 当前发现、风险与决策
 
+**2026-11-09 模块边界。** 工作台的跨仓 `-c` 源码桥导致实现和部署强绑定。把存储与写入操作移回所属仓库，读取使用固定公开命令。共享引擎需保持在 StockQA 原派发进程内，以维持原账本、lease 和已付收据语义。它通过公开能力、原始输入、回执和保存投影协作，产品进程无需新增第二套预算或审批。独立复核确认外仓回复即使协议正确仍可能串实体或缺少交付映射，绑定按原请求检查，业务上仍区分真实缺失和暂时不可用。2.8 既有改动及其私有边需单独并线。
+
 **2026-11-07 job façade施工包环境发现（来自OWNERPKG-INVEST-QUICK-SCAN-01，分支交付）。** (1) 全仓环境风险：任何新clone/worktree在 `core.autocrlf=true` 下会把 `questions/releases/artifacts/*.json`（release锁hash锁定）转成CRLF导致锁校验失败（prepare套件16项红）；修法=按 `questions/releases/locks/*.json` 的artifact_sha256从主检出复制字节一致工件。根治建议未来加 `.gitattributes` 标记该目录 `-text`（未做，避免与施工包scope混淆，留给主线决策）。(2) 基线先存失败：test_dashboard_execution.py 32项、test_dashboard_unusable_recovery.py 1项在master主检出同现（2026-11-07实测），非任何施工包引入，待主线排查。(3) 真实formal付费演练按红线§3-1留待操作者确认预算边界（NOT_RUN NR-1）；job面的软件级全链证据与两轮独审记录在分支 `planning/iqs-job-facade-01/`。
 
 **11/02 解耦七组已整改。** 公共结果字段由生产者定义，消费者不再复制供应商名单。服务短锁保护部署与配置，耗时工作保持原组件互斥。已付恢复使用原发布目录、原题义资源和原请求规则。UI 数据源故障留在受影响页面，迟到请求保留未保存表单。组件继续拥有状态、账本和投影。独立反例和本地、远端验证见[整改报告](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)。
@@ -140,3 +142,17 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - TH capability routing assumed every JSON `operations` array member was a string before converting to `set`; valid JSON with a non-string member could raise `TypeError` and abort discovery. The isolated source Lab now validates the list element types first, returns an explicit unsupported/gap result for malformed entries, and still finds later valid entries. Regression suite: 59 passed.
 - IN handoff described three delivered skill files with one combined hash. The public verifier hashes actual delivered files and could not resolve that aggregate. The handoff now exposes each produced file as a separate interface, pinned to the result commit and exact Git-blob SHA-256; public verification passes.
 - These are distinct from F05/W11 production integration. Both accepted outputs remain isolated skill-source candidates; neither canonical skill tree was modified.
+
+## 2026-11-09 当前独立复核结论
+
+- **已关闭的具体缺陷：** 之前 PWF 标记为冻结兼容基线的 `model_self_qualification` 失败，经本轮复现后确认不是“无害的旧失败”。答案 schema 对新增字段的向后兼容策略让模型自报 `check_level` 穿过语义校验。现从答案校验的公共入口拒绝等级和回执字段，增加两种重封装反例；66项 query v2 全文件及答案语义组合 106 passed、8 subtests passed，独立审查通过。路由集成测试原先仅比较返回列表和返回总数的内部一致性；已改为按 manifest ID 检查题目覆盖、重复与集合差异，定向 3 passed、独立审查 ACCEPT。
+- **没有全部关闭：** StockWiki owner 代码已进入本地 canonical `master@3799b43`，但无 remote；IQS consumer 候选仍在已推送隔离分支、因主线 2.8 WIP 尚未并入。真实 owner 查询仍无事实行（`coverage_gap / no_bound_fact_observations`），所以还缺真实正例 golden 和当前 canonical owner/consumer 的端到端互操作。
+- **解耦并未全仓完成：** 现阶段已建立版本化 IQS/StockWiki F05 JSON CLI、capability declaration 与对应范围的 AST 防回归，但各仓所有模块的 public facade、私有调用/导入规则和依赖方向还没有一张完整且可执行的边界图。旧的私有导入数量是历史快照，不作为本轮精确统计。Python `_` 不是访问控制；适当保障是在 CI 用 AST/import-layer 规则阻止跨边界访问，再用公开 CLI 的契约/集成测试验证。
+- **过度审查/门禁：** 当前没有证据表明已修问题被额外的重复审批或逐文件验收阻断。身份/作用域绑定、来源与时点、费用预留、未知请求防重、锁与 owner ACK 属于业务不变量，应保留。重复的许可库、资格审批/续期回执、每个小节点的独立审查仍不应恢复。主要治理缺口是 PWF 过时，而不是门禁太少。
+- **第一性原理收敛：** 项目慢在“真实数据接口是否能产生可绑定 facts、接口版本是否被两端同样理解、候选如何安全进入主线”，并非缺更多施工卡或更大测试数量。所有仓库先各自拥有数据/实现，通过小而稳定的公开 DTO+schema/capabilities/CLI 通讯；中心 IQS 只协调依赖版本、验收状态和剩余阻塞。单仓单 writer、契约前置、单元/合同/集成/少量真实 E2E 分层，避免把测试报告与接收回执做成第二审批系统。
+
+## 公开接口整改后的边界
+
+- 工作台应请求完整的交付范围、接收方查询和时点解释，底层解析、传输和资源文件由各模块拥有。架构回归对常见静态越界报告文件、行号和符号。Python 动态反射和跨对象传播需要在后续实际场景中单独覆盖。
+- StockWiki 的事实读取命令可以把查询快照写盘。消费者明确传入自己的 capture root，持久到下一次翻页、回放和导出。查询与导出各自绑定原操作的快照。验证响应必须同时核对请求 ID、操作、快照和导出水位。
+- 还有跨仓源码路径耦合。IQS 交付读取的内嵌进程仍加载 StockQA 的 projection 函数，适合迁移到 StockQA 自有的公开命令。B03 仍直接加载 StockWiki 公司评估模块，可改用已有的 `dashboard_company_assessment_cli`。查询版本适配目前还依赖基础校验模块的内部函数，适合用一个版本化入口收敛。

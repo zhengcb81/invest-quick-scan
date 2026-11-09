@@ -1,5 +1,26 @@
 # invest-quick-scan 当前实施计划
 
+## 当前施工节点 · 公开模块接口与回归测试
+
+- 本轮把依赖沿数据所有权拆开。StockWiki 负责身份、名单、查询、公司评估、准备与入库。StockQA 负责模型政策、已付工作、继续执行所需题库、答案保存与交付。IQS 负责业务编排、问题合成、工作台和时间视图。跨进程通过固定命令与版本化 JSON，原生共享引擎在 StockQA 进程内通过公开的输入投影和工作接口协作。
+- 查询的公开方言接口已通过 309 项测试及 53 项子测试。工作台 StockWiki 查询与兼容转发通过首轮 58 项。交付与接续首轮通过 StockQA 196 项及 IQS 216 项。独立复审发现的旧正式结果隐藏、交付回复绑定等问题仍需复验，本段记录候选进展，部署以下方交付记录为准。
+- 验收以正常入口能仅凭公开协议调用为准。覆盖相同操作串实体、错误结果 pin、旧命令兼容、历史读取、缓存和已付恢复。执行拆分层测试，独立 agent 在大节点复查实现和相邻行为。外仓先合入所有者接口，再合入 IQS 消费者。共享引擎与扫描准备需要原生隔离回归，业务 G4 验收单独签收。
+- 2.8 在原工作树的重叠修改保持原样。该范围的查询私有引用需在候选并线时改用公开方言接口，另验 F05 的真实事实行。持续检查生产入口和跨仓私有引用，仍有跨仓直连时不能把局部测试报为整个系统已解耦。
+- IQS 工作台的交付、准备、链接与时点模块已改用公开操作。架构测试列入现有 `fast` 分组。它覆盖私有导入、直接成员访问、简单别名和实例引用，并要求从 TIME 的包入口导入公开成员。分组清单现覆盖全部 130 个测试文件。最终 13 个文件的定向离线回归 366 项通过，需显式三方运行环境的一项原恢复用例跳过。
+- Theme `master@3352b58` 与 Industry `main@7d49ca3` 已并线。研究消费者调用 StockWiki 公开 `--capture-root`，分页和回放绑定请求的快照，查询和导出各自使用原操作的快照。Theme 定向 76 项通过，Industry 全套 186 项及 5 项子测试通过，独立复审通过。Industry 已推送，Theme 仓无远端。
+- F05 已推送的 2.7 候选和冻结的 2.8 WIP 在隔离目录三方合并无冲突，87 项契约及 CLI 测试通过。实际配置的 StockWiki 公开能力入口识别 2.7 候选，返回 `consumer_contract_deployed=true`、`facts_producer_ready=false`、`API_requests=0`。现用 owner 库 120 条观察中有 0 条事实。根目录 2.8 WIP 仍由原写入方落账，真实正例仍需沿原事实采集和入库流程生成。
+- F05 consumer 并线和真实事实正例继续按原主线。与其不重叠的工作台、交付、准备和共享引擎边界已并行推进，根 PWF 记录各仓版本和验收结果。
+
+## 2026-11-09 当前核实与收敛决策
+
+以下状态由总控对当前工作树、提交、定向测试和独立复核重新核实；遇到与下方旧日期记录冲突时，以此段和“实际状态总表”为准。
+
+- **已修复一个遗留的答案信任缺陷。** 旧 query v2 测试曾允许模型在答案内容中自称 `independently_checked`，因为兼容 schema 接受新增字段，而语义校验没有拒绝该信任元数据。现从答案校验入口递归拒绝 `check_level` 和 `check_level_receipt_id`，并新增伪造等级/回执反例。IQS master 提交 `3d2bf44` 已推送；`tests/test_query_contract_v2.py` 与 `tests/test_standard_answers.py` 合跑 **106 passed、8 subtests passed**。独立复核 ACCEPT。
+- **F05 候选有实质进展，但产品仍未闭环。** IQS 隔离候选 `codex/f05-query-paged-response-01` 提交 `8b7d80f`、`1df3bdd`、`16c7b1a` 已推送，尚未并入 canonical IQS（根目录有重叠的 2.8 WIP）；跨仓回归已改由 StockWiki 公共 CLI 承担。StockWiki owner 候选已于本轮快进并入 canonical `master@3799b43`；StockWiki 没有配置 remote，不能推送远端。IQS facts/query consumer 定向 **74 passed**；StockWiki 候选较广测试组曾 **92 passed**，合并后在 canonical 主线重跑六个 F05/路由测试文件 **45 passed、2 skipped**，包括最终 manifest 完整性断言；ruff 检查与独立审查通过。真实 owner 查询仍为 `coverage_gap / no_bound_fact_observations`，没有真实事实正例 golden；不能声称 F05 已完成生产接线。
+- **TH/IN 状态纠正。** 两个消费者已分别进入 canonical 源仓：Theme `master` `e35ab39`、Industry `main` `169c200`；两仓本次只读状态均为 tracked clean。之前计划中“canonical 源仓整合未完成”的说法已过时。仍缺真实 owner/W11 组合后的技能入口 E2E；这不等于其代码仍只在离线 Lab。
+- **解耦结论：尚未全项目完成。** D1–D7 的具体行为整改已通过各自范围的测试/审查，但这不是全仓边界合规证明。F05 目前有边界内 AST 回归；IQS、StockWiki 的全部模块边界尚未统一盘点或建立通用 CI 约束。Python `_private` 只是命名约定，不能靠它在运行时保证报错；跨仓调用应使用版本化公开 CLI/JSON schema/capabilities，仓内跨模块依赖用公开 facade/protocol，CI 用 AST/import 规则拦截越界私有导入/调用。
+- **没有发现需要恢复的重复权限门。** 保留身份/作用域、答案来源、预算原子预留、幂等/未知发送防重、并发锁与 owner ACK 等直接保护数据正确或防止重复付费的规则；不新增逐题许可证、独立审批回执、第二派发权限或每个小改动的审查关卡。当前主要拖点是 owner 没有可用事实行、IQS consumer 候选尚未并线、根工作树存在与 F05 文件重叠的并行 2.8 WIP。
+
 本轮历史任务（2026-11-02）：[D1–D7 解耦整改](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)已通过定向测试和独立对抗审查。公共结果接受合法扩展，慢命令与读取隔离，旧任务选择原发布资源和原请求规则，UI保留未保存草稿，执行和存储投影由各组件负责。此前的实际业务验收范围以原记录为准。
 
 执行状态：StockQA `01f20d6` 已推，GitHub CI 41532137887 已完成且成功，本地默认检查306项通过。上一节点的文档构建和发布通过证据见[CI根修](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。
@@ -36,7 +57,7 @@
 |Dashboard公司结果/B03|跨仓代码已并入各自主线|Dashboard main合同0.1.2-d、B03合并f501f32；IQS master已合入并推送B03代码fb262e0；只读UI仓master 47d5354。定向测试通过；原8766未重载，真实owner扫描未运行|
 |原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；11/01 gen7的1次真实HTTP及11/02零API恢复/入库见本节点终验。入口`http://127.0.0.1:8766/`|
 |远端持续集成|StockQA 最新 master 已绿|`01f20d6` 的 CI 41532137887 已完成且通过。上一节点的 Documentation 41523660825 构建与发布通过|
-|模块解耦|D1–D7 已整改并独审|服务组件195项、原UI 228项通过（6项跳过）、历史独审72项及尾测135项，详见本轮报告。测试分组有重叠，按范围分别记录|
+|模块解耦|D1–D7 行为范围已整改；结构解耦未完成|既有测试与独审证明指定行为，不证明全仓模块边界。F05 有限定范围的 AST 规则；通用 import/API 规则尚未覆盖 IQS 与 StockWiki 全部模块|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -47,15 +68,21 @@
 |IMPORT-PERF-30|研究范围签收，未启用|68不同测试、24合成测量；36包候选更慢，不作为基线发布阻塞|
 |评分校准/G2|受限范围已签|G2 r2 `verified_for_local_gate_scope`；原60家+20重复配方未全完成，实际为获准6家缩样，不能称60家校准完毕|
 |200家可靠性/L03/G3|未完成|G3合成批次接续工装已验收（31 passed/0 failed/0 skipped），仅属软件支撑；不替代200家真实试点、真实 owner ACK 或正式G3|
-|事实数据/关系查询/F05|消费者与 owner 隔离代码包已交付，产品整体仍 partial|IQS 消费端已合入 `master`：`da34654`；owner 实现隔离 Lab 提交 `6449917c`，82项定向、226项受影响回归、静态/日常检查及9步公共 CLI 隔离 E2E 通过，独立复审和handoff引用校验通过。真实 owner runtime/golden、与 IQS consumer public CLI 的真实正反互操作及 canonical StockWiki 合并/部署仍未完成|
-|主题/行业消费者|离线消费者包已验收，源仓/实际入口集成未验收|TH `54773536`（CP936 默认环境54项、独立复审通过）；IN `ba54e00f`（161项、独立复审通过，handoff元数据`0ab50e9`）。两者只证明隔离 Lab 合同消费；向各自 canonical skill 源仓整合、与真实 owner/W11组合及技能入口E2E仍待总控推进；不等200家G3|
+|事实数据/关系查询/F05|StockWiki owner 已入 canonical；IQS consumer、真实 facts 与端到端闭环未完成|StockWiki `master@3799b43`（无 remote）含 owner CLI 与校验修复，合并后六文件定向组45 passed/2 skipped。IQS consumer `16c7b1a` 已推候选分支但未并入 `master`。真实 owner 仍 `coverage_gap / no_bound_fact_observations`，无真实事实正例 golden，生产互操作/G4 未验收|
+|主题/行业消费者|已合入 canonical 源仓；技能入口实服务验收未完成|Theme `e35ab39`、Industry `169c200`；两个源仓 tracked clean。仍需在稳定 F05/W11 接口下跑技能入口 E2E；不等于200家G3|
 |全池与完整配套/G4—G6|未完成|2000覆盖、事实/两消费、配套安装/升级回退不能由本机启动成功代签|
 
 证据总入口：[本次对账](docs/implementation/reviews/PWF-RECONCILIATION-2026-10-31/report.md)、[三市场恢复](docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-three-market-recovery/cold-independent-final-review.json)、[真实TTL](docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-ttl-and-coverage/README.md)、[四包收口](docs/implementation/reviews/SUPPORT-CLOSE-2026-10-31/report.md)、[原TIME/RESULT接线](docs/implementation/reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。
 
 ## Next Step
 
-**回到小池内容质量与事实主线。** 三个独立消费者/owner施工包已经验收，不再重复发包或重复做离线实现；下一步由总控按源仓现状把 F05 owner 接入 canonical StockWiki，并建立受支持的只读 runtime/golden 路径，再对 IQS public CLI 跑真实正反互操作。真实接口稳定后，再将 TH/IN 离线消费者分别整合进 canonical skill 源仓并跑真实入口 E2E。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。B03接口代码现已合入Dashboard与IQS主线，生产服务尚未重载，真实owner扫描/三市场UI验收仍待完成。
+**先收口 F05，再做真实入口验收。** StockWiki owner 端已经在 canonical master；不重复做 owner 离线实现。下一步先在不覆盖 IQS 根目录并行 2.8 WIP 的前提下，将 IQS consumer 候选与 WIP 对齐并并入主线；然后从 StockWiki 公共只读查询接口取得至少一个真实、可绑定的问题事实行，完成 capability/schema 锁、分页、导出、无数据/不支持版本回退和重启复用的正反互操作。没有事实行时，结果应保持 coverage gap，不能用合成数据冒充 owner golden。随后验证已合入的 TH/IN 在稳定 F05/W11 服务上的实际技能入口，最后推进 G4；G3 真实200家覆盖、G5/G6 配套仍按各自原计划处理。常规修复只跑受影响测试，主里程碑跑相邻集成测试与一次独立审查；不恢复小时全套或小节点重复审查。
+
+### 跨仓协作与测试设计
+
+当前不应把所有整改线程同时拆进多个 harness：IQS 与 StockWiki 的 F05 候选仍待合并，根 IQS 工作树存在重叠 WIP。接口稳定并明确单仓 owner 后，再把每仓本地实现/单元测试放进该仓自己的 PWF；根 IQS PWF 只维护依赖版本、跨仓接口、集成状态与待解决阻塞，作为协调清单，不另建审批/回执系统。并行只放在不同仓且输入锁定的任务，同一仓保持单 writer。
+
+解耦按测试金字塔落地：仓内单元测试验证实现；公共 schema/capability 合同测试验证兼容与失败语义；跨仓集成只运行公开 CLI/协议和隔离临时目录；原 UI/真实 owner E2E 只在关键里程碑做少量正反例。新增架构测试应先明确每个仓的公开 facade 与私有目录，然后静态检查越界 import、`module._private()`、动态属性访问和直接跨仓 DB/import；不把“所有私有函数都在运行时抛错”做成产品机制，也不把全仓 AST 全禁用当新增门禁。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
@@ -83,8 +110,8 @@
 
 1. **完成小池使用闭环与质量修复。** 已完成上述fresh正例；先按Next Step统一逐题保存/恢复和共用语义，再处理ANSWER已发现的错期间/错公司/复合命题支持不足。按字段/命题保留缺口与定向查证，不把质量标签再次变成整答保存门。原历史不覆写，不承诺样本外零错误；原校准配方不足要如实报告，不拿测试数量换准确率。
 2. **批量可靠性与G3。** 复用已绿的软件和已认可池，核L03原前置/预算，分批累计原200家真实试点、中断恢复/导入幂等/额度切换/成本与时效证据；合并一次正式审查。三家真实流程不重做成新成果。200家是规模验收目标，不再作为事实、消费者和小样本配套功能开发的前置。
-3. **事实与F05。** F05 owner 隔离实现包已验收（`6449917c`，状态 partial）；IQS consumer 合同已在 `da34654`。下一步是把 owner 代码按 StockWiki 当前主线适配/合入 canonical 源仓，在受支持只读 runtime 采集真实 golden，并由总控对 IQS public CLI 完成真实正反互操作。隔离 E2E 不能代签这项产品验收。可与 G3 独立，不必先完成200家试点。
-4. **TH/IN正式消费与G4。** 两个离线消费者包已验收（TH `54773536`、IN `ba54e00f`），但还未合并各自 canonical skill 源仓。真实 F05/W11接口稳定后，分别沿原查询/固定快照分页/画像/元数据/原补扫入口整合；保留池外发现和各自研究方法，完成实际技能入口 E2E。原包中的G3串行门已由1.10.17取消，不能因此声称G3/F05已关。2026-11-07另准备了两张隔离源仓候选包，允许分别用锁定的已发布 facts wire 2.7 完成代码接线和合成验证；它们不接入当前 canonical 工作树，也不替代 F05/W11 稳定后的真实互操作与G4验收。
+3. **事实与F05。** StockWiki owner 候选已合入本地 canonical `master@3799b43`，但真实 owner query 当前没有 bound fact observations。下一步在 IQS root 2.8 WIP 由其 owner 落账后，将已推送的 IQS consumer 候选与 WIP 对齐/并线，再通过 StockWiki 公开只读 CLI 验证真实 facts 正例、无数据/不兼容回退和 snapshot 重启复用。真实正例仍需由实际 owner observation 提供；隔离 E2E 或合成数据不能代签。可与 G3 独立，不必先完成200家试点。
+4. **TH/IN正式消费与G4。** 两消费者已进入 canonical skill 源仓：TH `master@e35ab39`、IN `main@169c200`。代码提交和本仓 tracked tree 已核实；真实 F05/W11接口稳定后分别运行实际技能入口 E2E，检查固定快照分页、画像、元数据、补扫和来源；保留池外发现与各自研究方法。原包中的G3串行门已取消，不因此声称G3/F05已关；真实200家G3与G4产品验收继续分开记录。
 5. **扩容、运维和配套G5/G6。** 用户认可名单逐步扩至目标容量，完成覆盖/费用/维护与配套安装、加载、升级回退、统一操作入口的实际验收。当前本机一键开UI不等于全部安装发布已验。
 
 **2026-11-04 主线支撑包（2026-11-05 已验收交付）：** [F05-FACT-QUERY-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/F05-FACT-QUERY-01.md) 在 StockWiki 隔离克隆交付 owner 侧事实/关系查询候选，`status=partial`；[G3-BATCH-RESUME-HARNESS-01](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/G3-BATCH-RESUME-HARNESS-01.md) 合成200主体批次接续工装已交付，工装包完成但生产 G3 `not_closed`。handoff 分别位于 `C:\Users\郑曾波\Projects\iqs-stockwiki-f05-query-lab\docs\handoff\F05-FACT-QUERY-01\handoff.json` 与 `C:\Users\郑曾波\Projects\iqs-g3-batch-resume-harness-lab\docs\handoff\G3-BATCH-RESUME-HARNESS-01\handoff.json`。两包均不改 canonical StockWiki/IQS 产品代码、不调用收费 API；详情见[施工包索引](docs/implementation/parallel-lanes/packages/2026-11-04-mainline-support/README.md)及[进度记录](progress.md)。

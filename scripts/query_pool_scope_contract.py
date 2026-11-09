@@ -7,6 +7,7 @@ import copy
 import json
 import re
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
+import query_contract as profiles
 import query_pool_contract as raw
 import query_pool_assessment_contract as assessed
 from module_contract import canonical_bytes
@@ -126,7 +127,7 @@ def _scope_context(index, context, store_id):
         or context['inventory_sha256'] != digest({k: context[k] for k in inventory_keys})
         or index['scope_inventory_sha256'] != context['inventory_sha256']):
         raise ValueError('pool_independent_scope_inventory_required')
-    raw.profiles._utc(context['read_at'])
+    profiles.parse_utc_timestamp(context['read_at'])
     if len(canonical_bytes(context)) > raw.MAX_INDEX_BYTES or len(context['scope_rows']) > 60000:
         raise ValueError('pool_scope_inventory_capacity_limit')
     for key, value in context['scope_rows'].items():
@@ -134,7 +135,7 @@ def _scope_context(index, context, store_id):
             raise ValueError('pool_scope_inventory_invalid')
     if (len(context['source_watermarks']) != 3
         or {mark['namespace'] for mark in context['source_watermarks']} != {'universe', 'identity', 'analysis_subjects'}
-        or any(mark['status'] != 'available' or raw.profiles._utc(mark['read_at']) > raw.profiles._utc(context['read_at'])
+        or any(mark['status'] != 'available' or profiles.parse_utc_timestamp(mark['read_at']) > profiles.parse_utc_timestamp(context['read_at'])
             for mark in context['source_watermarks'])):
         raise ValueError('pool_scope_inventory_source_unavailable')
     actual_rows = {digest(row['subject_ref']): digest({key: value for key, value in row.items() if key != 'observation_refs'})
@@ -186,12 +187,12 @@ def validate_raw_index(index, *, store_id, scope_context, qualified=False):
 
 def validate_index(index, *, store_id, assessment_context, scope_context):
     validate_raw_index(index, store_id=store_id, scope_context=scope_context, qualified=True)
-    context = assessed._context(assessment_context, store_id, index['field_assessments'])
+    context = assessed.validate_assessment_context(assessment_context, store_id, index['field_assessments'])
     if index['qualification_watermark'] != context['qualification_watermark']:
         raise ValueError('pool_independent_assessment_mismatch')
     if set(index['field_assessments']) != {item['observation_id'] for row in index['rows'] for item in row['observation_refs']}:
         raise ValueError('pool_assessment_original_set_mismatch')
-    if raw.profiles._utc(context['read_at']) < raw.profiles._utc(index['read_at']):
+    if profiles.parse_utc_timestamp(context['read_at']) < profiles.parse_utc_timestamp(index['read_at']):
         raise ValueError('pool_assessment_before_capture')
     return copy.deepcopy(index)
 
@@ -204,7 +205,7 @@ def validate_response(response, *, request, index, selected_rows, store_id, asse
             raise ValueError('pool_response_owner_assessment_changed')
     qualified = (bool(selected_rows) and request['payload']['filters']['score_policy'] is not None
         and request['payload']['view'] == 'qualified' and all(row['selection_outcome'] == 'pass' for row in selected_rows))
-    return raw._validate_response(response, request=request, index=index, selected_rows=selected_rows, store_id=store_id,
+    return raw.validate_projected_response(response, request=request, index=index, selected_rows=selected_rows, store_id=store_id,
         request_validator=validate_request,
         index_validator=lambda value, store_id: validate_index(value, store_id=store_id,
             assessment_context=assessment_context, scope_context=scope_context),

@@ -95,8 +95,8 @@ def _env():
     return value
 
 
-def _recovery_refs(config):
-    options = config.get("prepare", {})
+def parse_recovery_refs(options):
+    """Validate the optional recovery selection and return detached references."""
     if "recovery_work_decision_refs" not in options:
         return None
     refs = options["recovery_work_decision_refs"]
@@ -136,7 +136,7 @@ def _ordered_route_targets(policy):
 
 
 def _recovery_subset(config, directory, manifest, native, policy):
-    refs = _recovery_refs(config)
+    refs = parse_recovery_refs(config.get("prepare", {}))
     dialect = policy["protocol"].split("/")[-1]
     if refs is None and dialect in {"1.0.0", "1.1.0", "1.6.0"}:
         return None
@@ -282,8 +282,9 @@ def _reusable_bank(config, payload):
         scopes[q['id']] = {'scope':scope,'scope_id':binding['entity_id'] if scope=='entity' else native['selected_listing']['security_id']}
     request = {k:binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision')}
     request.update(information_cutoff=route['as_of'],scope_bindings=scopes)
-    if _recovery_refs(config) is not None:
-        request['controlled_work_refs'] = _recovery_refs(config)
+    refs = parse_recovery_refs(config.get("prepare", {}))
+    if refs is not None:
+        request['controlled_work_refs'] = refs
     try:
         done = subprocess.run([config.get('stockqa_python') or sys.executable,'-B','-X','utf8','-c',
             _WORK_BANK_BINDING_READER,config['stockqa_root'],config['prepare']['admission_config']],
@@ -532,7 +533,7 @@ class PrepareGateway:
                     missing.append("native_prepare_owner_policy_invalid")
                 elif protocol not in {"stockwiki.refresh_owner_policy/1.0.0", "stockwiki.refresh_owner_policy/1.1.0", "stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0", "stockwiki.refresh_owner_policy/1.6.0"}:
                     missing.append("native_prepare_owner_dialect_not_supported")
-                elif (protocol in {"stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0"}) != (_recovery_refs(self.config) is not None):
+                elif (protocol in {"stockwiki.refresh_owner_policy/1.2.0", "stockwiki.refresh_owner_policy/1.3.0"}) != (parse_recovery_refs(self.config.get("prepare", {})) is not None):
                     missing.append("recovery_policy_refs_required")
                 else:
                     _ordered_route_targets(original_policy)
@@ -608,7 +609,7 @@ class PrepareGateway:
         if subset is not None and (not isinstance(subset,list) or not subset or any(not isinstance(q,str) or not q for q in subset)
             or len(set(subset))!=len(subset)):
             raise DashboardPrepareError('question_subset_invalid','Select a nonempty, unique question subset from this company bank')
-        if subset is not None and _recovery_refs(self.config) is not None:
+        if subset is not None and parse_recovery_refs(self.config.get("prepare", {})) is not None:
             raise DashboardPrepareError('question_subset_recovery_conflict','A question subset cannot replace an original controlled-recovery selection')
         profile = self.options.get("routing_profiles", {}).get(profile_id, {}) if profile_id else {}
         if profile_id and (not profile or profile.get("entity_id") != entity_id):

@@ -11,7 +11,6 @@ import module_contract
 ROOT=Path(__file__).resolve().parents[1]
 SCHEMA=json.loads((ROOT/'schemas/quick_scan/query-pool.schema.json').read_bytes())
 VALIDATOR=Draft202012Validator(SCHEMA,format_checker=FormatChecker())
-SUBJECT=Draft202012Validator(profiles.SCHEMA['$defs']['SubjectRef'],format_checker=FormatChecker())
 MAX_INDEX_BYTES=64*1024*1024
 MAX_RESPONSE_BYTES=8*1024*1024
 INDEX_KEYS={'protocol','universe_id','selection','owner_store_id','active_entity_count','rows','variants',
@@ -25,20 +24,20 @@ OBS_KEYS={'observation_id','payload_sha256','field_id','question_id','status','s
     'qualification_status','variant_id','validity_status'}
 
 
-def digest(value):return profiles._digest(value)
+def digest(value):return module_contract.digest(value)
 
 
 def validate_request(value):
     try:
         VALIDATOR.validate(value)
         if value['message_type']!='request':raise ValueError('pool_request_required')
-        profiles._utc(value['requested_at'])
-        if value['payload']['information_cutoff']>profiles._utc(value['requested_at']).date().isoformat():
+        requested = profiles.parse_utc_timestamp(value['requested_at'])
+        if value['payload']['information_cutoff']>requested.date().isoformat():
             raise ValueError('pool_future_information_cutoff')
         payload=value['payload']
         if payload['cursor'] is not None and payload['snapshot_id'] is None:
             raise ValueError('pool_cursor_requires_snapshot')
-        if value['operation']=='candidate_set':profiles._subject_map(payload['subject_refs'])
+        if value['operation']=='candidate_set':profiles.index_subject_refs(payload['subject_refs'])
         policy=payload['filters']['score_policy']
         if policy is not None:
             fields=set(payload['field_ids'])
@@ -79,20 +78,20 @@ def validate_index(index,*,store_id):
             or index['financial_accuracy_proven'] is not False or index['facts_producer_ready'] is not False
             or type(index['API_requests']) is not int or index['API_requests']!=0):
             raise ValueError('pool_index_owner_or_claim_mismatch')
-        read_at=profiles._utc(index['read_at'])
+        read_at=profiles.parse_utc_timestamp(index['read_at'])
         marks=index['source_watermarks']
         if len(marks)!=4 or {m['namespace'] for m in marks}!={'universe','identity','analysis_subjects','observations'}:
             raise ValueError('pool_source_watermarks_invalid')
         for mark in marks:
             if (mark['status'] not in {'available','missing','read_error','schema_unavailable'}
                 or type(mark['sequence']) is not int or mark['sequence']<0
-                or profiles._utc(mark['read_at'])>read_at):raise ValueError('pool_source_watermarks_invalid')
+                or profiles.parse_utc_timestamp(mark['read_at'])>read_at):raise ValueError('pool_source_watermarks_invalid')
         if len(module_contract.canonical_bytes(index))>MAX_INDEX_BYTES:raise ValueError('pool_index_retention_limit')
-        refs=profiles._subject_map([row['subject_ref'] for row in index['rows']])
+        profiles.index_subject_refs([row['subject_ref'] for row in index['rows']])
         seen=set();fields=[];found=set()
         for row in index['rows']:
             if set(row)!=ROW_KEYS:raise ValueError('pool_index_row_shape')
-            SUBJECT.validate(row['subject_ref'])
+            profiles.validate_subject_ref_shape(row['subject_ref'])
             if not isinstance(row['canonical_name'],str) or not 1<=len(row['canonical_name'])<=200:
                 raise ValueError('pool_index_name_invalid')
             if type(row['scan_enabled']) is not bool or type(row['member_version']) is not int or row['member_version']<1:
@@ -110,7 +109,7 @@ def validate_index(index,*,store_id):
                     raise ValueError('pool_observation_reference_invalid')
                 if (obs['variant_id'] not in index['variants'] or obs['field_id'] not in index['selection']['field_ids']
                     or obs['information_cutoff']>index['selection']['information_cutoff']
-                    or profiles._utc(obs['observed_at'])>read_at):raise ValueError('pool_index_observation_binding_invalid')
+                    or profiles.parse_utc_timestamp(obs['observed_at'])>read_at):raise ValueError('pool_index_observation_binding_invalid')
                 if obs['check_level']!='unverified_model_output' or obs['check_level_receipt_id'] is not None:
                     raise ValueError('pool_independent_qualification_required')
                 if obs['validity_status']!='not_assessed':raise ValueError('pool_independent_validity_required')
@@ -154,21 +153,26 @@ def validate_index(index,*,store_id):
     return copy.deepcopy(index)
 
 
-def _validate_response(response,*,request,index,selected_rows,store_id,request_validator,index_validator,
+def validate_projected_response(response,*,request,index,selected_rows,store_id,request_validator,index_validator,
         query_hasher,validator,row_extra=frozenset(),watermark_extra=None,qualification_available=False,
         candidate_protocol='stockwiki.c06_candidate_set/2.1.0',candidate_prefix='cset2_',candidate_qualified=False,
         selection_keys=('field_ids','information_cutoff','model_filter'),result_extra=None):
+    """Bind a pool dialect's projected rows to its request and owner capture.
+
+    A dialect supplies its own schema, index and request validators. This
+    operation enforces the shared paging, selection and snapshot invariants.
+    """
     request_validator(request);index_validator(index,store_id=store_id)
     if len(module_contract.canonical_bytes(response))>MAX_RESPONSE_BYTES:raise ValueError('pool_response_too_large')
     try:validator.validate(response)
     except ValidationError as error:raise ValueError('pool_response_invalid') from error
     if response['message_type']!='response' or any(response[k]!=request[k] for k in ('schema_version','operation','request_id')):
         raise ValueError('pool_response_binding_mismatch')
-    if profiles._utc(response['response_at'])<profiles._utc(request['requested_at']):
+    if profiles.parse_utc_timestamp(response['response_at'])<profiles.parse_utc_timestamp(request['requested_at']):
         raise ValueError('pool_response_before_request')
-    if (profiles._utc(index['read_at'])>profiles._utc(response['response_at'])
+    if (profiles.parse_utc_timestamp(index['read_at'])>profiles.parse_utc_timestamp(response['response_at'])
         or (request['payload']['snapshot_id'] is None
-            and profiles._utc(index['read_at'])<profiles._utc(request['requested_at']))):
+            and profiles.parse_utc_timestamp(index['read_at'])<profiles.parse_utc_timestamp(request['requested_at']))):
         raise ValueError('pool_response_read_time_invalid')
     result=response['result'];mark=result['watermark'];qhash=query_hasher(request)
     expected=dict(store_id=store_id,snapshot_id=capture_id(index,qhash),query_sha256=qhash,
@@ -182,7 +186,7 @@ def _validate_response(response,*,request,index,selected_rows,store_id,request_v
     if any(module_contract.canonical_bytes(result.get(k))!=module_contract.canonical_bytes(value)
         for k,value in (result_extra or {}).items()):raise ValueError('pool_response_scope_projection_mismatch')
     original={digest(row['subject_ref']):row for row in index['rows']}
-    all_refs=profiles._subject_map([row['subject_ref'] for row in selected_rows])
+    profiles.index_subject_refs([row['subject_ref'] for row in selected_rows])
     for row in selected_rows:
         if set(row)!=ROW_KEYS|{'selection_outcome','selection_explanations'}|row_extra:
             raise ValueError('pool_selected_row_shape')
@@ -231,7 +235,7 @@ def _validate_response(response,*,request,index,selected_rows,store_id,request_v
 
 
 def validate_response(response,*,request,index,selected_rows,store_id):
-    return _validate_response(response,request=request,index=index,selected_rows=selected_rows,store_id=store_id,
+    return validate_projected_response(response,request=request,index=index,selected_rows=selected_rows,store_id=store_id,
         request_validator=validate_request,index_validator=validate_index,query_hasher=query_sha256,validator=VALIDATOR)
 
 

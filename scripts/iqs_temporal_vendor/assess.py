@@ -27,6 +27,7 @@ from .policy import (
     CANDIDATE_VERSION,
     LEGACY_FAMILY,
     LEGACY_VERSION,
+    candidate_policy,
 )
 
 PROTOCOL = "iqs.temporal_policy_candidate/1.0.0"
@@ -397,6 +398,58 @@ def _publication_check(answer: dict[str, Any], stored_cutoff: str, now_dt: datet
     if reasons:
         return "refresh_required", reasons
     return "ok", []
+
+
+def explain_observation_clocks(observation, required_clocks, *, now_utc):
+    """Project an observation's dates for display without deciding reuse."""
+    now = _parse_utc(now_utc)
+    rules = candidate_policy()["clock_rules"]
+    answer = observation.get("answer")
+    if not isinstance(answer, dict):
+        raise ValueError("native_clock_answer_unreadable")
+    evidence = answer.get("evidence", [])
+    if not isinstance(evidence, list) or any(not isinstance(item, dict) for item in evidence):
+        raise ValueError("native_clock_answer_unreadable")
+    cutoff = observation.get("information_cutoff")
+    information_as_of = answer.get("information_as_of")
+    if information_as_of is not None:
+        information_date = _information_datetime(information_as_of)
+        if information_date > now:
+            raise TimeSemanticsError("information_date_in_future")
+        if information_date.date() > _parse_date_only(cutoff):
+            raise TimeSemanticsError("information_after_cutoff")
+
+    publication_status, publication_reasons = _publication_check(answer, cutoff, now)
+    status, reasons = publication_status, publication_reasons
+    event = observation.get("event_invalidated_at")
+    event_status = None
+    if event is not None:
+        event_time = _parse_utc(event, code="event_invalidated_at_invalid")
+        event_status = "invalidated" if event_time <= now else "scheduled"
+        if event_status == "invalidated":
+            reasons = [*reasons, "event_invalidated"]
+            if status == "ok":
+                status = "refresh_required"
+
+    readings = []
+    for clock in required_clocks:
+        if clock == "verification_clock":
+            continue
+        if clock == "publication_clock":
+            readings.append({"clock": clock, "reading": [entry.get("published_at") for entry in evidence],
+                "max_age_hours": None,
+                "status": "satisfied" if publication_status == "ok" else publication_status,
+                "reason_code": publication_reasons[0] if publication_reasons else "publication_satisfied",
+                "decision_effect": publication_status})
+        else:
+            readings.append(_assess_clock(clock, _clock_reading(observation, clock), rules[clock], now))
+
+    return {"protocol": "iqs.temporal_clock_explanation/1.0.0", "context_assessed": False,
+            "reuse_authorized": False, "clock_assessments": readings,
+            "source_constraints": {"status": status, "reason_codes": reasons, "event_status": event_status},
+            "actual_source_dates": {"observed_at": observation.get("observed_at"),
+                "information_as_of": information_as_of, "metric_period_end": answer.get("period_end"),
+                "verified_at": None, "event_invalidated_at": event}}
 
 
 def _verification_check(

@@ -1,5 +1,17 @@
 # 当前接手说明
 
+**2026-11-09 正在验证的模块边界。** StockWiki 候选位于 `.worktrees/stockwiki-dashboard-ports-20261109`，StockQA 候选位于 `.worktrees/stockqa-delivery-port-20261109`。两者先验收并合入原仓，再部署 IQS 消费者。工作台旧 `--worker` 转发现有 JSON 入口，便于运行中的服务平滑升级。扫描准备、共享引擎原生接续与最终独立复审以根 [progress.md](../../progress.md) 后续记录为准。请避免用旧工作树路径替代公开协议验证，避免误提交根目录原 2.8 改动。
+
+**本轮公开接口整改。** IQS 工作台改为经公开交付操作、恢复引用解析、origin 解析和 TIME 包入口协作。运行 `python -B -m pytest -q tests/test_dashboard_module_boundaries.py` 可以看到越界文件、行号及访问名。该测试已纳入 `scripts/run_tests.py fast`，范围为工作台模块内的显式 Python 引用和常见局部别名。Theme `master@3352b58` 与 Industry `main@7d49ca3` 已使用独立查询捕获目录。Industry 已推送，Theme 仓无远端。真实数据入口仍按根计划验收。
+
+**F05 接续。** IQS 2.7 候选 `16c7b1a` 与 2.8 WIP 已在隔离副本完成 87 项回归。三个重叠文件是 `scripts/query_facts_contract.py`、`tests/test_query_facts_contract.py` 与 `tests/test_f05_facts_cli_conformance.py`。三方合并基准为 `130dc31`。根工作树原 WIP 保持独立，合入时与其写入方协同。真实配置的 owner 能力探测认可 2.7 候选，事实观察为零，下一步沿原采集流程生成可绑定的事实观察并用公开 CLI 完成验收。旧 F05 集成测试仍引用缺失的外仓 Git 对象 `63a6ffcf`，在候选并入后由独立 CLI 回归接替。
+
+**2026-11-09 当前状态（优先于下方旧日期段）。** 本项目已可在小范围使用，但全项目尚未模块化解耦，F05 真实数据闭环和 G4 均未完成。IQS `master` `3d2bf44` 已推送：修复兼容 query 接口允许模型答案自授 `check_level` 的既往缺陷，定向 106 passed、8 subtests passed，独立审查 ACCEPT。IQS F05 consumer candidate `codex/f05-query-paged-response-01`（`16c7b1a`，已推分支，74 passed）尚未并入 `master`，因为根目录存在重叠 2.8 WIP。StockWiki owner candidate `3799b43` 已快进并入本地 canonical `master`；六文件 F05/路由测试组 45 passed、2 skipped，StockWiki 无 remote。路由 manifest 完整性修复独立审查 ACCEPT。
+
+**当前实质阻塞：** CATL owner 公开 query 返回 `coverage_gap / no_bound_fact_observations`，没有事实正例 golden；F05 仍 partial。IQS 根工作树有别的并行 2.8 WIP，不要 reset、checkout 覆写或 `git add -A`；consumer 候选并线前先在单 writer 状态对齐依赖。Theme `master@e35ab39` 与 Industry `main@169c200` 已有 canonical 代码、tracked clean；需在稳定 F05/W11 接口上跑真实技能入口 E2E。然后推进 G4；真实200家 G3、2000家覆盖和 G5/G6 仍未完成。
+
+**设计结论：** D1–D7 只证明既定行为范围通过，不等于全仓解耦。跨仓只通过版本化公开 CLI/JSON schema/capability 协议；仓内模块经公开 facade/protocol 协作。Python `_private` 不会天然阻止调用，靠 CI AST/import 边界测试阻止越界，不给每个小改动新增人工审批。稳定接口后可让各仓分别维护自己的 PWF；根 IQS PWF 只做版本/依赖/集成协调，不另造回执或门禁系统。
+
 **11/06 当前 F05 进展。** 独立包 [F05-IQS-CONSUMER-01](parallel-lanes/packages/2026-11-05-f05-iqs-consumer/README.md) 的已审查 payload `08e5b4d6` 已合入本仓 `master`（`da34654`）。主线 facts/capabilities/public CLI 定向82 passed；加相邻 exchange/query 回归97 passed、7子测试。旧 query v2 的 `model_self_qualification` 冻结基线失败在合并前已出现，本轮仍保留为非本次引入的失败。**F05 仍为 partial**：主线有消费者契约和校验CLI，但普通产品/共享引擎尚未接上实际 StockWiki owner runtime，真实 owner golden 和当前公开 CLI 正反互操作也未完成；未运行生产UI、数据库写入或收费API。详情见根 [task_plan.md](../../task_plan.md)、[progress.md](../../progress.md) 和 Lab handoff `C:\Users\郑曾波\Projects\iqs-f05-iqs-consumer-lab\docs\handoff\F05-IQS-CONSUMER-01\report.md`。
 
 **2026-11-07 三个独立施工包已验收：** [F05-OWNER-MAINLINE-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/F05-OWNER-MAINLINE-02.md) 在隔离 StockWiki Lab 的实现提交 `6449917c` 已独立审查；交接状态 `partial`，真实 owner golden、IQS public CLI 正反互操作和 canonical StockWiki 合并仍未做。[TH-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/TH-IMPL-02.md) 的离线消费者提交 `54773536`（54项测试，CP936 默认编码独立复审通过）和 [IN-IMPL-02](parallel-lanes/packages/2026-11-06-mainline-consumer-wave/IN-IMPL-02.md) 提交 `ba54e00f`（161项测试，独立复审通过）已验收；两者还未整合进各自 canonical skill 源仓。三份 handoff 经 IQS CLI `--verify-references` 均为 valid。总控下一步按根 [task_plan.md](../../task_plan.md) 继续 F05 真实 owner 接线与 golden/互操作，再整合 TH/IN；不把离线包完成误报为产品闭环。

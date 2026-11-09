@@ -151,11 +151,12 @@ def validate_config(value, root):
             raise ProductError('invalid_config', f'{key}必须是非空短文本。')
     origin = result.get('dashboard_origin')
     if origin is not None:
-        from dashboard_iqs_link import _base_origin
-        if not isinstance(origin, str) or _base_origin(origin) is None:
+        from dashboard_iqs_link import normalize_loopback_origin
+        normalized_origin = normalize_loopback_origin(origin)
+        if normalized_origin is None:
             raise ProductError('invalid_dashboard_origin',
                                'dashboard_origin 必须是本机 http(s) origin，例如 http://127.0.0.1:8899。')
-        result['dashboard_origin'] = _base_origin(origin)
+        result['dashboard_origin'] = normalized_origin
     options = result['prepare']
     if not isinstance(options, dict) or set(options)-PREPARE_KEYS:
         raise ProductError('invalid_prepare_config', '公司准备配置包含未知字段。')
@@ -166,9 +167,9 @@ def validate_config(value, root):
             or not 900 <= options['delegation_ttl_seconds'] <= 86400):
         raise ProductError('invalid_prepare_config', '新原执行确认有效期须为900至86400秒；不更新已有确认。')
     if 'recovery_work_decision_refs' in options:
-        from dashboard_prepare import _recovery_refs, DashboardPrepareError
+        from dashboard_prepare import parse_recovery_refs, DashboardPrepareError
         try:
-            _recovery_refs({'prepare': options})
+            parse_recovery_refs(options)
         except DashboardPrepareError as error:
             raise ProductError('invalid_prepare_config', '恢复模式须显式选择唯一的原工作与原控制决策引用。') from error
     result['prepare'] = dict(options)
@@ -455,8 +456,8 @@ class DashboardService:
         still wins: a deliberately fixed deployment address must never be
         replaced by discovery. An unusable value is ignored rather than stored.
         """
-        from dashboard_iqs_link import _base_origin
-        value = _base_origin(origin)
+        from dashboard_iqs_link import normalize_loopback_origin
+        value = normalize_loopback_origin(origin)
         self._runtime_origin = value
         return value
 

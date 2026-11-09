@@ -59,7 +59,8 @@ def visible_answer_schema(schema):
     return view
 
 
-def _validate_visible_channels(answer):
+def validate_visible_channels(answer):
+    """Reject private channels and self-assigned trust metadata in visible answers."""
     private = {
         "reasoning_content",
         "thinking",
@@ -67,6 +68,10 @@ def _validate_visible_channels(answer):
         "chain_of_thought",
         "reflection_content",
         "private_thoughts",
+        # Trust metadata belongs to the validated observation envelope, never
+        # to model-authored answer content (including additive schema fields).
+        "check_level",
+        "check_level_receipt_id",
     }
     stack = [answer]
     while stack:
@@ -102,7 +107,7 @@ def validator(name):
 def validate_content(
     answer, question, cutoff, *, answer_schema=None, metric_registry=None, research_only=False
 ):
-    _validate_visible_channels(answer)
+    validate_visible_channels(answer)
     if answer_schema is None:
         validator('answer-content.schema.json').validate(answer)
     else:

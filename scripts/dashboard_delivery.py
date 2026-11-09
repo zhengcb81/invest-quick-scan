@@ -79,16 +79,54 @@ def _scope_inputs(bundle):
     return ledger, request
 
 
+def describe_delivery_scope(bundle):
+    """Describe the immutable scope behind a registered delivery."""
+    ledger, request = _scope_inputs(bundle)
+    manifest = Path(bundle.get('manifest', ''))
+    if not manifest.is_absolute() or not manifest.is_file():
+        raise DashboardExecutionError('delivery_not_configured', '缺少原manifest，不能核实交付范围。', 409)
+    question_ids = request.get('question_ids')
+    if (not isinstance(question_ids, list) or not question_ids
+            or any(not isinstance(qid, str) or not qid for qid in question_ids)
+            or len(question_ids) != len(set(question_ids))):
+        raise DashboardExecutionError('delivery_work_mapping_missing', '原交付题目范围无效。', 409)
+    return {
+        'entity_id': bundle['entity_id'], 'work_store': str(ledger.resolve()),
+        'manifest': str(manifest.resolve()), 'question_ids': sorted(question_ids),
+        'confirmation_id': bundle.get('confirmation_id'),
+        'scope_bindings': request.get('scope_bindings') or {
+            qid: {'scope': 'entity', 'scope_id': bundle['entity_id']} for qid in question_ids},
+    }
+
+
+def _project_delivery(*, root, config, ledger, request, call, runtime, **selection):
+    command = [str(config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8',
+               '-c', _EXPORT, str(root), str(ledger)]
+    scope = {'entity_id': request['entity_id'], 'question_ids': request['question_ids'],
+             'scope_bindings': request.get('scope_bindings'), **selection}
+    return call(command, root, runtime, input_value=scope)
+
+
+def read_delivery_receivers(*, bundle, config, state_root, call):
+    """Read the receiver of the original confirmation without binding it."""
+    ledger, request = _scope_inputs(bundle)
+    confirmation = bundle.get('confirmation_id')
+    if not isinstance(confirmation, str) or not confirmation:
+        raise DashboardExecutionError('delivery_original_scope_unavailable', '缺少原confirmation，不能猜测原交付目标。', 409)
+    root = Path(config['stockqa_root'])
+    state_root.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='receiver-read-', dir=state_root) as runtime:
+        return _project_delivery(root=root, config=config, ledger=ledger, request=request, call=call,
+                                 runtime=runtime, confirmation_id=confirmation, receiver_only=True)
+
+
 def read_work_scope(*, bundle, config, call, runtime):
     """Observe native work rows without requiring today's spending policy."""
     ledger, request = _scope_inputs(bundle)
     root = Path(config['stockqa_root'])
-    result = call([str(config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8',
-                   '-c', _EXPORT, str(root), str(ledger)], root, runtime,
-                  input_value={'entity_id': request['entity_id'], 'question_ids': request['question_ids'],
-                      'scope_bindings': request.get('scope_bindings'),
-                      **({'confirmation_id': bundle['confirmation_id']} if bundle.get('confirmation_id') else {}),
-                      'read_only_scope': True})
+    original = {'confirmation_id': bundle['confirmation_id']} if bundle.get('confirmation_id') else {}
+    result = _project_delivery(root=root, config=config, ledger=ledger, request=request, call=call,
+                               runtime=runtime, **original, read_only_scope=True)
     return {**result, 'protocol': 'stockqa.read_only_work_projection/1.0.0',
             'reservation_created': False}
 
@@ -107,15 +145,12 @@ def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection
     confirmation = bundle.get('confirmation_id')
     if not isinstance(confirmation, str) or not confirmation:
         raise DashboardExecutionError('delivery_original_scope_unavailable', '缺少原confirmation，不能用最新一代工作替代原交付范围。', 409)
-    interpreter=str(config.get('stockqa_python',sys.executable))
     state_root.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='delivery-read-',dir=state_root) as runtime:
         # Each original sealed package is independently exportable. Unfinished
         # questions remain not_exportable, without holding completed answers.
-        result=call([interpreter,'-B','-X','utf8','-c',_EXPORT,
-            str(root),str(ledger)],root,runtime,input_value={
-                'entity_id': request['entity_id'], 'question_ids': request['question_ids'],
-                'scope_bindings': request.get('scope_bindings'), 'confirmation_id': confirmation})
+        result = _project_delivery(root=root, config=config, ledger=ledger, request=request, call=call,
+                                   runtime=runtime, confirmation_id=confirmation)
     from frozen_release_projection import create_projection
     manifest=json.loads(Path(bundle['manifest']).read_text(encoding='utf-8-sig'))
     release=create_projection(manifest,root=Path(config['iqs_release_root']))

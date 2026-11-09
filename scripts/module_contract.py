@@ -64,13 +64,18 @@ def digest(value: object) -> str:
     return hashlib.sha256(canonical_bytes(value)).hexdigest()
 
 
-def _unique_object(pairs: list[tuple[str, object]]) -> dict:
+def unique_json_object(pairs: list[tuple[str, object]]) -> dict:
+    """Decode JSON object pairs without silently dropping duplicate keys."""
     result = {}
     for key, value in pairs:
         if key in result:
             raise ValueError(f"duplicate JSON key in module archive: {key}")
         result[key] = value
     return result
+
+
+# Retained for existing archive readers while they migrate to the public hook.
+_unique_object = unique_json_object
 
 
 def _version(value: str) -> tuple[int, int, int]:

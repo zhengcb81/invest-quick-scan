@@ -6,15 +6,17 @@ TTLs, or grants any reuse/verification status. Real clocks are always supplied
 explicitly by the caller; this package never reads the wall clock.
 """
 
-from .assess import assess_reuse
+from .assess import assess_reuse, explain_observation_clocks
 from .errors import TimeSemanticsError
-from .policy import POLICY_FAMILIES, policy_registry, resolve_policy
+from .policy import POLICY_FAMILIES, load_observation_clock_policies, policy_registry, resolve_policy
 
 PROTOCOL = "iqs.temporal_policy_candidate/1.0.0"
 PRODUCTION_READY = False
 
 __all__ = [
     "assess_reuse",
+    "explain_observation_clocks",
+    "load_observation_clock_policies",
     "policy_registry",
     "resolve_policy",
     "POLICY_FAMILIES",

@@ -11,15 +11,13 @@ from datetime import timedelta
 from jsonschema import ValidationError
 import query_contract as originals
 from contract_validation import validate_parsed_answer
+from module_contract import digest
 from work_contract import parse_utc,freshness_status
 
 LEVELS=('unverified_model_output','execution_verified','screening_audited','formal_research_accepted')
 RECEIPT_KEYS={'receipt_id','entity_id','question_id','observation_id','authorized_check_level',
     'issuer','status','receipt_sha256','store_id','payload_sha256','subject_ref','issued_at'}
 POLICY_KEYS={'protocol','policy_id','version','fields','valid_from_utc','valid_to_utc','policy_sha256'}
-
-
-def digest(value):return originals._digest(value)
 
 
 def validate_policy(value,at_utc):
@@ -45,14 +43,14 @@ def validate_policy(value,at_utc):
     return copy.deepcopy(value)
 
 
-def _bound(row, original_reader=originals._original):
+def _bound(row, original_reader=originals.original_observation):
     original=original_reader(row)
     binding=row.get('subject_binding')
     if (not isinstance(binding,dict) or binding.get('observation_id')!=original['observation_id']
         or binding.get('payload_sha256')!=row['payload_sha256']):
         raise ValueError('field_assessment_bound_original_required')
     ref=binding['subject_ref']
-    originals._subject_map([ref])
+    originals.index_subject_refs([ref])
     # Standard originals keep listing authority in the independently captured
     # subject sidecar. Do not demand a listing field forbidden by their schema;
     # an original that actually carries it must still match exactly.
@@ -152,7 +150,7 @@ def assess_vendor_originals(rows,*,store_id,at_utc,trusted_check_level_receipts,
     import query_vendor_contract as vendor
     return _assess(rows,store_id=store_id,at_utc=at_utc,
         trusted_check_level_receipts=trusted_check_level_receipts,field_policy=field_policy,
-        bound_original=lambda row:_bound(row, vendor._original))
+        bound_original=lambda row:_bound(row, vendor.original_observation))
 
 
 def _pool_original(value):
@@ -161,7 +159,7 @@ def _pool_original(value):
     keys={'observation_id','payload_sha256','subject_ref','field_id','question_id','observed_at',
         'status','score','information_as_of','qualification_status'}
     if not isinstance(value,dict) or set(value)!=keys:raise ValueError('field_pool_input_invalid')
-    ref=value['subject_ref'];originals._subject_map([ref])
+    ref=value['subject_ref'];originals.index_subject_refs([ref])
     if (not re.fullmatch('obs_[a-f0-9]{64}',value['observation_id'])
         or not re.fullmatch('[a-f0-9]{64}',value['payload_sha256'])
         or any(not isinstance(value[k],str) or not 1<=len(value[k])<=160 for k in ('field_id','question_id','status'))
