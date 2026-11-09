@@ -24,7 +24,9 @@ import query_contract as core
 import module_contract
 
 SCHEMA=json.loads((core.ROOT/'schemas/quick_scan/query-facts-v2.7.schema.json').read_bytes())
+SCHEMA_28=json.loads((core.ROOT/'schemas/quick_scan/query-facts-v2.8.schema.json').read_bytes())
 VALIDATOR=Draft202012Validator(SCHEMA,format_checker=FormatChecker())
+VALIDATOR_28=Draft202012Validator(SCHEMA_28,format_checker=FormatChecker())
 PROTOCOL='stockwiki.c06_facts_query/1.0.0'
 EXPORT_PROTOCOL='stockwiki.c06_facts_export/1.0.0'
 WIRE_VERSION='2.7.0'
@@ -69,7 +71,8 @@ def _shape(value,kind):
     try:
         if len(module_contract.canonical_bytes(value))>MAX_BYTES:
             _fail('facts_document_too_large')
-        VALIDATOR.validate(value)
+        validator=VALIDATOR_28 if isinstance(value,dict) and value.get('schema_version')=='2.8.0' else VALIDATOR
+        validator.validate(value)
     except (ValidationError,TypeError,ValueError,KeyError,RecursionError) as error:
         raise ValueError('facts_document_invalid') from error
     if value['message_type']!=kind:
@@ -143,7 +146,7 @@ def validate_request(request):
 
 def query_sha256(request):
     validate_request(request)
-    semantic=dict(consumer_id=request['consumer_id'],schema_version=WIRE_VERSION,
+    semantic=dict(consumer_id=request['consumer_id'],schema_version=request['schema_version'],
         operation='query_facts',payload=normalize_payload(request))
     return _digest(semantic)
 
@@ -545,6 +548,19 @@ def _subject_scope(ref):
     return ref
 
 
+def _missing_subject_scope(ref,wire_version):
+    """Validate a missing scope, including an unresolved listing in wire 2.8."""
+    if not isinstance(ref,dict) or ref.get('scope')!='listing':
+        return _subject_scope(ref)
+    if (wire_version!='2.8.0' or set(ref)!={'entity_id','scope','scope_id',
+        'security_id','listing_id','segment_id'} or not isinstance(ref['entity_id'],str)
+        or not ref['entity_id'] or not isinstance(ref['listing_id'],str)
+        or not ref['listing_id'] or ref['scope_id']!=ref['listing_id']
+        or ref['security_id'] is not None or ref['segment_id'] is not None):
+        _fail('facts_subject_scope_invalid')
+    return ref
+
+
 ROW_FIELDS={'observation_id','payload_sha256','raw_sha256','original_json_base64',
     'observation_wire_profile','binding_status','subject_binding','observation_sequence',
     'ack_sequence','ingest_status','qualification_status'}
@@ -577,13 +593,24 @@ def _validate_profile_result(profile_result,*,request,owner):
         profile_refs=core._subject_map([profile['subject_ref'] for profile in profiles])
     except (TypeError,KeyError) as error:
         raise ValueError('facts_profile_result_invalid') from error
+    requested_listings=set(request['payload']['listing_ids'])
+    profile_listing_keys={(ref['entity_id'],ref['listing_id'])
+        for ref in profile_refs.values()
+        if ref['scope']=='security' and ref['listing_id'] is not None}
+    missing_listing_keys=set()
     missing_refs={}
     for ref in missing:
-        _subject_scope(ref)
+        _missing_subject_scope(ref,request['schema_version'])
+        if ref['scope']=='listing':
+            if requested_listings and ref['listing_id'] not in requested_listings:
+                _fail('facts_unrequested_subject')
+            missing_listing_keys.add((ref['entity_id'],ref['listing_id']))
         key=_scope_key(ref)
         if key in missing_refs:
             _fail('facts_duplicate_subject_scope')
         missing_refs[key]=ref
+    if profile_listing_keys & missing_listing_keys:
+        _fail('facts_subject_coverage_mismatch')
     if {_scope_key(profile['subject_ref']) for profile in profiles}&set(missing_refs):
         _fail('facts_subject_coverage_mismatch')
     for ref in list(profile_refs.values())+list(missing_refs.values()):
@@ -694,7 +721,7 @@ def build_result(*,profile_result,request,owner,read_at):
             'read_at':read_at,'source_consistency':'sequential_owner_reads',
             'source_watermarks':copy.deepcopy(marks)},
     }
-    return seal_response({'message_type':'response','schema_version':WIRE_VERSION,
+    return seal_response({'message_type':'response','schema_version':request['schema_version'],
         'request_id':request['request_id'],'operation':request['operation'],
         'response_at':read_at,'result':result},request=request)
 
@@ -808,7 +835,7 @@ def validate_export_response(*,response,request,owner):
         generated_at=export['generated_at'])
     expected_result.update(operation='export_facts',facts=[],page_facts=[],
         total=len(expected_export['candidates']),next_cursor=None,export=expected_export)
-    expected={'message_type':'response','schema_version':WIRE_VERSION,
+    expected={'message_type':'response','schema_version':request['schema_version'],
         'request_id':request['request_id'],'operation':'export_facts',
         'response_at':response['response_at'],'result':expected_result}
     if module_contract.canonical_bytes(response)!=module_contract.canonical_bytes(expected):
@@ -823,7 +850,8 @@ def validate_response(response,*,request,owner):
     native=_owner(owner)
     _validate_profile_result(response['result']['profile_result'],request=request,owner=native)
     result=response['result']
-    if (response['request_id']!=request['request_id']
+    if (response['schema_version']!=request['schema_version']
+        or response['request_id']!=request['request_id']
         or response['operation']!=request['operation']
         or result['query_sha256']!=query_sha256(request)
         or result['store_id']!=native['store_id']

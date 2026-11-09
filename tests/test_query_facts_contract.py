@@ -287,6 +287,13 @@ def test_query_hash_stable_across_presentation_parameters():
     assert {fc.query_sha256(request) for request in variants}=={fc.query_sha256(base)}
 
 
+def test_query_hash_binds_the_facts_wire_version():
+    request27,_,_,_=fact_pair(fact_observation())
+    request28=copy.deepcopy(request27)
+    request28['schema_version']='2.8.0'
+    assert fc.query_sha256(request27)!=fc.query_sha256(request28)
+
+
 def test_query_hash_sensitive_to_real_selection_changes():
     base,_,_,_=fact_pair(fact_observation())
     deltas=[dict(mode='strict',direction='outgoing'),
@@ -389,6 +396,60 @@ def test_missing_subject_is_partial_with_subject_unavailable_reason():
     assert result['coverage']['status']=='partial'
     assert 'subject_unavailable' in result['coverage']['reason_codes']
     assert result['missing_subject_ids']==['ENT_77777777-7777-4777-8777-777777777777']
+
+
+def test_v28_listing_missing_scope_does_not_collide_with_entity_profile():
+    """An unresolved listing remains distinct from a valid issuer-level profile."""
+    request,profile,owner,read_at=fact_pair(fact_observation(),
+        overrides={'schema_version':'2.8.0'})
+    listing={'entity_id':SUBJECT['entity_id'],'scope':'listing',
+        'scope_id':'LST_UNRESOLVED_SYNTHETIC','security_id':None,
+        'listing_id':'LST_UNRESOLVED_SYNTHETIC','segment_id':None}
+    profile['missing_subject_refs']=[listing]
+
+    response=build(request,profile,owner,read_at)
+
+    assert response['schema_version']=='2.8.0'
+    assert response['result']['status']=='partial'
+    assert response['result']['coverage']['status']=='partial'
+    assert response['result']['missing_subject_ids']==[SUBJECT['entity_id']]
+    assert response['result']['missing_subject_refs']==[listing]
+    assert fc.validate_response(response,request=request,owner=owner)==response
+
+
+def test_v28_rejects_missing_listing_outside_the_requested_listing_filter():
+    request,profile,owner,read_at=fact_pair(fact_observation(),
+        overrides={'schema_version':'2.8.0'})
+    request['payload']['listing_ids']=['LST_SELECTED']
+    profile['missing_subject_refs']=[{'entity_id':SUBJECT['entity_id'],'scope':'listing',
+        'scope_id':'LST_NOT_SELECTED','security_id':None,
+        'listing_id':'LST_NOT_SELECTED','segment_id':None}]
+    with pytest.raises(ValueError,match='facts_unrequested_subject'):
+        build(request,profile,owner,read_at)
+
+
+def test_v28_rejects_a_listing_reported_both_present_and_missing():
+    request,profile,owner,read_at=fact_pair(fact_observation(),
+        overrides={'schema_version':'2.8.0'})
+    listing_id='LST_CONTRADICTORY'
+    security=copy.deepcopy(SUBJECT)
+    security.update(scope='security',scope_id='SEC_SYNTHETIC',
+        security_id='SEC_SYNTHETIC',listing_id=listing_id,segment_id=None)
+    profile['profiles'][0]['subject_ref']=security
+    profile['profiles'][0]['observations']=[]
+    profile['missing_subject_refs']=[{'entity_id':SUBJECT['entity_id'],'scope':'listing',
+        'scope_id':listing_id,'security_id':None,'listing_id':listing_id,'segment_id':None}]
+    with pytest.raises(ValueError,match='facts_subject_coverage_mismatch'):
+        build(request,profile,owner,read_at)
+
+
+def test_v27_does_not_silently_accept_the_new_listing_missing_scope():
+    request,profile,owner,read_at=fact_pair(fact_observation())
+    profile['missing_subject_refs']=[{'entity_id':SUBJECT['entity_id'],
+        'scope':'listing','scope_id':'LST_UNRESOLVED_SYNTHETIC',
+        'security_id':None,'listing_id':'LST_UNRESOLVED_SYNTHETIC','segment_id':None}]
+    with pytest.raises(ValueError,match='facts_subject_scope_invalid'):
+        build(request,profile,owner,read_at)
 
 
 def test_source_failure_is_unavailable_and_never_reads_as_no_facts():

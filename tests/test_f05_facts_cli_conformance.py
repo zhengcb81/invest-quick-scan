@@ -213,8 +213,11 @@ def test_cli_capabilities_wire_declaration_is_routed():
     assert output['status'] == 'validated'
     # the CLI result is the full built response envelope
     wires = output['result']['result']['supported_query_wires']
-    assert len(wires) == 7 and wires[-1] == {
-        'schema_version': '2.7.0', 'operations': ['query_facts', 'export_facts']}
+    assert len(wires) == 8
+    assert wires[-2:] == [
+        {'schema_version': '2.7.0', 'operations': ['query_facts', 'export_facts']},
+        {'schema_version': '2.8.0', 'operations': ['query_facts', 'export_facts']},
+    ]
     code, out, err = run_cli('capabilities-response',
                              {'response': response, 'request': request,
                               'source_context': context, 'index': None,

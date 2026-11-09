@@ -16,7 +16,8 @@ WIRES = [dict(schema_version='2.0.0', operations=['get_profiles']),
     dict(schema_version='2.3.0', operations=['nominate', 'report_conflict']),
     dict(schema_version='2.4.0', operations=['research_context']),
     dict(schema_version='2.5.0', operations=['search', 'candidate_set']),
-    dict(schema_version='2.7.0', operations=['query_facts', 'export_facts'])]
+    dict(schema_version='2.7.0', operations=['query_facts', 'export_facts']),
+    dict(schema_version='2.8.0', operations=['query_facts', 'export_facts'])]
 OPERATIONS = ['get_profiles', 'search', 'candidate_set', 'nominate', 'report_conflict', 'research_context',
     'query_facts', 'export_facts']
 MARKETS = ['CN', 'HK', 'US']
