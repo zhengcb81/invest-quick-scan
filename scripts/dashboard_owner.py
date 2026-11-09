@@ -1,25 +1,25 @@
-"""Local dashboard adapter over StockWiki's original public owner interfaces.
-
-Only server deployment config supplies code/workspace/bundle paths. StockWiki
-imports happen in a fresh interpreter; this module does not open SQLite, mint
-identities, migrate stores, execute model work, or reinterpret qualifications.
-"""
+"""IQS client for StockWiki's public dashboard owner commands."""
 from __future__ import annotations
 
 import copy
-import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import subprocess
 import sys
-import tempfile
-from typing import Any
+
+if __package__:
+    from .dashboard_json import decode_owner_json
+else:
+    from dashboard_json import decode_owner_json
 
 PROTOCOL = "iqs.dashboard.owner/1.0.0"
+REQUEST_PROTOCOL = "stockwiki.quick_scan_dashboard_request/1.0.0"
+REPLY_PROTOCOL = "stockwiki.quick_scan_dashboard_reply/1.0.0"
+OWNER_COMMAND = "stockwiki.quick_scan_dashboard_cli"
 _ID = re.compile(r"^[A-Za-z0-9_.:-]{1,200}$")
-_ROOTS = ("stockwiki_root", "workspace_root", "iqs_root")
+_ROOTS = ("stockwiki_root", "workspace_root")
 _MAX_BYTES = 16 * 1024 * 1024
 TIMEOUT_SECONDS_MAX = 600
 
@@ -38,23 +38,6 @@ class DashboardOwnerError(ValueError):
     def as_dict(self):
         return {"code": self.code, "message": self.message,
                 "status": self.status, "details": self.details}
-
-
-def _json(raw):
-    def pairs(items):
-        result = {}
-        for key, value in items:
-            if key in result:
-                raise ValueError("duplicate_json_key")
-            result[key] = value
-        return result
-    return json.loads(raw, object_pairs_hook=pairs,
-                      parse_constant=lambda value: (_ for _ in ()).throw(ValueError("nonfinite_json")))
-
-
-def _digest(value):
-    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
-                                    separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
 def _identifier(value, name):
@@ -105,38 +88,85 @@ class OwnerGateway:
         if not executable.is_file():
             raise DashboardOwnerError("owner_python_missing", "Configured StockWiki interpreter is absent", 503)
         config["stockwiki_python"] = str(executable)
-        if not (Path(config["stockwiki_root"]) / "stockwiki" / "quick_scan_store.py").is_file():
-            raise DashboardOwnerError("owner_code_missing", "StockWiki code root is invalid", 503)
         timeout = config.get("timeout_seconds", 30)
         if not valid_timeout_seconds(timeout):
             raise DashboardOwnerError("deployment_invalid", f"timeout_seconds must be between 1 and {TIMEOUT_SECONDS_MAX}", 503)
         return config
 
     def _call(self, operation, payload=None):
+        if payload is None:
+            payload = {}
+        elif not isinstance(payload, dict):
+            raise DashboardOwnerError("invalid_payload", "Expected a JSON object")
         config = self._deployment()
-        request = {"config": config, "operation": operation, "payload": payload or {}}
+        if operation in {"company_result", "company_history"}:
+            if __package__:
+                from .dashboard_company_projection import ProjectionError, read_company_assessment
+            else:
+                from dashboard_company_projection import ProjectionError, read_company_assessment
+            try:
+                return read_company_assessment(config, operation, payload, environment=_env())
+            except ProjectionError as error:
+                raise DashboardOwnerError(error.code, error.message, error.status) from error
+        wire_operation = "entity_view_inputs" if operation == "entity_view" else operation
+        reply = self._owner_command(config, wire_operation, payload)
+        if operation == "status":
+            return {**reply, "registered_bundles": sorted(config.get("bundles", {}))}
+        if operation == "entity_view":
+            return _temporal_view(reply, payload["entity_id"])
+        if operation == "entity":
+            _require_entity_detail(reply, payload["entity_id"])
+        if operation in {"history", "facts"}:
+            _require_entity_records(reply, payload["entity_id"])
+        return reply
+
+    def _owner_command(self, config, operation, payload):
+        code = Path(config["stockwiki_root"])
+        if not (code / "stockwiki/quick_scan_dashboard_cli.py").is_file():
+            raise DashboardOwnerError("owner_code_missing", "StockWiki dashboard command is missing", 503)
+        command = [config["stockwiki_python"], "-B", "-X", "utf8", "-m", OWNER_COMMAND,
+                   "--root", config["workspace_root"]]
+        for key in ("universe_id", "workspace_kind"):
+            if config.get(key):
+                command.extend(("--" + key.replace("_", "-"), config[key]))
+        if operation in {"import_preview", "import_apply"}:
+            command.extend(_bundle_arguments(config, payload.get("bundle_id")))
+        request = {"protocol": REQUEST_PROTOCOL, "operation": operation, "payload": payload}
         try:
-            result = subprocess.run([config["stockwiki_python"], "-B", str(Path(__file__).resolve()), "--worker"],
-                                    cwd=config["stockwiki_root"], input=json.dumps(request, ensure_ascii=False),
+            wire = json.dumps(request, ensure_ascii=False, allow_nan=False)
+        except (ValueError, TypeError, RecursionError) as error:
+            raise DashboardOwnerError("invalid_payload", "Expected a serializable JSON object") from error
+        try:
+            result = subprocess.run(command, cwd=code, input=wire,
                                     text=True, encoding="utf-8", errors="strict", capture_output=True,
                                     timeout=config.get("timeout_seconds", 30), env=_env())
         except subprocess.TimeoutExpired as error:
             raise DashboardOwnerError("owner_timeout", "StockWiki owner request timed out", 504) from error
         except OSError as error:
             raise DashboardOwnerError("owner_process_unavailable", "Cannot start StockWiki interpreter", 503) from error
+        except UnicodeError as error:
+            raise DashboardOwnerError("owner_response_invalid", "StockWiki returned invalid UTF-8", 502) from error
         if len(result.stdout.encode("utf-8")) > _MAX_BYTES:
             raise DashboardOwnerError("owner_response_too_large", "StockWiki response exceeded the dashboard limit", 502)
         try:
-            response = _json(result.stdout)
-            if not isinstance(response, dict) or response.get("protocol") != PROTOCOL:
-                raise ValueError("invalid_worker_envelope")
-        except (ValueError, UnicodeError) as error:
+            response = decode_owner_json(result.stdout)
+            if (not isinstance(response, dict) or response.get("protocol") != REPLY_PROTOCOL
+                or response.get("operation") != operation):
+                raise ValueError("invalid_owner_envelope")
+            key = "result" if result.returncode == 0 else "error"
+            if set(response) != {"protocol", "operation", key} or not isinstance(response[key], dict):
+                raise ValueError("invalid_owner_envelope")
+            if key == "error":
+                value = response[key]
+                if (not isinstance(value.get("code"), str) or not isinstance(value.get("message"), str)
+                    or type(value.get("status")) is not int or not 400 <= value["status"] <= 599
+                    or not isinstance(value.get("details"), dict)):
+                    raise ValueError("invalid_owner_error")
+        except (ValueError, RecursionError) as error:
             raise DashboardOwnerError("owner_response_invalid", "StockWiki worker returned an invalid response", 502) from error
-        if response.get("error"):
+        if key == "error":
             value = response["error"]
             raise DashboardOwnerError(value["code"], value["message"], value["status"], value.get("details"))
-        if result.returncode != 0:
-            raise DashboardOwnerError("owner_process_failed", "StockWiki worker failed", 502)
         return response["result"]
 
     def status(self):
@@ -207,313 +237,87 @@ class OwnerGateway:
         return self._call("import_apply", _payload(payload, {"bundle_id", "preview_token"}))
 
 
-def _original_error(error):
-    import sqlite3
-    if isinstance(error, DashboardOwnerError):
-        return error
-    text = str(error)
-    code = getattr(error, "error_code", getattr(error, "code", None))
-    if isinstance(error, sqlite3.OperationalError) and any(word in text.lower() for word in ("locked", "busy")):
-        return DashboardOwnerError("owner_busy", "StockWiki owner is busy; retry later", 503)
-    if code == "entity_not_found":
-        return DashboardOwnerError(code, text, 404)
-    if isinstance(error, sqlite3.Error):
-        return DashboardOwnerError("owner_store_unreadable", "StockWiki store cannot be read", 503)
-    if isinstance(error, (FileNotFoundError, PermissionError)):
-        return DashboardOwnerError("owner_file_unavailable", "A configured owner file is missing or unreadable", 503)
-    return DashboardOwnerError(str(code or "owner_rejected"), text[:1500], 400)
-
-
-def _require_store(store, name):
-    if not store.database_path.is_file():
-        raise DashboardOwnerError("owner_database_missing", f"StockWiki {name} store is not initialized", 503)
-
-
-def _bundle(config, bundle_id):
+def _bundle_arguments(config, bundle_id):
     _identifier(bundle_id, "bundle_id")
     bundles = config.get("bundles", {})
     record = bundles.get(bundle_id) if isinstance(bundles, dict) else None
     if not isinstance(record, dict):
         raise DashboardOwnerError("bundle_not_registered", "Bundle is not registered in server deployment", 404)
-    data = {}
+    if not config.get("iqs_root") or not record.get("package") or not record.get("release"):
+        raise DashboardOwnerError("bundle_configuration_invalid", "Registered bundle is incomplete", 503)
+    arguments = ["--iqs-code-root", str(Path(config["iqs_root"]).expanduser().resolve()),
+                 "--bundle-id", bundle_id]
+    if config.get("iqs_release_root"):
+        arguments.extend(("--iqs-release-root", str(Path(config["iqs_release_root"]).expanduser().resolve())))
     for key in ("package", "release"):
-        if not record.get(key):
-            raise DashboardOwnerError("bundle_configuration_invalid", "Registered bundle is incomplete", 503)
-        path = Path(record[key]).expanduser().resolve(strict=True)
-        if not path.is_file() or path.stat().st_size > _MAX_BYTES:
-            raise DashboardOwnerError("bundle_file_invalid", "Registered bundle file is unavailable or too large", 503)
-        raw = path.read_bytes()
-        digest = hashlib.sha256(raw).hexdigest()
-        expected = record.get(key + "_sha256")
-        if expected is not None and digest != expected:
-            raise DashboardOwnerError("bundle_hash_mismatch", "Registered bundle changed", 409)
-        data[key], data[key + "_sha256"] = _json(raw.decode("utf-8")), digest
-    return data
+        arguments.extend(("--" + key, str(Path(record[key]).expanduser().resolve())))
+        if record.get(key + "_sha256") is not None:
+            arguments.extend(("--" + key + "-sha256", str(record[key + "_sha256"])))
+    return arguments
 
 
-def _member_display(member, registered):
-    """Add human labels by the exact original ID; never resolve identity by name."""
-    result = copy.deepcopy(member)
-    if registered is None:
-        return {**result, "canonical_name": None, "identity_state": None, "securities": [],
-                "identity_display_available": False, "identity_display_gap": "entity_not_found"}
-    if registered.get("entity_id") != member.get("entity_id"):
-        raise DashboardOwnerError("identity_display_mismatch", "Original identity did not match the member ID", 503)
-    name = registered.get("canonical_name")
-    return {**result, "canonical_name": name if isinstance(name, str) and name.strip() else None,
-            "identity_state": registered.get("identity_state"),
-            "identity_revision": registered.get("identity_revision"),
-            "securities": copy.deepcopy(registered.get("securities", [])),
-            "identity_display_available": isinstance(name, str) and bool(name.strip()),
-            "identity_display_source": "StockWiki.get_entity"}
+def _require_entity_detail(detail, entity_id):
+    invalid = DashboardOwnerError("owner_response_invalid", "StockWiki returned a different entity", 502)
+    entity = detail.get("entity")
+    groups = detail.get("groups", [])
+    if (not isinstance(entity, dict) or entity.get("entity_id") != entity_id
+        or detail.get("entity_id", entity_id) != entity_id or not isinstance(groups, list)):
+        raise invalid
+    for group in groups:
+        if not isinstance(group, dict) or group.get("entity_id", entity_id) != entity_id:
+            raise invalid
+        fields = group.get("fields", [])
+        if (not isinstance(fields, list) or any(not isinstance(field, dict)
+            or field.get("entity_id", entity_id) != entity_id for field in fields)):
+            raise invalid
 
 
-def _library_summary(coverage, runtime=None):
-    """Counts from original public projections, never full-scan/quality claims."""
-    total = coverage.get("total_entities")
-    if type(total) is not int or total < 0:
-        raise DashboardOwnerError("coverage_projection_invalid", "Original library count is not available", 503)
-    summary = {"scope": "owner_library", "total_entities": total,
-               "available": runtime is not None, "observed_entities": None, "missing_entities": None,
-               "observation_count": None, "scored_field_entries": None, "answered_field_entries": None,
-               "score_observations": None, "fact_observations": None,
-               "financial_accuracy_proven": False, "full_company_completion_known": False,
-               "meaning": "Stored records and current W09 field entries, not completed company scans or qualified answers"}
-    if runtime is None:
-        return {**summary, "reason": "owner_observation_database_missing"}
-    observed, count = runtime.get("distinct_companies"), runtime.get("observations")
-    if (type(observed) is not int or type(count) is not int or not 0 <= observed <= total
-            or count < observed):
-        raise DashboardOwnerError("coverage_projection_invalid", "Original coverage counts are inconsistent", 503)
-    fields = coverage.get("by_field", {})
-    if not isinstance(fields, dict) or any(not isinstance(row, dict) for row in fields.values()):
-        raise DashboardOwnerError("coverage_projection_invalid", "Original field coverage is invalid", 503)
-    for row in fields.values():
-        if any(type(row.get(key)) is not int or row[key] < 0 for key in ("scored", "answered")):
-            raise DashboardOwnerError("coverage_projection_invalid", "Original field counts are invalid", 503)
-    summary.update(observed_entities=observed, missing_entities=total-observed, observation_count=count,
-                   scored_field_entries=sum(row["scored"] for row in fields.values()),
-                   answered_field_entries=sum(row["answered"] for row in fields.values()),
-                   source="StockWiki.coverage + StockWiki.project_runtime_status")
-    return summary
+def _require_entity_records(reply, entity_id):
+    rows = reply.get("observations")
+    if reply.get("entity_id") != entity_id or not isinstance(rows, list):
+        raise DashboardOwnerError("owner_response_invalid", "StockWiki returned a different entity history", 502)
+    for row in rows:
+        if not isinstance(row, dict) or row.get("entity_id") != entity_id:
+            raise DashboardOwnerError("owner_response_invalid", "StockWiki returned a different entity history", 502)
+        payload = row.get("payload")
+        if isinstance(payload, dict) and payload.get("entity_id", entity_id) != entity_id:
+            raise DashboardOwnerError("owner_response_invalid", "StockWiki returned a different entity history", 502)
 
 
-def _owner_worker(config, operation, payload):
-    # Trusted deployment path, isolated interpreter: never contaminate server sys.path.
-    sys.path.insert(0, config["stockwiki_root"])
-    from stockwiki.paths import WorkspacePaths
-    from stockwiki.quick_scan_store import QuickScanStore
-    from stockwiki.quick_scan_observations import QuickScanObservationStore
-    from stockwiki.ui_quick_scan import (build_quick_scan_capabilities, build_quick_scan_search,
-                                        build_quick_scan_entity, build_quick_scan_coverage)
-    paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
-    identity, observations = QuickScanStore(paths), QuickScanObservationStore(paths)
-    _require_store(identity, "identity")
+def _temporal_view(reply, entity_id):
+    from datetime import datetime, timezone
 
-    def entity(entity_id):
-        value = identity.get_entity(entity_id)
-        if value is None:
-            raise DashboardOwnerError("entity_not_found", "No registered entity has this ID", 404)
-        return value
-
-    def universe(universe_id):
-        result = identity.get_universe(universe_id)
-        if result is None:
-            raise DashboardOwnerError("universe_not_found", "No registered universe has this ID", 404)
-        return result
-
-    def universe_id(value="default"):
-        value = config.get("universe_id", "default") if value == "default" else value
-        return _identifier(value, "universe_id")
-
-    if operation == "status":
-        source = build_quick_scan_search(paths, {"page_size": 1})
-        return {"protocol": PROTOCOL, "available": True, "status": "available",
-                "source_protocol": source["protocol"], "c06_envelope_validated": False,
-                "store_id": observations.store_id, "workspace_kind": config.get("workspace_kind", "unclassified"),
-                "entity_count": source["total"], "observations_available": observations.database_path.is_file(),
-                "capabilities": build_quick_scan_capabilities(paths),
-                "registered_bundles": sorted(config.get("bundles", {})),
-                "network_calls": 0, "llm_calls": 0, "automatic_migration": False}
-    if operation == "search":
-        # The public owner owns filters and pagination. Two adjacent pages cover
-        # an arbitrary offset without duplicating its selection/rule engine.
-        size, offset = payload["limit"], payload["offset"]
-        page, start = offset // size + 1, offset % size
-        request = {"text": payload["query"], "filters": payload["filters"], "page": page, "page_size": size,
-                   "conditions": payload.get("conditions"), "condition_combine": payload.get("condition_combine", "all"),
-                   "snapshot": payload.get("snapshot"), "view": payload.get("view", "all_relevant")}
-        result = build_quick_scan_search(paths, request)
-        rows = result["rows"][start:]
-        if start and result["next_page"] is not None:
-            request.update(page=page + 1, snapshot=result["snapshot"])
-            following = build_quick_scan_search(paths, request)
-            rows += following["rows"][:size - len(rows)]
-            if following["refresh_recommended"]:
-                result["refresh_recommended"] = True
-        result.update(rows=rows, offset=offset, limit=size, next_offset=offset + size if offset + size < result["total"] else None)
-        return result
-    if operation == "coverage":
-        result = build_quick_scan_coverage(paths)
-        runtime = None
-        if observations.database_path.is_file():
-            from stockwiki.quick_scan_delivery import project_runtime_status
-            runtime = project_runtime_status(observations)
-        return {**result, "library_summary": _library_summary(result, runtime)}
-    if operation == "entity":
-        return build_quick_scan_entity(paths, payload["entity_id"])
-    if operation == "entity_view":
-        from datetime import datetime, timezone
+    if __package__:
+        from .dashboard_temporal import build_entity_view
+    else:
         from dashboard_temporal import build_entity_view
-        detail = build_quick_scan_entity(paths, payload["entity_id"])
-        return build_entity_view(detail, observations.get_observation, entity_id=payload["entity_id"],
-                                 now_utc=datetime.now(timezone.utc).isoformat())
-    if operation in {"history", "facts"}:
-        entity(payload["entity_id"])
-        if not observations.database_path.is_file():
-            return {"protocol": PROTOCOL, "entity_id": payload["entity_id"], "observations": [], "count": 0,
-                    "available": False, "reason": "owner_observation_database_missing",
-                    "complete": False, "relations_supported": False, "network_calls": 0, "llm_calls": 0}
-        records = observations.observations_for_entity(payload["entity_id"])
-        if operation == "facts":
-            records = [row for row in records if row["payload"].get("answer", {}).get("response_kind") == "fact"]
-        return {"protocol": PROTOCOL, "source_protocol": "stockwiki_observation_store",
-                "entity_id": payload["entity_id"], "observations": records, "count": len(records),
-                "available": True, "complete": True, "relations_supported": False,
-                "meaning": "Stored original observations; not a cross-version comparability decision",
-                "network_calls": 0, "llm_calls": 0}
-    if operation in {"company_result", "company_history"}:
-        # B03: strictly read-only company assessment projection. The bridge
-        # module imports the owner's narrow internal read entry itself and
-        # never registers, computes scores or writes any store.
-        import dashboard_company_projection as projection
-
-        try:
-            return projection.worker_read(config, operation, payload)
-        except projection.ProjectionError as error:
-            raise DashboardOwnerError(error.code, error.message, error.status) from None
-    if operation == "universe_list":
-        selected = universe_id(payload.get("universe_id", "default"))
-        data = universe(selected)
-        members = [_member_display(row, identity.get_entity(row["entity_id"]))
-                   for row in identity.list_members(selected)]
-        return {"protocol": PROTOCOL, "universe": data, "members": members, "member_count": len(members),
-                "network_calls": 0, "llm_calls": 0}
-    if operation in {"universe_preview", "universe_apply"}:
-        selected = universe_id(payload.get("universe_id", "default"))
-        universe(selected)
-        if not payload.get("entity_id"):
-            query = payload.get("query")
-            if not isinstance(query, str) or not query.strip() or len(query) > 1000:
-                raise DashboardOwnerError("entity_id_required", "Choose an existing entity ID; names do not authorize identity changes")
-            candidates = build_quick_scan_search(paths, {"text": query, "page_size": 100})
-            display_candidates = [_member_display(row, identity.get_entity(row["entity_id"]))
-                                  for row in candidates["rows"]]
-            return {"protocol": PROTOCOL, "status": "ambiguous" if candidates["total"] > 1 else "choose_entity" if candidates["total"] else "unresolved",
-                    "candidates": display_candidates, "can_apply": False, "identity_changed": False}
-        if payload.get("query"):
-            raise DashboardOwnerError("invalid_payload", "Use either entity_id or a candidate query")
-        selected_entity = _identifier(payload["entity_id"], "entity_id")
-        record = entity(selected_entity)
-        action = payload.get("action", "add")
-        if action not in {"add", "remove", "restore", "pin", "unpin"}:
-            raise DashboardOwnerError("action_invalid", "Unsupported universe action")
-        reason = payload.get("reason", "")
-        if not isinstance(reason, str) or len(reason) > 2000 or (action in {"add", "remove", "restore"} and not reason.strip()):
-            raise DashboardOwnerError("reason_required", "Provide a nonempty reason of at most 2000 characters")
-        priority, pin = payload.get("priority", 0), payload.get("pin", False)
-        if type(priority) is not int or type(pin) is not bool:
-            raise DashboardOwnerError("invalid_payload", "priority must be an integer and pin must be boolean")
-        member = identity.get_member(selected, selected_entity)
-        normalized = {"action": action, "entity_id": selected_entity, "universe_id": selected,
-                      "reason": reason.strip(), "priority": priority, "pin": pin}
-        token = _digest({"operation": "universe", "payload": normalized,
-                         "identity_revision": record.get("identity_revision"), "member": member})
-        preview = {"protocol": PROTOCOL, "status": "preview", "can_apply": True, "identity_changed": False,
-                   "payload": normalized, "entity": record, "member": member, "preview_token": token}
-        if ((action == "add" and member and member["membership_status"] != "active")
-                or (action in {"remove", "pin", "unpin"} and (not member or member["membership_status"] != "active"))
-                or (action == "restore" and (not member or member["membership_status"] != "logically_removed"))):
-            preview.update(can_apply=False, reason="membership_state_conflict")
-        if operation == "universe_preview":
-            return preview
-        if payload.get("preview_token") != token:
-            raise DashboardOwnerError("preview_stale", "Refresh and review the membership preview before applying", 409)
-        if not preview["can_apply"]:
-            raise DashboardOwnerError("membership_state_conflict", "This action does not match current membership state", 409)
-        from stockwiki.quick_scan_universe import add_member, remove_member, restore_member, set_member_pin
-        if action == "add":
-            result = add_member(identity, selected, selected_entity, added_reason=reason,
-                                priority=priority, manual_pin=pin)
-        elif action == "remove":
-            result = remove_member(identity, selected, selected_entity, removal_reason=reason)
-        elif action == "restore":
-            result = restore_member(identity, selected, selected_entity, restoration_reason=reason)
-        else:
-            result = set_member_pin(identity, selected, selected_entity, pinned=action == "pin")
-        return {"protocol": PROTOCOL, "status": "applied", "member": result,
-                "identity_changed": False, "network_calls": 0, "llm_calls": 0}
-    if operation == "delivery_status":
-        _require_store(observations, "observations")
-        from stockwiki.quick_scan_delivery import ack_status, project_runtime_status
-        return (ack_status(observations, package_id=payload["package_id"]) if payload.get("package_id")
-                else project_runtime_status(observations))
-    if operation in {"import_preview", "import_apply"}:
-        _require_store(observations, "observations")
-        bundle_id = payload.get("bundle_id")
-        bundle = _bundle(config, bundle_id)
-        from stockwiki.quick_scan_import import parse_package, verify_package_integrity, import_package
-        package = parse_package(bundle["package"])
-        verify_package_integrity(package)
-        release = bundle["release"]
-        for key in ("module_package_id", "release_id", "catalog_version", "semantic_fingerprint_version", "questions"):
-            if key not in release:
-                raise DashboardOwnerError("frozen_release_invalid", "Registered frozen release is incomplete")
-        token = _digest({"bundle_id": bundle_id, "package_sha256": bundle["package_sha256"],
-                         "release_sha256": bundle["release_sha256"]})
-        if operation == "import_apply" and payload.get("preview_token") != token:
-            raise DashboardOwnerError("preview_stale", "Refresh and review the registered bundle before importing", 409)
-        # Subject-bound vendor validation uses only original IQS code. Validator
-        # scratch belongs to an owned temporary root, never the owner workspace.
-        with tempfile.TemporaryDirectory(prefix="iqs-dashboard-owner-") as temporary:
-            from stockwiki.quick_scan_subject_authority import IqsSubjectContract
-            from stockwiki.quick_scan_subject_dispatch import SubjectBoundObservationStore
-            contract = IqsSubjectContract(Path(config["iqs_root"]), runs_dir=Path(temporary),
-                                          release_root=Path(config.get("iqs_release_root", config["iqs_root"])))
-            bound_store = SubjectBoundObservationStore(paths, contract=contract)
-            if operation == "import_apply":
-                # Native import owns package integrity and per-item decisions.
-                # A rejected neighbour must not discard another item's ACK.
-                receipt = import_package(bound_store, package, frozen_release=release, identity_store=identity)
-                accepted = all(ack["status"] in {"accepted", "already_present"} for ack in receipt["acks"])
-                return {"protocol": PROTOCOL, "status": "imported" if accepted else "rejected_or_conflict", "receipt": receipt,
-                        "financial_accuracy_proven": False, "network_calls": 0, "llm_calls": 0}
-            preview = bound_store.preview_import(package, frozen_release=release, identity_store=identity)
-            return {"protocol": PROTOCOL, "status": "preview", "bundle_id": bundle_id,
-                    "package_id": package["package_id"], "items": preview["items"], "item_count": preview["item_count"],
-                    "can_apply": preview["can_apply"], "owner_preview": preview,
-                    "preview_token": token, "replay": all(item["exact_ack_replay"] for item in preview["items"]),
-                    "financial_accuracy_proven": False,
-                    "network_calls": 0, "llm_calls": 0}
-    raise DashboardOwnerError("operation_unknown", "Unsupported owner operation", 404)
+    if (set(reply) != {"entity_id", "detail", "observations"} or reply["entity_id"] != entity_id
+        or not isinstance(reply["detail"], dict) or not isinstance(reply["observations"], dict)
+        or any(not isinstance(row, dict) or row.get("entity_id") != entity_id
+               or row.get("observation_id") != key for key, row in reply["observations"].items())):
+        raise DashboardOwnerError("owner_response_invalid", "StockWiki returned invalid entity view inputs", 502)
+    _require_entity_detail(reply["detail"], entity_id)
+    return build_entity_view(reply["detail"], reply["observations"].get, entity_id=entity_id,
+                             now_utc=datetime.now(timezone.utc).isoformat())
 
 
 def _main():
+    """Forward the old worker invocation used by a dashboard already running."""
     if sys.argv[1:] != ["--worker"]:
         return 2
-    def offline(event, args):
-        if event in {"socket.connect", "socket.getaddrinfo", "socket.sendto"}:
-            raise RuntimeError("dashboard_owner_network_forbidden")
-    sys.addaudithook(offline)
     try:
         raw = sys.stdin.buffer.read(_MAX_BYTES + 1)
         if len(raw) > _MAX_BYTES:
             raise DashboardOwnerError("request_too_large", "Owner request exceeds limit")
-        request = _json(raw.decode("utf-8"))
-        result = _owner_worker(request["config"], request["operation"], request["payload"])
+        request = decode_owner_json(raw.decode("utf-8"))
+        gateway = OwnerGateway(request["config"])
+        result = gateway._call(request["operation"], request["payload"])
         response, code = {"protocol": PROTOCOL, "result": result}, 0
-    except Exception as error:
-        response, code = {"protocol": PROTOCOL, "error": _original_error(error).as_dict()}, 2
+    except DashboardOwnerError as error:
+        response, code = {"protocol": PROTOCOL, "error": error.as_dict()}, 2
+    except (ValueError, KeyError, TypeError, RecursionError):
+        error = DashboardOwnerError("invalid_payload", "Expected a legacy dashboard request")
+        response, code = {"protocol": PROTOCOL, "error": error.as_dict()}, 2
     print(json.dumps(response, ensure_ascii=False, allow_nan=False))
     return code
 

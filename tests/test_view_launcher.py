@@ -64,6 +64,29 @@ def test_missing_viewer_has_actionable_refusal(tmp_path):
     assert 'Traceback' not in p.stderr and not p.stdout
 
 
+def test_view_launcher_only_requires_the_public_module_entrypoint(tmp_path):
+    viewer = tmp_path / 'viewer'
+    package = viewer / 'src' / 'iqs_viewer_lab'
+    package.mkdir(parents=True)
+    (package / '__init__.py').touch()
+    (package / '__main__.py').write_text(
+        'import json, os, sys\n'
+        'if __name__ == "__main__":\n'
+        '    print(json.dumps({"argv": sys.argv[1:], "pid": os.getpid()}), flush=True)\n'
+        '    raise SystemExit(7)\n', encoding='utf8')
+    bundle = tmp_path / 'bundle.json'
+    with subprocess.Popen(
+        [sys.executable, '-B', str(SCRIPT), '--bundle', str(bundle), '--viewer-root', str(viewer), '--open'],
+        cwd=tmp_path, env=_env(tmp_path), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf8',
+    ) as process:
+        stdout, stderr = process.communicate(timeout=20)
+    assert process.returncode == 7, stderr
+    assert json.loads(stdout) == {
+        'argv': ['serve', '--bundle', str(bundle), '--host', '127.0.0.1', '--port', '0', '--open'],
+        'pid': process.pid,
+    }
+
+
 @pytest.mark.parametrize('explicit_root',[False,True])
 def test_real_thin_launcher_reads_meta_and_releases_port(tmp_path,explicit_root):
     # Test inputs are explicitly provided; the launcher itself never defaults

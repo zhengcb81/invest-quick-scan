@@ -20,10 +20,18 @@ import sys
 import threading
 import uuid
 
+if __package__:
+    from .dashboard_json import decode_owner_json
+else:
+    from dashboard_json import decode_owner_json
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a"
 PROTOCOL = "iqs.dashboard-preparation/1.0.0"
 MAX_BYTES = 16 * 1024 * 1024
+_OWNER_COMMAND = "stockwiki.quick_scan_prepare_cli"
+_OWNER_REQUEST = "stockwiki.quick_scan_prepare_request/1.0.0"
+_OWNER_REPLY = "stockwiki.quick_scan_prepare_reply/1.0.0"
 
 
 class DashboardPrepareError(ValueError):
@@ -215,20 +223,26 @@ def _timeouts(config):
     return worker, native
 
 
-_WORK_BANK_BINDING_READER = r'''
-import contextlib, json, sys
-sys.path.insert(0, sys.argv[1])
-with contextlib.redirect_stdout(sys.stderr):
-    from src.utils.quick_scan_refresh_admission import safe_read
-    from pathlib import Path
-    from src.utils.quick_scan_refresh_inspect import continuation_bank_bindings
-    request = json.load(sys.stdin)
-    config = safe_read(sys.argv[2]) if sys.argv[2] != '-' else request.pop('readonly_config')
-    if config.get("protocol") != "stockqa.refresh_admission_config/1.0.0":
-        raise ValueError("existing_work_deployment_invalid")
-    result = continuation_bank_bindings(Path(config["work_store"]), request)
-print(json.dumps(result, allow_nan=False))
-'''
+def _read_continuation_bank(config, binding, *, admission_config=None, ledger=None):
+    if (admission_config is None) == (ledger is None):
+        raise ValueError('exactly_one_original_bank_selector_required')
+    selector = ('--ledger', ledger) if admission_config is None else ('--admission-config', admission_config)
+    command = [config.get('stockqa_python') or sys.executable, '-B', '-X', 'utf8', '-m',
+               'src.utils.quick_scan_continuation_bank_cli', selector[0], str(selector[1])]
+    done = subprocess.run(command, input=_bytes({
+        'protocol': 'stockqa.continuation_bank_request/1.0.0', 'binding': binding,
+    }), capture_output=True, env=_env(), cwd=config['stockqa_root'],
+        timeout=_timeouts(config)[1], creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    if done.returncode or len(done.stdout) > MAX_BYTES:
+        raise ValueError('invalid_original_binding_read')
+    result = decode_owner_json(done.stdout)
+    if (not isinstance(result, dict) or result.get('protocol') != 'iqs.original_work_bank_bindings/1.0.0'
+        or any(type(result.get(counter)) is not int or result[counter] != 0
+               for counter in ('API_requests', 'database_writes'))
+        or not isinstance(result.get('rows'), list)
+        or not all(isinstance(row, dict) for row in result['rows'])):
+        raise ValueError('invalid_original_binding_read')
+    return result['rows']
 
 
 def _equivalent_frozen_bank(manifest, route, snapshot, binding, expected_hash):
@@ -268,10 +282,6 @@ def _equivalent_frozen_bank(manifest, route, snapshot, binding, expected_hash):
 
 def _reusable_bank(config, payload):
     """Only original active-work hashes select a unique original owner snapshot."""
-    from stockwiki.paths import WorkspacePaths
-    from stockwiki.quick_scan_store import QuickScanStore
-    from stockwiki.quick_scan_routes import QuickScanRouteStore
-    from stockwiki.quick_scan_route_validation import IqsRouteValidator
     native, manifest, route = payload['native'], payload['manifest'], payload['route']
     binding = native['binding']
     scopes = {}
@@ -286,41 +296,22 @@ def _reusable_bank(config, payload):
     if refs is not None:
         request['controlled_work_refs'] = refs
     try:
-        done = subprocess.run([config.get('stockqa_python') or sys.executable,'-B','-X','utf8','-c',
-            _WORK_BANK_BINDING_READER,config['stockqa_root'],config['prepare']['admission_config']],
-            input=_bytes(request),capture_output=True,env=_env(),cwd=config.get('prepare', {}).get('runtime_dir', config['stockqa_root']),
-            timeout=_timeouts(config)[1],creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
-        result=json.loads(done.stdout)
-        if (done.returncode or len(done.stdout)>MAX_BYTES
-            or result.get('protocol')!='iqs.original_work_bank_bindings/1.0.0'
-            or type(result.get('API_requests')) is not int or result['API_requests']!=0
-            or type(result.get('database_writes')) is not int or result['database_writes']!=0
-            or not isinstance(result.get('rows'),list)):
-            raise ValueError('invalid_original_binding_read')
+        rows = _read_continuation_bank(config, request, admission_config=config['prepare']['admission_config'])
     except (OSError,ValueError,subprocess.TimeoutExpired) as error:
         raise DashboardPrepareError('existing_work_binding_unavailable',
             'Original unfinished-work bindings are unavailable; inspect the owner before preparing',409) from error
-    rows=result['rows']
     if not rows:
         return None
     hashes={row.get('manifest_raw_sha256') for row in rows}
     if len(hashes)!=1 or any(not isinstance(h,str) or re.fullmatch('[a-f0-9]{64}',h) is None for h in hashes):
         raise DashboardPrepareError('existing_work_manifest_conflict','Original active work requires incompatible frozen banks',409)
     expected_hash=next(iter(hashes))
-    paths=WorkspacePaths.from_root(Path(config['workspace_root']))
-    routes=QuickScanRouteStore(QuickScanStore(paths),validator=IqsRouteValidator(Path(config['iqs_root']),
-        runs_dir=Path(config['prepare']['state_root'])/'reuse-validation',
-        release_root=Path(config.get('iqs_release_root',config['iqs_root']))))
-    if _bytes(routes.identity_binding(binding['subject_key']))!=_bytes(binding):
-        raise DashboardPrepareError('existing_work_subject_binding_changed','Original subject identity changed',409)
-    matches=[s for s in routes.snapshots_for_subject(binding['subject_key']) if s['manifest_raw_sha256']==expected_hash]
-    if len(matches)!=1:
-        raise DashboardPrepareError('existing_work_snapshot_required','Exactly one original owner snapshot must match the active-work bank hash',409)
-    snapshot=routes.get_snapshot(matches[0]['decision_id'])
+    found = _owner_prepare(config, 'frozen_bank', {'binding':binding,'manifest_sha256':expected_hash,'now_utc':_now()})
+    snapshot = _snapshot_bytes(found['snapshot'])
     _equivalent_frozen_bank(manifest,route,snapshot,binding,expected_hash)
-    validation=routes.validator.validate(snapshot['route_raw'],snapshot['manifest_raw'],
-        expected_decision_id=snapshot['decision_id'],validation_mode='execution',now_utc=_now())
-    if validation.get('new_execution_authorized') is not True:
+    if 'validation_error' in found:
+        _raise_owner_prepare_error(found['validation_error'])
+    if found.get('authorized') is not True:
         raise DashboardPrepareError('existing_work_route_not_executable','Original route cannot currently be executed',409)
     return {'decision_id':snapshot['decision_id'],'manifest_raw_sha256':expected_hash,
         'route_raw_sha256':snapshot['route_raw_sha256'],'work_bindings_sha256':_sha(rows),
@@ -349,61 +340,68 @@ def _cached_scope_result(owner_state, questions, subject_ref, *, cache_clock="in
 
 def _cache_preview(config,payload):
     """Original W06/C06 reads without quote, grant, runtime keys or admission."""
-    from stockwiki.paths import WorkspacePaths
-    from stockwiki.quick_scan_store import QuickScanStore
-    from stockwiki.quick_scan_routes import QuickScanRouteStore
-    from stockwiki.quick_scan_route_validation import IqsRouteValidator,RouteStoreError
-    from stockwiki.quick_scan_query_contract import IqsQueryContract
-    from stockwiki.quick_scan_subject_refresh import SubjectRefreshView
-    from stockwiki.quick_scan_module_refresh import plan_module_refresh
-    from stockwiki.quick_scan_subject_authority import subject_ref_for_question
     native,manifest,route=payload['native'],payload['manifest'],payload['route']
     binding=native.get('binding')
-    if binding is None or config.get('prepare',{}).get('recovery_work_decision_refs') is not None:return None
-    paths=WorkspacePaths.from_root(Path(config['workspace_root']))
-    policy=_read(paths.config_dir/'quick_scan_refresh.json')
-    directory=Path(payload['cache_directory']);directory.mkdir(parents=True,exist_ok=True)
-    routes=QuickScanRouteStore(QuickScanStore(paths),validator=IqsRouteValidator(Path(config['iqs_root']),
-        runs_dir=directory/'route-validation',release_root=Path(config.get('iqs_release_root',config['iqs_root']))))
-    now=_now();kwargs={'subject_key':binding['subject_key'],'scope':'entity','scope_id':binding['entity_id'],'now_utc':now}
+    if binding is None or config.get('prepare',{}).get('recovery_work_decision_refs') is not None:
+        return None
+    now = _now()
+    selected = set(payload['question_ids'])
+    questions = [question for question in manifest['questions'] if question['id'] in selected]
+    if len(questions) != len(selected):
+        raise DashboardPrepareError('question_subset_invalid','Selected question is not part of this company bank',409)
+    plan = _owner_prepare(config, 'cache_plan', {'binding':binding,'questions':questions,'now_utc':now})
+    if plan is None:
+        return None
+    snapshot = _snapshot_bytes(plan['snapshot'])
     try:
-        active=routes.get_for_execution(**kwargs);snapshot=active['snapshot']
         _equivalent_frozen_bank(manifest,route,snapshot,binding,snapshot['manifest_raw_sha256'])
-        contract=IqsQueryContract(Path(config['iqs_root']),runs_dir=directory/'query-validation',
-            release_root=Path(config.get('iqs_release_root',config['iqs_root'])))
-        view=SubjectRefreshView(routes,contract=contract,**kwargs)
-        plan=plan_module_refresh(routes,view,provider=policy['provider'],model=policy['model'],ttl_hours=policy['ttl_hours'],
-            cache_clock=policy.get('cache_clock','information_as_of'),**kwargs)
     except DashboardPrepareError as error:
-        if error.code=='existing_work_bank_changed':return None
+        if error.code=='existing_work_bank_changed':
+            return None
         raise
-    except RouteStoreError as error:
-        if error.code in {'route_current_unavailable','refresh_subject_observation_store_uninitialized','route_identity_changed'}:return None
-        raise
-    selected=set(payload['question_ids']);fields={row['field_id']:row for row in plan['fields']}
-    if any(fields[qid]['decision']!='reuse' or not fields[qid].get('reuse_observation_id') for qid in selected):return None
-    scopes={q['id']:{'scope':q['scope'],'scope_id':binding['entity_id'] if q['scope']=='entity' else native['selected_listing']['security_id']}
-        for q in manifest['questions'] if q['id'] in selected}
-    request={k:binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision')}
-    request.update(information_cutoff=route['as_of'],scope_bindings=scopes,
-        readonly_config={'protocol':'stockqa.refresh_admission_config/1.0.0','work_store':policy['qa']['work_store']})
-    completed=subprocess.run([config.get('stockqa_python') or sys.executable,'-B','-X','utf8','-c',
-        _WORK_BANK_BINDING_READER,config['stockqa_root'],'-'],input=_bytes(request),capture_output=True,
-        env=_env(),cwd=config['stockqa_root'],timeout=_timeouts(config)[1],creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
-    if completed.returncode:return None
-    inspected=json.loads(completed.stdout)
-    if (inspected.get('protocol')!='iqs.original_work_bank_bindings/1.0.0' or inspected.get('API_requests')!=0
-        or inspected.get('database_writes')!=0 or inspected.get('rows')!=[]):return None
-    grouped={}
-    for question in manifest['questions']:
-        if question['id'] not in selected:continue
-        ref=subject_ref_for_question(routes,question,snapshot,binding,now_utc=now)
+    if 'plan_error' in plan:
+        _raise_owner_prepare_error(plan['plan_error'])
+    rows = plan.get('rows')
+    if (not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows)
+        or [row.get('question_id') for row in rows] != [q['id'] for q in questions]):
+        raise DashboardPrepareError('native_response_invalid','Original cache plan did not bind every selected question',502)
+    scopes, grouped = {}, {}
+    for original, question in zip(rows, questions, strict=True):
+        qid, ref, field = original['question_id'], original.get('subject_ref'), original.get('field')
+        scope = 'segment' if route.get('scope') == 'segment' and question['scope'] == 'entity' else question['scope']
+        security_id, listing_id, segment_id = None, None, None
+        if scope == 'entity':
+            scope_id = binding['entity_id']
+        elif scope == 'security':
+            listing = native['selected_listing']
+            scope_id = security_id = listing['security_id']
+            listing_id = listing['listing_id']
+        elif scope == 'segment':
+            scope_id = segment_id = route.get('segment_id')
+        else:
+            scope_id = None
+        if (not isinstance(ref, dict) or not isinstance(field, dict) or not isinstance(scope_id, str)
+            or ref.get('scope') != scope or ref.get('scope_id') != scope_id
+            or ref.get('primary_issuer_id') != binding['entity_id']
+            or (ref.get('security_id'), ref.get('listing_id'), ref.get('segment_id')) != (security_id, listing_id, segment_id)
+            or type(ref.get('analysis_subject_revision')) is not int
+            or any(ref.get(key) != binding.get(key) for key in ('entity_id','analysis_subject_id','analysis_subject_revision','perimeter_sha256'))
+            or field.get('field_id') != qid or field.get('decision') != 'reuse'
+            or not isinstance(field.get('reuse_observation_id'), str) or not field['reuse_observation_id']):
+            raise DashboardPrepareError('native_response_invalid','Original cache plan returned a different question or scope',502)
+        scopes[qid] = {'scope':scope,'scope_id':scope_id}
         row=grouped.setdefault(_sha(ref),{'subject_ref':ref,'question_count':0,'items':[]})
-        field=fields[question['id']]
-        row['items'].append({'question_id':question['id'],'observation_id':field['reuse_observation_id'],
+        row['items'].append({'question_id':qid,'observation_id':field['reuse_observation_id'],
             **({key:field[key] for key in ('information_as_of','cache_started_at','cache_valid_until') if key in field}
                if plan.get('cache_clock')=='successful_scan' else {})})
         row['question_count']+=1
+    request={k:binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision')}
+    request.update(information_cutoff=route['as_of'],scope_bindings=scopes)
+    try:
+        if _read_continuation_bank(config, request, ledger=plan['work_store']):
+            return None
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        return None
     return {'status':'cached','entity_id':binding['entity_id'],'execution_bundles':[],'cached_scopes':list(grouped.values()),'checked_at':now,
         'cached_question_count':len(selected),'question_count_total':len(selected),'API_requests':0,'dispatch_started':False,
         **({'cache_clock':'successful_scan'} if plan.get('cache_clock')=='successful_scan' else {}),
@@ -480,11 +478,10 @@ class PrepareGateway:
 
     def _worker(self, operation, payload):
         self._deployment()
-        interpreter = self.config.get("stockwiki_python") or sys.executable
         timeout = 60 if operation == "snapshot" else _timeouts(self.config)[0]
         try:
-            completed = subprocess.run([interpreter, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--worker"],
-                cwd=self.config["stockwiki_root"], env=_env(), input=_bytes({"operation": operation,
+            completed = subprocess.run([sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--worker"],
+                cwd=self.config["iqs_root"], env=_env(), input=_bytes({"operation": operation,
                 "config": self.config, "payload": payload}), capture_output=True, timeout=timeout,
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired:
@@ -498,8 +495,8 @@ class PrepareGateway:
         if len(completed.stdout) > MAX_BYTES:
             raise DashboardPrepareError("owner_response_invalid", "Original owner response exceeds its limit", 502)
         try:
-            response = json.loads(completed.stdout.decode("utf-8"))
-        except (UnicodeError, ValueError) as error:
+            response = decode_owner_json(completed.stdout.decode("utf-8"))
+        except (UnicodeError, ValueError, RecursionError) as error:
             raise DashboardPrepareError("owner_response_invalid", "Original owner did not return its preparation envelope", 502) from error
         if not response.get("ok"):
             error = response.get("error", {})
@@ -511,7 +508,8 @@ class PrepareGateway:
     def status(self):
         try:
             self._deployment()
-            gaps = self._execution_gaps()
+            owner_policy = _owner_prepare(self.config, 'policy', {})
+            gaps = self._execution_gaps(owner_policy=owner_policy)
             return {"available": True, "bank_preview_available": True, "native_prepare_configured": not gaps,
                     "gaps": gaps, "module_package_id": self.options.get("module_package_id", DEFAULT_PACKAGE),
                     "profiles": [{"profile_id": key, "entity_id": row.get("entity_id"), "label": row.get("label", key)}
@@ -520,14 +518,15 @@ class PrepareGateway:
         except DashboardPrepareError as error:
             return {"available": False, "bank_preview_available": False, "gaps": [error.code], "API_requests": 0}
 
-    def _execution_gaps(self):
+    def _execution_gaps(self, *, owner_policy=None):
         missing = []
-        owner_policy = Path(self.config["workspace_root"]) / "config/quick_scan_refresh.json"
-        if not owner_policy.is_file():
-            missing.append("native_prepare_owner_policy_missing")
-        else:
-            try:
-                original_policy = _read(owner_policy)
+        try:
+            if owner_policy is None:
+                owner_policy = _owner_prepare(self.config, 'policy', {})
+            if owner_policy['sha256'] is None:
+                missing.append("native_prepare_owner_policy_missing")
+            else:
+                original_policy = owner_policy['policy']
                 protocol = original_policy.get("protocol") if isinstance(original_policy, dict) else None
                 if not isinstance(protocol, str) or not protocol.startswith("stockwiki.refresh_owner_policy/"):
                     missing.append("native_prepare_owner_policy_invalid")
@@ -537,8 +536,8 @@ class PrepareGateway:
                     missing.append("recovery_policy_refs_required")
                 else:
                     _ordered_route_targets(original_policy)
-            except (OSError, ValueError, TypeError):
-                missing.append("native_prepare_owner_policy_invalid")
+        except (OSError, ValueError, TypeError, KeyError):
+            missing.append("native_prepare_owner_policy_invalid")
         for key in ("admission_config", "runtime_dir", "spend_authorization"):
             value = self.options.get(key)
             if not isinstance(value, str) or not Path(value).is_absolute() or not Path(value).exists():
@@ -562,7 +561,7 @@ class PrepareGateway:
             missing.append("prepare.agent")
         return missing
 
-    def _configuration_binding(self, selection):
+    def _configuration_binding(self, selection, *, owner_policy=None):
         """Bind this preparation, not append-only UI bundle registrations."""
         keys = ("iqs_root", "stockwiki_root", "stockwiki_python", "stockqa_root", "stockqa_python",
                 "workspace_root", "iqs_release_root")
@@ -570,8 +569,10 @@ class PrepareGateway:
         profile_id = selection.get("profile_id")
         profile = self.options.get("routing_profiles", {}).get(profile_id) if profile_id else None
         selected_profile = {key: profile.get(key) for key in ("entity_id", "verified_facts", "user_policy")} if profile else None
-        files = {}
-        paths = [Path(self.config["workspace_root"]) / "config/quick_scan_refresh.json"]
+        if owner_policy is None:
+            owner_policy = _owner_prepare(self.config, 'policy', {})
+        files = {owner_policy['path']:owner_policy['sha256']}
+        paths = []
         for key in ("admission_config", "spend_authorization", "search_policy", "shared_company_config"):
             if self.options.get(key):
                 paths.append(Path(self.options[key]))
@@ -649,9 +650,10 @@ class PrepareGateway:
             if subset is not None and set(subset)-{q['id'] for q in manifest['questions']}:
                 raise DashboardPrepareError('question_subset_invalid','Selected question is not part of this company bank')
             requested=[q['id'] for q in manifest['questions'] if subset is None or q['id'] in subset]
-            cached=self._worker('cache_preview',{'native':native,'manifest':manifest,'route':route,'question_ids':requested,
-                'cache_directory':str(directory/'cache-read')}) if binding is not None else None
-            gaps = self._execution_gaps()
+            cached=self._worker('cache_preview',{'native':native,'manifest':manifest,'route':route,
+                'question_ids':requested}) if binding is not None else None
+            owner_policy = _owner_prepare(self.config, 'policy', {})
+            gaps = self._execution_gaps(owner_policy=owner_policy)
             if cached is not None:gaps=[]
             reused = self._worker("bank_reuse", {"native": native, "manifest": manifest, "route": route}) if binding is not None and not gaps and cached is None else None
             _new_raw(directory / "manifest.json", reused['manifest_raw'].encode('utf-8') if reused else (proposed / "manifest.json").read_bytes())
@@ -661,7 +663,7 @@ class PrepareGateway:
             _new(directory / "native.json", native)
             manifest = _read(directory / "manifest.json")
             route = _read(directory / "route.json")
-            recovery = _recovery_subset(self.config, directory, manifest, native, _read(Path(self.config["workspace_root"]) / "config/quick_scan_refresh.json")) if not gaps and cached is None else None
+            recovery = _recovery_subset(self.config, directory, manifest, native, owner_policy['policy']) if not gaps and cached is None else None
             if issuer["identity_state"] != "verified":
                 gaps.append("route_identity_unverified")
             if binding is None and native.get("bootstrap") is None:
@@ -670,7 +672,8 @@ class PrepareGateway:
                 gaps.append("security_selection_required")
             record = {"protocol": PROTOCOL, "preview_id": preview_id, "created_at": now,
                       "expires_at": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat().replace("+00:00", "Z"),
-                      "selection": payload, "snapshot_sha256": _snapshot_sha(native), "config_sha256": self._configuration_binding(payload),
+                      "selection": payload, "snapshot_sha256": _snapshot_sha(native),
+                      "config_sha256": self._configuration_binding(payload, owner_policy=owner_policy),
                       "owner_snapshot_as_of": native["owner_snapshot_as_of"], "scope_as_of": native["scope_as_of"],
                       "files": {name: hashlib.sha256((directory / name).read_bytes()).hexdigest()
                                 for name in ("identity.json", "route.json", "native.json", "manifest.json", "questions.json",
@@ -792,145 +795,98 @@ class PrepareGateway:
                 "API_requests": 0, "owner_database_writes": 0}
 
 
-def _preview_route_anchor(routes, *, subject_key, entity_id, now_utc):
-    """Read the original current ID solely as an expected-current CAS target.
-
-    A stale identity-bound route is never executable authority. The original
-    owner history permits a NEW validated route to replace it on explicit
-    apply, preserving the old immutable snapshot and subject revision.
-    """
-    try:
-        value = routes.get_current_anchor(subject_key=subject_key, scope="entity", scope_id=entity_id, now_utc=now_utc)
-    except Exception as error:
-        code = getattr(error, "code", None)
-        if code == "route_current_unavailable":
-            return None
-        if code != "route_identity_changed":
-            raise
-        history = routes.current_history(subject_key=subject_key, scope="entity", scope_id=entity_id)
-        invalid = DashboardPrepareError("owner_route_rebind_unavailable",
-            "Original route history needs inspection before preparing a new identity revision", 409)
-        if not isinstance(history, list) or not history:
-            raise invalid
-        previous = None
-        for version, row in enumerate(history, 1):
-            if (not isinstance(row, dict) or type(row.get("version")) is not int or row["version"] != version
-                    or (row.get("subject_key"), row.get("scope"), row.get("scope_id")) != (subject_key, "entity", entity_id)
-                    or not isinstance(row.get("decision_id"), str)
-                    or not re.fullmatch(r"route_[a-f0-9]{64}", row["decision_id"])
-                    or "previous_decision_id" not in row or row["previous_decision_id"] != previous):
-                raise invalid
-            previous = row["decision_id"]
-        row = history[-1]
-        # The original public getter verifies immutable route/manifest/metadata
-        # hashes. A missing/corrupt snapshot must not become an empty anchor.
-        snapshot = routes.get_snapshot(row["decision_id"])
-        if (not isinstance(snapshot, dict) or snapshot.get("decision_id") != row["decision_id"]
-                or (snapshot.get("subject_key"), snapshot.get("scope"), snapshot.get("scope_id"), snapshot.get("entity_id"))
-                != (subject_key, "entity", entity_id, entity_id)):
-            raise invalid
-        return {"decision_id": row["decision_id"], "anchor_version": row["version"]}
-    return {"decision_id": value["expected_decision_id"], "anchor_version": value["anchor_version"]}
-
-
 def _snapshot(config, payload):
-    from stockwiki.paths import WorkspacePaths
-    from stockwiki.quick_scan_store import QuickScanStore
-    from stockwiki.identity_g2b import build_identity_request
-    from stockwiki.identity_receipts import IdentityReceiptStore
-    from stockwiki.market_registry import MarketRegistryStore
-    from stockwiki.ui_quick_scan import build_quick_scan_entity
-    from stockwiki.quick_scan_routes import QuickScanRouteStore
-    from stockwiki.quick_scan_route_validation import IqsRouteValidator
-    paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
-    identity = QuickScanStore(paths)
-    # G2b auxiliary stores have legacy lazy-initialization methods; refuse a
-    # missing original database before invoking them so preview stays read-only.
-    for store in (identity, IdentityReceiptStore(paths), MarketRegistryStore(paths)):
-        if not store.database_path.is_file():
-            raise DashboardPrepareError("owner_identity_source_missing", "Original identity sources are not initialized", 503)
-    owner_snapshot_as_of = payload.get("owner_snapshot_as_of")
-    scope_as_of = payload.get("scope_as_of")
-    if not isinstance(owner_snapshot_as_of, str) or (payload.get("scope_selector") == "issuer_only" and scope_as_of != owner_snapshot_as_of):
-        raise DashboardPrepareError("preview_stale", "Original owner time is not frozen; create a new bank preview", 409)
-    request = build_identity_request(identity, IdentityReceiptStore(paths), MarketRegistryStore(paths),
-                                    entity_id=payload["entity_id"], as_of=owner_snapshot_as_of)
+    reply = _owner_prepare(config, 'snapshot', {**payload, 'now_utc': _now(),
+        'authorization_reference': config.get('prepare', {}).get('authorization_reference', '')})
+    if not isinstance(reply, dict) or set(reply) not in ({'identity', 'selection'}, {'identity', 'selection_error'}):
+        raise DashboardPrepareError('native_response_invalid', 'Original owner did not return its identity snapshot', 502)
+    identity = reply['identity']
     try:
         from . import contract_validation as cv
     except ImportError:
         import contract_validation as cv
-    # Validate the exact native owner DTO before selecting a listing, subject
-    # or question route. A verified label alone cannot satisfy this contract;
-    # missing attributes must be repaired at the original owner, never filled
-    # into an immutable preview or promoted by a caller-supplied assertion.
+    # The exact G2b identity is validated by the consuming IQS contract before
+    # any listing, subject, route anchor or owner selection refusal is used.
     try:
-        context = request["trusted_context"]
-        cv.validate_entity(request["payload"],
-            trusted_identity_receipts=context["identity_receipts"],
-            trusted_source_bindings=context["source_bindings"],
-            trusted_market_registry=context["market_registry"],
-            wire_profile="stockwiki-g2b/1.1.0")
+        context = identity['trusted_context']
+        cv.validate_entity(identity['payload'], trusted_identity_receipts=context['identity_receipts'],
+            trusted_source_bindings=context['source_bindings'], trusted_market_registry=context['market_registry'],
+            wire_profile='stockwiki-g2b/1.1.0')
     except (ValueError, KeyError, TypeError, AttributeError, cv.JsonSchemaValidationError):
-        raise DashboardPrepareError("owner_identity_contract_invalid",
-            "Complete or correct the original identity attributes and evidence, then create a new bank preview", 409,
-            {"required_action": "repair_original_identity_and_create_new_preview"}) from None
-    listings = [row for row in request["payload"]["listings"] if row.get("listing_status") in {"active", "suspended"}]
-    if payload.get("security_id"):
-        listings = [row for row in listings if row["security_id"] == payload["security_id"]]
-    if not listings:
-        raise DashboardPrepareError("security_not_registered", "Choose a current original security of this entity", 409)
-    listing = sorted(listings, key=lambda row: (row["market"], row["listing_id"]))[0]
-    listing_binding = None
-    if request["payload"]["identity_state"] == "verified":
-        from stockwiki.identity_snapshot import resolve_listing_binding
-        listing_binding = resolve_listing_binding(identity, entity_id=payload["entity_id"], security_id=listing["security_id"],
-            listing_id=listing["listing_id"], identity_revision=request["payload"]["identity_revision"], as_of=_now())
-    detail = build_quick_scan_entity(paths, payload["entity_id"])
-    subjects = detail.get("subjects", [])
-    bootstrap, bootstrap_gap = None, None
-    if payload.get("scope_selector") == "issuer_only" and request["payload"]["identity_state"] == "verified":
-        try:
-            from stockwiki.quick_scan_issuer_bootstrap import IssuerScopeBootstrap, IssuerBootstrapError
-        except ImportError:
-            bootstrap_gap = "issuer_bootstrap_unavailable"
-        else:
-            try:
-                bootstrap = IssuerScopeBootstrap(paths).preview(entity_id=payload["entity_id"],
-                    scope_as_of=scope_as_of, authorization_ref=config.get("prepare", {}).get("authorization_reference", ""))
-            except IssuerBootstrapError as error:
-                bootstrap_gap = error.error_code
-        # A prior explicit apply can already have created this exact legal
-        # issuer scope. Read its real anchor so another preparation uses CAS
-        # against that existing owner state, rather than assuming no anchor.
-        selected = [row for row in subjects if bootstrap and
-                    row["analysis_subject_id"] + "@" + str(row["analysis_subject_revision"]) == bootstrap["subject_key"]]
-    elif payload.get("subject_key"):
-        selected = [row for row in subjects if row["analysis_subject_id"] + "@" + str(row["analysis_subject_revision"]) == payload["subject_key"]]
-        if len(selected) != 1:
-            raise DashboardPrepareError("subject_not_registered", "Choose an original subject of this entity", 409)
-    else:
-        selected = subjects if len(subjects) == 1 else []
-    binding, anchor, gap = None, None, bootstrap_gap or ("subject_selection_required" if len(subjects) > 1 else "subject_authority_missing")
-    if selected and request["payload"]["identity_state"] == "verified":
-        key = selected[0]["analysis_subject_id"] + "@" + str(selected[0]["analysis_subject_revision"])
-        routes = QuickScanRouteStore(identity, validator=IqsRouteValidator(Path(config["iqs_root"]), runs_dir=paths.runs_dir,
-            release_root=Path(config.get("iqs_release_root", config["iqs_root"]))))
-        binding = routes.identity_binding(key)
-        anchor = _preview_route_anchor(routes, subject_key=key, entity_id=payload["entity_id"], now_utc=_now())
-        gap = None
-    return {"identity": request, "subjects": subjects, "binding": binding, "anchor": anchor, "subject_gap": gap, "bootstrap": bootstrap,
-            "owner_snapshot_as_of": owner_snapshot_as_of, "scope_as_of": scope_as_of,
-            "selected_listing": listing, "listing_binding": listing_binding}
+        raise DashboardPrepareError('owner_identity_contract_invalid',
+            'Complete or correct the original identity attributes and evidence, then create a new bank preview', 409,
+            {'required_action': 'repair_original_identity_and_create_new_preview'}) from None
+    issuer = identity['payload']
+    if issuer.get('entity_id') != payload['entity_id']:
+        raise DashboardPrepareError('native_response_invalid', 'Original owner returned a different entity', 502)
+    if 'selection_error' in reply:
+        _raise_owner_prepare_error(reply['selection_error'])
+    selection = reply['selection']
+    if not isinstance(selection, dict) or set(selection) != {
+        'subjects', 'binding', 'anchor', 'subject_gap', 'bootstrap', 'owner_snapshot_as_of',
+        'scope_as_of', 'selected_listing', 'listing_binding',
+    }:
+        raise DashboardPrepareError('native_response_invalid', 'Original owner did not return a scope selection', 502)
+    listing, listing_binding, binding = selection['selected_listing'], selection['listing_binding'], selection['binding']
+    bound_listing = listing_binding.get('listing') if isinstance(listing_binding, dict) else None
+    if (not isinstance(listing, dict) or listing not in issuer['listings']
+        or (payload.get('security_id') and listing.get('security_id') != payload['security_id'])
+        or selection['owner_snapshot_as_of'] != payload['owner_snapshot_as_of']
+        or selection['scope_as_of'] != payload.get('scope_as_of')
+        or (binding is not None and (not isinstance(binding, dict) or binding.get('entity_id') != issuer['entity_id']
+            or type(binding.get('identity_revision')) is not int
+            or binding.get('identity_revision') != issuer.get('identity_revision')))
+        or (listing_binding is not None and (not isinstance(bound_listing, dict)
+            or listing_binding.get('entity_id') != issuer['entity_id']
+            or type(listing_binding.get('identity_revision')) is not int
+            or listing_binding.get('identity_revision') != issuer.get('identity_revision')
+            or any(bound_listing.get(key) != listing.get(key) for key in ('entity_id','security_id','listing_id'))))):
+        raise DashboardPrepareError('native_response_invalid', 'Original owner scope did not match the requested identity', 502)
+    return {'identity': identity, **selection}
 
 
-def _native_cli(config, kind, module, arguments, *, input_value=None):
+def _snapshot_bytes(snapshot):
+    try:
+        return {**snapshot, 'manifest_raw':snapshot['manifest_raw'].encode('utf-8'),
+                'route_raw':snapshot['route_raw'].encode('utf-8')}
+    except (KeyError, AttributeError, TypeError) as error:
+        raise DashboardPrepareError('native_response_invalid','Original owner snapshot bytes are missing',502) from error
+
+
+def _raise_owner_prepare_error(error):
+    if (not isinstance(error, dict) or not isinstance(error.get('code'), str)
+        or not isinstance(error.get('message'), str) or type(error.get('status')) is not int
+        or not 400 <= error['status'] <= 599 or not isinstance(error.get('details'), dict)):
+        raise DashboardPrepareError('native_response_invalid', 'Original owner returned an invalid refusal', 502)
+    raise DashboardPrepareError(error['code'], error['message'], error['status'], error['details'])
+
+
+def _owner_prepare(config, operation, payload, *, iqs_release_root=None):
+    arguments = ['--root', config['workspace_root'], '--iqs-code-root', config['iqs_root'],
+                 '--iqs-release-root', iqs_release_root or config.get('iqs_release_root') or config['iqs_root']]
+    return _native_cli(config, 'wiki', _OWNER_COMMAND, arguments, owner_operation=operation,
+        timeout_override=60 if operation in {'snapshot', 'policy'} else None,
+        input_value={'protocol':_OWNER_REQUEST,'operation':operation,'payload':payload})
+
+
+def _route_command(config, action, subject_key, arguments, *, release_root):
+    result = _native_cli(config, 'wiki', 'stockwiki.quick_scan_routes_cli',
+        ['--root', config['workspace_root'], 'quick-scan-route-' + action, '--iqs-code-root', config['iqs_root'],
+         '--iqs-release-root', release_root, '--subject-key', subject_key, *arguments])
+    if (result.get('protocol') != 'stockwiki.route_store_cli/1.0.0' or result.get('action') != action
+        or result.get('status') != 'ok' or result.get('paid_dispatch_started') is not False):
+        raise DashboardPrepareError('native_response_invalid', 'Original owner route response did not match the operation', 502)
+    return result['payload']
+
+
+def _native_cli(config, kind, module, arguments, *, input_value=None, owner_operation=None, timeout_override=None):
     code_root = config["stockwiki_root" if kind == "wiki" else "stockqa_root"]
     interpreter = config.get("stockwiki_python" if kind == "wiki" else "stockqa_python") or sys.executable
     env = _env()
     env["PYTHONPATH"] = code_root
     cwd = config.get("prepare", {}).get("runtime_dir", code_root) if kind == "qa" else code_root
-    timeout = _timeouts(config)[1]
-    stage = [value for value in arguments if value in {"--request", "--install-delegation", "--confirm-delegated", "--confirmation-id", "--input-locations"}]
+    timeout = _timeouts(config)[1] if timeout_override is None else timeout_override
+    stage = [value for value in arguments if value in {"--request", "--install-delegation", "--install-delegation-stdin", "--confirm-delegated", "--confirmation-id", "--input-locations"}]
     details = {"native_module": module, "native_selectors": stage, "timeout_seconds": timeout}
     try:
         done = subprocess.run([interpreter, "-B", "-X", "utf8", "-m", module, *arguments], cwd=cwd, env=env,
@@ -948,12 +904,23 @@ def _native_cli(config, kind, module, arguments, *, input_value=None):
     if len(done.stdout) > MAX_BYTES:
         raise DashboardPrepareError("native_response_invalid", "Original native response exceeds its limit", 502)
     try:
-        result = json.loads(done.stdout.decode("utf-8"))
-    except (UnicodeError, ValueError) as error:
+        result = decode_owner_json(done.stdout.decode("utf-8"))
+    except (UnicodeError, ValueError, RecursionError) as error:
         raise DashboardPrepareError("native_response_invalid", "Original native command did not return JSON", 502,
             {**details, "exception_type": type(error).__name__}) from None
     if not isinstance(result, dict):
         raise DashboardPrepareError("native_response_invalid", "Original native command did not return an object", 502, details)
+    if owner_operation is not None:
+        key = 'error' if done.returncode else 'result'
+        allowed_absent = owner_operation in {'cache_plan','frozen_snapshot'}
+        if (set(result) != {'protocol','operation',key} or result['protocol'] != _OWNER_REPLY
+            or result['operation'] != owner_operation or done.returncode not in {0,2}
+            or (key == 'result' and not isinstance(result[key], dict)
+                and (result[key] is not None or not allowed_absent))):
+            raise DashboardPrepareError('native_response_invalid', 'Original preparation response did not match the operation', 502, details)
+        if key == 'error':
+            _raise_owner_prepare_error(result[key])
+        return result[key]
     if done.returncode:
         code = result.get("error_code", result.get("reason"))
         if not isinstance(code, str) or not re.fullmatch(r"[A-Za-z0-9_.-]{1,160}", code):
@@ -964,16 +931,11 @@ def _native_cli(config, kind, module, arguments, *, input_value=None):
 
 
 def _apply(config, payload):
-    from stockwiki.paths import WorkspacePaths
-    from stockwiki.quick_scan_store import QuickScanStore
-    from stockwiki.quick_scan_routes import QuickScanRouteStore
-    from stockwiki.quick_scan_route_validation import IqsRouteValidator
-    from stockwiki.quick_scan_refresh_records import RefreshRecordStore
     options, directory = config["prepare"], Path(payload["directory"])
     record, native = _read(directory / "preview.json"), _read(directory / "native.json")
     manifest, route = _read(directory / "manifest.json"), _read(directory / "route.json")
     cached=_cache_preview(config,{'native':native,'manifest':manifest,'route':route,
-        'question_ids':record['execution_question_ids'],'cache_directory':str(directory/'cache-read-apply')})
+        'question_ids':record['execution_question_ids']})
     if cached is not None:
         result={**cached,'protocol':PROTOCOL,'full_bank_question_count':record['bank']['question_count'],
             'company':record['bank']['company'],
@@ -984,9 +946,7 @@ def _apply(config, payload):
     if record.get('cache_only_available'):
         raise DashboardPrepareError('cache_no_longer_reusable','Original cached answers changed or expired; preview again before any new work',409)
     admission = _read(options["admission_config"])
-    paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
-    policy = _read(paths.config_dir / "quick_scan_refresh.json")
-    dialect = policy["protocol"].split("/")[-1]
+    policy = _owner_prepare(config, 'policy', {})['policy']
     recovery = _recovery_subset(config, directory, manifest, native, policy)
     if recovery != record.get("recovery_subset"):
         raise DashboardPrepareError("recovery_source_changed", "Original recovery controls changed after the bank preview", 409)
@@ -1007,16 +967,15 @@ def _apply(config, payload):
     config["prepare"]["admission_config"] = str(admission_path)
     options = config["prepare"]
     binding = native["binding"]
-    routes = QuickScanRouteStore(QuickScanStore(paths), validator=IqsRouteValidator(Path(config["iqs_root"]), runs_dir=directory / "validation",
-        release_root=Path(expected["iqs_release_root"])))
     frozen_dir = directory
     if native.get("bootstrap"):
-        from stockwiki.quick_scan_issuer_bootstrap import IssuerScopeBootstrap
-        bootstrap = IssuerScopeBootstrap(paths).apply(entity_id=record["bank"]["entity_id"],
-            scope_as_of=native["scope_as_of"], authorization_ref=options["authorization_reference"],
-            expected_preview_sha256=native["bootstrap"]["preview_sha256"])
+        applied = _owner_prepare(config, 'bootstrap_apply', {'entity_id':record['bank']['entity_id'],
+            'scope_as_of':native['scope_as_of'], 'authorization_reference':options['authorization_reference'],
+            'expected_preview_sha256':native['bootstrap']['preview_sha256']}, iqs_release_root=expected['iqs_release_root'])
+        bootstrap, binding = applied['bootstrap'], applied['binding']
+        if binding.get('entity_id') != record['bank']['entity_id'] or binding.get('subject_key') != bootstrap.get('subject_key'):
+            raise DashboardPrepareError('native_response_invalid','Original issuer bootstrap did not return the selected subject',502)
         _new(directory / "bootstrap.json", bootstrap)
-        binding = routes.identity_binding(bootstrap["subject_key"])
         # A draft subject was never a trust root. After ORIGINAL owner apply,
         # freeze a new final route/bank linked to the untouched initial preview.
         sys.path.insert(0, str(Path(config["iqs_root"]) / "scripts"))
@@ -1046,15 +1005,21 @@ def _apply(config, payload):
         if latest_meta != record.get('bank_reuse'):
             raise DashboardPrepareError('preview_stale','Original unfinished-work bank bindings changed',409)
     if record.get('bank_reuse'):
-        original = routes.get_snapshot(route['decision_id'])
-        if (original is None or original['route_raw'] != (frozen_dir/'route.json').read_bytes()
+        original = _owner_prepare(config, 'frozen_snapshot', {'subject_key':binding['subject_key'],
+            'decision_id':route['decision_id']}, iqs_release_root=expected['iqs_release_root'])
+        original = _snapshot_bytes(original) if original else None
+        if (original is None or original['decision_id'] != route['decision_id']
+            or original['route_raw'] != (frozen_dir/'route.json').read_bytes()
             or original['manifest_raw'] != (frozen_dir/'manifest.json').read_bytes()):
             raise DashboardPrepareError('existing_work_snapshot_required','Original frozen bank is missing or changed',409)
     else:
-        routes.record_snapshot((frozen_dir / "route.json").read_bytes(), (frozen_dir / "manifest.json").read_bytes(),
-                              subject_key=binding["subject_key"], expected_decision_id=route["decision_id"])
-    routes.set_current(route["decision_id"], subject_key=binding["subject_key"],
-                       expected_current_decision_id=(native["anchor"] or {}).get("decision_id"), now_utc=_now())
+        _route_command(config, 'record', binding['subject_key'], ['--route', str(frozen_dir/'route.json'),
+            '--manifest', str(frozen_dir/'manifest.json'), '--expected-decision-id', route['decision_id']],
+            release_root=expected['iqs_release_root'])
+    prior = (native['anchor'] or {}).get('decision_id')
+    _route_command(config, 'activate', binding['subject_key'], ['--expected-decision-id', route['decision_id'],
+        '--now-utc', _now(), *(['--expected-current-decision-id', prior] if prior else ['--expect-no-current'])],
+        release_root=expected['iqs_release_root'])
     # Identified transport, metadata and exact original identity bytes are
     # generated from the frozen release, never manually assembled answers.
     sys.path.insert(0, str(Path(config["iqs_root"]) / "scripts"))
@@ -1095,7 +1060,7 @@ def _apply(config, payload):
         scope_dir = directory / ("scope-" + str(index) + "-" + subject_ref["scope"])
         scope_dir.mkdir(parents=True, exist_ok=True)
         item = _prepare_scope(config, scope_dir, record, manifest, group["questions"], target, subject_ref, policy,
-                              admission, paths, expected, run_id + "-" + str(index))
+                              admission, expected, run_id + "-" + str(index))
         scope_records.append((scope_dir,item))
         (cached_scopes if item.get('status')=='cached' else executions).append(item)
     expected_scopes=[{'scope':item['subject_ref']['scope'],'scope_id':item['subject_ref']['scope_id']} for item in executions]
@@ -1121,8 +1086,7 @@ def _apply(config, payload):
     return result
 
 
-def _prepare_scope(config, directory, record, manifest, selected_questions, target, subject_ref, policy, admission, paths, expected, run_id):
-    from stockwiki.quick_scan_refresh_records import RefreshRecordStore
+def _prepare_scope(config, directory, record, manifest, selected_questions, target, subject_ref, policy, admission, expected, run_id):
     options = config["prepare"]
     dialect = policy["protocol"].split("/")[-1]
     targets = _ordered_route_targets(policy)
@@ -1149,32 +1113,24 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     owner_common = [*common, "--iqs-release-root", expected["iqs_release_root"]]
     preview = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli", [*owner_common, "--request", str(directory / "refresh.json")])
     _new(directory / "owner-preview.json", preview)
-    original = RefreshRecordStore(paths).load(preview["preview_id"])
+    original = _owner_prepare(config, "refresh_record", {"preview_id": preview["preview_id"]},
+                              iqs_release_root=expected["iqs_release_root"])
+    if original.get("preview_id") != preview["preview_id"]:
+        raise DashboardPrepareError("native_preview_scope_mismatch", "Owner returned another refresh preview", 502)
     cached=_cached_scope_result(original['owner_state'],selected_questions,subject_ref,
         cache_clock=policy.get('cache_clock','information_as_of'))
     if cached is not None:return {'status':'cached',**cached}
     if preview.get("status") != "ready":
         raise DashboardPrepareError("native_preview_not_ready", "Original owner preview is not ready", 409, {"preview": preview})
-    install = {"protocol": "stockwiki.refresh_delegation_install/1.0.0", "workspace_root": str(paths.root), "preview_id": preview["preview_id"],
+    install = {"protocol": "stockwiki.refresh_delegation_install/1.0.0", "workspace_root": str(Path(config["workspace_root"]).resolve()), "preview_id": preview["preview_id"],
                "preview_record_sha256": original["record_sha256"], "agent": options["agent"], "authorization_reference": options["authorization_reference"],
                "expires_at": (datetime.now(timezone.utc) + timedelta(seconds=_delegation_ttl_seconds(config))).isoformat().replace("+00:00", "Z")}
-    # This is the original fixed local owner install file. Its previous bytes
-    # are restored after install/confirm; immutable original grants remain.
-    install_path = paths.config_dir / "quick_scan_delegation_install.json"
-    old = install_path.read_bytes() if install_path.exists() else None
-    try:
-        install_path.write_bytes(_bytes(install) + b"\n")
-        grant = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli", [*owner_common, "--install-delegation"])
-        _new(directory / "grant.json", grant)
-        confirmation = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli", [*owner_common, "--confirm-delegated", preview["preview_id"],
-            "--delegation-id", grant["grant_id"], "--idempotency-key", run_id])
-        _new(directory / "confirmation.json", confirmation)
-    finally:
-        if install_path.exists() and install_path.read_bytes() == _bytes(install) + b"\n":
-            if old is None:
-                install_path.unlink()
-            else:
-                install_path.write_bytes(old)
+    grant = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli",
+                        [*owner_common, "--install-delegation-stdin"], input_value=install)
+    _new(directory / "grant.json", grant)
+    confirmation = _native_cli(config, "wiki", "stockwiki.quick_scan_refresh_owner_cli", [*owner_common, "--confirm-delegated", preview["preview_id"],
+        "--delegation-id", grant["grant_id"], "--idempotency-key", run_id])
+    _new(directory / "confirmation.json", confirmation)
     admitted = _native_cli(config, "qa", "src.utils.quick_scan_refresh_admission_cli", ["--config", options["admission_config"], "--confirmation-id", confirmation["confirmation_id"]])
     _new(directory / "admission.json", admitted)
     if admitted.get("registered_with_executor") is not True:
@@ -1220,9 +1176,8 @@ def _main():
         raw = sys.stdin.buffer.read(MAX_BYTES + 1)
         if len(raw) > MAX_BYTES:
             raise DashboardPrepareError("request_too_large", "Preparation request exceeds its limit")
-        request = json.loads(raw.decode("utf-8"))
+        request = decode_owner_json(raw.decode("utf-8"))
         config = request["config"]
-        sys.path.insert(0, config["stockwiki_root"])
         if request["operation"] == "snapshot":
             result = _snapshot(config, request["payload"])
         elif request["operation"] == "bank_reuse":

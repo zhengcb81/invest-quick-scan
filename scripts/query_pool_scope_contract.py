@@ -6,13 +6,14 @@ Distinct company/subject/scope counts and field denominators remain explicit.
 import copy
 import json
 import re
+from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 import query_contract as profiles
 import query_pool_contract as raw
 import query_pool_assessment_contract as assessed
 from module_contract import canonical_bytes
 
-SCHEMA = json.loads((raw.ROOT / 'schemas/quick_scan/query-pool-scoped.schema.json').read_bytes())
+SCHEMA = json.loads((Path(__file__).resolve().parents[1] / 'schemas/quick_scan/query-pool-scoped.schema.json').read_bytes())
 VALIDATOR = Draft202012Validator(SCHEMA, format_checker=FormatChecker())
 SELECTION_KEYS = ('field_ids', 'information_cutoff', 'model_filter', 'field_scope_selection')
 SCOPE_KEYS = {'scope_counts', 'field_scope_coverage', 'scope_inventory_sha256'}

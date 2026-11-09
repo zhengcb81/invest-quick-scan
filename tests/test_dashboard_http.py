@@ -15,6 +15,13 @@ from dashboard_http import product_handler
 from dashboard_service import DashboardService
 
 
+class LoopbackServer(http.server.ThreadingHTTPServer):
+    def server_bind(self):
+        # Keep the literal loopback fixture independent of DNS and OS settings.
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address
+
+
 class Owner:
     def __init__(self, config): self.config = config
     def status(self): return {'available': True, 'network_calls': 0}
@@ -37,12 +44,6 @@ def product(tmp_path):
             self.send_response(200); self.end_headers(); self.wfile.write(b'static')
         def log_message(self, *args): pass
     handler = product_handler(Static, service)
-    class LoopbackServer(http.server.ThreadingHTTPServer):
-        def server_bind(self):
-            # Keep this listener literal-loopback under the offline runner.
-            socketserver.TCPServer.server_bind(self)
-            self.server_name, self.server_port = self.server_address
-
     with LoopbackServer(('127.0.0.1', 0), handler) as server:
         thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
         yield service, server.server_address[1], tmp_path

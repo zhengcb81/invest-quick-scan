@@ -3,9 +3,7 @@ from __future__ import annotations
 
 import copy
 import json
-from pathlib import Path
 import sys
-import types
 
 import pytest
 
@@ -34,6 +32,19 @@ def gateway(tmp_path, owner_policy):
     workspace = tmp_path / "owner"
     (workspace / "config").mkdir(parents=True)
     prepare._new(workspace / "config/quick_scan_refresh.json", owner_policy)
+    code_root = tmp_path / "stockwiki-code"
+    package = code_root / "stockwiki"
+    package.mkdir(parents=True)
+    (package / "quick_scan_prepare_cli.py").write_text('''
+import hashlib, json, sys
+from pathlib import Path
+request = json.load(sys.stdin)
+assert request == {'protocol': 'stockwiki.quick_scan_prepare_request/1.0.0', 'operation': 'policy', 'payload': {}}
+path = Path(sys.argv[sys.argv.index('--root') + 1]) / 'config/quick_scan_refresh.json'
+raw = path.read_bytes()
+print(json.dumps({'protocol': 'stockwiki.quick_scan_prepare_reply/1.0.0', 'operation': 'policy', 'result': {
+    'policy': json.loads(raw), 'sha256': hashlib.sha256(raw).hexdigest(), 'path': str(path)}}))
+''', encoding="utf8")
     runtime = tmp_path / "runtime"
     runtime.mkdir()
     prepare._new(runtime / "llm_apis.json", {"synthetic": "no credentials"})
@@ -42,7 +53,8 @@ def gateway(tmp_path, owner_policy):
     (qa / "main_with_llm.py").write_text("# never executed", encoding="utf8")
     for name in ("admission.json", "spend.json"):
         prepare._new(tmp_path / name, {})
-    config = {"workspace_root": str(workspace), "stockqa_root": str(qa),
+    config = {"workspace_root": str(workspace), "stockwiki_root": str(code_root),
+              "iqs_root": str(tmp_path), "stockwiki_python": sys.executable, "stockqa_root": str(qa),
               "prepare": {"admission_config": str(tmp_path / "admission.json"),
                           "runtime_dir": str(runtime), "spend_authorization": str(tmp_path / "spend.json"),
                           "producer": {"component_version": "test", "build_id": "offline"},
@@ -57,28 +69,24 @@ def scope_inputs(tmp_path, monkeypatch, owner_policy):
     directory.mkdir()
     owner_config = tmp_path / "owner-config"
     owner_config.mkdir()
-    paths = types.SimpleNamespace(root=tmp_path / "owner", config_dir=owner_config)
     captures = []
 
-    class RefreshRecords:
-        def __init__(self, actual_paths):
-            assert actual_paths is paths
+    def owner_prepare(config, operation, payload, *, iqs_release_root):
+        assert operation == "refresh_record" and payload == {"preview_id": "original-preview"}
+        assert iqs_release_root == str(tmp_path / "release")
+        return {"preview_id": "original-preview", "record_sha256": "a" * 64,
+                "owner_state": {"quote": {"max_http_requests": 1}}}
 
-        def load(self, preview_id):
-            assert preview_id == "original-preview"
-            return {"record_sha256": "a" * 64, "owner_state": {"quote": {"max_http_requests": 1}}}
-
-    monkeypatch.setitem(sys.modules, "stockwiki", types.ModuleType("stockwiki"))
-    monkeypatch.setitem(sys.modules, "stockwiki.quick_scan_refresh_records",
-                        types.SimpleNamespace(RefreshRecordStore=RefreshRecords))
-
-    def native(config, owner, module, arguments):
+    def native(config, owner, module, arguments, *, input_value=None):
         captures.append((owner, module, list(arguments)))
         if module == "stockwiki.quick_scan_query_v2_cli":
             return {"result": {"status": "available", "missing_subject_refs": [],
                                "watermark": {"snapshot_id": "original-snapshot"}}}
         if module == "stockwiki.quick_scan_refresh_owner_cli":
-            if "--install-delegation" in arguments:
+            if "--install-delegation-stdin" in arguments:
+                assert input_value["workspace_root"] == str((tmp_path / "owner").resolve())
+                assert input_value["preview_record_sha256"] == "a" * 64
+                assert input_value["preview_id"] == "original-preview"
                 return {"grant_id": "original-grant"}
             if "--confirm-delegated" in arguments:
                 return {"confirmation_id": "original-confirmation"}
@@ -87,8 +95,9 @@ def scope_inputs(tmp_path, monkeypatch, owner_policy):
         return {"registered_with_executor": True}
 
     monkeypatch.setattr(prepare, "_native_cli", native)
+    monkeypatch.setattr(prepare, "_owner_prepare", owner_prepare)
     monkeypatch.setattr(prepare, "_cached_scope_result", lambda *args, **kwargs: None)
-    config = {"workspace_root": str(paths.root), "iqs_root": str(tmp_path / "iqs"),
+    config = {"workspace_root": str(tmp_path / "owner"), "iqs_root": str(tmp_path / "iqs"),
               "prepare": {"admission_config": str(tmp_path / "admission.json"),
                           "authorization_reference": "synthetic-test-only", "agent": {},
                           "runtime_dir": str(tmp_path / "runtime"), "spend_authorization": str(tmp_path / "spend.json")}}
@@ -99,7 +108,7 @@ def scope_inputs(tmp_path, monkeypatch, owner_policy):
             {"preview_id": "local-preview", "bank": {"entity_id": ref["entity_id"], "company": "Synthetic fixture",
                                                         "information_cutoff": "2026-11-01"}},
             {}, [{"id": "Q_GENERIC", "metric_id": "M_GENERIC"}], target, ref,
-            owner_policy, {"consumer_id": "invest-quick-scan"}, paths,
+            owner_policy, {"consumer_id": "invest-quick-scan"},
             {"iqs_release_root": str(tmp_path / "release")}, "run-synthetic")
     return args, captures, directory, owner_config
 
@@ -138,7 +147,7 @@ def test_ordered_scope_preserves_exact_sequence_in_inspection_and_broad_snapshot
     assert inspect["model"] == TARGETS[0]["model"]
     assert result["execution_bundle"]["inspection_schema_version"] == "1.6.0"
     assert len(captures) == 5
-    assert not list(owner_config.iterdir())  # Original install file restored.
+    assert not list(owner_config.iterdir())
 
 
 def test_invalid_ordered_scope_stops_before_native_calls(tmp_path, monkeypatch):

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import runpy
 import sys
 
 
@@ -19,13 +20,22 @@ def main(argv=None):
     if not (source / "iqs_viewer_lab" / "__main__.py").is_file():
         sys.stderr.write("Viewer source is missing; provide --viewer-root pointing to iqs-viewer-lab.\n")
         return 2
-    sys.path.insert(0, str(source))
-    from iqs_viewer_lab.__main__ import main as viewer_main
-
     command = ["serve", "--bundle", str(Path(args.bundle).resolve()), "--host", "127.0.0.1", "--port", str(args.port)]
     if args.open_browser:
         command.append("--open")
-    return viewer_main(command)
+    # Run the public -m entry in this process so existing launchers still own
+    # the listener PID and terminating that PID closes the listener.
+    argv, search_path = sys.argv[:], sys.path[:]
+    try:
+        sys.argv[1:] = command
+        sys.path.insert(0, str(source))
+        runpy.run_module("iqs_viewer_lab", run_name="__main__", alter_sys=True)
+    except SystemExit as exit_status:
+        return exit_status.code
+    finally:
+        sys.argv[:] = argv
+        sys.path[:] = search_path
+    return 0
 
 
 if __name__ == "__main__":

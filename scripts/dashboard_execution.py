@@ -27,8 +27,10 @@ except ImportError:
 
 try:
     from .dashboard_errors import DashboardExecutionError
+    from .dashboard_json import decode_owner_json
 except ImportError:
     from dashboard_errors import DashboardExecutionError
+    from dashboard_json import decode_owner_json
 
 
 def _now():
@@ -194,76 +196,6 @@ def _valid_retirement(record):
         return False
 
 
-_POLICY_HELPER = r'''
-import contextlib, hashlib, json, pathlib, sys
-source, target, mode = sys.argv[1:]
-sys.path.insert(0, source)
-try:
-    with contextlib.redirect_stdout(sys.stderr):
-        from src.config.llm_config import LLMConfig
-        path = pathlib.Path(target)
-        raw = path.read_bytes()
-        document = json.loads(raw.decode("utf-8-sig"))
-        policy = document.get("quick_scan_model_policy")
-        if mode == "save":
-            request = json.load(sys.stdin)
-            if request["revision_sha256"] != hashlib.sha256(raw).hexdigest():
-                raise RuntimeError("settings_changed")
-            policy = request["policy"]
-            LLMConfig(str(path)).save_quick_scan_model_policy(policy)
-        else:
-            if policy is not None:
-                LLMConfig.validate_quick_scan_model_policy(policy)
-        revision = hashlib.sha256(path.read_bytes()).hexdigest()
-        providers = document.get("providers")
-        choices = []
-        if isinstance(providers, dict):
-            for name, value in sorted(providers.items()):
-                if not isinstance(name, str) or not name or len(name) > 200 or not isinstance(value, dict):
-                    continue
-                model = value.get("model", "")
-                choices.append({"provider_config_ref": name,
-                    "model": model if isinstance(model, str) and len(model) <= 200 else "",
-                    "enabled": value.get("enabled") is True})
-    print(json.dumps({"policy": policy, "revision_sha256": revision,
-        "provider_config_refs": [row["provider_config_ref"] for row in choices],
-        "provider_choices": choices, "provider_metadata_available": isinstance(providers, dict),
-        "effective": "next_run", "API_requests": 0}, ensure_ascii=False, allow_nan=False))
-except Exception as error:
-    print(json.dumps({"error_code": "settings_changed" if str(error) == "settings_changed" else "owner_policy_rejected"}))
-    raise SystemExit(2)
-'''
-
-
-_REGISTERED_PERMISSIONS_HELPER = r'''
-import contextlib, json, sys
-source, config_path, confirmation_id, mode = sys.argv[1:]
-sys.path.insert(0, source)
-try:
-    with contextlib.redirect_stdout(sys.stderr):
-        from src.utils.quick_scan_refresh_admission import RefreshAdmissionService
-        service = (RefreshAdmissionService(config_path, recovery_only=True)
-                   if mode == "paid_response_recovery" else RefreshAdmissionService(config_path))
-        proof, _, _ = (service.read_registered(confirmation_id, recovery_only=True)
-            if mode == "paid_response_recovery" else service.read_registered(confirmation_id))
-        if proof["confirmation"]["confirmation_id"] != confirmation_id:
-            raise ValueError("original_confirmation_mismatch")
-    result = {"protocol": "iqs.dashboard_registered_permissions/1.0.0",
-        "status": "passed", "confirmation_id": confirmation_id,
-        "permission_authenticated": True, "API_requests": 0,
-        "received_response_scope_verified": mode == "paid_response_recovery"}
-    code = 0
-except Exception as error:
-    reason = getattr(error, "reason", "owner_confirmation_permissions_rejected")
-    import re
-    if not isinstance(reason, str) or re.fullmatch(r"[a-z][a-z0-9_]{0,159}", reason) is None:
-        reason = "owner_confirmation_permissions_rejected"
-    result = {"error_code": reason, "API_requests": 0}
-    code = 2
-print(json.dumps(result, ensure_ascii=False, allow_nan=False))
-raise SystemExit(code)
-'''
-
 _RECOVERY_FIELDS = ('entity_id', 'company', 'provider', 'confirmation_id', 'questions',
     'manifest', 'identity_snapshot', 'c06_authority', 'owner_config', 'admission_config',
     'inspection_request', 'shared_company_config', 'security_scope_id', 'runtime_dir')
@@ -397,7 +329,7 @@ class ExecutionGateway:
                 input=json.dumps(input_value) if input_value is not None else None,
                 capture_output=True, text=True, encoding="utf-8", timeout=130,
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-            output = json.loads(result.stdout)
+            output = decode_owner_json(result.stdout)
         except (OSError, subprocess.TimeoutExpired, ValueError):
             raise DashboardExecutionError("owner_transport_unavailable", "原执行器暂不可用；未重发模型请求", 503) from None
         if result.returncode or not isinstance(output, dict) or output.get("API_requests") != 0:
@@ -443,8 +375,7 @@ class ExecutionGateway:
         except ImportError:
             from dashboard_delivery import read_delivery_receivers
         _, bundle = self._select({'bundle_id': bundle_id}, recovery=True)
-        return read_delivery_receivers(bundle=bundle, config=self.config,
-                                       state_root=self.state_root, call=self._call)
+        return read_delivery_receivers(bundle=bundle, config=self.config, call=self._call)
 
     @staticmethod
     def inspection_work_items(inspection):
@@ -496,23 +427,27 @@ class ExecutionGateway:
         and clean temporary validation copies in its configured runs directory;
         this is not a claim of zero filesystem activity.
         """
+        mode = "paid_response_recovery" if recovery_only else "current_permissions"
         command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8",
-                   "-c", _REGISTERED_PERMISSIONS_HELPER, str(root),
-                   bundle["admission_config"], bundle["confirmation_id"],
-                   "paid_response_recovery" if recovery_only else "current_permissions"]
+                   "-m", "src.utils.quick_scan_registered_permissions_cli",
+                   "--config", bundle["admission_config"]]
+        request = {"protocol": "stockqa.registered_permissions_request/1.0.0",
+                   "confirmation_id": bundle["confirmation_id"], "mode": mode}
         try:
-            result = self._call(command, root, runtime)
+            result = self._call(command, root, root, input_value=request)
         except DashboardExecutionError as error:
             return {"status": "blocked", "reason": error.code}
-        if (result.get("protocol") != "iqs.dashboard_registered_permissions/1.0.0"
+        if (result.get("protocol") != "stockqa.registered_permissions_response/1.0.0"
             or result.get("status") != "passed"
             or result.get("confirmation_id") != bundle["confirmation_id"]
+            or result.get("mode") != mode
             or result.get("permission_authenticated") is not True
             or type(result.get("API_requests")) is not int or result["API_requests"] != 0
-            or (recovery_only and result.get("received_response_scope_verified") is not True)):
+            or type(result.get("network_calls")) is not int or result["network_calls"] != 0
+            or result.get("received_response_scope_verified") is not recovery_only):
             return {"status": "blocked", "reason": "owner_permissions_contract_invalid"}
         return {"status": "passed", "confirmation_id": bundle["confirmation_id"],
-                "inspection_mode": "paid_response_recovery" if recovery_only else "current_permissions",
+                "inspection_mode": mode,
                 "received_response_scope_verified": bool(recovery_only), "registered_action_checked": True}
 
     def _read_work_scope(self, bundle, root, runtime):
@@ -520,8 +455,7 @@ class ExecutionGateway:
             from .dashboard_delivery import read_work_scope
         except ImportError:
             from dashboard_delivery import read_work_scope
-        return read_work_scope(bundle=bundle, config=self.config, call=self._call,
-                               runtime=runtime)
+        return read_work_scope(bundle=bundle, config=self.config, call=self._call)
 
     def _inspect_work(self, bundle, root, runtime, admission):
         """Original fixed read-only ledger inspection, not consent or dispatch."""
@@ -1124,17 +1058,47 @@ class ExecutionGateway:
         path = Path(self.config.get("model_policy_path", ""))
         runtime = Path(self.config.get("runtime_dir", ""))
         root = Path(self.config.get("stockqa_root", ""))
-        if not path.is_absolute() or not path.is_file() or path.resolve() != (runtime / "llm_apis.json").resolve() or not (root / "src/config/llm_config.py").is_file():
+        if (not path.is_absolute() or not path.is_file()
+            or path.resolve() != (runtime / "llm_apis.json").resolve()
+            or not root.is_absolute() or not root.is_dir()):
             raise DashboardExecutionError("model_policy_unconfigured", "尚未指定原StockQA运行配置；不会另存第二份策略", 409)
-        return path, root, runtime
+        return path, root
+
+    def _settings_owner(self, path, root, operation, payload=None):
+        command = [str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8",
+                   "-m", "src.utils.quick_scan_model_policy_cli", "--config", str(path)]
+        request = {"protocol": "stockqa.model_policy_request/1.0.0", "operation": operation,
+                   **(payload or {})}
+        result = self._call(command, root, root, input_value=request)
+        if (result.get("protocol") != "stockqa.model_policy_response/1.0.0"
+            or result.get("operation") != operation
+            or type(result.get("API_requests")) is not int or result["API_requests"] != 0
+            or type(result.get("network_calls")) is not int or result["network_calls"] != 0
+            or result.get("effective") != "next_run"
+            or not isinstance(result.get("revision_sha256"), str)
+            or not re.fullmatch(r"[a-f0-9]{64}", result["revision_sha256"])
+            or type(result.get("provider_metadata_available")) is not bool
+            or not isinstance(result.get("provider_config_refs"), list)
+            or not all(isinstance(ref, str) for ref in result["provider_config_refs"])
+            or not isinstance(result.get("provider_choices"), list)
+            or "policy" not in result or (result["policy"] is not None and not isinstance(result["policy"], dict))
+            or (operation == "save" and result["policy"] != request["policy"])):
+            raise DashboardExecutionError("owner_policy_contract_invalid", "原执行器策略响应不符合公开协议", 409)
+        choices = []
+        for row in result["provider_choices"]:
+            if (not isinstance(row, dict) or not isinstance(row.get("provider_config_ref"), str)
+                or not isinstance(row.get("model"), str) or type(row.get("enabled")) is not bool):
+                raise DashboardExecutionError("owner_policy_contract_invalid", "原执行器策略响应不符合公开协议", 409)
+            choices.append({key: row[key] for key in ("provider_config_ref", "model", "enabled")})
+        return {**{key: result[key] for key in ("policy", "revision_sha256", "provider_config_refs",
+                    "provider_metadata_available", "effective", "API_requests")}, "provider_choices": choices}
 
     def settings(self):
         try:
-            path, root, runtime = self._settings_path()
+            path, root = self._settings_path()
         except DashboardExecutionError as error:
             return {"configured": False, "reason": error.code, "policy": None, "API_requests": 0}
-        result = self._call([str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8", "-c", _POLICY_HELPER,
-                             str(root), str(path), "read"], root, runtime)
+        result = self._settings_owner(path, root, "read")
         if result.get('policy') is None:
             template = Path(self.config.get('iqs_root', Path(__file__).resolve().parents[1]))/'examples/model-policy.template.json'
             result['policy'] = _read(template)
@@ -1150,55 +1114,78 @@ class ExecutionGateway:
         encoded = json.dumps(payload, allow_nan=False)
         if len(encoded) > 256 * 1024 or re.search(r'"[^"\\]*(?:api.?key|secret|password|credential|authorization)[^"\\]*"\s*:', encoded, re.I):
             raise DashboardExecutionError("settings_secret_forbidden", "策略不得包含密钥值；密钥继续由环境变量提供")
-        path, root, runtime = self._settings_path()
+        path, root = self._settings_path()
         with self._lock:
-            return self._call([str(self.config.get("stockqa_python", sys.executable)), "-B", "-X", "utf8", "-c", _POLICY_HELPER,
-                               str(root), str(path), "save"], root, runtime, input_value=payload)
+            return self._settings_owner(path, root, "save", payload)
 
-    def acknowledge_delivery(self, bundle, receipt):
-        """Pass exact StockWiki ACKs to registered original work; no new queue/state."""
+    def _delivery_control(self, bundle, operation, payload):
         root = Path(self.config.get('stockqa_root', ''))
         ledger = Path(bundle.get('work_store', ''))
         mapping = bundle.get('work_item_ids')
-        if (not root.is_absolute() or not (root/'src/utils/quick_scan_work_store.py').is_file()
+        if (not root.is_absolute() or not root.is_dir()
             or not ledger.is_absolute() or not ledger.is_file() or not isinstance(mapping, dict) or not mapping):
             raise DashboardExecutionError('ack_owner_unconfigured', '缺少原StockQA账本及逐观察work引用', 409)
-        acks = receipt.get('acks') if isinstance(receipt, dict) else None
-        if (not isinstance(acks, list) or not acks or any(not isinstance(ack, dict) for ack in acks)
-            or any(not isinstance(ack.get('observation_id'), str) for ack in acks)
-            or len({ack['observation_id'] for ack in acks}) != len(acks)
-            or not {ack['observation_id'] for ack in acks} <= set(mapping)):
+        if (any(not isinstance(observation, str) or not observation or not isinstance(work, str) or not work
+                for observation, work in mapping.items()) or len(set(mapping.values())) != len(mapping)):
             raise DashboardExecutionError('ack_scope_mismatch', '回执与已登记观察范围不一致', 409)
-        helper = r'''
-import json, pathlib, sys
-sys.path.insert(0, sys.argv[1])
-from src.utils.quick_scan_work_store import QuickScanWorkStore, WorkConflictError, LeaseFencedError
-request=json.load(sys.stdin)
-def offline(event,args):
-    if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}: raise RuntimeError('network_forbidden')
-sys.addaudithook(offline)
-try:
-    store=QuickScanWorkStore(pathlib.Path(sys.argv[2]))
-    rows=[]
-    for ack in request['receipt']['acks']:
-        work=request['work_item_ids'][ack['observation_id']]
-        try:
-            result=store.apply_result_delivery_ack(work,ack)
-            rows.append({'work_item_id':work,'observation_id':ack['observation_id'],'state':result['state']})
-        except (ValueError,WorkConflictError,LeaseFencedError) as error:
-            rows.append({'work_item_id':work,'observation_id':ack['observation_id'],
-                'state':'ack_rejected','error_type':type(error).__name__})
-    present={ack['observation_id'] for ack in request['receipt']['acks']}
-    for observation,work in request['work_item_ids'].items():
-        if observation not in present:
-            rows.append({'work_item_id':work,'observation_id':observation,'state':'ack_missing'})
-    print(json.dumps({'status':'delivered' if all(r['state']=='delivered' for r in rows) else 'owner_rejected',
-        'items':rows,'API_requests':0,'network_calls':0}))
-except Exception:
-    print(json.dumps({'error_code':'original_ack_rejected','API_requests':0}));raise SystemExit(2)
-'''
-        return self._call([str(self.config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8', '-c', helper,
-            str(root), str(ledger)], root, ledger.parent, input_value={'receipt': receipt, 'work_item_ids': mapping})
+        acks = []
+        if operation == 'acknowledge':
+            receipt = payload['receipt']
+            acks = receipt.get('acks') if isinstance(receipt, dict) else None
+            if (not isinstance(acks, list) or not acks or any(not isinstance(ack, dict) for ack in acks)
+                or any(not isinstance(ack.get('observation_id'), str) for ack in acks)
+                or len({ack['observation_id'] for ack in acks}) != len(acks)
+                or not {ack['observation_id'] for ack in acks} <= set(mapping)):
+                raise DashboardExecutionError('ack_scope_mismatch', '回执与已登记观察范围不一致', 409)
+        command = [str(self.config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8', '-m',
+                   'src.utils.quick_scan_delivery_control_cli', '--ledger', str(ledger)]
+        response = self._call(command, root, root, input_value={
+            'protocol': 'stockqa.delivery_control_request/1.0.0', 'operation': operation,
+            'payload': {'work_item_ids': mapping, **payload},
+        })
+        statuses = ('delivered', 'owner_rejected') if operation == 'acknowledge' else ('bound',)
+        if (not isinstance(response, dict)
+            or response.get('protocol') != 'stockqa.delivery_control_response/1.0.0'
+            or response.get('operation') != operation or response.get('status') not in statuses
+            or not isinstance(response.get('items'), list)
+            or not all(isinstance(row, dict) for row in response['items'])
+            or not self._delivery_control_items_match(operation, response, mapping, acks)
+            or any(type(response.get(counter)) is not int or response[counter] != 0
+                   for counter in ('API_requests', 'network_calls'))):
+            raise DashboardExecutionError('owner_delivery_control_invalid', '原交付控制响应与公开协议不一致。', 409)
+        return {field: response[field] for field in ('status', 'items', 'API_requests', 'network_calls')}
+
+    @staticmethod
+    def _delivery_control_items_match(operation, response, mapping, acks):
+        items = response['items']
+        if len(items) != len(mapping):
+            return False
+        if operation == 'bind':
+            return (all(isinstance(row.get('work_item_id'), str)
+                        and isinstance(row.get('binding_sha256'), str)
+                        and re.fullmatch(r'[a-f0-9]{64}', row['binding_sha256']) for row in items)
+                    and {row['work_item_id'] for row in items} == set(mapping.values()))
+
+        states = {'accepted': 'delivered', 'already_present': 'delivered',
+                  'rejected': 'rejected', 'conflict': 'conflict'}
+        requested = {ack['observation_id']: states.get(ack.get('status'), 'ack_rejected')
+                     if isinstance(ack.get('status'), str) else 'ack_rejected' for ack in acks}
+        unseen = set(mapping)
+        for row in items:
+            observation, state = row.get('observation_id'), row.get('state')
+            if (not isinstance(observation, str) or observation not in unseen
+                or row.get('work_item_id') != mapping[observation]):
+                return False
+            expected_state = requested.get(observation, 'ack_missing')
+            if state != expected_state and not (observation in requested and state == 'ack_rejected'):
+                return False
+            unseen.remove(observation)
+        delivered = all(row['state'] == 'delivered' for row in items)
+        return response['status'] == ('delivered' if delivered else 'owner_rejected')
+
+    def acknowledge_delivery(self, bundle, receipt):
+        """Pass exact StockWiki ACKs to registered original work."""
+        return self._delivery_control(bundle, 'acknowledge', {'receipt': receipt})
 
     def export_delivery(self, payload):
         try:
@@ -1212,33 +1199,4 @@ except Exception:
 
     def bind_delivery_consumer(self, bundle, target, source_ref):
         """Freeze the receiver from its independent public DTO BEFORE importing."""
-        root = Path(self.config.get('stockqa_root', ''))
-        ledger = Path(bundle.get('work_store', ''))
-        mapping = bundle.get('work_item_ids')
-        if (not root.is_absolute() or not (root/'src/utils/quick_scan_work_store.py').is_file()
-            or not ledger.is_absolute() or not ledger.is_file() or not isinstance(mapping, dict) or not mapping):
-            raise DashboardExecutionError('ack_owner_unconfigured', '缺少原StockQA账本及逐观察work引用', 409)
-        helper = r'''
-import json,pathlib,sys
-sys.path.insert(0,sys.argv[1])
-from src.utils.quick_scan_work_store import QuickScanWorkStore
-request=json.load(sys.stdin)
-def offline(event,args):
-    if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}: raise RuntimeError('network_forbidden')
-sys.addaudithook(offline)
-try:
-    store=QuickScanWorkStore(pathlib.Path(sys.argv[2]));rows=[]
-    for observation,work in request['work_item_ids'].items():
-        delivery=store.get_result_delivery(work)
-        if delivery['observation_id']!=observation: raise ValueError('observation_scope_mismatch')
-        binding=delivery.get('consumer_binding')
-        if binding is None or binding['consumer']!=request['target']:
-            binding=store.bind_result_delivery_consumer(work,request['target'],source_ref=request['source_ref'])
-        rows.append({'work_item_id':work,'binding_sha256':binding['binding_sha256']})
-    print(json.dumps({'status':'bound','items':rows,'API_requests':0,'network_calls':0}))
-except Exception:
-    print(json.dumps({'error_code':'original_consumer_binding_rejected','API_requests':0}));raise SystemExit(2)
-'''
-        return self._call([str(self.config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8', '-c', helper,
-            str(root), str(ledger)], root, ledger.parent,
-            input_value={'work_item_ids': mapping, 'target': target, 'source_ref': source_ref})
+        return self._delivery_control(bundle, 'bind', {'target': target, 'source_ref': source_ref})

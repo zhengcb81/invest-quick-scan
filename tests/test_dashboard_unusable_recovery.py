@@ -173,19 +173,22 @@ def test_original_comparison_decision_selects_only_its_exact_successor(tmp_path,
                            {'protocol': 'stockwiki.refresh_owner_policy/1.2.0'})
 
 
-def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch, capsys):
-    # Exercise the actual subprocess reader text with synthetic read-only ports.
-    # This checks selection, not original-owner permission or a real SQLite DB.
-    import io
-    import types
+def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch, tmp_path):
+    # The consumer forwards exact comparison references to the public read port.
+    from types import SimpleNamespace
     binding = {'entity_id': 'ENT_FIX', 'subject_key': 'ASJ_FIX@1', 'perimeter_sha256': 'a'*64,
                'identity_revision': 1, 'information_cutoff': '2026-11-01',
                'scope': 'entity', 'scope_id': 'ENT_FIX', 'manifest_raw_sha256': 'b'*64}
     row = {'status': 'delivered', 'work_item_id': 'WORK_source', 'generation': 4,
            'retry_purpose': 'comparison', 'retry_decision_id': 'owd1_original'}
     calls = []
-    def continuation_bank_bindings(path, query):
-        assert path == Path('synthetic')
+    def continuation_bank_bindings(command, **options):
+        assert command[-4:] == ['-m', 'src.utils.quick_scan_continuation_bank_cli',
+                                '--ledger', str(tmp_path/'synthetic.sqlite')]
+        assert options['cwd'] == str(tmp_path)
+        request = json.loads(options['input'])
+        assert request['protocol'] == 'stockqa.continuation_bank_request/1.0.0'
+        query = request['binding']
         assert query['scope_bindings'] == {'IQS_11': {'scope': 'entity', 'scope_id': 'ENT_FIX'}}
         refs = query.get('controlled_work_refs', [])
         calls.append(refs)
@@ -195,27 +198,16 @@ def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch
             rows.append({'question_id': 'IQS_11', 'work_item_id': row['work_item_id'],
                          'generation': row['generation'], 'manifest_raw_sha256': binding['manifest_raw_sha256'],
                          'binding_sha256': p._sha(binding)})
-        return {'protocol': 'iqs.original_work_bank_bindings/1.0.0', 'rows': rows,
-                'API_requests': 0, 'database_writes': 0}
-    for name in ('src', 'src.utils'):
-        module = types.ModuleType(name); module.__path__ = []
-        monkeypatch.setitem(sys.modules, name, module)
-    for name, members in (
-        ('src.utils.quick_scan_refresh_admission', {'safe_read': lambda path: None}),
-        ('src.utils.quick_scan_refresh_inspect', {'continuation_bank_bindings': continuation_bank_bindings}),
-    ):
-        module = types.ModuleType(name); module.__dict__.update(members)
-        monkeypatch.setitem(sys.modules, name, module)
-    monkeypatch.setattr(sys, 'argv', ['reader', 'synthetic-source', '-'])
-    monkeypatch.setattr(sys, 'path', list(sys.path))
+        response = {'protocol': 'iqs.original_work_bank_bindings/1.0.0', 'rows': rows,
+                    'API_requests': 0, 'database_writes': 0}
+        return SimpleNamespace(returncode=0, stdout=json.dumps(response).encode())
+    monkeypatch.setattr(p.subprocess, 'run', continuation_bank_bindings)
     request = {k: binding[k] for k in ('entity_id','subject_key','perimeter_sha256','identity_revision','information_cutoff')}
     request.update(scope_bindings={'IQS_11': {'scope':'entity','scope_id':'ENT_FIX'}},
-                   readonly_config={'protocol':'stockqa.refresh_admission_config/1.0.0','work_store':'synthetic'},
                    controlled_work_refs=[{'work_item_id':'WORK_source','decision_id':'owd1_original'}])
     def run():
-        monkeypatch.setattr(sys, 'stdin', io.StringIO(json.dumps(request)))
-        exec(p._WORK_BANK_BINDING_READER, {})
-        return json.loads(capsys.readouterr().out)['rows']
+        return p._read_continuation_bank({'stockqa_root': str(tmp_path)}, request,
+                                         ledger=tmp_path/'synthetic.sqlite')
     assert run()[0]['manifest_raw_sha256'] == binding['manifest_raw_sha256']
     assert calls[-1] == [{'work_item_id': 'WORK_source', 'decision_id': 'owd1_original'}]
     request['controlled_work_refs'][0]['decision_id'] = 'owd1_other'

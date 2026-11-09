@@ -145,3 +145,39 @@ def test_dashboard_uses_public_interfaces():
         for line, symbol in _private_edges(path.read_text(encoding="utf-8-sig"), dashboard_modules=modules)
     ]
     assert not violations, "Dashboard must use public interfaces:\n" + "\n".join(violations)
+
+
+def _owner_implementation_references(source):
+    violations = []
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Import):
+            names = [alias.name for alias in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            names = [node.module or ""]
+        else:
+            names = []
+        for name in names:
+            if name.split(".")[0] in {"stockwiki", "src"}:
+                violations.append((node.lineno, name))
+        if isinstance(node, ast.Constant) and node.value == "-c":
+            violations.append((node.lineno, "inline Python owner transport"))
+    return sorted(violations)
+
+
+@pytest.mark.parametrize("source", [
+    "from stockwiki.quick_scan_store import QuickScanStore",
+    "import src.utils.quick_scan_work_store",
+    "args = [python, '-c', OWNER_SCRIPT]",
+])
+def test_owner_implementation_transport_is_detected(source):
+    assert len(_owner_implementation_references(source)) == 1
+
+
+@pytest.mark.parametrize("filename", [
+    "dashboard_owner.py", "dashboard_company_projection.py", "dashboard_delivery.py",
+    "dashboard_execution.py", "dashboard_prepare.py",
+])
+def test_migrated_owner_clients_only_call_public_commands(filename):
+    path = SCRIPTS / filename
+    violations = _owner_implementation_references(path.read_text(encoding="utf-8-sig"))
+    assert not violations, "\n".join(f"{filename}:{line}: {name}" for line, name in violations)

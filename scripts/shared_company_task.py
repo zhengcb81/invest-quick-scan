@@ -11,6 +11,8 @@ import copy
 import hashlib
 import json
 
+COMPANY_SCAN_TASK_PORT_PROTOCOL = "stockqa.company_scan_task_port/1.0.0"
+
 
 class NativeTaskRejected(ValueError):
     pass
@@ -33,23 +35,16 @@ def create_native_task(
         limits_within_registration,
     )
     from iqs_company_agent_lab.task import LoadedTask
-    from src.runners.llm_runner import QuickScanWorkLifecycle
-    from src.utils.quick_scan_owner_refresh import OwnerRefreshSession
-    from src.utils.quick_scan_refresh_execution import ApprovedRefreshSession
-    from src.utils.quick_scan_result_outbox import canonical_sha256
+    from src.utils.quick_scan_company_context import (
+        assert_company_scan_admission,
+        company_scan_inputs,
+    )
 
-    if not isinstance(lifecycle, QuickScanWorkLifecycle):
-        raise NativeTaskRejected("original_native_lifecycle_required")
-    owner = lifecycle._owner_refresh
-    if (
-        not isinstance(owner, ApprovedRefreshSession)
-        or not isinstance(owner.native, OwnerRefreshSession)
-        or owner.service.store is not lifecycle._store
-        or owner.native.store is not lifecycle._store
-        or not lifecycle._transport_managed
-    ):
-        raise NativeTaskRejected("original_admitted_native_owner_required")
-    owner.check()
+    try:
+        assert_company_scan_admission(lifecycle)
+        owner = company_scan_inputs(lifecycle)
+    except ValueError as error:
+        raise NativeTaskRejected(str(error)) from error
     if not isinstance(owner.plan.get("information_cutoff"), str) or not owner.plan["information_cutoff"]:
         raise NativeTaskRejected("registered_information_cutoff_required")
     if strategy_id != "free_agent":
@@ -68,13 +63,7 @@ def create_native_task(
     selected = list(owner.requested_question_ids if question_ids is None else question_ids)
     if not 1 <= len(selected) <= 12 or len(set(selected)) != len(selected) or not set(selected) <= set(owner.entries):
         raise NativeTaskRejected("bounded_original_authorized_questions_required")
-    context = lifecycle._observation_context
-    if (
-        not isinstance(context, dict)
-        or context.get("schema") != "stockqa.quick_scan_observation_context/2.0.0"
-        or canonical_sha256(context) != canonical_sha256(owner.native.observation_context)
-    ):
-        raise NativeTaskRejected("original_native_subject_context_required")
+    context = owner.observation_context
     manifest = owner.bundle["manifest"]
     manifest_rows = {row["id"]: row for row in manifest["questions"]}
     locks = {row["module_id"]: row for row in manifest["module_locks"]}
@@ -226,7 +215,7 @@ def create_native_task(
         },
     )
     task.owner_binding = copy.deepcopy(binding)
-    owner.check()
+    assert_company_scan_admission(lifecycle)
     return task
 
 
@@ -244,14 +233,17 @@ def create_company_scan_task(
 ):
     from iqs_company_agent_lab.canonical import canonical_json, sha256_hex
     from iqs_company_agent_lab.task import LoadedTask
-    from src.utils.quick_scan_company_context import company_scan_inputs
+    from src.utils.quick_scan_company_context import (
+        company_scan_inputs,
+        company_scan_pack_group_key,
+        validate_company_scan_task,
+    )
 
     try:
         owner = company_scan_inputs(lifecycle)
     except ValueError as error:
         raise NativeTaskRejected(str(error)) from error
     from iqs_company_agent_lab.scan_profile import build_scan_profile, validate_scan_task
-    from src.core.models import Question
 
     strategy_id = "module_packs"
     for value in (experiment_id, run_id):
@@ -393,8 +385,8 @@ def create_company_scan_task(
         module_locks=copy.deepcopy(manifest["module_locks"]),
     )
     groups = {
-        q["question_id"]: lifecycle.question_pack_group_key(
-            Question(q["question"]["prompt"], question_id=q["question_id"])
+        q["question_id"]: company_scan_pack_group_key(
+            lifecycle, q["question_id"], q["question"]["prompt"]
         )
         for q in questions
     }
@@ -425,7 +417,5 @@ def create_company_scan_task(
     )
     task.owner_binding = copy.deepcopy(binding)
     validate_scan_task(task)
-    from src.utils.quick_scan_company_context import validate_company_scan_task
-
     validate_company_scan_task(lifecycle, task)
     return task

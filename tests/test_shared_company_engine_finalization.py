@@ -89,7 +89,7 @@ def bound(monkeypatch):
     run = {"run_id": task.raw["run_id"], "slots": [{"question_id": q, "execution_status": "completed", "answer": answer(q), "attempt_refs": ["stockqa:native_" + q]} for q in task.question_ids]}
     monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: (copy.deepcopy(run), EvidenceBoard(2000)))
     # Glue-only double; the dedicated semantic suite exercises the original rule.
-    monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: lambda body, qid: None)
+    monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args, **kwargs: lambda body, qid: None)
     return task, MapperOnlyServices(task), run
 
 
@@ -104,6 +104,15 @@ def test_explicit_finalizer_calls_original_seam_and_reuses_completed_checkpoints
     again = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
     assert again["reused_question_ids"] == task.question_ids
     assert services.saves == task.question_ids
+
+
+def test_finalization_summary_uses_verified_task_id_when_slot_projection_has_no_id(bound, monkeypatch):
+    task, services, run = bound
+    monkeypatch.setattr(engine, "_verified_finalization_export",
+                        lambda *args: ({"slots": copy.deepcopy(run["slots"])}, EvidenceBoard(2000)))
+    result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
+    assert result["run_id"] == task.raw["run_id"]
+    assert result["status"] == "completed"
 
 
 def test_finalizer_refuses_arbitrary_service_before_export_read():

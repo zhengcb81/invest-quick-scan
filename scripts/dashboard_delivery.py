@@ -14,19 +14,9 @@ except ImportError:
     from dashboard_errors import DashboardExecutionError
 
 
-_EXPORT = r'''
-import json,pathlib,sys
-sys.path.insert(0,sys.argv[1])
-def offline(event,args):
-    if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}: raise RuntimeError('network_forbidden')
-sys.addaudithook(offline)
-from src.utils.quick_scan_refresh_inspect import delivery_scope_projection
-try:
-    result = delivery_scope_projection(pathlib.Path(sys.argv[2]), json.load(sys.stdin))
-    print(json.dumps(result, ensure_ascii=False))
-except Exception:
-    print(json.dumps({'error_code':'original_delivery_export_rejected','API_requests':0}));raise SystemExit(2)
-'''
+DELIVERY_REQUEST_PROTOCOL = 'stockqa.delivery_scope_request/1.0.0'
+DELIVERY_RESPONSE_PROTOCOL = 'stockqa.delivery_scope_response/1.0.0'
+DELIVERY_COMMAND = 'src.utils.quick_scan_delivery_scope_cli'
 
 
 def _immutable(path, raw, *, expected_digest=None):
@@ -99,45 +89,53 @@ def describe_delivery_scope(bundle):
     }
 
 
-def _project_delivery(*, root, config, ledger, request, call, runtime, **selection):
+def _project_delivery(*, config, ledger, request, call, operation, confirmation=None):
+    root = Path(config.get('stockqa_root', ''))
+    if not root.is_absolute() or not root.is_dir():
+        raise DashboardExecutionError('delivery_not_configured', '原交付代码根缺失。', 409)
     command = [str(config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8',
-               '-c', _EXPORT, str(root), str(ledger)]
+               '-m', DELIVERY_COMMAND, '--ledger', str(ledger)]
     scope = {'entity_id': request['entity_id'], 'question_ids': request['question_ids'],
-             'scope_bindings': request.get('scope_bindings'), **selection}
-    return call(command, root, runtime, input_value=scope)
+             'scope_bindings': request.get('scope_bindings')}
+    if confirmation is not None:
+        scope['confirmation_id'] = confirmation
+    response = call(command, root, root, input_value={
+        'protocol': DELIVERY_REQUEST_PROTOCOL, 'operation': operation, 'scope': scope,
+    })
+    result = response.get('result') if isinstance(response, dict) else None
+    if (not isinstance(result, dict) or response.get('protocol') != DELIVERY_RESPONSE_PROTOCOL
+        or response.get('status') != 'ok' or response.get('operation') != operation
+        or any(type(response.get(counter)) is not int or response[counter] != 0
+               for counter in ('API_requests', 'network_calls'))
+        or any(not isinstance(result.get(field), list)
+               or not all(isinstance(row, dict) for row in result[field])
+               for field in ('items', 'work_items', 'consumers'))):
+        raise DashboardExecutionError('owner_delivery_contract_invalid', '原交付查询响应与公开协议不一致。', 409)
+    return {**result, 'API_requests': 0, 'network_calls': 0}
 
 
-def read_delivery_receivers(*, bundle, config, state_root, call):
+def read_delivery_receivers(*, bundle, config, call, state_root=None):
     """Read the receiver of the original confirmation without binding it."""
     ledger, request = _scope_inputs(bundle)
     confirmation = bundle.get('confirmation_id')
     if not isinstance(confirmation, str) or not confirmation:
         raise DashboardExecutionError('delivery_original_scope_unavailable', '缺少原confirmation，不能猜测原交付目标。', 409)
-    root = Path(config['stockqa_root'])
-    state_root.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix='receiver-read-', dir=state_root) as runtime:
-        return _project_delivery(root=root, config=config, ledger=ledger, request=request, call=call,
-                                 runtime=runtime, confirmation_id=confirmation, receiver_only=True)
+    return _project_delivery(config=config, ledger=ledger, request=request, call=call,
+                             operation='receivers', confirmation=confirmation)
 
 
-def read_work_scope(*, bundle, config, call, runtime):
+def read_work_scope(*, bundle, config, call, runtime=None):
     """Observe native work rows without requiring today's spending policy."""
     ledger, request = _scope_inputs(bundle)
-    root = Path(config['stockqa_root'])
-    original = {'confirmation_id': bundle['confirmation_id']} if bundle.get('confirmation_id') else {}
-    result = _project_delivery(root=root, config=config, ledger=ledger, request=request, call=call,
-                               runtime=runtime, **original, read_only_scope=True)
+    result = _project_delivery(config=config, ledger=ledger, request=request, call=call,
+                               operation='inspect', confirmation=bundle.get('confirmation_id') or None)
     return {**result, 'protocol': 'stockqa.read_only_work_projection/1.0.0',
             'reservation_created': False}
 
 
 def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection_work_items):
-    key = bundle_id
     # Reading an already sealed result does not require a new spending grant,
     # runtime model config or permission to dispatch again.
-    root=Path(config.get('stockqa_root',''))
-    if not root.is_absolute() or not (root/'src/utils/quick_scan_work_store.py').is_file():
-        raise DashboardExecutionError('delivery_not_configured','原交付代码根缺失。',409)
     for field in ('manifest',):
         if not Path(bundle.get(field,'')).is_absolute() or not Path(bundle[field]).is_file():
             raise DashboardExecutionError('delivery_not_configured','缺少原只读交付输入。',409,{'missing':[field]})
@@ -145,12 +143,10 @@ def export_deliveries(*, bundle_id, bundle, config, state_root, call, inspection
     confirmation = bundle.get('confirmation_id')
     if not isinstance(confirmation, str) or not confirmation:
         raise DashboardExecutionError('delivery_original_scope_unavailable', '缺少原confirmation，不能用最新一代工作替代原交付范围。', 409)
-    state_root.mkdir(parents=True,exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix='delivery-read-',dir=state_root) as runtime:
-        # Each original sealed package is independently exportable. Unfinished
-        # questions remain not_exportable, without holding completed answers.
-        result = _project_delivery(root=root, config=config, ledger=ledger, request=request, call=call,
-                                   runtime=runtime, confirmation_id=confirmation)
+    # Each original sealed package is independently exportable. Unfinished
+    # questions remain not_exportable, without holding completed answers.
+    result = _project_delivery(config=config, ledger=ledger, request=request, call=call,
+                               operation='export', confirmation=confirmation)
     from frozen_release_projection import create_projection
     manifest=json.loads(Path(bundle['manifest']).read_text(encoding='utf-8-sig'))
     release=create_projection(manifest,root=Path(config['iqs_release_root']))

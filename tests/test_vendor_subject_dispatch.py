@@ -160,7 +160,9 @@ def test_profile_dialects_cannot_use_private_contract_helpers():
                 for entry in node.names:
                     if entry.name.startswith('_'):
                         violations.append(f'{source.name}:{node.lineno}: {node.module}.{entry.name}')
-            if isinstance(node, ast.Attribute) and node.attr.startswith('_'):
+            if isinstance(node, ast.Attribute) and (node.attr.startswith('_') or (
+                name in {'query_pool_assessment_contract', 'query_pool_scope_contract'} and node.attr == 'ROOT'
+            )):
                 reference = ast.unparse(node)
                 if reference.split('.', 1)[0] in aliases:
                     violations.append(f'{source.name}:{node.lineno}: {reference}')

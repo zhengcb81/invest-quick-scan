@@ -1,16 +1,8 @@
 """B03 company assessment projection bridge (strictly read-only).
 
-The owner (StockWiki) publishes immutable company assessment snapshots
-through ``stockwiki.public_company_assessments`` (its public CLI is the
-operator face; the narrow in-process read API used here is the owner-internal
-read entry this card was granted). This module is the projection bridge
-between that owner read surface and the IQS Dashboard HTTP service:
-
-- the WORKER half (``worker_read``) runs inside the isolated owner worker
-  subprocess, validates the bounded payload, maps owner refusal codes and
-  returns one plain dict — it performs reads only;
-- the SERVICE half (``project_result``/``project_history``) shapes the GET
-  response and pins the entity-scoped IQSLink beside it.
+StockWiki's public read-only command owns the assessment and identity reads.
+This adapter checks the versioned command response and shapes the existing IQS
+Dashboard result and history payloads.
 
 No aggregate score is ever computed, selected or summed here: the owner's
 ``aggregate_score`` is passed through verbatim (``null`` with its named
@@ -22,15 +14,25 @@ become a company result through this projection.
 
 from __future__ import annotations
 
-import json
+import os
 from pathlib import Path
+import re
+import subprocess
 from typing import Any
+
+if __package__:
+    from .dashboard_json import decode_owner_json
+else:
+    from dashboard_json import decode_owner_json
 
 PROJECTION_PROTOCOL = "iqs.dashboard.company_assessment/1"
 PROJECTION_VERSION = "company_assessment/1.0.0"
 # The owner's own declaration this projection was written against.
 OWNER_PROTOCOL = "stockwiki.company_assessment/1"
 OWNER_SCHEMA_VERSION = "1.0.0"
+_OWNER_COMMAND = "dashboard_company_assessment_cli.py"
+_MAX_OUTPUT_BYTES = 16 * 1024 * 1024
+_ERROR_CODE = re.compile(r"[a-z][a-z0-9_]{0,100}")
 
 # Honest named absences pass through verbatim: a store that cannot be read
 # or a registry with no registered result is an explicit reason, never zero.
@@ -51,9 +53,14 @@ _REFUSAL_STATUS = {
     "registry_integrity_mismatch": 502,
     "registry_unavailable": 503,
     "observation_store_unavailable": 503,
-    "identity_store_missing": 503,
+    "response_too_large": 502,
     "write_refused_read_only": 502,
     "internal_refused": 502,
+}
+_IDENTITY_REFUSALS = {
+    "identity_store_missing": "owner_database_missing",
+    "identity_store_unavailable": "owner_store_unreadable",
+    "identity_store_busy": "owner_busy",
 }
 
 
@@ -103,66 +110,108 @@ def _validated_history_payload(payload: Any) -> dict[str, Any]:
     return {"entity_id": entity_id, "limit": limit, "offset": offset}
 
 
-def worker_read(config: dict, operation: str, payload: Any) -> dict[str, Any]:
-    """Worker half: read the owner's company assessment authority (read-only).
-
-    Runs inside the isolated owner worker subprocess with ``stockwiki_root``
-    already first on ``sys.path``. Only the owner's narrow internal read
-    entry is used; no registration happens here and no store is ever opened
-    writable.
-    """
-    from stockwiki.paths import WorkspacePaths
-    try:
-        from stockwiki.public_company_assessments import (
-            CompanyAssessmentError,
-            list_company_history,
-            read_company_result,
-        )
-    except ImportError:
-        # An older StockWiki owner does not publish the company assessment
-        # projection: that is a named unavailable capability, never a zero or
-        # a fallback formal result.
-        raise ProjectionError(
-            "owner_company_projection_unavailable",
-            "the StockWiki owner does not publish the company assessment projection",
-            502,
-        ) from None
-
-    paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
+def read_company_assessment(
+    config: dict, operation: str, payload: Any, *, environment: dict[str, str] | None = None
+) -> dict[str, Any]:
+    """Read one company projection over the owner's versioned public command."""
     if operation == "company_result":
         normalized = _validated_result_payload(payload)
-        _require_entity(config, normalized["entity_id"])
-        try:
-            owner = read_company_result(paths, **normalized)
-        except CompanyAssessmentError as error:
-            raise ProjectionError(
-                error.code,
-                "the owner company assessment authority refused this read",
-                _REFUSAL_STATUS.get(error.code, 502),
-            ) from None
+        action, read = "read", "result"
+        pin = normalized["result_id"]
+        options = ["--result-id", pin] if pin is not None else []
     elif operation == "company_history":
         normalized = _validated_history_payload(payload)
-        _require_entity(config, normalized["entity_id"])
-        try:
-            owner = list_company_history(paths, **normalized)
-        except CompanyAssessmentError as error:
-            raise ProjectionError(
-                error.code,
-                "the owner company assessment authority refused this read",
-                _REFUSAL_STATUS.get(error.code, 502),
-            ) from None
-    else:  # pragma: no cover - the worker dispatch only sends these two
+        action = read = "history"
+        options = ["--limit", str(normalized["limit"]), "--offset", str(normalized["offset"])]
+    else:
         raise ProjectionError("operation_unknown", "Unsupported company projection read", 404)
-    owner = _checked_owner_read(owner)
-    return {
+
+    root = Path(config["stockwiki_root"]).resolve()
+    script = root / _OWNER_COMMAND
+    if not script.is_file():
+        raise _owner_unavailable()
+    entity_id = normalized["entity_id"]
+    command = [config["stockwiki_python"], "-B", "-X", "utf8", str(script), action,
+               "--root", config["workspace_root"], "--entity", entity_id, "--require-identity", *options]
+    if environment is None:
+        environment = {key: value for key, value in os.environ.items()
+                       if key.upper() in {"PATH", "SYSTEMROOT", "WINDIR", "LD_LIBRARY_PATH"}}
+    try:
+        process = subprocess.run(command, cwd=root, stdin=subprocess.DEVNULL,
+                                 capture_output=True, timeout=config.get("timeout_seconds", 30),
+                                 env=environment)
+    except subprocess.TimeoutExpired:
+        raise ProjectionError("owner_timeout", "StockWiki owner request timed out", 504) from None
+    except OSError:
+        raise ProjectionError("owner_process_unavailable", "Cannot start StockWiki interpreter", 503) from None
+    if process.returncode == 2 and not process.stdout:
+        _raise_owner_refusal(process.stderr)
+    if process.returncode != 0:
+        raise ProjectionError("owner_process_failed", "StockWiki owner command failed", 502)
+    owner = _checked_owner_read(_decode_owner_output(process.stdout))
+    if owner.get("action") != action or owner.get("entity_id") != entity_id:
+        raise ProjectionError("owner_projection_invalid", "owner read does not match the request", 502)
+    envelope = {
         "protocol": PROJECTION_PROTOCOL,
         "projection_version": PROJECTION_VERSION,
-        "entity_id": normalized["entity_id"],
-        "read": "result" if operation == "company_result" else "history",
-        "owner_payload": _bounded(owner),
+        "entity_id": entity_id,
+        "read": read,
+        "owner_payload": {key: value for key, value in owner.items() if key != "action"},
         "network_calls": 0,
         "llm_calls": 0,
     }
+    absent = owner.get("reason_code") == "company_not_registered"
+    if read == "result":
+        if not {"result", "reason_code"} <= owner.keys() or (absent and owner["result"] is not None):
+            raise ProjectionError("owner_projection_invalid", "owner result status is malformed", 502)
+        if absent:
+            raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
+        result = project_result(envelope)["company_result"]
+        if pin is not None and result is not None and result["result_id"] != pin:
+            raise ProjectionError("company_result_pin_mismatch", "owner returned a different pinned result", 502)
+    else:
+        history = project_history(envelope, limit=normalized["limit"], offset=normalized["offset"])
+        unknown = history["registry_state"] == "entity_not_registered"
+        if absent != unknown or (absent and (history["items"] or history["page"]["total"] != 0)):
+            raise ProjectionError("owner_projection_invalid", "owner history identity status is malformed", 502)
+        if unknown:
+            raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
+    return envelope
+
+
+def _owner_unavailable() -> ProjectionError:
+    return ProjectionError(
+        "owner_company_projection_unavailable",
+        "the StockWiki owner does not publish the required company assessment read",
+        502,
+    )
+
+
+def _decode_owner_output(raw: bytes) -> Any:
+    if len(raw) > _MAX_OUTPUT_BYTES:
+        raise ProjectionError("owner_response_too_large", "owner projection exceeds the response bound", 502)
+
+    try:
+        return decode_owner_json(raw.decode("utf-8"))
+    except (ValueError, RecursionError):
+        raise ProjectionError("owner_projection_invalid", "owner returned invalid JSON", 502) from None
+
+
+def _raise_owner_refusal(raw: bytes) -> None:
+    refusal = _decode_owner_output(raw)
+    code = refusal.get("error_code") if isinstance(refusal, dict) else None
+    if not isinstance(code, str) or not _ERROR_CODE.fullmatch(code):
+        raise ProjectionError("owner_projection_invalid", "owner refusal is malformed", 502)
+    if refusal.get("schema_version") != OWNER_SCHEMA_VERSION:
+        raise ProjectionError("owner_protocol_unsupported", "owner company assessment protocol is unsupported", 502)
+    if code == "invalid_invocation":
+        # An older command does not support the strict identity option.
+        raise _owner_unavailable()
+    if code in _IDENTITY_REFUSALS:
+        raise ProjectionError(_IDENTITY_REFUSALS[code], "the owner identity store could not confirm registration", 503)
+    raise ProjectionError(
+        code, "the owner company assessment authority refused this read", _REFUSAL_STATUS.get(code, 502)
+    )
 
 
 def _checked_owner_read(owner: Any) -> dict[str, Any]:
@@ -178,30 +227,9 @@ def _checked_owner_read(owner: Any) -> dict[str, Any]:
             raise ProjectionError("owner_projection_invalid", "owner read is missing envelope fields", 502)
     if owner.get("protocol") != OWNER_PROTOCOL or owner.get("schema_version") != OWNER_SCHEMA_VERSION:
         raise ProjectionError("owner_protocol_unsupported", "owner company assessment protocol is unsupported", 502)
-    if owner.get("network_calls") != 0 or owner.get("llm_calls") != 0:
+    if any(type(owner[key]) is not int or owner[key] != 0 for key in ("network_calls", "llm_calls")):
         raise ProjectionError("owner_projection_invalid", "owner read reported unexpected I/O", 502)
     return owner
-
-
-def _require_entity(config: dict, entity_id: str) -> None:
-    """A company projection only answers for a registered canonical entity."""
-    from stockwiki.paths import WorkspacePaths
-    from stockwiki.quick_scan_store import QuickScanStore
-
-    paths = WorkspacePaths.from_root(Path(config["workspace_root"]))
-    identity = QuickScanStore(paths)
-    if not identity.database_path.is_file():
-        raise ProjectionError("owner_database_missing", "StockWiki identity store is not initialized", 503)
-    if identity.get_entity(entity_id) is None:
-        raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
-
-
-def _bounded(value: Any) -> Any:
-    """Reject unexpectedly huge owner payloads instead of truncating them."""
-    encoded = json.dumps(value, ensure_ascii=False)
-    if len(encoded) > 16 * 1024 * 1024:
-        raise ProjectionError("owner_response_too_large", "owner projection exceeds the response bound", 502)
-    return value
 
 
 def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
@@ -263,9 +291,13 @@ def project_history(owner_payload: dict[str, Any], *, limit: int, offset: int) -
     if any(not isinstance(item, dict) or not isinstance(item.get("result_id"), str)
            or not item["result_id"] for item in items):
         raise ProjectionError("owner_projection_invalid", "owner history item is malformed", 502)
+    entity_id = owner_payload["entity_id"]
+    if any(item.get("entity_id", entity_id) != entity_id for item in items):
+        raise ProjectionError("owner_projection_invalid", "owner history item names a different entity", 502)
     if len(items) > limit:
         raise ProjectionError("owner_projection_invalid", "owner history page exceeds the requested limit", 502)
-    if page.get("limit") != limit or page.get("offset") != offset:
+    if (type(page.get("limit")) is not int or type(page.get("offset")) is not int
+            or page["limit"] != limit or page["offset"] != offset):
         raise ProjectionError("owner_projection_invalid", "owner history page does not echo the request", 502)
     total = page.get("total")
     if type(total) is not int or total < 0:

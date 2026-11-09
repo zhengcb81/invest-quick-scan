@@ -8,6 +8,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -19,41 +20,42 @@ import pytest
 from scripts.dashboard_prepare import DashboardPrepareError, PrepareGateway, _env, _new, _apply_guard, _control_path, _native_cli, _timeouts, _sha, _snapshot_sha
 
 
-def test_work_binding_transport_uses_only_public_projection(monkeypatch, capsys):
-    import io
-    import types
-    from scripts.dashboard_prepare import _WORK_BANK_BINDING_READER
+def test_work_binding_transport_uses_only_public_projection(monkeypatch, tmp_path):
+    from types import SimpleNamespace
+    from scripts.dashboard_prepare import _read_continuation_bank
     binding = dict(entity_id='ENT_EXAMPLE', subject_key='ASJ_EXAMPLE', perimeter_sha256='a'*64,
         identity_revision=1, information_cutoff='2026-11-01', scope='entity', scope_id='ENT_EXAMPLE',
         manifest_raw_sha256='b'*64)
     calls = []
-    def project(path, request):
-        calls.append((path, request))
-        return {'protocol': 'iqs.original_work_bank_bindings/1.0.0',
+    def project(command, **options):
+        calls.append((command, options['cwd'], json.loads(options['input'])))
+        response = {'protocol': 'iqs.original_work_bank_bindings/1.0.0',
                 'rows': [{'work_item_id': 'WORK_EXAMPLE', 'generation': 1, 'question_id': 'Q1',
                           'manifest_raw_sha256': 'b'*64, 'binding_sha256': _sha(binding)}],
                 'database_writes': 0, 'API_requests': 0}
-    modules = {
-        'src': types.ModuleType('src'),
-        'src.utils': types.ModuleType('src.utils'),
-        'src.utils.quick_scan_refresh_admission': types.SimpleNamespace(safe_read=lambda p: None),
-        'src.utils.quick_scan_refresh_inspect': types.SimpleNamespace(continuation_bank_bindings=project),
-    }
-    for name, value in modules.items():
-        monkeypatch.setitem(sys.modules, name, value)
+        return SimpleNamespace(returncode=0, stdout=json.dumps(response).encode())
+    monkeypatch.setattr(subprocess, 'run', project)
     request = {key: binding[key] for key in ('entity_id', 'subject_key', 'perimeter_sha256',
         'identity_revision', 'information_cutoff')}
-    request.update(scope_bindings={'Q1': {'scope': 'entity', 'scope_id': 'ENT_EXAMPLE'}},
-        readonly_config={'protocol': 'stockqa.refresh_admission_config/1.0.0', 'work_store': 'not-opened.sqlite'})
-    monkeypatch.setattr(sys, 'argv', ['reader', 'unused-code-root', '-'])
-    monkeypatch.setattr(sys, 'stdin', io.StringIO(json.dumps(request)))
-    monkeypatch.setattr(sys, 'path', list(sys.path))
-    exec(compile(_WORK_BANK_BINDING_READER, '<work-binding-transport>', 'exec'), {})
-    result = json.loads(capsys.readouterr().out)
-    assert calls == [(Path('not-opened.sqlite'), {key: value for key, value in request.items()
-                                                if key != 'readonly_config'})]
-    assert result['rows'][0]['work_item_id'] == 'WORK_EXAMPLE'
-    assert result['database_writes'] == result['API_requests'] == 0
+    request.update(scope_bindings={'Q1': {'scope': 'entity', 'scope_id': 'ENT_EXAMPLE'}})
+    root = str(tmp_path/'owner')
+    ledger = tmp_path/'not-opened.sqlite'
+    rows = _read_continuation_bank({'stockqa_root': root}, request, ledger=ledger)
+    assert calls == [([sys.executable, '-B', '-X', 'utf8', '-m',
+                       'src.utils.quick_scan_continuation_bank_cli', '--ledger', str(ledger)],
+                      root, {'protocol': 'stockqa.continuation_bank_request/1.0.0', 'binding': request})]
+    assert rows[0]['work_item_id'] == 'WORK_EXAMPLE'
+
+
+def test_work_binding_transport_refuses_duplicate_projection_keys(monkeypatch, tmp_path):
+    from types import SimpleNamespace
+    from scripts.dashboard_prepare import _read_continuation_bank
+
+    response = (b'{"protocol":"iqs.original_work_bank_bindings/1.0.0",'
+                b'"rows":[{"work_item_id":"foreign"}],"rows":[],"API_requests":0,"database_writes":0}')
+    monkeypatch.setattr(subprocess, 'run', lambda *args, **kwargs: SimpleNamespace(returncode=0, stdout=response))
+    with pytest.raises(ValueError, match='duplicate_json_key'):
+        _read_continuation_bank({'stockqa_root': str(tmp_path)}, {}, ledger=tmp_path/'not-opened.sqlite')
 
 
 @pytest.mark.parametrize('arguments', [[], ['--apply']])
@@ -103,8 +105,6 @@ def test_frozen_bank_equivalence_ignores_only_route_clock_and_id_not_meaning():
 def test_reuse_requires_exact_unique_original_work_hash_and_owner_snapshot(tmp_path,monkeypatch,fault):
     from types import SimpleNamespace
     from scripts import dashboard_prepare as api
-    monkeypatch.syspath_prepend(str(WIKI))
-    import stockwiki.quick_scan_routes as native_routes
     binding={'entity_id':ENTITY,'subject_key':'ASJ_test@1','identity_revision':3,'perimeter_sha256':'a'*64}
     payload={'native':{'binding':binding,'selected_listing':{'security_id':'SEC_test'}},
         'manifest':{'questions':[{'id':'Q','scope':'entity'}]},'route':{'as_of':'2026-10-25'}}
@@ -115,9 +115,11 @@ def test_reuse_requires_exact_unique_original_work_hash_and_owner_snapshot(tmp_p
     rows=[{'manifest_raw_sha256':h} for h in hashes]
     response={'protocol':'iqs.original_work_bank_bindings/1.0.0','rows':rows,'API_requests':0,'database_writes':0}
     monkeypatch.setattr(api.subprocess,'run',lambda *args,**kwargs:SimpleNamespace(returncode=2 if fault=='reader_unavailable' else 0,stdout=json.dumps(response).encode()))
-    snapshots=[] if fault!='duplicate_snapshot' else [{'decision_id':'route_a','manifest_raw_sha256':'b'*64},{'decision_id':'route_b','manifest_raw_sha256':'b'*64}]
-    fake=SimpleNamespace(identity_binding=lambda _:binding,snapshots_for_subject=lambda _:snapshots)
-    monkeypatch.setattr(native_routes,'QuickScanRouteStore',lambda *args,**kwargs:fake)
+    def snapshot(config, operation, payload):
+        assert operation == 'frozen_bank' and payload['binding'] == binding and payload['manifest_sha256'] == 'b'*64
+        assert fault in {'missing_snapshot','duplicate_snapshot'}
+        raise DashboardPrepareError('existing_work_snapshot_required','Original owner has no unique matching snapshot',409)
+    monkeypatch.setattr(api,'_owner_prepare',snapshot)
     config={'stockqa_root':str(QA),'workspace_root':str(tmp_path),'iqs_root':str(ROOT),
         'prepare':{'admission_config':str(tmp_path/'admission.json'),'state_root':str(tmp_path/'state')}}
     if fault=='no_active_work':
@@ -126,8 +128,8 @@ def test_reuse_requires_exact_unique_original_work_hash_and_owner_snapshot(tmp_p
         with pytest.raises(DashboardPrepareError):api._reusable_bank(config,payload)
 
 ROOT = Path(__file__).resolve().parents[1]
-WIKI = ROOT.parent / "StockWiki"
-QA = ROOT.parent / "StockQAbyLLM"
+WIKI = Path(os.environ.get("IQS_DASHBOARD_TEST_STOCKWIKI_ROOT", ROOT.parent / "StockWiki"))
+QA = Path(os.environ.get("IQS_DASHBOARD_TEST_STOCKQA_ROOT", ROOT.parent / "StockQAbyLLM"))
 ENTITY = "ENT_1b2a4d3e-0000-4a1b-8c2d-000000000001"
 
 
@@ -410,19 +412,13 @@ def test_native_verified_missing_country_stays_unknown_and_preview_is_readonly(o
 
 @pytest.mark.parametrize("original", ["compact"], indirect=True)
 def test_snapshot_maps_native_contract_shape_and_semantic_failures_to_stable_repair_action(original, monkeypatch):
-    from scripts.dashboard_prepare import _snapshot
+    from scripts import dashboard_prepare
     gateway, base, config = original
     selection = {"entity_id": ENTITY, "owner_snapshot_as_of": "2026-10-25T00:00:00Z",
                  "scope_as_of": None, "scope_selector": "existing"}
     # Start with a genuine owner-serialized DTO. Only corrupted transport
     # copies below are injected; no store, receipt or authority is repaired.
     native = gateway._worker("snapshot", selection)["identity"]
-    monkeypatch.syspath_prepend(str(WIKI))
-    import stockwiki.identity_g2b as g2b
-    import stockwiki.identity_snapshot as owner_snapshot
-    def selection_must_not_run(*args, **kwargs):
-        raise AssertionError("Invalid contract reached original listing selection")
-    monkeypatch.setattr(owner_snapshot, "resolve_listing_binding", selection_must_not_run)
     malformed = copy.deepcopy(native)
     malformed["trusted_context"].pop("source_bindings")
     mismatched = copy.deepcopy(native)
@@ -433,9 +429,11 @@ def test_snapshot_maps_native_contract_shape_and_semantic_failures_to_stable_rep
     before = tree(base / "owner")
     for invalid in (malformed, mismatched, unregistered_mic):
         frozen = copy.deepcopy(invalid)
-        monkeypatch.setattr(g2b, "build_identity_request", lambda *args, **kwargs: invalid)
+        monkeypatch.setattr(dashboard_prepare, '_owner_prepare', lambda *args, **kwargs: {
+            'identity':invalid, 'selection_error':{'code':'security_not_registered','message':'Unexpected scope',
+                'status':409,'details':{}}})
         with pytest.raises(DashboardPrepareError) as error:
-            _snapshot(config, selection)
+            dashboard_prepare._snapshot(config, selection)
         assert error.value.code == "owner_identity_contract_invalid" and error.value.status == 409
         assert error.value.details == {"required_action": "repair_original_identity_and_create_new_preview"}
         assert invalid == frozen and tree(base / "owner") == before
@@ -526,63 +524,6 @@ print(json.dumps(result))
     assert conflict["snapshots"] == current["snapshots"]
 
 
-def test_preview_route_rebind_rejects_invalid_original_history_and_snapshot_shapes():
-    from types import SimpleNamespace
-    from scripts.dashboard_prepare import _preview_route_anchor
-    subject = "ASJ_33333333-3333-4333-8333-333333333333@1"
-    decision = "route_" + "a" * 64
-    row = {"subject_key": subject, "scope": "entity", "scope_id": ENTITY, "version": 1,
-           "decision_id": decision, "previous_decision_id": None}
-    snapshot = {"decision_id": decision, "subject_key": subject, "scope": "entity", "scope_id": ENTITY, "entity_id": ENTITY}
-    def stale(**kwargs):
-        raise DashboardPrepareError("route_identity_changed", "Synthetic stale original route")
-    bad_histories = [None, [], [None], [dict(row, version=True)], [dict(row, version=2)],
-        [dict(row, subject_key="ASJ_OTHER@1")], [dict(row, scope_id="ENT_OTHER")], [dict(row, scope="segment")],
-        [dict(row, decision_id="../route_" + "a" * 64)], [dict(row, previous_decision_id=decision)],
-        [row, dict(row, version=2, decision_id="route_" + "b" * 64, previous_decision_id=None)]]
-    bad_snapshots = [None, {}, dict(snapshot, decision_id="route_" + "b" * 64),
-        dict(snapshot, subject_key="ASJ_OTHER@1"), dict(snapshot, entity_id="ENT_OTHER"), dict(snapshot, scope="segment")]
-    for history, candidate in [(item, snapshot) for item in bad_histories] + [([row], item) for item in bad_snapshots]:
-        routes = SimpleNamespace(get_current_anchor=stale, current_history=lambda **kwargs: history,
-            get_snapshot=lambda expected: candidate)
-        with pytest.raises(DashboardPrepareError) as error:
-            _preview_route_anchor(routes, subject_key=subject, entity_id=ENTITY, now_utc="2026-10-25T00:00:00Z")
-        assert error.value.code == "owner_route_rebind_unavailable"
-
-
-def test_preview_route_anchor_preserves_non_identity_refusals_and_never_grants_execution():
-    from types import SimpleNamespace
-    from scripts.dashboard_prepare import _preview_route_anchor
-    subject = "ASJ_33333333-3333-4333-8333-333333333333@1"
-    def unexpected(*args, **kwargs):
-        raise AssertionError("Unexpected history, snapshot or execution call")
-    routes = SimpleNamespace(get_current_anchor=lambda **kwargs: {"expected_decision_id": "route_" + "a" * 64, "anchor_version": 2},
-        current_history=unexpected, get_snapshot=unexpected, get_for_execution=unexpected)
-    selection = {"subject_key": subject, "entity_id": ENTITY, "now_utc": "2026-10-25T00:00:00Z"}
-    assert _preview_route_anchor(routes, **selection) == {"decision_id": "route_" + "a" * 64, "anchor_version": 2}
-    for code in ("route_current_unavailable", "route_current_corrupted", "route_snapshot_corrupted", "route_time_before_activation", "unknown_guard"):
-        refusal = DashboardPrepareError(code, "Synthetic original refusal")
-        def original_refusal(**kwargs):
-            raise refusal
-        routes.get_current_anchor = original_refusal
-        if code == "route_current_unavailable":
-            assert _preview_route_anchor(routes, **selection) is None
-        else:
-            with pytest.raises(DashboardPrepareError) as error:
-                _preview_route_anchor(routes, **selection)
-            assert error.value is refusal
-    routes.get_current_anchor = lambda **kwargs: (_ for _ in ()).throw(DashboardPrepareError("route_identity_changed", "Synthetic"))
-    routes.current_history = lambda **kwargs: [{"subject_key": subject, "scope": "entity", "scope_id": ENTITY, "version": 1,
-        "decision_id": "route_" + "a" * 64, "previous_decision_id": None}]
-    damaged = DashboardPrepareError("route_snapshot_corrupted", "Synthetic original hash guard")
-    def corrupted_snapshot(expected):
-        raise damaged
-    routes.get_snapshot = corrupted_snapshot
-    with pytest.raises(DashboardPrepareError) as error:
-        _preview_route_anchor(routes, **selection)
-    assert error.value is damaged
-
-
 def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_replays_exact_result(original):
     gateway, base, _ = original
     gateway.options['work_lease_seconds'] = 3600
@@ -645,14 +586,17 @@ def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_
         "work_ledger_unchanged_by_execution_preview": True,
         "source_sha256": {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
                           for path in (ROOT / "scripts/dashboard_prepare.py", Path(__file__))}}
-    (ROOT / "runs/dashboard-prepare28-native-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (base / "native-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
 def test_fresh_preparation_reuses_exact_original_work_bank_after_current_route_churn(original):
     gateway, base, config = original
     selection={'entity_id':ENTITY,'as_of':'2026-10-25','mode':'quick'}
     first=gateway.bank_preview(selection)
-    initial=gateway.apply({k:first[k] for k in ('preview_id','preview_token')})
+    try:
+        initial=gateway.apply({k:first[k] for k in ('preview_id','preview_token')})
+    except DashboardPrepareError as error:
+        pytest.fail(f'Initial original apply refused {error.code}: {error.details}')
     first_dir=Path(gateway.options['state_root'])/'candidates'/first['preview_id']
     original_manifest=(first_dir/'manifest.json').read_bytes()
     original_route=json.loads((first_dir/'route.json').read_text())
@@ -862,7 +806,7 @@ def test_explicit_original_issuer_bootstrap_is_readonly_until_apply_and_keeps_dr
             "completed_phases": gateway.preparation(preview["preview_id"])["completed_phases"],
             "elapsed_apply_seconds": time.perf_counter() - started, "API_requests": 0,
             "prepare_source_sha256": hashlib.sha256((ROOT / "scripts/dashboard_prepare.py").read_bytes()).hexdigest()}
-        (ROOT / "runs/dashboard-prepare28-bootstrap-stage-report.json").write_text(json.dumps(thin, indent=2), encoding="utf-8")
+        (base / "bootstrap-stage-report.json").write_text(json.dumps(thin, indent=2), encoding="utf-8")
         pytest.fail(f"Original bootstrap chain refused: {error.code}; {thin['details']}; phases={thin['completed_phases']}")
     assert result["status"] == "prepared" and result["question_count_total"] == 36
     assert result["API_requests"] == 0 and result["dispatch_started"] is False
@@ -874,7 +818,7 @@ def test_explicit_original_issuer_bootstrap_is_readonly_until_apply_and_keeps_dr
         "scope_question_counts": [item["question_count"] for item in result["execution_bundles"]],
         "completed_phases": gateway.preparation(preview["preview_id"])["result"]["status"],
         "API_requests": 0, "prepare_source_sha256": hashlib.sha256((ROOT / "scripts/dashboard_prepare.py").read_bytes()).hexdigest()}
-    (ROOT / "runs/dashboard-prepare28-bootstrap-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (base / "bootstrap-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
 def test_existing_original_issuer_only_scope_retains_its_real_route_anchor(original, monkeypatch):
@@ -959,16 +903,17 @@ def test_current_owner_time_is_frozen_for_fresh_receipt_and_historical_answer_cu
 import json,sys
 from pathlib import Path
 request=json.load(sys.stdin);config=request['config']
-sys.path[:0]=[config['stockwiki_root'],str(Path(config['iqs_root'])/'scripts')]
-from dashboard_prepare import _apply
-from stockwiki.quick_scan_routes import QuickScanRouteStore
+sys.path.insert(0,str(Path(config['iqs_root'])/'scripts'))
+import dashboard_prepare as adapter
 class StopBeforeRoute(Exception):pass
-def stop(*args,**kwargs):raise StopBeforeRoute()
+def stop(config,action,*args,**kwargs):
+ assert action=='record'
+ raise StopBeforeRoute()
 def offline(event,args):
     if event in {'socket.connect','socket.getaddrinfo','socket.sendto'}:raise RuntimeError('test_network_forbidden')
 sys.addaudithook(offline)
-QuickScanRouteStore.record_snapshot=stop
-try:_apply(config,request['payload'])
+adapter._route_command=stop
+try:adapter._apply(config,request['payload'])
 except StopBeforeRoute:print(json.dumps({'stopped_before_route':True}))
 else:raise RuntimeError('test_expected_route_boundary_stop')
 '''
@@ -1105,8 +1050,11 @@ def test_unapplied_legacy_local_candidate_requires_new_preview_without_rebuildin
 
 @pytest.mark.parametrize('change', [None, 'identity', 'input', 'token', 'config', 'partial'])
 def test_old_local_preview_uses_current_inputs_and_owner_not_an_arbitrary_hour(tmp_path, monkeypatch, change):
+    from scripts import dashboard_prepare
     config = {'iqs_root': str(tmp_path), 'stockwiki_root': str(tmp_path), 'workspace_root': str(tmp_path)}
     gateway = PrepareGateway(config)
+    monkeypatch.setattr(dashboard_prepare, '_owner_prepare', lambda *args, **kwargs: {
+        'path':str(tmp_path/'config/quick_scan_refresh.json'),'sha256':None,'policy':None})
     preview_id = 'prepare_' + 'a' * 32
     directory = gateway._deployment() / 'candidates' / preview_id
     directory.mkdir(parents=True)
@@ -1185,50 +1133,34 @@ def test_cache_preview_exposes_existing_results_without_an_apply_or_job(original
 
 
 @pytest.mark.parametrize('clock',[None,'successful_scan'])
-def test_readonly_cache_preview_passes_owner_clock_and_preserves_source_dates(tmp_path,monkeypatch,clock):
-    from types import SimpleNamespace
+def test_readonly_cache_preview_preserves_native_dates_and_binds_selected_scope(tmp_path, monkeypatch, clock):
     from scripts import dashboard_prepare as prepare
-    monkeypatch.syspath_prepend(str(WIKI))
-    import stockwiki.paths as paths_module
-    import stockwiki.quick_scan_store as stores
-    import stockwiki.quick_scan_routes as routes_module
-    import stockwiki.quick_scan_route_validation as route_validation
-    import stockwiki.quick_scan_query_contract as queries
-    import stockwiki.quick_scan_subject_refresh as views
-    import stockwiki.quick_scan_module_refresh as refresh
-    import stockwiki.quick_scan_subject_authority as subjects
-    owner_policy={'provider':'mimo','model':'mimo-v2.6-pro','ttl_hours':24,'qa':{'work_store':str(tmp_path/'never-opened.sqlite')}}
-    if clock is not None:owner_policy['cache_clock']=clock
-    _new(tmp_path/'config/quick_scan_refresh.json',owner_policy)
-    monkeypatch.setattr(paths_module.WorkspacePaths,'from_root',lambda p:SimpleNamespace(config_dir=tmp_path/'config'))
-    monkeypatch.setattr(stores,'QuickScanStore',lambda p:object())
-    snapshot={'manifest_raw_sha256':'a'*64}
-    owner_routes=SimpleNamespace(get_for_execution=lambda **kw:{'snapshot':snapshot})
-    monkeypatch.setattr(routes_module,'QuickScanRouteStore',lambda *a,**kw:owner_routes)
-    monkeypatch.setattr(route_validation,'IqsRouteValidator',lambda *a,**kw:object())
-    monkeypatch.setattr(queries,'IqsQueryContract',lambda *a,**kw:object())
-    monkeypatch.setattr(views,'SubjectRefreshView',lambda *a,**kw:object())
-    monkeypatch.setattr(prepare,'_equivalent_frozen_bank',lambda *a:None)
-    calls=[]
-    def owner_plan(*args,**kwargs):
-        calls.append(kwargs)
-        return {'cache_clock':kwargs['cache_clock'],'fields':[{'field_id':'DUPONT_02','decision':'reuse',
-            'reuse_observation_id':'obs_original','information_as_of':'2025-12-31',
-            'cache_started_at':'2026-11-01T12:00:00Z','cache_valid_until':'2026-11-02T12:00:00Z'}]}
-    monkeypatch.setattr(refresh,'plan_module_refresh',owner_plan)
-    ref={'entity_id':ENTITY,'scope':'entity','scope_id':ENTITY}
-    monkeypatch.setattr(subjects,'subject_ref_for_question',lambda *a,**kw:ref)
-    read={'protocol':'iqs.original_work_bank_bindings/1.0.0','API_requests':0,'database_writes':0,'rows':[]}
-    monkeypatch.setattr(prepare.subprocess,'run',lambda *a,**kw:SimpleNamespace(returncode=0,stdout=json.dumps(read).encode()))
-    binding={'entity_id':ENTITY,'subject_key':'subject@1','perimeter_sha256':'a'*64,'identity_revision':1}
-    config={'workspace_root':str(tmp_path),'iqs_root':str(ROOT),'stockqa_root':str(QA)}
-    payload={'native':{'binding':binding,'selected_listing':{'security_id':'SEC_original'}},
-        'manifest':{'questions':[{'id':'DUPONT_02','scope':'entity'}]},'route':{'as_of':'2026-11-01'},
-        'cache_directory':str(tmp_path/'cache-preview'),'question_ids':['DUPONT_02']}
-    result=prepare._cache_preview(config,payload)
-    expected_clock=clock or 'information_as_of'
-    assert calls[0]['cache_clock']==result.get('cache_clock','information_as_of')==expected_clock
-    item=result['cached_scopes'][0]['items'][0]
+    ref = {'entity_id':ENTITY,'primary_issuer_id':ENTITY,'scope':'entity','scope_id':ENTITY,'perimeter_sha256':'a'*64,
+           'analysis_subject_id':'ASJ_TEST','analysis_subject_revision':1}
+    field = {'field_id':'DUPONT_02','decision':'reuse','reuse_observation_id':'obs_original',
+        'information_as_of':'2025-12-31','cache_started_at':'2026-11-01T12:00:00Z',
+        'cache_valid_until':'2026-11-02T12:00:00Z'}
+    ledger = str(tmp_path/'never-opened.sqlite')
+    snapshot = {'manifest_raw_sha256':'a'*64,'manifest_raw':'{}','route_raw':'{}'}
+    binding = {'entity_id':ENTITY,'subject_key':'subject@1','perimeter_sha256':'a'*64,'identity_revision':1,
+               'analysis_subject_id':'ASJ_TEST','analysis_subject_revision':1}
+    questions = [{'id':'DUPONT_02','scope':'entity'}]
+    def owner(config, operation, payload):
+        assert operation == 'cache_plan' and payload['binding'] == binding and payload['questions'] == questions
+        return {'snapshot':snapshot, 'work_store':ledger,'cache_clock':clock,
+            'rows':[{'question_id':'DUPONT_02','subject_ref':ref,'field':field}]}
+    def qa(config, request, **kwargs):
+        assert kwargs == {'ledger':ledger} and request['scope_bindings'] == {'DUPONT_02':{'scope':'entity','scope_id':ENTITY}}
+        return []
+    monkeypatch.setattr(prepare, '_owner_prepare', owner)
+    monkeypatch.setattr(prepare, '_equivalent_frozen_bank', lambda *a:None)
+    monkeypatch.setattr(prepare, '_read_continuation_bank', qa)
+    config = {'workspace_root':str(tmp_path),'iqs_root':str(ROOT),'stockqa_root':str(QA)}
+    payload = {'native':{'binding':binding,'selected_listing':{'security_id':'SEC_original'}},
+        'manifest':{'questions':questions},'route':{'as_of':'2026-11-01'},'question_ids':['DUPONT_02']}
+    result = prepare._cache_preview(config,payload)
+    assert result.get('cache_clock','information_as_of') == (clock or 'information_as_of')
+    item = result['cached_scopes'][0]['items'][0]
     if clock=='successful_scan':
         assert item['information_as_of']=='2025-12-31'
         assert item['cache_started_at']=='2026-11-01T12:00:00Z'
@@ -1237,3 +1169,6 @@ def test_readonly_cache_preview_passes_owner_clock_and_preserves_source_dates(tm
         assert 'cache_clock' not in result and set(item)=={'question_id','observation_id'}
     assert result['execution_bundles']==[] and result['API_requests']==0
     assert not (tmp_path/'never-opened.sqlite').exists()
+    ref['entity_id'] = 'ENT_FOREIGN'
+    with pytest.raises(DashboardPrepareError, match='different question or scope'):
+        prepare._cache_preview(config,payload)

@@ -1,11 +1,8 @@
 """B03: the company assessment projection over dispatch, HTTP and worker.
 
-Covers the owner company result/history reads end to end on the IQS service
-side: the extended company return-route boundary (hash company routes,
-trusted-loopback absolute returns, cross-scope refusal, duplicate-key
-refusal), the two new independent GET routes over a fake owner, and — when
-the B03 StockWiki worktree is available — the real worker subprocess against
-a real isolated owner workspace. GET reads perform no business write.
+Covers company result/history through IQS dispatch, HTTP and the public owner
+command, including an isolated synthetic StockWiki workspace when its source
+checkout is available. GET reads perform no business write.
 """
 from pathlib import Path
 import copy
@@ -25,6 +22,7 @@ import dashboard_company_projection as projection
 import dashboard_iqs_link as link
 from dashboard_http import product_handler
 from dashboard_service import DashboardService, ProductError
+from test_dashboard_http import LoopbackServer
 
 
 RESULT_SNAPSHOT = {
@@ -311,6 +309,24 @@ def test_explicit_missing_pin_is_named_refusal_not_200_null(tmp_path):
     assert reply['error']['code'] == 'company_result_not_found'
 
 
+@pytest.mark.parametrize('route', ['company/result', 'link'])
+@pytest.mark.parametrize('reason', ['observation_store_missing', 'observation_store_unavailable'])
+def test_pinned_read_keeps_owner_outage_distinct_from_unknown_result(tmp_path, route, reason):
+    calls = []
+
+    class OwnerUnavailable(Owner):
+        def company_result(self, entity_id, result_id=None):
+            calls.append((entity_id, result_id))
+            return _owner_result_payload(entity_id, reason=reason)
+
+    service = service_for(tmp_path, owner=OwnerUnavailable, dashboard_origin='http://127.0.0.1:43219')
+    pin = RESULT_SNAPSHOT['result_id']
+    code, reply = service.dispatch('GET', f'/api/product/{route}?id=ENT_A&result_id={pin}')
+    assert code == 503, reply
+    assert reply['error']['code'] == reason
+    assert calls == [('ENT_A', pin)]
+
+
 def test_resolved_pin_returns_the_same_immutable_id(tmp_path):
     service = service_for(tmp_path, owner=Owner, dashboard_origin='http://127.0.0.1:43219')
     code, reply = service.dispatch(
@@ -517,7 +533,7 @@ def _serve(tmp_path, owner=Owner):
         def log_message(self, *args):
             pass
 
-    server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), product_handler(Static, service))
+    server = LoopbackServer(('127.0.0.1', 0), product_handler(Static, service))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server, server.server_address[1], service
@@ -577,85 +593,203 @@ def test_company_routes_over_real_http(tmp_path):
         server.server_close()
 
 
-# -- real worker subprocess (needs the B03 StockWiki worktree) ------------------
+# -- public owner subprocess -------------------------------------------------
+
+
+def _cli_deployment(tmp_path):
+    code_root = tmp_path / 'owner-code'
+    code_root.mkdir()
+    workspace_root = tmp_path / 'owner-data'
+    workspace_root.mkdir()
+    return {
+        'stockwiki_root': str(code_root), 'workspace_root': str(workspace_root),
+        'stockwiki_python': sys.executable, 'timeout_seconds': 30,
+    }
+
+
+def _cli_reply(config, args, *, stdout='', stderr='', returncode=0):
+    script = Path(config['stockwiki_root']) / 'dashboard_company_assessment_cli.py'
+    expected = [*args[:1], '--root', config['workspace_root'], '--entity', 'ENT_A',
+                '--require-identity', *args[1:]]
+    script.write_text(
+        'import sys\n'
+        f'assert sys.argv[1:] == {expected!r}\n'
+        f'sys.stdout.write({stdout!r})\n'
+        f'sys.stderr.write({stderr!r})\n'
+        f'raise SystemExit({returncode})\n', encoding='utf-8',
+    )
+
+
+def _public_read_reply():
+    return {**_owner_result_payload(result=RESULT_SNAPSHOT)['owner_payload'],
+            'entity_id': 'ENT_A', 'action': 'read'}
+
+
+def test_company_read_uses_only_stockwiki_public_command(tmp_path):
+    config = _cli_deployment(tmp_path)
+    pin = RESULT_SNAPSHOT['result_id']
+    _cli_reply(config, ['read', '--result-id', pin], stdout=json.dumps(_public_read_reply()))
+    response = projection.read_company_assessment(
+        config, 'company_result', {'entity_id': 'ENT_A', 'result_id': pin})
+    assert projection.project_result(response)['company_result'] == RESULT_SNAPSHOT
+    assert not list(Path(config['workspace_root']).iterdir())
+
+
+def test_company_read_refuses_nonfinite_numeric_exponent(tmp_path):
+    config = _cli_deployment(tmp_path)
+    reply = json.dumps(_public_read_reply())[:-1] + ',"additional_numeric":1e999}'
+    _cli_reply(config, ['read'], stdout=reply)
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A'})
+    assert error.value.code == 'owner_projection_invalid'
+    assert error.value.status == 502
+
+
+def test_company_history_uses_only_stockwiki_public_command(tmp_path):
+    config = _cli_deployment(tmp_path)
+    owner = Owner(None).company_history('ENT_A', limit=5, offset=0)['owner_payload']
+    _cli_reply(config, ['history', '--limit', '5', '--offset', '0'],
+               stdout=json.dumps({**owner, 'entity_id': 'ENT_A', 'action': 'history'}))
+    response = projection.read_company_assessment(
+        config, 'company_history', {'entity_id': 'ENT_A', 'limit': 5})
+    assert projection.project_history(response, limit=5, offset=0)['page']['total'] == 1
+
+
+def test_owner_gateway_reads_company_without_an_owner_python_package(tmp_path):
+    from dashboard_owner import OwnerGateway
+
+    config = _cli_deployment(tmp_path)
+    config['iqs_root'] = str(Path(__file__).resolve().parents[1])
+    _cli_reply(config, ['read'], stdout=json.dumps(_public_read_reply()))
+    response = OwnerGateway(config).company_result('ENT_A')
+    assert projection.project_result(response)['company_result'] == RESULT_SNAPSHOT
+
+
+@pytest.mark.parametrize(('update', 'code'), [
+    ({'protocol': 'stockwiki.company_assessment/9'}, 'owner_protocol_unsupported'),
+    ({'schema_version': '2.0.0'}, 'owner_protocol_unsupported'),
+    ({'entity_id': 'ENT_OTHER'}, 'owner_projection_invalid'),
+    ({'action': 'history'}, 'owner_projection_invalid'),
+    ({'llm_calls': False}, 'owner_projection_invalid'),
+    ({'result': {**RESULT_SNAPSHOT, 'entity_id': 'ENT_OTHER'}}, 'owner_projection_invalid'),
+    ({'result': {**RESULT_SNAPSHOT, 'result_id': 'cas_other'}}, 'company_result_pin_mismatch'),
+    ({'reason_code': 'company_not_registered'}, 'owner_projection_invalid'),
+])
+def test_company_read_refuses_wrong_stockwiki_reply(tmp_path, update, code):
+    config = _cli_deployment(tmp_path)
+    pin = RESULT_SNAPSHOT['result_id']
+    _cli_reply(config, ['read', '--result-id', pin], stdout=json.dumps({**_public_read_reply(), **update}))
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A', 'result_id': pin})
+    assert error.value.code == code
+    assert error.value.status == 502
+
+
+@pytest.mark.parametrize('case', ['different_request', 'different_item', 'boolean_offset', 'duplicate_entity'])
+def test_company_history_refuses_unbound_or_ambiguous_public_reply(tmp_path, case):
+    config = _cli_deployment(tmp_path)
+    owner = Owner(None).company_history('ENT_A', limit=5, offset=0)['owner_payload']
+    owner.update(entity_id='ENT_A', action='history')
+    if case == 'different_request':
+        owner['entity_id'] = 'ENT_OTHER'
+    elif case == 'different_item':
+        owner['items'][0]['entity_id'] = 'ENT_OTHER'
+    elif case == 'boolean_offset':
+        owner['page']['offset'] = False
+    reply = json.dumps(owner)
+    if case == 'duplicate_entity':
+        reply = '{"entity_id":"ENT_OTHER",' + reply[1:]
+    _cli_reply(config, ['history', '--limit', '5', '--offset', '0'], stdout=reply)
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.read_company_assessment(config, 'company_history', {'entity_id': 'ENT_A', 'limit': 5})
+    assert error.value.code == 'owner_projection_invalid'
+    assert error.value.status == 502
+
+
+@pytest.mark.parametrize(('owner_code', 'expected'), [
+    ('identity_store_missing', 'owner_database_missing'),
+    ('identity_store_unavailable', 'owner_store_unreadable'),
+    ('identity_store_busy', 'owner_busy'),
+])
+def test_company_read_maps_public_identity_store_refusal(tmp_path, owner_code, expected):
+    config = _cli_deployment(tmp_path)
+    _cli_reply(config, ['read'], stderr=json.dumps({
+        'schema_version': '1.0.0', 'error_code': owner_code, 'detail': 'owner-internal diagnostic',
+    }), returncode=2)
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A'})
+    assert error.value.code == expected
+    assert error.value.status == 503
+    assert 'owner-internal diagnostic' not in str(error.value)
+
 
 B03_STOCKWIKI_ROOT = Path(os.environ.get(
     'B03_STOCKWIKI_ROOT',
-    str(Path(__file__).resolve().parents[2] / 'dashboard-owner-sw-b03-assessments')))
+    str(Path(__file__).resolve().parents[2] / 'StockWiki'))).resolve()
 
 
-@pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / 'stockwiki' / 'public_company_assessments.py').is_file(),
-                    reason='B03 StockWiki worktree is not available next to this service tree')
-def test_worker_reports_a_named_unavailable_for_an_old_owner(monkeypatch, tmp_path):
-    # An older StockWiki without the company assessment module is a named
-    # unavailable capability, never a zero or a fallback formal result.
-    monkeypatch.syspath_prepend(str(B03_STOCKWIKI_ROOT))
-    monkeypatch.setitem(sys.modules, 'stockwiki.public_company_assessments', None)
+@pytest.mark.parametrize('old_command', ['missing', 'unsupported_identity'])
+def test_command_reports_a_named_unavailable_for_an_old_owner(tmp_path, old_command):
+    config = _cli_deployment(tmp_path)
+    if old_command == 'unsupported_identity':
+        _cli_reply(config, ['read'], stderr=json.dumps({
+            'schema_version': '1.0.0', 'error_code': 'invalid_invocation',
+        }), returncode=2)
     with pytest.raises(projection.ProjectionError) as error:
-        projection.worker_read({'workspace_root': str(tmp_path)}, 'company_result',
-                               {'entity_id': 'ENT_A'})
+        projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A'})
     assert error.value.code == 'owner_company_projection_unavailable'
     assert error.value.status == 502
 
 
-def _seed_workspace(root: Path) -> None:
-    """Seed an isolated owner workspace through public entry points only."""
-    script = f'''
+def _seed_workspace(root: Path) -> str:
+    """Use StockWiki's own synthetic seeder in a separate test process."""
+    script = '''
 import sys
-sys.path.insert(0, r"{B03_STOCKWIKI_ROOT}")
 from pathlib import Path
-sys.path.insert(0, r"{B03_STOCKWIKI_ROOT / 'tests'}")
-from test_public_company_assessments import (
-    _workspace, _manifest, _published_observation, _import_observations,
-    _register_request, E01,
-)
-from stockwiki.public_company_assessments import (
-    record_release_authority,
-    register_company_assessment,
-)
-paths = _workspace(Path(r"{root}"))
-manifest = _manifest()
-_import_observations(paths, manifest, [
-    _published_observation(E01, qid, f"obs_{{qid.lower()}}", manifest=manifest)
-    for qid in manifest["questions"]
-])
-record_release_authority(paths, manifest)
-outcome = register_company_assessment(paths, _register_request(E01, manifest))
-print(outcome["result_id"])
+sys.path.insert(0, str(Path.cwd() / "tests"))
+from test_public_company_assessments import _seed_registered, E01
+from stockwiki.public_company_assessments import read_company_result
+paths = _seed_registered(Path(sys.argv[1]))
+print(read_company_result(paths, entity_id=E01)["result"]["result_id"])
 '''
-    done = subprocess.run([sys.executable, '-B', '-c', script], capture_output=True, timeout=300)
+    done = subprocess.run([sys.executable, '-B', '-c', script, str(root)],
+                          cwd=B03_STOCKWIKI_ROOT, capture_output=True, timeout=300)
     assert done.returncode == 0, done.stderr.decode('utf-8', 'replace')
     return done.stdout.decode('utf-8').strip()
 
 
-@pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / 'stockwiki' / 'public_company_assessments.py').is_file(),
-                    reason='B03 StockWiki worktree is not available next to this service tree')
-def test_company_reads_through_the_real_owner_worker(tmp_path):
-    from dashboard_owner import OwnerGateway
-
+@pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / 'dashboard_company_assessment_cli.py').is_file(),
+                    reason='StockWiki public command is not available next to this service tree')
+def test_company_reads_through_the_real_public_owner_command(tmp_path):
     root = tmp_path / 'owner-workspace'
     root.mkdir(parents=True, exist_ok=True)
     result_id = _seed_workspace(root)
+    def owner_files():
+        return {path.relative_to(root): path.read_bytes() for path in root.rglob('*') if path.is_file()}
+    before = owner_files()
     config = {
         'stockwiki_root': str(B03_STOCKWIKI_ROOT),
         'stockwiki_python': sys.executable,
         'workspace_root': str(root),
-        'iqs_root': str(Path(__file__).resolve().parents[1]),
         'timeout_seconds': 120,
-        'bundles': {},
     }
-    gateway = OwnerGateway(config)
-    answer = gateway.company_result('ENT_11111111-1111-4111-8111-111111111111')
+    entity_id = 'ENT_11111111-1111-4111-8111-111111111111'
+    answer = projection.read_company_assessment(config, 'company_result', {'entity_id': entity_id})
     assert answer['protocol'] == projection.PROJECTION_PROTOCOL
     snapshot = answer['owner_payload']['result']
     assert snapshot['result_id'] == result_id
     assert snapshot['aggregate_score'] is None
     assert snapshot['status'] == 'formal'
-    history = gateway.company_history('ENT_11111111-1111-4111-8111-111111111111', limit=5, offset=0)
+    history = projection.read_company_assessment(
+        config, 'company_history', {'entity_id': entity_id, 'limit': 5})
     assert history['owner_payload']['page']['total'] == 1
-    absent = gateway.company_result('ENT_11111111-1111-4111-8111-111111111111',
-                                    result_id='cas_00000000000000000000')
+    absent = projection.read_company_assessment(
+        config, 'company_result', {'entity_id': entity_id, 'result_id': 'cas_00000000000000000000'})
     assert absent['owner_payload']['result'] is None
     assert absent['owner_payload']['reason_code'] == 'company_result_not_registered'
-    with pytest.raises(Exception):
-        gateway.company_history('ENT_11111111-1111-4111-8111-111111111111', limit=0)
+    for operation in ('company_result', 'company_history'):
+        with pytest.raises(projection.ProjectionError) as error:
+            projection.read_company_assessment(config, operation, {'entity_id': 'ENT_UNKNOWN'})
+        assert error.value.code == 'entity_not_found'
+        assert error.value.status == 404
+    assert owner_files() == before

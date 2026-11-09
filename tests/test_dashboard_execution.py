@@ -52,16 +52,30 @@ print("Bearer abcdefghijklmnopqrstuvwxyz", flush=True)
 time.sleep(0.08)
 pathlib.Path(sys.argv[sys.argv.index("--output")+1]).write_text(json.dumps({"argv":sys.argv[1:]}))
 ''', encoding="utf-8")
-    (source / "src/config/llm_config.py").write_text('''
-import json, pathlib
-class LLMConfig:
- def __init__(self, path): self.path=pathlib.Path(path)
- @staticmethod
- def validate_quick_scan_model_policy(value):
-  if not isinstance(value,dict) or set(value)!={"models"}: raise ValueError("invalid")
- def save_quick_scan_model_policy(self, policy):
-  self.validate_quick_scan_model_policy(policy)
-  data=json.loads(self.path.read_text());data["quick_scan_model_policy"]=policy;self.path.write_text(json.dumps(data))
+    (source / "src/utils/quick_scan_model_policy_cli.py").write_text('''
+import hashlib,json,pathlib,sys
+assert len(sys.argv)==3 and sys.argv[1]=='--config'
+assert pathlib.Path.cwd()==pathlib.Path(__file__).resolve().parents[2]
+path=pathlib.Path(sys.argv[2]); raw=path.read_bytes(); document=json.loads(raw)
+request=json.load(sys.stdin); operation=request['operation']
+assert request['protocol']=='stockqa.model_policy_request/1.0.0'
+if operation=='save':
+ assert set(request)=={'protocol','operation','revision_sha256','policy'}
+ if request['revision_sha256']!=hashlib.sha256(raw).hexdigest():
+  print(json.dumps({'error_code':'settings_changed','API_requests':0,'network_calls':0}))
+  raise SystemExit(2)
+ document['quick_scan_model_policy']=request['policy']
+ path.write_text(json.dumps(document),encoding='utf-8')
+else:
+ assert operation=='read' and set(request)=={'protocol','operation'}
+providers=document.get('providers')
+choices=[{'provider_config_ref':name,'model':entry.get('model','') if isinstance(entry.get('model'),str) else '',
+          'enabled':entry.get('enabled') is True}
+         for name,entry in sorted(providers.items()) if isinstance(entry,dict)] if isinstance(providers,dict) else []
+print(json.dumps({'protocol':'stockqa.model_policy_response/1.0.0','operation':operation,
+  'policy':document.get('quick_scan_model_policy'),'revision_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+  'provider_config_refs':[row['provider_config_ref'] for row in choices], 'provider_choices':choices,
+  'provider_metadata_available':isinstance(providers,dict),'effective':'next_run','API_requests':0,'network_calls':0}))
 ''', encoding="utf-8")
     (source / "src/utils/quick_scan_refresh_admission.py").write_text('''
 import json, pathlib
@@ -76,12 +90,34 @@ class RefreshAdmissionService:
   assert confirmation_id == "rc2_" + "a"*64
   return {"confirmation":{"confirmation_id":confirmation_id}}, {}, {}
 ''', encoding="utf-8")
-    (source / "src/utils/quick_scan_refresh_inspect.py").write_text('''
+    (source / 'src/utils/quick_scan_registered_permissions_cli.py').write_text('''
+import json,pathlib,sys
+assert len(sys.argv)==3 and sys.argv[1]=='--config'
+assert pathlib.Path.cwd()==pathlib.Path(__file__).resolve().parents[2]
+request=json.load(sys.stdin); mode=request['mode']; recovery=mode=='paid_response_recovery'
+assert set(request)=={'protocol','mode','confirmation_id'}
+assert request['protocol']=='stockqa.registered_permissions_request/1.0.0'
+assert mode in ('current_permissions','paid_response_recovery')
+confirmation=request['confirmation_id']
+try:
+ from .quick_scan_refresh_admission import RefreshAdmissionService
+ service=RefreshAdmissionService(sys.argv[2],recovery_only=recovery)
+ proof,_,_=service.read_registered(confirmation,recovery_only=recovery)
+ assert proof['confirmation']['confirmation_id']==confirmation
+except Exception as error:
+ print(json.dumps({'error_code':getattr(error,'reason','owner_confirmation_permissions_rejected'),
+                   'API_requests':0,'network_calls':0}))
+ raise SystemExit(2)
+print(json.dumps({'protocol':'stockqa.registered_permissions_response/1.0.0','status':'passed','mode':mode,
+ 'confirmation_id':confirmation,'permission_authenticated':True,'received_response_scope_verified':recovery,
+ 'API_requests':0,'network_calls':0}))
+''', encoding='utf-8')
+    (source / "src/utils/quick_scan_delivery_scope_cli.py").write_text('''
 import json,pathlib
+import sys
 def delivery_scope_projection(path, request):
     assert request['entity_id'] == 'ENT_TEST'
     assert request.get('confirmation_id') in (None, 'rc2_' + 'a'*64)
-    assert request['read_only_scope'] is True
     frozen = json.loads((path.parent/'bundle/inspection_request.json').read_text())
     rows = json.loads(path.read_text()).get('work_items', frozen.get('work_items', []))
     if isinstance(rows, dict):
@@ -96,7 +132,19 @@ def delivery_scope_projection(path, request):
         raise ValueError('original_registered_scope_mismatch')
     return {'work_items': [indexed.get(qid, {'question_id': qid, 'work_item_id': None,
                                            'status': 'missing'}) for qid in qids],
-            'items': [], 'consumers': [], 'API_requests': 0, 'network_calls': 0}
+            'items': [], 'consumers': []}
+
+try:
+    assert len(sys.argv) == 3 and sys.argv[1] == '--ledger'
+    request = json.load(sys.stdin)
+    assert request['protocol'] == 'stockqa.delivery_scope_request/1.0.0'
+    assert request['operation'] == 'inspect'
+    result = delivery_scope_projection(pathlib.Path(sys.argv[2]), request['scope'])
+except Exception:
+    print(json.dumps({'error_code':'original_delivery_export_rejected','API_requests':0}))
+    raise SystemExit(2)
+print(json.dumps({'protocol':'stockqa.delivery_scope_response/1.0.0','operation':'inspect','status':'ok',
+    'result':result,'API_requests':0,'network_calls':0}))
 ''', encoding='utf8')
     llm = put(runtime / "llm_apis.json", {"providers": {"test": {"api_key": "never-return-this"}}, "quick_scan_model_policy": {"models": ["first", "second"]}})
     ledger, policy = put(tmp_path / "ledger.sqlite", {}), put(tmp_path / "policy.json", {})
@@ -1005,10 +1053,11 @@ def test_permissions_helper_contract_is_fail_closed(deployment,monkeypatch,shape
     gateway = ExecutionGateway(config)
     actual = gateway._call
     def response(command,*args,**kwargs):
-        if '-c' not in command:
+        if 'src.utils.quick_scan_registered_permissions_cli' not in command:
             return actual(command,*args,**kwargs)
-        value={'protocol':'iqs.dashboard_registered_permissions/1.0.0', 'status':'passed',
+        value={'protocol':'stockqa.registered_permissions_response/1.0.0', 'status':'passed',
             'confirmation_id':bundle['confirmation_id'],'API_requests':0,
+            'network_calls':0,'mode':'current_permissions','received_response_scope_verified':False,
             'permission_authenticated':True}
         if shape=='wrong_id': value['confirmation_id']='rc2_'+'b'*64
         elif shape=='not_authenticated': value['permission_authenticated']=False
@@ -1036,7 +1085,7 @@ def test_permissions_transport_timeout_is_not_a_model_retry_or_new_preparation(d
     config, runtime, _ = deployment
     actual = gateway_module.subprocess.run
     def timeout(command,*args,**kwargs):
-        if '-c' in command:
+        if 'src.utils.quick_scan_registered_permissions_cli' in command:
             raise gateway_module.subprocess.TimeoutExpired(command,130)
         return actual(command,*args,**kwargs)
     monkeypatch.setattr(gateway_module.subprocess,'run',timeout)
@@ -1300,7 +1349,7 @@ def test_native_keyed_work_items_and_g2b_envelope_do_not_require_fixture_flat_sh
         'quote':{'budget_available':False},'work_items':{'IQS_05':{'work_item_id':'WORK_original','status':'result_ready'}}}
     actual = gateway._call
     monkeypatch.setattr(gateway,'_call',lambda command,*args,**kwargs:
-        actual(command,*args,**kwargs) if '-c' in command else native)
+        native if 'src.utils.quick_scan_refresh_inspect_cli' in command else actual(command,*args,**kwargs))
     preview=gateway.preview({'bundle_id':'test'})
     assert preview['readonly_recovery'] is True and preview['inspection'] is native
     assert preview['inspection']['work_items']=={'IQS_05':{'work_item_id':'WORK_original','status':'result_ready'}}
@@ -1660,15 +1709,20 @@ def test_paid_response_permission_helper_uses_recovery_not_send_mode(deployment,
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
     calls = []
-    def original_owner(command, root, runtime):
-        calls.append(command)
-        return {'protocol': 'iqs.dashboard_registered_permissions/1.0.0',
+    def original_owner(command, root, cwd, *, input_value):
+        assert root == cwd == Path(config['stockqa_root'])
+        calls.append((command, input_value))
+        return {'protocol': 'stockqa.registered_permissions_response/1.0.0',
                 'status': 'passed', 'confirmation_id': bundle['confirmation_id'],
-                'permission_authenticated': True, 'API_requests': 0, 'received_response_scope_verified': True}
+                'permission_authenticated': True, 'API_requests': 0, 'network_calls': 0,
+                'mode':'paid_response_recovery','received_response_scope_verified': True}
     monkeypatch.setattr(gateway, '_call', original_owner)
     result = gateway._registered_permissions(bundle, Path(config['stockqa_root']), runtime, recovery_only=True)
     assert result['status'] == 'passed'
-    assert calls[0][-1] == 'paid_response_recovery'
+    assert calls == [([sys.executable, '-B', '-X', 'utf8', '-m',
+                       'src.utils.quick_scan_registered_permissions_cli', '--config', bundle['admission_config']],
+                      {'protocol':'stockqa.registered_permissions_request/1.0.0',
+                       'confirmation_id':bundle['confirmation_id'],'mode':'paid_response_recovery'})]
     assert not (runtime/'calls.txt').exists()
 
 

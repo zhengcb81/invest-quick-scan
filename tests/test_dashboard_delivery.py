@@ -1,6 +1,7 @@
 """Original native ACK boundary, seeded by isolated owner fixtures; no model I/O."""
 import copy
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -10,8 +11,30 @@ import pytest
 from scripts.dashboard_execution import ExecutionGateway, DashboardExecutionError
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT.parent/'StockQAbyLLM'
+SOURCE = Path(os.environ.get('IQS_STOCKQA_DELIVERY_TEST_ROOT', ROOT.parent/'StockQAbyLLM')).resolve()
 TARGET = {'component':'StockWiki','namespace':'quick_scan','store_id':'stockwiki-test-store'}
+MODULE = 'src.utils.quick_scan_delivery_scope_cli'
+REQUEST = 'stockqa.delivery_scope_request/1.0.0'
+RESPONSE = 'stockqa.delivery_scope_response/1.0.0'
+
+
+def delivery_command(ledger, fault_source=''):
+    command = [sys.executable, '-B', '-X', 'utf8']
+    if fault_source:
+        # Inject only a test fault before running the actual public entry point.
+        command += ['-c', fault_source + f'\nimport runpy\nrunpy.run_module({MODULE!r}, run_name="__main__")']
+    else:
+        command += ['-m', MODULE]
+    return [*command, '--ledger', str(ledger)]
+
+
+def project_delivery(gateway, ledger, scope, operation, fault_source=''):
+    response = gateway._call(delivery_command(ledger, fault_source), SOURCE, SOURCE,
+                             input_value={'protocol': REQUEST, 'operation': operation, 'scope': scope})
+    assert response['protocol'] == RESPONSE and response['status'] == 'ok'
+    assert response['operation'] == operation
+    return {**response['result'], 'API_requests': response['API_requests'],
+            'network_calls': response['network_calls']}
 
 
 def native_delivery_rows(gateway, bundle):
@@ -35,22 +58,22 @@ print(json.dumps({'rows':{work:store.get_result_delivery(work) for work in reque
 def journal_read_port(work_id, fault=None):
     """Mock only a native reader, never generate owner/admission authority."""
     return r'''
-import sys
-sys.path.insert(0,sys.argv[1])
 from src.utils.quick_scan_refresh_inspect import ReadOnlyWorkView
 def original_action(self, confirmation_id):
     if confirmation_id != 'rc2_'+'1'*64 or FAULT == 'missing': return None
-    original=self.get_item(ORIGINAL_ID)
-    row={key:original[key] for key in ('work_item_id','entity_id','question_id','generation','scope','scope_id')}
+    originals=[self.get_item(work_id) for work_id in ORIGINAL_IDS]
+    rows=[{key:original[key] for key in ('work_item_id','entity_id','question_id','generation','scope','scope_id')}
+          for original in originals]
+    row=rows[0]
     if FAULT == 'entity': row['entity_id']='ENT_OTHER'
     if FAULT == 'question': row['question_id']='OTHER_Q'
     if FAULT == 'scope': row['scope']='security';row['scope_id']='SEC_OTHER'
     if FAULT == 'generation': row['generation']+=1
     if FAULT == 'work_id': row['work_item_id']='WORK_MISSING'
     return {'receipt':{'confirmation_id': 'rc2_'+('2' if FAULT=='confirmation' else '1')*64,
-        'items':[row]},'inputs':{'references':[]}}
+        'items':rows},'inputs':{'references':[]}}
 ReadOnlyWorkView.get_registered_refresh_action=original_action
-'''.replace('ORIGINAL_ID', repr(work_id)).replace('FAULT', repr(fault))
+'''.replace('ORIGINAL_IDS', repr([work_id] if isinstance(work_id, str) else list(work_id))).replace('FAULT', repr(fault))
 
 
 @pytest.fixture
@@ -128,8 +151,11 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
     calls = []
     def native(command, root, runtime, *, input_value=None):
         calls.append(command)
-        assert '-c' in command and '--policy' not in command
-        assert input_value['question_ids'] == ['Q1', 'Q2'] + (['Q3'] if missing_work in {'row', 'omitted'} else [])
+        assert command == delivery_command(tmp_path/'ledger') and root == runtime == SOURCE
+        assert input_value['protocol'] == REQUEST and input_value['operation'] == 'export'
+        scope = input_value['scope']
+        assert scope['question_ids'] == ['Q1', 'Q2'] + (['Q3'] if missing_work in {'row', 'omitted'} else [])
+        assert scope['confirmation_id'] == bundle['confirmation_id']
         rows = []
         for i in range(0 if missing_work=='all' else 2):
             if i >= ready_count:
@@ -142,8 +168,10 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
             rows.append({'question_id': 'Q3', 'work_item_id': None, 'status': 'not_exportable', 'reason': 'missing'})
         if missing_work == 'all':
             rows.extend({'question_id': qid, 'work_item_id': None, 'status': 'not_exportable', 'reason': 'missing'}
-                        for qid in input_value['question_ids'])
-        return {'items': rows, 'API_requests': 0, 'network_calls': 0}
+                        for qid in scope['question_ids'])
+        return {'protocol': RESPONSE, 'operation': 'export', 'status': 'ok',
+                'result': {'items': rows, 'work_items': [], 'consumers': []},
+                'API_requests': 0, 'network_calls': 0}
     monkeypatch.setattr(gateway, '_call', native)  # Native process boundary; SQL/package validation is tested separately.
     _, selected = gateway._select({'bundle_id': 'B'})
     result = export_deliveries(bundle_id='B', bundle=selected, config=gateway.config,
@@ -185,6 +213,17 @@ def test_observation_mapping_cannot_retarget_original_work(delivery):
     assert Path(bundle['work_store']).read_bytes()==before
 
 
+def test_invalid_later_receiver_mapping_cannot_bind_an_earlier_work(delivery):
+    gateway, bundle, _ = delivery
+    mapping = list(bundle['work_item_ids'])
+    bundle['work_item_ids'][mapping[1]] = 'WORK_UNREGISTERED'
+    before = Path(bundle['work_store']).read_bytes()
+    with pytest.raises(DashboardExecutionError) as error:
+        gateway.bind_delivery_consumer(bundle, TARGET, 'operator-config:isolated-dashboard-test')
+    assert error.value.code == 'original_consumer_binding_rejected'
+    assert Path(bundle['work_store']).read_bytes() == before
+
+
 def test_partial_ack_batch_is_retriable_without_reapplying_completed_work(delivery):
     gateway,bundle,receipt=delivery
     gateway.bind_delivery_consumer(bundle,TARGET,'operator-config:isolated-dashboard-test')
@@ -215,13 +254,12 @@ def test_original_rejection_is_recorded_without_claiming_delivered(delivery):
 
 def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(delivery, tmp_path):
     import hashlib
-    from scripts.dashboard_delivery import _EXPORT
     gateway,bundle,receipt=delivery
     ledger=Path(bundle['work_store'])
-    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'work_ids':list(bundle['work_item_ids'].values())}
-    command=[sys.executable,'-B','-X','utf8','-c',_EXPORT,str(SOURCE),str(ledger)]
+    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'confirmation_id':'rc2_'+'1'*64}
+    original_action = journal_read_port(bundle['work_item_ids'].values())
     before=ledger.read_bytes()
-    response=gateway._call(command,SOURCE,tmp_path,input_value=request)
+    response=project_delivery(gateway,ledger,request,'export',original_action)
     assert response['API_requests']==0 and len(response['items'])==2
     for row in response['items']:
         assert row['status']=='exportable'
@@ -229,7 +267,7 @@ def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(del
         assert row['work_item_id']==bundle['work_item_ids'][row['observation_id']]
     assert ledger.read_bytes()==before
     with pytest.raises(DashboardExecutionError):
-        gateway._call(command,SOURCE,tmp_path,input_value={**request,'entity_id':'ENT_FOREIGN'})
+        project_delivery(gateway,ledger,{**request,'entity_id':'ENT_FOREIGN'},'export',original_action)
     assert ledger.read_bytes()==before
 
 
@@ -245,7 +283,6 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
     # sealed bytes and their integrity reader remain ORIGINAL code. This is no
     # owner/admission qualification or producer-positive receipt fixture.
     call = gateway._call
-    from scripts.dashboard_delivery import _EXPORT
     journal_port = journal_read_port(original_ids[0])
     qids = ['IQS_05']
     if cached_reference:
@@ -254,13 +291,12 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
             {'entity_id': 'ENT_BYD', 'scope': 'entity', 'scope_id': 'ENT_BYD'}}]
         journal_port = journal_port.replace("'references':[]", "'references':" + repr(references))
         if cached_reference == 'only':
-            journal_port = journal_port.replace("'items':[row]", "'items':[]")
+            journal_port = journal_port.replace("'items':rows", "'items':[]")
         else:
             qids.append(reference_qid)
     def recorded_action(command, *args, **kwargs):
-        command = list(command)
-        if '-c' in command and command[command.index('-c')+1] == _EXPORT:
-            command[command.index('-c')+1] = journal_port + _EXPORT
+        if '-m' in command and command[command.index('-m')+1] == MODULE:
+            command = delivery_command(command[-1], journal_port)
         return call(command, *args, **kwargs)
     monkeypatch.setattr(gateway, '_call', recorded_action)
     ledger = Path(original['work_store'])
@@ -302,31 +338,26 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
 @pytest.mark.parametrize('fault', ['missing', 'confirmation', 'entity', 'question', 'scope', 'generation', 'work_id'])
 def test_original_action_scope_cannot_select_foreign_or_later_work(delivery, tmp_path, fault):
     """Actual readonly SQLite/outbox, explicit mock of immutable journal port."""
-    from scripts.dashboard_delivery import _EXPORT
     gateway, original, _ = delivery
     ledger = Path(original['work_store'])
     ids = list(original['work_item_ids'].values())
     request = {'entity_id': 'ENT_BYD', 'question_ids': ['IQS_05'],
                'scope_bindings': {'IQS_05': {'scope': 'entity', 'scope_id': 'ENT_BYD'}},
-               'confirmation_id': 'rc2_'+'1'*64,
-               'work_ids': [ids[1]]}  # Cannot override the original action with today's ID.
+               'confirmation_id': 'rc2_'+'1'*64}
     before = ledger.read_bytes()
     with pytest.raises(DashboardExecutionError):
-        gateway._call([sys.executable, '-B', '-X', 'utf8', '-c', journal_read_port(ids[0], fault)+_EXPORT,
-                       str(SOURCE), str(ledger)], SOURCE, tmp_path, input_value=request)
+        project_delivery(gateway, ledger, request, 'export', journal_read_port(ids[0], fault))
     assert ledger.read_bytes() == before
 
 
 def test_export_uses_layout_checked_read_only_view_without_history_audit(delivery, tmp_path):
-    from scripts.dashboard_delivery import _EXPORT
     gateway,bundle,receipt=delivery
     ledger=Path(bundle['work_store'])
-    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'work_ids':list(bundle['work_item_ids'].values())}
+    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'confirmation_id':'rc2_'+'1'*64}
     # Original layout validation must still run, while a scan of every unrelated
     # historical answer/package is deliberately rejected in this child.
     guard=r'''
 import sys
-sys.path.insert(0,sys.argv[1])
 from src.utils.quick_scan_work_store import QuickScanWorkStore
 original=QuickScanWorkStore._validate_schema.__func__
 def layout_only(cls,connection,**kwargs):
@@ -337,8 +368,7 @@ def layout_only(cls,connection,**kwargs):
 QuickScanWorkStore._validate_schema=classmethod(layout_only)
 '''
     before=ledger.read_bytes()
-    response=gateway._call([sys.executable,'-B','-X','utf8','-c',guard+_EXPORT,
-        str(SOURCE),str(ledger)],SOURCE,tmp_path,input_value=request)
+    response=project_delivery(gateway,ledger,request,'export',journal_read_port(bundle['work_item_ids'].values())+guard)
     assert response['API_requests']==0 and response['network_calls']==0
     assert len(response['items'])==2 and all(r['status']=='exportable' for r in response['items'])
     assert ledger.read_bytes()==before
@@ -347,7 +377,6 @@ QuickScanWorkStore._validate_schema=classmethod(layout_only)
 @pytest.mark.parametrize('fault',['layout','current_package'])
 def test_read_only_export_keeps_layout_and_current_package_validation(delivery,tmp_path,fault):
     import sqlite3
-    from scripts.dashboard_delivery import _EXPORT
     gateway,bundle,receipt=delivery
     ledger=Path(bundle['work_store'])
     work_ids=list(bundle['work_item_ids'].values())
@@ -363,10 +392,9 @@ def test_read_only_export_keeps_layout_and_current_package_validation(delivery,t
             connection.execute('UPDATE quick_scan_result_delivery SET package_json=? WHERE work_item_id=?',('{}',work_ids[0]))
             connection.execute(trigger)
     before=ledger.read_bytes()
-    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'work_ids':work_ids}
+    request={'entity_id':'ENT_BYD','question_ids':['IQS_05'],'confirmation_id':'rc2_'+'1'*64}
     with pytest.raises(DashboardExecutionError):
-        gateway._call([sys.executable,'-B','-X','utf8','-c',_EXPORT,str(SOURCE),str(ledger)],
-            SOURCE,tmp_path,input_value=request)
+        project_delivery(gateway,ledger,request,'export',journal_read_port(work_ids))
     assert ledger.read_bytes()==before
 
 
@@ -375,7 +403,6 @@ def test_native_stored_ack_recovers_without_release_and_preserves_partial_siblin
     """Actual original outbox/ACK validator; only remote stored-ACK read is a port."""
     monkeypatch.syspath_prepend(str(ROOT/'scripts'))
     from dashboard_service import DashboardService
-    from scripts.dashboard_delivery import _EXPORT
     gateway,bundle,receipt=delivery
     gateway.bind_delivery_consumer(bundle,TARGET,'isolated-original-target')
     original_rows=native_delivery_rows(gateway,bundle)
@@ -386,9 +413,9 @@ def test_native_stored_ack_recovers_without_release_and_preserves_partial_siblin
     class Outbox:
         def __init__(self, config): pass
         def delivery_receivers(self, bundle_id):
-            return gateway._call([sys.executable,'-B','-c',_EXPORT,str(SOURCE),bundle['work_store']],
-                SOURCE,tmp_path,input_value={'entity_id':'ENT_BYD','question_ids':['IQS_05'],
-                    'work_ids':list(bundle['work_item_ids'].values()),'receiver_only':True})
+            return project_delivery(gateway,bundle['work_store'],
+                {'entity_id':'ENT_BYD','question_ids':['IQS_05'],'confirmation_id':'rc2_'+'1'*64},
+                'receivers',journal_read_port(bundle['work_item_ids'].values()))
         def acknowledge_delivery(self, mapping, incoming):
             events.append('native-ack')
             return gateway.acknowledge_delivery(mapping,incoming)
@@ -462,11 +489,7 @@ module._immutable(Path(sys.argv[2]),raw,**({'expected_digest':hashlib.sha256(raw
         _immutable(path,b'different-original-package',**options)
     assert caught.value.code==('delivery_byte_hash_mismatch' if derived else 'delivery_archive_changed')
     assert path.read_bytes()==raw
-    from scripts.dashboard_owner import _bundle
-    digest=hashlib.sha256(raw).hexdigest()
-    original=_bundle({'bundles':{'original':{'package':str(path),'release':str(path),
-        'package_sha256':digest,'release_sha256':digest}}},'original')
-    assert original['package']==original['release']=={'original':'sealed-package'}
+    assert json.loads(path.read_bytes()) == {'original':'sealed-package'}
 
 
 @pytest.mark.parametrize('release', [False, True])

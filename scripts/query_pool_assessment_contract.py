@@ -6,13 +6,14 @@ neither audit receipts nor field TTL/policy. No financial truth certification.
 import copy
 import json
 import re
+from pathlib import Path
 from jsonschema import Draft202012Validator,FormatChecker,ValidationError
 import query_pool_contract as raw
 import query_contract as profiles
 from query_field_assessment import LEVELS
 from module_contract import canonical_bytes
 
-SCHEMA=json.loads((raw.ROOT/'schemas/quick_scan/query-pool-qualified.schema.json').read_bytes())
+SCHEMA=json.loads((Path(__file__).resolve().parents[1]/'schemas/quick_scan/query-pool-qualified.schema.json').read_bytes())
 VALIDATOR=Draft202012Validator(SCHEMA,format_checker=FormatChecker())
 FIELDS={'information_as_of','valid_until','validity_status','minimum_check_level',
     'check_level','check_level_receipt_id','qualification_status','screening_eligible'}

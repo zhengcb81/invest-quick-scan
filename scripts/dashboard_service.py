@@ -554,15 +554,8 @@ class DashboardService:
         # composed by the UI from `routes.results` + the observation id.
         return value
 
-    def _company_assessment_result(self, entity_id, result_id, return_to):
-        """B03: GET `company/result` - one immutable owner company snapshot.
-
-        The owner's honest absent reasons pass through verbatim (a missing
-        store or an unregistered company is a named reason, never a zero
-        result and never a promoted question score). The entity-scoped
-        IQSLink travels beside it so a consumer can enter the IQS UI with
-        this result's observation context and a validated return route.
-        """
+    def _read_company_result(self, entity_id, result_id):
+        """Read an owner result and distinguish a missing pin from an unavailable store."""
         import dashboard_company_projection as projection
 
         owner_payload = self._gateway('owner').company_result(entity_id, result_id)
@@ -570,18 +563,22 @@ class DashboardService:
             response = projection.project_result(owner_payload)
         except projection.ProjectionError as error:
             raise ProductError(error.code, error.message, error.status) from None
-        if result_id is not None and response.get('company_result') is None:
-            # B03-R2: an EXPLICIT pin that does not resolve (absent, cross-ENT)
-            # is a named refusal, never a 200-null that a consumer could read
-            # as "fall back to latest".
-            raise ProductError('company_result_not_found',
-                               '固定的公司结果不存在或不属于该实体。', 404)
-        if (result_id is not None
-                and response['company_result'].get('result_id') != result_id):
-            # The owner accepted a pin but returned a different snapshot.
-            # Never publish that response under the requested immutable ID.
-            raise ProductError('company_result_pin_mismatch',
-                               '公司结果所有者返回的结果ID与请求固定ID不一致。', 502)
+        if result_id is not None:
+            result = response['company_result']
+            if result is None:
+                reason = response['reason_code']
+                if reason in {'observation_store_missing', 'observation_store_unavailable'}:
+                    raise ProductError(reason, '观察库暂时不可用，无法读取固定的公司结果。', 503)
+                raise ProductError('company_result_not_found',
+                                   '固定的公司结果不存在或不属于该实体。', 404)
+            if result['result_id'] != result_id:
+                raise ProductError('company_result_pin_mismatch',
+                                   '公司结果所有者返回的结果ID与请求固定ID不一致。', 502)
+        return response
+
+    def _company_assessment_result(self, entity_id, result_id, return_to):
+        """Return the owner snapshot with its entity-scoped IQS link."""
+        response = self._read_company_result(entity_id, result_id)
         response['iqs_link'] = self._iqs_link(entity_id, return_to)
         if result_id is not None:
             response['iqs_link'] = _pin_company_result_route(
@@ -900,25 +897,9 @@ class DashboardService:
                     raise ProductError('invalid_query', '公司结果ID必须唯一且非空。')
                 result_pin = ((result_values or result_id_values)[0]
                               if supplied_pin else None)
-                pin_data = None
-                if result_pin:
-                    # B03-R2: the link context may be composed for an explicit
-                    # old result pin; the pin must resolve for THIS entity or
-                    # the whole request is refused (no silent latest fallback).
-                    import dashboard_company_projection as projection_mod
-                    pin_payload = self._gateway('owner').company_result(entity_id, result_pin)
-                    try:
-                        pin_data = projection_mod.project_result(pin_payload)
-                    except projection_mod.ProjectionError as error:
-                        raise ProductError(error.code, error.message, error.status) from None
-                    if pin_data.get('company_result') is None:
-                        raise ProductError('company_result_not_found',
-                                           '固定的公司结果不存在或不属于该实体。', 404)
-                    if pin_data['company_result'].get('result_id') != result_pin:
-                        raise ProductError('company_result_pin_mismatch',
-                                           '公司结果所有者返回的结果ID与请求固定ID不一致。', 502)
+                pin_data = self._read_company_result(entity_id, result_pin) if result_pin else None
                 result = self._iqs_link(entity_id, query.get('return'))
-                if result_pin:
+                if pin_data is not None:
                     result = _pin_company_result_route(
                         result, pin_data['company_result'])
                 return result

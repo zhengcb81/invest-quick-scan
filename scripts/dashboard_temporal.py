@@ -7,9 +7,14 @@ from __future__ import annotations
 import hashlib
 import json
 
-from iqs_temporal_vendor import (
-    TimeSemanticsError, explain_observation_clocks, load_observation_clock_policies,
-)
+if __package__:
+    from .iqs_temporal_vendor import (
+        TimeSemanticsError, explain_observation_clocks, load_observation_clock_policies,
+    )
+else:
+    from iqs_temporal_vendor import (
+        TimeSemanticsError, explain_observation_clocks, load_observation_clock_policies,
+    )
 
 PROTOCOL = "iqs.temporal_shadow/1.0.0"
 VIEW_PROTOCOL = "iqs.company_research_view/1.0.0"

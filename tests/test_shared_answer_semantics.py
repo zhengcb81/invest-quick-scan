@@ -248,7 +248,7 @@ def test_finalizer_rechecks_original_semantics_before_native_output_match(origin
                       "attempt_refs": ["stockqa:native_" + qid]}]}
     from iqs_company_agent_lab.evidence import EvidenceBoard
     monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: (run, EvidenceBoard(2000)))
-    monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: engine._frozen_answer_semantics(single, context))
+    monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args, **kwargs: engine._frozen_answer_semantics(single, context))
     with pytest.raises(engine.SharedEngineRejected, match="standard_answer_contract"):
         engine.finalize_shared_engine(single, services, Path("unused-unit-only"))
     assert services.saves == [] and services.restores == []
@@ -358,6 +358,38 @@ def test_native_search_uses_original_source_projection_without_fabricating_exter
             callback(body,qid,attempt_ref='stockqa:UNIT_SDK_ATTEMPT',evidence_board=board)
     assert len(captured)==1 and 'external_context_use' not in captured[0]
     assert captured[0]['work_transport']['work_attempt_id']=='UNIT_NATIVE'
+
+
+@pytest.mark.parametrize("status", ["not_applicable", "insufficient_evidence", "search_unavailable"])
+def test_original_source_free_terminal_answer_replays_without_publication(native_bound, monkeypatch, status):
+    task, qid, body, services, _, board = native_bound
+    missing = helpers.sf.gen_insufficient(task.questions[0]["question"])
+    missing.update(status=status)
+    body.clear()
+    body.update(missing)
+    services.store.get_external_context_use = lambda _: None
+    from src.utils import quick_scan_work_transport
+    monkeypatch.setattr(quick_scan_work_transport, "project_quick_scan_answer_sources", lambda *args, **kwargs: {
+        "search_status": "not_executed", "search_source_urls": [], "source_urls": [],
+    })
+    callback = engine._production_answer_semantics(task, services)
+    assert callback(body, qid, attempt_ref="stockqa:UNIT_SDK_ATTEMPT", evidence_board=board) == ()
+    publish = engine._production_answer_semantics(task, services, for_publication=True)
+    with pytest.raises(ValueError, match="verified source projection"):
+        publish(body, qid, attempt_ref="stockqa:UNIT_SDK_ATTEMPT", evidence_board=board)
+
+
+@pytest.mark.parametrize("kind", ["integral_float", "sourced_search_unavailable"])
+def test_publication_preflight_retains_native_checkpoint_value_types(native_bound, kind):
+    task, qid, body, services, _, board = native_bound
+    if kind == "integral_float":
+        body["score"] = float(body["score"])
+    else:
+        body.clear()
+        body.update(helpers.sf.gen_insufficient(task.questions[0]["question"]), status="search_unavailable")
+    publish = engine._production_answer_semantics(task, services, for_publication=True)
+    with pytest.raises(ValueError):
+        publish(body, qid, attempt_ref="stockqa:UNIT_SDK_ATTEMPT", evidence_board=board)
 
 
 def test_actual_native_http_source_does_not_require_https(native_bound):

@@ -7,16 +7,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 
 import pytest
 
-from scripts.dashboard_owner import DashboardOwnerError, OwnerGateway, _env, _original_error, _member_display, _library_summary
+from scripts.dashboard_owner import DashboardOwnerError, OwnerGateway, _env
 
 ROOT = Path(__file__).resolve().parents[1]
-STOCKWIKI = ROOT.parent / "StockWiki"
+STOCKWIKI = Path(os.environ.get("IQS_DASHBOARD_TEST_STOCKWIKI_ROOT", ROOT.parent / "StockWiki"))
 ENTITY = "ENT_11111111-1111-4111-8111-111111111111"
 SECOND = "ENT_22222222-2222-4222-8222-222222222222"
 
@@ -24,6 +25,128 @@ SECOND = "ENT_22222222-2222-4222-8222-222222222222"
 def _tree(root):
     return {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in root.rglob("*") if path.is_file()}
+
+
+@pytest.mark.parametrize("reply_protocol, reply_operation", [
+    ("stockwiki.quick_scan_dashboard_reply/1.0.0", "coverage"),
+    ("stockwiki.quick_scan_dashboard_reply/99.0.0", "coverage"),
+    ("stockwiki.quick_scan_dashboard_reply/1.0.0", "search"),
+])
+def test_dashboard_can_run_with_only_stockwiki_public_command(tmp_path, reply_protocol, reply_operation):
+    code = tmp_path / "code"
+    package = code / "stockwiki"
+    package.mkdir(parents=True)
+    workspace = tmp_path / "owner"
+    workspace.mkdir()
+    (package / "quick_scan_dashboard_cli.py").write_text(f"""
+import json, sys
+assert sys.argv[1:] == ['--root', {str(workspace)!r}]
+assert json.load(sys.stdin) == {{'protocol': 'stockwiki.quick_scan_dashboard_request/1.0.0',
+    'operation': 'coverage', 'payload': {{}}}}
+print(json.dumps({{'protocol': {reply_protocol!r}, 'operation': {reply_operation!r},
+    'result': {{'total_entities': 2}}}}))
+""", encoding="utf-8")
+    gateway = OwnerGateway({"stockwiki_root": str(code), "workspace_root": str(workspace),
+                            "stockwiki_python": sys.executable, "iqs_root": str(ROOT)})
+    if reply_protocol.endswith("/1.0.0") and reply_operation == "coverage":
+        assert gateway.coverage() == {"total_entities": 2}
+    else:
+        with pytest.raises(DashboardOwnerError) as error:
+            gateway.coverage()
+        assert error.value.code == "owner_response_invalid"
+    assert list(workspace.iterdir()) == []
+
+
+def test_running_dashboard_legacy_worker_forwards_to_owner_command(tmp_path):
+    code = tmp_path / "code"
+    package = code / "stockwiki"
+    package.mkdir(parents=True)
+    workspace = tmp_path / "owner"
+    workspace.mkdir()
+    (package / "quick_scan_dashboard_cli.py").write_text('''
+import json, sys
+request = json.load(sys.stdin)
+print(json.dumps({'protocol': 'stockwiki.quick_scan_dashboard_reply/1.0.0',
+    'operation': request['operation'], 'result': {'total_entities': 2}}))
+''', encoding="utf-8")
+    request = {"config": {"stockwiki_root": str(code), "workspace_root": str(workspace),
+                          "stockwiki_python": sys.executable}, "operation": "coverage", "payload": {}}
+    result = subprocess.run([sys.executable, "-B", str(ROOT / "scripts/dashboard_owner.py"), "--worker"],
+                            input=json.dumps(request), capture_output=True, text=True, encoding="utf-8",
+                            timeout=10, env=_env())
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"protocol": "iqs.dashboard.owner/1.0.0", "result": {"total_entities": 2}}
+
+    request["payload"] = []
+    rejected = subprocess.run([sys.executable, "-B", str(ROOT / "scripts/dashboard_owner.py"), "--worker"],
+                              input=json.dumps(request), capture_output=True, text=True, encoding="utf-8",
+                              timeout=10, env=_env())
+    assert rejected.returncode == 2
+    assert json.loads(rejected.stdout)["error"]["code"] == "invalid_payload"
+
+
+def test_public_owner_response_rejects_nonfinite_exponent(tmp_path):
+    package = tmp_path / "stockwiki"
+    package.mkdir()
+    (package / "quick_scan_dashboard_cli.py").write_text(
+        'print(\'{"protocol":"stockwiki.quick_scan_dashboard_reply/1.0.0",'
+        '"operation":"coverage","result":{"total_entities":1e400}}\')', encoding="utf-8")
+    owner = OwnerGateway({"stockwiki_root": str(tmp_path), "workspace_root": str(tmp_path),
+                          "stockwiki_python": sys.executable})
+    with pytest.raises(DashboardOwnerError) as error:
+        owner.coverage()
+    assert error.value.code == "owner_response_invalid"
+
+
+def test_entity_view_works_as_package_without_an_external_pythonpath(tmp_path):
+    code = tmp_path / "code"
+    package = code / "stockwiki"
+    package.mkdir(parents=True)
+    (package / "quick_scan_dashboard_cli.py").write_text('''
+import json, sys
+request = json.load(sys.stdin)
+assert request['operation'] == 'entity_view_inputs'
+eid = request['payload']['entity_id']
+print(json.dumps({'protocol': 'stockwiki.quick_scan_dashboard_reply/1.0.0',
+    'operation': request['operation'], 'result': {'entity_id': eid,
+    'detail': {'entity': {'entity_id': eid}, 'groups': []}, 'observations': {}}}))
+''', encoding="utf-8")
+    config = {"stockwiki_root": str(code), "workspace_root": str(tmp_path), "stockwiki_python": sys.executable}
+    program = """
+import json, sys
+from scripts.dashboard_owner import OwnerGateway
+view = OwnerGateway(json.load(sys.stdin)).entity_view('ENT_TEST')
+assert view['protocol'] == 'iqs.company_research_view/1.0.0'
+assert view['entity']['entity']['entity_id'] == 'ENT_TEST'
+"""
+    result = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", program], cwd=ROOT,
+                            input=json.dumps(config), capture_output=True, text=True, encoding="utf-8",
+                            timeout=20, env=_env())
+    assert result.returncode == 0, result.stderr
+
+
+@pytest.mark.parametrize("operation,result", [
+    ("entity", {"entity": {"entity_id": SECOND}, "groups": []}),
+    ("entity", {"entity": {"entity_id": ENTITY}, "groups": [{"fields": [{"entity_id": SECOND}]}]}),
+    ("entity_view_inputs", {"entity_id": ENTITY, "detail": {"entity": {"entity_id": SECOND}}, "observations": {}}),
+    ("history", {"entity_id": ENTITY, "observations": [{"entity_id": SECOND}]}),
+    ("facts", {"entity_id": SECOND, "observations": []}),
+])
+def test_same_operation_reply_cannot_return_another_entity(tmp_path, operation, result):
+    package = tmp_path / "stockwiki"
+    package.mkdir()
+    (package / "quick_scan_dashboard_cli.py").write_text(f'''
+import json, sys
+assert json.load(sys.stdin)['operation'] == {operation!r}
+print(json.dumps({{'protocol': 'stockwiki.quick_scan_dashboard_reply/1.0.0',
+    'operation': {operation!r}, 'result': {result!r}}}))
+''', encoding="utf-8")
+    config = {"stockwiki_root": str(tmp_path), "workspace_root": str(tmp_path), "stockwiki_python": sys.executable}
+    owner = OwnerGateway(config)
+    method = "entity_view" if operation == "entity_view_inputs" else operation
+    with pytest.raises(DashboardOwnerError) as error:
+        getattr(owner, method)(ENTITY)
+    assert error.value.code == "owner_response_invalid"
 
 
 @pytest.fixture()
@@ -111,6 +234,11 @@ def test_real_owner_reads_keep_original_model_versions_missingness_and_no_writes
     assert result["total"] == 2 and len(result["rows"]) == 1
     assert gateway.search(limit=1, offset=1, snapshot=result["snapshot"])["rows"][0]["entity_id"] != result["rows"][0]["entity_id"]
     detail = gateway.entity(ENTITY)
+    view = gateway.entity_view(ENTITY)
+    assert {k: v for k, v in view["entity"].items() if k != "generated_at_utc"} == {
+        k: v for k, v in detail.items() if k != "generated_at_utc"
+    }
+    assert view["temporal_shadow"]["records"]
     fields = [field for group in detail["groups"] for field in group["fields"]]
     stored = next(field for field in fields if field["question_id"] == "IQS_LEG")
     assert stored["model_resolved"] == "fixture-model"
@@ -257,27 +385,6 @@ def test_uninitialized_observation_store_keeps_coverage_unknown_and_does_not_cre
     assert _tree(workspace) == before and not database.exists()
 
 
-def test_member_display_never_uses_same_name_to_attach_a_different_entity():
-    member = {"entity_id": ENTITY, "membership_status": "active", "version": 1}
-    missing = _member_display(member, None)
-    assert missing["canonical_name"] is None and missing["identity_display_available"] is False
-    assert missing["entity_id"] == ENTITY and member == {"entity_id": ENTITY, "membership_status": "active", "version": 1}
-    with pytest.raises(DashboardOwnerError) as error:
-        _member_display(member, {"entity_id": SECOND, "canonical_name": "Same displayed name"})
-    assert error.value.code == "identity_display_mismatch"
-
-
-@pytest.mark.parametrize("runtime", [
-    {"distinct_companies": 3, "observations": 3},
-    {"distinct_companies": True, "observations": 1},
-    {"distinct_companies": 1, "observations": 0},
-])
-def test_inconsistent_original_coverage_is_rejected_instead_of_clamped_or_green(runtime):
-    with pytest.raises(DashboardOwnerError) as error:
-        _library_summary({"total_entities": 2, "by_field": {}}, runtime)
-    assert error.value.code == "coverage_projection_invalid"
-
-
 def test_name_preview_never_activates_and_id_required_for_apply(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)
@@ -405,13 +512,12 @@ def test_owner_corrupt_database_is_unavailable_not_zero(owner):
     assert "entity_count" not in result
 
 
-def test_original_busy_and_transport_timeout_remain_distinct(monkeypatch, tmp_path):
-    import sqlite3
-    assert _original_error(sqlite3.OperationalError("database is locked")).code == "owner_busy"
-    assert _original_error(sqlite3.DatabaseError("file is not a database")).code == "owner_store_unreadable"
-    gateway = OwnerGateway({})
-    monkeypatch.setattr(gateway, "_deployment", lambda: {"stockwiki_python": sys.executable,
-                                                       "stockwiki_root": str(tmp_path)})
+def test_transport_timeout_remains_named(monkeypatch, tmp_path):
+    code = tmp_path / "stockwiki"
+    code.mkdir()
+    (code / "quick_scan_dashboard_cli.py").touch()
+    gateway = OwnerGateway({"stockwiki_python": sys.executable, "stockwiki_root": str(tmp_path),
+                            "workspace_root": str(tmp_path)})
     def timeout(*args, **kwargs):
         raise subprocess.TimeoutExpired("isolated owner", 1)
     monkeypatch.setattr(subprocess, "run", timeout)
