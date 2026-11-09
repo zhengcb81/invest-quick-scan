@@ -18,19 +18,24 @@ import copy
 import json
 import math
 import re
+from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 import query_contract as core
 import module_contract
 
-SCHEMA=json.loads((core.ROOT/'schemas/quick_scan/query-facts-v2.7.schema.json').read_bytes())
-SCHEMA_28=json.loads((core.ROOT/'schemas/quick_scan/query-facts-v2.8.schema.json').read_bytes())
+_SCHEMA_DIR = Path(__file__).resolve().parents[1] / 'schemas/quick_scan'
+SCHEMA = json.loads((_SCHEMA_DIR / 'query-facts-v2.7.schema.json').read_bytes())
+SCHEMA_28 = json.loads((_SCHEMA_DIR / 'query-facts-v2.8.schema.json').read_bytes())
 VALIDATOR=Draft202012Validator(SCHEMA,format_checker=FormatChecker())
 VALIDATOR_28=Draft202012Validator(SCHEMA_28,format_checker=FormatChecker())
 PROTOCOL='stockwiki.c06_facts_query/1.0.0'
 EXPORT_PROTOCOL='stockwiki.c06_facts_export/1.0.0'
 WIRE_VERSION='2.7.0'
 DIRECTION_CONVENTION_VERSION='stockwiki.facts_direction_convention/1.0.0'
+CAPABILITIES_PROTOCOL='iqs.facts_contract_capabilities/1.0.0'
+CAPABILITIES_FEATURES=('full_response_validation_v1',
+    'paged_response_projection_v1','export_response_validation_v1')
 MAX_BYTES=16*1024*1024
 MAX_OBSERVATION_BYTES=512*1024
 PAGE_SIZE_DEFAULT=50
@@ -60,11 +65,17 @@ DIRECTION_CONVENTION={
 
 
 def _digest(value):
-    return core._digest(value)
+    return module_contract.digest(value)
 
 
 def _fail(code):
     raise ValueError(code)
+
+
+def capabilities():
+    """Public semantic features of this facts contract implementation."""
+    return {'protocol':CAPABILITIES_PROTOCOL,'wire_version':WIRE_VERSION,
+        'features':list(CAPABILITIES_FEATURES)}
 
 
 def _shape(value,kind):
@@ -385,7 +396,7 @@ def project_fact_rows(profile_result,payload):
     stats={'fact_observations':0}
     for profile in profile_result['profiles']:
         for record in profile['observations']:
-            obs=core._original(record)
+            obs=core.original_observation(record)
             answer=obs['answer']
             if answer.get('response_kind')!='fact':
                 continue
@@ -487,7 +498,7 @@ def _profile_watermark(value,owner):
         'source_watermarks','read_at'} or value['store_id']!=owner['store_id']
         or type(value['observation_sequence']) is not int or value['observation_sequence']<0):
         _fail('facts_profile_watermark_invalid')
-    read_at=core._utc(value['read_at'])
+    read_at=core.parse_utc_timestamp(value['read_at'])
     marks=value['source_watermarks']
     if not isinstance(marks,list) or len({mark.get('namespace') for mark in marks})!=len(marks):
         _fail('facts_profile_source_watermarks_invalid')
@@ -498,7 +509,7 @@ def _profile_watermark(value,owner):
             'sequence','read_at','content_sha256'} or type(mark['sequence']) is not int
             or mark['sequence']<0 or mark['status'] not in
             {'available','missing','read_error','schema_unavailable'}
-            or core._utc(mark['read_at'])>read_at):
+            or core.parse_utc_timestamp(mark['read_at'])>read_at):
             _fail('facts_profile_source_watermarks_invalid')
         if mark['status']=='available':
             if (type(mark['schema_version']) is not int or not isinstance(mark['content_sha256'],str)
@@ -590,7 +601,7 @@ def _validate_profile_result(profile_result,*,request,owner):
         _fail('facts_profile_result_invalid')
     requested=set(request['payload']['entity_ids'])
     try:
-        profile_refs=core._subject_map([profile['subject_ref'] for profile in profiles])
+        profile_refs=core.index_subject_refs([profile['subject_ref'] for profile in profiles])
     except (TypeError,KeyError) as error:
         raise ValueError('facts_profile_result_invalid') from error
     requested_listings=set(request['payload']['listing_ids'])
@@ -609,8 +620,6 @@ def _validate_profile_result(profile_result,*,request,owner):
         if key in missing_refs:
             _fail('facts_duplicate_subject_scope')
         missing_refs[key]=ref
-    if profile_listing_keys & missing_listing_keys:
-        _fail('facts_subject_coverage_mismatch')
     if {_scope_key(profile['subject_ref']) for profile in profiles}&set(missing_refs):
         _fail('facts_subject_coverage_mismatch')
     for ref in list(profile_refs.values())+list(missing_refs.values()):
@@ -637,28 +646,35 @@ def _validate_profile_result(profile_result,*,request,owner):
             or not profile['canonical_name'].strip()
             or not isinstance(profile['observations'],list)):
             _fail('facts_profile_result_invalid')
-        if 'matched_listings' in profile:
-            _matched_listings(profile['matched_listings'])
+        entity_id=profile['subject_ref']['entity_id']
+        profile_listing_keys.update((entity_id,listing['listing_id'])
+            for listing in _matched_listings(profile.get('matched_listings',[]))
+            if listing['listing_id'] is not None)
         for row in profile['observations']:
             if row['observation_id'] in seen:
                 _fail('facts_duplicate_original_observation')
             seen.add(row['observation_id'])
-            obs=core._original(row)
-            owner_ref=core._reference(row,owner)
+            obs=core.original_observation(row)
+            owner_ref=core.validate_owner_observation_reference(row,owner)
             if obs['answer'].get('response_kind')=='fact' and row['binding_status']!='bound':
                 # Frozen wire parity: a legacy unbound answer cannot carry a
                 # fact row past the native seal; refuse with the wire's code
                 # before the generic unbound-history check.
                 _fail('facts_legacy_unbound_answer')
-            core._validate_original_semantics(obs,row=row,owner_ref=owner_ref,request=base,
+            core.validate_original_semantics(obs,row=row,owner_ref=owner_ref,request=base,
                 watermark=watermark,subject_ref=profile['subject_ref'])
+    if requested_listings and any(listing not in requested_listings
+        for _,listing in profile_listing_keys):
+        _fail('facts_unrequested_subject')
+    if profile_listing_keys & missing_listing_keys:
+        _fail('facts_subject_coverage_mismatch')
     for row in legacy:
         if row['observation_id'] in seen:
             _fail('facts_duplicate_original_observation')
         seen.add(row['observation_id'])
-        obs=core._original(row)
-        owner_ref=core._reference(row,owner)
-        core._validate_original_semantics(obs,row=row,owner_ref=owner_ref,request=base,
+        obs=core.original_observation(row)
+        owner_ref=core.validate_owner_observation_reference(row,owner)
+        core.validate_original_semantics(obs,row=row,owner_ref=owner_ref,request=base,
             watermark=watermark,subject_ref=None)
     return copy.deepcopy(profile_result)
 
@@ -826,7 +842,7 @@ def validate_export_response(*,response,request,owner):
         _fail('facts_request_binding_mismatch')
 
     read_at=result['watermark']['read_at']
-    if core._utc(response['response_at'])<core._utc(read_at):
+    if core.parse_utc_timestamp(response['response_at'])<core.parse_utc_timestamp(read_at):
         _fail('facts_response_before_read')
     internal=build_response(profile_result=result['profile_result'],request=request,
         owner=native,read_at=read_at)
@@ -857,21 +873,34 @@ def validate_response(response,*,request,owner):
         or result['store_id']!=native['store_id']
         or result['watermark']['store_id']!=native['store_id']):
         _fail('facts_request_binding_mismatch')
-    if core._utc(response['response_at'])<core._utc(result['watermark']['read_at']):
+    if core.parse_utc_timestamp(response['response_at'])<core.parse_utc_timestamp(result['watermark']['read_at']):
         _fail('facts_response_before_read')
-    sealed=seal_response({'message_type':response['message_type'],
-        'schema_version':response['schema_version'],'request_id':response['request_id'],
-        'operation':response['operation'],'response_at':response['response_at'],
-        'result':copy.deepcopy(result)},request=request)
-    if sealed['result']!=result:
-        _fail('facts_snapshot_content_mismatch')
     # A snapshot can be replayed by either operation; the projection is
     # rebuilt under the operation that produced the stored sealed result.
+    # The public owner query returns a page projection (`facts=[]`,
+    # `page_facts=...`) while the immutable snapshot id is bound to the FULL
+    # result. Recompute that full result from the owner-bound profile, then
+    # compare either the full build response or its exact requested page.
     build_request=dict(copy.deepcopy(request),operation=result['operation'])
     rebuilt=build_result(profile_result=result['profile_result'],request=build_request,
         owner=native,read_at=result['watermark']['read_at'])['result']
-    if rebuilt!=result:
-        _fail('facts_projection_mismatch')
+    presented=present_result(rebuilt,request['payload'])
+    is_page=(bool(rebuilt['facts']) and result.get('facts')==[]
+        and isinstance(result.get('page_facts'),list))
+    if is_page:
+        if result['watermark']['snapshot_id']!=rebuilt['watermark']['snapshot_id']:
+            _fail('facts_snapshot_content_mismatch')
+        if result!=presented:
+            _fail('facts_projection_mismatch')
+    else:
+        sealed=seal_response({'message_type':response['message_type'],
+            'schema_version':response['schema_version'],'request_id':response['request_id'],
+            'operation':response['operation'],'response_at':response['response_at'],
+            'result':copy.deepcopy(result)},request=request)
+        if sealed['result']!=result:
+            _fail('facts_snapshot_content_mismatch')
+        if result!=rebuilt:
+            _fail('facts_projection_mismatch')
     if (request['payload']['snapshot_id'] is not None
         and request['payload']['snapshot_id']!=result['watermark']['snapshot_id']):
         _fail('facts_snapshot_id_mismatch')
@@ -883,7 +912,7 @@ def _reject_constant(token):
 
 
 def _json(raw):
-    return json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object,
+    return json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract.unique_json_object,
         parse_constant=_reject_constant)
 
 

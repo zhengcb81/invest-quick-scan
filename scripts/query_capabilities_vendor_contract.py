@@ -1,10 +1,12 @@
 """Capabilities1.2 adds explicit execution support, never financial coverage."""
 import copy,json
+from pathlib import Path
 from jsonschema import Draft202012Validator,FormatChecker,ValidationError
 import query_capabilities_contract as base
 import observation_profiles
 from module_contract import canonical_bytes
-SCHEMA=json.loads((base.scoped.raw.ROOT/'schemas/quick_scan/query-capabilities-v1.2.schema.json').read_bytes())
+from query_contract import parse_utc_timestamp
+SCHEMA=json.loads((Path(__file__).resolve().parents[1]/'schemas/quick_scan/query-capabilities-v1.2.schema.json').read_bytes())
 VALIDATOR=Draft202012Validator(SCHEMA,format_checker=FormatChecker())
 
 def _shape(value):
@@ -20,7 +22,7 @@ def validate_request(request):
     return copy.deepcopy(request)
 
 def _result(request,source_context,index,scope_context):
-    result=base._result(request,source_context,index,scope_context)
+    result=base.project_capabilities(request,source_context,index,scope_context)
     wires=result['supported_query_wires']+[dict(schema_version='2.6.0',operations=['get_profiles'])]
     wires.sort(key=lambda row:tuple(int(part) for part in row['schema_version'].split('.')))
     result['supported_query_wires']=wires
@@ -40,7 +42,7 @@ def build_response(*,request,source_context,index,scope_context):
 def validate_response(*,response,request,source_context,index,scope_context):
     validate_request(request);_shape(response)
     if (response['message_type']!='response' or response['request_id']!=request['request_id']
-        or base.profiles._utc(response['response_at'])<base.profiles._utc(source_context['read_at'])
+        or parse_utc_timestamp(response['response_at'])<parse_utc_timestamp(source_context['read_at'])
         or canonical_bytes(response['result'])!=canonical_bytes(_result(request,source_context,index,scope_context))):
         raise ValueError('capabilities_response_owner_mismatch')
     if len(canonical_bytes(response))>base.MAX_BYTES:raise ValueError('capabilities_response_too_large')

@@ -25,7 +25,6 @@ LEGACY_WIRES = [
     {'schema_version': '2.5.0', 'operations': ['search', 'candidate_set']},
 ]
 FACTS_WIRE = {'schema_version': '2.7.0', 'operations': ['query_facts', 'export_facts']}
-FACTS_WIRE_28 = {'schema_version': '2.8.0', 'operations': ['query_facts', 'export_facts']}
 VENDOR_WIRE = {'schema_version': '2.6.0', 'operations': ['get_profiles']}
 LEGACY_OPERATIONS = ['get_profiles', 'search', 'candidate_set', 'nominate',
                      'report_conflict', 'research_context']
@@ -76,8 +75,8 @@ def build_12(**kwargs):
 def test_capabilities_1_1_declares_the_facts_wire_after_the_legacy_six():
     response = build_11(request=capabilities_request(), context=owner_context())
     wires = response['result']['supported_query_wires']
-    assert wires == LEGACY_WIRES + [FACTS_WIRE, FACTS_WIRE_28]
-    assert len(wires) == 8
+    assert wires == LEGACY_WIRES + [FACTS_WIRE]
+    assert len(wires) == 7
     assert response['result']['supported_operations'] == (
         LEGACY_OPERATIONS + ['query_facts', 'export_facts'])
 
@@ -86,30 +85,30 @@ def test_capabilities_1_2_keeps_vendor_wire_and_adds_facts_wire():
     response = build_12(request=capabilities_request(schema_version='1.2.0'),
                         context=owner_context())
     wires = response['result']['supported_query_wires']
-    assert len(wires) == 9
+    assert len(wires) == 8
     assert LEGACY_WIRES == wires[:6]
-    assert wires == LEGACY_WIRES + [VENDOR_WIRE, FACTS_WIRE, FACTS_WIRE_28]
+    assert wires == LEGACY_WIRES + [VENDOR_WIRE, FACTS_WIRE]
     assert response['schema_version'] == '1.2.0'
     assert response['protocol'] == 'stockwiki.c06_query_capabilities/1.2.0'
     assert response['result']['supported_operations'] == (
         LEGACY_OPERATIONS + ['query_facts', 'export_facts'])
 
 
-def test_facts_requirements_are_satisfied_once_declared():
+def test_owner_does_not_advertise_consumer_only_facts_wire():
     request = capabilities_request(operations=['query_facts', 'export_facts'],
                                    versions=['2.7.0', '2.8.0'])
     response = build_11(request=request, context=owner_context())
     required = response['result']['capability_requirements']
-    assert required['status'] == 'satisfied'
+    assert required['status'] == 'missing'
     assert required['missing_operations'] == []
-    assert required['missing_query_versions'] == []
+    assert required['missing_query_versions'] == ['2.8.0']
     vendor_response = build_12(request=capabilities_request(
         schema_version='1.2.0', operations=['query_facts'], versions=['2.7.0', '2.8.0']),
         context=owner_context())
     vendor_required = vendor_response['result']['capability_requirements']
-    assert vendor_required['status'] == 'satisfied'
+    assert vendor_required['status'] == 'missing'
     assert vendor_required['missing_operations'] == []
-    assert vendor_required['missing_query_versions'] == []
+    assert vendor_required['missing_query_versions'] == ['2.8.0']
 
 
 def test_legacy_requirements_keep_their_old_answers():

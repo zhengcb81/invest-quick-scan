@@ -443,6 +443,33 @@ def test_v28_rejects_a_listing_reported_both_present_and_missing():
         build(request,profile,owner,read_at)
 
 
+@pytest.mark.parametrize('wire', ['2.7.0', '2.8.0'])
+def test_facts_rejects_unrequested_matched_listing_without_rejecting_legacy_profiles(wire):
+    request, profile, owner, read_at = fact_pair(fact_observation(), overrides={'schema_version': wire})
+    request['payload']['listing_ids'] = ['LST_SELECTED']
+    # Older issuer profiles can omit listing metadata entirely.
+    profile['profiles'][0].pop('matched_listings')
+    build(request, profile, owner, read_at)
+    profile['profiles'][0]['matched_listings'] = [
+        {'market': 'SSE', 'ticker': '600001', 'listing_id': 'LST_OTHER'},
+    ]
+    with pytest.raises(ValueError, match='facts_unrequested_subject'):
+        build(request, profile, owner, read_at)
+
+
+def test_v28_rejects_matched_listing_metadata_reported_as_missing():
+    request, profile, owner, read_at = fact_pair(fact_observation(), overrides={'schema_version': '2.8.0'})
+    listing_id = 'LST_CONTRADICTORY'
+    request['payload']['listing_ids'] = [listing_id]
+    profile['profiles'][0]['matched_listings'] = [
+        {'market': 'SSE', 'ticker': '600001', 'listing_id': listing_id},
+    ]
+    profile['missing_subject_refs'] = [{'entity_id': SUBJECT['entity_id'], 'scope': 'listing',
+        'scope_id': listing_id, 'listing_id': listing_id, 'security_id': None, 'segment_id': None}]
+    with pytest.raises(ValueError, match='facts_subject_coverage_mismatch'):
+        build(request, profile, owner, read_at)
+
+
 def test_v27_does_not_silently_accept_the_new_listing_missing_scope():
     request,profile,owner,read_at=fact_pair(fact_observation())
     profile['missing_subject_refs']=[{'entity_id':SUBJECT['entity_id'],
@@ -778,6 +805,58 @@ def test_default_page_size_and_bounds():
     with pytest.raises(ValueError,match='facts_page_size_invalid'):
         fc.present_result(result,dict(request['payload'],
             page={'page_size':101,'cursor':None}))
+
+
+def test_response_validator_accepts_the_public_paged_facts_projection():
+    request,profile,owner=three_counterparty_pair()
+    request['payload']['page']={'page_size':1,'cursor':None}
+    full=build(request,profile,owner)
+    presented=copy.deepcopy(full)
+    presented['result']=fc.present_result(full['result'],request['payload'])
+
+    assert presented['result']['facts']==[]
+    assert len(presented['result']['page_facts'])==1
+    assert fc.validate_response(presented,request=request,owner=owner)==presented
+
+    second_request=copy.deepcopy(request)
+    second_request['request_id']='REQ_FACTS_PAGE_2'
+    second_request['payload']['snapshot_id']=presented['result']['watermark']['snapshot_id']
+    second_request['payload']['page']['cursor']=presented['result']['next_cursor']
+    second_full=build(second_request,profile,owner)
+    second_page=copy.deepcopy(second_full)
+    second_page['result']=fc.present_result(second_full['result'],second_request['payload'])
+    assert second_page['result']['watermark']['snapshot_id']==presented['result']['watermark']['snapshot_id']
+    assert second_page['result']['page_facts'][0]['fact_id']!=presented['result']['page_facts'][0]['fact_id']
+    assert fc.validate_response(second_page,request=second_request,owner=owner)==second_page
+
+    tampered=copy.deepcopy(presented)
+    tampered['result']['page_facts'][0]['counterparty']['name']='Unrelated entity'
+    with pytest.raises(ValueError,match='facts_projection_mismatch'):
+        fc.validate_response(tampered,request=request,owner=owner)
+
+
+def test_response_validator_accepts_strict_page_with_only_candidate_facts():
+    """An empty strict page can still project a non-empty candidate set."""
+    request,profile,owner,read_at=fact_pair(fact_observation(review='unreviewed'))
+    request['payload'].update(mode='strict',direction='outgoing',
+        page={'page_size':1,'cursor':None})
+    full=fc.build_response(profile_result=profile,request=request,owner=owner,
+        read_at=read_at)
+    assert len(full['result']['facts'])==1
+    assert full['result']['candidate_total']==1
+
+    presented=copy.deepcopy(full)
+    presented['result']=fc.present_result(full['result'],request['payload'])
+    assert presented['result']['facts']==[]
+    assert presented['result']['page_facts']==[]
+    assert presented['result']['total']==0
+    assert presented['result']['candidate_total']==1
+    assert fc.validate_response(presented,request=request,owner=owner)==presented
+
+    tampered=copy.deepcopy(presented)
+    tampered['result']['candidate_total']=0
+    with pytest.raises(ValueError,match='facts_projection_mismatch'):
+        fc.validate_response(tampered,request=request,owner=owner)
 
 
 # --------------------------------------------------------------------- export

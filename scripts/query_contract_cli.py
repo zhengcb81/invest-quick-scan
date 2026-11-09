@@ -20,7 +20,7 @@ def main(argv=None):
             'review-lead-request','review-lead-response','research-request','research-query-hash',
             'research-build','research-response','scoped-pool-index','scoped-pool-response',
             'capabilities-request','capabilities-build','capabilities-response',
-            'facts-request','facts-query-hash','facts-build','facts-response',
+            'facts-capabilities','facts-request','facts-query-hash','facts-build','facts-response',
             'facts-export-response'))
     args=parser.parse_args(argv)
     try:
@@ -45,7 +45,10 @@ def main(argv=None):
                 result=capabilities.validate_response(**value)
         elif args.operation.startswith('facts-'):
             import query_facts_contract as facts
-            if args.operation in {'facts-request','facts-query-hash'}:
+            if args.operation=='facts-capabilities':
+                if value:raise ValueError('query_contract_input_fields')
+                result=facts.capabilities()
+            elif args.operation in {'facts-request','facts-query-hash'}:
                 if set(value)!={'request'}:raise ValueError('query_contract_input_fields')
                 result=(facts.validate_request(value['request']) if args.operation=='facts-request'
                     else facts.query_sha256(value['request']))

@@ -1,39 +1,30 @@
-"""Public CLI conformance for the facts wire and the frozen F05 owner wrappers.
+"""Public CLI conformance for the IQS facts wire.
 
-Part A drives scripts/query_contract_cli.py exactly like a caller would: a
-temporary JSON input file, one subprocess per call, exit code and canonical
-output asserted. Part B restores the tracked StockWiki code of the frozen F05
-candidate (owner commit 63a6ffcf) into this lab's own temporary directory and
-drives the public CLI through the candidate's IqsQueryContract wrappers and
-FactsContractAdapter. The candidate repository is only read via git archive;
-the restored copy is cleaned up; a native rejection must propagate without
-triggering the StockWiki local fallback. Everything is synthetic; no owner
-store, no production path, no network.
+This suite drives scripts/query_contract_cli.py as an external caller would:
+temporary JSON input, one subprocess per operation, and asserted exit code and
+canonical output. Cross-repository producer/consumer behavior is exercised by
+StockWiki's C06 integration tests through the public CLI; IQS tests do not
+import StockWiki implementation modules or depend on its Git object store.
+Everything here is synthetic; no owner store, production path, or network.
 """
+import ast
 import copy
-import io
 import json
 import os
 import subprocess
 import sys
-import tarfile
 import tempfile
 from pathlib import Path
-
-import pytest
 
 import module_contract
 import query_facts_contract as fc
 from test_query_facts_contract import (digest, fact_request, fact_observation,
-                                       fact_owner, fact_pair, fact_profile_result,
-                                       projection, strict_pair)
+                                       fact_pair, strict_pair,
+                                       three_counterparty_pair)
 from test_query_capabilities_facts_wire import build_11, capabilities_request, owner_context
 
 LAB_ROOT = Path(__file__).resolve().parents[1]
 CLI = LAB_ROOT / 'scripts' / 'query_contract_cli.py'
-OWNER_REPO = Path(os.environ.get(
-    'F05_OWNER_LAB_REPO', r'C:\Users\郑曾波\Projects\iqs-stockwiki-f05-query-lab'))
-OWNER_COMMIT = '63a6ffcf23f8d16f47acf44bdbcf3e567a85458e'
 OUTPUT_FIELDS = {'protocol', 'operation', 'status', 'input_sha256', 'result',
                  'API_requests', 'database_writes', 'identity_attested'}
 
@@ -79,6 +70,20 @@ def test_cli_facts_request_accepts_and_echoes():
     expected = valid_output('facts-request', {'request': request})
     expected['result'] = request
     assert output == expected
+
+
+def test_cli_facts_capabilities_advertises_semantic_projection_support():
+    code, out, err = run_cli('facts-capabilities', {})
+    assert code == 0, err
+    output = json.loads(out)
+    assert output['status'] == 'validated'
+    assert output['result'] == {
+        'protocol':'iqs.facts_contract_capabilities/1.0.0',
+        'wire_version':'2.7.0',
+        'features':['full_response_validation_v1',
+                    'paged_response_projection_v1',
+                    'export_response_validation_v1'],
+    }
 
 
 def test_cli_facts_request_rejects_duplicate_json_key():
@@ -137,6 +142,55 @@ def test_cli_facts_build_then_response_round_trip():
     output = json.loads(out)
     assert output['status'] == 'validated'
     assert output['result'] == expected
+
+
+def test_cli_facts_response_accepts_and_binds_public_page_projection():
+    request, profile, owner = three_counterparty_pair()
+    request['payload']['page'] = {'page_size': 1, 'cursor': None}
+    full = fc.build_response(profile_result=profile, request=request,
+                             owner=owner, read_at='2026-10-09T15:00:00Z')
+    response = copy.deepcopy(full)
+    response['result'] = fc.present_result(full['result'], request['payload'])
+    envelope = {'response': response, 'request': request, 'owner': owner}
+
+    code, out, err = run_cli('facts-response', envelope)
+    assert code == 0, err
+    output = json.loads(out)
+    assert output['status'] == 'validated'
+    assert output['result'] == response
+
+    tampered = copy.deepcopy(envelope)
+    tampered['response']['result']['page_facts'][0]['counterparty']['name'] = 'Unrelated'
+    code, out, _ = run_cli('facts-response', tampered)
+    assert code == 2 and json.loads(out) == rejected_output('facts-response')
+
+
+def test_cli_facts_response_accepts_strict_page_with_no_strict_rows():
+    request, profile, owner, read_at = fact_pair(
+        fact_observation(review='unreviewed'),
+        overrides={'mode':'strict','direction':'outgoing',
+                   'page':{'page_size':1,'cursor':None}})
+    full = fc.build_response(profile_result=profile, request=request,
+                             owner=owner, read_at=read_at)
+    assert len(full['result']['facts']) == 1
+    assert full['result']['candidate_total'] == 1
+    response = copy.deepcopy(full)
+    response['result'] = fc.present_result(full['result'], request['payload'])
+    assert response['result']['total'] == 0
+    assert response['result']['page_facts'] == []
+
+    code, out, err = run_cli('facts-response',
+        {'response':response,'request':request,'owner':owner})
+    assert code == 0, err
+    output = json.loads(out)
+    assert output['status'] == 'validated'
+    assert output['result'] == response
+
+    tampered = copy.deepcopy(response)
+    tampered['result']['candidate_total'] = 0
+    code, out, _ = run_cli('facts-response',
+        {'response':tampered,'request':request,'owner':owner})
+    assert code == 2 and json.loads(out) == rejected_output('facts-response')
 
 
 def test_cli_facts_response_rejects_tampered_and_missing_fields():
@@ -213,11 +267,8 @@ def test_cli_capabilities_wire_declaration_is_routed():
     assert output['status'] == 'validated'
     # the CLI result is the full built response envelope
     wires = output['result']['result']['supported_query_wires']
-    assert len(wires) == 8
-    assert wires[-2:] == [
-        {'schema_version': '2.7.0', 'operations': ['query_facts', 'export_facts']},
-        {'schema_version': '2.8.0', 'operations': ['query_facts', 'export_facts']},
-    ]
+    assert len(wires) == 7
+    assert wires[-1] == {'schema_version': '2.7.0', 'operations': ['query_facts', 'export_facts']}
     code, out, err = run_cli('capabilities-response',
                              {'response': response, 'request': request,
                               'source_context': context, 'index': None,
@@ -245,176 +296,25 @@ def test_cli_output_is_canonical_json():
     assert out.rstrip(b'\r\n') == module_contract.canonical_bytes(json.loads(out))
 
 
-# --------------------------------------------------- Part B: frozen F05 owner
-
-class _OwnerRestore:
-    """Tracked code of the frozen F05 candidate restored into a lab temp dir."""
-
-    def __init__(self):
-        if not OWNER_REPO.exists():
-            pytest.fail(f'frozen F05 owner repository missing: {OWNER_REPO}')
-        probe = subprocess.run(['git', '-C', str(OWNER_REPO), 'cat-file', '-t',
-                                OWNER_COMMIT], capture_output=True)
-        if probe.returncode != 0:
-            pytest.fail(f'frozen F05 owner commit missing: {OWNER_COMMIT}')
-        archive = subprocess.run(
-            ['git', '-C', str(OWNER_REPO), 'archive', '--format=tar', OWNER_COMMIT,
-             '--', 'stockwiki', 'config/quick_scan_facts_query.schema.json'],
-            check=True, capture_output=True).stdout
-        self._temp = tempfile.TemporaryDirectory(prefix='f05-owner-restore-')
-        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
-            tar.extractall(self._temp.name, filter='data')
-        self.root = Path(self._temp.name)
-        self.scripts = str(LAB_ROOT / 'scripts')
-        self._added_scripts = self.scripts not in sys.path
-        sys.path.insert(0, str(self.root))
-        if self._added_scripts:
-            sys.path.insert(0, self.scripts)
-        import stockwiki.quick_scan_query_contract as query_contract
-        import stockwiki.quick_scan_facts_contract as facts_contract
-        import stockwiki.quick_scan_observations as observations
-        self.query_contract = query_contract
-        self.facts_contract = facts_contract
-        self.observations = observations
-
-    def cleanup(self):
-        if self._added_scripts and self.scripts in sys.path:
-            sys.path.remove(self.scripts)
-        sys.path.remove(str(self.root))
-        for name in list(sys.modules):
-            if name == 'stockwiki' or name.startswith('stockwiki.'):
-                del sys.modules[name]
-        self._temp.cleanup()
-
-
-@pytest.fixture()
-def owner_env():
-    restored = _OwnerRestore()
-    try:
-        yield restored
-    finally:
-        restored.cleanup()
-
-
-def test_frozen_owner_wrappers_drive_the_native_cli(owner_env):
-    contract = owner_env.query_contract.IqsQueryContract(
-        LAB_ROOT, runs_dir=owner_env.root / 'runs')
-    adapter = owner_env.facts_contract.FactsContractAdapter(native=contract)
-    request, profile, owner, read_at = strict_pair()
-    validated = adapter.validate_facts_request(request)
-    assert validated == request
-    assert adapter.native_supported is True
-    native_hash = adapter.facts_query_sha256(request)
-    assert native_hash == owner_env.facts_contract.query_sha256(request)
-    assert native_hash == fc.query_sha256(request)
-    assert adapter.native_supported is True
-    response = adapter.build_facts_response(profile_result=profile,
-                                            request=request, owner=owner,
-                                            read_at=read_at)
-    assert adapter.native_supported is True
-    # the IQS native build and the frozen owner local build agree exactly
-    assert response == owner_env.facts_contract.build_response(
-        profile_result=profile, request=request, owner=owner, read_at=read_at)
-    checked = adapter.validate_facts_response(response, request=request,
-                                              owner=owner)
-    assert checked == response
-    assert adapter.native_supported is True
-
-
-def test_frozen_owner_replay_wrapper_uses_native_response(owner_env):
-    contract = owner_env.query_contract.IqsQueryContract(
-        LAB_ROOT, runs_dir=owner_env.root / 'runs')
-    adapter = owner_env.facts_contract.FactsContractAdapter(native=contract)
-    request, profile, owner, read_at = strict_pair()
-    response = adapter.build_facts_response(profile_result=profile,
-                                            request=request, owner=owner,
-                                            read_at=read_at)
-    snapshot = response['result']['watermark']['snapshot_id']
-    # the replay keeps the original query identity, binds the stored snapshot
-    # and may arrive later with a changed request timestamp
-    replay = copy.deepcopy(request)
-    replay['payload']['snapshot_id'] = snapshot
-    replay['requested_at'] = '2026-10-15T08:00:00Z'
-    envelope = dict(message_type='response', schema_version='2.7.0',
-                    request_id=replay['request_id'],
-                    operation=replay['operation'],
-                    response_at='2026-10-15T08:01:00Z',
-                    result=copy.deepcopy(response['result']))
-    assert adapter.validate_facts_response(envelope, request=replay,
-                                           owner=owner) == envelope
-    assert adapter.native_supported is True
-
-
-def test_native_rejection_propagates_and_never_triggers_local_fallback(owner_env,
-                                                                       monkeypatch):
-    contract = owner_env.query_contract.IqsQueryContract(
-        LAB_ROOT, runs_dir=owner_env.root / 'runs')
-    adapter = owner_env.facts_contract.FactsContractAdapter(native=contract)
-    request, _, _, _ = strict_pair()
-    invalid = fact_request(mode='strict')  # strict without a declared direction
-    calls = []
-    monkeypatch.setattr(owner_env.facts_contract, 'validate_request',
-                        lambda value: calls.append(value))
-    with pytest.raises(owner_env.observations.ObservationImportError) as error:
-        adapter.validate_facts_request(invalid)
-    assert error.value.error_code == 'subject_contract_output_invalid'
-    assert calls == []  # the StockWiki local fallback never executed
-    assert adapter.native_supported is None
-    # the same native instance still validates the good request afterwards
-    assert adapter.validate_facts_request(request) == request
-    assert adapter.native_supported is True
-
-
-def test_unsupported_operation_falls_back_but_rejection_still_propagates(owner_env):
-    class Stub:
-        def __init__(self, code):
-            self.code = code
-
-        def validate_facts_request(self, request):
-            raise owner_env.observations.ObservationImportError(self.code)
-
-    request, _, _, _ = strict_pair()
-    absent = owner_env.facts_contract.FactsContractAdapter(
-        native=Stub('subject_contract_operation_unsupported'))
-    assert absent.validate_facts_request(request) == request
-    assert absent.native_supported is False
-    rejected = owner_env.facts_contract.FactsContractAdapter(
-        native=Stub('subject_contract_output_invalid'))
-    with pytest.raises(owner_env.observations.ObservationImportError) as error:
-        rejected.validate_facts_request(request)
-    assert error.value.error_code == 'subject_contract_output_invalid'
-
-
-def test_real_unsupported_operation_triggers_the_fallback(owner_env):
-    # the base IQS commit (aca0f4be) has no facts-* operations: its real
-    # argparse 'invalid choice' refusal must surface as an ABSENT capability
-    # (subject_contract_operation_unsupported) and fall back to the owner
-    # local contract — never as a request rejection.
-    base_commit = 'aca0f4be5adcb96f0c7d8f58e0c4a205e6c17981'
-    archive = subprocess.run(
-        ['git', '-C', str(LAB_ROOT), 'archive', '--format=tar', base_commit,
-         '--', 'scripts', 'schemas'], check=True, capture_output=True).stdout
-    with tempfile.TemporaryDirectory(prefix='f05-base-cli-') as base:
-        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
-            tar.extractall(base, filter='data')
-        contract = owner_env.query_contract.IqsQueryContract(
-            Path(base), runs_dir=owner_env.root / 'runs')
-        adapter = owner_env.facts_contract.FactsContractAdapter(native=contract)
-        request, _, _, _ = strict_pair()
-        assert adapter.validate_facts_request(request) == request
-        assert adapter.native_supported is False
-        # the same absent CLI must still reject a genuinely invalid request
-        # through the owner local contract
-        invalid = fact_request(mode='strict')  # strict without a direction
-        with pytest.raises(ValueError, match='facts_direction_required_in_strict'):
-            adapter.validate_facts_request(invalid)
-
-
-def test_frozen_owner_hash_and_cli_hash_are_identical(owner_env):
-    contract = owner_env.query_contract.IqsQueryContract(
-        LAB_ROOT, runs_dir=owner_env.root / 'runs')
-    request, _, _, _ = strict_pair()
-    code, out, err = run_cli('facts-query-hash', {'request': request})
-    assert code == 0, err
-    assert json.loads(out)['result'] == contract.facts_query_sha256(request)
-    assert json.loads(out)['result'] == owner_env.facts_contract.query_sha256(request)
+def test_facts_consumer_cli_does_not_import_stockwiki_implementation():
+    """IQS talks to the owner via the versioned public JSON CLI, not imports."""
+    paths = (LAB_ROOT / 'scripts' / 'query_facts_contract.py',
+             LAB_ROOT / 'scripts' / 'query_contract_cli.py')
+    violations = []
+    for path in paths:
+        tree = ast.parse(path.read_text(encoding='utf-8'), filename=str(path))
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name == 'stockwiki' or alias.name.startswith('stockwiki.'):
+                        violations.append(f'{path.name}:{node.lineno}: import {alias.name}')
+            elif isinstance(node, ast.ImportFrom):
+                if node.module == 'stockwiki' or (node.module or '').startswith('stockwiki.'):
+                    violations.append(f'{path.name}:{node.lineno}: from {node.module} import ...')
+            elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name) \
+                    and node.func.id == '__import__' and node.args \
+                    and isinstance(node.args[0], ast.Constant) \
+                    and isinstance(node.args[0].value, str) \
+                    and node.args[0].value.startswith('stockwiki.'):
+                violations.append(f'{path.name}:{node.lineno}: dynamic import {node.args[0].value}')
+    assert not violations, 'F05 consumer crossed the public CLI boundary:\n' + '\n'.join(violations)
