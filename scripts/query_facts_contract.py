@@ -831,19 +831,32 @@ def validate_response(response,*,request,owner):
         _fail('facts_request_binding_mismatch')
     if core._utc(response['response_at'])<core._utc(result['watermark']['read_at']):
         _fail('facts_response_before_read')
-    sealed=seal_response({'message_type':response['message_type'],
-        'schema_version':response['schema_version'],'request_id':response['request_id'],
-        'operation':response['operation'],'response_at':response['response_at'],
-        'result':copy.deepcopy(result)},request=request)
-    if sealed['result']!=result:
-        _fail('facts_snapshot_content_mismatch')
     # A snapshot can be replayed by either operation; the projection is
     # rebuilt under the operation that produced the stored sealed result.
+    # The public owner query returns a page projection (`facts=[]`,
+    # `page_facts=...`) while the immutable snapshot id is bound to the FULL
+    # result. Recompute that full result from the owner-bound profile, then
+    # compare either the full build response or its exact requested page.
     build_request=dict(copy.deepcopy(request),operation=result['operation'])
     rebuilt=build_result(profile_result=result['profile_result'],request=build_request,
         owner=native,read_at=result['watermark']['read_at'])['result']
-    if rebuilt!=result:
-        _fail('facts_projection_mismatch')
+    presented=present_result(rebuilt,request['payload'])
+    is_page=(bool(rebuilt['facts']) and result.get('facts')==[]
+        and isinstance(result.get('page_facts'),list))
+    if is_page:
+        if result['watermark']['snapshot_id']!=rebuilt['watermark']['snapshot_id']:
+            _fail('facts_snapshot_content_mismatch')
+        if result!=presented:
+            _fail('facts_projection_mismatch')
+    else:
+        sealed=seal_response({'message_type':response['message_type'],
+            'schema_version':response['schema_version'],'request_id':response['request_id'],
+            'operation':response['operation'],'response_at':response['response_at'],
+            'result':copy.deepcopy(result)},request=request)
+        if sealed['result']!=result:
+            _fail('facts_snapshot_content_mismatch')
+        if result!=rebuilt:
+            _fail('facts_projection_mismatch')
     if (request['payload']['snapshot_id'] is not None
         and request['payload']['snapshot_id']!=result['watermark']['snapshot_id']):
         _fail('facts_snapshot_id_mismatch')

@@ -719,6 +719,58 @@ def test_default_page_size_and_bounds():
             page={'page_size':101,'cursor':None}))
 
 
+def test_response_validator_accepts_the_public_paged_facts_projection():
+    request,profile,owner=three_counterparty_pair()
+    request['payload']['page']={'page_size':1,'cursor':None}
+    full=build(request,profile,owner)
+    presented=copy.deepcopy(full)
+    presented['result']=fc.present_result(full['result'],request['payload'])
+
+    assert presented['result']['facts']==[]
+    assert len(presented['result']['page_facts'])==1
+    assert fc.validate_response(presented,request=request,owner=owner)==presented
+
+    second_request=copy.deepcopy(request)
+    second_request['request_id']='REQ_FACTS_PAGE_2'
+    second_request['payload']['snapshot_id']=presented['result']['watermark']['snapshot_id']
+    second_request['payload']['page']['cursor']=presented['result']['next_cursor']
+    second_full=build(second_request,profile,owner)
+    second_page=copy.deepcopy(second_full)
+    second_page['result']=fc.present_result(second_full['result'],second_request['payload'])
+    assert second_page['result']['watermark']['snapshot_id']==presented['result']['watermark']['snapshot_id']
+    assert second_page['result']['page_facts'][0]['fact_id']!=presented['result']['page_facts'][0]['fact_id']
+    assert fc.validate_response(second_page,request=second_request,owner=owner)==second_page
+
+    tampered=copy.deepcopy(presented)
+    tampered['result']['page_facts'][0]['counterparty']['name']='Unrelated entity'
+    with pytest.raises(ValueError,match='facts_projection_mismatch'):
+        fc.validate_response(tampered,request=request,owner=owner)
+
+
+def test_response_validator_accepts_strict_page_with_only_candidate_facts():
+    """An empty strict page can still project a non-empty candidate set."""
+    request,profile,owner,read_at=fact_pair(fact_observation(review='unreviewed'))
+    request['payload'].update(mode='strict',direction='outgoing',
+        page={'page_size':1,'cursor':None})
+    full=fc.build_response(profile_result=profile,request=request,owner=owner,
+        read_at=read_at)
+    assert len(full['result']['facts'])==1
+    assert full['result']['candidate_total']==1
+
+    presented=copy.deepcopy(full)
+    presented['result']=fc.present_result(full['result'],request['payload'])
+    assert presented['result']['facts']==[]
+    assert presented['result']['page_facts']==[]
+    assert presented['result']['total']==0
+    assert presented['result']['candidate_total']==1
+    assert fc.validate_response(presented,request=request,owner=owner)==presented
+
+    tampered=copy.deepcopy(presented)
+    tampered['result']['candidate_total']=0
+    with pytest.raises(ValueError,match='facts_projection_mismatch'):
+        fc.validate_response(tampered,request=request,owner=owner)
+
+
 # --------------------------------------------------------------------- export
 
 def public_export_response(request,profile,owner,read_at):

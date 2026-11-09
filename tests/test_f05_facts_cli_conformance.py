@@ -26,7 +26,7 @@ import module_contract
 import query_facts_contract as fc
 from test_query_facts_contract import (digest, fact_request, fact_observation,
                                        fact_owner, fact_pair, fact_profile_result,
-                                       projection, strict_pair)
+                                       projection, strict_pair, three_counterparty_pair)
 from test_query_capabilities_facts_wire import build_11, capabilities_request, owner_context
 
 LAB_ROOT = Path(__file__).resolve().parents[1]
@@ -137,6 +137,55 @@ def test_cli_facts_build_then_response_round_trip():
     output = json.loads(out)
     assert output['status'] == 'validated'
     assert output['result'] == expected
+
+
+def test_cli_facts_response_accepts_and_binds_public_page_projection():
+    request, profile, owner = three_counterparty_pair()
+    request['payload']['page'] = {'page_size': 1, 'cursor': None}
+    full = fc.build_response(profile_result=profile, request=request,
+                             owner=owner, read_at='2026-10-09T15:00:00Z')
+    response = copy.deepcopy(full)
+    response['result'] = fc.present_result(full['result'], request['payload'])
+    envelope = {'response': response, 'request': request, 'owner': owner}
+
+    code, out, err = run_cli('facts-response', envelope)
+    assert code == 0, err
+    output = json.loads(out)
+    assert output['status'] == 'validated'
+    assert output['result'] == response
+
+    tampered = copy.deepcopy(envelope)
+    tampered['response']['result']['page_facts'][0]['counterparty']['name'] = 'Unrelated'
+    code, out, _ = run_cli('facts-response', tampered)
+    assert code == 2 and json.loads(out) == rejected_output('facts-response')
+
+
+def test_cli_facts_response_accepts_strict_page_with_no_strict_rows():
+    request, profile, owner, read_at = fact_pair(
+        fact_observation(review='unreviewed'),
+        overrides={'mode':'strict','direction':'outgoing',
+                   'page':{'page_size':1,'cursor':None}})
+    full = fc.build_response(profile_result=profile, request=request,
+                             owner=owner, read_at=read_at)
+    assert len(full['result']['facts']) == 1
+    assert full['result']['candidate_total'] == 1
+    response = copy.deepcopy(full)
+    response['result'] = fc.present_result(full['result'], request['payload'])
+    assert response['result']['total'] == 0
+    assert response['result']['page_facts'] == []
+
+    code, out, err = run_cli('facts-response',
+        {'response':response,'request':request,'owner':owner})
+    assert code == 0, err
+    output = json.loads(out)
+    assert output['status'] == 'validated'
+    assert output['result'] == response
+
+    tampered = copy.deepcopy(response)
+    tampered['result']['candidate_total'] = 0
+    code, out, _ = run_cli('facts-response',
+        {'response':tampered,'request':request,'owner':owner})
+    assert code == 2 and json.loads(out) == rejected_output('facts-response')
 
 
 def test_cli_facts_response_rejects_tampered_and_missing_fields():
