@@ -38,7 +38,8 @@ def query_sha256(request):
     return digest(dict(consumer_id=request['consumer_id'],schema_version='2.2.0',operation='search',payload=payload))
 
 
-def _context(context,store_id,assessment_values):
+def validate_assessment_context(context,store_id,assessment_values):
+    """Validate independently captured owner assessment for the selected pool."""
     try:
         compact=context.get('protocol')=='stockwiki.pool_field_assessment_digest/1.0.0' if isinstance(context,dict) else False
         if (not isinstance(context,dict) or set(context)!=(DIGEST_CONTEXT_KEYS if compact else CONTEXT_KEYS)
@@ -51,7 +52,7 @@ def _context(context,store_id,assessment_values):
                 raise ValueError('pool_independent_assessment_mismatch')
         elif assessment_values!=context['field_assessments']:
             raise ValueError('pool_independent_assessment_mismatch')
-        profiles._utc(context['read_at']);mark=context['qualification_watermark']
+        profiles.parse_utc_timestamp(context['read_at']);mark=context['qualification_watermark']
         if (set(mark)!=MARK_KEYS or mark['protocol']!='stockwiki.pool_qualification_watermark/1.0.0'
             or mark['store_id']!=store_id or mark['source_status'] not in {'available','not_initialized'}
             or type(mark['qualification_sequence']) is not int or mark['qualification_sequence']<0
@@ -62,7 +63,7 @@ def _context(context,store_id,assessment_values):
             raise ValueError('pool_independent_assessment_watermark_invalid')
         values=assessment_values
         if mark['field_policy_valid_until'] is not None:
-            if profiles._utc(context['read_at'])>=profiles._utc(mark['field_policy_valid_until']):
+            if profiles.parse_utc_timestamp(context['read_at'])>=profiles.parse_utc_timestamp(mark['field_policy_valid_until']):
                 raise ValueError('pool_assessment_policy_expired')
         if not isinstance(values,dict) or len(values)>60000:raise ValueError('pool_assessment_capacity_limit')
         for key,value in values.items():
@@ -73,9 +74,9 @@ def _context(context,store_id,assessment_values):
                 or value['qualification_status'] not in {'verified','revoked','receipt_missing'}
                 or value['validity_status'] not in {'fresh','stale','unknown','policy_unavailable','field_policy_missing'}):
                 raise ValueError('pool_assessment_projection_invalid')
-            if value['valid_until'] is not None:profiles._utc(value['valid_until'])
+            if value['valid_until'] is not None:profiles.parse_utc_timestamp(value['valid_until'])
             if value['validity_status']=='fresh' and (value['valid_until'] is None
-                or profiles._utc(context['read_at'])>=profiles._utc(value['valid_until'])):
+                or profiles.parse_utc_timestamp(context['read_at'])>=profiles.parse_utc_timestamp(value['valid_until'])):
                 raise ValueError('pool_assessment_expired')
             if value['screening_eligible'] and (value['minimum_check_level'] is None
                 or LEVELS.index(value['check_level'])<LEVELS.index(value['minimum_check_level'])
@@ -86,7 +87,7 @@ def _context(context,store_id,assessment_values):
 
 
 def validate_index(index,*,store_id,assessment_context):
-    context=_context(assessment_context,store_id,index['field_assessments'])
+    context=validate_assessment_context(assessment_context,store_id,index['field_assessments'])
     if (set(index)!=raw.INDEX_KEYS|{'field_assessments','qualification_watermark'}
         or index['protocol']!='stockwiki.c06_pool_index/1.2.0'
         or index['qualification_watermark']!=context['qualification_watermark']):
@@ -101,7 +102,7 @@ def validate_index(index,*,store_id,assessment_context):
     raw.validate_index(legacy,store_id=store_id)
     if set(index['field_assessments'])!={o['observation_id'] for row in index['rows'] for o in row['observation_refs']}:
         raise ValueError('pool_assessment_original_set_mismatch')
-    if profiles._utc(context['read_at'])<profiles._utc(index['read_at']):raise ValueError('pool_assessment_before_capture')
+    if profiles.parse_utc_timestamp(context['read_at'])<profiles.parse_utc_timestamp(index['read_at']):raise ValueError('pool_assessment_before_capture')
     return copy.deepcopy(index)
 
 
@@ -112,7 +113,7 @@ def validate_response(response,*,request,index,selected_rows,store_id,assessment
         if row.get('field_assessments')!=expected:raise ValueError('pool_response_owner_assessment_changed')
     candidate_qualified=(bool(selected_rows) and request['payload']['filters']['score_policy'] is not None
         and request['payload']['view']=='qualified' and all(row['selection_outcome']=='pass' for row in selected_rows))
-    return raw._validate_response(response,request=request,index=index,selected_rows=selected_rows,store_id=store_id,
+    return raw.validate_projected_response(response,request=request,index=index,selected_rows=selected_rows,store_id=store_id,
         request_validator=validate_request,index_validator=lambda value,store_id:validate_index(value,
             store_id=store_id,assessment_context=assessment_context),query_hasher=query_sha256,validator=VALIDATOR,
         row_extra={'field_assessments'},watermark_extra={'qualification_watermark':index['qualification_watermark']},

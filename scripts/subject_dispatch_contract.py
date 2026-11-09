@@ -81,7 +81,7 @@ def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_
     if d['protocol']=='stockwiki.subject_dispatch_request/1.2.0':
         import query_vendor_contract as selected_query
     else:selected_query=qc
-    original=selected_query._original({'original_json_base64':base64.b64encode(raw).decode('ascii'),
+    original=selected_query.original_observation({'original_json_base64':base64.b64encode(raw).decode('ascii'),
         'raw_sha256':hashlib.sha256(raw).hexdigest(),'payload_sha256':payload_sha256,
         'observation_wire_profile':'stockwiki-portable-observation/1.1.0' if d['protocol']=='stockwiki.subject_dispatch_request/1.2.0' else 'stockwiki-portable-observation/1.0.0',
         'observation_id':observation['observation_id']})
@@ -116,7 +116,7 @@ def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_
     binding['receipt_id']='sbr_'+digest({'dispatch_receipt_id':receipt['receipt_id'],
         'dispatch_receipt_sha256':digest(receipt),'binding':binding})
     try:
-        qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
+        qc.validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
             'payload_sha256':payload_sha256,
             'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
             owner_ref={'question_contract':d['question_contract']},request=query_request(d,bound_at),
@@ -129,7 +129,7 @@ def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_
         # scored/answered observations still take the strict path.
         if research_only:
             raise
-        qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
+        qc.validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
             'payload_sha256':payload_sha256,
             'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
             owner_ref={'question_contract':d['question_contract']},request=query_request(d,bound_at),

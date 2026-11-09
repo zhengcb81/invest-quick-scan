@@ -1,5 +1,7 @@
 # 当前接手说明
 
+**2026-11-09 正在验证的模块边界。** StockWiki 候选位于 `.worktrees/stockwiki-dashboard-ports-20261109`，StockQA 候选位于 `.worktrees/stockqa-delivery-port-20261109`。两者先验收并合入原仓，再部署 IQS 消费者。工作台旧 `--worker` 转发现有 JSON 入口，便于运行中的服务平滑升级。扫描准备、共享引擎原生接续与最终独立复审以根 [progress.md](../../progress.md) 后续记录为准。请避免用旧工作树路径替代公开协议验证，避免误提交根目录原 2.8 改动。
+
 **本轮公开接口整改。** IQS 工作台改为经公开交付操作、恢复引用解析、origin 解析和 TIME 包入口协作。运行 `python -B -m pytest -q tests/test_dashboard_module_boundaries.py` 可以看到越界文件、行号及访问名。该测试已纳入 `scripts/run_tests.py fast`，范围为工作台模块内的显式 Python 引用和常见局部别名。Theme `master@3352b58` 与 Industry `main@7d49ca3` 已使用独立查询捕获目录。Industry 已推送，Theme 仓无远端。真实数据入口仍按根计划验收。
 
 **F05 接续。** IQS 2.7 候选 `16c7b1a` 与 2.8 WIP 已在隔离副本完成 87 项回归。三个重叠文件是 `scripts/query_facts_contract.py`、`tests/test_query_facts_contract.py` 与 `tests/test_f05_facts_cli_conformance.py`。三方合并基准为 `130dc31`。根工作树原 WIP 保持独立，合入时与其写入方协同。真实配置的 owner 能力探测认可 2.7 候选，事实观察为零，下一步沿原采集流程生成可绑定的事实观察并用公开 CLI 完成验收。旧 F05 集成测试仍引用缺失的外仓 Git 对象 `63a6ffcf`，在候选并入后由独立 CLI 回归接替。

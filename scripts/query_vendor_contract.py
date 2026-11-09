@@ -1,36 +1,56 @@
-"""Explicit query2.6 dialect, reuses old scope/watermark/content checks."""
-import copy,json,base64
-from jsonschema import Draft202012Validator,FormatChecker
-import query_contract as base
-import observation_profiles as profiles
-SCHEMA=json.loads((base.ROOT/'schemas/quick_scan/query-v2.6.schema.json').read_bytes())
-VALIDATOR=Draft202012Validator(SCHEMA,format_checker=FormatChecker())
+"""Query 2.6 selects an explicit original observation profile."""
+import copy
+import json
+from pathlib import Path
 
-def shape(value,kind):return base._validate_shape(value,kind,validator=VALIDATOR)
+from jsonschema import Draft202012Validator, FormatChecker
+
+from observation_profiles import schema_for
+from query_contract import ProfileQueryDialect, query_sha256, seal_response
+
+
+__all__ = ['profile_query_schema', 'query_sha256', 'original_observation',
+           'seal_response', 'validate_request', 'validate_response']
+
+_SCHEMA = json.loads((Path(__file__).resolve().parents[1] / 'schemas/quick_scan/query-v2.6.schema.json').read_bytes())
+_VALIDATOR = Draft202012Validator(_SCHEMA, format_checker=FormatChecker())
+_WIRE_PROFILES = {
+    '1.1.0': 'stockwiki-portable-observation/1.0.0',
+    '1.2.0': 'stockwiki-portable-observation/1.1.0',
+}
+
+
+def profile_query_schema():
+    """Return the 2.6 query schema for enclosing wire contracts."""
+    return copy.deepcopy(_SCHEMA)
+
+
+def _select_schema(version, wire_profile):
+    if not isinstance(version, str) or version not in _WIRE_PROFILES:
+        raise ValueError('query_observation_profile_unavailable')
+    if wire_profile != _WIRE_PROFILES[version]:
+        raise ValueError('query_original_wire_profile_mismatch')
+    if version == '1.2.0':
+        return schema_for(version)
+    return None
+
+
+_DIALECT = ProfileQueryDialect(_VALIDATOR, select_observation_schema=_select_schema)
+
+
 def validate_request(value):
-    shape(value,'request');base._subject_map(value['payload']['subject_refs']);base._utc(value['requested_at'])
-    if value['payload']['information_cutoff']>base._utc(value['requested_at']).date().isoformat():
-        raise ValueError('query_future_information_cutoff')
+    _DIALECT.validate_request(value)
     return copy.deepcopy(value)
-def _original(row):
-    # First decode is bounded, then base reader authenticates bytes/hash and parses strict JSON.
-    if not isinstance(row.get('original_json_base64'),str) or len(row['original_json_base64'])>4*((base.MAX_OBSERVATION_BYTES+2)//3):raise ValueError('query_original_bytes_mismatch')
-    raw=base64.b64decode(row['original_json_base64'],validate=True)
-    if len(raw)>base.MAX_OBSERVATION_BYTES:raise ValueError('query_original_bytes_mismatch')
-    header=json.loads(raw.decode('utf-8'),object_pairs_hook=base.module_contract._unique_object)
-    if header.get('schema_version')=='1.1.0':
-        if row.get('observation_wire_profile')!='stockwiki-portable-observation/1.0.0':raise ValueError('query_original_wire_profile_mismatch')
-        return base._original(row)
-    if header.get('schema_version')!='1.2.0':raise ValueError('query_observation_profile_unavailable')
-    if row.get('observation_wire_profile')!='stockwiki-portable-observation/1.1.0':raise ValueError('query_original_wire_profile_mismatch')
-    resources={path:profiles._read(path) for path in profiles._BASE_RESOURCES}
-    schema=profiles.schema_for('1.2.0',resources)
-    schema['$id']='urn:iqs:stockwiki-portable-observation:1.2'
-    schema['properties']['entity_id']={'type':'string','minLength':1,'maxLength':160}
-    validator=Draft202012Validator(schema,registry=base.ANSWER_REGISTRY,format_checker=FormatChecker())
-    return base._original(row,validator=validator)
-def validate_response(value,*,expected_request,expected_owner):
-    return base._validate_response(value,expected_request=expected_request,expected_owner=expected_owner,
-        request_validator=validate_request,shape_validator=shape,original_reader=_original)
-query_sha256=base.query_sha256
-seal_response=base.seal_response
+
+
+def original_observation(row):
+    return _DIALECT.original_observation(row)
+
+
+# Compatibility for the StockWiki 2.6 synthetic fixture. Runtime adapters use
+# original_observation, and this name is excluded from the public exports.
+_original = original_observation
+
+
+def validate_response(value, *, expected_request, expected_owner):
+    return _DIALECT.validate_response(value, expected_request=expected_request, expected_owner=expected_owner)

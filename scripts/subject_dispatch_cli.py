@@ -1,7 +1,6 @@
 """Fixed offline contract adapter. Validated content does not attest its source."""
 import argparse
 import json
-import sys
 from pathlib import Path
 import subject_dispatch_contract as contract
 import query_contract as qc
@@ -33,7 +32,7 @@ def main(argv=None):
             observation=value['observation'];raw=module_contract.canonical_bytes(observation)
             if observation.get('schema_version')!='1.2.0':raise ValueError('subject_original_profile_mismatch')
             import hashlib
-            result=vendor._original({'original_json_base64':base64.b64encode(raw).decode('ascii'),
+            result=vendor.original_observation({'original_json_base64':base64.b64encode(raw).decode('ascii'),
                 'raw_sha256':hashlib.sha256(raw).hexdigest(),'payload_sha256':contract.digest(observation),
                 'observation_wire_profile':'stockwiki-portable-observation/1.1.0',
                 'observation_id':observation['observation_id']})

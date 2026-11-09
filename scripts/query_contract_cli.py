@@ -26,7 +26,7 @@ def main(argv=None):
     try:
         with Path(args.input).open('rb') as handle:raw=handle.read(MAX_BYTES+1)
         if len(raw)>MAX_BYTES:raise ValueError('query_input_too_large')
-        value=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+        value=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract.unique_json_object)
         module_contract.canonical_bytes(value)
         if not isinstance(value,dict):raise ValueError('query_object_required')
         if args.operation.startswith('capabilities-'):
@@ -149,8 +149,8 @@ def main(argv=None):
             if not isinstance(value['rows'],list):raise ValueError('query_contract_input_fields')
             result=[]
             for row in value['rows']:
-                original=selected._original(row)
-                result.append({'row_sha256':contract._digest(row),'original':original,
+                original=selected.original_observation(row)
+                result.append({'row_sha256':module_contract.digest(row),'original':original,
                     'variant_key':contract.observation_variant_key(original)})
         elif args.operation=='bindings':
             if set(value)!={'items'} or not isinstance(value['items'],list):raise ValueError('query_contract_input_fields')
@@ -162,8 +162,8 @@ def main(argv=None):
                 receipt=subjects.validate_receipt(item['receipt'],store_id=item['store_id'])
                 binding_input={key:val for key,val in item.items() if key!='store_id'}
                 binding=subjects.bind_original(**binding_input)
-                result.append({'receipt_input_sha256':contract._digest({'receipt':item['receipt'],'store_id':item['store_id']}),
-                    'receipt':receipt,'binding_input_sha256':contract._digest(binding_input),'binding':binding})
+                result.append({'receipt_input_sha256':module_contract.digest({'receipt':item['receipt'],'store_id':item['store_id']}),
+                    'receipt':receipt,'binding_input_sha256':module_contract.digest(binding_input),'binding':binding})
         else:
             if set(value)!={'response','request','owner'}:raise ValueError('query_contract_input_fields')
             selected=contract
@@ -174,7 +174,7 @@ def main(argv=None):
             selected.validate_response(response,expected_request=value['request'],expected_owner=value['owner'])
             result=response
         output={'protocol':PROTOCOL,'operation':args.operation,'status':'validated',
-            'input_sha256':contract._digest(value),'result':result,
+            'input_sha256':module_contract.digest(value),'result':result,
             'API_requests':0,'database_writes':0,'identity_attested':False}
         encoded=module_contract.canonical_bytes(output)
         if len(encoded)>MAX_BYTES:raise ValueError('query_output_too_large')

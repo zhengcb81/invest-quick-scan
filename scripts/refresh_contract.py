@@ -13,6 +13,7 @@ from pathlib import Path
 import module_contract
 import query_contract as query
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
+from query_vendor_contract import profile_query_schema as vendor_profile_query_schema
 from referencing import Registry, Resource
 
 SCHEMA = json.loads(
@@ -46,8 +47,6 @@ PROFILE_EXPOSURE_SCHEMA = json.loads(
 ORDERED_SCHEMA = json.loads(
     (Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.6.schema.json").read_bytes()
 )
-from query_vendor_contract import SCHEMA as VENDOR_QUERY_SCHEMA
-
 REGISTRY = Registry().with_resources(
     [
         (s["$id"], Resource.from_contents(s))
@@ -59,8 +58,8 @@ REGISTRY = Registry().with_resources(
             EXPOSURE_SCHEMA,
             PROFILE_EXPOSURE_SCHEMA,
             ORDERED_SCHEMA,
-            query.SCHEMA,
-            VENDOR_QUERY_SCHEMA,
+            query.profile_query_schema(),
+            vendor_profile_query_schema(),
         )
     ]
 )
@@ -82,7 +81,7 @@ def paid_work_count(items):
 
 
 def digest(value):
-    return query._digest(value)
+    return module_contract.digest(value)
 
 
 def _shape(
@@ -179,13 +178,13 @@ def validate_request(request):
         raise ValueError("refresh_frozen_snapshot_required")
     if request["consumer_id"] != source["consumer_id"]:
         raise ValueError("refresh_consumer_mismatch")
-    query._subject_map(request["subject_refs"])
+    query.index_subject_refs(request["subject_refs"])
     captured = {digest(r) for r in source["payload"]["subject_refs"]}
     if any(digest(r) not in captured for r in request["subject_refs"]):
         raise ValueError("refresh_subject_outside_snapshot")
     if set(request["field_ids"]) - set(source["payload"]["field_ids"]):
         raise ValueError("refresh_field_outside_snapshot")
-    if query._utc(request["requested_at"]) < query._utc(source["requested_at"]):
+    if query.parse_utc_timestamp(request["requested_at"]) < query.parse_utc_timestamp(source["requested_at"]):
         raise ValueError("refresh_request_before_query")
 
 
@@ -233,7 +232,7 @@ def validate_policy(policy):
     seen = set()
     for row in policy["routes"]:
         ref = row["subject_ref"]
-        query._subject_map([ref])
+        query.index_subject_refs([ref])
         key = digest(ref)
         if key in seen:
             raise ValueError("refresh_policy_duplicate_subject")
@@ -370,8 +369,8 @@ def _check_state(request, state):
 def create_preview(request, owner_state, *, created_at, expires_at):
     validate_request(request)
     _check_state(request, owner_state)
-    created, end = query._utc(created_at), query._utc(expires_at)
-    if created < query._utc(request["requested_at"]) or not created < end <= created + timedelta(
+    created, end = query.parse_utc_timestamp(created_at), query.parse_utc_timestamp(expires_at)
+    if created < query.parse_utc_timestamp(request["requested_at"]) or not created < end <= created + timedelta(
         hours=1
     ):
         raise ValueError("refresh_preview_time_invalid")
@@ -384,7 +383,7 @@ def create_preview(request, owner_state, *, created_at, expires_at):
             c = item["owner_control"]
             expected = (
                 "deferred_unknown"
-                if created < query._utc(c["next_retry_at"])
+                if created < query.parse_utc_timestamp(c["next_retry_at"])
                 else (
                     "manual_refresh_required"
                     if c["purpose"] == "retry_unknown_answer"
@@ -483,7 +482,7 @@ def validate_preview(preview, *, request, owner_state, now=None):
     )
     if preview != expected:
         raise ValueError("refresh_preview_owner_mismatch")
-    if now is not None and not query._utc(preview["created_at"]) <= query._utc(now) < query._utc(
+    if now is not None and not query.parse_utc_timestamp(preview["created_at"]) <= query.parse_utc_timestamp(now) < query.parse_utc_timestamp(
         preview["expires_at"]
     ):
         raise ValueError("refresh_preview_expired")

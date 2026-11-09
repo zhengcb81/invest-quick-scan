@@ -1,5 +1,7 @@
 """Synthetic preregistration/profile contract, not an owner golden."""
-import copy,json,pytest
+import copy
+
+import pytest
 import subject_dispatch_contract as dc
 import query_contract as qc
 import test_vendor_http_identity_profile as profile_fixture
@@ -88,9 +90,81 @@ def test_query26_roundtrip_retains_original_and_explicit_profile(values):
     request,response,owner=query_pair(values)
     vendor.validate_response(response,expected_request=request,expected_owner=owner)
     row=response['result']['profiles'][0]['observations'][0]
-    assert vendor._original(row)==values[1]
+    assert vendor.original_observation(row)==values[1]
     assert row['qualification_status']=='review_pending'
     with pytest.raises(ValueError):qc.validate_response(response,expected_request=request,expected_owner=owner)
+
+
+def test_query26_keeps_legacy_observation_and_rejects_foreign_snapshot():
+    from test_query_contract_v2 import advanced_pair, observation
+    import query_vendor_contract as vendor
+
+    request, response, owner = advanced_pair()
+    request['schema_version'] = response['schema_version'] = '2.6.0'
+    response = vendor.seal_response(response, request=request)
+    vendor.validate_response(response, expected_request=request, expected_owner=owner)
+    row = response['result']['profiles'][0]['observations'][0]
+    assert vendor.original_observation(row) == observation()
+    request['payload']['snapshot_id'] = 'snap2_' + '9' * 64
+    with pytest.raises(ValueError, match='query_requested_snapshot_unavailable'):
+        vendor.validate_response(response, expected_request=request, expected_owner=owner)
+
+
+def test_query26_profile_selection_does_not_replace_raw_hash_validation(values):
+    import query_vendor_contract as vendor
+
+    _, response, _ = query_pair(values)
+    row = response['result']['profiles'][0]['observations'][0]
+    row['raw_sha256'] = '9' * 64
+    with pytest.raises(ValueError, match='query_original_observation_invalid'):
+        vendor.original_observation(row)
+
+
+def test_enclosing_contract_cannot_mutate_shared_query_schemas():
+    import query_vendor_contract as vendor
+
+    for dialect in (qc, vendor):
+        snapshot = dialect.profile_query_schema()
+        snapshot['$defs'].clear()
+        assert dialect.profile_query_schema()['$defs']
+
+
+def test_profile_dialects_cannot_use_private_contract_helpers():
+    import ast
+    from pathlib import Path
+
+    scripts = Path(__file__).resolve().parents[1] / 'scripts'
+    contract_modules = {
+        'query_contract', 'query_vendor_contract', 'query_pool_contract',
+        'query_pool_assessment_contract', 'module_contract',
+        'standard_answers', 'observation_profiles',
+    }
+    consumers = (
+        'query_contract', 'query_vendor_contract', 'query_contract_cli',
+        'query_field_assessment', 'query_research_contract',
+        'query_review_lead_contract', 'query_pool_contract',
+        'query_pool_assessment_contract', 'query_pool_scope_contract',
+        'subject_dispatch_contract', 'subject_dispatch_cli', 'refresh_contract',
+    )
+    violations = []
+    for name in consumers:
+        source = scripts / f'{name}.py'
+        tree = ast.parse(source.read_text(encoding='utf-8-sig'), filename=str(source))
+        aliases = {
+            entry.asname or entry.name
+            for node in ast.walk(tree) if isinstance(node, ast.Import)
+            for entry in node.names if entry.name in contract_modules
+        }
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.module in contract_modules:
+                for entry in node.names:
+                    if entry.name.startswith('_'):
+                        violations.append(f'{source.name}:{node.lineno}: {node.module}.{entry.name}')
+            if isinstance(node, ast.Attribute) and node.attr.startswith('_'):
+                reference = ast.unparse(node)
+                if reference.split('.', 1)[0] in aliases:
+                    violations.append(f'{source.name}:{node.lineno}: {reference}')
+    assert not violations, '\n'.join(violations)
 
 @pytest.mark.parametrize('field',['execution_response_id','execution_response_sha256','execution_receipt_sha256','execution_request_payload_sha256'])
 def test_query26_self_hashing_binding_does_not_override_owner_or_execution(values,field):

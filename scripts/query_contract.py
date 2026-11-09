@@ -3,7 +3,7 @@ import base64
 import copy
 import hashlib
 import json
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
@@ -12,24 +12,38 @@ import standard_answers
 from referencing import Registry, Resource
 
 ROOT=Path(__file__).resolve().parents[1]
-SCHEMA=json.loads((ROOT/'schemas/quick_scan/query-v2.schema.json').read_bytes())
-VALIDATOR=Draft202012Validator(SCHEMA,format_checker=FormatChecker())
+_PROFILE_SCHEMA=json.loads((ROOT/'schemas/quick_scan/query-v2.schema.json').read_bytes())
+_PROFILE_VALIDATOR=Draft202012Validator(_PROFILE_SCHEMA,format_checker=FormatChecker())
+_SUBJECT_REF_VALIDATOR=Draft202012Validator(_PROFILE_SCHEMA['$defs']['SubjectRef'],format_checker=FormatChecker())
 MAX_INPUT_BYTES=8*1024*1024
 MAX_OBSERVATION_BYTES=512*1024
-ANSWER_SCHEMA=json.loads((ROOT/'schemas/answer-content.schema.json').read_bytes())
-PORTABLE_SCHEMA=copy.deepcopy(json.loads((ROOT/'schemas/observation.schema.json').read_bytes()))
-# A named read-only dialect, not an in-place change to the frozen v1 contract.
-PORTABLE_SCHEMA['$id']='urn:iqs:stockwiki-portable-observation:1'
-PORTABLE_SCHEMA['properties']['entity_id']={'type':'string','minLength':1,'maxLength':160}
-ANSWER_REGISTRY=Registry().with_resource(ANSWER_SCHEMA['$id'],Resource.from_contents(ANSWER_SCHEMA))
-ORIGINAL_VALIDATOR=Draft202012Validator(PORTABLE_SCHEMA,registry=ANSWER_REGISTRY,format_checker=FormatChecker())
+_ANSWER_SCHEMA=json.loads((ROOT/'schemas/answer-content.schema.json').read_bytes())
+_ANSWER_REGISTRY=Registry().with_resource(_ANSWER_SCHEMA['$id'],Resource.from_contents(_ANSWER_SCHEMA))
 
 
-def _validate_shape(value,kind,*,validator=None):
+def _portable_schema(schema, schema_id):
+    """Apply owner query identity bounds without modifying the archived schema."""
+    portable = copy.deepcopy(schema)
+    portable['$id'] = schema_id
+    portable['properties']['entity_id'] = {'type': 'string', 'minLength': 1, 'maxLength': 160}
+    return portable
+
+
+_PORTABLE_SCHEMA=_portable_schema(json.loads((ROOT/'schemas/observation.schema.json').read_bytes()),
+                                  'urn:iqs:stockwiki-portable-observation:1')
+_ORIGINAL_VALIDATOR=Draft202012Validator(_PORTABLE_SCHEMA,registry=_ANSWER_REGISTRY,format_checker=FormatChecker())
+
+
+def profile_query_schema():
+    """Return the legacy profile-query schema for enclosing wire contracts."""
+    return copy.deepcopy(_PROFILE_SCHEMA)
+
+
+def _validate_shape(value,kind,*,validator):
     try:
         if len(module_contract.canonical_bytes(value))>MAX_INPUT_BYTES:
             raise ValueError('query_input_too_large')
-        (VALIDATOR if validator is None else validator).validate(value)
+        validator.validate(value)
     except (ValidationError,TypeError,ValueError,RecursionError) as exc:
         raise ValueError('query_document_invalid') from exc
     if value['message_type']!=kind:
@@ -42,7 +56,7 @@ def load_document(path):
             raw=handle.read(MAX_INPUT_BYTES+1)
         if len(raw)>MAX_INPUT_BYTES:
             raise ValueError('query_input_too_large')
-        value=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=module_contract._unique_object)
+        value=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=module_contract.unique_json_object)
         if not isinstance(value,dict):
             raise ValueError('query_object_required')
         module_contract.canonical_bytes(value)
@@ -56,7 +70,8 @@ def _subject_key(ref):
                   'scope','scope_id','security_id','listing_id','segment_id'))
 
 
-def _subject_map(refs):
+def index_subject_refs(refs):
+    """Index a query's subject scopes and reject duplicates or conflicting scope IDs."""
     mapped={}
     for ref in refs:
         key=_subject_key(ref)
@@ -75,25 +90,29 @@ def _subject_map(refs):
     return mapped
 
 
+def validate_subject_ref_shape(ref):
+    """Check a single SubjectRef against the shared query wire shape."""
+    _SUBJECT_REF_VALIDATOR.validate(ref)
+
+
 def validate_request(value):
-    _validate_shape(value,'request')
-    _subject_map(value['payload']['subject_refs'])
-    _utc(value['requested_at'])
-    if value['payload']['information_cutoff']>_utc(value['requested_at']).date().isoformat():
-        raise ValueError('query_future_information_cutoff')
+    _LEGACY_DIALECT.validate_request(value)
 
 
-def _digest(value):
-    return hashlib.sha256(module_contract.canonical_bytes(value)).hexdigest()
-
-
-def _utc(value):
+def parse_utc_timestamp(value):
+    """Parse the query wire's UTC Z-suffixed timestamp."""
     if not isinstance(value,str) or not value.endswith('Z'):
         raise ValueError('query_timestamp_must_be_utc')
     try:
         return datetime.fromisoformat(value[:-1]+'+00:00')
     except ValueError as exc:
         raise ValueError('query_timestamp_invalid') from exc
+
+
+# Compatibility for existing callers of the 2.7/2.8 facts and capability wires.
+_subject_map = index_subject_refs
+_utc = parse_utc_timestamp
+_digest = module_contract.digest
 
 
 def query_sha256(request):
@@ -120,15 +139,19 @@ def seal_response(value,*,request):
     return value
 
 
-def _original(row,*,validator=None):
+def _decode_original(raw):
+    return json.loads(raw.decode('utf-8'), object_pairs_hook=module_contract.unique_json_object)
+
+
+def _original(row,*,validator=None,decoded=None):
     try:
-        raw=base64.b64decode(row['original_json_base64'],validate=True)
+        raw = base64.b64decode(row['original_json_base64'], validate=True) if decoded is None else decoded[0]
         if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
             raise ValueError('query_original_bytes_mismatch')
-        obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+        obs = _decode_original(raw) if decoded is None else decoded[1]
         module_contract.canonical_bytes(obs)
-        (ORIGINAL_VALIDATOR if validator is None else validator).validate(obs)
-        standard_answers._validate_visible_channels(obs["answer"])
+        (_ORIGINAL_VALIDATOR if validator is None else validator).validate(obs)
+        standard_answers.validate_visible_channels(obs["answer"])
         for field in ("entity_id", "security_id", "segment_id"):
             if field in obs["answer"] and obs["answer"][field] != obs.get(field):
                 raise ValueError("query_original_answer_subject_mismatch")
@@ -139,6 +162,11 @@ def _original(row,*,validator=None):
         return obs
     except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
         raise ValueError('query_original_observation_invalid') from exc
+
+
+def original_observation(row):
+    """Verify and decode an original observation in the legacy query dialect."""
+    return _LEGACY_DIALECT.original_observation(row)
 
 
 def _reference(row,expected_owner):
@@ -159,7 +187,8 @@ def _reference(row,expected_owner):
     return ref
 
 
-def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref,research_only=False):
+def validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref,research_only=False):
+    """Check a decoded original against its independent owner and query scope."""
     execution=obs['execution']
     answer=obs['answer']
     start,end=_utc(execution['started_at']),_utc(execution['answered_at'])
@@ -181,7 +210,7 @@ def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_r
     registry=json.loads((ROOT/'questions/metric-registry.json').read_bytes())
     try:
         standard_answers.validate_content(answer,question,obs['information_cutoff'],
-            answer_schema=ANSWER_SCHEMA,metric_registry=registry,research_only=research_only)
+            answer_schema=_ANSWER_SCHEMA,metric_registry=registry,research_only=research_only)
     except (ValueError,ValidationError,TypeError,KeyError) as exc:
         raise ValueError('query_original_answer_semantics_invalid') from exc
     if execution['search_status']=='executed' and not execution['search_receipt_id']:
@@ -231,6 +260,10 @@ def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_r
             raise ValueError('query_foreign_unbound_history')
         if not request['payload']['include_history']:
             raise ValueError('query_unrequested_unbound_history')
+
+
+# The facts wires still call the old name until their own migration.
+_validate_original_semantics = validate_original_semantics
 
 
 def _watermark(value,request):
@@ -294,21 +327,18 @@ def _validate_semantics_compat(obs, **kwargs):
     research-only semantics. Scored/answered observations stay strict.
     """
     try:
-        _validate_original_semantics(obs, **kwargs)
+        validate_original_semantics(obs, **kwargs)
     except ValueError:
         if kwargs.get("research_only"):
             raise
-        _validate_original_semantics(obs, research_only=True, **kwargs)
+        validate_original_semantics(obs, research_only=True, **kwargs)
 
 
 def validate_response(value,*,expected_request,expected_owner):
-    return _validate_response(value,expected_request=expected_request,expected_owner=expected_owner)
+    return _LEGACY_DIALECT.validate_response(value,expected_request=expected_request,expected_owner=expected_owner)
 
 
-def _validate_response(value,*,expected_request,expected_owner,request_validator=None,shape_validator=None,original_reader=None):
-    (validate_request if request_validator is None else request_validator)(expected_request)
-    (_validate_shape if shape_validator is None else shape_validator)(value,'response')
-    read_original=_original if original_reader is None else original_reader
+def _validate_response(value,*,expected_request,expected_owner,read_original):
     if (not isinstance(expected_owner,dict) or not {'store_id'}<=set(expected_owner)
         or set(expected_owner)-{'store_id','observation_refs'}
         or not isinstance(expected_owner['store_id'],str) or not expected_owner['store_id'].strip()):
@@ -386,3 +416,51 @@ def _validate_response(value,*,expected_request,expected_owner,request_validator
             raise ValueError('query_partial_result_status_mismatch')
     elif coverage['status']!='not_covered' or result['status']!='coverage_gap':
         raise ValueError('query_empty_coverage_status_mismatch')
+
+
+class ProfileQueryDialect:
+    """A profile query's schema and its registered observation profile selector.
+
+    Every dialect keeps owner, scope and snapshot checks in the same validator.
+    The selector receives (observation_version, wire_profile) and returns the
+    registered vendor observation schema, or None for the legacy portable form.
+    """
+
+    def __init__(self, validator, *, select_observation_schema=None):
+        self._validator = validator
+        self._select_observation_schema = select_observation_schema
+
+    def validate_request(self, value):
+        _validate_shape(value, 'request', validator=self._validator)
+        index_subject_refs(value['payload']['subject_refs'])
+        requested = parse_utc_timestamp(value['requested_at'])
+        if value['payload']['information_cutoff'] > requested.date().isoformat():
+            raise ValueError('query_future_information_cutoff')
+
+    def original_observation(self, row):
+        if self._select_observation_schema is None:
+            return _original(row)
+        encoded = row.get('original_json_base64')
+        if not isinstance(encoded, str) or len(encoded) > 4 * ((MAX_OBSERVATION_BYTES + 2) // 3):
+            raise ValueError('query_original_bytes_mismatch')
+        raw = base64.b64decode(encoded, validate=True)
+        if len(raw) > MAX_OBSERVATION_BYTES:
+            raise ValueError('query_original_bytes_mismatch')
+        observation = _decode_original(raw)
+        if not isinstance(observation, dict):
+            raise ValueError('query_original_observation_invalid')
+        schema = self._select_observation_schema(observation.get('schema_version'), row.get('observation_wire_profile'))
+        validator = None
+        if schema is not None:
+            portable = _portable_schema(schema, 'urn:iqs:stockwiki-portable-observation:1.2')
+            validator = Draft202012Validator(portable, registry=_ANSWER_REGISTRY, format_checker=FormatChecker())
+        return _original(row, validator=validator, decoded=(raw, observation))
+
+    def validate_response(self, value, *, expected_request, expected_owner):
+        self.validate_request(expected_request)
+        _validate_shape(value, 'response', validator=self._validator)
+        return _validate_response(value, expected_request=expected_request, expected_owner=expected_owner,
+                                  read_original=self.original_observation)
+
+
+_LEGACY_DIALECT = ProfileQueryDialect(_PROFILE_VALIDATOR)

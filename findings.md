@@ -1,5 +1,7 @@
 # 当前发现、风险与决策
 
+**2026-11-09 模块边界。** 工作台的跨仓 `-c` 源码桥导致实现和部署强绑定。把存储与写入操作移回所属仓库，读取使用固定公开命令。共享引擎需保持在 StockQA 原派发进程内，以维持原账本、lease 和已付收据语义。它通过公开能力、原始输入、回执和保存投影协作，产品进程无需新增第二套预算或审批。独立复核确认外仓回复即使协议正确仍可能串实体或缺少交付映射，绑定按原请求检查，业务上仍区分真实缺失和暂时不可用。2.8 既有改动及其私有边需单独并线。
+
 **2026-11-07 job façade施工包环境发现（来自OWNERPKG-INVEST-QUICK-SCAN-01，分支交付）。** (1) 全仓环境风险：任何新clone/worktree在 `core.autocrlf=true` 下会把 `questions/releases/artifacts/*.json`（release锁hash锁定）转成CRLF导致锁校验失败（prepare套件16项红）；修法=按 `questions/releases/locks/*.json` 的artifact_sha256从主检出复制字节一致工件。根治建议未来加 `.gitattributes` 标记该目录 `-text`（未做，避免与施工包scope混淆，留给主线决策）。(2) 基线先存失败：test_dashboard_execution.py 32项、test_dashboard_unusable_recovery.py 1项在master主检出同现（2026-11-07实测），非任何施工包引入，待主线排查。(3) 真实formal付费演练按红线§3-1留待操作者确认预算边界（NOT_RUN NR-1）；job面的软件级全链证据与两轮独审记录在分支 `planning/iqs-job-facade-01/`。
 
 **11/02 解耦七组已整改。** 公共结果字段由生产者定义，消费者不再复制供应商名单。服务短锁保护部署与配置，耗时工作保持原组件互斥。已付恢复使用原发布目录、原题义资源和原请求规则。UI 数据源故障留在受影响页面，迟到请求保留未保存表单。组件继续拥有状态、账本和投影。独立反例和本地、远端验证见[整改报告](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)。
