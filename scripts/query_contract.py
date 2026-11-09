@@ -169,7 +169,8 @@ def original_observation(row):
     return _LEGACY_DIALECT.original_observation(row)
 
 
-def _reference(row,expected_owner):
+def validate_owner_observation_reference(row,expected_owner):
+    """Verify a projected observation against its independent owner reference."""
     refs=expected_owner.get('observation_refs')
     if not isinstance(refs,dict) or row['observation_id'] not in refs:
         raise ValueError('query_independent_observation_reference_required')
@@ -185,6 +186,9 @@ def _reference(row,expected_owner):
     if any(type(ref[k]) is not int for k in ('observation_sequence','ack_sequence')):
         raise ValueError('query_owner_observation_sequence_invalid')
     return ref
+
+
+_reference = validate_owner_observation_reference
 
 
 def validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref,research_only=False):
@@ -380,7 +384,7 @@ def _validate_response(value,*,expected_request,expected_owner,read_original):
                 raise ValueError('query_duplicate_original_observation')
             seen.add(row['observation_id'])
             obs=read_original(row)
-            owner_ref=_reference(row,expected_owner)
+            owner_ref=validate_owner_observation_reference(row,expected_owner)
             _validate_semantics_compat(obs,row=row,owner_ref=owner_ref,request=expected_request,
                 watermark=result['watermark'],subject_ref=profile['subject_ref'])
             if not expected_request['payload']['include_history']:
@@ -398,7 +402,7 @@ def _validate_response(value,*,expected_request,expected_owner,read_original):
             raise ValueError('query_duplicate_original_observation')
         seen.add(row['observation_id'])
         obs=read_original(row)
-        _validate_semantics_compat(obs,row=row,owner_ref=_reference(row,expected_owner),
+        _validate_semantics_compat(obs,row=row,owner_ref=validate_owner_observation_reference(row,expected_owner),
             request=expected_request,watermark=result['watermark'],subject_ref=None)
     actual_covered=set.intersection(*field_sets) if field_sets and not missing else set()
     if covered!=actual_covered or coverage['scores_available']!=scores or coverage['facts_available']!=facts:

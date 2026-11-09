@@ -137,7 +137,11 @@ def test_profile_dialects_cannot_use_private_contract_helpers():
     contract_modules = {
         'query_contract', 'query_vendor_contract', 'query_pool_contract',
         'query_pool_assessment_contract', 'module_contract',
-        'standard_answers', 'observation_profiles',
+        'standard_answers', 'observation_profiles', 'query_capabilities_contract',
+        'query_pool_scope_contract',
+    }
+    own_resource_consumers = {
+        'query_facts_contract', 'query_capabilities_contract', 'query_capabilities_vendor_contract',
     }
     consumers = (
         'query_contract', 'query_vendor_contract', 'query_contract_cli',
@@ -145,7 +149,7 @@ def test_profile_dialects_cannot_use_private_contract_helpers():
         'query_review_lead_contract', 'query_pool_contract',
         'query_pool_assessment_contract', 'query_pool_scope_contract',
         'subject_dispatch_contract', 'subject_dispatch_cli', 'refresh_contract',
-    )
+    ) + tuple(sorted(own_resource_consumers))
     violations = []
     for name in consumers:
         source = scripts / f'{name}.py'
@@ -160,7 +164,9 @@ def test_profile_dialects_cannot_use_private_contract_helpers():
                 for entry in node.names:
                     if entry.name.startswith('_'):
                         violations.append(f'{source.name}:{node.lineno}: {node.module}.{entry.name}')
-            if isinstance(node, ast.Attribute) and node.attr.startswith('_'):
+            if isinstance(node, ast.Attribute) and (
+                node.attr.startswith('_') or (name in own_resource_consumers and node.attr == 'ROOT')
+            ):
                 reference = ast.unparse(node)
                 if reference.split('.', 1)[0] in aliases:
                     violations.append(f'{source.name}:{node.lineno}: {reference}')

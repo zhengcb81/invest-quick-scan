@@ -2,12 +2,13 @@
 import copy
 import json
 import re
+from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 import query_contract as profiles
 import query_pool_scope_contract as scoped
-from module_contract import canonical_bytes
+from module_contract import canonical_bytes, digest
 
-SCHEMA = json.loads((scoped.raw.ROOT / 'schemas/quick_scan/query-capabilities.schema.json').read_bytes())
+SCHEMA = json.loads((Path(__file__).resolve().parents[1] / 'schemas/quick_scan/query-capabilities.schema.json').read_bytes())
 VALIDATOR = Draft202012Validator(SCHEMA, format_checker=FormatChecker())
 MAX_BYTES = 8 * 1024 * 1024
 WIRES = [dict(schema_version='2.0.0', operations=['get_profiles']),
@@ -56,7 +57,7 @@ def validate_request(request):
         VALIDATOR.validate(request)
         if request['message_type'] != 'request':
             raise ValueError('capabilities_request_required')
-        profiles._utc(request['requested_at'])
+        profiles.parse_utc_timestamp(request['requested_at'])
         selection = request['payload']['selection']
         if selection is not None:
             payload = dict(selection, filters=dict(text='', markets=[], industries=[], stages=[], company_types=[], score_policy=None),
@@ -75,10 +76,10 @@ def _context(value):
         'identity_market_scan_status', 'identity_market_scope', 'unmapped_identity_market_labels',
         'observation_sequence', 'capture_error', 'context_sha256'}
     if (not isinstance(value, dict) or set(value) != keys or value['protocol'] != 'stockwiki.capabilities_owner_context/1.0.0'
-        or value['context_sha256'] != profiles._digest({key: item for key, item in value.items() if key != 'context_sha256'})
+        or value['context_sha256'] != digest({key: item for key, item in value.items() if key != 'context_sha256'})
         or not isinstance(value['store_id'], str) or not 1 <= len(value['store_id']) <= 160):
         raise ValueError('capabilities_owner_context_required')
-    at = profiles._utc(value['read_at'])
+    at = profiles.parse_utc_timestamp(value['read_at'])
     marks = value['source_watermarks']
     if (not isinstance(marks, list) or len(marks) != 4
         or {mark['namespace'] for mark in marks} != {'universe', 'identity', 'analysis_subjects', 'observations'}):
@@ -86,7 +87,7 @@ def _context(value):
     for mark in marks:
         if (set(mark) != {'namespace', 'schema_version', 'status', 'sequence', 'read_at', 'content_sha256'}
             or mark['status'] not in {'available', 'missing', 'read_error', 'schema_unavailable'}
-            or type(mark['sequence']) is not int or mark['sequence'] < 0 or profiles._utc(mark['read_at']) > at):
+            or type(mark['sequence']) is not int or mark['sequence'] < 0 or profiles.parse_utc_timestamp(mark['read_at']) > at):
             raise ValueError('capabilities_source_invalid')
         versions = {'universe': {5, 6}, 'identity': {5, 6}, 'analysis_subjects': {1}, 'observations': {2, 3, 4}}
         if mark['status'] == 'available' and (type(mark['schema_version']) is not int
@@ -109,9 +110,10 @@ def _context(value):
     return value
 
 
-def _result(request, source_context, index, scope_context):
+def project_capabilities(request, source_context, index, scope_context):
+    """Build the shared capability projection from independent owner context."""
     ctx = _context(source_context); selection = request['payload']['selection']
-    if profiles._utc(request['requested_at']) > profiles._utc(ctx['read_at']):
+    if profiles.parse_utc_timestamp(request['requested_at']) > profiles.parse_utc_timestamp(ctx['read_at']):
         raise ValueError('capabilities_read_before_request')
     if (selection is None and (index is not None or scope_context is not None or ctx['capture_error'] is not None)):
         raise ValueError('capabilities_unrequested_selection')
@@ -119,7 +121,7 @@ def _result(request, source_context, index, scope_context):
         scoped.validate_raw_index(index, store_id=ctx['store_id'], scope_context=scope_context)
         if (ctx['capture_error'] is not None or index['universe_id'] != selection['universe_id']
             or index['selection'] != {key: selection[key] for key in scoped.SELECTION_KEYS}
-            or profiles._utc(index['read_at']) > profiles._utc(ctx['read_at'])):
+            or profiles.parse_utc_timestamp(index['read_at']) > profiles.parse_utc_timestamp(ctx['read_at'])):
             raise ValueError('capabilities_selection_mismatch')
         native_marks = {mark['namespace']: mark for mark in ctx['source_watermarks']}
         if any(any(mark[key] != native_marks[mark['namespace']][key] for key in ('schema_version', 'status', 'sequence'))
@@ -183,7 +185,7 @@ def build_response(*, request, source_context, index, scope_context):
     validate_request(request)
     response = dict(protocol='stockwiki.c06_query_capabilities/1.1.0', schema_version='1.1.0', message_type='response',
         operation='capabilities', request_id=request['request_id'], response_at=source_context['read_at'],
-        result=_result(request, source_context, index, scope_context))
+        result=project_capabilities(request, source_context, index, scope_context))
     return validate_response(response=response, request=request, source_context=source_context, index=index, scope_context=scope_context)
 
 
@@ -192,8 +194,8 @@ def validate_response(*, response, request, source_context, index, scope_context
     try:
         VALIDATOR.validate(response)
         if (response['message_type'] != 'response' or response['request_id'] != request['request_id']
-            or profiles._utc(response['response_at']) < profiles._utc(source_context['read_at'])
-            or canonical_bytes(response['result']) != canonical_bytes(_result(request, source_context, index, scope_context))):
+            or profiles.parse_utc_timestamp(response['response_at']) < profiles.parse_utc_timestamp(source_context['read_at'])
+            or canonical_bytes(response['result']) != canonical_bytes(project_capabilities(request, source_context, index, scope_context))):
             raise ValueError('capabilities_response_owner_mismatch')
         if len(canonical_bytes(response)) > MAX_BYTES:
             raise ValueError('capabilities_response_too_large')
@@ -201,6 +203,8 @@ def validate_response(*, response, request, source_context, index, scope_context
         raise ValueError('capabilities_response_invalid') from exc
     return copy.deepcopy(response)
 
+
+_result = project_capabilities
 
 validate_capabilities_request = validate_request
 build_capabilities_response = build_response
