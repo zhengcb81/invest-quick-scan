@@ -448,3 +448,13 @@ IQS 的未提交 2.8 改动被明确排除；卡片交付只代表离线源仓�
 TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并在独立 Lab 内修正缺口；最终独立 reviewer 均 ACCEPT，IQS 公共交接 verifier 两包均为 `valid / errors=[]`。TH 最终 commit `dde51cdd1431a106af2a3f03467bd3423511256b`、59项通过；IN 代码结果 commit `ce7434bd46a9c74b2c1156e61ca56fc670d62c9`，整目录176项通过并另复跑 CWD 用例1项通过。IN 回执原有的单一组合 hash 无法指向实际交付文件，现以三个精确 commit-bound 文件 hash替代。交接文件 SHA-256、测试范围、审查人结论见 `task_plan.md` 的同日验收条目及对应隔离 Lab handoff。
 
 本轮未改 canonical Theme/Industry 技能源仓、StockWiki、StockQA或生产数据库；未做真实 owner、收费模型/搜索或真实公司扫描。隔离交付通过不等于 F05/W11、G3/G4 或真实主线接线完成。主线仍按 task_plan 的 F05/W11 稳定接线和真实技能入口互操作验收推进。
+
+## 2026-11-09 当前主线复核、F05 候选与解耦审计
+
+- **真实代码和历史问题复核：** IQS canonical `master` 从 `130dc31` 增加精确提交 `3d2bf44` 并成功推送；只改 `scripts/standard_answers.py` 与 `tests/test_query_contract_v2.py`。重跑发现旧失败确实仍存在：模型答案可通过扩展字段伪造 `check_level=independently_checked`。根因是答案 schema 为向后兼容接受扩展字段，但答案语义校验没有把信任等级与可见答案隔离。现在通用可见答案校验递归拒绝 `check_level` 与 `check_level_receipt_id`；新增自授等级与伪造回执两种反例，并在重新封装、重算观察ID/owner引用后检查拒绝。最终 `tests/test_query_contract_v2.py` 66 passed；与 `tests/test_standard_answers.py` 合跑 106 passed、8 subtests passed。独立审查 ACCEPT。普通模型答案不承载审批/资格，信任等级继续由本地受信 observation envelope 控制。
+- **IQS F05 消费端候选：** 隔离分支 `codex/f05-query-paged-response-01` 的提交为 `8b7d80f`（分页/响应验证）、`1df3bdd`（语义能力声明）、`16c7b1a`（移除对 StockWiki 私有模块及缺失 Git 对象的 IQS 测试依赖，改用 F05 公共 CLI 边界测试），分支已推到 origin。候选专测 74 passed。此分支不等于并入 canonical master。
+- **StockWiki F05 owner 候选：** 隔离分支 `codex/f05-owner-runtime-01` 提交 `3799b43`；新增/修复公开能力声明、分页及 snapshot 绑定校验、公开 export-response CLI、旧消费者回退、范围内 AST 边界防回归，并将路由集成测试改为以 manifest question IDs 检查题目数量、唯一性和完整集合相等。StockWiki 相关整组 92 passed、ruff 检查通过；本轮最终路由集成复跑 3 passed，独立审查 ACCEPT。该仓没有配置 remote，候选未推送/未并入 canonical；canonical `StockWiki/master` `07567f5` tracked clean，只有既有运行数据 untracked。
+- **真实 owner 的限制：** 对 CATL 的公开查询得到 `coverage_gap / no_bound_fact_observations`、0条事实观察、无 owner 引用、0 API 请求。这说明当前 owner 没有可供本接口消费的事实行；不构成 positive golden，也不能伪造 F05 正例。F05 仍 partial，接下来需要真实可绑定的 owner facts、公开 CLI 正反互操作和按协议复用恢复。
+- **跨仓实际版本：** Theme canonical `master` `e35ab39`、Industry canonical `main` `169c200`，本轮只读看到两个 tracked tree clean；之前 PWF 所写“整合仍待办”已过时。真正未验的是 F05/W11 可用后的技能入口端到端调用，不是源代码尚未合入。
+- **解耦与门禁检查：** D1–D7 的具体行为整改仍按其当时范围有效；它们不是全项目解耦证明。F05 有限域静态规则只防该边界中的内部导入，不可外推为整个 IQS/StockWiki 架构已封装。没有必要恢复此前移除的重复许可/审核链；保留身份、owner 来源、预算、幂等/未知发送、锁和 ACK 等正确性/经济安全约束。Python 私有命名不能运行时阻止访问；应以明确 facade、版本化协议和静态边界测试实现。
+- **当前主要卡点：** 真实 owner 没有事实行，且 StockWiki 候选尚未并线；IQS canonical 根目录含其他并行 2.8 WIP，因此不能整目录回滚或直接覆盖。第一步是先在单写者下解决候选与 WIP 的版本衔接，再获得真实 owner facts 完成 F05；随后做 TH/IN 技能入口实服务 E2E 和 G4。200家真实 G3、2000家覆盖、G5/G6 配套仍未完成。

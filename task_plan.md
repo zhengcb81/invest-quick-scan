@@ -1,5 +1,15 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-09 当前核实与收敛决策
+
+以下状态由总控对当前工作树、提交、定向测试和独立复核重新核实；遇到与下方旧日期记录冲突时，以此段和“实际状态总表”为准。
+
+- **已修复一个遗留的答案信任缺陷。** 旧 query v2 测试曾允许模型在答案内容中自称 `independently_checked`，因为兼容 schema 接受新增字段，而语义校验没有拒绝该信任元数据。现从答案校验入口递归拒绝 `check_level` 和 `check_level_receipt_id`，并新增伪造等级/回执反例。IQS master 提交 `3d2bf44` 已推送；`tests/test_query_contract_v2.py` 与 `tests/test_standard_answers.py` 合跑 **106 passed、8 subtests passed**。独立复核 ACCEPT。
+- **F05 候选有实质进展，但产品仍未闭环。** IQS 隔离候选 `codex/f05-query-paged-response-01` 提交 `8b7d80f`、`1df3bdd`、`16c7b1a` 已推送；删除了 IQS 对 StockWiki 私有实现和缺失 Git 对象的依赖，跨仓回归改由 StockWiki 公共 CLI 承担。StockWiki 隔离候选 `codex/f05-owner-runtime-01` 提交 `3799b43` 本地已提交，但该仓没有配置 remote，且未合入 canonical `master`。候选测试：IQS facts/query consumer **74 passed**；StockWiki 相关整组 **92 passed**，本轮路由 manifest 完整性回归 **3 passed**，ruff 检查通过；路由测试独立复审 ACCEPT。真实 owner 查询仍为 `coverage_gap / no_bound_fact_observations`，没有真实事实正例 golden；不能声称 F05 已生产接通。StockWiki canonical `master` 为 `07567f5`，tracked clean，只有运行数据未跟踪；本轮未改 canonical StockWiki。
+- **TH/IN 状态纠正。** 两个消费者已分别进入 canonical 源仓：Theme `master` `e35ab39`、Industry `main` `169c200`；两仓本次只读状态均为 tracked clean。之前计划中“canonical 源仓整合未完成”的说法已过时。仍缺真实 owner/W11 组合后的技能入口 E2E；这不等于其代码仍只在离线 Lab。
+- **解耦结论：尚未全项目完成。** D1–D7 的具体行为整改已通过各自范围的测试/审查，但这不是全仓边界合规证明。F05 目前有边界内 AST 回归；IQS、StockWiki 的全部模块边界尚未统一盘点或建立通用 CI 约束。Python `_private` 只是命名约定，不能靠它在运行时保证报错；跨仓调用应使用版本化公开 CLI/JSON schema/capabilities，仓内跨模块依赖用公开 facade/protocol，CI 用 AST/import 规则拦截越界私有导入/调用。
+- **没有发现需要恢复的重复权限门。** 保留身份/作用域、答案来源、预算原子预留、幂等/未知发送防重、并发锁与 owner ACK 等直接保护数据正确或防止重复付费的规则；不新增逐题许可证、独立审批回执、第二派发权限或每个小改动的审查关卡。当前主要拖点是 owner 没有可用事实行、IQS/StockWiki 候选尚未并线、根工作树存在与 F05 文件重叠的并行 2.8 WIP。
+
 本轮历史任务（2026-11-02）：[D1–D7 解耦整改](docs/implementation/reviews/DECOUPLING-2026-11-02/remediation.md)已通过定向测试和独立对抗审查。公共结果接受合法扩展，慢命令与读取隔离，旧任务选择原发布资源和原请求规则，UI保留未保存草稿，执行和存储投影由各组件负责。此前的实际业务验收范围以原记录为准。
 
 执行状态：StockQA `01f20d6` 已推，GitHub CI 41532137887 已完成且成功，本地默认检查306项通过。上一节点的文档构建和发布通过证据见[CI根修](docs/implementation/reviews/CI-ROOT-CAUSE-2026-11-02/report.md)。
@@ -36,7 +46,7 @@
 |Dashboard公司结果/B03|跨仓代码已并入各自主线|Dashboard main合同0.1.2-d、B03合并f501f32；IQS master已合入并推送B03代码fb262e0；只读UI仓master 47d5354。定向测试通过；原8766未重载，真实owner扫描未运行|
 |原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；11/01 gen7的1次真实HTTP及11/02零API恢复/入库见本节点终验。入口`http://127.0.0.1:8766/`|
 |远端持续集成|StockQA 最新 master 已绿|`01f20d6` 的 CI 41532137887 已完成且通过。上一节点的 Documentation 41523660825 构建与发布通过|
-|模块解耦|D1–D7 已整改并独审|服务组件195项、原UI 228项通过（6项跳过）、历史独审72项及尾测135项，详见本轮报告。测试分组有重叠，按范围分别记录|
+|模块解耦|D1–D7 行为范围已整改；结构解耦未完成|既有测试与独审证明指定行为，不证明全仓模块边界。F05 有限定范围的 AST 规则；通用 import/API 规则尚未覆盖 IQS 与 StockWiki 全部模块|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -47,15 +57,21 @@
 |IMPORT-PERF-30|研究范围签收，未启用|68不同测试、24合成测量；36包候选更慢，不作为基线发布阻塞|
 |评分校准/G2|受限范围已签|G2 r2 `verified_for_local_gate_scope`；原60家+20重复配方未全完成，实际为获准6家缩样，不能称60家校准完毕|
 |200家可靠性/L03/G3|未完成|G3合成批次接续工装已验收（31 passed/0 failed/0 skipped），仅属软件支撑；不替代200家真实试点、真实 owner ACK 或正式G3|
-|事实数据/关系查询/F05|消费者与 owner 隔离代码包已交付，产品整体仍 partial|IQS 消费端已合入 `master`：`da34654`；owner 实现隔离 Lab 提交 `6449917c`，82项定向、226项受影响回归、静态/日常检查及9步公共 CLI 隔离 E2E 通过，独立复审和handoff引用校验通过。真实 owner runtime/golden、与 IQS consumer public CLI 的真实正反互操作及 canonical StockWiki 合并/部署仍未完成|
-|主题/行业消费者|离线消费者包已验收，源仓/实际入口集成未验收|TH `54773536`（CP936 默认环境54项、独立复审通过）；IN `ba54e00f`（161项、独立复审通过，handoff元数据`0ab50e9`）。两者只证明隔离 Lab 合同消费；向各自 canonical skill 源仓整合、与真实 owner/W11组合及技能入口E2E仍待总控推进；不等200家G3|
+|事实数据/关系查询/F05|候选已加固并独审；真实 owner 事实与正式并线仍未完成|IQS 候选 `16c7b1a` 已推分支，StockWiki 候选 `3799b43` 仅本地提交；两者都未合入 canonical 两仓。候选测试 IQS 74 passed、StockWiki 92 passed + 路由回归3 passed。真实 owner 仍 `coverage_gap / no_bound_fact_observations`，无真实事实正例 golden，生产互操作/G4 未验收|
+|主题/行业消费者|已合入 canonical 源仓；技能入口实服务验收未完成|Theme `e35ab39`、Industry `169c200`；两个源仓 tracked clean。仍需在稳定 F05/W11 接口下跑技能入口 E2E；不等于200家G3|
 |全池与完整配套/G4—G6|未完成|2000覆盖、事实/两消费、配套安装/升级回退不能由本机启动成功代签|
 
 证据总入口：[本次对账](docs/implementation/reviews/PWF-RECONCILIATION-2026-10-31/report.md)、[三市场恢复](docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-three-market-recovery/cold-independent-final-review.json)、[真实TTL](docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-ttl-and-coverage/README.md)、[四包收口](docs/implementation/reviews/SUPPORT-CLOSE-2026-10-31/report.md)、[原TIME/RESULT接线](docs/implementation/reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。
 
 ## Next Step
 
-**回到小池内容质量与事实主线。** 三个独立消费者/owner施工包已经验收，不再重复发包或重复做离线实现；下一步由总控按源仓现状把 F05 owner 接入 canonical StockWiki，并建立受支持的只读 runtime/golden 路径，再对 IQS public CLI 跑真实正反互操作。真实接口稳定后，再将 TH/IN 离线消费者分别整合进 canonical skill 源仓并跑真实入口 E2E。原CPP保存、当前原authority目标封包、StockWiki ACK分别判断；原缓存引用不算新包，partial/subset回执只补缺口；旧ready不占补封实际进度额度，原stored ACK先恢复，终态job迟到worker不复活。私有暂存不作恢复依据，派生UI cache可由原精确字节重建。B03接口代码现已合入Dashboard与IQS主线，生产服务尚未重载，真实owner扫描/三市场UI验收仍待完成。
+**先收口 F05，再做真实入口验收。** 不再发新的离线实现包。先在不覆盖 canonical 并行改动的前提下，将 IQS/StockWiki 已审候选和当前 2.8 WIP 对齐，再由 StockWiki 公共只读查询接口取得至少一个真实、可绑定的问题事实行，完成 capability/schema 锁、分页、导出、无数据/不支持版本回退和重启复用的正反互操作。没有事实行时，结果应保持 coverage gap，不能用合成数据冒充 owner golden。随后验证已合入的 TH/IN 在稳定 F05/W11 服务上的实际技能入口，最后推进 G4；G3 真实200家覆盖、G5/G6 配套仍按各自原计划处理。常规修复只跑受影响测试，主里程碑跑相邻集成测试与一次独立审查；不恢复小时全套或小节点重复审查。
+
+### 跨仓协作与测试设计
+
+当前不应把所有整改线程同时拆进多个 harness：IQS 与 StockWiki 的 F05 候选仍待合并，根 IQS 工作树存在重叠 WIP。接口稳定并明确单仓 owner 后，再把每仓本地实现/单元测试放进该仓自己的 PWF；根 IQS PWF 只维护依赖版本、跨仓接口、集成状态与待解决阻塞，作为协调清单，不另建审批/回执系统。并行只放在不同仓且输入锁定的任务，同一仓保持单 writer。
+
+解耦按测试金字塔落地：仓内单元测试验证实现；公共 schema/capability 合同测试验证兼容与失败语义；跨仓集成只运行公开 CLI/协议和隔离临时目录；原 UI/真实 owner E2E 只在关键里程碑做少量正反例。新增架构测试应先明确每个仓的公开 facade 与私有目录，然后静态检查越界 import、`module._private()`、动态属性访问和直接跨仓 DB/import；不把“所有私有函数都在运行时抛错”做成产品机制，也不把全仓 AST 全禁用当新增门禁。
 
 - **11/02 gen7新增终态：** 原`run-5a03133643e34e60b69d6b9b311b46c0`/work`WORK_ef7cfb7bd41740ab95e2d31af6c78548`已保存CP并delivered；ACK `ack_fd86eacd8b792b505a582f13`，原score8/MiMo Pro/11月1日响应时间不变。最后一次原UI恢复exit0、交付job completed，非重新提问；原响应及普通配置hash相同，账本无新增费用。
 - 原UI任务`run-73ab08b815574449a6337c806a9bb2cc`的同一generation6已恢复并入库；原attempt、响应hash、时间、正文及score7保持。交付job`deliveryjob_275e156668c52d138ea84887f11626c8`在08:28:19Z取得原ACK，1/1 scope，不能重问这笔请求。
