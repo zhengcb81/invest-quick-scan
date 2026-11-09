@@ -93,10 +93,12 @@ def scope_inputs(tmp_path, monkeypatch, owner_policy):
                           "authorization_reference": "synthetic-test-only", "agent": {},
                           "runtime_dir": str(tmp_path / "runtime"), "spend_authorization": str(tmp_path / "spend.json")}}
     ref = {"entity_id": "ENT_SYNTHETIC", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "security_id": None}
+    target = {key: str(tmp_path / f"{key}.json") for key in
+              ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config")}
     args = (config, directory,
             {"preview_id": "local-preview", "bank": {"entity_id": ref["entity_id"], "company": "Synthetic fixture",
                                                         "information_cutoff": "2026-11-01"}},
-            {}, [{"id": "Q_GENERIC", "metric_id": "M_GENERIC"}], tmp_path / "target", ref,
+            {}, [{"id": "Q_GENERIC", "metric_id": "M_GENERIC"}], target, ref,
             owner_policy, {"consumer_id": "invest-quick-scan"}, paths,
             {"iqs_release_root": str(tmp_path / "release")}, "run-synthetic")
     return args, captures, directory, owner_config

@@ -78,22 +78,25 @@ class RefreshAdmissionService:
 ''', encoding="utf-8")
     (source / "src/utils/quick_scan_refresh_inspect.py").write_text('''
 import json,pathlib
-class ReadOnlyWorkView:
- def __init__(self,path):
-  request=json.loads((pathlib.Path(path).parent/'bundle/inspection_request.json').read_text())
-  rows=json.loads(pathlib.Path(path).read_text()).get('work_items',request.get('work_items',[]))
-  if isinstance(rows,dict): rows=[dict(row,question_id=qid) for qid,row in rows.items()]
-  self.rows={row.get('work_item_id',str(i)):dict(row,question_id=row.get('question_id',request['question_ids'][i]),work_item_id=row.get('work_item_id',str(i))) for i,row in enumerate(rows)}
- def owner_refresh_projection(self,**kwargs):
-  return {row.get('question_id',str(i)):row for i,row in enumerate(self.rows.values())}
- def get_item(self,work):
-  row=self.rows[work]
-  return {'entity_id':'ENT_TEST','scope':'entity','scope_id':'ENT_TEST','generation':1,**row}
- def get_registered_refresh_action(self,confirmation_id):
-  if confirmation_id != 'rc2_'+'a'*64: return None
-  return {'receipt':{'confirmation_id':confirmation_id,'items':[
-   {key:row[key] for key in ('work_item_id','entity_id','question_id','scope','scope_id','generation')}
-   for row in (self.get_item(work) for work in self.rows)]},'inputs':{'references':[]}}
+def delivery_scope_projection(path, request):
+    assert request['entity_id'] == 'ENT_TEST'
+    assert request.get('confirmation_id') in (None, 'rc2_' + 'a'*64)
+    assert request['read_only_scope'] is True
+    frozen = json.loads((path.parent/'bundle/inspection_request.json').read_text())
+    rows = json.loads(path.read_text()).get('work_items', frozen.get('work_items', []))
+    if isinstance(rows, dict):
+        rows = [dict(row, question_id=qid) for qid, row in rows.items()]
+    qids = request['question_ids']
+    indexed = {}
+    for i, row in enumerate(rows):
+        qid = row['question_id'] if 'question_id' in row else qids[i]
+        indexed[qid] = {'question_id': qid, 'work_item_id': row.get('work_item_id', str(i)),
+                        'status': row['status'], 'generation': row.get('generation', 1)}
+    if request.get('confirmation_id') and set(indexed) - set(qids):
+        raise ValueError('original_registered_scope_mismatch')
+    return {'work_items': [indexed.get(qid, {'question_id': qid, 'work_item_id': None,
+                                           'status': 'missing'}) for qid in qids],
+            'items': [], 'consumers': [], 'API_requests': 0, 'network_calls': 0}
 ''', encoding='utf8')
     llm = put(runtime / "llm_apis.json", {"providers": {"test": {"api_key": "never-return-this"}}, "quick_scan_model_policy": {"models": ["first", "second"]}})
     ledger, policy = put(tmp_path / "ledger.sqlite", {}), put(tmp_path / "policy.json", {})
@@ -1394,8 +1397,12 @@ def test_pending_native_delivery_ignores_future_scan_controls_but_keeps_original
         changed = runtime/'different-ledger.sqlite'
         changed.write_bytes(b'different temporary source')
         put(Path(bundle['admission_config']), {**admission, 'work_store': str(changed)})
-        with pytest.raises(Exception, match='范围已变'):
-            jobs.control(job_id, 'resume')
+        jobs.control(job_id, 'resume')
+        deadline = time.monotonic() + 5
+        while jobs._threads and time.monotonic() < deadline: time.sleep(.01)
+        blocked = jobs.get(job_id)
+        assert blocked['state'] == 'partial'
+        assert blocked['entries'][0]['error_code'] == 'delivery_bundle_changed'
         assert calls == ['test', 'test']
 
 

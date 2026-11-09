@@ -1,5 +1,9 @@
 # 当前接手说明
 
+**本轮公开接口整改。** IQS 工作台改为经公开交付操作、恢复引用解析、origin 解析和 TIME 包入口协作。运行 `python -B -m pytest -q tests/test_dashboard_module_boundaries.py` 可以看到越界文件、行号及访问名。该测试已纳入 `scripts/run_tests.py fast`，范围为工作台模块内的显式 Python 引用和常见局部别名。Theme `master@3352b58` 与 Industry `main@7d49ca3` 已使用独立查询捕获目录。Industry 已推送，Theme 仓无远端。真实数据入口仍按根计划验收。
+
+**F05 接续。** IQS 2.7 候选 `16c7b1a` 与 2.8 WIP 已在隔离副本完成 87 项回归。三个重叠文件是 `scripts/query_facts_contract.py`、`tests/test_query_facts_contract.py` 与 `tests/test_f05_facts_cli_conformance.py`。三方合并基准为 `130dc31`。根工作树原 WIP 保持独立，合入时与其写入方协同。真实配置的 owner 能力探测认可 2.7 候选，事实观察为零，下一步沿原采集流程生成可绑定的事实观察并用公开 CLI 完成验收。旧 F05 集成测试仍引用缺失的外仓 Git 对象 `63a6ffcf`，在候选并入后由独立 CLI 回归接替。
+
 **2026-11-09 当前状态（优先于下方旧日期段）。** 本项目已可在小范围使用，但全项目尚未模块化解耦，F05 真实数据闭环和 G4 均未完成。IQS `master` `3d2bf44` 已推送：修复兼容 query 接口允许模型答案自授 `check_level` 的既往缺陷，定向 106 passed、8 subtests passed，独立审查 ACCEPT。IQS F05 consumer candidate `codex/f05-query-paged-response-01`（`16c7b1a`，已推分支，74 passed）尚未并入 `master`，因为根目录存在重叠 2.8 WIP。StockWiki owner candidate `3799b43` 已快进并入本地 canonical `master`；六文件 F05/路由测试组 45 passed、2 skipped，StockWiki 无 remote。路由 manifest 完整性修复独立审查 ACCEPT。
 
 **当前实质阻塞：** CATL owner 公开 query 返回 `coverage_gap / no_bound_fact_observations`，没有事实正例 golden；F05 仍 partial。IQS 根工作树有别的并行 2.8 WIP，不要 reset、checkout 覆写或 `git add -A`；consumer 候选并线前先在单 writer 状态对齐依赖。Theme `master@e35ab39` 与 Industry `main@169c200` 已有 canonical 代码、tracked clean；需在稳定 F05/W11 接口上跑真实技能入口 E2E。然后推进 G4；真实200家 G3、2000家覆盖和 G5/G6 仍未完成。

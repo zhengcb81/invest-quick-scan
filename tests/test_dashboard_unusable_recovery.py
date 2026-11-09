@@ -184,21 +184,25 @@ def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch
     row = {'status': 'delivered', 'work_item_id': 'WORK_source', 'generation': 4,
            'retry_purpose': 'comparison', 'retry_decision_id': 'owd1_original'}
     calls = []
-    class View:
-        def __init__(self, path): pass
-        def continuation_binding_snapshot(self, **kwargs):
-            calls.append(kwargs)
-            if (row['status'] == 'delivered'
-                and (row['work_item_id'], row['retry_decision_id']) not in kwargs['comparison_refs']):
-                return {}
-            return {'IQS_11': {'work': copy.deepcopy(row), 'binding_record': {'binding': dict(binding)}}}
+    def continuation_bank_bindings(path, query):
+        assert path == Path('synthetic')
+        assert query['scope_bindings'] == {'IQS_11': {'scope': 'entity', 'scope_id': 'ENT_FIX'}}
+        refs = query.get('controlled_work_refs', [])
+        calls.append(refs)
+        original_ref = {'work_item_id': row['work_item_id'], 'decision_id': row['retry_decision_id']}
+        rows = []
+        if row['status'] == 'pending' or original_ref in refs:
+            rows.append({'question_id': 'IQS_11', 'work_item_id': row['work_item_id'],
+                         'generation': row['generation'], 'manifest_raw_sha256': binding['manifest_raw_sha256'],
+                         'binding_sha256': p._sha(binding)})
+        return {'protocol': 'iqs.original_work_bank_bindings/1.0.0', 'rows': rows,
+                'API_requests': 0, 'database_writes': 0}
     for name in ('src', 'src.utils'):
         module = types.ModuleType(name); module.__path__ = []
         monkeypatch.setitem(sys.modules, name, module)
     for name, members in (
         ('src.utils.quick_scan_refresh_admission', {'safe_read': lambda path: None}),
-        ('src.utils.quick_scan_refresh_inspect', {'ReadOnlyWorkView': View}),
-        ('src.utils.quick_scan_result_outbox', {'canonical_sha256': p._sha}),
+        ('src.utils.quick_scan_refresh_inspect', {'continuation_bank_bindings': continuation_bank_bindings}),
     ):
         module = types.ModuleType(name); module.__dict__.update(members)
         monkeypatch.setitem(sys.modules, name, module)
@@ -213,7 +217,7 @@ def test_delivered_comparison_source_still_selects_its_original_bank(monkeypatch
         exec(p._WORK_BANK_BINDING_READER, {})
         return json.loads(capsys.readouterr().out)['rows']
     assert run()[0]['manifest_raw_sha256'] == binding['manifest_raw_sha256']
-    assert calls[-1]['comparison_refs'] == {('WORK_source', 'owd1_original')}
+    assert calls[-1] == [{'work_item_id': 'WORK_source', 'decision_id': 'owd1_original'}]
     request['controlled_work_refs'][0]['decision_id'] = 'owd1_other'
     assert run() == []
     request.pop('controlled_work_refs')

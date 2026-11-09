@@ -427,22 +427,11 @@ class ExecutionGateway:
     def delivery_registration(self, bundle_id):
         """Identify the original output scope, independent of future sends."""
         try:
-            from .dashboard_delivery import _scope_inputs
+            from .dashboard_delivery import describe_delivery_scope
         except ImportError:
-            from dashboard_delivery import _scope_inputs
+            from dashboard_delivery import describe_delivery_scope
         key, bundle = self._select({'bundle_id': bundle_id}, recovery=True)
-        ledger, request = _scope_inputs(bundle)
-        manifest = Path(bundle.get('manifest', ''))
-        if not manifest.is_absolute() or not manifest.is_file():
-            raise DashboardExecutionError('delivery_not_configured', '缺少原manifest，不能核实交付范围。', 409)
-        qids = request.get('question_ids')
-        if not isinstance(qids, list) or not qids or any(not isinstance(qid, str) or not qid for qid in qids) or len(qids) != len(set(qids)):
-            raise DashboardExecutionError('delivery_work_mapping_missing', '原交付题目范围无效。', 409)
-        scope = {'entity_id': bundle['entity_id'], 'work_store': str(ledger.resolve()),
-                 'manifest': str(manifest.resolve()), 'question_ids': sorted(qids),
-                 'confirmation_id': bundle.get('confirmation_id'),
-                 'scope_bindings': request.get('scope_bindings') or {
-                     qid: {'scope': 'entity', 'scope_id': bundle['entity_id']} for qid in qids}}
+        scope = describe_delivery_scope(bundle)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
         return {**grouping, 'bundle_id': key, 'entity_id': bundle['entity_id'],
                 'delivery_scope': scope, 'bundle_fingerprint': _digest(scope), 'API_requests': 0}
@@ -450,23 +439,12 @@ class ExecutionGateway:
     def delivery_receivers(self, bundle_id):
         """Read exact original outbox destination facts; do not bind a receiver."""
         try:
-            from .dashboard_delivery import _EXPORT, _scope_inputs
+            from .dashboard_delivery import read_delivery_receivers
         except ImportError:
-            from dashboard_delivery import _EXPORT, _scope_inputs
+            from dashboard_delivery import read_delivery_receivers
         _, bundle = self._select({'bundle_id': bundle_id}, recovery=True)
-        ledger, request = _scope_inputs(bundle)
-        confirmation = bundle.get('confirmation_id')
-        if not isinstance(confirmation, str) or not confirmation:
-            raise DashboardExecutionError('delivery_original_scope_unavailable', '缺少原confirmation，不能猜测原交付目标。', 409)
-        root = Path(self.config['stockqa_root'])
-        import tempfile
-        self.state_root.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix='receiver-read-', dir=self.state_root) as runtime:
-            return self._call([str(self.config.get('stockqa_python', sys.executable)), '-B', '-X', 'utf8',
-                '-c', _EXPORT, str(root), str(ledger)], root, runtime, input_value={
-                    'entity_id': request['entity_id'], 'question_ids': request['question_ids'],
-                    'scope_bindings': request.get('scope_bindings'), 'confirmation_id': confirmation,
-                    'receiver_only': True})
+        return read_delivery_receivers(bundle=bundle, config=self.config,
+                                       state_root=self.state_root, call=self._call)
 
     @staticmethod
     def inspection_work_items(inspection):

@@ -12,13 +12,14 @@ sys.path.insert(0,str(ROOT/'scripts'))
 # Production workers still use only the configured native StockWiki path.
 sys.path.insert(0,str(ROOT.parent/'StockWiki'))
 import dashboard_temporal as temporal
+from iqs_temporal_vendor import load_observation_clock_policies
 
 NOW='2026-10-31T12:00:00Z'
 ENTITY='ENT_SYNTHETIC_TIME'
 
 
 def specimen():
-    policies,bindings=temporal._policies()
+    policies,bindings=load_observation_clock_policies()
     qid='IQS_01';binding=bindings[qid]
     payload={'observation_id':'OBS_TIME_SYNTHETIC','entity_id':ENTITY,'identity_revision':1,
       'field_id':policies[qid]['field_id'],'question_id':qid,'scope':'entity',
@@ -185,7 +186,7 @@ def test_date_explanation_does_not_require_model_dispatch_metadata():
 
 @pytest.mark.parametrize('qid',['IQS_06','IQS_19','IQS_20','IQS_21'])
 def test_mixed_date_explanation_never_depends_on_retired_verification_receipts(qid):
-    detail,raw=specimen();policies,bindings=temporal._policies();binding=bindings[qid]
+    detail,raw=specimen();policies,bindings=load_observation_clock_policies();binding=bindings[qid]
     payload=raw['payload'];payload.update(question_id=qid,field_id=policies[qid]['field_id'],
         question_definition_sha256=binding['definition_sha256'],module_release_id=binding['module_release_id'])
     raw.update(question_id=qid,field_id=payload['field_id'],payload_sha256=temporal._sha(payload))

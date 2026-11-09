@@ -6,27 +6,18 @@ reuse, renew TTL, issue receipts or change the original entity/refresh DTO.
 from __future__ import annotations
 import hashlib
 import json
-from pathlib import Path
 
-from iqs_temporal_vendor import TimeSemanticsError
-from iqs_temporal_vendor.policy import candidate_policy
-from iqs_temporal_vendor.assess import (_parse_utc, _clock_reading, _assess_clock,
-                                       _publication_check, _information_datetime, _parse_date_only)
+from iqs_temporal_vendor import (
+    TimeSemanticsError, explain_observation_clocks, load_observation_clock_policies,
+)
 
 PROTOCOL = "iqs.temporal_shadow/1.0.0"
 VIEW_PROTOCOL = "iqs.company_research_view/1.0.0"
-_DATA = Path(__file__).resolve().parent / "iqs_temporal_vendor"
 
 
 def _sha(value):
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
         separators=(",", ":"), allow_nan=False).encode()).hexdigest()
-
-
-def _policies():
-    catalog = json.loads((_DATA / "time-policy-catalog.json").read_bytes())
-    bindings = json.loads((_DATA / "question-bindings.json").read_bytes())["bindings"]
-    return {entry["question_id"]: entry for entry in catalog["entries"]}, bindings
 
 
 def _refusal(row, code):
@@ -35,55 +26,6 @@ def _refusal(row, code):
             "decision": "not_assessable", "reason_codes": [code],
             "current_context_verified": False, "reuse_authorized": False,
             "verification_receipt_available": False}
-
-
-def _clock_explanation(observation, policy, now_utc):
-    """Use the pinned TIME clock engine without inventing missing identity context."""
-    now = _parse_utc(now_utc)
-    rules = candidate_policy()["clock_rules"]
-    answer = observation.get("answer")
-    if not isinstance(answer, dict) or not isinstance(answer.get("evidence", []), list) or any(
-            not isinstance(item, dict) for item in answer.get("evidence", [])):
-        raise ValueError("native_clock_answer_unreadable")
-    info = answer.get("information_as_of")
-    if info is not None:
-        information_date = _information_datetime(info)
-        if information_date > now:
-            raise TimeSemanticsError("information_date_in_future")
-        if information_date.date() > _parse_date_only(observation.get("information_cutoff")):
-            raise TimeSemanticsError("information_after_cutoff")
-    publication_status, publication_reasons = _publication_check(
-        answer, observation.get("information_cutoff"), now)
-    event = observation.get("event_invalidated_at")
-    event_status = None
-    if event is not None:
-        event_time = _parse_utc(event, code="event_invalidated_at_invalid")
-        event_status = "invalidated" if event_time <= now else "scheduled"
-        if event_status == "invalidated":
-            publication_reasons = [*publication_reasons, "event_invalidated"]
-            if publication_status == "ok":
-                publication_status = "refresh_required"
-    readings = []
-    for clock in policy["required_clocks"]:
-        if clock == "verification_clock":
-            continue  # Retired receipt system; historical metadata stays in the original DTO.
-        if clock == "publication_clock":
-            status, reasons = _publication_check(answer, observation.get("information_cutoff"), now)
-            item = {"clock": clock, "reading": [e.get("published_at") for e in answer.get("evidence", [])],
-                    "max_age_hours": None, "status": "satisfied" if status == "ok" else status,
-                    "reason_code": reasons[0] if reasons else "publication_satisfied",
-                    "decision_effect": status}
-        else:
-            item = _assess_clock(clock, _clock_reading(observation, clock), rules[clock], now)
-        readings.append(item)
-    return {"protocol": "iqs.temporal_clock_explanation/1.0.0", "context_assessed": False,
-            "reuse_authorized": False, "clock_assessments": readings,
-            "source_constraints": {"status": publication_status, "reason_codes": publication_reasons,
-                                   "event_status": event_status},
-            "actual_source_dates": {"observed_at": observation.get("observed_at"),
-                "information_as_of": answer.get("information_as_of"),
-                "metric_period_end": answer.get("period_end"), "verified_at": None,
-                "event_invalidated_at": event}}
 
 
 def _record(row, raw, entity_id, now_utc, policies, bindings):
@@ -126,7 +68,8 @@ def _record(row, raw, entity_id, now_utc, policies, bindings):
         result["reason_codes"].append("native_identity_revision_unknown")
     try:
         # Explain the original dates; the native service alone decides cache reuse.
-        result["clock_only_assessment"] = _clock_explanation(payload, policy, now_utc)
+        result["clock_only_assessment"] = explain_observation_clocks(
+            payload, policy["required_clocks"], now_utc=now_utc)
         result["reason_codes"] += result["clock_only_assessment"]["source_constraints"]["reason_codes"]
     except (TimeSemanticsError, ValueError, TypeError, KeyError) as error:
         result["reason_codes"].append(getattr(error, "error_code", "native_clock_not_assessable"))
@@ -135,7 +78,7 @@ def _record(row, raw, entity_id, now_utc, policies, bindings):
 
 def build_entity_view(detail, get_observation, *, entity_id, now_utc):
     """Wrap untouched original entity DTO; evaluate only exact visible native rows."""
-    policies, bindings = _policies()
+    policies, bindings = load_observation_clock_policies()
     sidecar = {"protocol": PROTOCOL, "evaluated_at_utc": now_utc,
         "mode": "read_only_shadow", "production_reuse_applied": False,
         "reuse_authorized": False, "current_context_verified": False,

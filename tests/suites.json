@@ -50,12 +50,18 @@
       "test_time05_scope_update.py",
       "test_vendor_subject_dispatch.py",
       "test_test_suites.py",
+      "test_dashboard_module_boundaries.py",
+      "test_dashboard_delivery_boundary.py",
       "test_dashboard_batches.py",
       "test_dashboard_jobs.py",
       "test_dashboard_delivery_jobs.py",
       "test_dashboard_product_prepare_api.py",
       "test_dashboard_grant_duration.py",
-      "test_unusable_checkpoint_refresh_contract.py"
+      "test_unusable_checkpoint_refresh_contract.py",
+      "test_query_capabilities_facts_wire.py",
+      "test_query_facts_contract.py",
+      "test_refresh_ordered_routes.py",
+      "test_shared_public_boundaries.py"
     ],
     "integration": [
       "test_accuracy_followup.py",
@@ -114,15 +120,25 @@
       "test_dashboard_entity_view_http.py",
       "test_dashboard_temporal.py",
       "test_dashboard_unusable_recovery.py",
-      "test_identity_compact_profile.py"
+      "test_identity_compact_profile.py",
+      "test_ack_continuation.py",
+      "test_dashboard_company_result.py",
+      "test_dashboard_entity_iqs_link.py",
+      "test_dashboard_prepare_ordered_routes.py",
+      "test_f05_facts_cli_conformance.py",
+      "test_one_click.py",
+      "test_read_only_replay_boundaries.py",
+      "test_shared_publication_restart.py"
     ],
     "e2e": [
       "test_producer_pipeline_e2e.py"
     ],
     "native": [
       "test_company_scan_native_e2e.py",
-      "test_shared_company_engine_native_e2e.py"
+      "test_shared_company_engine_native_e2e.py",
+      "test_company_scan_ordered_native_e2e.py",
+      "test_paid_partial_cold_native_e2e.py"
     ]
   },
-  "partition_revision": 3
+  "partition_revision": 4
 }
