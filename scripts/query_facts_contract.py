@@ -29,6 +29,9 @@ PROTOCOL='stockwiki.c06_facts_query/1.0.0'
 EXPORT_PROTOCOL='stockwiki.c06_facts_export/1.0.0'
 WIRE_VERSION='2.7.0'
 DIRECTION_CONVENTION_VERSION='stockwiki.facts_direction_convention/1.0.0'
+CAPABILITIES_PROTOCOL='iqs.facts_contract_capabilities/1.0.0'
+CAPABILITIES_FEATURES=('full_response_validation_v1',
+    'paged_response_projection_v1','export_response_validation_v1')
 MAX_BYTES=16*1024*1024
 MAX_OBSERVATION_BYTES=512*1024
 PAGE_SIZE_DEFAULT=50
@@ -63,6 +66,12 @@ def _digest(value):
 
 def _fail(code):
     raise ValueError(code)
+
+
+def capabilities():
+    """Public semantic features of this facts contract implementation."""
+    return {'protocol':CAPABILITIES_PROTOCOL,'wire_version':WIRE_VERSION,
+        'features':list(CAPABILITIES_FEATURES)}
 
 
 def _shape(value,kind):

@@ -81,6 +81,20 @@ def test_cli_facts_request_accepts_and_echoes():
     assert output == expected
 
 
+def test_cli_facts_capabilities_advertises_semantic_projection_support():
+    code, out, err = run_cli('facts-capabilities', {})
+    assert code == 0, err
+    output = json.loads(out)
+    assert output['status'] == 'validated'
+    assert output['result'] == {
+        'protocol':'iqs.facts_contract_capabilities/1.0.0',
+        'wire_version':'2.7.0',
+        'features':['full_response_validation_v1',
+                    'paged_response_projection_v1',
+                    'export_response_validation_v1'],
+    }
+
+
 def test_cli_facts_request_rejects_duplicate_json_key():
     request, _, _, _ = strict_pair()
     body = module_contract.canonical_bytes({'request': request})
