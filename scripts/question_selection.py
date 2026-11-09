@@ -95,7 +95,7 @@ def select_questions_for_route(profile, mode, modules, selected_module_ids, mand
                                    include_basic=include_basic)
 
 
-def apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True):
+def apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True, reserved=0):
     """Trim optional follow-ups while retaining the complete shared questionnaire.
 
     ``protect_basic=False`` is only for reading a previously frozen manifest
@@ -113,11 +113,11 @@ def apply_question_budget(questions, maximum, mandatory_question_ids=(), *, prot
     required = [q for q in questions if q.get('comparison_role') == 'core' or q.get('critical')
                 or q['id'] in mandatory_question_ids or (protect_basic and
                     q.get('module_id') in ('common', *library.ALWAYS_APPLICABLE_DIAGNOSTICS))]
-    if len(required) > maximum:
+    if len(required) + reserved > maximum:
         raise ValueError('question budget below mandatory core, basic diagnostics and critical-risk coverage'
-                         f' (required={len(required)}, max_questions={maximum})')
+                         f' (required={len(required) + reserved}, max_questions={maximum})')
     optional = [q for q in questions if q not in required]
-    kept_ids = {q['id'] for q in required + optional[:maximum - len(required)]}
+    kept_ids = {q['id'] for q in required + optional[:maximum - len(required) - reserved]}
     kept = [q for q in questions if q['id'] in kept_ids]
     deferred = [{'question_id': q['id'], 'module_id': q['module_id'],
                  'reason': 'question_count_budget'} for q in questions if q['id'] not in kept_ids]

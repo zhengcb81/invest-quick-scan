@@ -22,6 +22,7 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 import query_contract as core
+import query_vendor_contract as vendor
 import module_contract
 
 _SCHEMA_DIR = Path(__file__).resolve().parents[1] / 'schemas/quick_scan'
@@ -386,6 +387,12 @@ def _stamp_order(row):
     return (row['observed_at'],row['observation_sequence'])
 
 
+def _original_observation(row):
+    if row['observation_wire_profile'] == 'stockwiki-portable-observation/1.0.0':
+        return core.original_observation(row)
+    return vendor.original_observation(row)
+
+
 def project_fact_rows(profile_result,payload):
     """Project sealed fact answers into filtered, gated, stably ordered rows.
 
@@ -396,7 +403,7 @@ def project_fact_rows(profile_result,payload):
     stats={'fact_observations':0}
     for profile in profile_result['profiles']:
         for record in profile['observations']:
-            obs=core.original_observation(record)
+            obs=_original_observation(record)
             answer=obs['answer']
             if answer.get('response_kind')!='fact':
                 continue
@@ -654,7 +661,7 @@ def _validate_profile_result(profile_result,*,request,owner):
             if row['observation_id'] in seen:
                 _fail('facts_duplicate_original_observation')
             seen.add(row['observation_id'])
-            obs=core.original_observation(row)
+            obs=_original_observation(row)
             owner_ref=core.validate_owner_observation_reference(row,owner)
             if obs['answer'].get('response_kind')=='fact' and row['binding_status']!='bound':
                 # Frozen wire parity: a legacy unbound answer cannot carry a
@@ -672,7 +679,7 @@ def _validate_profile_result(profile_result,*,request,owner):
         if row['observation_id'] in seen:
             _fail('facts_duplicate_original_observation')
         seen.add(row['observation_id'])
-        obs=core.original_observation(row)
+        obs=_original_observation(row)
         owner_ref=core.validate_owner_observation_reference(row,owner)
         core.validate_original_semantics(obs,row=row,owner_ref=owner_ref,request=base,
             watermark=watermark,subject_ref=None)

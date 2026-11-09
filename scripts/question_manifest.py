@@ -132,6 +132,42 @@ def _published_method_id(questions, profile, contexts, package, release, answer_
     return 'core-constructs-v1/' + module_contract.digest(core)[:16]
 
 
+def fact_questions(bank):
+    """Return the same canonical definitions for draft, release and observation reads."""
+    return [{**q, 'response_kind': 'fact', 'scope': 'entity',
+             'rubric_version': bank['version'], 'construct_id': None}
+            for q in bank['questions']]
+
+
+def select_fact_questions(bank, profile, mode):
+    recovery = (profile.get('recovery_review') or profile.get('stage') in ('turnaround', 'declining')
+                or 'distressed' in profile.get('overlays', []))
+    selected = []
+    for question in fact_questions(bank):
+        applies = question['applies']
+        relevant = (applies.get('all') or profile.get('company_type') in applies.get('types', [])
+                    or bool(set(profile.get('industry_modules', [])) & set(applies.get('industries', [])))
+                    or profile.get('stage') in applies.get('stages', [])
+                    or (applies.get('cycle_sensitive') and profile.get('cycle_sensitive'))
+                    or (applies.get('recovery') and recovery))
+        if relevant and (mode == 'full' or question['priority'] == 1):
+            selected.append(question)
+    return selected
+
+
+def archived_facts(package, profile, mode, ids):
+    """Verify the requested opt-in against the original archived bank and route profile."""
+    if not isinstance(ids, list) or not ids or any(not isinstance(qid, str) for qid in ids):
+        raise ValueError('fact question selection must be a nonempty ID list')
+    bank = package['format_resources'].get(module_registry.FACT_BANK_RESOURCE)
+    if bank is None:
+        raise ValueError('released package has no fact bank')
+    selected = [q for q in select_fact_questions(bank, profile, mode) if q['id'] in ids]
+    if len({q['id'] for q in selected}) != len(selected) or ids != [q['id'] for q in selected]:
+        raise ValueError('fact question selection differs from the applicable archived bank order')
+    return selected
+
+
 def _validate_published_manifest(manifest, *, root):
     package, modules, release, contexts = module_registry.load_package(
         manifest['module_package_id'], root=root)
@@ -154,9 +190,16 @@ def _validate_published_manifest(manifest, *, root):
     elif manifest.get('answer_format') == 'screening-1':
         reference = 'schemas/quick_scan/score.schema.json'
         expected_hashes[reference] = module_contract.digest(package['format_resources'][reference])
+    profile, mode = manifest.get('profile'), manifest.get('mode')
+    facts = []
+    if 'fact_question_ids' in manifest:
+        if manifest.get('answer_format') != 'standard-1':
+            raise ValueError('fact questions require standard-1')
+        facts = archived_facts(package, profile, mode, manifest['fact_question_ids'])
+        resource = module_registry.FACT_BANK_RESOURCE
+        expected_hashes[resource] = module_contract.digest(package['format_resources'][resource])
     if manifest.get('source_sha256') != expected_hashes:
         raise ValueError('manifest source hashes differ from released files')
-    profile, mode = manifest.get('profile'), manifest.get('mode')
     route_decision = manifest.get('route_decision')
     if (route_decision is None and 'route_decision_id' in manifest) or (
             route_decision is not None and manifest.get('route_decision_id') != route_decision.get('decision_id')):
@@ -194,18 +237,21 @@ def _validate_published_manifest(manifest, *, root):
         raise ValueError('unsupported question budget policy')
     expected, deferred = apply_question_budget(
         expected, manifest.get('max_questions'), mandatory,
-        protect_basic=budget_policy == 'basic-required-v1')
+        protect_basic=budget_policy == 'basic-required-v1', reserved=len(facts))
     if (manifest.get('modules') != selected or manifest.get('replacements') != replacements
             or manifest.get('module_locks') != module_locks(release, selected)
             or manifest.get('deferred_questions') != deferred):
         raise ValueError('manifest selection, module lock, or deferred questions drift')
+    expected_mappings = [metric_mapping(q, metric_schema=package['format_resources'][metric_reference])
+                         for q in expected]
+    if {q['id'] for q in expected} & {q['id'] for q in facts}:
+        raise ValueError('fact and score question identities overlap')
+    expected = expected + facts
     questions = manifest.get('questions')
     if (not isinstance(questions, list) or len(questions) != len(expected)
             or manifest.get('question_count') != len(expected)):
         raise ValueError('manifest question count differs from released selection')
     mappings = manifest.get('question_metric_mappings')
-    expected_mappings = [metric_mapping(q, metric_schema=package['format_resources'][metric_reference])
-                         for q in expected]
     if mappings != expected_mappings:
         raise ValueError('manifest metric mapping differs from released questions')
     answer_format = manifest.get('answer_format')
@@ -220,20 +266,22 @@ def _validate_published_manifest(manifest, *, root):
         expected_prompts = [renderer.render_question(q, profile, contexts) for q in expected]
     extras = {'metric_contract', 'prompt', 'prompt_sha256', 'semantic_sha256', 'definition_sha256'}
     for observed, source, mapping, expected_prompt in zip(questions, expected,
-                                                           expected_mappings, expected_prompts):
+            expected_mappings + [None] * len(facts), expected_prompts, strict=True):
         if not isinstance(observed, dict) or {k: v for k, v in observed.items() if k not in extras} != source:
             raise ValueError('manifest question definition differs from archive')
-        if observed.get('metric_contract') != mapping:
+        if observed.get('metric_contract') != mapping or (mapping is None and 'metric_contract' in observed):
             raise ValueError('manifest question metric contract differs from archive')
+        definition = source if mapping is None else next(
+            q for q in modules[source['module_id']]['questions'] if q['id'] == source['id'])
         prompt = observed.get('prompt')
         if (not isinstance(prompt, str) or prompt != expected_prompt
                 or observed.get('prompt_sha256') != hashlib.sha256(prompt.encode('utf-8')).hexdigest()
-                or observed.get('definition_sha256') != module_contract.question_definition_sha256(
-                    next(q for q in modules[source['module_id']]['questions'] if q['id'] == source['id']))
+                or observed.get('definition_sha256') != module_contract.question_definition_sha256(definition)
                 or observed.get('semantic_sha256') != question_fingerprint(
                     source, profile, contexts, package, release, answer_format)):
             raise ValueError('manifest question prompt or semantic fingerprint mismatch')
     if manifest.get('method_id') != _published_method_id(
-            expected, profile, contexts, package, release, answer_format):
+            [q for q in expected if q.get('response_kind', 'score') == 'score'],
+            profile, contexts, package, release, answer_format):
         raise ValueError('manifest core method fingerprint mismatch')
     return {item['question_id']: item for item in expected_mappings}

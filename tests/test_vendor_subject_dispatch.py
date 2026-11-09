@@ -95,6 +95,30 @@ def test_query26_roundtrip_retains_original_and_explicit_profile(values):
     with pytest.raises(ValueError):qc.validate_response(response,expected_request=request,expected_owner=owner)
 
 
+def test_facts_query_retains_native_vendor_observation_and_execution_binding(values):
+    import test_query_facts_contract as facts
+
+    dispatch, original, before_send = copy.deepcopy(values)
+    answer = facts.fact_observation(cutoff=original['information_cutoff'])['answer']
+    qid = answer['question_id']
+    original.update(field_id=qid, question_id=qid, construct_id=None, answer=answer)
+    original['observation_id'] = 'obs_' + dc.digest({k:v for k,v in original.items() if k!='observation_id'})
+    dispatch.update(question_id=qid, field_id=qid,
+                    question_contract={'id': qid, 'response_kind': 'fact', 'relations': ['sells_to']})
+    row = facts.projection(original)
+    row['observation_wire_profile'] = 'stockwiki-portable-observation/1.1.0'
+    row['subject_binding'] = bind(dispatch, original, before_send)
+    profile = facts.fact_profile_result([row])
+    profile['profiles'][0]['subject_ref'] = dispatch['subject_ref']
+    owner = facts.fact_owner([row])
+    request = facts.fact_request()
+    response = facts.build(request, profile, owner)
+    assert facts.validate(request, response, owner)['result']['facts'][0]['observation_id'] == original['observation_id']
+    row['observation_wire_profile'] = 'stockwiki-portable-observation/1.0.0'
+    with pytest.raises(ValueError):
+        facts.build(request, profile, owner)
+
+
 def test_query26_keeps_legacy_observation_and_rejects_foreign_snapshot():
     from test_query_contract_v2 import advanced_pair, observation
     import query_vendor_contract as vendor

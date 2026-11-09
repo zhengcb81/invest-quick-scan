@@ -189,22 +189,7 @@ def validate_content(
 def validate_fact_library():
     bank = library.read_json(ROOT / 'questions/facts.json')
     _, modules = library.load_library(root=ROOT)
-    ids, fields = set(), set()
-    for q in bank['questions']:
-        if q['id'] in ids or q['field_id'] in fields or not q['field_id'].startswith('facts.'):
-            raise ValueError('duplicate/invalid fact identity')
-        ids.add(q['id']); fields.add(q['field_id'])
-        if not q['question'] or not q['relations'] or q['priority'] not in (1, 2) or not 1 <= q['max_items'] <= 20:
-            raise ValueError('incomplete fact question')
-        for kind in ('types', 'industries', 'stages'):
-            if any(key not in modules or modules[key]['kind'] != kind for key in q['applies'].get(kind, [])):
-                raise ValueError('invalid fact route')
-    for kind in ('types', 'industries', 'stages'):
-        covered = {key for q in bank['questions'] for key in q['applies'].get(kind, [])}
-        required = {key for key, module in modules.items() if module['kind'] == kind and key != 'cyclical'}
-        if covered != required:
-            raise ValueError('missing type/industry/stage fact coverage')
-    return {'questions': len(ids), 'version': bank['version']}
+    return module_registry.validate_fact_bank(bank, modules)
 
 
 def select_facts(profile, mode='quick'):
@@ -213,20 +198,7 @@ def select_facts(profile, mode='quick'):
     if mode not in ('quick', 'full'):
         raise ValueError('unknown mode')
     bank = library.read_json(ROOT / 'questions/facts.json')
-    chosen = []
-    recovery = (profile.get('recovery_review') or profile['stage'] in ('turnaround', 'declining')
-                or 'distressed' in profile.get('overlays', []))
-    for q in bank['questions']:
-        a = q['applies']
-        applies = (a.get('all') or profile['company_type'] in a.get('types', [])
-                   or bool(set(profile.get('industry_modules', [])) & set(a.get('industries', []))))
-        applies = applies or profile['stage'] in a.get('stages', [])
-        applies = applies or (a.get('cycle_sensitive') and profile.get('cycle_sensitive'))
-        applies = applies or (a.get('recovery') and recovery)
-        if applies and (mode == 'full' or q['priority'] == 1):
-            chosen.append({**q, 'response_kind': 'fact', 'scope': 'entity',
-                           'rubric_version': bank['version'], 'construct_id': None})
-    return bank, chosen
+    return bank, manifest_contract.select_fact_questions(bank, profile, mode)
 
 
 def compose_facts(profile, mode, output_dir):
@@ -261,14 +233,20 @@ def _published_observation_source(record):
         raise ValueError('observation module release mismatch')
     if record['template_version'] != release['catalog_version']:
         raise ValueError('observation catalog version mismatch')
-    if record['answer']['response_kind'] != 'score':
-        raise ValueError('scored module package cannot validate a fact observation')
     known = {q['id']: (module_id, q)
              for module_id, module in modules.items() for q in module['questions']}
+    bank = resources.get(module_registry.FACT_BANK_RESOURCE)
+    if bank is not None:
+        for q in manifest_contract.fact_questions(bank):
+            if q['id'] in known:
+                raise ValueError('released fact and score question identities overlap')
+            known[q['id']] = (q['module_id'], q)
     source = known.get(record['question_id'])
     if source is None:
         raise ValueError('observation question missing from frozen module release')
     module_id, archived_question = source
+    if record['answer']['response_kind'] != archived_question.get('response_kind', 'score'):
+        raise ValueError('observation response kind differs from frozen question')
     if record['question_definition_sha256'] != module_contract.question_definition_sha256(archived_question):
         raise ValueError('observation question definition differs from frozen release')
     question = {**archived_question, 'module_id': module_id}

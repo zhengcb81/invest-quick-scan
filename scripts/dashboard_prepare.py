@@ -625,6 +625,7 @@ class PrepareGateway:
             "scope_as_of": owner_snapshot_as_of if scope_selector == "issuer_only" else None,
             "subject_key": payload.get("subject_key"), "scope_selector": scope_selector, "security_id": payload.get("security_id")})
         sys.path.insert(0, str(Path(self.config["iqs_root"]) / "scripts"))
+        import module_registry
         import routing
         import question_sets
         identity, binding = native["identity"], native["binding"]
@@ -638,13 +639,21 @@ class PrepareGateway:
                        "as_of": as_of, "security_id": listing["security_id"], "requested_mode": mode, "verified_facts": profile.get("verified_facts", [])}
         now, preview_id = _now(), "prepare_" + uuid.uuid4().hex
         directory = state / "candidates" / preview_id
-        route = routing.resolve_route_decision(route_input, package_id=self.options.get("module_package_id", DEFAULT_PACKAGE),
-            user_policy=profile.get("user_policy"), now_utc=now, root=Path(self.config["iqs_root"]))
+        package_id = self.options.get("module_package_id", DEFAULT_PACKAGE)
+        code_root = Path(self.config["iqs_root"])
+        fact_ids = None
+        if subset:
+            package, _, _, _ = module_registry.load_package(package_id, root=code_root)
+            fact_bank = package['format_resources'].get(module_registry.FACT_BANK_RESOURCE, {})
+            fact_ids = [q['id'] for q in fact_bank.get('questions', []) if q['id'] in subset] or None
+        route = routing.resolve_route_decision(route_input, package_id=package_id,
+            user_policy=profile.get("user_policy"), now_utc=now, root=code_root)
         directory.mkdir(parents=True, exist_ok=False)
         try:
             proposed = directory / "proposed-bank"
             question_sets.compose_from_route(route, proposed, now_utc=now,
-                expected_route_decision_id=route["decision_id"], answer_format="standard-1")
+                expected_route_decision_id=route["decision_id"], answer_format="standard-1",
+                **({'fact_question_ids': fact_ids} if fact_ids else {}))
             _new(proposed / "route.json", route)
             manifest = _read(proposed / "manifest.json")
             if subset is not None and set(subset)-{q['id'] for q in manifest['questions']}:
@@ -988,7 +997,9 @@ def _apply(config, payload):
         route = routing.resolve_route_decision(final_input, package_id=record["bank"]["module_package_id"],
             user_policy=selected_profile.get("user_policy"), now_utc=_now(), root=Path(config["iqs_root"]))
         frozen_dir = directory / "final"
-        question_sets.compose_from_route(route, frozen_dir, now_utc=_now(), expected_route_decision_id=route["decision_id"], answer_format="standard-1")
+        question_sets.compose_from_route(route, frozen_dir, now_utc=_now(),
+            expected_route_decision_id=route["decision_id"], answer_format="standard-1",
+            **({'fact_question_ids': manifest['fact_question_ids']} if 'fact_question_ids' in manifest else {}))
         _new(frozen_dir / "route.json", route)
         _new_raw(frozen_dir / "identity.json", (directory / "identity.json").read_bytes())
         _new(frozen_dir / "preparation-lineage.json", {"draft_preview_id": record["preview_id"], "draft_preview_token": record["preview_token"],
@@ -1090,7 +1101,7 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
     options = config["prepare"]
     dialect = policy["protocol"].split("/")[-1]
     targets = _ordered_route_targets(policy)
-    field_ids = sorted({row.get("field_id", row["metric_id"]) for row in selected_questions})
+    field_ids = sorted({row.get("field_id", row.get("metric_id")) for row in selected_questions})
     query = {"message_type": "request", "schema_version": "2.6.0" if dialect in {"1.1.0", "1.2.0", "1.3.0", "1.6.0"} else "2.0.0", "request_id": run_id + "-query",
              "consumer_id": admission["consumer_id"], "operation": "get_profiles", "requested_at": _now(),
              "payload": {"subject_refs": [subject_ref], "field_ids": field_ids, "information_cutoff": record["bank"]["information_cutoff"],

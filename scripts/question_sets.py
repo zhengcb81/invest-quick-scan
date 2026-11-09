@@ -171,9 +171,9 @@ def publish_library():
                                    renderer_rules_sha256=renderer_rules_sha256())
 
 
-def _apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True):
+def _apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True, reserved=0):
     return _selection_contract.apply_question_budget(
-        questions, maximum, mandatory_question_ids, protect_basic=protect_basic)
+        questions, maximum, mandatory_question_ids, protect_basic=protect_basic, reserved=reserved)
 
 
 def _published_selection(profile, mode, modules, release, route_decision, contexts, package=None):
@@ -200,7 +200,8 @@ def _validate_published_manifest(manifest):
 
 
 def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=None,
-            route_decision=None, max_questions=None, now_utc=None, expected_route_decision_id=None):
+            route_decision=None, max_questions=None, now_utc=None, expected_route_decision_id=None,
+            fact_question_ids=None):
     profile = json.loads(json.dumps(profile, ensure_ascii=False))
     if profile.get('diagnostic_exclusions'):
         raise ValueError('new scans cannot exclude basic diagnostics; retain each question and return '
@@ -242,13 +243,18 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         raise ValueError('new scan requires all basic diagnostics; refresh the frozen route with router 2.5 '
                          'and retain non-meaningful questions as explicit not_applicable')
     mandatory = (route_decision['dispatch_plan']['mandatory_question_ids'] if route_v2 else ())
-    chosen, deferred = _apply_question_budget(chosen, max_questions, mandatory)
     metric_reference = 'schemas/quick_scan/metric.schema.json'
     metric_schema = package['format_resources'][metric_reference]
+    facts = []
+    if fact_question_ids is not None:
+        if answer_format != 'standard-1':
+            raise ValueError('fact questions require standard-1')
+        facts = manifest_contract.archived_facts(package, profile, mode, fact_question_ids)
+    chosen, deferred = _apply_question_budget(chosen, max_questions, mandatory, reserved=len(facts))
     metric_mappings = [metric_mapping(q, metric_schema=metric_schema) for q in chosen]
     prompts = []
     manifest_questions = []
-    for question, mapping in zip(chosen, metric_mappings):
+    for question, mapping in zip(chosen + facts, metric_mappings + [None] * len(facts), strict=True):
         if answer_format == 'standard-1':
             prompt = renderer.standard_prompt(question, profile, contexts=contexts,
                                      resources=package['format_resources'])
@@ -257,12 +263,11 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         else:
             prompt = renderer.render_question(question, profile, contexts)
         prompts.append(prompt)
-        canonical_question = next(
-            item for item in modules[question['module_id']]['questions']
-            if item['id'] == question['id'])
+        canonical_question = question if mapping is None else next(
+            item for item in modules[question['module_id']]['questions'] if item['id'] == question['id'])
         manifest_questions.append({
             **question,
-            'metric_contract': mapping,
+            **({'metric_contract': mapping} if mapping is not None else {}),
             'prompt': prompt,
             'prompt_sha256': hashlib.sha256(prompt.encode('utf-8')).hexdigest(),
             'semantic_sha256': _question_fingerprint(
@@ -303,12 +308,16 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         'deferred_questions': deferred,
         'max_questions': max_questions,
         'source_sha256': source_hashes,
-        'question_count': len(chosen),
+        'question_count': len(manifest_questions),
         'quality_weights': QUALITY_WEIGHTS,
         'metric_contract_version': METRIC_CONTRACT_VERSION,
         'question_metric_mappings': metric_mappings,
         'questions': manifest_questions,
     }
+    if facts:
+        manifest['fact_question_ids'] = list(fact_question_ids)
+        resource = module_registry.FACT_BANK_RESOURCE
+        source_hashes[resource] = module_contract.digest(package['format_resources'][resource])
     if max_questions is not None:
         manifest['budget_policy'] = 'basic-required-v1'
     if route_decision is not None:
@@ -327,11 +336,13 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         raise ValueError('output already contains a question run; use a fresh directory')
     question_groups = (export_questions(chosen, profile, answer_format, contexts, prompts=prompts)
                        if answer_format in ('legacy', 'screening-1')
-                       else [{'category': '标准化评分', 'questions': prompts}])
+                       else [{'category': '标准化评分', 'questions': prompts[:len(chosen)]}])
+    if facts:
+        question_groups.append({'category': '非评分事实', 'questions': prompts[len(chosen):]})
     write_json(output_dir / 'questions.json', question_groups)
     write_json(output_dir / 'manifest.json', manifest)
     return {
-        'question_count': len(chosen),
+        'question_count': len(manifest_questions),
         'modules': selected,
         'deferred_question_ids': [item['question_id'] for item in deferred],
         'module_package_id': package['package_id'],
@@ -340,12 +351,13 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
 
 
 def compose_from_route(route_decision, output_dir, *, now_utc, expected_route_decision_id,
-                       answer_format='screening-1', max_questions=None):
+                       answer_format='screening-1', max_questions=None, fact_question_ids=None):
     """Execute a v2 dispatch without inventing a legacy profile or current time."""
     import routing as route_engine
     return compose(route_engine.profile_from_route(route_decision),
                    route_decision['dispatch_plan']['resolved_mode'], output_dir, answer_format,
                    package_id=route_decision['module_package_id'], route_decision=route_decision,
+                   fact_question_ids=fact_question_ids,
                    max_questions=max_questions, now_utc=now_utc,
                    expected_route_decision_id=expected_route_decision_id)
 
@@ -1095,7 +1107,10 @@ def main():
     compile_cmd.add_argument('--max-questions', type=int)
     compile_cmd.add_argument('--now-utc')
     compile_cmd.add_argument('--expected-route-decision-id')
+    compile_cmd.add_argument('--fact-question-id', action='append')
     sub.add_parser('publish-modules')
+    publish_facts = sub.add_parser('publish-facts', help='archive an opt-in fact bank with an existing release')
+    publish_facts.add_argument('--module-package-id', required=True)
     publish_routing = sub.add_parser('publish-routing')
     publish_routing.add_argument('--activate', action='store_true')
     route_request = sub.add_parser('routing-v2-request')
@@ -1112,6 +1127,7 @@ def main():
         route_compose.add_argument('--' + key, required=True)
     route_compose.add_argument('--answer-format', choices=('legacy', 'standard-1', 'screening-1'), default='screening-1')
     route_compose.add_argument('--max-questions', type=int)
+    route_compose.add_argument('--fact-question-id', action='append')
     norm = sub.add_parser('normalize')
     for key in ('manifest', 'answers', 'output'):
         norm.add_argument('--' + key, required=True)
@@ -1145,9 +1161,13 @@ def main():
                              package_id=args.module_package_id,
                              route_decision=module_registry._read_json(Path(args.route_decision)) if args.route_decision else None,
                              max_questions=args.max_questions, now_utc=args.now_utc,
-                             expected_route_decision_id=args.expected_route_decision_id)
+                             expected_route_decision_id=args.expected_route_decision_id,
+                             fact_question_ids=args.fact_question_id)
         elif args.command == 'publish-modules':
             result = publish_library()
+        elif args.command == 'publish-facts':
+            package = module_registry.publish_fact_bank(args.module_package_id, root=ROOT)
+            result = {'package_id': package['package_id'], 'release_id': package['release_id'], 'activated': False}
         elif args.command == 'publish-routing':
             import routing as route_engine
             result = route_engine.publish_routing_package(root=ROOT, renderer_version=RENDERER_VERSION,
@@ -1187,7 +1207,8 @@ def main():
         elif args.command == 'compose-route':
             result = compose_from_route(module_registry._read_json(Path(args.route_decision)), args.out_dir,
                 now_utc=args.now_utc, expected_route_decision_id=args.expected_route_decision_id,
-                answer_format=args.answer_format, max_questions=args.max_questions)
+                answer_format=args.answer_format, max_questions=args.max_questions,
+                fact_question_ids=args.fact_question_id)
         else:
             output = normalize(read_json(args.manifest), read_json(args.answers),
                                read_json(args.review) if args.review else None)

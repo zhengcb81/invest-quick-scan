@@ -1,10 +1,13 @@
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
+import shutil
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -77,6 +80,66 @@ def published_fixture(*, entity_id='EXAMPLE_ENTITY_A', company='示例工业设�
 def rehash(record):
     record['observation_id'] = 'obs_' + sa.digest({k: v for k, v in record.items() if k != 'observation_id'})
     return record
+
+
+def test_released_fact_uses_original_answer_and_authority_contracts(tmp_path):
+    import c06_authority
+    import frozen_release_projection
+    import module_registry
+    import pytest
+
+    release_root = tmp_path / 'resources'
+    release_copy = release_root / 'questions' / 'releases'
+    shutil.copytree(ROOT / 'questions' / 'releases',
+                    '\\\\?\\' + str(release_copy) if os.name == 'nt' else release_copy)
+    shutil.copyfile(ROOT / 'questions' / 'facts.json', release_root / 'questions' / 'facts.json')
+    baseline = Path('schemas/quick_scan/module-legacy-baseline.json')
+    (release_root / baseline).parent.mkdir(parents=True)
+    shutil.copyfile(ROOT / baseline, release_root / baseline)
+    base, modules, _, _ = module_registry.load_current(root=release_root)
+    package = module_registry.publish_fact_bank(base['package_id'], root=release_root)
+    assert module_registry.load_current(root=release_root)[0] == base
+    bank = package['format_resources'][module_registry.FACT_BANK_RESOURCE]
+    for changes in ({'id': modules['common']['questions'][0]['id']}, {'relations': 'sells_to'}):
+        invalid = copy.deepcopy(bank)
+        invalid['questions'][0].update(changes)
+        with pytest.raises(ValueError):
+            module_registry.validate_fact_bank(invalid, modules)
+    draft, answers, receipt = fixture(fact=True)
+    profile = draft['profile']
+    output = tmp_path / 'compose'
+    with patch.object(qs, 'ROOT', release_root), patch.object(sa, 'ROOT', release_root):
+        qs.compose(profile, 'quick', output, 'standard-1', package_id=package['package_id'],
+                   fact_question_ids=['FACT_10'])
+        raw = (output / 'manifest.json').read_bytes()
+        manifest = json.loads(raw)
+        fact = manifest['questions'][-1]
+        assert fact['id'] == 'FACT_10' and fact['response_kind'] == 'fact'
+        assert fact['id'] not in {m['question_id'] for m in manifest['question_metric_mappings']}
+        projection = frozen_release_projection.create_projection(manifest, root=release_root)
+        assert projection['questions'][fact['id']]['response_kind'] == 'fact'
+        assert projection['questions'][fact['id']]['relations'] == fact['relations']
+        receipt['requests'][fact['id']]['prompt_sha256'] = fact['prompt_sha256']
+        receipt['manifest_sha256'] = sa.digest(manifest)
+        run = {key: receipt[key] for key in ('run_id', 'scan_id', 'inputset_id', 'task_mode', 'comparison_group_id')}
+        authority = c06_authority.create_authority(manifest,
+            manifest_file_sha256=hashlib.sha256(raw).hexdigest(), identity_snapshot_sha256='a'*64,
+            run_context=run, contract_versions={'identity_schema':'2.1.0','answer_schema':'1.0.0',
+                'observation_schema':'1.1.0','question_catalog':manifest['template_version'],
+                'model_policy_schema':'2.0.0'}, producer={'component_version':'fixture','build_id':'fixture'},
+            root=release_root)
+        assert {'fact_v1', 'score_v1'} <= set(authority['capabilities'])
+        record = sa.build_observations(manifest, answers, receipt)['observations'][0]
+        assert record['answer']['score'] is None
+        assert record['field_id'] == authority['observation_context']['questions'][fact['id']]['metadata']['field_id']
+        tampered = copy.deepcopy(manifest)
+        tampered['questions'][-1]['relations'] = ['different_relation']
+        with pytest.raises(ValueError):
+            frozen_release_projection.create_projection(tampered, root=release_root)
+        over_limit = {**manifest, 'max_questions': len(manifest['questions']) - 1,
+                      'budget_policy': 'basic-required-v1'}
+        with pytest.raises(ValueError):
+            frozen_release_projection.create_projection(over_limit, root=release_root)
 
 
 class StandardAnswerTests(unittest.TestCase):

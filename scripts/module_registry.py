@@ -18,6 +18,7 @@ import module_contract as contract
 
 
 ROOT = Path(__file__).resolve().parents[1]
+FACT_BANK_RESOURCE = 'questions/facts.json'
 PACKAGE_PATTERN = re.compile(r"^pkg_[a-f0-9]{64}$")
 RELEASE_PATTERN = re.compile(r"^modrel_[a-f0-9]{64}$")
 LEGACY_BASELINE_RELEASE_ID = "modrel_18c097b26b82746d3b48d9f2da4858a15ce216bce39c2572d10c2dcef23d32b9"
@@ -273,7 +274,8 @@ def load_package(package_id: str, *, root: Path = ROOT) -> tuple[dict, dict[str,
     required_resources = {"schemas/answer-content.schema.json", "questions/metric-registry.json",
                           "schemas/quick_scan/score.schema.json", "schemas/quick_scan/metric.schema.json"}
     resource_keys = set(body["format_resources"])
-    if resource_keys not in (required_resources, required_resources | {"schemas/observation.schema.json"}):
+    if resource_keys not in (required_resources, required_resources | {"schemas/observation.schema.json"},
+                             required_resources | {"schemas/observation.schema.json", FACT_BANK_RESOURCE}):
         raise ValueError("module package is missing frozen response resources")
     if any(not isinstance(resource, dict) for resource in body["format_resources"].values()):
         raise ValueError("module package response resources must be JSON objects")
@@ -291,6 +293,8 @@ def load_package(package_id: str, *, root: Path = ROOT) -> tuple[dict, dict[str,
                                legacy_ids=legacy_ids,
                                historical_retired_ids=frozenset(release["retired_question_ids"]))
     _validate_contexts(body["scoring_contexts"], modules)
+    if FACT_BANK_RESOURCE in resource_keys:
+        validate_fact_bank(body['format_resources'][FACT_BANK_RESOURCE], modules)
     if release["schema_version"] == "2.0.0":
         _load_routing_policy(root, release, modules)
     return package, modules, release, body["scoring_contexts"]
@@ -328,6 +332,53 @@ def observation_ingest_ready(package: dict) -> bool:
     version = schema.get("properties", {}).get("schema_version", {})
     return (package.get("semantic_fingerprint_version") == "2.0.0"
             and isinstance(version.get("enum"), list) and "1.1.0" in version["enum"])
+
+
+def validate_fact_bank(bank, modules):
+    """Verify the authoring bank against the modules it will be used with."""
+    if not isinstance(bank, dict) or bank.get('response_kind') != 'fact' or not isinstance(bank.get('questions'), list):
+        raise ValueError('invalid fact bank')
+    if not isinstance(bank.get('version'), str) or not bank['version']:
+        raise ValueError('fact bank version is required')
+    ids = {question['id'] for module in modules.values() for question in module['questions']}
+    fields = set()
+    for question in bank['questions']:
+        qid, field = question['id'], question['field_id']
+        if qid in ids or field in fields or not field.startswith('facts.'):
+            raise ValueError('duplicate/invalid fact identity')
+        ids.add(qid)
+        fields.add(field)
+        relations = question['relations']
+        if (not question['question'] or not isinstance(relations, list) or not relations
+                or any(not isinstance(value, str) or not value for value in relations)
+                or len(set(relations)) != len(relations) or question['priority'] not in (1, 2)
+                or not 1 <= question['max_items'] <= 20):
+            raise ValueError('incomplete fact question')
+        for kind in ('types', 'industries', 'stages'):
+            if any(key not in modules or modules[key]['kind'] != kind for key in question['applies'].get(kind, [])):
+                raise ValueError('invalid fact route')
+    for kind in ('types', 'industries', 'stages'):
+        covered = {key for question in bank['questions'] for key in question['applies'].get(kind, [])}
+        required = {key for key, module in modules.items() if module['kind'] == kind and key != 'cyclical'}
+        if covered != required:
+            raise ValueError('missing type/industry/stage fact coverage')
+    return {'questions': len(fields), 'version': bank['version']}
+
+
+def publish_fact_bank(package_id: str, *, root: Path = ROOT) -> dict:
+    """Archive the fact bank beside the verified release without activating it."""
+    root = Path(root)
+    package, modules, _, _ = load_package(package_id, root=root)
+    if not observation_ingest_ready(package):
+        raise ValueError('fact bank requires an observation-ready release')
+    bank = _read_json(root / FACT_BANK_RESOURCE)
+    validate_fact_bank(bank, modules)
+    body = {key: value for key, value in package.items() if key != 'package_id'}
+    body['format_resources'] = {**body['format_resources'], FACT_BANK_RESOURCE: bank}
+    enriched = {**body, 'package_id': 'pkg_' + contract.digest(body)}
+    _write_immutable(_package_path(root, enriched['package_id']),
+                     json.dumps(enriched, ensure_ascii=False, sort_keys=True, indent=2).encode('utf-8') + b'\n')
+    return load_package(enriched['package_id'], root=root)[0]
 
 
 def _historical_packages(root: Path) -> list[tuple[dict, dict[str, dict], dict, dict]]:

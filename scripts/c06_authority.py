@@ -54,13 +54,14 @@ def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256
 
     Identity hash is a binding, never a verified identity attestation. No answer
     fields, model names, execution timestamps or observation IDs are invented.
-    Current support is the released scoring standard-1 path; facts stay F05.
+    Scoring and fact capabilities come from the same released standard manifest.
     """
     if not isinstance(manifest, dict) or manifest.get('answer_format') != 'standard-1':
         raise ValueError('standard-1 frozen manifest required')
     if 'module_package_id' not in manifest:
-        raise ValueError('released scoring module package required')
-    question_manifest.validate_manifest_metric_contract(manifest, root=root)
+        raise ValueError('released module package required')
+    if question_manifest.validate_manifest_metric_contract(manifest, root=root) is None:
+        raise ValueError('released manifest validation required')
     package, _, _, _ = module_registry.load_package(manifest['module_package_id'], root=root)
     if not module_registry.observation_ingest_ready(package):
         raise ValueError('historical release cannot issue new observations')
@@ -124,10 +125,12 @@ def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256
     if subject_binding is not None:
         from subject_context_export import attach_subject_context
         context=attach_subject_context(context,manifest,subject_binding,listing_bindings=listing_bindings)
+    kinds = {question.get('response_kind', 'score') for question in manifest['questions']}
     return {
         'schema_version': '3.0.0' if subject_binding is not None else '2.0.0',
         'contract_versions': copy.deepcopy(contract_versions),
-        'capabilities': ['entity_security_identity_v1', 'standard_observation_v1', 'score_v1'],
+        'capabilities': ['entity_security_identity_v1', 'standard_observation_v1',
+                         *(kind + '_v1' for kind in ('score', 'fact') if kind in kinds)],
         'producer': copy.deepcopy(producer),
         'observation_context': copy.deepcopy(context),
         'observation_context_sha256': answers.digest(context),

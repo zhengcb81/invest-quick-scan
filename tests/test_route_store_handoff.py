@@ -17,15 +17,14 @@ from jsonschema import Draft202012Validator, FormatChecker
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import module_contract as mc
+import question_library
 import question_sets as qs
 
 
-def _core_count(root):
-    """The released core construct count (BASIC-BANK-EXPANSION-21: derived)."""
-    catalog = json.loads((Path(root) / "questions/catalog.json").read_text(encoding="utf-8"))
-    entry = next(item for item in catalog["modules"] if item["id"] == "common")
-    common = json.loads((Path(root) / entry["path"]).read_text(encoding="utf-8"))
-    return len(mc.core_construct_ids(common))
+def _basic_count(root):
+    """The common coverage includes required diagnostics outside the core score."""
+    _, modules = question_library.load_library(root=root)
+    return len(qs.basic_questions(modules))
 import routing
 import route_store_handoff as handoff
 
@@ -73,7 +72,7 @@ def test_actual_producer_bundle_binds_raw_bytes_without_company_score(bundle):
     assert result["expected_decision_id"] == route["decision_id"]
     assert result["route_raw_sha256"] == hashlib.sha256(before[0]).hexdigest()
     assert result["manifest_raw_sha256"] == hashlib.sha256(before[1]).hexdigest()
-    assert result["question_count"] == _core_count(root)
+    assert result["question_count"] == _basic_count(root)
     assert result["new_execution_authorized"] is False
     assert result["source_authentication"] == "caller_owned_anchor_and_trusted_validator_transport_required"
     assert "score" not in result
@@ -169,7 +168,7 @@ def test_edited_current_catalog_does_not_reinterpret_frozen_release(bundle):
     catalog = json.loads(catalog_path.read_bytes())
     catalog["version"] = "99.0.0"
     catalog_path.write_bytes(mc.canonical_bytes(catalog))
-    assert validate(bundle)["question_count"] == _core_count(root)
+    assert validate(bundle)["question_count"] == _basic_count(root)
 
 
 @pytest.mark.parametrize("raw", [b'{"a":1,"a":2}', b'{"a":{"b":1,"b":2}}',

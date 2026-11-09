@@ -1,4 +1,4 @@
-"""Export selected score contracts from verified archives, without answers or IDs."""
+"""Export selected question contracts from verified archives, without answers."""
 import module_registry
 import question_manifest
 import standard_answers
@@ -28,16 +28,17 @@ def create_projection(manifest, *, root):
         raise ValueError('historical release cannot accept new observations')
     questions = {}
     for question in manifest['questions']:
-        if question.get('response_kind', 'score') != 'score':
-            raise ValueError('score release projection does not support facts')
+        kind = question.get('response_kind', 'score')
         questions[question['id']] = {
             'field_id': standard_answers.question_field_id(question),
-            'scope': question['scope'], 'response_kind': 'score',
+            'scope': question['scope'], 'response_kind': kind,
             'definition_sha256': question['definition_sha256'],
             'semantic_sha256': question['semantic_sha256'],
             'rubric_version': question['rubric_version'],
             'construct_id': question['construct_id'],
         }
+        if kind == 'fact':
+            questions[question['id']]['relations'] = list(question['relations'])
     return {'module_package_id': package['package_id'], 'release_id': release['release_id'],
         'catalog_version': release['catalog_version'],
         'semantic_fingerprint_version': package.get('semantic_fingerprint_version', '1.0.0'),
