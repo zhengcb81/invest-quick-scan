@@ -18,7 +18,7 @@ E12 `59c1dd5` 和 Dashboard 浏览器实际 `POST /api/v1/commands` 202、接续
 
 最终 IQS 主线接口合跑 **180 项通过**。旧题库版本标签兼容和两条仅核 24 道评分构念的旧路由断言修复后，题库和路由 **77 项及 31 项子测试通过**。宽测试组中，原有双作用域登记曾在第二作用域返回非 JSON；固定两个 owner 的版本后单独重跑原生 **36 题双作用域 1 项通过**，347.44 秒，未再现故障。独立 agent 用原授权账本和隔离 owner 的 SQLite 核对 F05 一次执行、同一条绑定观察与 ACK，并核对 E12 原运行的启动次数仍为一。未把候选关系当作逐条通过金融审查。
 
-Dashboard 保留并行增加的 `beeba6c` 及其父提交，在 `efad14f` 快进本地 `main`，E12 验收代码与隔离部署一致。远端 `ced8b88`。自动审批拒绝 `git push`，原因是该快进会同时发布 119 个历史提交、634 个跟踪路径及其他生产演练证据，完整发布范围和远端可见性尚未确认。本机清单 `runs/e12-dashboard-closeout-20261109/dashboard-pending-push.txt`。IQS 和 StockQA 已实际推送，StockWiki 无远端。
+Dashboard 保留并行增加的 `beeba6c` 及其父提交，E12 验收代码与隔离部署一致。首次推送因历史范围未获确认被自动审批拒绝。用户于 2026-11-09 明确授权后，逐项核对 `ced8b88..efad14f` 的 119 个提交和 634 个跟踪路径（含生产演练证据），按锁定 SHA 将既有 `origin/main` 非强推快进至 `efad14ff6292924b90a030d8ab87365ca66db8b4`，并以 `git ls-remote` 核对。清单冻结后新增的本地 `main@0dcf61f` 留在本地。本机原清单 `runs/e12-dashboard-closeout-20261109/dashboard-pending-push.txt`。IQS 和 StockQA 已实际推送，StockWiki 无远端。
 
 ## 2026-11-09 模块边界整改候选
 
