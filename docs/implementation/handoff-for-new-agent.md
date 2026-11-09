@@ -1,8 +1,8 @@
 # 当前接手说明
 
-**2026-11-09 当前状态（优先于下方旧日期段）。** 本项目已可在小范围使用，但全项目尚未模块化解耦，F05 真实数据闭环和 G4 均未完成。IQS `master` `3d2bf44` 已推送：修复兼容 query 接口允许模型答案自授 `check_level` 的既往缺陷，定向 106 passed、8 subtests passed，独立审查 ACCEPT。IQS F05 consumer candidate `codex/f05-query-paged-response-01`（`16c7b1a`，已推分支，74 passed）和 StockWiki owner candidate `codex/f05-owner-runtime-01`（`3799b43`，本地提交；该仓没有 remote）已完成接口/测试修复，但均未合入 canonical 两仓。StockWiki 路由正例改为对齐 manifest 全量 question IDs，3项集成测试通过且独立审查 ACCEPT；StockWiki 整组 92 passed、ruff 通过。
+**2026-11-09 当前状态（优先于下方旧日期段）。** 本项目已可在小范围使用，但全项目尚未模块化解耦，F05 真实数据闭环和 G4 均未完成。IQS `master` `3d2bf44` 已推送：修复兼容 query 接口允许模型答案自授 `check_level` 的既往缺陷，定向 106 passed、8 subtests passed，独立审查 ACCEPT。IQS F05 consumer candidate `codex/f05-query-paged-response-01`（`16c7b1a`，已推分支，74 passed）尚未并入 `master`，因为根目录存在重叠 2.8 WIP。StockWiki owner candidate `3799b43` 已快进并入本地 canonical `master`；六文件 F05/路由测试组 45 passed、2 skipped，StockWiki 无 remote。路由 manifest 完整性修复独立审查 ACCEPT。
 
-**当前实质阻塞：** CATL owner 公开 query 返回 `coverage_gap / no_bound_fact_observations`，没有事实正例 golden；F05 仍 partial。IQS 根工作树有别的并行 2.8 WIP，不要 reset、checkout 覆写或 `git add -A`；候选并线前先在单 writer 状态对齐依赖。Theme `master@e35ab39` 与 Industry `main@169c200` 已有 canonical 代码、tracked clean；需在稳定 F05/W11 接口上跑真实技能入口 E2E。然后推进 G4；真实200家 G3、2000家覆盖和 G5/G6 仍未完成。
+**当前实质阻塞：** CATL owner 公开 query 返回 `coverage_gap / no_bound_fact_observations`，没有事实正例 golden；F05 仍 partial。IQS 根工作树有别的并行 2.8 WIP，不要 reset、checkout 覆写或 `git add -A`；consumer 候选并线前先在单 writer 状态对齐依赖。Theme `master@e35ab39` 与 Industry `main@169c200` 已有 canonical 代码、tracked clean；需在稳定 F05/W11 接口上跑真实技能入口 E2E。然后推进 G4；真实200家 G3、2000家覆盖和 G5/G6 仍未完成。
 
 **设计结论：** D1–D7 只证明既定行为范围通过，不等于全仓解耦。跨仓只通过版本化公开 CLI/JSON schema/capability 协议；仓内模块经公开 facade/protocol 协作。Python `_private` 不会天然阻止调用，靠 CI AST/import 边界测试阻止越界，不给每个小改动新增人工审批。稳定接口后可让各仓分别维护自己的 PWF；根 IQS PWF 只做版本/依赖/集成协调，不另造回执或门禁系统。
 

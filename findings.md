@@ -144,7 +144,7 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 ## 2026-11-09 当前独立复核结论
 
 - **已关闭的具体缺陷：** 之前 PWF 标记为冻结兼容基线的 `model_self_qualification` 失败，经本轮复现后确认不是“无害的旧失败”。答案 schema 对新增字段的向后兼容策略让模型自报 `check_level` 穿过语义校验。现从答案校验的公共入口拒绝等级和回执字段，增加两种重封装反例；66项 query v2 全文件及答案语义组合 106 passed、8 subtests passed，独立审查通过。路由集成测试原先仅比较返回列表和返回总数的内部一致性；已改为按 manifest ID 检查题目覆盖、重复与集合差异，定向 3 passed、独立审查 ACCEPT。
-- **没有全部关闭：** F05 的真实 owner 查询仍无事实行（`coverage_gap / no_bound_fact_observations`），所以还缺真实正例 golden 和当前 canonical owner/consumer 的生产式互操作。候选代码在独立分支，StockWiki 无 remote；未声称产品生产接线完成。
+- **没有全部关闭：** StockWiki owner 代码已进入本地 canonical `master@3799b43`，但无 remote；IQS consumer 候选仍在已推送隔离分支、因主线 2.8 WIP 尚未并入。真实 owner 查询仍无事实行（`coverage_gap / no_bound_fact_observations`），所以还缺真实正例 golden 和当前 canonical owner/consumer 的端到端互操作。
 - **解耦并未全仓完成：** 现阶段已建立版本化 IQS/StockWiki F05 JSON CLI、capability declaration 与对应范围的 AST 防回归，但各仓所有模块的 public facade、私有调用/导入规则和依赖方向还没有一张完整且可执行的边界图。旧的私有导入数量是历史快照，不作为本轮精确统计。Python `_` 不是访问控制；适当保障是在 CI 用 AST/import-layer 规则阻止跨边界访问，再用公开 CLI 的契约/集成测试验证。
 - **过度审查/门禁：** 当前没有证据表明已修问题被额外的重复审批或逐文件验收阻断。身份/作用域绑定、来源与时点、费用预留、未知请求防重、锁与 owner ACK 属于业务不变量，应保留。重复的许可库、资格审批/续期回执、每个小节点的独立审查仍不应恢复。主要治理缺口是 PWF 过时，而不是门禁太少。
 - **第一性原理收敛：** 项目慢在“真实数据接口是否能产生可绑定 facts、接口版本是否被两端同样理解、候选如何安全进入主线”，并非缺更多施工卡或更大测试数量。所有仓库先各自拥有数据/实现，通过小而稳定的公开 DTO+schema/capabilities/CLI 通讯；中心 IQS 只协调依赖版本、验收状态和剩余阻塞。单仓单 writer、契约前置、单元/合同/集成/少量真实 E2E 分层，避免把测试报告与接收回执做成第二审批系统。
