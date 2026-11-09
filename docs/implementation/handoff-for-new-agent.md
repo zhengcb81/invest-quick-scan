@@ -1,6 +1,6 @@
 # 当前接手说明
 
-**2026-11-09 模块边界推进。** StockWiki 工作台查询、B03 公司评估和原生准备已并入本地主线 `c2c65c6`。StockQA 的交付控制、工作题库、已注册权限和配置 `d5294fb` 与生命周期 `7eebaae` 已推主线。IQS 查询方言已推 `9540ea8`。部署先更新两个所有者，再更新 IQS 消费者。工作台旧 `--worker` 转发原 JSON 入口，StockQA 保持旧任务工厂兼容。原生隔离和独立复核证据见 [progress.md](../../progress.md)。F05 公开接口候选已推 `18a8ad7`，根工作树 2.8 改动保持独立。外部 Dashboard 消费者在 `codex/iqs-public-reply-boundary-20261109`，任务命令实际接通仍依赖原 IQS `owner_job_cli.py` 包。
+**2026-11-09 模块边界推进。** StockWiki 工作台查询、B03 公司评估和原生准备已并入本地主线 `c2c65c6`。StockQA 交付与配置 `d5294fb`、原生生命周期 `7eebaae`，以及 IQS 查询方言 `9540ea8`、主实现 `25dc299` 均已推主线。部署先更新两个所有者，再更新 IQS 消费者。工作台旧 `--worker` 转发原 JSON 入口，StockQA 保持旧任务工厂兼容。339 项合跑、独立复核和原生零重发证据见 [progress.md](../../progress.md)。F05 公开接口候选已推 `18a8ad7`，根工作树 2.8 改动保持独立。外部 Dashboard 消费者在 `codex/iqs-public-reply-boundary-20261109`，任务命令实际接通仍依赖原 IQS `owner_job_cli.py` 包。
 
 **本轮公开接口整改。** IQS 工作台改为经公开交付操作、恢复引用解析、origin 解析和 TIME 包入口协作。运行 `python -B -m pytest -q tests/test_dashboard_module_boundaries.py` 可以看到越界文件、行号及访问名。该测试已纳入 `scripts/run_tests.py fast`，范围为工作台模块内的显式 Python 引用和常见局部别名。Theme `master@3352b58` 与 Industry `main@7d49ca3` 已使用独立查询捕获目录。Industry 已推送，Theme 仓无远端。真实数据入口仍按根计划验收。
 
