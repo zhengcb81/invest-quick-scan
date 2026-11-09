@@ -21,6 +21,15 @@ import question_sets as qs  # noqa: E402
 import standard_answers as sa  # noqa: E402
 
 
+def test_checked_out_release_artifacts_keep_original_publisher_hashes():
+    locks = sorted((ROOT / "questions/releases/locks").glob("*.json"))
+    assert locks
+    for lock in locks:
+        for row in json.loads(lock.read_bytes())["modules"]:
+            artifact = ROOT / row["artifact_ref"]
+            assert hashlib.sha256(artifact.read_bytes()).hexdigest() == row["artifact_sha256"], artifact
+
+
 class ModuleRegistryTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="iqs-s05-")
