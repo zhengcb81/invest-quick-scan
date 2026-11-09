@@ -16,6 +16,8 @@ import time
 from urllib.parse import parse_qs, urlencode, urlsplit
 from dashboard_locks import control_lock, ControlBusyError
 from dashboard_owner import valid_timeout_seconds, TIMEOUT_SECONDS_MAX
+from dashboard_job_facade import (LIMITS_REF_REGISTRY, MAPPING_VERSION, WIRE_PROTOCOL,
+                                  OWNER_JOB_ID_PATTERN as JOB_ID_PATTERN)
 
 ROOT = Path(__file__).resolve().parents[1]
 SECRET_KEYS = {'api_key', 'apikey', 'api_secret', 'secret', 'password', 'authorization',
@@ -315,6 +317,17 @@ class DashboardService:
         with self._lock:
             batch = self._batches()
         return batch.get(batch_id)
+
+    def _job_facade(self):
+        """Bind the durable job projection to this request's frozen deployment."""
+        from dashboard_job_facade import OwnerJobFacade
+        return OwnerJobFacade(
+            Path(self.config['state_root'])/'owner-jobs',
+            execution=lambda: self._gateway('execution'),
+            preparation_jobs=self._preparation_jobs,
+            delivery_jobs=self._delivery_jobs,
+            batches=self._batches,
+            universe_id=self.config['universe_id'])
 
     def _deliver_scope(self, bundle_id):
         # Capture trusted local references briefly; all slow native I/O runs
@@ -693,6 +706,15 @@ class DashboardService:
             self._preparation_jobs()
         elif path == 'tasks/deliver' or path.startswith('delivery/jobs') or re.fullmatch(r'batches/[^/]+/deliver', path):
             self._delivery_jobs()
+        elif path == 'jobs' or path.startswith('jobs/'):
+            if path.startswith('jobs/prepjob_'):
+                self._preparation_jobs()
+            elif path.startswith('jobs/deliveryjob_'):
+                self._delivery_jobs()
+            elif path.startswith('jobs/batch-'):
+                self._batches()
+            else:
+                self._gateway('execution')
         elif path == 'batches' or path.startswith('batches/'):
             self._batches()
         view = copy.copy(self)
@@ -761,6 +783,15 @@ class DashboardService:
         if method == 'GET':
             if path == 'delivery/jobs':
                 return self._delivery_jobs().list()
+            if path == 'jobs':
+                return self._job_facade().list_jobs(cursor=query.get('cursor'),
+                    limit=query.get('limit', 50))
+            match = re.fullmatch(rf'jobs/({JOB_ID_PATTERN})', path)
+            if match:
+                return self._job_facade().get_status(match[1])
+            match = re.fullmatch(r'jobs/commands/([A-Za-z0-9][A-Za-z0-9._:\-]{0,127})', path)
+            if match:
+                return self._job_facade().get_command(match[1])
             if path == 'prepare/status':
                 return self._preparer().status()
             if path == 'prepare/jobs':
@@ -781,7 +812,20 @@ class DashboardService:
                 return {'api_version': '1.0.0', 'csrf_token': self.csrf_token,
                     'owner': owner, 'execution': execution, 'data': {'workspace_kind': self.config['workspace_kind'],
                     'workspace_label': self.config['workspace_label'], 'workspace_root': self.config['workspace_root']},
-                    'read_has_model_calls': False}
+                    'read_has_model_calls': False,
+                    # OWNERPKG-INVEST-QUICK-SCAN-01: the public job façade rides
+                    # the same origin, transport guards and envelope as this
+                    # control plane; this block is its route discovery record.
+                    'owner_job_facade': {'wire_protocol': WIRE_PROTOCOL,
+                        'mapping_version': MAPPING_VERSION,
+                        'routes': {'submit': 'POST jobs/submit',
+                                   'status': 'GET jobs/{owner_job_id}',
+                                   'actions': 'GET jobs/{owner_job_id} via job_view.allowed_actions',
+                                   'act': 'POST jobs/{owner_job_id}/{cancel|resume|retry|reconcile}',
+                                   'list': 'GET jobs?cursor&limit',
+                                   'command_binding': 'GET jobs/commands/{command_id}'},
+                        'limits_ref_registry': sorted(key for key in LIMITS_REF_REGISTRY if key),
+                        'job_id_kinds': [kind for kind in ('run', 'prepjob', 'deliveryjob', 'batch')]}}
             if path == 'setup':
                 return self._setup()
             if path == 'settings':
@@ -965,6 +1009,15 @@ class DashboardService:
                     bundle = self.config['import_bundles'].get(body.get('bundle_id'), {})
                     return self._apply_import(self._gateway('owner'),bundle,body)
                 return getattr(self._gateway('owner'), action)(body)
+            if path == 'jobs/submit':
+                return self._job_facade().submit_run_scan(body)
+            match = re.fullmatch(rf'jobs/({JOB_ID_PATTERN})/(cancel|resume|retry|reconcile)', path)
+            if match:
+                if not isinstance(body, dict) or set(body) != {'idempotency_key'} \
+                        or not isinstance(body.get('idempotency_key'), str):
+                    raise ProductError('invalid_body', 'job动作体必须是{idempotency_key}。')
+                return self._job_facade().act(match[1],
+                    {'action': match[2], 'idempotency_key': body['idempotency_key']})
             if path in {'tasks/preview', 'tasks/start'}:
                 return getattr(self._gateway('execution'), path.split('/')[1])(body)
             match = re.fullmatch(r'tasks/([A-Za-z0-9_.-]{1,128})/(inspect|pause|resume|retire|seal)', path)

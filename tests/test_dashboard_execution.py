@@ -194,6 +194,73 @@ def start(gateway):
     return gateway.start({"bundle_id": "test", "preview_id": preview["preview_id"]})
 
 
+def test_dashboard_job_bundle_selection_proves_all_requested_coordinates(deployment):
+    config, _, bundle = deployment
+    put(Path(bundle["identity_snapshot"]), {"payload": {"entity_id": "ENT_TEST",
+        "listings": [{"listing_id": "LST_A", "security_id": "SEC_A", "ticker": "TEST", "exchange_raw": "NASDAQ"},
+                     {"listing_id": "LST_B", "security_id": "SEC_A", "ticker": "TEST", "exchange_raw": "NYSE"}]}})
+    put(Path(bundle["manifest"]), {"profile": {"entity_id": "ENT_TEST",
+        "security_id": "SEC_A", "as_of": "2026-10-31", "ticker": "TEST", "exchange": "NASDAQ"}})
+    put(Path(bundle["owner_config"]), {"subject_key": "ASJ_A@3"})
+    gateway = ExecutionGateway({**config, "bundles": {"test": bundle, "second": bundle}})
+    requested = {"bundle_id": "test", "entity_id": "ENT_TEST", "listing_id": "LST_A",
+                 "analysis_subject_id": "ASJ_A", "as_of": "2026-10-31"}
+    registration = gateway.resolve_job_bundle(**requested)
+    assert registration["bundle_id"] == "test"
+    assert registration["bundle_fingerprint"] == gateway.bundle_registration("test")["bundle_fingerprint"]
+    for key, value, error in (
+        ("bundle_id", None, "bundle_selection_required"),
+        ("entity_id", "ENT_OTHER", "entity_mismatch"),
+        ("listing_id", "LST_B", "bundle_listing_mismatch"),
+        ("analysis_subject_id", "ASJ_B", "bundle_subject_mismatch"),
+        ("as_of", "2026-11-01", "bundle_as_of_mismatch"),
+    ):
+        with pytest.raises(DashboardExecutionError) as caught:
+            gateway.resolve_job_bundle(**{**requested, key: value})
+        assert caught.value.code == error
+    assert gateway.tasks(inspect_owner=False)["tasks"] == []
+
+
+def test_stalled_owner_preview_does_not_block_another_registered_start(deployment, monkeypatch):
+    import threading
+
+    config, _, bundle = deployment
+    gateway = ExecutionGateway({**config, "bundles": {
+        "test": bundle, "second": {**bundle, "entity_id": "ENT_OTHER"}}})
+    entered, release = threading.Event(), threading.Event()
+
+    def preview(selection):
+        bundle_id = selection["bundle_id"]
+        if bundle_id == "test":
+            entered.set()
+            assert release.wait(10)
+        return {**gateway.bundle_registration(bundle_id), "can_start": True}
+
+    monkeypatch.setattr(gateway, "preview", preview)
+    with ThreadPoolExecutor(2) as pool:
+        first = pool.submit(gateway.start, {"bundle_id": "test"})
+        assert entered.wait(3)
+        second = pool.submit(gateway.start, {"bundle_id": "second"})
+        try:
+            result = second.result(timeout=5)
+            assert result["process_started"] is True
+        finally:
+            release.set()
+        other = first.result(timeout=5)
+    for launch in (result, other):
+        wait_done(gateway, launch["run"]["run_id"])
+
+
+def test_job_fingerprint_mismatch_refuses_before_owner_preview(deployment, monkeypatch):
+    config, _, _ = deployment
+    gateway = ExecutionGateway(config)
+    monkeypatch.setattr(gateway, "preview", lambda *_: pytest.fail("unbound registration read owner"))
+    with pytest.raises(DashboardExecutionError) as caught:
+        gateway.start({"bundle_id": "test", "entity_id": "ENT_TEST", "bundle_fingerprint": "0" * 64})
+    assert caught.value.code == "bundle_changed"
+    assert caught.value.prelaunch_not_started is True
+
+
 def forbid_model_launch(monkeypatch):
     """Allow real read-only native CLI fixtures, forbid only the model child."""
     original = gateway_module.subprocess.Popen

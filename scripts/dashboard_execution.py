@@ -356,6 +356,44 @@ class ExecutionGateway:
         return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"),
                 "bundle_fingerprint": self._fingerprint(bundle), "API_requests": 0}
 
+    def resolve_job_bundle(self, *, bundle_id, entity_id, listing_id, analysis_subject_id, as_of):
+        """Resolve only registered launch inputs and prove any explicit scope."""
+        key, bundle = self._select({"bundle_id": bundle_id, "entity_id": entity_id}, launching=True)
+        fingerprint = self._fingerprint(bundle)
+        try:
+            if analysis_subject_id is not None:
+                subject_key = _read(bundle["owner_config"])["subject_key"]
+                subject, separator, revision = subject_key.rpartition("@")
+                if not separator or not revision.isdecimal() or subject != analysis_subject_id:
+                    raise DashboardExecutionError("bundle_subject_mismatch", "登记执行包的分析主体不匹配。", 409)
+            if as_of is not None or listing_id is not None:
+                profile = _read(bundle["manifest"])["profile"]
+                if profile["entity_id"] != entity_id:
+                    raise DashboardExecutionError("bundle_entity_mismatch", "登记执行包的题目范围不匹配。", 409)
+                if as_of is not None and profile.get("as_of") != as_of:
+                    raise DashboardExecutionError("bundle_as_of_mismatch", "登记执行包的资料截止日不匹配。", 409)
+                if listing_id is not None:
+                    security_id = bundle.get("security_id") or profile["security_id"]
+                    identity = _read(bundle["identity_snapshot"])
+                    original = identity.get("payload", identity)
+                    listings = [listing for listing in original["listings"]
+                                if security_id and listing.get("security_id") == security_id]
+                    if len(listings) > 1:
+                        listings = [listing for listing in listings
+                                    if profile.get("ticker") and profile.get("exchange")
+                                    and profile["ticker"] in (listing.get("ticker"), listing.get("ticker_raw"))
+                                    and profile["exchange"] in (listing.get("exchange_mic"), listing.get("exchange_raw"))]
+                    if (original["entity_id"] != entity_id or len(listings) != 1
+                            or listings[0].get("listing_id") != listing_id):
+                        raise DashboardExecutionError("bundle_listing_mismatch", "登记执行包的挂牌不匹配。", 409)
+        except DashboardExecutionError:
+            raise
+        except (OSError, ValueError, TypeError, AttributeError, KeyError):
+            raise DashboardExecutionError("bundle_scope_unverifiable", "无法核实登记执行包的原始范围。", 409) from None
+        if fingerprint != self._fingerprint(bundle):
+            raise DashboardExecutionError("bundle_changed", "核实过程中登记执行包有变化。", 409)
+        return {"bundle_id": key, "entity_id": entity_id, "bundle_fingerprint": fingerprint}
+
     def delivery_registration(self, bundle_id):
         """Identify the original output scope, independent of future sends."""
         try:
@@ -791,41 +829,61 @@ class ExecutionGateway:
                 'original_references_absent':True,'current_preflight_sha256':_digest(preview),
                 'past_HTTP_history_attested':False,'API_requests':0,'database_writes':0}
 
+    def _attached_start(self, key, fingerprint):
+        prior = [row for row in self._records() if row["bundle_id"] == key]
+        if not prior:
+            return None
+        record = prior[-1]
+        if record.get('reference_error'):
+            raise DashboardExecutionError('process_reference_corrupt', '该公司的启动引用损坏；请核对原任务，不能按空历史重发。', 409)
+        if record['launcher_state'] == 'retired':
+            raise DashboardExecutionError('run_retired', '该启动引用已退役；保留历史，新执行须原同scope准备', 409, prelaunch_not_started=True)
+        if record["bundle_fingerprint"] != fingerprint:
+            raise DashboardExecutionError("bundle_changed", "执行包已改变；保留原任务，请登记新包后执行", 409, prelaunch_not_started=True)
+        if record["process_state"] in {"running", "starting"} and record["run_id"] not in self._processes:
+            record.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
+        return {"status": "attached", "run": record, "process_started": False, "paid_dispatch_started": None}
+
     def start(self, payload):
-        key, bundle = self._select(payload, launching=True)
+        selection = dict(payload) if isinstance(payload, dict) else payload
+        expected = selection.pop('bundle_fingerprint', None) if isinstance(selection, dict) else None
+        try:
+            key, bundle = self._select(selection, launching=True)
+            fingerprint = self._fingerprint(bundle)
+            if expected is not None and expected != fingerprint:
+                raise DashboardExecutionError('bundle_changed', '命令绑定的登记执行包已变化。', 409)
+        except DashboardExecutionError as exc:
+            exc.prelaunch_not_started = True
+            raise
+        with self._lock:
+            attached = self._attached_start(key, fingerprint)
+        if attached is not None:
+            return attached
+        # Original owner I/O is read-only here. Serialize only the subsequent
+        # reference check and launch publication, so another company can progress.
+        try:
+            preview = self.preview({"bundle_id": key})
+        except DashboardExecutionError as exc:
+            exc.prelaunch_not_started = True
+            raise
         with self._lock:
             self.state_root.mkdir(parents=True, exist_ok=True)
             with self._control_lock('start'):
-                prior = [row for row in self._records() if row["bundle_id"] == key]
-                if prior:
-                    record = prior[-1]
-                    if record.get('reference_error'):
-                        raise DashboardExecutionError('process_reference_corrupt', '该公司的启动引用损坏；请核对原任务，不能按空历史重发。', 409)
-                    if record['launcher_state'] == 'retired':
-                        raise DashboardExecutionError('run_retired', '该启动引用已退役；保留历史，新执行须原同scope准备', 409)
-                    if record["bundle_fingerprint"] != self._fingerprint(bundle):
-                        raise DashboardExecutionError("bundle_changed", "执行包已改变；保留原任务，请登记新包后执行", 409)
-                    if record["process_state"] in {"running", "starting"} and record["run_id"] not in self._processes:
-                        record.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
-                    return {"status": "attached", "run": record, "process_started": False, "paid_dispatch_started": None}
-                # A read-only browser preview is optional, not a launch permit.
-                # Re-read the actual owner now; an old/missing preview_id must
-                # not prevent a valid launch after a server restart or a
-                # harmless work/quote change.
-                fingerprint = self._fingerprint(bundle)
-                preview = self.preview({"bundle_id": key})
-                if not preview["can_start"]:
-                    raise DashboardExecutionError("execution_not_ready", "执行前置未满足", 409, preview,prelaunch_not_started=True)
                 if (preview.get('bundle_fingerprint') != fingerprint
-                        or self._fingerprint(bundle) != fingerprint):
+                        or self.bundles.get(key) != bundle or self._fingerprint(bundle) != fingerprint):
                     raise DashboardExecutionError('bundle_changed', '执行输入在本次检查期间改变，请重新读取当前执行包',
                         409, preview, prelaunch_not_started=True)
+                attached = self._attached_start(key, fingerprint)
+                if attached is not None:
+                    return attached
+                if not preview["can_start"]:
+                    raise DashboardExecutionError("execution_not_ready", "执行前置未满足", 409, preview,prelaunch_not_started=True)
                 root, runtime, _, _ = self._deployment(bundle)
                 run_id = "run-" + uuid.uuid4().hex
                 folder = self.state_root / run_id
                 folder.mkdir()
                 record = {"protocol": "iqs.dashboard_process_reference/1.0.0", "run_id": run_id, "bundle_id": key,
-                          "bundle_fingerprint": self._fingerprint(bundle), "entity_id": bundle["entity_id"], "started_at": _now(),
+                          "bundle_fingerprint": fingerprint, "entity_id": bundle["entity_id"], "started_at": _now(),
                           "process_state": "starting", "launcher_state": "running", "launch_attempt": 1,
                           "pause_scope": "company_boundary", "work_completion_authoritative": False,
                           "result_path": str(folder / "result.json"), "log_path": str(folder / "process.log")}
@@ -841,11 +899,13 @@ class ExecutionGateway:
                 except OSError:
                     record.update(process_state="launch_failed", finished_at=_now(), exit_code=None)
                     _write(path, record)
-                    raise DashboardExecutionError("launch_failed", "本机无法启动原执行器；请检查部署", 503) from None
+                    raise DashboardExecutionError("launch_failed", "本机无法启动原执行器；请检查部署", 503, prelaunch_not_started=True) from None
                 record.update(process_state="running", pid=process.pid)
-                _write(path, record)
                 self._processes[run_id] = process
-                threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
+                try:
+                    _write(path, record)
+                finally:
+                    threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
                 return {"status": "started", "run": record, "process_started": True, "paid_dispatch_started": None}
 
     def _finish(self, process, path, record):
@@ -911,17 +971,13 @@ class ExecutionGateway:
                     self._processes.pop(record["run_id"], None)
 
     def control(self, run_id, action):
+        if action == "inspect":
+            record = self._control_record(run_id)
+            preview = self.preview({"bundle_id": record["bundle_id"]}, read_only=True, _record=record)
+            self._owner_snapshots[run_id] = {'preview': preview, 'observed_at': _now()}
+            return {"run": record, "preview": preview}
         with self._lock, self._control_lock(action):
-            records = [row for row in self._records() if row["run_id"] == run_id]
-            if not records:
-                raise DashboardExecutionError("run_unknown", "没有该启动记录", 404)
-            record = records[0]
-            if record.get('reference_error'):
-                raise DashboardExecutionError('process_reference_corrupt', '该启动记录损坏；原文件已保留，请核对该原任务。', 409)
-            if action == "inspect":
-                preview = self.preview({"bundle_id": record["bundle_id"]}, read_only=True, _record=record)
-                self._owner_snapshots[run_id] = {'preview': preview, 'observed_at': _now()}
-                return {"run": record, "preview": preview}
+            record = self._control_record(run_id)
             path = self.state_root / (run_id + ".json")
             if record['launcher_state'] == 'retired':
                 if action == 'retire':
@@ -1030,6 +1086,15 @@ class ExecutionGateway:
                 return {"run": record, "state": "running", "process_started": True, "paid_dispatch_started": None,
                         "notice": "仅恢复同一原owner登记范围；原执行器复用已保存答案，未知HTTP不重发"}
             raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume", "retire", "seal"]})
+
+    def _control_record(self, run_id):
+        records = [row for row in self._records() if row["run_id"] == run_id]
+        if not records:
+            raise DashboardExecutionError("run_unknown", "没有该启动记录", 404)
+        record = records[0]
+        if record.get('reference_error'):
+            raise DashboardExecutionError('process_reference_corrupt', '该启动记录损坏；原文件已保留，请核对该原任务。', 409)
+        return record
 
     @contextmanager
     def process_control(self, action):
