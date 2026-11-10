@@ -93,6 +93,37 @@ def config():
     )
 
 
+def use_scan_runtime(monkeypatch, services):
+    """Inject a detached public Runtime DTO for composition-only guard tests."""
+    class RuntimePort:
+        model = services.client.model
+
+        def has_native_session(self):
+            return False
+
+        def pack_group_key(self, question_id):
+            question = services.questions[question_id]
+            return services.lifecycle.question_pack_group_key(question)
+
+        def original_inputs(self):
+            import src.utils.quick_scan_company_context as context
+            return context.company_scan_inputs(services.lifecycle)
+
+        def supports_intent_recovery(self):
+            return True
+
+        def attempt_observations(self, *, transport_origin):
+            return []
+
+        def check_admission(self):
+            return services.owner.check()
+
+        def assert_execution_controls(self, **_controls):
+            return services.owner.assert_execution_controls(**_controls)
+
+    monkeypatch.setattr(engine, "_company_runtime", lambda *_args, **_kwargs: RuntimePort())
+
+
 @pytest.mark.parametrize(
     "limit",
     [
@@ -112,7 +143,7 @@ def test_scan_actual_sdk_config_cannot_exceed_declared_task_cap(limit):
         engine._scan_preflight(t, service, config())
 
 
-def test_self_consistent_wrong_group_rejects_before_owner_or_claim():
+def test_self_consistent_wrong_group_rejects_before_owner_or_claim(monkeypatch):
     t = task()
     seen = []
     service = SimpleNamespace(
@@ -122,6 +153,7 @@ def test_self_consistent_wrong_group_rejects_before_owner_or_claim():
             question_pack_group_key=lambda q: seen.append(q) or ["foreign-group"]
         ),
     )
+    use_scan_runtime(monkeypatch, service)
     with pytest.raises(
         engine.SharedEngineRejected, match="scan_profile_native_pack_group_mismatch"
     ):
@@ -175,5 +207,6 @@ def test_pure_scan_construction_does_not_recheck_current_permissions(monkeypatch
         lifecycle=SimpleNamespace(question_pack_group_key=lambda q: ["issuer", "perimeter"]),
         questions={"ORIGINAL_1": "original"}, recover_intent=lambda intent: None,
         attempt_observations=lambda **kw: [], owner=owner)
+    use_scan_runtime(monkeypatch, services)
     assert engine._scan_preflight(t, services, config()) == config()
     assert len(controls) == 1

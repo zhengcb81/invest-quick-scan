@@ -21,6 +21,7 @@ engine = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(engine)
 from src.utils.quick_scan_owner_research import OwnerResearchServices
 from iqs_company_agent_lab.evidence import EvidenceBoard
+from iqs_company_agent_lab.api import create_owner_task, task_snapshot
 
 
 class MapperOnlyServices(OwnerResearchServices):
@@ -28,9 +29,9 @@ class MapperOnlyServices(OwnerResearchServices):
     def __init__(self, task, *, expired=False, proof_bad=False):
         self.task, self.saves, self.restores = task, [], []
         self.expired, self.proof_bad = expired, proof_bad
-        self.owner = SimpleNamespace(bundle={"authority": {}}, entries={q: {"kind": "work", "work_item_id": "WORK_" + q} for q in task.question_ids})
+        self.owner = SimpleNamespace(bundle={"authority": {}}, entries={q: {"kind": "work", "work_item_id": "WORK_" + q} for q in task_snapshot(task)["question_ids"]})
         self.rows, self.checkpoints, self.standards = {}, {}, {}
-        for q in task.question_ids:
+        for q in task_snapshot(task)["question_ids"]:
             self.rows["WORK_" + q] = {"work_item_id": "WORK_" + q, "question_id": q, "status": "leased"}
         self.store = SimpleNamespace(
             get_item=lambda w: copy.deepcopy(self.rows[w]),
@@ -43,12 +44,18 @@ class MapperOnlyServices(OwnerResearchServices):
         )
     def _assert_registered_inputs(self, *, check_current=True):
         pass
+    def bind_task_owner_binding(self, binding):
+        contract = task_snapshot(self.task)
+        subject = contract["company_doc"]["subject"]["subject_ref"]
+        if binding.get("subject_ref") != subject:
+            raise ValueError("native_task_owner_binding_mismatch")
+        self._task_binding = copy.deepcopy(binding)
     def _response(self, attempt_id):
         q = attempt_id.removeprefix("ATTEMPT_")
         return {"receipt": {"attempt_id": "native_" + q, "search_status": "executed", "source_urls": ["https://example.invalid/" + q]}}
     def inspect_attempt(self, ref):
         q = ref.removeprefix("stockqa:native_")
-        if q not in self.task.question_ids:
+        if q not in task_snapshot(self.task)["question_ids"]:
             return {"known": False, "response_saved": None}
         return {"known": True, "native_receipt": self._response("ATTEMPT_" + q)["receipt"],
                 "response_saved": {"final_content": json.dumps({"answers": [answer(q)], "declared_question_ids": [q]}), "tool_calls": None}}
@@ -78,6 +85,33 @@ def answer(q):
     return {"question_id": q, "status": "insufficient_evidence", "score": None, "summary": "synthetic test only"}
 
 
+def finalization_task(question_ids):
+    subject_ref = {"entity_id": "SYNTHETIC_FINALIZE", "scope": "entity", "scope_id": "SYNTHETIC_FINALIZE"}
+    raw = {
+        "protocol": "iqs.company-scan-task/1.0.0",
+        "run_id": "synthetic-finalize",
+        "company_ref": {"path": "company.json", "bytes": 1, "sha256": "a" * 64},
+        "information_cutoff": "2026-10-15",
+        "limits": {},
+        "strategy_id": "free_agent",
+        "question_refs": [],
+    }
+    return create_owner_task(
+        raw,
+        [{"question_id": qid, "question": {"id": qid}} for qid in question_ids],
+        {"origin": "owner_public", "subject": {"subject_ref": subject_ref}},
+        {"records": []},
+        {"provider": "synthetic-test", "model": "synthetic-test"},
+        {},
+        owner_binding={
+            "protocol": "iqs.native-company-owner-binding/1.0.0",
+            "synthetic": False,
+            "subject_ref": subject_ref,
+            "authority_ref": {"id": "synthetic-authority"},
+        },
+    )
+
+
 @pytest.fixture
 def bound(monkeypatch):
     from src.utils import quick_scan_delivery_seal
@@ -85,8 +119,9 @@ def bound(monkeypatch):
     # This fixture isolates composition only, never grants native authority.
     monkeypatch.setattr(quick_scan_delivery_seal, "get_matching_sealed_delivery",
                         lambda store, wid, *, authority: store.get_result_delivery(wid))
-    task = SimpleNamespace(question_ids=["IQS_05", "IQS_06"], raw={"run_id": "synthetic-finalize"})
-    run = {"run_id": task.raw["run_id"], "slots": [{"question_id": q, "execution_status": "completed", "answer": answer(q), "attempt_refs": ["stockqa:native_" + q]} for q in task.question_ids]}
+    question_ids = ["IQS_05", "IQS_06"]
+    task = finalization_task(question_ids)
+    run = {"run_id": task_snapshot(task)["raw"]["run_id"], "slots": [{"question_id": q, "execution_status": "completed", "answer": answer(q), "attempt_refs": ["stockqa:native_" + q]} for q in task_snapshot(task)["question_ids"]]}
     monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: (copy.deepcopy(run), EvidenceBoard(2000)))
     # Glue-only double; the dedicated semantic suite exercises the original rule.
     monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args, **kwargs: lambda body, qid: None)
@@ -96,14 +131,14 @@ def bound(monkeypatch):
 def test_explicit_finalizer_calls_original_seam_and_reuses_completed_checkpoints(bound):
     task, services, _ = bound
     first = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
-    assert first["status"] == "completed" and services.saves == task.question_ids
+    assert first["status"] == "completed" and services.saves == task_snapshot(task)["question_ids"]
     assert first["new_model_http"] == 0 and first["financial_accuracy_assessed"] is False
     assert len(first["checkpoints"]) == 2
     # A fresh service carrier can inspect existing checkpoints without a lease or HTTP.
     services.expired = True
     again = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
-    assert again["reused_question_ids"] == task.question_ids
-    assert services.saves == task.question_ids
+    assert again["reused_question_ids"] == task_snapshot(task)["question_ids"]
+    assert services.saves == task_snapshot(task)["question_ids"]
 
 
 def test_finalization_summary_uses_verified_task_id_when_slot_projection_has_no_id(bound, monkeypatch):
@@ -111,13 +146,21 @@ def test_finalization_summary_uses_verified_task_id_when_slot_projection_has_no_
     monkeypatch.setattr(engine, "_verified_finalization_export",
                         lambda *args: ({"slots": copy.deepcopy(run["slots"])}, EvidenceBoard(2000)))
     result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
-    assert result["run_id"] == task.raw["run_id"]
+    assert result["run_id"] == task_snapshot(task)["raw"]["run_id"]
     assert result["status"] == "completed"
 
 
 def test_finalizer_refuses_arbitrary_service_before_export_read():
-    with pytest.raises(engine.SharedEngineRejected, match="original_owner"):
+    with pytest.raises(engine.SharedEngineRejected, match="original_company_task_contract_required"):
         engine.finalize_shared_engine(object(), object(), Path("never-read"))
+
+
+def test_finalizer_normalizes_invalid_owner_runtime_before_export_read(tmp_path):
+    task = finalization_task(["IQS_INVALID_RUNTIME"])
+    export = tmp_path / "must-not-read-or-create"
+    with pytest.raises(engine.SharedEngineRejected, match="original_owner_research_services"):
+        engine.finalize_shared_engine(task, object(), export)
+    assert not export.exists()
 
 
 @pytest.mark.parametrize("change", ["wrong_ref", "foreign_member", "changed_answer", "partial"])
@@ -159,7 +202,7 @@ def test_existing_checkpoint_for_different_standard_answer_is_not_reused(bound):
     services.standards["WORK_IQS_06"]["answer"]["summary"] = "conflicting existing answer"
     with pytest.raises(engine.SharedEngineRejected, match="existing_checkpoint"):
         engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
-    assert services.saves == task.question_ids
+    assert services.saves == task_snapshot(task)["question_ids"]
 
 
 def test_partial_native_publication_resumes_only_unsaved_member_without_resend(bound):
@@ -173,7 +216,7 @@ def test_partial_native_publication_resumes_only_unsaved_member_without_resend(b
     result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
     assert result["reused_question_ids"] == ["IQS_05"]
     assert result["new_model_http"] == 0
-    assert services.saves == task.question_ids and len(services.checkpoints) == 2
+    assert services.saves == task_snapshot(task)["question_ids"] and len(services.checkpoints) == 2
 
 
 def test_saved_checkpoints_with_failed_seal_do_not_claim_finalization_complete(bound):
@@ -182,13 +225,13 @@ def test_saved_checkpoints_with_failed_seal_do_not_claim_finalization_complete(b
     pending = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
     assert pending["status"] == "checkpointed_delivery_pending"
     assert pending["checkpoint_status"] == "completed"
-    assert pending["pending_delivery_question_ids"] == task.question_ids
-    assert services.saves == task.question_ids
+    assert pending["pending_delivery_question_ids"] == task_snapshot(task)["question_ids"]
+    assert services.saves == task_snapshot(task)["question_ids"]
     services.delivery_pending = False
     completed = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
     assert completed["status"] == "completed" and completed["pending_delivery_question_ids"] == []
-    assert completed["reused_question_ids"] == task.question_ids
-    assert completed["new_model_http"] == 0 and services.saves == task.question_ids
+    assert completed["reused_question_ids"] == task_snapshot(task)["question_ids"]
+    assert completed["new_model_http"] == 0 and services.saves == task_snapshot(task)["question_ids"]
 
 
 def test_old_ready_package_is_not_current_authority_completion(bound, monkeypatch):
@@ -201,7 +244,7 @@ def test_old_ready_package_is_not_current_authority_completion(bound, monkeypatc
     assert first["checkpoint_status"] == "completed"
     assert first["status"] == "checkpointed_delivery_pending"
     assert all(row["delivery_state"] == "ready" and not row["delivery_matches_authority"] for row in first["checkpoints"])
-    assert first["pending_delivery_question_ids"] == task.question_ids
+    assert first["pending_delivery_question_ids"] == task_snapshot(task)["question_ids"]
     before = copy.deepcopy(services.checkpoints)
     current["matched"] = True
     again = engine.finalize_shared_engine(task, services, Path("unused-unit-export"))
@@ -213,8 +256,8 @@ def test_old_ready_package_is_not_current_authority_completion(bound, monkeypatc
 @pytest.mark.parametrize("error_name", ["WorkConflictError", "LeaseFencedError"])
 def test_work_local_finalization_conflict_preserves_other_members(bound, stage, error_name):
     from src.utils import quick_scan_work_store as native_store
-    task, _, run = bound
-    task.question_ids.append("IQS_07")
+    _, _, run = bound
+    task = finalization_task(["IQS_05", "IQS_06", "IQS_07"])
     run["slots"].append(dict(question_id="IQS_07", execution_status="completed",
         answer=answer("IQS_07"), attempt_refs=["stockqa:native_IQS_07"]))
     services = MapperOnlyServices(task)
@@ -355,10 +398,10 @@ def test_partial_selection_retains_all_native_preflight_guards(bound, fault):
 def test_explicit_all_selection_uses_original_task_order_and_retains_complete_semantics(bound):
     task, services, _ = bound
     result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"),
-                                           question_ids=list(reversed(task.question_ids)))
+                                           question_ids=list(reversed(task_snapshot(task)["question_ids"])))
     assert result["status"] == "completed" and result["whole_task_finalized"] is True
-    assert services.saves == task.question_ids
-    assert result["selected_question_ids"] == task.question_ids
+    assert services.saves == task_snapshot(task)["question_ids"]
+    assert result["selected_question_ids"] == task_snapshot(task)["question_ids"]
     assert result["unfinalized_question_ids"] == []
 
 
@@ -366,7 +409,7 @@ def test_explicit_full_scope_with_pending_delivery_is_not_whole_task_finalized(b
     task, services, _ = bound
     services.delivery_pending = True
     result = engine.finalize_shared_engine(task, services, Path("unused-unit-export"),
-                                           question_ids=task.question_ids)
+                                           question_ids=task_snapshot(task)["question_ids"])
     assert result["status"] == "checkpointed_delivery_pending"
     assert result["whole_task_finalized"] is False
-    assert result["pending_delivery_question_ids"] == task.question_ids
+    assert result["pending_delivery_question_ids"] == task_snapshot(task)["question_ids"]

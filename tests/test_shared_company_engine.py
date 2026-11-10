@@ -139,8 +139,51 @@ class SyntheticObservations:
         return rows
 
 
+class CompositionRuntime:
+    """Test adapter implementing the engine's public Runtime port only."""
+    def __init__(self, services):
+        self.services = services
+        self.model = getattr(getattr(services, "client", None), "model", "synthetic-test")
+        self.provider = getattr(
+            getattr(services, "client", None), "provider_name", "synthetic-test"
+        )
+
+    def has_native_session(self):
+        return bool(getattr(self.services, "native_session", False))
+
+    def attempt_observations(self, *, transport_origin):
+        method = getattr(self.services, "attempt_observations", None)
+        return method(transport_origin=transport_origin) if callable(method) else []
+
+    def supports_intent_recovery(self):
+        return callable(getattr(self.services, "recover_intent", None))
+
+    def recover_intent(self, intent):
+        return self.services.recover_intent(intent)
+
+    def inspect_attempt(self, reference):
+        method = getattr(self.services, "inspect_attempt", None)
+        return method(reference) if callable(method) else {"known": False}
+
+
+def use_composition_runtime(monkeypatch):
+    # These tests exercise recovery orchestration. StockQA's public facade and
+    # its real owner admission are covered by separate owner-side tests.
+    monkeypatch.setattr(
+        engine,
+        "_company_runtime",
+        lambda services, contract=None: CompositionRuntime(services),
+    )
+
+
 def test_cli_capabilities_has_no_unreviewed_production_launch():
-    result = subprocess.run([sys.executable, str(Path(engine.__file__)), "capabilities"], capture_output=True, check=True)
+    env = dict(os.environ, PYTHONPATH="")
+    result = subprocess.run(
+        [sys.executable, str(Path(engine.__file__)), "capabilities"],
+        capture_output=True,
+        check=True,
+        env=env,
+    )
     payload = json.loads(result.stdout)
     assert payload["production_owner_admitted"] is False
     assert payload["financial_accuracy_assessed"] is False
@@ -235,7 +278,7 @@ def test_native_inspection_rejects_double_never_falls_back_to_resend():
         engine.inspect_native_recovery(SimpleNamespace(), attempt_ref="stockqa:unproven")
 
 
-def test_prior_service_observations_refused_instead_of_relabelled_new_http():
+def test_prior_service_observations_refused_instead_of_relabelled_new_http(monkeypatch):
     # A constructor-bypassed object is used ONLY as an invalid-input counterexample.
     # It never reaches owner.check, native dispatch or an asserted native positive.
     from src.utils.quick_scan_owner_research import OwnerResearchServices
@@ -247,6 +290,7 @@ def test_prior_service_observations_refused_instead_of_relabelled_new_http():
     services.client = SimpleNamespace(model="deepseek-flash", provider_name="mimo")
     services.attempt_observations = lambda **kwargs: [{"runtime_attempt_ref": "stockqa:previous-run"}]
     services.owner = SimpleNamespace(check=lambda: pytest.fail("must reject before fake owner check"))
+    use_composition_runtime(monkeypatch)
     with pytest.raises(engine.SharedEngineRejected, match="fresh_owner_service_observer"):
         engine.preflight(task, services, {"protocol": "iqs.agent-runtime-lab.session-config/1.0.0"})
 
@@ -288,6 +332,7 @@ def _crash_checkpoint(tmp_path, *, strategy="free_agent", legacy=False):
 
 
 def test_resume_unknown_original_proof_refuses_before_new_session_or_http(tmp_path, monkeypatch):
+    use_composition_runtime(monkeypatch)
     task, old_port, checkpoint = _crash_checkpoint(tmp_path)
     # These patches isolate composition control flow. They are explicitly not
     # native authority positives or acceptance of a fabricated owner DTO.
@@ -305,6 +350,7 @@ def test_resume_unknown_original_proof_refuses_before_new_session_or_http(tmp_pa
 @pytest.mark.parametrize("replay_only", [False, True])
 @pytest.mark.parametrize("original_sqlite", [False, True])
 def test_resume_proven_unsent_preserves_original_task_and_one_request_cap(tmp_path, monkeypatch, replay_only, original_sqlite):
+    use_composition_runtime(monkeypatch)
     task = helpers.make_task("free_agent", "composition-proven-unsent", max_model=1)
     stopped = ContextPort(task, fail=True)
     with pytest.raises(engine.SharedEngineInterrupted):
@@ -317,8 +363,8 @@ def test_resume_proven_unsent_preserves_original_task_and_one_request_cap(tmp_pa
     assert raw["pending_receipt"] is None and raw["state"]["counters"]["model_http"] == 0
     monkeypatch.setattr(engine, "preflight", lambda *args: {})
     fresh = ContextPort(task)
-    import iqs_agent_runtime_lab.port
-    monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *a, **kw: fresh)
+    import iqs_agent_runtime_lab.api
+    monkeypatch.setattr(iqs_agent_runtime_lab.api, "create_runtime_port", lambda *a, **kw: fresh)
     class Unsent(SyntheticObservations):
         def recover_intent(self, intent):
             return {"decision": "not_sent", "saved_receipt": None}
@@ -368,6 +414,7 @@ def test_resume_proven_unsent_preserves_original_task_and_one_request_cap(tmp_pa
 
 
 def test_resume_unsent_classification_with_pending_receipt_is_still_refused(tmp_path, monkeypatch):
+    use_composition_runtime(monkeypatch)
     task, old_port, checkpoint = _crash_checkpoint(tmp_path, legacy=True)
     assert json.loads(checkpoint.read_text(encoding="utf8"))["pending_receipt"] is not None
     monkeypatch.setattr(engine, "preflight", lambda *args: {})
@@ -381,6 +428,7 @@ def test_resume_unsent_classification_with_pending_receipt_is_still_refused(tmp_
 
 @pytest.mark.parametrize("legacy", [False, True])
 def test_resume_original_saved_receipt_uses_fresh_port_zero_new_model_calls(tmp_path, monkeypatch, legacy):
+    use_composition_runtime(monkeypatch)
     task, old_port, checkpoint = _crash_checkpoint(tmp_path, legacy=legacy)
     monkeypatch.setattr(engine, "preflight", lambda *args: {})
     saved = copy.deepcopy(old_port.receipts[0])
@@ -390,8 +438,8 @@ def test_resume_original_saved_receipt_uses_fresh_port_zero_new_model_calls(tmp_
     monkeypatch.setattr(engine, "inspect_native_recovery", lambda *args, **kwargs:
         {"decision": "recover_saved_receipt", "saved_receipt": saved})
     fresh_port = ContextPort(task)
-    import iqs_agent_runtime_lab.port
-    monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *args, **kwargs: fresh_port)
+    import iqs_agent_runtime_lab.api
+    monkeypatch.setattr(iqs_agent_runtime_lab.api, "create_runtime_port", lambda *args, **kwargs: fresh_port)
     class Replayed(SyntheticObservations):
         def inspect_attempt(self, ref):
             return {"known": True}
@@ -415,6 +463,7 @@ def test_resume_original_saved_receipt_uses_fresh_port_zero_new_model_calls(tmp_
 
 
 def test_native_recovery_conflicting_known_usage_never_hidden_by_physical_dedup(tmp_path, monkeypatch):
+    use_composition_runtime(monkeypatch)
     task, old_port, checkpoint = _crash_checkpoint(tmp_path, legacy=True)
     monkeypatch.setattr(engine, "preflight", lambda *args: {})
     saved = copy.deepcopy(old_port.receipts[0])
@@ -469,6 +518,7 @@ def test_unresolved_original_intent_stops_before_generation(tmp_path):
 
 
 def test_os_process_death_after_response_restores_original_pending_checkpoint(tmp_path, monkeypatch):
+    use_composition_runtime(monkeypatch)
     # The child exits immediately: no exception handler or Python finally can
     # manufacture the checkpoint after the fact. The response is a labelled
     # synthetic native-output stand-in; no network socket or owner is used.
@@ -508,8 +558,8 @@ t.engine._execute_with_port(task, t.SyntheticObservations(port), port,
     monkeypatch.setattr(engine, "inspect_native_recovery", lambda *args, **kwargs:
         {"decision": "recover_saved_receipt", "saved_receipt": saved})
     fresh = ContextPort(task)
-    import iqs_agent_runtime_lab.port
-    monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *args, **kwargs: fresh)
+    import iqs_agent_runtime_lab.api
+    monkeypatch.setattr(iqs_agent_runtime_lab.api, "create_runtime_port", lambda *args, **kwargs: fresh)
     class Recovered(SyntheticObservations):
         def inspect_attempt(self, ref):
             return {"known": True}

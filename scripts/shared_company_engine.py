@@ -17,7 +17,6 @@ from pathlib import Path
 
 PROTOCOL = "iqs.shared-company-engine/1.0.0"
 
-
 class SharedEngineRejected(ValueError):
     pass
 
@@ -30,7 +29,54 @@ class SharedEngineInterrupted(RuntimeError):
         self.session_dir = Path(session_dir)
 
 
+def _ensure_script_import_path():
+    import sys
+
+    scripts = str(Path(__file__).resolve().parent)
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+
+
+def _current_owner_api_protocols():
+    _ensure_script_import_path()
+    from shared_company_ports import current_owner_api_protocols
+
+    return current_owner_api_protocols()
+
+
+def _task_contract(task):
+    """Read the Company's versioned detached task DTO, never its fields."""
+    from iqs_company_agent_lab.api import task_snapshot
+
+    try:
+        contract = task_snapshot(task)
+    except (TypeError, ValueError) as error:
+        raise SharedEngineRejected("original_company_task_contract_required") from error
+    if contract.get("protocol") != "iqs.company-agent-task-contract/1.1.0":
+        raise SharedEngineRejected("company_task_contract_version_unsupported")
+    return contract
+
+
+def _company_runtime(services, contract=None):
+    """Ask StockQA's public API for its opaque, task-bound Runtime port."""
+    try:
+        from src.utils.quick_scan_company_api import create_company_research_runtime
+
+        return create_company_research_runtime(services, task_contract=contract)
+    except ImportError as error:
+        raise SharedEngineRejected("stockqa_company_runtime_api_unavailable") from error
+    except (TypeError, ValueError) as error:
+        raise SharedEngineRejected(str(error)) from error
+
+
 def capabilities():
+    # Capability discovery reports our minimum public-port requirements and
+    # remains usable before sibling repositories are installed. Runtime
+    # admission checks their actual declarations separately.
+    _ensure_script_import_path()
+    from shared_company_ports import required_owner_api_protocols
+
+    owner_apis = required_owner_api_protocols()
     return {
         "protocol": PROTOCOL,
         "execution_api": "execute_shared_engine",
@@ -44,6 +90,9 @@ def capabilities():
             "original_RuntimeBridgePort",
             "native_safe_visible_output",
         ],
+        # Preserve the v1 capability envelope for existing StockQA readers.
+        # These describe the historical registered sample profile; generic
+        # task admission is derived from the owner task contract below.
         "registered_question_count": 12,
         "registered_cutoff": "2026-10-13",
         "strategies": ["fixed3", "free_agent", "evidence_agent"],
@@ -63,6 +112,7 @@ def capabilities():
             "search_queries": 0,
             "qualification_granted": False,
         },
+        "required_owner_api_protocols": owner_apis,
         "unsupported_scope": "implicit_research_execution_and_cli",
         "unsupported": [
             "native_multiturn_packs",
@@ -77,168 +127,100 @@ def capabilities():
 
 def preflight(task, services, session_config):
     """Validate the bounded composition without claiming a new owner grant."""
-    from iqs_agent_runtime_lab.port import validate_session_config
-    from iqs_company_agent_lab.strategy import strategy_for_task
-    from iqs_company_agent_lab.task import LoadedTask
-    from src.utils.quick_scan_company_runtime import CompanyResearchRuntime, is_admitted_research_service
-
-    if not is_admitted_research_service(services):
-        raise SharedEngineRejected("original_owner_research_services_required")
-    if not isinstance(task, LoadedTask) or services.task is not task:
-        raise SharedEngineRejected("original_service_bound_task_required")
-    if task.company_doc.get("origin") != "owner_public" or not getattr(task, "owner_binding", None):
+    try:
+        _current_owner_api_protocols()
+    except ValueError as error:
+        raise SharedEngineRejected(str(error)) from error
+    from iqs_agent_runtime_lab.api import validate_session_config
+    from iqs_company_agent_lab.api import task_pack_sizes
+    contract = _task_contract(task)
+    runtime = _company_runtime(services, contract)
+    if contract["company_doc"].get("origin") != "owner_public" or not contract.get("owner_binding"):
         raise SharedEngineRejected("original_owner_public_binding_required")
-    strategy_for_task(task)  # Full question IDs, contracts and scheduling projection.
-    if task.raw.get("protocol") == "iqs.company-scan-task/1.0.0":
+    raw = contract["raw"]
+    question_ids = contract["question_ids"]
+    pack_sizes = task_pack_sizes(task)
+    if raw.get("protocol") == "iqs.company-scan-task/1.0.0":
         return _scan_preflight(task, services, session_config)
-    if len(task.question_ids) != 12 or task.raw.get("information_cutoff") != "2026-10-13":
-        raise SharedEngineRejected("registered_twelve_question_task_required")
-    runtime = CompanyResearchRuntime(services)
+    if not question_ids or not isinstance(raw.get("information_cutoff"), str) or not pack_sizes:
+        raise SharedEngineRejected("registered_question_task_contract_required")
     config = validate_session_config(session_config)
     if config.get("logical_clock") is not False:
         raise SharedEngineRejected("native_runtime_requires_wall_clock")
     if config["planned_model"] != runtime.model:
         raise SharedEngineRejected("original_model_route_mismatch")
-    if services.native_session:
+    if runtime.has_native_session():
         # All three registered strategies may select several questions in one
         # intent. Native session registration presently supports singleton work.
         raise SharedEngineRejected("native_multiturn_question_pack_not_supported")
-    if not callable(getattr(services, "recover_intent", None)):
+    if not runtime.supports_intent_recovery():
         raise SharedEngineRejected("original_native_intent_lookup_required")
-    if services.attempt_observations(transport_origin="scripted_wire"):
+    if runtime.attempt_observations(transport_origin="scripted_wire"):
         # Observer classification is per execution, while native SQLite and
         # budget history persist. Reusing a prior run's observer would mislabel
         # historical responses as newly sent requests in the new summary.
         raise SharedEngineRejected("fresh_owner_service_observer_required")
-    _production_answer_semantics(task, services)
+    _production_answer_semantics(task, runtime)
     if runtime.provider != "mimo":
         raise SharedEngineRejected("native_one_shot_question_pack_requires_mimo")
     runtime.check_admission()
     runtime.assert_execution_controls(
-        pack_size=12 if task.raw["strategy_id"] == "free_agent" else 3,
+        pack_size=max(pack_sizes),
         thinking_enabled=True,
         max_output_tokens=config["max_output_tokens"],
     )
     return config
 
 
+def _answer_validation_api():
+    """Resolve and verify the IQS-owned answer-validation module contract."""
+    _ensure_script_import_path()
+    import answer_validation
+
+    if getattr(answer_validation, "API_PROTOCOL", None) != "iqs.answer-validation-api/1.0.0":
+        raise SharedEngineRejected("answer_validation_api_version_unsupported")
+    return answer_validation
+
+
 def _original_answer_resources(context, root):
-    """Resolve resources already named by the original owner, not current files.
-
-    Production contexts name an immutable module package. Older research
-    contexts carry only the two original digests; retain that format by looking
-    up matching existing resources, without requiring new fields or rewriting
-    the task. An unrelated new registry entry cannot change old semantics.
-    """
-    import module_registry
-    import standard_answers
-
-    names = {"answer_schema_sha256": "schemas/answer-content.schema.json",
-             "metric_registry_sha256": "questions/metric-registry.json"}
-    if not isinstance(context, dict):
-        raise SharedEngineRejected("original_answer_context_required")
-
-    def matches(resources):
-        return all(standard_answers.digest(resources[name]) == context.get(key)
-                   for key, name in names.items())
-
-    ids = {row.get("metadata", {}).get("module_package_id")
-           for row in context.get("questions", {}).values() if isinstance(row, dict)} - {None}
-    if ids:
-        if len(ids) != 1:
-            raise SharedEngineRejected("original_answer_resource_package_mismatch")
-        package, _, _, _ = module_registry.load_package(next(iter(ids)), root=root)
-        resources = package["format_resources"]
-        return copy.deepcopy(resources)
-
-    # Legacy research contexts have no package ID. Resource hashes are lookup
-    # keys, not a requirement that today's catalog still has the same hash.
-    legacy_resources = None
+    """Compatibility wrapper for callers of the original helper."""
+    api = _answer_validation_api()
     try:
-        resources = {name: standard_answers.library.read_json(root / name) for name in names.values()}
-        legacy_resources = resources
-        if matches(resources):
-            return resources
-    except (OSError, ValueError, KeyError, TypeError):
-        # An unavailable current authoring tree is not a prerequisite for
-        # reading an old, independently verified resource package.
-        pass
-    for path in sorted((root / "questions/releases/packages").glob("pkg_*.json")):
-        try:
-            package, _, _, _ = module_registry.load_package(path.stem, root=root)
-        except (OSError, ValueError, KeyError, TypeError):
-            continue  # An unrelated broken package must not hide the original.
-        if matches(package["format_resources"]):
-            return copy.deepcopy(package["format_resources"])
-    # Original research-only contexts did not bind a package. Their descriptive
-    # whole-resource hashes were never an admission gate. Keep that old reader
-    # when no original archive can be identified, rather than inventing one.
-    if legacy_resources is not None:
-        return legacy_resources
-    raise SharedEngineRejected("original_answer_resources_unavailable")
+        return api.original_answer_resources(context, root)
+    except api.AnswerSemanticsRejected as error:
+        raise SharedEngineRejected(str(error)) from error
 
 
 def _frozen_answer_semantics(task, context, *, release_root=None):
-    """Validate original questions; whole registry hashes are provenance only.
-
-    Adding an unrelated metric or schema annotation must not invalidate an
-    already received answer. Actual question, unit and evidence semantics are
-    still validated below, without changing the original body or hash record.
-    """
-    import sys
-
-    scripts = Path(__file__).resolve().parent
-    if str(scripts) not in sys.path:
-        sys.path.insert(0, str(scripts))
-    import standard_answers
-    import question_prompts
-
-    if (Path(standard_answers.__file__).resolve() != scripts / "standard_answers.py"
-        or Path(question_prompts.__file__).resolve() != scripts / "question_prompts.py"):
-        raise SharedEngineRejected("original_standard_answer_validator_required")
-    root = Path(release_root) if release_root is not None else scripts.parent
-    resources = _original_answer_resources(context, root)
-    schema = resources["schemas/answer-content.schema.json"]
-    registry = resources["questions/metric-registry.json"]
-    questions = {row["question_id"]: copy.deepcopy(row["question"]) for row in task.questions}
-    if (len(questions) != len(task.questions)
-        or set(questions) != set(task.question_ids)
-        or any(question.get("id") != qid for qid, question in questions.items())):
-        raise SharedEngineRejected("original_semantic_question_contract_required")
-    cutoff = task.raw["information_cutoff"]
-
-    def validate_original(answer, question_id):
-        if question_id not in questions or answer.get("question_id") != question_id:
-            raise ValueError("original semantic question mismatch")
-        before = copy.deepcopy(answer)
-        standard_answers.validate_content(answer, questions[question_id], cutoff,
-                                          answer_schema=schema, metric_registry=registry)
-        if answer != before:
-            raise ValueError("original semantic validator changed answer")
-
-    validate_original.prompt_rules = tuple(question_prompts.typed_semantic_rules(q)
-                                            for q in questions.values())
-    validate_original.legacy_prompt_rules = tuple(question_prompts.legacy_typed_semantic_rules(q)
-                                                   for q in questions.values())
-    return validate_original
+    """Delegate answer validation to the IQS-owned public validation module."""
+    api = _answer_validation_api()
+    try:
+        return api.frozen_answer_semantics(task, context, release_root=release_root)
+    except api.AnswerSemanticsRejected as error:
+        raise SharedEngineRejected(str(error)) from error
 
 
 def _production_answer_semantics(task, services, *, for_publication=False):
     # Synthetic/old research entry points retain their historical default.
     # Public production preflight already requires an original owner task.
-    if getattr(task, "company_doc", {}).get("origin") != "owner_public":
+    try:
+        contract = _task_contract(task)
+    except SharedEngineRejected:
+        # Synthetic/local research tests retain their historical no-native
+        # semantics; production preflight requires the versioned DTO first.
         return None
-    from src.utils.quick_scan_company_runtime import CompanyResearchRuntime
-
-    inputs = CompanyResearchRuntime(services).original_inputs()
+    if contract["company_doc"].get("origin") != "owner_public":
+        return None
+    runtime = _company_runtime(services, contract)
+    inputs = runtime.original_inputs()
     context = inputs.observation_context
     owner_config = json.loads(inputs.input_raw["owner-config.json"])
-    original = _frozen_answer_semantics(task, context,
+    original = _frozen_answer_semantics(contract, context,
         release_root=owner_config["iqs_release_root"])
 
     def validate_native(answer, question_id, *, attempt_ref, evidence_board):
         original(answer, question_id)
-        return _validate_native_answer_sources(task, services, context, answer, question_id,
+        return _validate_native_answer_sources(contract, runtime, context, answer, question_id,
                                                attempt_ref=attempt_ref, evidence_board=evidence_board,
                                                for_publication=for_publication)
 
@@ -252,12 +234,10 @@ def _production_answer_semantics(task, services, *, for_publication=False):
 def _validate_native_answer_sources(task, services, context, answer, question_id,
                                     *, attempt_ref, evidence_board, for_publication):
     """Read the exact native member/use proof; never infer a latest response."""
-    from iqs_company_agent_lab.answers import check_citation_closure
-    from src.utils.quick_scan_company_runtime import CompanyResearchRuntime
-
+    from iqs_company_agent_lab.api import check_citation_closure
     if evidence_board is None:
         raise ValueError("original successful current native reference required")
-    runtime = CompanyResearchRuntime(services)
+    runtime = _company_runtime(services, task)
     sources = runtime.answer_source_context(question_id, attempt_ref, context)
     body, board = copy.deepcopy(answer), copy.deepcopy(evidence_board)
     # A diagnostic with no claims may complete research/replay of an already
@@ -279,8 +259,8 @@ def _validate_native_answer_sources(task, services, context, answer, question_id
 
 def _write_atomic(path, payload):
     """Same-directory replacement retains the last complete original record."""
-    from iqs_company_agent_lab.canonical import canonical_json
-    from iqs_company_agent_lab.events import scan_for_secret
+    from iqs_company_agent_lab.api import canonical_json
+    from iqs_company_agent_lab.api import scan_for_secret
 
     raw = canonical_json(payload).encode("utf8")
     scan_for_secret(raw.decode("utf8"))
@@ -320,8 +300,8 @@ def _replace_record(temporary, path):
 
 
 def _new_session(session_dir, task):
-    from iqs_company_agent_lab.pathsafety import ensure_safe_output_dir
-    from iqs_company_agent_lab.task import task_bundle
+    from iqs_company_agent_lab.api import ensure_safe_output_dir
+    from iqs_company_agent_lab.api import task_bundle
 
     session_dir = Path(session_dir)
     ensure_safe_output_dir(session_dir)
@@ -331,48 +311,48 @@ def _new_session(session_dir, task):
 
 
 def _journal(session_dir, run_id, *, start_seq=-1, start_head=None):
-    from iqs_company_agent_lab.canonical import canonical_json
-    from iqs_company_agent_lab.events import EventJournal
+    from iqs_company_agent_lab.api import canonical_json
+    from iqs_company_agent_lab.api import create_durable_event_journal
 
-    class DurableOriginalJournal(EventJournal):
-        """Original event validation/hash chain; add only atomic persistence."""
+    def persist_events(events):
+        raw = ("\n".join(canonical_json(row) for row in events) + "\n").encode("utf8")
+        _publish_atomic(session_dir / "events.jsonl", lambda temporary: temporary.write_bytes(raw))
 
-        def append(self, event_type, data, segment_id=None):
-            event = super().append(event_type, data, segment_id)
-            raw = ("\n".join(canonical_json(row) for row in self.events) + "\n").encode("utf8")
-            path = session_dir / "events.jsonl"
-            _publish_atomic(path, lambda temporary: temporary.write_bytes(raw))
-            return event
-
-    return DurableOriginalJournal(run_id, start_seq=start_seq, start_head_sha256=start_head)
+    return create_durable_event_journal(
+        run_id, persist_events, start_seq=start_seq, start_head=start_head
+    )
 
 
 def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_intent=None,
                   replay_only=False):
     """Save original pending state before HTTP, without another execution loop."""
-    from iqs_company_agent_lab.canonical import canonical_json
-    from iqs_company_agent_lab.checkpoint import build_checkpoint, write_checkpoint
-    from iqs_company_agent_lab.runtime import SavedResponseBoundary
+    from iqs_company_agent_lab.api import canonical_json
+    from iqs_company_agent_lab.api import build_runner_checkpoint, write_checkpoint
+    from iqs_company_agent_lab.api import event_journal_projection, runner_event_projection
+    from iqs_company_agent_lab.api import raise_saved_response_boundary
 
     class CheckpointedPort:
         def _save(self, intent, receipt=None):
             runner = runner_ref[0]
             import hashlib
             events = [
-                e for _, journal in history_journals for e in journal.events
-            ] + runner.journal.events
+                event
+                for _, journal in history_journals
+                for event in event_journal_projection(journal)["events"]
+            ] + runner_event_projection(runner)["events"]
             raw = ("\n".join(canonical_json(e) for e in events) + "\n").encode("utf8")
             # 128-bit filename discriminator avoids growing Windows paths;
             # exact bytes and the original full event/checkpoint hashes remain checked.
-            name = "pending-history-" + str(runner.journal.seq) + "-" + hashlib.sha256(raw).hexdigest()[:32] + ".jsonl"
+            sequence = runner_event_projection(runner)["sequence"]
+            name = "pending-history-" + str(sequence) + "-" + hashlib.sha256(raw).hexdigest()[:32] + ".jsonl"
             history = session_dir / name
             if history.exists():
                 if history.read_bytes() != raw:
                     raise SharedEngineRejected("immutable_pending_history_conflict")
             else:
                 _publish_atomic(history, lambda temporary: temporary.write_bytes(raw))
-            checkpoint = build_checkpoint(
-                runner.state, runner.journal, pending_intent=intent, pending_receipt=receipt
+            checkpoint = build_runner_checkpoint(
+                runner, pending_intent=intent, pending_receipt=receipt
             )
             path = session_dir / "checkpoint.json"
             _publish_atomic(path, lambda temporary: write_checkpoint(temporary, checkpoint, [name]))
@@ -389,7 +369,7 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
                 # End local replay with the slots already recovered. There is
                 # no fabricated receipt or pending checkpoint for an unasked
                 # question, and unknown work never reaches the live port.
-                raise SavedResponseBoundary("replay_only_saved_responses_exhausted")
+                raise_saved_response_boundary("replay_only_saved_responses_exhausted")
             self._save(envelope["intent"])
             if recover_intent is not None:
                 recovered = recover_intent(copy.deepcopy(envelope["intent"]))
@@ -410,7 +390,7 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
 
         def search(self, envelope):
             if replay_only:
-                raise SavedResponseBoundary("replay_only_new_search_forbidden")
+                raise_saved_response_boundary("replay_only_new_search_forbidden")
             return port.search(envelope)
 
         def inspect_attempt(self, ref):
@@ -423,31 +403,18 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
 
 
 def _export(
-    task, services, runner, *, output, transport_origin, journals=None, mode="native_owner"
+    task, runtime, runner, *, output, transport_origin, journals=None, mode="native_owner"
 ):
-    from iqs_company_agent_lab.checkpoint import build_checkpoint
-    from iqs_company_agent_lab.export import write_run_export
-    from iqs_company_agent_lab.provenance import evidence_origin, runtime_evidence_document
-    from iqs_company_agent_lab.runner import input_manifest_sha256
+    from iqs_company_agent_lab.api import write_runner_export
 
-    journals = journals or [("events.jsonl", runner.journal)]
-    events = [event for _, journal in journals for event in journal.events]
-    evidence = runtime_evidence_document(
-        run_id=task.raw["run_id"],
-        input_manifest_sha256=input_manifest_sha256(task.raw),
-        events=events,
-        attempts=services.attempt_observations(transport_origin=transport_origin),
-        evidence_origin=evidence_origin(task.evidence_board_doc, runner.state.board.snapshot()),
-    )
-    checkpoint = build_checkpoint(runner.state, runner.journal)
-    return write_run_export(
+    return write_runner_export(
+        task,
+        runner,
         Path(output),
-        runner.state,
-        journals,
-        input_manifest_sha256(task.raw),
-        mode,
-        checkpoint=checkpoint,
-        runtime_evidence=evidence,
+        journals=journals,
+        attempts=runtime.attempt_observations(transport_origin=transport_origin),
+        transport_origin=transport_origin,
+        mode=mode,
     )
 
 
@@ -461,8 +428,8 @@ def execute_shared_engine(
     Native refusal, failed output or interrupted execution does not authorize
     another send. The durable session directory is retained for inspection.
     """
-    from iqs_agent_runtime_lab.port import create_runtime_port
-    from iqs_company_agent_lab.pathsafety import ensure_safe_output_dir
+    from iqs_agent_runtime_lab.api import create_runtime_port
+    from iqs_company_agent_lab.api import ensure_safe_output_dir
 
     config = preflight(task, services, session_config)
     if transport_origin not in {"stockqa_live", "scripted_wire"}:
@@ -475,34 +442,44 @@ def execute_shared_engine(
     ):
         raise SharedEngineRejected("session_and_export_must_be_disjoint")
     ensure_safe_output_dir(output)  # Fail before any send or session creation.
-    port = create_runtime_port(services, task=task, session_config=config)
+    contract = _task_contract(task)
+    runtime = _company_runtime(services, contract)
+    port = create_runtime_port(runtime, task=contract, session_config=config)
     return _execute_with_port(
         task,
         services,
         port,
+        runtime=runtime,
         output=output,
         session_dir=session_dir,
         transport_origin=transport_origin,
     )
 
 
-def _execute_with_port(task, services, port, *, output, session_dir, transport_origin):
+def _execute_with_port(task, services, port, *, output, session_dir, transport_origin,
+                       runtime=None):
     """Internal engine seam also exercised by explicitly synthetic tests.
 
     This is not the owner-admitting public entry point. No caller callback or
     Python factory is loaded by the CLI. The sole scheduling loop is Runner.
     """
-    from iqs_company_agent_lab.checkpoint import write_checkpoint
-    from iqs_company_agent_lab.runner import RunCrashed, Runner
+    from iqs_company_agent_lab.api import write_checkpoint
+    from iqs_company_agent_lab.api import RunnerPortCrashed, create_runner_port
 
+    contract = _task_contract(task)
     session_dir = _new_session(session_dir, task)
-    journal = _journal(session_dir, task.raw["run_id"])
+    journal = _journal(session_dir, contract["raw"]["run_id"])
     runner_ref = []
-    semantic_validator = _production_answer_semantics(task, services)
-    runner = Runner(
+    observation_port = runtime if runtime is not None else services
+    semantic_validator = _production_answer_semantics(task, observation_port)
+    recover_intent = getattr(observation_port, "recover_intent", None)
+    supports_recovery = getattr(observation_port, "supports_intent_recovery", None)
+    if callable(supports_recovery) and not supports_recovery():
+        recover_intent = None
+    runner = create_runner_port(
         task,
         _pending_port(
-            port, runner_ref, session_dir, recover_intent=getattr(services, "recover_intent", None)
+            port, runner_ref, session_dir, recover_intent=recover_intent
         ),
         journal=journal,
         execution_revision=2,
@@ -513,7 +490,7 @@ def _execute_with_port(task, services, port, *, output, session_dir, transport_o
     runner_ref.append(runner)
     try:
         runner.run()
-    except RunCrashed as exc:
+    except RunnerPortCrashed as exc:
         checkpoint = exc.checkpoint
         _publish_atomic(session_dir / "checkpoint.json",
                         lambda temporary: write_checkpoint(temporary, checkpoint, ["events.jsonl"]))
@@ -522,26 +499,28 @@ def _execute_with_port(task, services, port, *, output, session_dir, transport_o
         # The port already saved the original pre-send state, so a real process
         # death or SDK exception does not depend on SyntheticCrash control flow.
         raise SharedEngineInterrupted(session_dir) from exc
-    return _export(task, services, runner, output=output, transport_origin=transport_origin)
+    return _export(task, observation_port, runner, output=output,
+                   transport_origin=transport_origin)
 
 
 def inspect_native_recovery(services, *, attempt_ref=None, intent=None):
     """Original native inspection only; an unknown result never triggers HTTP."""
-    from src.utils.quick_scan_company_runtime import is_admitted_research_service
-
-    if not is_admitted_research_service(services):
-        raise SharedEngineRejected("original_owner_research_services_required")
+    try:
+        _current_owner_api_protocols()
+    except ValueError as error:
+        raise SharedEngineRejected(str(error)) from error
+    runtime = _company_runtime(services)
     if (attempt_ref is None) == (intent is None):
         raise SharedEngineRejected("exactly_one_original_recovery_key_required")
     if attempt_ref is not None:
-        return services.request_resume(attempt_ref)
-    if not callable(getattr(services, "recover_intent", None)):
+        return runtime.request_resume(attempt_ref)
+    if not runtime.supports_intent_recovery():
         return {
             "decision": "pause_for_inspection",
             "reason": "native_intent_lookup_not_available",
             "saved_receipt": None,
         }
-    result = services.recover_intent(copy.deepcopy(intent))
+    result = runtime.recover_intent(copy.deepcopy(intent))
     return result or {
         "decision": "pause_for_inspection",
         "reason": "no_native_intent_proof",
@@ -567,25 +546,30 @@ def resume_shared_engine(
     original released-unsent classification with no receipt may continue into
     normal dispatch, and never in replay_only mode. No lease is renewed here.
     """
-    from iqs_agent_runtime_lab.port import create_runtime_port
-    from iqs_company_agent_lab.canonical import sha256_hex
-    from iqs_company_agent_lab.pathsafety import ensure_safe_output_dir
-    from iqs_company_agent_lab.resume import RecoveryMismatch, load_verified_recovery, reconcile_saved_receipt
-    from iqs_company_agent_lab.runner import Runner
+    from iqs_agent_runtime_lab.api import create_runtime_port
+    from iqs_company_agent_lab.api import sha256_hex
+    from iqs_company_agent_lab.api import ensure_safe_output_dir
+    from iqs_company_agent_lab.api import RecoveryMismatch, load_verified_recovery, reconcile_saved_receipt
+    from iqs_company_agent_lab.api import continue_runner_port
 
     config = preflight(task, services, session_config)
     if transport_origin not in {"stockqa_live", "scripted_wire"}:
         raise SharedEngineRejected("explicit_transport_origin_required")
     checkpoint_path, output, session_dir = Path(checkpoint_path), Path(output), Path(session_dir)
     semantic_validator = _production_answer_semantics(task, services)
+    contract = _task_contract(task)
+    runtime = _company_runtime(services, contract)
     try:
         recovery = load_verified_recovery(checkpoint_path, task,
             answer_semantic_rules=getattr(semantic_validator, "legacy_prompt_rules",
                                           getattr(semantic_validator, "prompt_rules", ())))
     except RecoveryMismatch as error:
         raise SharedEngineRejected(str(error)) from error
-    checkpoint, history = recovery.checkpoint, recovery.history_journals
-    pending_intent, pending = recovery.pending_intent, recovery.pending_receipt
+    from iqs_company_agent_lab.api import recovery_event_journals, recovery_projection
+
+    projection = recovery_projection(recovery)
+    checkpoint, history = projection["checkpoint"], recovery_event_journals(recovery)
+    pending_intent, pending = projection["pending_intent"], projection["pending_receipt"]
     if pending_intent is not None:
         if pending_intent.get("kind") != "model_step":
             raise SharedEngineRejected("non_model_pending_recovery_not_supported")
@@ -616,8 +600,8 @@ def resume_shared_engine(
         raise SharedEngineRejected("orphan_pending_receipt")
     # Observe historical native receipts from their original source. No session,
     # hidden reasoning, response regeneration or model HTTP is involved.
-    for reference in recovery.attempt_refs:
-        services.inspect_attempt(reference)
+    for reference in projection["attempt_refs"]:
+        runtime.inspect_attempt(reference)
     if (
         output.absolute() == session_dir.absolute()
         or output.absolute() in session_dir.absolute().parents
@@ -630,25 +614,29 @@ def resume_shared_engine(
         session_dir / "parent-checkpoint.json",
         {
             "checkpoint_sha256": sha256_hex(checkpoint_path.read_bytes()),
-            "event_head_sha256": recovery.event_head_sha256,
+            "event_head_sha256": projection["event_head_sha256"],
         },
     )
     journal = _journal(
-        session_dir, task.raw["run_id"], start_seq=recovery.event_seq, start_head=recovery.event_head_sha256
+        session_dir,
+        _task_contract(task)["raw"]["run_id"],
+        start_seq=projection["event_seq"],
+        start_head=projection["event_head_sha256"],
     )
-    port = create_runtime_port(services, task=task, session_config=config)
+    port = create_runtime_port(runtime, task=contract, session_config=config)
     runner_ref = []
-    runner = Runner.continue_from_checkpoint(
+    runner = continue_runner_port(
         task,
         _pending_port(
-            port, runner_ref, session_dir, history, recover_intent=services.recover_intent,
+            port, runner_ref, session_dir, history,
+            recover_intent=runtime.recover_intent if runtime.supports_intent_recovery() else None,
             replay_only=replay_only,
         ),
         checkpoint,
         journal,
         answer_semantic_validator=semantic_validator,
         answer_semantic_validator_version=getattr(semantic_validator, "semantic_version", 1),
-        answer_semantic_rules=recovery.answer_semantic_rules,
+        answer_semantic_rules=projection["answer_semantic_rules"],
     )
     runner_ref.append(runner)
     try:
@@ -657,7 +645,7 @@ def resume_shared_engine(
         raise SharedEngineInterrupted(session_dir) from exc
     return _export(
         task,
-        services,
+        runtime,
         runner,
         output=output,
         transport_origin=transport_origin,
@@ -677,7 +665,7 @@ def main(argv=None):
     if args.command == "capabilities":
         result = capabilities()
     else:
-        from iqs_company_agent_lab.reporter import generate_report
+        from iqs_company_agent_lab.api import generate_report
 
         result = generate_report(args.input, args.output)
     print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
@@ -690,17 +678,15 @@ if __name__ == "__main__":
 
 def _scan_preflight(task, services, session_config):
     """Same native guards and executor, explicit one-shot scan profile."""
-    from iqs_agent_runtime_lab.port import validate_session_config
-    from iqs_company_agent_lab.scan_profile import validate_scan_task
-    from src.utils.quick_scan_company_runtime import CompanyResearchRuntime
-
+    from iqs_agent_runtime_lab.api import validate_session_config
+    from iqs_company_agent_lab.api import validate_scan_task
     profile = validate_scan_task(task)
+    contract = _task_contract(task)
+    raw = contract["raw"]
+    question_ids = contract["question_ids"]
     config = validate_session_config(session_config)
-    runtime = CompanyResearchRuntime(services)
-    if config.get("logical_clock") is not False:
-        raise SharedEngineRejected("native_runtime_requires_wall_clock")
-    if config["planned_model"] != runtime.model:
-        raise SharedEngineRejected("original_model_route_mismatch")
+    # Caller-controlled resource limits are deterministic. Reject an invalid
+    # profile before asking StockQA to bind or inspect the owner service.
     caps = profile["resource_limits"]
     for actual, declared in (
         ("max_output_tokens", "logical_max_output_tokens_including_reasoning_per_request"),
@@ -710,22 +696,27 @@ def _scan_preflight(task, services, session_config):
     ):
         if config[actual] > caps[declared]:
             raise SharedEngineRejected("scan_sdk_session_exceeds_profile_cap:" + actual)
-    from iqs_company_agent_lab.canonical import sha256_hex
+    if config.get("logical_clock") is not False:
+        raise SharedEngineRejected("native_runtime_requires_wall_clock")
+    runtime = _company_runtime(services, contract)
+    if config["planned_model"] != runtime.model:
+        raise SharedEngineRejected("original_model_route_mismatch")
+    from iqs_company_agent_lab.api import sha256_hex
 
-    for qid in task.question_ids:
+    for qid in question_ids:
         actual = runtime.pack_group_key(qid)
         if sha256_hex(actual) != profile["native_pack_group_sha256"][qid]:
             raise SharedEngineRejected("scan_profile_native_pack_group_mismatch")
     # Compare display/provenance bytes against the ACTUAL native owner, not
     # just a caller-provided self-consistent profile. No second quote or grant.
-    from iqs_company_agent_lab.scan_profile import (
+    from iqs_company_agent_lab.api import (
         native_company_projection,
         native_input_references,
     )
 
     original = runtime.original_inputs()
     refs = native_input_references(original.input_raw)
-    subject = original.observation_context["questions"][task.question_ids[0]][
+    subject = original.observation_context["questions"][question_ids[0]][
         "subject_binding"
     ]["subject_ref"]
     company = native_company_projection(
@@ -747,23 +738,23 @@ def _scan_preflight(task, services, session_config):
         original_inputs_sha256=sha256_hex(refs),
     )
     if (
-        task.raw.get("native_inputs") != refs
-        or task.company_doc != company
-        or task.runtime_profile != expected_runtime
-        or task.raw.get("module_locks") != original.bundle["manifest"]["module_locks"]
-        or task.raw.get("owner_binding") != binding
-        or getattr(task, "owner_binding", None) != binding
+        raw.get("native_inputs") != refs
+        or contract["company_doc"] != company
+        or contract["runtime_profile"] != expected_runtime
+        or raw.get("module_locks") != original.bundle["manifest"]["module_locks"]
+        or raw.get("owner_binding") != binding
+        or contract.get("owner_binding") != binding
     ):
         raise SharedEngineRejected("scan_profile_original_native_source_projection_mismatch")
-    if services.native_session:
+    if runtime.has_native_session():
         raise SharedEngineRejected("scan_multiturn_not_supported_in_one_shot_profile")
     if profile["route_id"] != original.route_id:
         raise SharedEngineRejected("scan_profile_native_route_mismatch")
-    if not callable(getattr(services, "recover_intent", None)):
+    if not runtime.supports_intent_recovery():
         raise SharedEngineRejected("original_native_intent_lookup_required")
-    if services.attempt_observations(transport_origin="scripted_wire"):
+    if runtime.attempt_observations(transport_origin="scripted_wire"):
         raise SharedEngineRejected("fresh_owner_service_observer_required")
-    _production_answer_semantics(task, services)
+    _production_answer_semantics(task, runtime)
     # Original comparison approval is exact, not a pack-size upper bound.
     for pack in profile["packs"]:
         runtime.assert_execution_controls(
@@ -777,7 +768,7 @@ def _scan_preflight(task, services, session_config):
 
 def _verified_finalization_export(task, export_dir, answer_semantic_rules=()):
     """Consume the Company's verified slot projection, not its file internals."""
-    from iqs_company_agent_lab.resume import RecoveryMismatch, read_verified_answer_export
+    from iqs_company_agent_lab.api import RecoveryMismatch, read_verified_answer_export
 
     try:
         slots, board = read_verified_answer_export(task, export_dir,
@@ -790,8 +781,8 @@ def _verified_finalization_export(task, export_dir, answer_semantic_rules=()):
 def _native_final_answer(saved, question_id, expected_answer, *, evidence_board=None,
                          verified_source_urls=()):
     """Match the completed slot to safe original output, never caller text."""
-    from iqs_company_agent_lab.answers import AnswerRejection, check_citation_closure, parse_answers_payload
-    from iqs_company_agent_lab.strictjson import loads
+    from iqs_company_agent_lab.api import AnswerRejection, check_citation_closure, parse_answers_payload
+    from iqs_company_agent_lab.api import loads
 
     payloads = []
     if saved.get("final_content"):
@@ -857,21 +848,23 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
     from the same verified export; incomplete members remain unfinalized and
     the result reports the entire original task scope, never full completion.
     """
-    from src.utils.quick_scan_company_runtime import CompanyResearchRuntime, is_admitted_research_service
-
-    if not is_admitted_research_service(services) or services.task is not task:
-        raise SharedEngineRejected("original_owner_research_services_required")
-    runtime = CompanyResearchRuntime(services)
-    services.validate_registered_inputs()
+    try:
+        _current_owner_api_protocols()
+    except ValueError as error:
+        raise SharedEngineRejected(str(error)) from error
+    contract = _task_contract(task)
+    runtime = _company_runtime(services, contract)
+    task_question_ids = contract["question_ids"]
+    runtime.validate_registered_inputs()
     selected_ids = None
     if question_ids is not None:
         if (not isinstance(question_ids, list) or not question_ids
             or any(not isinstance(qid, str) for qid in question_ids)
             or len(set(question_ids)) != len(question_ids)
-            or not set(question_ids) <= set(task.question_ids)):
+            or not set(question_ids) <= set(task_question_ids)):
             raise SharedEngineRejected("finalization_original_question_selection_required")
-        selected_ids = [qid for qid in task.question_ids if qid in question_ids]
-    semantic_validator = _production_answer_semantics(task, services, for_publication=True)
+        selected_ids = [qid for qid in task_question_ids if qid in question_ids]
+    semantic_validator = _production_answer_semantics(task, runtime, for_publication=True)
     if semantic_validator is None:
         raise SharedEngineRejected("original_production_answer_semantics_required")
     run, evidence_board = _verified_finalization_export(task, export_dir,
@@ -956,7 +949,7 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
                            checkpoint_id=checkpoint["checkpoint_id"], checkpoint_sha256=checkpoint["sha256"],
                            delivery_state=delivery["state"], delivery_matches_authority=delivery["matches_authority"]))
     pending = [row["question_id"] for row in result if not row["delivery_matches_authority"]]
-    result = dict(protocol="iqs.shared-engine-finalization/1.0.0", run_id=task.raw["run_id"],
+    result = dict(protocol="iqs.shared-engine-finalization/1.0.0", run_id=contract["raw"]["run_id"],
                 status="partial" if unsaved else ("checkpointed_delivery_pending" if pending else "completed"),
                 checkpoint_status="partial" if unsaved else "completed", pending_delivery_question_ids=pending,
                 finalization_errors=errors, unfinalized_question_ids=unsaved,
@@ -964,10 +957,10 @@ def finalize_shared_engine(task, services, export_dir, *, question_ids=None):
                 checkpoints=result, reused_question_ids=reused,
                 new_model_http=0, financial_accuracy_assessed=False)
     if selected_ids is not None:
-        remaining = [qid for qid in task.question_ids if qid not in selected_ids or qid in unsaved]
+        remaining = [qid for qid in task_question_ids if qid not in selected_ids or qid in unsaved]
         result.update(selected_question_ids=selected_ids,
                       selected_question_count=len(selected_ids),
-                      original_question_count=len(task.question_ids),
+                      original_question_count=len(task_question_ids),
                       unfinalized_question_ids=remaining,
                       whole_task_finalized=not remaining and not pending)
         if remaining:

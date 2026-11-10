@@ -90,9 +90,16 @@ def test_typed_pending_resume_export_and_report_reuse_original_hashes_without_ne
     monkeypatch.setattr(engine, "preflight", lambda *args: {})
     monkeypatch.setattr(engine, "inspect_native_recovery", lambda *args, **kwargs:
                         dict(decision="recover_saved_receipt", saved_receipt=saved))
+    # This test targets recovery composition, so inject the narrow public
+    # Runtime port adapter instead of constructing StockQA's native runtime.
+    composition.use_composition_runtime(monkeypatch)
     fresh_port = ScanContextPort(task)
-    import iqs_agent_runtime_lab.port
-    monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *args, **kwargs: fresh_port)
+    import iqs_agent_runtime_lab.api
+    monkeypatch.setattr(
+        iqs_agent_runtime_lab.api,
+        "create_runtime_port",
+        lambda *args, **kwargs: fresh_port,
+    )
     class Warm(composition.SyntheticObservations):
         def inspect_attempt(self, ref):
             return dict(known=True)

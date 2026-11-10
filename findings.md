@@ -180,3 +180,12 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - 初轮复核确认多个仓的版本化 owner API / public CLI、静态私有导入检查与短测试组已落地。TDD 探针曾证明赋值别名链和直接嵌套 `getattr(importer, "import_module")(... )` / `getattr(builtins, "__import__")(... )` 能绕过七个边界扫描器；反例已补入，扫描器已修复。七个常见边界套件和 Company Agent facade 测试均通过，模块 owner/接口/版本/依赖方向已归档至 [`docs/architecture/module-boundaries.md`](docs/architecture/module-boundaries.md)。独立 reviewer `final_modularity_audit` 对最终源码测试及动态导入探针 ACCEPT，无未解决 P1/P2。该结论是静态架构回归，不是 Python 运行时沙箱，也不覆盖任意反射或 `exec`。
 - 这类回归属于边界测试自身的质量，不表示生产代码中已发现动态导入；本轮没有因测试扫描器 RED 就推断产品存在相同私有导入。
 - 后续相邻复核确认：StockQA WorkStore 的 180 个仓内导入名均在其版本化 owner 导出集中；StockWiki 之前列举的私有访问均已替换为已声明公开名称，且边界测试已列入短测试。StockWiki 8 个稳定协作者合同实行精确版本/导出检查；其他同 owner helper 不逐文件版本化，已在模块图明确为刻意范围。两项复核均未发现 P1/P2。
+
+## 2026-11-10 共享引擎公开 facade 的 canonical 发布缺口
+
+- IQS HEAD `4328208` 中的边界测试已引用本地尚未提交的 `scripts/answer_validation.py` 与 `scripts/shared_company_ports.py`；IQS 当前工作树有源码，但该 commit 单独并非自包含。
+- StockQA HEAD `4c24789`、Company Agent HEAD `d0280f5`、Agent Runtime HEAD `5839ef4` 均缺共享引擎调用的新 `api.py`/facade。起始只读快照显示三仓分别有 66/1/23 tracked edits 与 19/7/8 untracked paths；本轮之后仅精确改了 StockQA 三个文件，其他状态没有重新统计，因此不可把候选当 canonical 交付，也不可覆盖或代提交其他改动。
+- IQS 候选当前聚焦组 177 passed、task-factory facade 合成合同 2 passed，模块路由/题库回归 214 passed（另 236 subtests）；这仅验证目前工作区组合。干净检出跨仓集成仍未完成，模块化主线保持 OPEN。
+- 已修复 IQS 的三项真实缺陷：fresh subprocess 的 capabilities CLI 要求 provider import、owner service 错误类型泄漏、scan 静态资源 cap 晚于 owner runtime 创建。旧 fixture 改为公开 Runtime 端口测试替身，StockQA owner facade 对任意伪造 service 的拒绝仍由独立反例覆盖。
+- 独立最终复审另发现 Company Agent 最低 API 版本下限错配，以及 StockQA 配置入口依赖私有 `task.py`/`port.py` 文件布局并有直接导入 Company Agent facade 的旁路。IQS 下限已暂时固定到 owner 候选已声明版本 1.5/2.3/1.4 并增加边界正反例；StockQA 候选改为验证 provider root、所有 Company Agent 调用走版本化 facade、缺失模块和版本问题稳定拒绝。复测：IQS 177 passed，公共 task facade 组合2 passed；semantic replay6，standard answers41+8 subtests，prompt8+8 subtests，test suite manifest14 passed；StockQA配置/恢复37 passed、边界24 passed；模块/路由/题库214+236 subtests。独立 reviewer 对追加合同测试也未发现 P1/P2，PWF数字已对齐；整体 canonical 集成仍 OPEN。
+- 当前不可以发布完成：StockQA 三文件候选修复及三个 owner facade 均尚未进入 canonical HEAD，且 IQS 的 `4328208` 干净检出仍缺 `answer_validation.py` / `shared_company_ports.py`。本轮候选代码已由独立 agent ACCEPT；下一节点须以 owner 固定提交建立隔离 clean checkout 做真实跨仓版本协商，再对集成结果独立复审；否则保持 OPEN，不推送为可用产品接线。

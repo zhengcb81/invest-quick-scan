@@ -1,5 +1,8 @@
 """The production composition consumes public StockQA contracts only."""
 import ast
+import importlib
+import sys
+from types import ModuleType, SimpleNamespace
 from pathlib import Path
 
 import pytest
@@ -7,9 +10,9 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 
 EXPECTED_OWNER_APIS = {
-    'stockqa': 'stockqa.company-scan-public-api/1.3.0',
-    'company_agent': 'iqs.company-agent-public-api/2.1.0',
-    'agent_runtime': 'iqs.agent-runtime-public-api/1.3.0',
+    'stockqa': 'stockqa.company-scan-public-api/1.5.0',
+    'company_agent': 'iqs.company-agent-public-api/2.3.0',
+    'agent_runtime': 'iqs.agent-runtime-public-api/1.4.0',
 }
 
 
@@ -223,17 +226,92 @@ def test_company_composition_does_not_discover_peer_modules_by_file_layout():
 
 def test_answer_validation_peers_publish_the_versioned_semantics_used_by_the_consumer(monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    import answer_validation
     import standard_answers
     import question_prompts
+    import shared_company_engine
 
+    assert answer_validation.API_PROTOCOL == 'iqs.answer-validation-api/1.0.0'
     assert standard_answers.ANSWER_VALIDATION_API_PROTOCOL == 'iqs.standard-answer-validation/1.0.0'
     assert question_prompts.SEMANTIC_RULES_API_PROTOCOL == 'iqs.question-prompt-semantics/1.0.0'
+    assert shared_company_engine._answer_validation_api() is answer_validation
+
+
+@pytest.mark.parametrize('peer', ['standard_answers', 'question_prompts'])
+def test_frozen_semantics_rejects_missing_or_incompatible_collaborator_protocol(monkeypatch, peer):
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    import answer_validation
+
+    standard_protocol = 'iqs.standard-answer-validation/1.0.0'
+    prompt_protocol = 'iqs.question-prompt-semantics/1.0.0'
+    standards = ModuleType('standard_answers')
+    prompts = ModuleType('question_prompts')
+    standards.ANSWER_VALIDATION_API_PROTOCOL = standard_protocol
+    prompts.SEMANTIC_RULES_API_PROTOCOL = prompt_protocol
+    if peer == 'standard_answers':
+        standards.ANSWER_VALIDATION_API_PROTOCOL = 'iqs.standard-answer-validation/9.0.0'
+    else:
+        prompts.SEMANTIC_RULES_API_PROTOCOL = 'iqs.question-prompt-semantics/9.0.0'
+    monkeypatch.setitem(sys.modules, 'standard_answers', standards)
+    monkeypatch.setitem(sys.modules, 'question_prompts', prompts)
+
+    with pytest.raises(answer_validation.AnswerSemanticsRejected,
+                       match='original_standard_answer_validator_required'):
+        answer_validation.frozen_answer_semantics(None, {}, release_root=ROOT)
+
+
+def test_shared_engine_rejects_an_unsupported_answer_validation_protocol(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    import answer_validation
+    import shared_company_engine
+
+    monkeypatch.setattr(answer_validation, 'API_PROTOCOL', 'iqs.answer-validation-api/9.0.0')
+    with pytest.raises(shared_company_engine.SharedEngineRejected,
+                       match='answer_validation_api_version_unsupported'):
+        shared_company_engine._answer_validation_api()
+
+
+def test_missing_owner_public_api_is_normalized_before_preflight_imports(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    import builtins
+    import shared_company_engine as engine
+
+    original_import = builtins.__import__
+    def fail_owner_import(name, *args, **kwargs):
+        if name == 'iqs_company_agent_lab.api':
+            raise ModuleNotFoundError(name)
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, '__import__', fail_owner_import)
+    with pytest.raises(engine.SharedEngineRejected, match='company_scan_owner_api_unavailable'):
+        engine.preflight(object(), object(), {})
+
+
+def test_missing_stockqa_runtime_facade_is_normalized(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    import builtins
+    import shared_company_engine as engine
+
+    original_import = builtins.__import__
+    def fail_stockqa_import(name, *args, **kwargs):
+        if name == 'src.utils.quick_scan_company_api':
+            raise ModuleNotFoundError(name)
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, '__import__', fail_stockqa_import)
+    with pytest.raises(engine.SharedEngineRejected, match='stockqa_company_runtime_api_unavailable'):
+        engine._company_runtime(object())
 
 
 def test_owner_api_version_negotiation_accepts_only_declared_compatible_versions(monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
-    from shared_company_ports import OwnerApiProtocolError, validate_owner_api_protocols
+    from shared_company_ports import (
+        OwnerApiProtocolError,
+        required_owner_api_protocols,
+        validate_owner_api_protocols,
+    )
 
+    assert required_owner_api_protocols() == EXPECTED_OWNER_APIS
     assert validate_owner_api_protocols(EXPECTED_OWNER_APIS) == EXPECTED_OWNER_APIS
     with pytest.raises(OwnerApiProtocolError, match='owner_api_set_mismatch'):
         validate_owner_api_protocols({**EXPECTED_OWNER_APIS, 'unregistered': '1.0.0'})
@@ -247,17 +325,20 @@ def test_owner_api_version_negotiation_accepts_backward_compatible_minor_and_pat
     from shared_company_ports import validate_owner_api_protocols
 
     compatible = {
-        'stockqa': 'stockqa.company-scan-public-api/1.4.3',
-        'company_agent': 'iqs.company-agent-public-api/2.3.0',
-        'agent_runtime': 'iqs.agent-runtime-public-api/1.7.12',
+        'stockqa': 'stockqa.company-scan-public-api/1.6.3',
+        'company_agent': 'iqs.company-agent-public-api/2.4.0',
+        'agent_runtime': 'iqs.agent-runtime-public-api/1.5.12',
     }
     assert validate_owner_api_protocols(compatible) == compatible
 
 
 @pytest.mark.parametrize('owner,version', [
     ('stockqa', 'stockqa.company-scan-public-api/1.1.9'),
+    ('stockqa', 'stockqa.company-scan-public-api/1.4.9'),
     ('stockqa', 'stockqa.company-scan-public-api/2.0.0'),
     ('company_agent', 'iqs.company-agent-public-api/1.9.9'),
+    ('company_agent', 'iqs.company-agent-public-api/2.2.9'),
+    ('agent_runtime', 'iqs.agent-runtime-public-api/1.3.9'),
     ('agent_runtime', 'iqs.agent-runtime-public-api/2.0.0'),
     ('agent_runtime', 'iqs.agent-runtime-public-api/1.x.0'),
 ])
@@ -439,20 +520,93 @@ def test_company_composition_does_not_import_concrete_owner_task_or_runner_types
     assert not violations, violations
 
 
-def test_shared_engine_capabilities_report_owner_declared_versions_not_copied_pins(monkeypatch):
+def test_shared_engine_capabilities_report_consumer_minimum_versions_without_provider_imports(monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
     import shared_company_engine as engine
+    import shared_company_ports
 
     declared = {
         'stockqa': 'stockqa.company-scan-public-api/9.1.0',
         'company_agent': 'iqs.company-agent-public-api/9.2.0',
         'agent_runtime': 'iqs.agent-runtime-public-api/9.3.0',
     }
-    monkeypatch.setattr(engine, '_current_owner_api_protocols', lambda: declared)
+    monkeypatch.setattr(shared_company_ports, 'required_owner_api_protocols', lambda: declared)
 
     result = engine.capabilities()
 
     assert result['required_owner_api_protocols'] == declared
-    assert 'registered_question_count' not in result
-    assert 'registered_cutoff' not in result
-    assert not {'original_Runner', 'original_RuntimeBridgePort'} & set(result['requires'])
+    assert result['protocol'] == 'iqs.shared-company-engine/1.0.0'
+    # V1 capability fields remain as legacy-profile metadata for existing
+    # StockQA readers; they are not the admission rule for generic task DTOs.
+    assert result['registered_question_count'] == 12
+    assert result['registered_cutoff'] == '2026-10-13'
+    assert result['question_pack_provider'] == 'mimo'
+    assert {'original_Runner', 'original_RuntimeBridgePort'} <= set(result['requires'])
+
+
+def test_preflight_uses_task_scope_not_legacy_question_count_or_cutoff(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    engine = importlib.import_module('shared_company_engine')
+
+    def package(name):
+        value = ModuleType(name)
+        value.__path__ = []
+        monkeypatch.setitem(sys.modules, name, value)
+        return value
+
+    package('iqs_company_agent_lab')
+    company_api = ModuleType('iqs_company_agent_lab.api')
+    company_api.task_pack_sizes = lambda _task: [2, 1]
+    monkeypatch.setitem(sys.modules, 'iqs_company_agent_lab.api', company_api)
+
+    package('iqs_agent_runtime_lab')
+    runtime_api = ModuleType('iqs_agent_runtime_lab.api')
+    runtime_api.validate_session_config = lambda _config: config
+    monkeypatch.setitem(sys.modules, 'iqs_agent_runtime_lab.api', runtime_api)
+
+    package('src')
+    package('src.utils')
+    stockqa_api = ModuleType('src.utils.quick_scan_company_api')
+    monkeypatch.setitem(sys.modules, 'src.utils.quick_scan_company_api', stockqa_api)
+
+    contract = {
+        'protocol': 'iqs.company-agent-task-contract/1.1.0',
+        'company_doc': {'origin': 'owner_public'},
+        'owner_binding': {'entity_id': 'entity:test'},
+        'raw': {
+            'protocol': 'iqs.company-agent-task/1.0.0',
+            'information_cutoff': '2026-11-09',
+        },
+        'question_ids': ['Q_A', 'Q_B', 'Q_C'],
+    }
+    controls = []
+    runtime = SimpleNamespace(
+        model='mimo-v2.6-flash',
+        provider='mimo',
+        has_native_session=lambda: False,
+        supports_intent_recovery=lambda: True,
+        attempt_observations=lambda **kwargs: [],
+        check_admission=lambda: None,
+        assert_execution_controls=lambda **kwargs: controls.append(kwargs),
+    )
+    config = {
+        'logical_clock': False,
+        'planned_model': 'mimo-v2.6-flash',
+        'max_output_tokens': 4096,
+    }
+    service = object()
+
+    monkeypatch.setattr(engine, '_current_owner_api_protocols', lambda: {})
+    monkeypatch.setattr(engine, '_task_contract', lambda _task: contract)
+    monkeypatch.setattr(engine, '_production_answer_semantics', lambda *_args: None)
+    stockqa_api.create_company_research_runtime = lambda actual_service, *, task_contract: (
+        runtime if actual_service is service and task_contract is contract
+        else pytest.fail('owner facade must receive the original service and task DTO')
+    )
+
+    assert engine.preflight(object(), service, {}) == config
+    assert controls == [{
+        'pack_size': 2,
+        'thinking_enabled': True,
+        'max_output_tokens': 4096,
+    }]

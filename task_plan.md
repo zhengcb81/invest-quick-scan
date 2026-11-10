@@ -67,7 +67,7 @@
 |Dashboard公司结果/B03|跨仓代码已并入各自主线|Dashboard main合同0.1.2-d、B03合并f501f32；IQS master已合入并推送B03代码fb262e0；只读UI仓master 47d5354。定向测试通过；原8766未重载，真实owner扫描未运行|
 |原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；11/01 gen7的1次真实HTTP及11/02零API恢复/入库见本节点终验。入口`http://127.0.0.1:8766/`|
 |远端持续集成|StockQA 最新 master 已绿|`01f20d6` 的 CI 41532137887 已完成且通过。上一节点的 Documentation 41523660825 构建与发布通过|
-|模块解耦|本轮已完成 PWF 定义的活跃产品边界梳理、版本化公开接口登记、快速负例回归与独立审查|总图见[模块边界与接口表](docs/architecture/module-boundaries.md)。七个边界套件通过，独立 reviewer ACCEPT；此结论不外推为金融准确、F05/G3/G4/G5/G6 或全池完成|
+|模块解耦|边界图与常见越界回归已通过；共享引擎跨仓公开 facade 还未成为各 owner 的 canonical commit，因此产品接线未关闭|本机聚焦回归 177 passed；新增 owner-task facade 组合测试 2 passed 并登记 integration；模块/路由/题库组合组 214 passed、236 subtests。StockQA、Company Agent、Runtime 的 facade 仍只存在于脏工作树；见[模块接口状态](docs/architecture/module-boundaries.md)。不能把当前工作树测试说成干净检出或已发布的跨仓集成|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -86,9 +86,9 @@
 
 ## Next Step
 
-**模块边界主线已按本计划的限定范围完成；下一步回到真实 F05/W11 技能入口验收。** 模块 owner、公开入口、协议/schema版本和依赖方向已登记于[模块边界与接口表](docs/architecture/module-boundaries.md)。七个边界套件、短测试组入口及独立 reviewer ACCEPT 记录见 `progress.md` 的 2026-11-10 节。不要把静态边界测试说成抵御任意 Python 反射的运行时沙箱，也不要外推为整个产品已验收。接下来以稳定 owner 公共接口完成 TH/IN 技能入口实服务 E2E，再推进 G4；G3真实200家、G5/G6及2000家容量目标仍按各自计划开放。
+**模块边界回归设计已绿，canonical 跨仓接线仍待收口；暂不将主线切回 F05/W11。** 模块 owner、公开入口、协议/schema版本和依赖方向已登记于[模块边界与接口表](docs/architecture/module-boundaries.md)。先让 StockQA、Company Agent 与 Agent Runtime 的公开 facade 在各自 canonical HEAD 可用，再从干净检出运行版本协商和跨仓正反例；当前源仓有大量未提交内容，不能覆盖、代提交或拿工作树结果冒充发布。之后通过新一轮独立审查，才关闭模块化主线并转回真实 F05/W11 技能入口。静态规则不是抵御任意 Python 反射的沙箱；G3真实200家、G4、G5/G6及2000家容量目标仍分别开放。
 
-### 模块化与松耦合的完成定义（本轮已完成范围）
+### 模块化与松耦合的完成定义（边界回归已达成，发布接线仍开放）
 
 1. 对每个参与正常产品运行的组件写明唯一 owner、公开入口/DTO/schema 版本、允许依赖方向，以及测试/实验工具的边界；不把普通 helper 文件伪装成独立产品模块，也不将运行数据目录当代码层。
 2. 产品消费者不从另一个组件的私有实现路径导入类/函数，不窥探其文件布局或数据库；需要已有 owner 行为时，通过其公开 facade/CLI/JSON protocol 执行。Owner 可在自己的边界内调用私有实现。
@@ -96,13 +96,16 @@
 4. 只重构已核实的产品路径；每个受影响仓先确认 HEAD/写树，保持并行 writer 和数据库/实验材料不动。运行相关单元/合同测试，再跑一次隔离集成链。
 5. 由不同 agent 对照最终 diff、模块清单、违规扫描和测试结果独立审查；所有 P1/P2 与相邻路径遗漏修完并复测后才把该工作标为完成。未审到或因外部 writer/缺索引无法核实的仓，必须明确列出，不能改称“全项目通过”。
 
-### 本轮完成状态（2026-11-10）
+### 当前完成状态（2026-11-10，更新）
 
 |完成项|证据|结论|
 |---|---|---|
-|Owner、公开接口、版本与允许依赖方向|[模块边界与接口表](docs/architecture/module-boundaries.md)|覆盖 IQS、StockQA、StockWiki、Company Agent、Agent Runtime、Dashboard、Theme、Industry 的活跃产品边界|
-|私有导入、私有成员、动态导入绕行与 owner 数据直读负例|IQS/StockQA/StockWiki/Runtime/Dashboard/Theme/Industry 边界测试；TDD 先红后绿|七个常见快速边界套件通过，Company Agent facade 测试通过；合法公开入口和已有兼容路径保留正例|
-|测试入口与独立审查|`progress.md` 2026-11-10 节；独立 reviewer `final_modularity_audit` 最终 ACCEPT|无未修复 P1/P2；本结论只覆盖已登记的模块边界与常见绕行形式|
+|Owner、公开接口、版本与允许依赖方向|[模块边界与接口表](docs/architecture/module-boundaries.md)|边界设计已覆盖活跃产品组件；StockQA/Company Agent/Runtime 公开 API 当前仍是各自脏工作树中的候选，尚未进入 HEAD|
+|私有导入、私有成员、动态导入绕行与 owner 数据直读负例|IQS/StockQA/StockWiki/Runtime/Dashboard/Theme/Industry 边界测试；TDD 先红后绿|登记范围内的扫描器/负例通过；本轮候选代码与补充合同测试独立审查 ACCEPT，canonical 跨仓集成仍待固定 owner commit 后复核|
+|干净检出和跨仓公开 API 集成|待 owner facade 进入 canonical HEAD 后执行|当前本机聚焦组 177 passed、task factory facade 2 passed，模块/路由组合组 214 passed + 236 subtests；它们读取兄弟仓未提交 API 候选，不能作为已发布接线证据|
+|最终测试入口与独立审查|本轮候选实现及追加合同测试独立审查 ACCEPT；整体集成 OPEN|IQS/StockQA 候选测试及 PWF 已更新；不得标记整体完成，直到 owner facade 进入各自 HEAD、干净隔离集成通过且集成结果无未解 P1/P2|
+
+**2026-11-10 独立复审跟进：** owner API 下限已提高到当前候选 facade 版本 StockQA 1.5.0 / Company Agent 2.3.0 / Agent Runtime 1.4.0；低一个 minor 的拒绝和高版本兼容均进入回归。StockQA 配置入口已移除对 `task.py`、`port.py` 私有文件名的依赖；证据、扫描、checkpoint loader 统一经版本化 Company Agent facade，缺失/错误版本/缺失操作/错误来源均有稳定反例。IQS 共享引擎/语义/finalizer/scan guard/边界组 177 passed；新增 owner-task facade 合成正反例 2 passed 并登记至 integration suite。额外回归：semantic replay 6 passed、标准答案 41 passed/8 subtests、题目提示 8 passed/8 subtests、test suite manifest 14 passed；StockQA 配置/恢复 37 passed、模块边界24 passed（合计61），模块/路由/题库组合组214 passed+236 subtests。独立审查对候选代码和补充合同测试 ACCEPT；StockQA 源码仍是未提交 owner 候选，三家 facade 均未进入 canonical HEAD，clean checkout 跨仓集成仍 OPEN。
 
 ### 跨仓协作与测试设计
 

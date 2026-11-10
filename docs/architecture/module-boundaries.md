@@ -32,10 +32,10 @@ flowchart LR
 
 | Owner / 产品边界 | 唯一负责的数据与行为 | 对外公开入口及版本 | 允许依赖方向与主要消费者 |
 |---|---|---|---|
-| **invest-quick-scan (IQS)** | 公司扫描编排；题库模块、路由决策、标准答案投影和扫描 UI 合同 | 题库模块 schema `$id=urn:iqs:quick-scan:question-module:1`；每个模块有独立 `module_id`、语义版本及不可变 release/lock；当前 router `2.5.0`、routing policy schema `1.3.0`、route decision schema `2.0.0`。跨仓任务 port 为 `stockqa.company_scan_task_port/1.0.0`；owner API 兼容最小版本见 `scripts/shared_company_ports.py` | IQS 编排到 StockQA company-scan facade，并经公开 owner 命令/JSON contract 到 StockWiki；不拥有 StockQA 工作库或 StockWiki 身份/观察库 |
-| **StockQA** | LLM 与搜索 provider、请求/额度/预算、扫描执行、work ledger、checkpoint 与恢复 | `src.utils.quick_scan_company_api.PUBLIC_API_PROTOCOL = stockqa.company-scan-public-api/1.5.0`。StockQA 内部 WorkStore 跨模块导出协议为 `stockqa.quick-scan-work-store-module/1.5.0`；该模块协议只供 StockQA owner 内部模块使用，外部消费者应使用 company-scan facade。 | IQS 只调用 company-scan facade；StockQA 通过 Company Agent 和 Agent Runtime 的公开 facade 组合执行；工作库由 StockQA 独占 |
-| **Company Agent** | agent task contract、回答验证、执行/恢复及导出 | `iqs_company_agent_lab.api.PUBLIC_API_PROTOCOL = iqs.company-agent-public-api/2.3.0`；显式 export map 与 `__all__` 限定公开名字 | 由 StockQA 集成层调用；外部消费者经 `api` facade，不导入 runner、answers 等内部模块 |
-| **Agent Runtime** | runtime service port、原生回答与工具调用回执投影 | `iqs_agent_runtime_lab.api.PUBLIC_API_PROTOCOL = iqs.agent-runtime-public-api/1.4.0`；`RUNTIME_SERVICES_PROTOCOL = iqs.agent-runtime-services/1.0.0`；facade 返回的 opaque port 只开放声明的操作 | 由 StockQA/IQS 执行组合按 facade 调用；不越过 `api` 直接访问内部 port/receiptmap |
+| **invest-quick-scan (IQS)** | 公司扫描编排；题库模块、路由决策、标准答案投影和扫描 UI 合同 | 题库模块 schema `$id=urn:iqs:quick-scan:question-module:1`；每个模块有独立 `module_id`、语义版本及不可变 release/lock；当前 router `2.5.0`、routing policy schema `1.3.0`、route decision schema `2.0.0`。跨仓任务 port 为 `stockqa.company_scan_task_port/1.0.0`；共享执行器 capabilities 为 `iqs.shared-company-engine/1.0.0`；答案语义协作者为 `iqs.answer-validation-api/1.0.0`；owner API 下限见 `scripts/shared_company_ports.py`，当前按已观察候选固定为 StockQA 1.5、Company Agent 2.3、Runtime 1.4；更低版本的历史兼容尚无 canonical 矩阵证据 | IQS 编排到 StockQA company-scan facade，并经公开 owner 命令/JSON contract 到 StockWiki；不拥有 StockQA 工作库或 StockWiki 身份/观察库 |
+| **StockQA** | LLM 与搜索 provider、请求/额度/预算、扫描执行、work ledger、checkpoint 与恢复 | 工作树候选 `src.utils.quick_scan_company_api.PUBLIC_API_PROTOCOL = stockqa.company-scan-public-api/1.5.0`；WorkStore 导出候选 `stockqa.quick-scan-work-store-module/1.5.0`。截至当前 canonical HEAD `4c24789`，公开 company facade 文件尚未跟踪，相关 owner 实现处于大范围未提交状态。候选配置不再检查 Company Agent `task.py`/Runtime `port.py`；证据、扫描及恢复操作统一经版本化 Company Agent facade，缺失导入有稳定错误映射。 | 目标依赖是 IQS 调用 company-scan facade，StockQA 通过 Company Agent 和 Agent Runtime 的公开 facade 组合执行；工作库由 StockQA 独占。不能将工作树候选视为已发布接口 |
+| **Company Agent** | agent task contract、回答验证、执行/恢复及导出 | 工作树候选 `iqs_company_agent_lab.api.PUBLIC_API_PROTOCOL = iqs.company-agent-public-api/2.3.0`；canonical HEAD `d0280f5` 尚无 `api.py`，新 facade 与相关 task 改动尚未提交 | 目标由 StockQA 集成层调用；外部消费者经 `api` facade，不导入 runner、answers 等内部模块。当前仅是候选 |
+| **Agent Runtime** | runtime service port、原生回答与工具调用回执投影 | 工作树候选 `iqs_agent_runtime_lab.api.PUBLIC_API_PROTOCOL = iqs.agent-runtime-public-api/1.4.0`、`RUNTIME_SERVICES_PROTOCOL = iqs.agent-runtime-services/1.0.0`；canonical HEAD `5839ef4` 尚无 `api.py`，并有相关改动未提交 | 目标由 StockQA/IQS 执行组合按 facade 调用；不越过 `api` 直接访问内部 port/receiptmap。当前仅是候选 |
 | **StockWiki** | 公司/证券身份、股票池成员、观察、事实来源与 ACK/查询状态 | 事实查询入口 `python -m stockwiki.quick_scan_query_v2_cli`；能力 envelope `iqs.facts_contract_capabilities/1.0.0`，可协商 capability schema `1.2.0` 并兼容 `1.1.0`；facts wire `2.7.0`，`stockwiki.c06_facts_query/1.0.0`；export `stockwiki.c06_facts_export/1.0.0`；CLI result `stockwiki.c06_facts_cli_result/1.0.0`。原有 query wire 保留其公开版本 | IQS、Dashboard 与只读消费者通过 owner CLI/HTTP contract 使用；数据库和原始 owner 文件由 StockWiki 独占 |
 | **investment-dashboard** | UI、HTTP/application 层、Dashboard 自身投影与展示状态 | `backend.dashboard.ports.QuickScanPort` 定义 `capabilities/list_observations/get_result/link`；IQS adapter 使用 owner 声明的协议与 generated DTO；生成合同 `CONTRACT_VERSION = 0.1.2-d`，QuickScan DTO 为 `QuickScanView` | UI → application/service → ports → owner adapters；Dashboard 不从 StockQA/StockWiki 实现层导入模块，也不重算 IQS 分数 |
 | **analyze-theme-value-chain** | 主题研究自己的结果与本地 capture/output | `scripts/quick_scan_client.py` 以固定 StockWiki CLI 发起只读查询；接受 capability `1.1.0/1.2.0`，只消费 facts schema `2.7.0`、`stockwiki.c06_facts_query/1.0.0` 与 export `1.0.0` | 只读消费 StockWiki 公共 facts contract；结果留在 Theme 自己的输出根，不回写 owner 数据库 |
@@ -46,6 +46,7 @@ flowchart LR
 - 版本化范围以稳定协作者/API 白名单为准，不按每个 `.py` 文件机械分配版本。StockQA WorkStore 的 `MODULE_API_PROTOCOL`/`MODULE_API_EXPORTS` 是 StockQA owner 内的稳定协作者合同；外部消费者仍必须走 `quick_scan_company_api` facade。
 - StockWiki 的 `tests/test_f05_module_api_boundaries.py` 对 8 个明确登记的稳定模块逐项核验版本和精确导出，并核验消费者只导入这些模块声明的名称；同时扫描全部 `quick_scan_*.py`，拒绝下划线私有导入/成员调用及常见动态导入绕行。其他未登记的 `quick_scan_*` 实现文件属于 StockWiki owner 内部协作，不是跨仓协议，不要求逐文件版本号。当前独立审查没有发现这些边界上的 P1/P2。
 - IQS/StockQA/Company Agent/Runtime/Dashboard/Theme/Industry 的表内版本字段表示仓间或已登记模块合同；各 owner 的局部 helper 仍由其仓内测试和实现共同演进。若某 helper 开始被跨 owner 消费，必须先迁入已有 facade 或登记版本化入口并加合同正反例。
+- IQS `shared_company_engine` 的 1.0 capabilities 保留旧 profile 元数据以兼容已有读取方，并报告本地声明的 owner API 最低版本；运行时 admission 另从 owner facade 读取并核对实际协议。CLI 能在 provider 仓库未安装时工作。旧的 12 题/截止日字段只是历史 profile 描述，generic task admission 从公开任务 DTO 读取问题集和有效 cutoff。答案语义模块协议由 engine 在调用时核对。
 
 ### IQS 题库的兼容边界
 
@@ -59,7 +60,7 @@ flowchart LR
 
 | 代码 owner | 守卫测试 | 快速/默认测试入口 |
 |---|---|---|
-| IQS | `tests/test_shared_public_boundaries.py`、`tests/test_dashboard_module_boundaries.py` | IQS fast 测试清单；`scripts/run_tests.py fast --plan` 可见 |
+| IQS | `tests/test_shared_public_boundaries.py`、`tests/test_shared_company_task_api.py`、`tests/test_dashboard_module_boundaries.py` | suite manifest；`scripts/run_tests.py integration --plan` 可见任务 API 合同组 |
 | StockQA | `tests/unit/test_quick_scan_module_boundaries.py` | `scripts/checks.py` daily target |
 | StockWiki | `tests/test_f05_module_api_boundaries.py` | `scripts/checks.py` short target |
 | Company Agent | `tests/test_public_api.py`、`tests/test_secret_boundary.py` | pytest 默认测试发现 |
@@ -68,7 +69,19 @@ flowchart LR
 | Theme | `tests/test_quick_scan_integration.py` 中 QuickScan client boundary 用例 | pytest 默认测试发现 |
 | Industry | `tests/test_quick_scan_module_boundaries.py` | pytest 默认测试发现 |
 
-2026-11-10 TDD 先加入失败的别名与嵌套 `getattr(importer, "import_module")(... )` / `getattr(builtins, "__import__")(... )` 反例，再修扫描器。七个边界套件最终通过：IQS 50、StockQA 24、StockWiki 9、Runtime 9、Dashboard 2、Theme 2、Industry 4 项测试及 12 个子测试；Company Agent public API 两项通过。独立 reviewer `final_modularity_audit` 对最终测试、动态导入探针和修订结果给出 **ACCEPT**，无遗留 P1/P2。
+## Canonical 集成状态核对（2026-11-10）
+
+边界图与静态扫描器的历史 ACCEPT 不能替代共享引擎跨仓接线验收。当前各仓实际状态如下：
+
+- IQS HEAD `4328208` 已提交边界文档和测试，但测试引用的 `scripts/answer_validation.py`、`scripts/shared_company_ports.py` 尚未进入该提交；两份源码当前仅在 IQS 工作树。该提交单独干净检出并不自足。
+- StockQA HEAD `4c24789` 尚无 `src/utils/quick_scan_company_api.py`；该 API、`quick_scan_company_runtime.py` 及其依赖在工作树有未提交变更。
+- Company Agent HEAD `d0280f5` 尚无 `src/iqs_company_agent_lab/api.py`；公开 facade 与 task 配套修改仍未提交。
+- Agent Runtime HEAD `5839ef4` 尚无 `src/iqs_agent_runtime_lab/api.py`；facade 与运行支持修改仍未提交。
+- 当前定向测试在同一台工作站读取了以上工作树候选。因此，177 项共享引擎/语义/边界回归、2 项 task-factory facade 合成合同测试与 214 项模块/路由/题库组合回归只说明候选工作区状态，不能证明 canonical owner 组合或清洁部署可运行。
+
+完成条件：各 owner 按其仓库计划提交 facade 与最小依赖；IQS 再提交与版本匹配的 adapter；随后使用固定 commit 的隔离干净检出跑跨仓正例、拒绝不兼容版本的反例和公开 capabilities 命令，并经新的独立审查。此期间不覆盖或代提交这些仓库中的其他未提交内容。
+
+2026-11-10 TDD 先加入失败的别名与嵌套 `getattr(importer, "import_module")(... )` / `getattr(builtins, "__import__")(... )` 反例，再修扫描器。七个边界套件最终通过：IQS 50、StockQA 24、StockWiki 9、Runtime 9、Dashboard 2、Theme 2、Industry 4 项测试及 12 个子测试；Company Agent public API 两项通过。独立 reviewer `final_modularity_audit` 对扫描器、动态导入探针和模块图给出 **ACCEPT**。后续审查发现共享引擎 facade 的 owner 实现仍有未提交候选，不能将该 ACCEPT 外推为干净检出或生产跨仓接线通过；该集成项仍开放。
 
 这些测试是架构回归保护，不是 Python 运行时沙箱：下划线成员名本身不能阻止任意反射或 `exec`。公开 facade 只导出白名单名称，越界静态调用在测试中失败；不要把该约束表述成抵御恶意代码的安全边界。
 

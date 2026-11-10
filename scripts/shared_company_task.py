@@ -10,8 +10,19 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import sys
+from pathlib import Path
 
 COMPANY_SCAN_TASK_PORT_PROTOCOL = "stockqa.company_scan_task_port/1.0.0"
+
+
+def _current_owner_api_protocols():
+    scripts = str(Path(__file__).resolve().parent)
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    from shared_company_ports import current_owner_api_protocols
+
+    return current_owner_api_protocols()
 
 
 class NativeTaskRejected(ValueError):
@@ -28,14 +39,15 @@ def create_native_task(
     evidence_board=None,
     limits=None,
 ):
-    from iqs_company_agent_lab.canonical import canonical_json, sha256_hex
-    from iqs_company_agent_lab.frozenregistration import (
+    _current_owner_api_protocols()
+    from iqs_company_agent_lab.api import canonical_json, sha256_hex
+    from iqs_company_agent_lab.api import (
         LIMIT_CAPS,
         QUESTION_IDS,
         limits_within_registration,
     )
-    from iqs_company_agent_lab.task import LoadedTask
-    from src.utils.quick_scan_company_context import (
+    from iqs_company_agent_lab.api import create_owner_task
+    from src.utils.quick_scan_company_api import (
         assert_company_scan_admission,
         company_scan_inputs,
     )
@@ -202,19 +214,14 @@ def create_native_task(
         native_inputs=native_inputs,
         module_locks=copy.deepcopy(manifest["module_locks"]),
     )
-    task = LoadedTask(
-        raw,
-        None,
-        questions,
-        company,
-        board,
-        profile,
+    task = create_owner_task(
+        raw, questions, company, board, profile,
         {
             "protocol": "iqs.native-company-targets/1.0.0",
             "native_manifest_ref": native_inputs["manifest.json"],
         },
+        owner_binding=binding,
     )
-    task.owner_binding = copy.deepcopy(binding)
     assert_company_scan_admission(lifecycle)
     return task
 
@@ -231,9 +238,10 @@ def create_company_scan_task(
     max_questions_per_pack=12,
     search_exposure=None,
 ):
-    from iqs_company_agent_lab.canonical import canonical_json, sha256_hex
-    from iqs_company_agent_lab.task import LoadedTask
-    from src.utils.quick_scan_company_context import (
+    _current_owner_api_protocols()
+    from iqs_company_agent_lab.api import canonical_json, sha256_hex
+    from iqs_company_agent_lab.api import create_owner_task
+    from src.utils.quick_scan_company_api import (
         company_scan_inputs,
         company_scan_pack_group_key,
         validate_company_scan_task,
@@ -243,7 +251,7 @@ def create_company_scan_task(
         owner = company_scan_inputs(lifecycle)
     except ValueError as error:
         raise NativeTaskRejected(str(error)) from error
-    from iqs_company_agent_lab.scan_profile import build_scan_profile, validate_scan_task
+    from iqs_company_agent_lab.api import build_scan_profile, validate_scan_task
 
     strategy_id = "module_packs"
     for value in (experiment_id, run_id):
@@ -337,7 +345,7 @@ def create_company_scan_task(
         )
     ):
         raise NativeTaskRejected("original_identity_listings_required")
-    from iqs_company_agent_lab.scan_profile import native_company_projection
+    from iqs_company_agent_lab.api import native_company_projection
 
     company = native_company_projection(identity_payload, subject)
     profile = dict(
@@ -347,7 +355,7 @@ def create_company_scan_task(
         model=owner.route_model,
         native_inputs_sha256=sha256_hex(native_inputs),
     )
-    from iqs_company_agent_lab.scan_profile import scan_limits
+    from iqs_company_agent_lab.api import scan_limits
 
     selected_limits = scan_limits(limits, search_exposure=search_exposure)
     binding = dict(
@@ -403,19 +411,14 @@ def create_company_scan_task(
     raw['limits'] = execution['resource_limits']
     raw["execution_profile"] = execution
     raw["execution_profile_sha256"] = sha256_hex(execution)
-    task = LoadedTask(
-        raw,
-        None,
-        questions,
-        company,
-        board,
-        profile,
+    task = create_owner_task(
+        raw, questions, company, board, profile,
         {
             "protocol": "iqs.native-company-targets/1.0.0",
             "native_manifest_ref": native_inputs["manifest.json"],
         },
+        owner_binding=binding,
     )
-    task.owner_binding = copy.deepcopy(binding)
     validate_scan_task(task)
     validate_company_scan_task(lifecycle, task)
     return task

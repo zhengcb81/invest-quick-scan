@@ -22,6 +22,7 @@ import module_registry
 from metric_coordinates import metric_coordinate, validate_metric_coordinates
 
 ROOT = library.ROOT
+ANSWER_VALIDATION_API_PROTOCOL = "iqs.standard-answer-validation/1.0.0"
 
 
 def digest(value):

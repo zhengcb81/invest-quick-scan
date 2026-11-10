@@ -241,8 +241,7 @@ def test_finalizer_rechecks_original_semantics_before_native_output_match(origin
     task, qid, body, context = original
     # A contract-only mapper: not an admission or a sender.
     fixture = load("semantic_finalization_fixture", ROOT / "tests/test_shared_company_engine_finalization.py")
-    single = SimpleNamespace(question_ids=[qid], questions=task.questions[:1],
-                             raw={"run_id": "synthetic-final", "information_cutoff": task.raw["information_cutoff"]})
+    single = fixture.finalization_task([qid])
     services = fixture.MapperOnlyServices(single)
     run = {"slots": [{"question_id": qid, "execution_status": "completed", "answer": bad(body, "score_items"),
                       "attempt_refs": ["stockqa:native_" + qid]}]}
@@ -305,6 +304,70 @@ def native_bound(original, monkeypatch):
     monkeypatch.setattr(transport, "project_quick_scan_answer_sources", lambda *args, **kwargs:
                         {"search_status": "executed", "source_urls": [source["url"]],
                          "search_source_urls": [source["url"]], "provided_context_sources": []})
+
+    class UnitRuntimePort:
+        """Detached public Runtime DTO for glue-only semantic tests."""
+        def original_inputs(self):
+            return SimpleNamespace(
+                observation_context=copy.deepcopy(context),
+                input_raw={"owner-config.json": json.dumps(
+                    {"iqs_release_root": str(ROOT)}
+                ).encode("utf8")},
+            )
+
+        def answer_source_context(self, question_id, reference, observed_context):
+            inspected = services.inspect_attempt(reference)
+            if not inspected.get("known") or not inspected.get("response_saved"):
+                raise ValueError("original successful current native reference required")
+            if question_id != qid or observed_context != context:
+                raise ValueError("original frozen observation context required")
+            if services.store.get_external_context_use("UNIT_NATIVE") not in (None, {"proof": {"work_item_id": work_id}}):
+                raise ValueError("original external context use proof required")
+            execution = copy.deepcopy(native)
+            execution["work_transport"] = {
+                "work_attempt_id": "UNIT_NATIVE",
+                "final_receipt": copy.deepcopy(native),
+            }
+            use = services.store.get_external_context_use("UNIT_NATIVE")
+            if use is not None:
+                if not isinstance(use, dict) or not isinstance(use.get("proof"), dict) or not use["proof"]:
+                    raise ValueError("original external context use proof required")
+                execution["external_context_use"] = copy.deepcopy(use["proof"])
+            projection = transport.project_quick_scan_answer_sources(
+                execution, work_store=services.store, work_item_id=work_id
+            )
+            verified = projection.get("search_status") == "executed" and bool(
+                projection.get("search_source_urls")
+            )
+            return {
+                "response": copy.deepcopy(inspected["response_saved"]),
+                "verified_search": verified,
+                "source_urls": tuple(projection.get("source_urls", ())) if verified else (),
+                "entity_id": "UNIT_ENTITY",
+                "metadata": copy.deepcopy(context["questions"][question_id]["metadata"]),
+                "question_contract": {},
+            }
+
+        @staticmethod
+        def validate_answer_transport(answer, question_id, sources):
+            # A small implementation of the public Runtime port contract: the
+            # owner package owns full answer-schema validation; IQS verifies
+            # that it delegates transport/source checks through this method.
+            if sources["verified_search"] and answer.get("score") is not None and type(
+                answer["score"]
+            ) is not int:
+                raise ValueError("owner runtime rejected non-integral score")
+            evidence_urls = {
+                row.get("url") for row in answer.get("evidence", [])
+                if isinstance(row, dict)
+            }
+            if evidence_urls - set(sources["source_urls"]):
+                raise ValueError("owner runtime rejected an unbound source URL")
+            if answer.get("status") == "search_unavailable" and sources["verified_search"]:
+                raise ValueError("owner runtime rejected a contradictory search status")
+            return None
+
+    monkeypatch.setattr(engine, "_company_runtime", lambda *_args, **_kwargs: UnitRuntimePort())
     from iqs_company_agent_lab.evidence import EvidenceBoard
     return task, qid, body, services, source, EvidenceBoard(2000)
 
