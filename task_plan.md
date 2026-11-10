@@ -103,7 +103,7 @@
 |Owner、公开接口、版本与允许依赖方向|[模块边界与接口表](docs/architecture/module-boundaries.md)|边界设计已覆盖活跃产品组件；IQS 候选已本地提交 `bb20529`；StockQA/Company Agent/Runtime 公开 API 当前仍是各自脏工作树中的候选，尚未进入 HEAD|
 |私有导入、私有成员、动态导入绕行与 owner 数据直读负例|IQS/StockQA/StockWiki/Runtime/Dashboard/Theme/Industry 边界测试；TDD 先红后绿|登记范围内的扫描器/负例通过；本轮候选代码与补充合同测试独立审查 ACCEPT，canonical 跨仓集成仍待固定 owner commit 后复核|
 |干净检出和跨仓公开 API 集成|待 owner facade 进入 canonical HEAD 后执行|IQS 扩大离线回归 454 passed + 244 subtests；三 owner 候选另有 StockQA 61、Company Agent 11、Runtime 38 项通过及版本/API 导入 smoke，但都读取未提交工作树，不能作为已发布接线证据|
-|最终测试入口与独立审查|IQS/StockQA 候选实现及补充合同测试已有 ACCEPT；跨仓候选复审中，整体集成 OPEN|IQS 候选本地提交为 `bb20529`；不得标记整体完成，直到 owner facade 进入各自 HEAD、固定版本的干净隔离集成通过且最终独立审查无未解 P1/P2|
+|最终测试入口与独立审查|IQS/StockQA 候选实现及补充合同测试已有 ACCEPT；跨仓候选复审已完成，整体集成仍 OPEN|IQS 候选本地提交为 `bb20529`；不得标记整体完成，直到 owner facade 进入各自 HEAD、固定版本的干净隔离集成通过且最终独立审查无未解 P1/P2|
 
 **2026-11-10 独立复审跟进：** owner API 下限已提高到当前候选 facade 版本 StockQA 1.5.0 / Company Agent 2.3.0 / Agent Runtime 1.4.0；低一个 minor 的拒绝和高版本兼容均进入回归。StockQA 配置入口已移除对 `task.py`、`port.py` 私有文件名的依赖；证据、扫描、checkpoint loader 统一经版本化 Company Agent facade，缺失/错误版本/缺失操作/错误来源均有稳定反例。IQS 共享引擎/语义/finalizer/scan guard/边界组 177 passed；新增 owner-task facade 合成正反例 2 passed 并登记至 integration suite。额外回归：semantic replay 6 passed、标准答案 41 passed/8 subtests、题目提示 8 passed/8 subtests、test suite manifest 14 passed；StockQA 配置/恢复 37 passed、模块边界24 passed（合计61），模块/路由/题库组合组214 passed+236 subtests。独立审查对候选代码和补充合同测试 ACCEPT；本段之后的 owner facade 候选测试与跨仓 smoke 见 `progress.md` 最新记录。clean checkout 跨仓集成仍 OPEN。
 
