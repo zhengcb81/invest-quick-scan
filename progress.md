@@ -508,3 +508,13 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - Theme `3352b58` 本地快进进入 `master`，无 remote。独立审查发现 Python 入口可绕过目录检查，且文件硬链接可改写 owner 工件。修复覆盖预检、解析实际路径、原子发布、失败时去除上一轮响应及导出标签。76 项定向测试通过，无跳过。
 - Industry `7d49ca3` 已进入并推送原 `origin/main`。独立审查复现错快照的首屏和导出结果可被接收。修复验证主水位和导出水位的快照 ID，拒绝页不参与事实聚合，已校验的前页仍可用。全套 186 passed、5 subtests。两仓均以独立子进程验证公开 CLI 参数及消费者目录的复用，独立复审通过，隔离候选目录已清理。
 - F05 基准 `130dc31`，主线 `30a841c`，候选 `16c7b1a`。三个重叠文件在冻结 2.8 WIP 的隔离副本三方合并无冲突，87 项 IQS 定向用例通过，临时副本清理。真实配置的 owner `--capabilities` 认可候选，`API_requests=0`。只读观察库计数为 120 条总记录、120 条主体绑定、0 条事实。2.8 尚需原写入方并线，真实正例仍待原采集和入库。旧 F05 离线集成组的六条用例仍需原缺失外仓对象，由候选的独立 CLI 回归接替。
+
+## 2026-11-10 模块边界扫描器补洞与独立复审
+
+- 根据 2026-11-09 独立基线，把真实生产入口对应的边界测试覆盖到 IQS、StockQA、StockWiki、Company Agent、Agent Runtime、Dashboard、Theme 和 Industry。现有实现包含版本化公开 facade/CLI/协议、跨模块 API 导出声明、层间私有成员扫描及 owner 数据路径检查；本轮未改生产数据库、名单、API key 或任何模型/搜索接线。
+- TDD RED 证明普通赋值别名曾绕过 IQS、StockQA、Runtime、Dashboard 与 Theme 的动态 import 检查；独立 reviewer 再发现“嵌套 `getattr(importer, "import_module")(... )` 直接调用”和 `builtins.__import__` 同类旁路。两轮失败反例均已加入各 owner 的现有边界测试，并修复 AST 扫描器。Reviewer 初轮 `NEEDS_FIX` 指向该遗漏，复修后同一独立 reviewer 对最终改动复验为 `ACCEPT`，未留 P1/P2。
+- 最终定向测试：IQS 两套边界 `50 passed`；StockQA `24 passed`；StockWiki `9 passed`；Runtime `9 passed`；Dashboard `2 passed`；Theme `2 passed`（仅运行边界选择器，75 项未选）；Industry `4 passed + 12 subtests passed`；Company Agent public API `2 passed`。独立 reviewer 另外逐一扫描七仓的直接动态导入探针，七处均被检出。
+- 日常入口核实：IQS `scripts/run_tests.py fast --plan` 返回 62 个 fast 文件（总测试清单133），包含 `test_shared_public_boundaries.py` 与 `test_dashboard_module_boundaries.py`；本轮只做 plan 模式，没有跑完整 fast 组。StockQA `scripts/checks.py` 的 `DAILY_TEST_TARGETS` 包含模块边界文件；StockWiki `SHORT_TESTS` 包含对应边界文件；Dashboard `pytest` 默认 testpaths 包含 integration。没有把定向测试说成整仓全套通过。
+- 两项相邻独立复核已结案：StockQA WorkStore 的跨模块导入逐项落在 owner 的 `MODULE_API_EXPORTS` 中，180 个 AST 导入名无遗漏；StockWiki 先前指出的下划线导入和日常测试漏项在当前树均已消失。其余未登记 StockWiki helper 是同 owner 内部协作，不属于逐文件版本化的跨仓合同；边界规则和版本化范围已明确补入模块图。
+- 模块归属、公开接口、版本与允许依赖方向已归档至 [`docs/architecture/module-boundaries.md`](docs/architecture/module-boundaries.md)，根计划已据此将下一步切回真实 F05/W11 技能入口 E2E。
+- 范围限制：本轮关闭的是 PWF 定义并登记的活跃生产模块边界回归缺口，不等于项目金融准确性、F05真实owner全量覆盖、G3/G4/G5/G6、真实技能入口或整个产品 E2E 完成。Python 下划线命名本身不是运行时访问控制；静态规则覆盖已声明依赖与常见直连/别名路径，不声称阻止任意反射或任意 `exec`。

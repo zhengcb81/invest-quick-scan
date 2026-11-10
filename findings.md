@@ -157,8 +157,26 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - **过度审查/门禁：** 当前没有证据表明已修问题被额外的重复审批或逐文件验收阻断。身份/作用域绑定、来源与时点、费用预留、未知请求防重、锁与 owner ACK 属于业务不变量，应保留。重复的许可库、资格审批/续期回执、每个小节点的独立审查仍不应恢复。主要治理缺口是 PWF 过时，而不是门禁太少。
 - **第一性原理收敛：** 项目慢在“真实数据接口是否能产生可绑定 facts、接口版本是否被两端同样理解、候选如何安全进入主线”，并非缺更多施工卡或更大测试数量。所有仓库先各自拥有数据/实现，通过小而稳定的公开 DTO+schema/capabilities/CLI 通讯；中心 IQS 只协调依赖版本、验收状态和剩余阻塞。单仓单 writer、契约前置、单元/合同/集成/少量真实 E2E 分层，避免把测试报告与接收回执做成第二审批系统。
 
-## 公开接口整改后的边界
+## 2026-11-09 模块化收口的独立基线盘点（历史快照，已由 11-10 复查更新）
+
+本节保留整改前的发现和范围，不能当作当前未解决项。当前边界图、修复结果和剩余限制见下方 2026-11-10 记录及 `docs/architecture/module-boundaries.md`。
+
+- 独立只读审查确认全项目模块边界尚未收口。IQS `tests/test_dashboard_module_boundaries.py` 只扫描 `dashboard_*.py`、`open_dashboard.py` 和 temporal 包；`tests/test_shared_public_boundaries.py` 只检查两份共享引擎文件，而且明确允许 `src.utils.quick_scan_company_context` 与 `src.utils.quick_scan_company_runtime`，没有约束 `iqs_*_lab` 导入。它们只能证明局部反例，不是所有生产模块的架构证明。
+- 主要 P1 是 `scripts/shared_company_engine.py` 与 `scripts/shared_company_task.py` 直接导入 `src.utils.*` 和 `iqs_agent_runtime_lab`/`iqs_company_agent_lab` 的具体子模块，并依赖 `standard_answers.__file__`、`question_prompts.__file__` 定位实现资源。原 engine 文件头称“consumes an already admitted StockQA owner service”，但这些导入仍穿过 owner/Lab 边界。另有 StockQA `quick_scan_work_transport.py` 从 `quick_scan_work_store.py` 导入 `_cost_to_micros`、`_safe_text`、`_sanitized_receipt`；这是明确的仓内封装遗漏。
+- 根目录的一次只读 AST 探针覆盖 135 个 Python 源文件，统计到 271 条本地跨文件 import、38 项以下划线命名的跨文件引用；这些数包括同一功能域的实验/题库内部协作，不能不分 owner 地一概当成违规。正式测试必须先声明生产 owner/模块归属，再按跨边界规则判定。
+- 已核实 Dashboard CodeGraph `5f4d620` 有 `QuickScanPort`、IQS adapter 与合同生成；Dashboard 工作树存在并行更改，当前不写入。StockQA `master@4c24789` 有未跟踪工件但索引到 QuickScan store/transport；StockWiki `master@93b2592` 有未跟踪 SQLite/数据路径，当前不写入。Theme 与 Industry 的 CodeGraph 未初始化，本轮未改索引。跨仓 agent 的有限审计及活动 writer 细节见本线程交接记录。
+- 收口方式是定义产品级 owner/公开接口依赖，再以快速 AST/import 测试守住已声明边界；不按每个 helper 建新包、审批或回执，不批量移动普通测试、历史档案和实验产物。需要某仓结构索引但尚不存在时按仓库指令另行处理；在此之前不伪报该仓已完成审计。
+
+## 公开接口整改后的边界（历史建议，已由 2026-11-10 现状复查更新）
+
+下列建议记录了整改过程中的候选耦合点，不代表仍然开放；当前实现和可验证范围以 `docs/architecture/module-boundaries.md` 及本页 2026-11-10 复查为准。
 
 - 工作台应请求完整的交付范围、接收方查询和时点解释，底层解析、传输和资源文件由各模块拥有。架构回归对常见静态越界报告文件、行号和符号。Python 动态反射和跨对象传播需要在后续实际场景中单独覆盖。
 - StockWiki 的事实读取命令可以把查询快照写盘。消费者明确传入自己的 capture root，持久到下一次翻页、回放和导出。查询与导出各自绑定原操作的快照。验证响应必须同时核对请求 ID、操作、快照和导出水位。
 - 还有跨仓源码路径耦合。IQS 交付读取的内嵌进程仍加载 StockQA 的 projection 函数，适合迁移到 StockQA 自有的公开命令。B03 仍直接加载 StockWiki 公司评估模块，可改用已有的 `dashboard_company_assessment_cli`。查询版本适配目前还依赖基础校验模块的内部函数，适合用一个版本化入口收敛。
+
+## 2026-11-10 边界扫描器的动态导入别名
+
+- 初轮复核确认多个仓的版本化 owner API / public CLI、静态私有导入检查与短测试组已落地。TDD 探针曾证明赋值别名链和直接嵌套 `getattr(importer, "import_module")(... )` / `getattr(builtins, "__import__")(... )` 能绕过七个边界扫描器；反例已补入，扫描器已修复。七个常见边界套件和 Company Agent facade 测试均通过，模块 owner/接口/版本/依赖方向已归档至 [`docs/architecture/module-boundaries.md`](docs/architecture/module-boundaries.md)。独立 reviewer `final_modularity_audit` 对最终源码测试及动态导入探针 ACCEPT，无未解决 P1/P2。该结论是静态架构回归，不是 Python 运行时沙箱，也不覆盖任意反射或 `exec`。
+- 这类回归属于边界测试自身的质量，不表示生产代码中已发现动态导入；本轮没有因测试扫描器 RED 就推断产品存在相同私有导入。
+- 后续相邻复核确认：StockQA WorkStore 的 180 个仓内导入名均在其版本化 owner 导出集中；StockWiki 之前列举的私有访问均已替换为已声明公开名称，且边界测试已列入短测试。StockWiki 8 个稳定协作者合同实行精确版本/导出检查；其他同 owner helper 不逐文件版本化，已在模块图明确为刻意范围。两项复核均未发现 P1/P2。
