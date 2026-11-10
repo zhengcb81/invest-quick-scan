@@ -67,7 +67,7 @@
 |Dashboard公司结果/B03|跨仓代码已并入各自主线|Dashboard main合同0.1.2-d、B03合并f501f32；IQS master已合入并推送B03代码fb262e0；只读UI仓master 47d5354。定向测试通过；原8766未重载，真实owner扫描未运行|
 |原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；11/01 gen7的1次真实HTTP及11/02零API恢复/入库见本节点终验。入口`http://127.0.0.1:8766/`|
 |远端持续集成|StockQA 最新 master 已绿|`01f20d6` 的 CI 41532137887 已完成且通过。上一节点的 Documentation 41523660825 构建与发布通过|
-|模块解耦|边界图与常见越界回归已通过；共享引擎跨仓公开 facade 还未成为各 owner 的 canonical commit，因此产品接线未关闭|本机聚焦回归 177 passed；新增 owner-task facade 组合测试 2 passed 并登记 integration；模块/路由/题库组合组 214 passed、236 subtests。StockQA、Company Agent、Runtime 的 facade 仍只存在于脏工作树；见[模块接口状态](docs/architecture/module-boundaries.md)。不能把当前工作树测试说成干净检出或已发布的跨仓集成|
+|模块解耦|边界图与常见越界回归已通过；共享引擎跨仓公开 facade 还未成为各 owner 的 canonical commit，因此产品接线未关闭|IQS 本地提交 `bb20529` 已包含共享引擎 ports/语义拆分和回归；本机聚焦回归 177 passed、owner-task facade 合成合同 2 passed、模块/路由/题库组合组 214 passed + 236 subtests。三个 owner facade 已在工作树并通过针对性候选测试及导入 smoke，但仍未进入各自 HEAD；见[模块接口状态](docs/architecture/module-boundaries.md)。不能把候选工作树测试说成已发布的跨仓集成|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -100,12 +100,16 @@
 
 |完成项|证据|结论|
 |---|---|---|
-|Owner、公开接口、版本与允许依赖方向|[模块边界与接口表](docs/architecture/module-boundaries.md)|边界设计已覆盖活跃产品组件；StockQA/Company Agent/Runtime 公开 API 当前仍是各自脏工作树中的候选，尚未进入 HEAD|
+|Owner、公开接口、版本与允许依赖方向|[模块边界与接口表](docs/architecture/module-boundaries.md)|边界设计已覆盖活跃产品组件；IQS 候选已本地提交 `bb20529`；StockQA/Company Agent/Runtime 公开 API 当前仍是各自脏工作树中的候选，尚未进入 HEAD|
 |私有导入、私有成员、动态导入绕行与 owner 数据直读负例|IQS/StockQA/StockWiki/Runtime/Dashboard/Theme/Industry 边界测试；TDD 先红后绿|登记范围内的扫描器/负例通过；本轮候选代码与补充合同测试独立审查 ACCEPT，canonical 跨仓集成仍待固定 owner commit 后复核|
-|干净检出和跨仓公开 API 集成|待 owner facade 进入 canonical HEAD 后执行|当前本机聚焦组 177 passed、task factory facade 2 passed，模块/路由组合组 214 passed + 236 subtests；它们读取兄弟仓未提交 API 候选，不能作为已发布接线证据|
-|最终测试入口与独立审查|本轮候选实现及追加合同测试独立审查 ACCEPT；整体集成 OPEN|IQS/StockQA 候选测试及 PWF 已更新；不得标记整体完成，直到 owner facade 进入各自 HEAD、干净隔离集成通过且集成结果无未解 P1/P2|
+|干净检出和跨仓公开 API 集成|待 owner facade 进入 canonical HEAD 后执行|IQS 扩大离线回归 454 passed + 244 subtests；三 owner 候选另有 StockQA 61、Company Agent 11、Runtime 38 项通过及版本/API 导入 smoke，但都读取未提交工作树，不能作为已发布接线证据|
+|最终测试入口与独立审查|IQS/StockQA 候选实现及补充合同测试已有 ACCEPT；跨仓候选复审中，整体集成 OPEN|IQS 候选本地提交为 `bb20529`；不得标记整体完成，直到 owner facade 进入各自 HEAD、固定版本的干净隔离集成通过且最终独立审查无未解 P1/P2|
 
-**2026-11-10 独立复审跟进：** owner API 下限已提高到当前候选 facade 版本 StockQA 1.5.0 / Company Agent 2.3.0 / Agent Runtime 1.4.0；低一个 minor 的拒绝和高版本兼容均进入回归。StockQA 配置入口已移除对 `task.py`、`port.py` 私有文件名的依赖；证据、扫描、checkpoint loader 统一经版本化 Company Agent facade，缺失/错误版本/缺失操作/错误来源均有稳定反例。IQS 共享引擎/语义/finalizer/scan guard/边界组 177 passed；新增 owner-task facade 合成正反例 2 passed 并登记至 integration suite。额外回归：semantic replay 6 passed、标准答案 41 passed/8 subtests、题目提示 8 passed/8 subtests、test suite manifest 14 passed；StockQA 配置/恢复 37 passed、模块边界24 passed（合计61），模块/路由/题库组合组214 passed+236 subtests。独立审查对候选代码和补充合同测试 ACCEPT；StockQA 源码仍是未提交 owner 候选，三家 facade 均未进入 canonical HEAD，clean checkout 跨仓集成仍 OPEN。
+**2026-11-10 独立复审跟进：** owner API 下限已提高到当前候选 facade 版本 StockQA 1.5.0 / Company Agent 2.3.0 / Agent Runtime 1.4.0；低一个 minor 的拒绝和高版本兼容均进入回归。StockQA 配置入口已移除对 `task.py`、`port.py` 私有文件名的依赖；证据、扫描、checkpoint loader 统一经版本化 Company Agent facade，缺失/错误版本/缺失操作/错误来源均有稳定反例。IQS 共享引擎/语义/finalizer/scan guard/边界组 177 passed；新增 owner-task facade 合成正反例 2 passed 并登记至 integration suite。额外回归：semantic replay 6 passed、标准答案 41 passed/8 subtests、题目提示 8 passed/8 subtests、test suite manifest 14 passed；StockQA 配置/恢复 37 passed、模块边界24 passed（合计61），模块/路由/题库组合组214 passed+236 subtests。独立审查对候选代码和补充合同测试 ACCEPT；本段之后的 owner facade 候选测试与跨仓 smoke 见 `progress.md` 最新记录。clean checkout 跨仓集成仍 OPEN。
+
+**2026-11-10 owner facade 候选联测：** IQS 模块化候选已本地提交 `bb20529`（尚未推送，因 owner 端尚无固定提交）。重新读取到 StockQA `master@4c24789`、Company Agent `master@d0280f5`、Runtime `codex/agent-run-02@5839ef4` 的公开 facade 候选；三仓工作树仍有并行改动，facade 未入 HEAD。隔离临时目录测试通过：StockQA 61、Company Agent 11、Runtime 38；跨仓只读 smoke 解析版本 `1.5.0/2.3.0/1.4.0` 并解析所需公开操作。它证明当前候选组合可以互相导入，不证明 canonical 提交、部署环境或生产数据链已闭环。独立跨仓 reviewer 已完成复核，候选接口与测试可接受、无 P1/P2；整体仍待固定 owner commit 和 clean checkout 合同集成，之后才考虑推送可用组合。
+
+**IQS 扩大离线回归：** 共享引擎/模块边界/答案语义/模块路由与题库 19 个测试文件在全新临时工作目录合跑 **454 passed、244 subtests passed**。单项隔离 StockQA 合同测试曾暴露临时 cwd 下缺 `logs/` 目录；测试夹具现于临时目录预建日志目录，单项重跑通过并由该整组再次覆盖。临时文件随测试清理；未访问网络/模型/API 或生产数据库。
 
 ### 跨仓协作与测试设计
 

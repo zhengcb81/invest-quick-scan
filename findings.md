@@ -189,3 +189,11 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - 已修复 IQS 的三项真实缺陷：fresh subprocess 的 capabilities CLI 要求 provider import、owner service 错误类型泄漏、scan 静态资源 cap 晚于 owner runtime 创建。旧 fixture 改为公开 Runtime 端口测试替身，StockQA owner facade 对任意伪造 service 的拒绝仍由独立反例覆盖。
 - 独立最终复审另发现 Company Agent 最低 API 版本下限错配，以及 StockQA 配置入口依赖私有 `task.py`/`port.py` 文件布局并有直接导入 Company Agent facade 的旁路。IQS 下限已暂时固定到 owner 候选已声明版本 1.5/2.3/1.4 并增加边界正反例；StockQA 候选改为验证 provider root、所有 Company Agent 调用走版本化 facade、缺失模块和版本问题稳定拒绝。复测：IQS 177 passed，公共 task facade 组合2 passed；semantic replay6，standard answers41+8 subtests，prompt8+8 subtests，test suite manifest14 passed；StockQA配置/恢复37 passed、边界24 passed；模块/路由/题库214+236 subtests。独立 reviewer 对追加合同测试也未发现 P1/P2，PWF数字已对齐；整体 canonical 集成仍 OPEN。
 - 当前不可以发布完成：StockQA 三文件候选修复及三个 owner facade 均尚未进入 canonical HEAD，且 IQS 的 `4328208` 干净检出仍缺 `answer_validation.py` / `shared_company_ports.py`。本轮候选代码已由独立 agent ACCEPT；下一节点须以 owner 固定提交建立隔离 clean checkout 做真实跨仓版本协商，再对集成结果独立复审；否则保持 OPEN，不推送为可用产品接线。
+
+### 2026-11-10 当前候选变化
+
+- IQS 两个此前未进 HEAD 的源码与其回归已精确提交为本地 `bb20529`；IQS 现在 clean-checkout 自洽。此 commit 未推送，等待 owner commit 锁定后的跨仓验证。
+- 三个 owner facade 现在可在各自工作树找到：StockQA `1.5.0`、Company Agent `2.3.0`、Runtime `1.4.0`。只读 Git 核对确认它们仍未进入各自 HEAD；Runtime 候选目前位于 `codex/agent-run-02`，不在 canonical `master`。
+- 在独立系统临时目录运行当前工作树候选测试：StockQA 61、Company Agent 11、Runtime 38 passed；同时版本协商和公开函数导入 smoke 通过。无模型、网络、数据库或生产数据调用。
+- 独立 reviewer 已覆盖三 owner 当前接口和 IQS 消费端：候选可接受、无确定性 P1/P2；明确指出这不替代 owner canonical 提交及 clean checkout 集成。尚待 owner 端固定提交和干净检出正反例；在证据齐备前整体模块化状态仍 OPEN。
+- IQS 19 文件扩大离线组现为 454 passed、244 subtests passed。复跑发现一项现有隔离测试在全新 cwd 未预建 logger 目录；仅增强其临时测试 fixture 后单项和整组通过，未修改 StockQA logger。临时目录由 pytest/TemporaryDirectory 清理。

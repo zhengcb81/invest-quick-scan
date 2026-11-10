@@ -536,3 +536,12 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - **仍未关闭：** 上述 StockQA 修复还在未提交 owner 工作树，不能视作 canonical 发布；StockQA、Company Agent、Runtime API facade 也尚未进入各自 HEAD。根 IQS 的 clean checkout 仍缺 `scripts/answer_validation.py` 与 `scripts/shared_company_ports.py` 所对应的可发布闭环。不能推送或宣称全项目模块解耦完成，需等 owner 正式提交后再做锁定版本的 clean integration 和独立复审。
 - **独立复审结果：** 新 reviewer 对 IQS/StockQA 本轮候选代码及补充合同测试 ACCEPT，未发现剩余 P1/P2；它核对了版本正反例、public facade 调用、错误归一、空根目录、owner 来源正反例、语义版本拒绝、任务工厂消费链及隔离测试。该 ACCEPT 仅覆盖候选代码与当前工作区，不替代 owner canonical 提交后的 clean checkout 集成审查。
 - **补充合同测试复审：** 针对 reviewer 提出的语义协作者版本拒绝和 task factory/public consumer 组合缺口，已增加两个语义版本拒绝参数、owner task 合成正反例及 integration-suite 登记；聚焦组复跑 177 passed、任务 API 2 passed。独立 agent 对补充增量 ACCEPT。
+
+## 2026-11-10 owner facade 候选联测与提交
+
+- **IQS 本地提交：** 将共享引擎 ports、答案验证拆分、版本协调、任务 facade 合同及对应测试/PWF 精确提交为 `bb20529`（19 个文件）。`git diff --cached --check` 通过；只暂存本项路径，工作区其他并行文件未纳入。由于 owner facade 尚未固定提交，此 commit 暂留本地，未推送到 `origin/master`。
+- **owner 工作树快照：** StockQA `master@4c24789`、Company Agent `master@d0280f5`、Runtime `codex/agent-run-02@5839ef4`。当前均有未提交变更；三份 facade 分别在 StockQA `quick_scan_company_api.py`、Company Agent `api.py`、Runtime `api.py`，协议为 `1.5.0/2.3.0/1.4.0`。它们仍不属于 canonical HEAD。
+- **隔离候选测试：** 从系统临时工作目录运行，关闭 pytest cache 和字节码写入、各自使用独立 `basetemp`。StockQA `test_shared_company_entry.py` + `test_quick_scan_module_boundaries.py` **61 passed**；Company Agent `test_public_api.py` + `test_public_task_port.py` **11 passed**；Runtime `test_public_api.py`、`test_public_task_contract.py`、`test_company_agent_api_compat.py`、`test_module_boundaries.py` **38 passed**。早先默认 `%TEMP%` 中有非本项目的 `pdb.py` 造成 pytest 启动 INTERNALERROR；改用新建空临时工作目录并禁用 debugging 插件后通过，源仓无测试输出写入。
+- **跨仓 smoke：** 以只读 `PYTHONPATH` 同时加载当前三 owner 候选和 IQS adapter；`current_owner_api_protocols()` 返回 StockQA 1.5.0、Company Agent 2.3.0、Runtime 1.4.0，且 adapter 中所需的公开函数均可解析。未创建 owner task、未访问公司数据库、模型/API 或网络。
+- **扩大离线回归与夹具修复：** 19 个 IQS 测试文件整组通过 **454 passed、244 subtests passed**。其中 `test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline` 在全新临时 cwd 首次揭示 StockQA logger 预期 `logs/` 已存在；只在该隔离测试的 `TemporaryDirectory` 中建目录，单测 `1 passed`，再跑完整组无失败。该改动只使测试在干净环境稳定，不修改外仓 logger；日志与其他临时结果自动清理。
+- **结论与下一步：** 本机候选在单工作站组合可导入且定向测试绿，但 owner 工作树仍有并行改动，不能据此提交/推送他人全部改动，也不能宣称干净部署完成。独立跨仓 reviewer 已复审三 owner facade 和总控消费者，候选接口/测试 ACCEPT、无 P1/P2；整体接线仍 OPEN。待取得固定 owner commit，再在新建干净临时检出中运行版本协商、公开调用与拒绝不兼容版本的正反例，最后独立复审集成结果。

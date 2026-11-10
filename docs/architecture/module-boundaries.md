@@ -73,13 +73,13 @@ flowchart LR
 
 边界图与静态扫描器的历史 ACCEPT 不能替代共享引擎跨仓接线验收。当前各仓实际状态如下：
 
-- IQS HEAD `4328208` 已提交边界文档和测试，但测试引用的 `scripts/answer_validation.py`、`scripts/shared_company_ports.py` 尚未进入该提交；两份源码当前仅在 IQS 工作树。该提交单独干净检出并不自足。
-- StockQA HEAD `4c24789` 尚无 `src/utils/quick_scan_company_api.py`；该 API、`quick_scan_company_runtime.py` 及其依赖在工作树有未提交变更。
-- Company Agent HEAD `d0280f5` 尚无 `src/iqs_company_agent_lab/api.py`；公开 facade 与 task 配套修改仍未提交。
-- Agent Runtime HEAD `5839ef4` 尚无 `src/iqs_agent_runtime_lab/api.py`；facade 与运行支持修改仍未提交。
-- 当前定向测试在同一台工作站读取了以上工作树候选。因此，177 项共享引擎/语义/边界回归、2 项 task-factory facade 合成合同测试与 214 项模块/路由/题库组合回归只说明候选工作区状态，不能证明 canonical owner 组合或清洁部署可运行。
+- IQS 本地 HEAD `bb20529` 已包含 `scripts/answer_validation.py`、`scripts/shared_company_ports.py` 和调用它们的回归；该提交可独立检出，但尚未推送到 `origin/master`，因为 owner 端还没有锁定版本。
+- StockQA canonical HEAD 仍为 `4c24789`；当前 `master` 工作树已出现 `src/utils/quick_scan_company_api.py`（1.5.0）及配套变更，但未提交。
+- Company Agent canonical HEAD 仍为 `d0280f5`；当前 `master` 工作树已出现 `src/iqs_company_agent_lab/api.py`（2.3.0）、`public_port.py` 及配套变更，但未提交。
+- Agent Runtime canonical HEAD 仍为 `5839ef4`；候选在 `codex/agent-run-02` 工作树，已出现 `src/iqs_agent_runtime_lab/api.py`（1.4.0）及运行支持修改，但未提交，也尚未合入 canonical branch。
+- 当前定向候选测试：IQS 19 文件组合 454 passed + 244 subtests（其中包含共享引擎/语义/边界177、task-factory合成合同2、模块/路由/题库214+236 subtests）；StockQA 61、Company Agent 11、Runtime 38 均通过。跨仓 smoke 以只读导入确认三份候选版本和公开操作可解析。上述 owner 侧结果读取未提交工作树，证明当前候选能组合，不证明固定提交的 canonical 组合或清洁部署可运行。
 
-完成条件：各 owner 按其仓库计划提交 facade 与最小依赖；IQS 再提交与版本匹配的 adapter；随后使用固定 commit 的隔离干净检出跑跨仓正例、拒绝不兼容版本的反例和公开 capabilities 命令，并经新的独立审查。此期间不覆盖或代提交这些仓库中的其他未提交内容。
+完成条件：三个 owner 分别把 facade 与必要依赖固化为可引用的 commit；IQS 按这些版本固定依赖并推送 `bb20529`；随后使用固定 commit 的隔离干净检出跑跨仓公开操作正例、拒绝不兼容版本反例和公开 capabilities 命令，并经新的独立审查。只收敛这些接口及其必要依赖，不带入其他并行改动。
 
 2026-11-10 TDD 先加入失败的别名与嵌套 `getattr(importer, "import_module")(... )` / `getattr(builtins, "__import__")(... )` 反例，再修扫描器。七个边界套件最终通过：IQS 50、StockQA 24、StockWiki 9、Runtime 9、Dashboard 2、Theme 2、Industry 4 项测试及 12 个子测试；Company Agent public API 两项通过。独立 reviewer `final_modularity_audit` 对扫描器、动态导入探针和模块图给出 **ACCEPT**。后续审查发现共享引擎 facade 的 owner 实现仍有未提交候选，不能将该 ACCEPT 外推为干净检出或生产跨仓接线通过；该集成项仍开放。
 

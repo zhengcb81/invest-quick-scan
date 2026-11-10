@@ -1126,6 +1126,7 @@ class QuestionSetTests(unittest.TestCase):
             temp_context = tempfile.TemporaryDirectory(prefix='iqs-stockqa-s02-')
             tmp = temp_context.name
             try:
+                Path(tmp, 'logs').mkdir()
                 os.chdir(tmp)  # upstream logger writes here, never into the external repository
                 loader = importlib.import_module('src.config.json_config_manager').JSONConfigManager
                 parser = importlib.import_module('src.providers.llm_response_parser').LLMResponseParser
