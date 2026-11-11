@@ -1,6 +1,19 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-11 九仓未提交/未并线盘点完成
+
+**当前新增进展：改动归属已查清并写回原9张MC卡，已安全清理临时产物并合入一组真实漏合修复；模块化专项仍未完成。** 详见[盘点与处理总表](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)。
+
+- IQS原28份tracked WIP、QA canonical/1.8候选、Runtime两边独有实现全部保留。CA公开API已在主线；旧G2/F05/E12/报告分支或真祖先或等价补丁，不重复合。Runtime的codex/agent-run-02就是实际主线；CA/Runtime没有remote。
+- 真正待并线已经明确：StockWiki C38@4532b0d包含名单request/read/history等尚未入master的功能；IQS C38@b851111提供配套消费者；Dashboard这端已有消费面。顺序和测试写入MC-SW→MC-IQS→MC-DASH，不再停留在“未来找机会合”。
+- Dashboard原两个功能漏合及测试已在独立树验证后ff到main@0addea2：语言filter数组、reconcile配置、流式/缓冲读取测试。29项通过、非作者审查通过；5份tracked+1份新测试WIP前后SHA-256一致。其他writer于20:09迁移了一个测试路径，报告已按实时状态修正。20:21另一writer又将这6项与说明提交为2049356，当前Dashboard tracked clean；本轮验收止于0addea2，MC-DASH承接2049356继续验证。
+- 删除71个pytest临时目录和6个明确残留文件，共20,734文件、约1.53GB。未删有效源码候选、真实/原工作SQLite库、原答、个人配置、历史验收证据或原有注册worktree；本轮自建测试工作树已正常回收。
+- 本轮没有测试所有保留WIP、没有收费调用、没有生产库/名单修改。IQS依赖未齐的本地提交、Dashboard既有19项本地提交没有借本次审计一并发布；正常发布授权仍有效，按原MC发布步骤处理。
+
+
 ## 2026-11-11 当前方案：先按架构规划，分域收口
+
+以下保留规划节点的设计结论；本轮实际清理、测试和并线进展以上一节及Next Step为准。
 
 **当前结论：模块化尚未完成，剩余不是继续补几个私有访问反例。** 本轮已对实际运行链做四路架构调查，确认版本分叉、冻结夹具冒名当前集成、历史交付门、宽对象和原UI双向源码加载等问题。现在先完成规划及独立审查，不继续零散实施。
 
@@ -67,7 +80,7 @@
 - IQS调查HEAD为`fbe5b39`，工作树要求QA≥1.7；StockQA canonical HEAD`4c24789`缺facade，磁盘1.5，临时候选1.8。不是仅待推送，而是需归拢两个实现。
 - Company Agent`793bfbc`已提交API2.3；Runtime`5839ef4`的API1.4仍在候选。Runtime原36项局部通过/独审不等于当前owner组合通过。
 - Runtime当前tests中旧218/219计数和历史pin不一致，现决定将这些历史检查移出默认产品验收，**不再刷新旧回执求绿**。冻结集成保留为legacy，新增真正当前源码组合。
-- StockWiki已到`12c441e`；Dashboard已到`b707473`；原8766仓是`iqs-question-bank-ui-lab@47d5354`；Theme`3352b58`有WIP，Industry`7d49ca3`。本轮没有验证远端或部署。
+- StockWiki已到`12c441e`；Dashboard调查时到`b707473`，本轮小修复已快进`0addea2`，另一writer后续提交`2049356`为当前HEAD；原8766仓是`iqs-question-bank-ui-lab@47d5354`；Theme`3352b58`有WIP，Industry`7d49ca3`。本轮没有验证远端或部署。
 - 完整来源、确认问题与限度见[实际架构调查](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)。
 
 ## 目标和不可变边界
@@ -107,7 +120,7 @@
 
 ## Next Step
 
-**本轮规划独审已通过。下一步由用户分派独立harness，总控执行MC-IQS的P1。** 按[九仓收尾路线图](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)归拢已存在的QA/Runtime候选和各仓WIP，给出C5公开启动/快照输入，各owner并行TDD；最后只用自包含提交做一次真实源码组合I1–I7及集中独审。当前不继续逐项扩展反射扫描、不刷新历史218/pin、不自行启动9个实现worker。原F05/W11/G4业务主线在专项完成后接续，规模与金融验收单列。
+**沿原9张MC卡进入分域实施，第一步归拢现有源码，而不是重新排查全仓。** [入场盘点](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)和每卡精确并线项已完成：MC-QA/RT收齐两个候选与canonical，MC-SW先并C38公开名单owner及依赖，MC-IQS移植匹配消费者并提供C5快照，其他模块按本卡并行TDD。源码/测试自包含后一次当前版本组合I1–I7与集中独审，再发布并返回F05/W11/G4。没有自主启动9个实施worker，不增加小节点回执或历史pin门。Dashboard本轮三项小修复已并；其余明确待并项在各卡中，不用重复询问授权。
 
 ### 模块化与松耦合的完成定义（由本轮域级TDD路线收敛）
 

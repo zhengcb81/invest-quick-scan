@@ -1,5 +1,19 @@
 # 当前进度与阶段证据
 
+## 2026-11-11 各模块WIP与未并线审查、精确清理及小修并线
+
+总控及三个只读agent核9个源仓、各自注册工作树和候选副本，输出[四份详细报告及处理索引](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)。分清真祖先、patch等价、手工重做、实质缺失与本地未推送；审查结果加入原9张MC卡，不新发一批。StockWiki/IQS C38名单authority确实未归主线，已写明版本/依赖/合流测试；QA/Runtime有效WIP和旧快照参考完整保留，Theme新harness/Industry边界测试不误删。
+
+实际清理：71个pytest目录20,728文件1,526,513,329字节；另6个确认残留354,258字节，合计20,734文件约1.53GB。精确列表见cleanup.md。删除前检查根边界、无reparse/内嵌.git与活动进程；真实/原工作库、原答、配置、历史证据和原注册worktree未动；测试临时SQLite/源码副本属于已清产物。本轮自建Dashboard测试worktree完成用途后正常移除。
+
+Dashboard在独立worktree摘取5d2a761、4b30e1d、8e3231c，测试hunk冲突保留streaming和buffered两例，不选边丢测试。最终5a16ca7/c56e9ce/0addea2经非作者完整diff核验，2个测试文件29项全部通过；随后canonical main由b707473快进0addea2，6项当前源码WIP前后哈希一致。其余19个原本本地未发布提交未推送，不借此次小修代签全D00发布。收尾时发现另一writer于20:21提交2049356，原6项WIP及其README已进入main；0addea2仍是其祖先。MC-DASH基线相应更新，未把这项新提交算入本轮29项验收。
+
+环境/核查偏差也已处理：外部worktree的沙箱Git误报改用只读沙箱外Git；UTF-8路径用字节解码避免中文乱码；两次沙箱pytest卡在首个Windows asyncio测试，精确停止自有PID后相同离线命令沙箱外3.86秒返回29通过；初次并线保护因测试从tests/unit迁至m0-platform而停止，复核最新路径再ff，未覆盖writer。文档提交预检另检出执行链报告末尾多余空行，已规范后重检。上述失败未算成产品断言失败。未付费、未运行真实owner/下载、未修改生产名单或数据库。
+
+本节点文档/操作独立终核PASS，三处措辞歧义已修复，无开放发现，详见intake-audit/review.md；不代签保留WIP或并行提交2049356的功能质量。
+
+当前9仓核心TDD尚待实施；本次是归拢前的收账。下一步只按MC卡读取相关变动、收成真实自包含owner组合，不刷新旧回执。IQS已有未发布源码的QA/RT依赖仍未齐，本轮文档本地提交后不把它们悄然推送成可用产品。
+
 ## 2026-11-11 架构重新规划（未继续源码实施）
 
 响应用户要求，使用planning-with-files，先读实际代码和各仓Git。三个独立agent分别审执行链、数据/研究消费者、两套UI，总控审IQS。确定9仓责任线和有限退出条件；计划、调查、公共契约/TDD、整合交接及9份施工卡在[同一目录](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)。这一轮没有运行产品测试、真实模型、服务或写生产库。

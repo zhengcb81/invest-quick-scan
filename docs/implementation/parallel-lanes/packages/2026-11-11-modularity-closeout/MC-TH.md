@@ -2,6 +2,13 @@
 
 可独立交harness。先读 [总路线](README.md)、[契约/TDD的C4](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)。只改Theme，不代改StockWiki/IQS。
 
+## 2026-11-11 入场盘点与并线清单
+
+[实查](intake-audit/store-consumers.md)：`master@3352b58`，无remote，无其它未并分支。两份tracked修改为`quick_scan_client.py`与对应integration测试；新`tests/fixtures/quick_scan/quick_scan_client_test_harness.py`是测试直接依赖，不是临时文件。
+
+三个文件作为一个候选归拢：去任意CLI module配置、隔离fake adapter、能力域边界测试。与本卡schema语义兼容整改一起检查，跑原短组后自包含提交；不能只提交tracked diff漏掉新harness。本轮已删除三个明确`.pyc`，源码和CodeGraph配置未动；不新建remote。
+
+
 ## 目录和已有改变
 
 - 源仓：`C:/Users/郑曾波/Projects/analyze-theme-value-chain`，HEAD `3352b58`。client和integration test已有tracked修改，另有`quick_scan_client_test_harness.py`等新文件；开工必须完整识别支持关系，不能只提交两份tracked diff。

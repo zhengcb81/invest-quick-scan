@@ -2,6 +2,16 @@
 
 本文件配合每包范围使用；不是新的运行准入系统。
 
+## 入场盘点已经完成，复用结果
+
+先读[intake-audit](intake-audit/README.md)和本卡新增入场段。每个作者只需重新核对自己将修改的HEAD/diff是否变化，不再跑一轮全仓盘点，不另发许可/回执。总控保留文档源；各仓作者在自己的PWF记录实际承接的源文件/提交。
+
+- QA和Runtime必须保留canonical与独立.git候选两边改动；不能只checkout HEAD而漏掉新接口。CA公开API已经提交，验证即可。
+- StockWiki C38主候选先并公开名单事务及依赖，IQS C38再接request/history，Dashboard现有消费者最后组合。其余C38已交付能力按MC-SW分域归拢；B03/F05/E12祖先或patch等价项不重做。
+- Dashboard本轮验收到0addea2，6项原WIP在ff时哈希保留；另一writer随后已提交2049356，当前以该提交继续验证；老C38消费者已合。IQS/Dashboard“已在main但没push”的提交与“未合侧枝”分别记录。
+- 清理只涉及确定测试产物；原库、答案、历史证据和有效候选均存在。不要因本轮清理成功而推广成git clean、reset或tmp全删。
+
+
 ## 开工与不相互覆盖
 
 1. 读取该源仓AGENTS、当前PWF和本包。用`GIT_OPTIONAL_LOCKS=0`读取HEAD、tracked diff与本包相关untracked清单；不打印环境密钥。不凭旧文档判断树干净。

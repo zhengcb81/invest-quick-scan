@@ -2,6 +2,13 @@
 
 可独立交harness。先读 [总路线](README.md)、[契约/TDD的C5](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)。C5是本次双方约定，真实IQS实现由MC-IQS提供；本包可先写fake测试，不代改IQS。
 
+## 2026-11-11 入场盘点与并线清单
+
+[UI实查](intake-audit/ui.md)：真实原UI仓`iqs-question-bank-ui-lab master@47d5354`。源码tracked clean；两份generated JSON修改是页面数据快照，不是新功能或垃圾；`.codegraph`为本地索引，保留、不夹带提交。
+
+旧B03 UI变更已在master，不重复合。报告逐一列出的7个worktree中，旧生成输出/原件证据保留；不以“清理”重生成snapshot、改215公司名单或删除旧结果。实现仍按C5由IQS持有export/state_root，UI只消费公开snapshot；新UI功能commit排除本机运行生成物。只在本卡真实交付后由总控更新部署，不把源码已合视为8766已重载。
+
+
 ## 目录与范围
 
 - 正确源仓：`C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab`，HEAD `47d5354`；**不是iqs-viewer-lab**。开工核实dirty状态，不能假设干净。

@@ -1,10 +1,18 @@
 # 当前接手说明
 
+## 2026-11-11 接手先看：改动盘点已落到原分包
+
+先读[九仓盘点/实际处理](parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)，再读自己那张MC卡的新“入场盘点与并线清单”。不重做全仓审计，不再把旧祖先或等价分支整体合回；只在动手前复核当前HEAD和将改路径。各仓仍可能有writer，Dashboard本轮已观察到测试路径迁移。
+
+Dashboard三个小修复已ff主线0addea2（29项通过/非作者diff独审）；当时5tracked+1新测试WIP哈希不变；20:21另一writer已提交为2049356（加其说明共7文件），当前tracked clean。MC-DASH接续此新提交，质量不由本轮29项代签。IQS原28项WIP、QA77/候选87、Runtime24/候选49仍需按卡收拢。CA API2.3已在793bfbc；Runtime codex/agent-run-02就是主线；CA/RT/Theme无remote。StockWiki C38@4532b0d→IQS C38@b851111是真待并配对，Dashboard消费者已存在，先owner后consumer；旧C1不重复合。
+
+71个pytest目录和6个明确残留文件已经删除，约1.53GB；有效候选根/源码/原答/运行库/历史证据均在，不要按tmp前缀扩大清理。旧副本对照、全部未提交路径、worktree/分支状态和测试命令都在报告。剩余是原9包TDD/组合实施，本次盘点不是模块化完成。IQS/Dashboard本地未推送的源提交按卡的完整发布组合收齐后正常发布，现有授权继续有效，不反复问。
+
 ## 2026-11-11 接手续令（优先于下方历史）
 
 用户要求先从各模块架构做细规划，供多个harness并行TDD收口。本轮不继续零散源码修补。先读根PWF和[本轮总路线](parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)、[实际调查](parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)、[公共契约/TDD](parallel-lanes/packages/2026-11-11-modularity-closeout/contracts-and-tdd.md)、[整合交接](parallel-lanes/packages/2026-11-11-modularity-closeout/integration-and-handoff.md)。规划已由三个非作者agent复核通过，歧义已修正。9包未在本轮启动，用户可分派8个外仓包，IQS由总控负责。
 
-不要继续刷新Runtime历史218/219和freeze pin求绿，也不要扩大千行反射扫描器。QA源仓磁盘facade1.5、IQS临时候选1.8、HEAD均缺该文件；IQS floor已1.7。CA793bfbc已提交，RT1.4仍候选。SW12c441e、Dashboard b707473、原8766 question-bank UI47d5354、Theme3352b58有WIP、Industry7d49ca3是本轮实际快照。下方旧版本只是历史，不得覆盖这些事实。
+不要继续刷新Runtime历史218/219和freeze pin求绿，也不要扩大千行反射扫描器。QA源仓磁盘facade1.5、IQS临时候选1.8、HEAD均缺该文件；IQS floor已1.7。CA793bfbc已提交，RT1.4仍候选。SW12c441e、Dashboard早前架构快照b707473（当前2049356；本节点验收到0addea2）、原8766 question-bank UI47d5354、Theme3352b58有WIP、Industry7d49ca3是架构调查及收尾复核的分时快照；最新接手基线以上一节和各MC卡为准，下方旧版本不覆盖新状态。
 
 真正关闭专项需：每域公开替换/封装/方向TDD、owner自包含commit、无legacy注入的当前源码I1–I7组合、一次独立集成审查；随后回F05/W11/G4与规模主线。不要把金融准确性、2000家或新视觉要求追加成架构门。保留所有原已付回答/真实验收和并行修改，不能整体清理临时工作树或git add -A。
 

@@ -2,6 +2,18 @@
 
 本卡留给总控；若用户交给另一harness，总控停止IQS源码并发写入。先读同目录 [总路线](README.md)、[调查](architecture-audit.md)、[契约/TDD](contracts-and-tdd.md)、[交接](integration-and-handoff.md)。无需此前聊天上下文。
 
+## 2026-11-11 入场盘点与并线清单
+
+先读[本仓实查](intake-audit/iqs.md)及[九仓索引](intake-audit/README.md)。当前基线 `master@5c8ba43`；28份原tracked修改全保留，不能从HEAD重建而丢掉WIP。已在master的bb20529等属于未发布，不是未合并分支。
+
+1. 按报告四组归拢题库/语义/observer/共享引擎；QA≥1.7消费者与QA1.8/RT真实公开版本一起验证。只清理了可再生pytest输出，两个有效.git候选完整保留。
+2. **确实待并：C38 `b851111`（实现418bb94），与C1 `59e8619`最终tree相同，只取一份。** 先等MC-SW名单request/read/history自包含提交，再移植六文件至当前service/owner，保留B03/E12/慢锁修复。依赖、精确文件、同键回放/冲突/中断测试见报告；不做整分支旧代码覆盖。
+3. deeplink/B03/job-facade多次被摘取重做，不因git cherry为“+”重复合并。补查旧`test_dashboard_iqs_link_api.py`的有效行为是否已被当前测试覆盖；有缺只迁移反例。F05及E12等价修复不重做。
+4. 旧docs验收副本、`.mimosa`、本地配置和研究报告不进本次源码提交。原始JSON字节一致而Git显示M的老worktree不当新题义提交；不要清理全部worktree。
+
+本轮没有测试这28份源码WIP；本卡仍需完成原TDD与集中独审。Dashboard小修复已独立并线，见MC-DASH；不是IQS共享引擎已完成的证明。
+
+
 ## 工作范围和输入
 
 - 唯一源仓：`C:/Users/郑曾波/Projects/invest-quick-scan`。规划时HEAD `fbe5b39`，包含本地`bb20529`；有共享引擎、语义、题库等WIP，不能从HEAD开始丢弃它们。

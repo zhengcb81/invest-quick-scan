@@ -2,9 +2,19 @@
 
 交给Dashboard侧harness/D00协调，不覆盖其原九模块计划。先读 [总路线](README.md)、[契约/TDD](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)，以及本仓AGENTS和`.planning/unified-dashboard-2026-10-26/START_HERE.md`/`OWNERSHIP.md`。
 
+## 2026-11-11 入场盘点与并线清单
+
+详见[UI完整实查和候选独审](intake-audit/ui.md)。调查基线main `b707473`、本地origin/main `0dcf61f`，原有19个本地提交未发布。**本轮已把3个漏合修复摘取并快进到main `0addea2`**：原5d2a761→5a16ca7（流式测试）、4b30e1d→c56e9ce（language list）、8e3231c→0addea2（reconcile --config）。两种读取测试都保留；两文件测试29/29通过，独立差异审查通过。
+
+- 20:11盘点时有效WIP为5份tracked（service.py、ports/protocols.py、transport/http.py、tests/support/factory.py、tests/unit/m0-platform/test_owner_port_error.py）和1份新`tests/integration/test_module_boundaries.py`。20:09期间测试路径发生迁移，存在其他writer；本次ff前后6份字节hash一致。随后20:21另一writer已将这6项连同其说明提交为`2049356`，现在tracked clean。**本卡从2049356承接，不再把这些修改当未提交WIP重做；本轮只验收到0addea2，2049356的质量由本卡延续验证。** 开工只核最新相关diff，不覆盖其它writer。
+- 旧C38 Dashboard消费者已在main；不要再merge或降级绕过。提供者缺口由MC-SW和MC-IQS的C38归拢解决，Dashboard只做现有公开名单接口整体验证。
+- 旧C30–C38/E12/B03大部分patch已合；原all31树有120项暂存、B03探针/原始证据、E14暂停记录等，按报告保留，不能`git clean`。与此卡无关的D00功能/证据不整支带入。
+- 本轮只并上述4个路径；没有发布原有19个未发布提交或后续writer提交。当前main@2049356比本地origin多23提交，须由D00/本卡确认完整发布范围后按原授权推送，不借小修复带出未审整线。Dashboard总PWF仍由D00维护，IQS不代写。
+
+
 ## 工作树与归属
 
-- 源仓：`C:/Users/郑曾波/Projects/investment-dashboard`，调查HEAD `b707473`，不是旧0dcf61f；dirty状态开工核。
+- 源仓：`C:/Users/郑曾波/Projects/investment-dashboard`，早前调查HEAD `b707473`，当前`2049356`；本轮验收点为`0addea2`，新提交/WIP状态开工核。
 - 建议工作树：`C:/Users/郑曾波/Projects/iqs-modularity-worktrees-20261111/MC-DASH`，分支`codex/modularity-dashboard-20261111`。若D00已有隔离树，使用其指定树并回报。
 - 写入限m0共享ports/composition必要接线、m6 quickscan、m8 jobs、application/service中相关依赖/存储注入及对应tests/文档。D00在既有ownership中登记具体路径，避免D01/D03/D04正在同改。
 - 不重开m1–m5/m7/m9建设、不改RF/company-wiki、不手写generated合同、不修改IQS或其它owner、不动生产配置。

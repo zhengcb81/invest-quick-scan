@@ -2,6 +2,13 @@
 
 可独立交harness。先读 [总路线](README.md)、[契约/TDD的C4](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)。本包优先验证已有成果，不为凑改动重写行业研究。
 
+## 2026-11-11 入场盘点与并线清单
+
+[实查](intake-audit/store-consumers.md)：`main@7d49ca3` tracked clean，但新增未跟踪`tests/test_quick_scan_module_boundaries.py`；它是待审源码，不是临时测试输出。两条report-generation分支均为main祖先，旧worktree干净，不需要再merge。
+
+先将这份边界测试纳入本卡TDD，审掉重复/过度静态解释规则但保留域级反例；与原五个快扫测试一起验证后提交。没有实际实现缺口则不强行重构。origin/main只在本地ref与main一致，发布前按原流程核远端，不把本次只读盘点说成远端已验证。
+
+
 ## 目录和范围
 
 - 源仓：`C:/Users/郑曾波/Projects/industry-research`，HEAD `7d49ca3`，调查tracked clean；开工复核。

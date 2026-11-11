@@ -1,5 +1,13 @@
 # 当前发现、风险与决策
 
+## 2026-11-11 改动盘点纠正
+
+“还有很多分支”并不等于很多未合功能：QA旧G2、IQS F05/E12和Industry报告已吸收；Runtime的唯一codex分支本来就是主线。另一方面，StockWiki C38仍缺129条已交付路径，IQS名单authority也缺，Dashboard消费端已在main，这才是具体的版本断层。已把归拢顺序放回MC-SW/MC-IQS，不加新支线或新门。
+
+QA和Runtime的价值主要在未提交源码，不能只看HEAD或tmp目录名。Runtime canonical有候选没有的launcher修复；Theme新test harness/Industry新边界测试也会被“只提交tracked”漏掉。三仓canonical无remote的事实（CA/RT/Theme）已纠正，不能擅建远端。约1.53GB可再生测试输出已精确清理，其它原始状态保留。
+
+Dashboard漏合的language list/reconcile配置已根修并线main@0addea2，29项离线测试和独审通过。实际存在其他writer移动测试文件、随后提交2049356，已更新MC-DASH基线；本轮前后哈希保护避免覆盖，未替新提交代签质量；“盘点快照”不能成为稍后强行reset的依据。报告、待并源提交和每包输入见[本轮实查](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)。
+
 ## 2026-11-11 收尾拖延的根因与纠正
 
 结论：不是单纯“测试还不够”，而是能力域未统一、候选未发布为同一组合、当前集成实际用冻结代码、历史交付门挤占了产品收尾。具体证据和9仓整改路线见[架构调查](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)和[总计划](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)。

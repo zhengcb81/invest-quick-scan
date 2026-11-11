@@ -2,11 +2,20 @@
 
 可独立交harness。先读 [总路线](README.md)、[契约/TDD](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)。此包以保留已有成果为原则；无缺陷时可只补关键测试和说明，不强制重构。
 
+## 2026-11-11 入场盘点与并线清单
+
+[实查](intake-audit/execution.md)：`master@793bfbc`已经包含公开API2.3，tracked clean，只有master；不存在待并feature分支。**canonical当前没有remote**，不新建远端，也不把无推送记作失败。
+
+本轮已精确删除单测生成的`fixtures/locked/synthetic/boards/run-context-compact-2.board.json`。根因是`tests/conftest.py`的make_task把自定义board写入locked fixture；本卡把可写测试输入移到tmp_path，保留原静态fixture，并跑`tests/test_usage_cache.py::test_context_compression_boundary_keeps_traceability`及原公共API组。验证后源码树不得再生成这份board。
+
+其余已有封装按原TDD验证，不强制重构。CodeGraph本地配置保留、不进业务提交。只有发现实际缺口才新增源码，不能以“必须有新commit”为验收标准。
+
+
 ## 目录与边界
 
 - 唯一源仓：`C:/Users/郑曾波/Projects/iqs-company-agent-lab`；HEAD `793bfbc`已含API2.3、task1.1、opaque task/journal/runner。
 - 独立实现树：`C:/Users/郑曾波/Projects/iqs-modularity-worktrees-20261111/MC-CA`；`codex/modularity-ca-20261111`，尚未创建。
-- 允许：`src/iqs_company_agent_lab/`公开api、public_port、task/runner/recovery/schema资源加载及必要纯规则；相关tests、文档和本包PWF。远端存在性开工核实，不自行新增remote。
+- 允许：`src/iqs_company_agent_lab/`公开api、public_port、task/runner/recovery/schema资源加载及必要纯规则；相关tests、文档和本包PWF。本轮已核canonical无remote，不自行新增remote。
 - 不写IQS/QA/RT；不动模型客户端/预算/正式响应；不扩研究策略，不重建12题历史实验。
 
 ## 架构与接口

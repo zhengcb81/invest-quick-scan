@@ -2,6 +2,17 @@
 
 可独立交harness。先读 [总路线](README.md)、[契约/TDD](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)。重点不是继续扩扫描器，而是发布已有接口、取消历史交付门、证明可替换。
 
+## 2026-11-11 入场盘点与并线清单
+
+详见[执行链实查](intake-audit/execution.md)。实际主线是唯一分支`codex/agent-run-02@5839ef4`，没有另一个main/master，也没有remote；不用为名字重新建主线。canonical24份tracked+9份新文件，候选49份tracked+12份新源码/测试，是待归拢实现，不是待合commit。
+
+1. 保留canonical独有launcher修复`iqs_agent_runtime_lab.py`、`src/iqs_agent_runtime_lab/__main__.py`、`tools/lock_inputs.py`说明；候选不含这些变化，不能整目录覆盖。
+2. 再收候选api/services/opaque/DTO/explicit_source_adapter及测试；包含candidate独有conftest与runtime_test_support。旧`.tmp-runtime-modularity-20261110`的48份src/tests已证与canonical相同，不再当第三份未合实现；根内其它证据仍保留。
+3. 旧handoff/tools的pin/218计数改动不作为本轮必须交付项；原历史留档，当前默认功能suite与冻结legacy分层。不要把删除历史门变成删除恢复业务测试。
+4. 本轮只清理候选内部9个pytest目录，两个旧Temp工作树的删除状态是旧不完整检出，未提交/未删登记。旧c15ad9a/cab5175均是当前HEAD祖先，无新功能需并。
+5. 收拢后按本卡launcher、公开services、当前CA/QA组合短组和一次独审形成自包含提交；0API验证后再通知IQS选择此真实版本。
+
+
 ## 输入与写入
 
 - 源仓：`C:/Users/郑曾波/Projects/iqs-agent-runtime-lab`，分支`codex/agent-run-02`，HEAD `5839ef4`不含api；磁盘有API1.4。

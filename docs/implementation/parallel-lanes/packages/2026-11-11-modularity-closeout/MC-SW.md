@@ -2,6 +2,18 @@
 
 可独立交harness。先读 [总路线](README.md)、[契约/TDD](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)。本包不重做已经通过的事实CLI与数据库设计。
 
+## 2026-11-11 入场盘点与并线清单
+
+详见[存储/消费者完整实查](intake-audit/store-consumers.md)：`master@12c441e` tracked clean；7个未跟踪运行库/日志全部保留且不入Git。36个分支、30个worktree已核对；18条非祖先分支并非18个独立缺口。
+
+**真实主候选是C38 `codex/dashboard-c38-sw-release@4532b0d`**：136条变更路径中当前master缺129条，另7条内容不同。不是已全部并线。C1的7be0c97/60a85ef已patch等价进入C38，不能重复合两线。
+
+- 先在隔离树把名单`dashboard_membership_request_cli.py`、`quick_scan_membership_read.py/request.py`与DDL/事务/universe/backup依赖并到当前master。公开wire `stockwiki.membership_request/1.0.0` 的apply/lookup/history保持，交IQS C38消费者配对。精确测试命令与同键/错键/分页/断线/并发场景见报告。
+- C38余下已交付research/identity/onboarding/proof/binding/source-link/analysis-subject源码也列入本卡并线清单：逐能力域比对当前实现，缺失的沿原公开接口合入，自包含提交；若与D00当前writer重叠，记精确剩余提交/范围移交D00，不用“C38已验”跳过。只归拢已有功能，不新增业务研究或真实迁移。
+- 两条B03的3个最终源文件相同且已被master移植增强；保留当前只读CLI/分离operator，不合回旧公开写入口。F05等真祖先不重合。B34剩余07fbb8a仅三份文档，可在C38收齐后纳入历史，不将它变成运行门。
+- 含junction的backup测试目录、旧实验库/证据与`.d00-audit`源码保留。没有运行生产库迁移，不把clean源码误记为“所有分支已上线”。
+
+
 ## 工作范围
 
 - 源仓：`C:/Users/郑曾波/Projects/StockWiki`，调查HEAD `12c441e`、tracked clean；开工重新核实。

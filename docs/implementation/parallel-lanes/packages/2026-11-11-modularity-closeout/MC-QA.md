@@ -2,6 +2,17 @@
 
 可独立交harness。先读同目录 [总路线](README.md)、[契约/TDD](contracts-and-tdd.md)、[调查](architecture-audit.md)、[交接](integration-and-handoff.md)。本包只写StockQA，不代改消费者。
 
+## 2026-11-11 入场盘点与并线清单
+
+详见[执行链实查](intake-audit/execution.md)。canonical `master@4c24789` 有77份tracked修改；独立.git候选有87份tracked修改。9份新接口与对口测试不是临时文件，必须随依赖归拢。两条旧G2分支都已是master祖先，无需再合；远端状态只核了本地ref，没有fetch。
+
+- 归拢单元：lifecycle/owner ports、provider/runner调用、question-pack/work/已付响应journal、公开factory与其测试；候选独有`quick_scan_company.py`、`_quick_scan_company_task_factory.py`和两份factory/contract tests。
+- canonical与候选53份相同、47份不同、4份候选独有，按hunk保留两者的有效变化。不要整目录覆盖；不要把未跟踪接口漏在commit外。
+- 旧delivery-port副本409份代码/测试/文档无独有未归拢逻辑，QA-v3的343份src/tests等于canonical；初版/v2各25个不同内容（无独有路径）作为有限参考，精确名单见报告。不整根覆盖，也不凭上层IQS的Git状态判它们已合。
+- 测试沿原短组，再覆盖改动到的已付恢复、question pack与共享额度；源/接口/测试自包含提交到master后，才提供IQS当前组合输入。不刷新旧交付回执。
+- 候选内部10个pytest目录及一个canonical空stderr已清理；源候选根、历史实验脚本、个人记忆、CodeGraph和特殊名称`nul`保留，排除业务提交。
+
+
 ## 工作目录与已有候选
 
 - 源仓：`C:/Users/郑曾波/Projects/StockQAbyLLM`，HEAD `4c24789`，磁盘facade1.5、HEAD无该文件。
