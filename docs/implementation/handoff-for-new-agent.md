@@ -1,6 +1,15 @@
 # 当前接手说明
 
-**2026-11-10 当前模块边界状态。** IQS 的共享引擎拆分、公开 ports、语义校验与回归已本地提交 `bb20529`，因此不再缺 IQS 源码；该 commit 暂未推送。StockQA `1.5.0`、Company Agent `2.3.0`、Runtime `1.4.0` 的公开 facade 已出现在 owner 工作树，但仍未提交/未进入各自 HEAD；Runtime 候选还在 `codex/agent-run-02`。IQS 19 文件离线组合回归 454 passed/244 subtests；StockQA 61、Company Agent 11、Runtime 38 项候选测试通过，跨仓版本/公开操作导入 smoke 通过。后几项读取未提交 owner 工作树，只能证明候选可组合，不能当作 canonical 发布或 clean checkout 验收。独立跨仓 reviewer 已接受候选接口和测试、未发现 P1/P2；正式接线仍 OPEN。下一步需固定 owner commit，在干净临时检出跑公开 API 正反例与 capabilities 检查，通过后更新 IQS 依赖并复审，再推送可用组合。详见根 [`progress.md`](../../progress.md) 最新模块化记录和 [`docs/architecture/module-boundaries.md`](../../docs/architecture/module-boundaries.md)。模块化主线保持 OPEN；静态边界规则不是防任意反射的运行时沙箱。
+## 2026-11-11 接手续令（优先于下方历史）
+
+用户要求先从各模块架构做细规划，供多个harness并行TDD收口。本轮不继续零散源码修补。先读根PWF和[本轮总路线](parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)、[实际调查](parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)、[公共契约/TDD](parallel-lanes/packages/2026-11-11-modularity-closeout/contracts-and-tdd.md)、[整合交接](parallel-lanes/packages/2026-11-11-modularity-closeout/integration-and-handoff.md)。规划已由三个非作者agent复核通过，歧义已修正。9包未在本轮启动，用户可分派8个外仓包，IQS由总控负责。
+
+不要继续刷新Runtime历史218/219和freeze pin求绿，也不要扩大千行反射扫描器。QA源仓磁盘facade1.5、IQS临时候选1.8、HEAD均缺该文件；IQS floor已1.7。CA793bfbc已提交，RT1.4仍候选。SW12c441e、Dashboard b707473、原8766 question-bank UI47d5354、Theme3352b58有WIP、Industry7d49ca3是本轮实际快照。下方旧版本只是历史，不得覆盖这些事实。
+
+真正关闭专项需：每域公开替换/封装/方向TDD、owner自包含commit、无legacy注入的当前源码I1–I7组合、一次独立集成审查；随后回F05/W11/G4与规模主线。不要把金融准确性、2000家或新视觉要求追加成架构门。保留所有原已付回答/真实验收和并行修改，不能整体清理临时工作树或git add -A。
+
+
+**2026-11-11 早前测试历史（已被本页首节路线取代）。** IQS候选19文件454 passed/244 subtests、较早StockQA61/Company Agent11、Runtime36项及局部独审保留为当时证据，不等于当前组合。Runtime完整套件曾因fixture、路径与历史handoff计数/pin失败；fixture和4项短路径用例已修验。当前决定把旧218/219与freeze/review pin检查移出产品默认验收，不继续修旧回执。现行下一步只有本页首节的9仓TDD计划；具体过程见根[progress.md](../../progress.md)。
 
 **2026-11-09 F05/E12 交接。** IQS `7446b5f` 与 `59c1dd5`、StockQA `4c24789`、StockWiki `93b2592`。F05 使用真实宁德时代 `FACT_10`，原授权登记、MiMo、原观察、StockWiki 导入及原 ACK 接通。公开 2.7 查询和导出各有自己的快照，分页沿原查询快照，Strict 当前排除待审核的 19 条候选。原观察库保持原样。启用事实时可用 `python scripts/question_sets.py publish-facts --module-package-id <现有发布包>`，配置 `prepare.module_package_id`，通过既有准备入口选 `question_ids`。发布归档不切换评分默认包。需要临时真公司验收时新建观察库，不能搬用原库绑定。
 

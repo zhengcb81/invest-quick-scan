@@ -1,5 +1,16 @@
 # 当前发现、风险与决策
 
+## 2026-11-11 收尾拖延的根因与纠正
+
+结论：不是单纯“测试还不够”，而是能力域未统一、候选未发布为同一组合、当前集成实际用冻结代码、历史交付门挤占了产品收尾。具体证据和9仓整改路线见[架构调查](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)和[总计划](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)。
+
+- 已有公开CLI、opaque task/runner/runtime成果保留；设计上消除宽对象、反向依赖和对方内部目录知识。
+- 测试改为最小公开fake可运行、DTO不改owner、域方向mutation和真正当前提交组合；不穷举Python反射，不把每文件当模块。
+- 旧手写测试数、历史pin和同义schema字节hash不再阻挡当前功能；身份/原答完整性/幂等/真实发送预算仍保留。
+- 9仓分工是现有专项的收尾，不是新增9条研发支线。company-wiki、旧viewer和实验Lab不成为这次新前置。
+- 本轮只做调查/规划，尚未验证实现修复。历史“设计已覆盖全部模块”结论以本轮实际清单纠正，不能继续作为整体完成证明。
+
+
 **F05 真实验收发现。** 评分专用的发布、执行、写入和 2.0 读取都会阻断事实。修复后事实沿原发布归档、请求回执、已付保存、封存、StockWiki 绑定和 ACK。原生读取选择 owner 宣布的观测版本，保留 1.1/1.2 原字节。旧精简输出仅保留历史评分路径，不能替换事实正文。真实 19 条为 Explore 候选，Strict 的原审查要求保持。复制观察库会改变其身份，验收以原生初始化、实际生成绑定的隔离库为准。
 
 **E12 真实使用发现。** Dashboard 当前通用 StockWiki 代码根缺专用挂牌桥。已验证配置把通用 owner 指向主线，身份桥指向 `dashboard-owner-stockwiki-b-integration` 并读取同一真实身份工作区。作业恢复结果未知时，公开动作保留原键，Dashboard 重开后仍可核对原请求；目录中单条不可读不会丢掉其他任务。
@@ -197,3 +208,25 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - 在独立系统临时目录运行当前工作树候选测试：StockQA 61、Company Agent 11、Runtime 38 passed；同时版本协商和公开函数导入 smoke 通过。无模型、网络、数据库或生产数据调用。
 - 独立 reviewer 已覆盖三 owner 当前接口和 IQS 消费端：候选可接受、无确定性 P1/P2；明确指出这不替代 owner canonical 提交及 clean checkout 集成。尚待 owner 端固定提交和干净检出正反例；在证据齐备前整体模块化状态仍 OPEN。
 - IQS 19 文件扩大离线组现为 454 passed、244 subtests passed。复跑发现一项现有隔离测试在全新 cwd 未预建 logger 目录；仅增强其临时测试 fixture 后单项和整组通过，未修改 StockQA logger。临时目录由 pytest/TemporaryDirectory 清理。
+
+## 2026-11-10 Runtime/StockQA owner 边界复审补充
+
+- Runtime 的发布测试链存在重复执行和跳过被误计为全绿的问题。已改为在最终交付 commit 的临时 clean clone 中完整执行一遍，并校验精确通过数与零跳过；内层回归仅做 metadata-only。该路径依赖最新 candidate commit/pin 才能证明，当前工作树有未提交实现，所以尚未跑最终 pin gate。
+- Runtime AST 规则曾漏过 `vars(...).get`/`__getattribute__`，并把局部变量、lambda 参数和 comprehension target 误当作导入模块。现已按 Python lexical scope 处理并补反例；模块级重绑定也单独识别。该扫描仍是常见源码访问的防回归，不是任意 `exec`/运行时反射沙箱。
+- Runtime 文档 test matrix 数量与完整收集列表不一致。现将28个单元模块归入16组，校验无漏项、重复、数量偏差；最新 collection 为216 unit + 7 integration，文档声明校验成功。测试生成脚本以 JSON 结果更新文档，不再修改其自身源码。
+- StockQA 已声明版本合同的 known-outcome 与 owner-budget modules 原先不在强制导入检查范围，WorkStore 因此可以越过其导出集引用操作。现已纳入检查并声明全部被调用名称；加星导入也作为违规，不会静默跳过。WorkStore session 外键依赖 `work_item` 已补回精确声明。
+- Runtime 和 StockQA 当前候选定向测试通过，但修改仍在各自候选工作树，不能当作已发布 owner API，也不能据此说模块化/解耦全项目完成。
+
+## 2026-11-10 Runtime 边界检测的相邻作用域
+
+- 独立复审发现扫描器初版既漏报通过 `builtins.getattr` 与函数/条件块本地 import 进入私有成员的路径，也可能误报函数、导入、普通赋值重绑定后的同名对象；修复后又发现推导式目标会继承外层模块别名，导致合法局部对象被误报。
+- 候选扫描器现通过模块和函数的顺序绑定状态识别别名与重绑定，并为 list/set/dict/generator comprehensions 单独跟踪 target scope。测试同时保留违规正例及参数、重绑定、lambda、推导式 target 的合法负例。复审最终结论尚待回传，不能提前标为 ACCEPT。
+- 这证明静态边界测试需要同时约束漏报和误报：前者会放过私有耦合，后者会造成合法代码被拒。即使该扫描器审查通过，它仍不阻止任意 `exec` 或运行时反射，不得描述成安全沙箱。
+
+## 2026-11-11 模块化进度核对
+
+- **Runtime 源码边界：** 最新 reviewer 复现了 raw namespace 反射旁路。规则现禁止从 Company Agent/Runtime facade 取得 `vars(module)` 或 `module.__dict__` namespace，并识别 `builtins.vars` 与导入/赋值别名；TDD RED/GREEN 与 36 项针对性组合通过，独立复审 ACCEPT。
+- **公开面：** CompanyAgentOperations 的字段集合及 Runtime `api.__all__` 已有精确合同测试。操作对象用于隔离正常消费者的模块命名空间，但 Python 函数对象仍可反射 `__globals__`，所以这不是恶意代码沙箱。
+- **Owner 发布链：** Company Agent 本地 `master@793bfbc` 已包含 facade，但本地没有 `origin/master` ref，不能推断远端已发布。StockQA `master@4c24789` 与 Runtime `codex/agent-run-02@5839ef4` 的 HEAD 尚无其 facade。干净安装时仍不能依赖未提交候选。
+- **项目判断：** 模块所有权/接口表与常见源码边界回归已成形；跨仓 API 的固定提交、clean-checkout 集成及其独立审查未完成。因此回答“模块化设计已落地一部分；全项目解耦尚未完成”。
+- **完整 Runtime suite 不能当绿：** 一次 `tests/` 全量运行失败。已修复三个 fixture NameError 的共同根因和旧 6 项 integration assertion，相关测试通过；Windows 深层临时目录的四个迁移/复制用例在短 basetemp 下通过。仍有实际收集数 219 与 handoff 218 不符，以及冻结 pin 与当前未提交 delivery 不符；在最终候选 commit/hand-off 刷新之前，这些是未关闭的发布一致性问题。它们不是模块边界专项失败，但阻止把 Runtime 候选称为完整交付。

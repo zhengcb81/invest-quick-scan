@@ -1,5 +1,18 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-11 当前方案：先按架构规划，分域收口
+
+**当前结论：模块化尚未完成，剩余不是继续补几个私有访问反例。** 本轮已对实际运行链做四路架构调查，确认版本分叉、冻结夹具冒名当前集成、历史交付门、宽对象和原UI双向源码加载等问题。现在先完成规划及独立审查，不继续零散实施。
+
+唯一执行分解是[模块化有限收尾路线图](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)：9仓责任线，IQS总控与8个可独立交harness的owner/consumer包。每仓自己维护本包PWF，外仓不改IQS根计划；Dashboard沿其D00。已成熟模块允许验证后直接交付，不强制重构。
+
+- 设计单位是能力域，既有opaque句柄/公开CLI保留；TDD证明公开替换、数据隔离、方向约束与保存恢复，不继续写静态Python解释器。
+- 删除/移出默认功能验收的旧用例数、freeze/review pin、同义schema字节格式门；保留身份、原答完整性、幂等和真实新发送预算。
+- 本轮只读调查，没有新产品测试、收费请求或生产写入。规划独审通过，发现的接口歧义已修正；9条源码实施线未在本轮启动。
+- 完成定义为公开边界可独立测试、固定提交组合I1–I7通过并独审；然后关闭专项、回原F05/W11/G4及规模主线，不把新金融/扩容要求追加为架构门。
+
+下方各日期段是阶段历史，不能覆盖本节、实际状态表和Next Step。旧ACCEPT只对当时已审范围有效。
+
 ## 2026-11-09 F05 与 E12 收尾
 
 1. **2.8 与 F05 查询并线完成。** 原八份文件逐字节冻结，提交 `19b5478` 保留施工内容，合并 `3f085bc` 已推。IQS 接受 2.7/2.8，StockWiki 公开服务按实际声明 2.7。旧 README 不纳入本轮。
@@ -49,6 +62,14 @@
 
 截至2026-11-04，B03公司结果读取代码已合入investment-dashboard main和IQS master；只读UI候选也已合入其UI仓master。代码链合入不代表原8766已重载或真实owner扫描已完成。本文件是唯一当前状态与执行顺序；[progress.md](progress.md)只记阶段证据，[findings.md](findings.md)只记结论/风险，[交接](docs/implementation/handoff-for-new-agent.md)只说明如何接手。原数千行记录已[原字节归档](docs/implementation/archive/pwf-through-2026-10-31/README.md)。历史日期报告和施工卡是当时的范围/证据，不能覆盖本表；也不能因本表更新而改签旧验收。
 
+## 2026-11-11 实际版本校正
+
+- IQS调查HEAD为`fbe5b39`，工作树要求QA≥1.7；StockQA canonical HEAD`4c24789`缺facade，磁盘1.5，临时候选1.8。不是仅待推送，而是需归拢两个实现。
+- Company Agent`793bfbc`已提交API2.3；Runtime`5839ef4`的API1.4仍在候选。Runtime原36项局部通过/独审不等于当前owner组合通过。
+- Runtime当前tests中旧218/219计数和历史pin不一致，现决定将这些历史检查移出默认产品验收，**不再刷新旧回执求绿**。冻结集成保留为legacy，新增真正当前源码组合。
+- StockWiki已到`12c441e`；Dashboard已到`b707473`；原8766仓是`iqs-question-bank-ui-lab@47d5354`；Theme`3352b58`有WIP，Industry`7d49ca3`。本轮没有验证远端或部署。
+- 完整来源、确认问题与限度见[实际架构调查](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)。
+
 ## 目标和不可变边界
 
 为用户认可的公司池建立持续更新的评分与事实画像、可解释筛选、历史/模型比较、产业链检索和两个深研技能联动，并最终完成配套部署。约2000家是原长期目标容量，尚未完成，不能自主生成名单或假报覆盖。当前认可池215个实体不是2000家，也不是216个挂牌候选。
@@ -65,9 +86,9 @@
 |题库与组合|已实现并接UI|48评分模块/222题；另61信息题。所有公司基础36题=核心24+杜邦7+五力5，数量派生，非硬编码24上限|
 |身份/名单/比较/UI|原UI已接|215实体；手动增删/恢复、TXT/CSV审阅、模型/时间对比已接。并非全池有答案|
 |Dashboard公司结果/B03|跨仓代码已并入各自主线|Dashboard main合同0.1.2-d、B03合并f501f32；IQS master已合入并推送B03代码fb262e0；只读UI仓master 47d5354。定向测试通过；原8766未重载，真实owner扫描未运行|
-|原部署|当前可用|原GET doctor `ready=true`、`blocked_reasons=[]`，该GET不发模型；11/01 gen7的1次真实HTTP及11/02零API恢复/入库见本节点终验。入口`http://127.0.0.1:8766/`|
-|远端持续集成|StockQA 最新 master 已绿|`01f20d6` 的 CI 41532137887 已完成且通过。上一节点的 Documentation 41523660825 构建与发布通过|
-|模块解耦|边界图与常见越界回归已通过；共享引擎跨仓公开 facade 还未成为各 owner 的 canonical commit，因此产品接线未关闭|IQS 本地提交 `bb20529` 已包含共享引擎 ports/语义拆分和回归；本机聚焦回归 177 passed、owner-task facade 合成合同 2 passed、模块/路由/题库组合组 214 passed + 236 subtests。三个 owner facade 已在工作树并通过针对性候选测试及导入 smoke，但仍未进入各自 HEAD；见[模块接口状态](docs/architecture/module-boundaries.md)。不能把候选工作树测试说成已发布的跨仓集成|
+|原部署|上一节点本机可用，本轮未重新检查运行服务|原入口`http://127.0.0.1:8766/`，历史doctor与真实恢复证据保留；架构规划不触碰用户部署|
+|远端持续集成|上一节点StockQA CI有已绿证据；本轮未重查远端|历史`01f20d6` CI41532137887及Documentation41523660825成功记录保留，不代表本轮未提交候选已绿|
+|模块解耦|未完成；架构调查及分域计划已形成，规划独审已通过|当前有版本分叉、冻结测试、宽对象与原UI源码耦合；9仓TDD责任线见[收尾路线图](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)，不能用局部ACCEPT或扫描器绿色代替组合验收|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -79,16 +100,16 @@
 |评分校准/G2|受限范围已签|G2 r2 `verified_for_local_gate_scope`；原60家+20重复配方未全完成，实际为获准6家缩样，不能称60家校准完毕|
 |200家可靠性/L03/G3|未完成|G3合成批次接续工装已验收（31 passed/0 failed/0 skipped），仅属软件支撑；不替代200家真实试点、真实 owner ACK 或正式G3|
 |事实数据/关系查询/F05|代码已并线，真实单题隔离端到端通过|真实宁德时代观察已通过 owner 原生入库、公开 2.7 查询与导出。19 条为待审核候选。正式默认库的事实覆盖和 G4 仍开放|
-|主题/行业消费者|已合入 canonical 源仓；技能入口实服务验收未完成|Theme `e35ab39`、Industry `169c200`；两个源仓 tracked clean。仍需在稳定 F05/W11 接口下跑技能入口 E2E；不等于200家G3|
+|主题/行业消费者|已存在公开消费链，边界与兼容仍待收口|本轮实际Theme `3352b58`有client/测试WIP，Industry `7d49ca3`；旧e35ab39/169c200不是本轮读到的HEAD。Theme同义schema字节误拒已证实，按MC-TH/IN修验；真实技能产品使用仍未全部验收|
 |全池与完整配套/G4—G6|未完成|2000覆盖、事实/两消费、配套安装/升级回退不能由本机启动成功代签|
 
 证据总入口：[本次对账](docs/implementation/reviews/PWF-RECONCILIATION-2026-10-31/report.md)、[三市场恢复](docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-three-market-recovery/cold-independent-final-review.json)、[真实TTL](docs/implementation/reviews/UI-INTEGRATION-30-2026-10-30/native-ttl-and-coverage/README.md)、[四包收口](docs/implementation/reviews/SUPPORT-CLOSE-2026-10-31/report.md)、[原TIME/RESULT接线](docs/implementation/reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。
 
 ## Next Step
 
-**模块边界回归设计已绿，canonical 跨仓接线仍待收口；暂不将主线切回 F05/W11。** 模块 owner、公开入口、协议/schema版本和依赖方向已登记于[模块边界与接口表](docs/architecture/module-boundaries.md)。先让 StockQA、Company Agent 与 Agent Runtime 的公开 facade 在各自 canonical HEAD 可用，再从干净检出运行版本协商和跨仓正反例；当前源仓有大量未提交内容，不能覆盖、代提交或拿工作树结果冒充发布。之后通过新一轮独立审查，才关闭模块化主线并转回真实 F05/W11 技能入口。静态规则不是抵御任意 Python 反射的沙箱；G3真实200家、G4、G5/G6及2000家容量目标仍分别开放。
+**本轮规划独审已通过。下一步由用户分派独立harness，总控执行MC-IQS的P1。** 按[九仓收尾路线图](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)归拢已存在的QA/Runtime候选和各仓WIP，给出C5公开启动/快照输入，各owner并行TDD；最后只用自包含提交做一次真实源码组合I1–I7及集中独审。当前不继续逐项扩展反射扫描、不刷新历史218/pin、不自行启动9个实现worker。原F05/W11/G4业务主线在专项完成后接续，规模与金融验收单列。
 
-### 模块化与松耦合的完成定义（边界回归已达成，发布接线仍开放）
+### 模块化与松耦合的完成定义（由本轮域级TDD路线收敛）
 
 1. 对每个参与正常产品运行的组件写明唯一 owner、公开入口/DTO/schema 版本、允许依赖方向，以及测试/实验工具的边界；不把普通 helper 文件伪装成独立产品模块，也不将运行数据目录当代码层。
 2. 产品消费者不从另一个组件的私有实现路径导入类/函数，不窥探其文件布局或数据库；需要已有 owner 行为时，通过其公开 facade/CLI/JSON protocol 执行。Owner 可在自己的边界内调用私有实现。
@@ -96,14 +117,14 @@
 4. 只重构已核实的产品路径；每个受影响仓先确认 HEAD/写树，保持并行 writer 和数据库/实验材料不动。运行相关单元/合同测试，再跑一次隔离集成链。
 5. 由不同 agent 对照最终 diff、模块清单、违规扫描和测试结果独立审查；所有 P1/P2 与相邻路径遗漏修完并复测后才把该工作标为完成。未审到或因外部 writer/缺索引无法核实的仓，必须明确列出，不能改称“全项目通过”。
 
-### 当前完成状态（2026-11-10，更新）
+### 2026-11-10/11 局部验证历史（不是本轮整体完成状态）
 
 |完成项|证据|结论|
 |---|---|---|
-|Owner、公开接口、版本与允许依赖方向|[模块边界与接口表](docs/architecture/module-boundaries.md)|边界设计已覆盖活跃产品组件；IQS 候选已本地提交 `bb20529`；StockQA/Company Agent/Runtime 公开 API 当前仍是各自脏工作树中的候选，尚未进入 HEAD|
-|私有导入、私有成员、动态导入绕行与 owner 数据直读负例|IQS/StockQA/StockWiki/Runtime/Dashboard/Theme/Industry 边界测试；TDD 先红后绿|登记范围内的扫描器/负例通过；本轮候选代码与补充合同测试独立审查 ACCEPT，canonical 跨仓集成仍待固定 owner commit 后复核|
+|Owner、公开接口、版本与允许依赖方向|[模块边界与接口表](docs/architecture/module-boundaries.md)|边界设计已覆盖活跃产品组件；IQS 候选已本地提交 `bb20529`；Company Agent facade 在本地 owner HEAD `793bfbc`；StockQA/Runtime facade 尚未进入可引用 owner HEAD|
+|私有导入、私有成员、动态导入绕行与 owner 数据直读负例|IQS/StockQA/StockWiki/Runtime/Dashboard/Theme/Industry 边界测试；TDD 先红后绿|登记范围内扫描器通过；Runtime 最新 namespace 反例整改 36 passed，独立审查 ACCEPT；canonical 跨仓集成仍待固定 owner commit 后复核|
 |干净检出和跨仓公开 API 集成|待 owner facade 进入 canonical HEAD 后执行|IQS 扩大离线回归 454 passed + 244 subtests；三 owner 候选另有 StockQA 61、Company Agent 11、Runtime 38 项通过及版本/API 导入 smoke，但都读取未提交工作树，不能作为已发布接线证据|
-|最终测试入口与独立审查|IQS/StockQA 候选实现及补充合同测试已有 ACCEPT；跨仓候选复审已完成，整体集成仍 OPEN|IQS 候选本地提交为 `bb20529`；不得标记整体完成，直到 owner facade 进入各自 HEAD、固定版本的干净隔离集成通过且最终独立审查无未解 P1/P2|
+|最终测试入口与独立审查|IQS/StockQA 候选实现、跨仓候选和 Runtime 最新边界整改均有 ACCEPT；最终 clean-checkout 集成尚未审|IQS 候选本地提交为 `bb20529`；不得标记整体完成，直到 StockQA/Runtime facade 有可引用提交、Company Agent 发布状态确认、固定版本的干净隔离集成通过且最终独立审查无未解 P1/P2|
 
 **2026-11-10 独立复审跟进：** owner API 下限已提高到当前候选 facade 版本 StockQA 1.5.0 / Company Agent 2.3.0 / Agent Runtime 1.4.0；低一个 minor 的拒绝和高版本兼容均进入回归。StockQA 配置入口已移除对 `task.py`、`port.py` 私有文件名的依赖；证据、扫描、checkpoint loader 统一经版本化 Company Agent facade，缺失/错误版本/缺失操作/错误来源均有稳定反例。IQS 共享引擎/语义/finalizer/scan guard/边界组 177 passed；新增 owner-task facade 合成正反例 2 passed 并登记至 integration suite。额外回归：semantic replay 6 passed、标准答案 41 passed/8 subtests、题目提示 8 passed/8 subtests、test suite manifest 14 passed；StockQA 配置/恢复 37 passed、模块边界24 passed（合计61），模块/路由/题库组合组214 passed+236 subtests。独立审查对候选代码和补充合同测试 ACCEPT；本段之后的 owner facade 候选测试与跨仓 smoke 见 `progress.md` 最新记录。clean checkout 跨仓集成仍 OPEN。
 
@@ -141,7 +162,7 @@
 
 不是新增任务或新门；把现行任务目录与后续交付收敛到下列产品节点，原全目标不缩减。
 
-1. **完成小池使用闭环与质量修复。** 已完成上述fresh正例；先按Next Step统一逐题保存/恢复和共用语义，再处理ANSWER已发现的错期间/错公司/复合命题支持不足。按字段/命题保留缺口与定向查证，不把质量标签再次变成整答保存门。原历史不覆写，不承诺样本外零错误；原校准配方不足要如实报告，不拿测试数量换准确率。
+1. **完成小池使用闭环与质量修复。** 已完成上述fresh正例；先完成上述模块化专项的同一owner保存/恢复及组合验收，再处理ANSWER已发现的错期间/错公司/复合命题支持不足。按字段/命题保留缺口与定向查证，不把质量标签再次变成整答保存门。原历史不覆写，不承诺样本外零错误；原校准配方不足要如实报告，不拿测试数量换准确率。
 2. **批量可靠性与G3。** 复用已绿的软件和已认可池，核L03原前置/预算，分批累计原200家真实试点、中断恢复/导入幂等/额度切换/成本与时效证据；合并一次正式审查。三家真实流程不重做成新成果。200家是规模验收目标，不再作为事实、消费者和小样本配套功能开发的前置。
 3. **事实与 F05。** 已跑通实际单题从发布、搜索、保存到原生观察和公开读取。按业务覆盖计划启用事实包并验收下一批真实公司，不再重复构造离线正例。
 4. **TH/IN正式消费与G4。** 两消费者已进入 canonical skill 源仓：TH `master@e35ab39`、IN `main@169c200`。代码提交和本仓 tracked tree 已核实；真实 F05/W11接口稳定后分别运行实际技能入口 E2E，检查固定快照分页、画像、元数据、补扫和来源；保留池外发现与各自研究方法。原包中的G3串行门已取消，不因此声称G3/F05已关；真实200家G3与G4产品验收继续分开记录。

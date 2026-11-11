@@ -1,5 +1,17 @@
 # 当前进度与阶段证据
 
+## 2026-11-11 架构重新规划（未继续源码实施）
+
+响应用户要求，使用planning-with-files，先读实际代码和各仓Git。三个独立agent分别审执行链、数据/研究消费者、两套UI，总控审IQS。确定9仓责任线和有限退出条件；计划、调查、公共契约/TDD、整合交接及9份施工卡在[同一目录](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)。这一轮没有运行产品测试、真实模型、服务或写生产库。
+
+发现并纠正的关键状态：QA canonical磁盘1.5与候选1.8分叉，HEAD均无facade；IQS最低已1.7。CA793bfbc已提交；RT的current_sources仍测locked fixture，旧218/219与pin校验将退出当前产品默认测试，不再更新历史回执。SW实际12c441e、Dashboard b707473，原8766为question-bank UI@47d5354；Theme3352b58有WIP、Industry7d49ca3。
+
+确认设计缺口：宽control穿透、能力域循环、UI双向源码装配与硬编码历史目录、Theme同义schema原字节误拒；各包用公开替身/DTO隔离/域方向/实际保存恢复TDD收口。保留既有opaque句柄和公开CLI，不增加框架、授权或审查小节点。
+
+三个非作者agent均已完成规划复核并通过。审查修正了：expired新发凭证、mixed pending与零API的区分、fake与真实owner绑定、公共2.7向量来源/closed字段、原UI单向启动/快照生成与partial状态、Dashboard短临时目录。详见[规划审查](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/plan-review.md)。本轮源码实施未启动。后续交接必须区分源码提交、独立验证、组合发布，不能再用测试数/包数表示产品完成。
+
+调查工具小问题已处理：PowerShell的rg路径glob改用-g；旧猜测测试清单名改为tests/suites.json；已知不存在的dashboard_query未继续追；一次apply_patch同路径Delete/Add失败后改Update，未改变源码。它们不是产品阻塞。
+
 ## 2026-11-09 F05 与 E12 收尾
 
 起点 IQS `eec815f` 与 `origin/master` 一致。2.8 相关的七个已跟踪文件和一个新 schema 最近修改时间为 11 月 7 日，未观察到新的内容变化或 Git 索引锁，在并线前再次复验。另有一份 10 月 10 日历史 README，单独保留。F05 候选为 `18a8ad7`，E12 交付为 `23d20b8`。先冻结 2.8，再在隔离工作树合并 F05。E12 同期完成了只读核查。
@@ -545,3 +557,30 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - **跨仓 smoke：** 以只读 `PYTHONPATH` 同时加载当前三 owner 候选和 IQS adapter；`current_owner_api_protocols()` 返回 StockQA 1.5.0、Company Agent 2.3.0、Runtime 1.4.0，且 adapter 中所需的公开函数均可解析。未创建 owner task、未访问公司数据库、模型/API 或网络。
 - **扩大离线回归与夹具修复：** 19 个 IQS 测试文件整组通过 **454 passed、244 subtests passed**。其中 `test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline` 在全新临时 cwd 首次揭示 StockQA logger 预期 `logs/` 已存在；只在该隔离测试的 `TemporaryDirectory` 中建目录，单测 `1 passed`，再跑完整组无失败。该改动只使测试在干净环境稳定，不修改外仓 logger；日志与其他临时结果自动清理。
 - **结论与下一步：** 本机候选在单工作站组合可导入且定向测试绿，但 owner 工作树仍有并行改动，不能据此提交/推送他人全部改动，也不能宣称干净部署完成。独立跨仓 reviewer 已复审三 owner facade 和总控消费者，候选接口/测试 ACCEPT、无 P1/P2；整体接线仍 OPEN。待取得固定 owner commit，再在新建干净临时检出中运行版本协商、公开调用与拒绝不兼容版本的正反例，最后独立复审集成结果。
+
+## 2026-11-10 Runtime/StockQA 模块边界复审整改
+
+- **Runtime 复审指出的根因已修：** 发布脚本原来在测试内部、fresh checkout 和最终发布门重复启动单元/集成套件。现把完整套件的唯一执行点收敛到最终临时 clean clone；pin 回归和 fresh-checkout 子流程只核对元数据，不会嵌套重跑套件。clone 保留 `.git`，Git 绑定测试不再静默跳过；gate 按 handoff 中记录的通过数核对实际结果，并拒绝任何 skipped。README 也改正为默认命令只跑 `tests/`，集成套件独立运行。
+- **Runtime 边界探针补齐：** private facade 检测现在覆盖 `vars(module)[...]`、`vars(module).get(...)`、`__getattribute__`、lambda 捕获/参数、推导式目标作用域和导入别名在模块级重新绑定的情况。共享词法作用域映射替代两套不一致的局部判断。Repository-wide offline fixture 同时屏蔽 `create_connection`、`connect`、`connect_ex` 和 UDP `sendto`。
+- **测试清单恢复真实覆盖：** 交付 JSON 原来统计完整216单测，却只列出15组且漏列13个已收集模块。现在按职责把全部28个单元测试模块纳入16组；`verify_document_claims.py` 检查每个模块恰好出现一次、各项数量准确且总和匹配。`sync_metadata_latest.py` 改为以结构化 handoff 为源更新文档，不再用正则改写生成器源代码。当前收集数为216单元、7集成；文档声明验证通过。
+- **StockQA owner API 候选补全：** 版本化导入边界检查纳入 known-outcome journal 和 owner-budget-continuation 两个现有 owner；公开导出清单涵盖消费者实际使用的 DDL/操作/投影，并提高对应次版本。star import 也不能绕过合同检查。Research Output 的精确表依赖恢复了 session DDL 引用的 `work_item` 外键。
+- **测试证据：** Runtime `test_module_boundaries.py` 与 `integration_tests` 合跑退出码0（13+7项）；`verify_document_claims.py` 退出码0；运行时/元数据脚本 `py_compile` 通过。StockQA `test_quick_scan_module_boundaries.py` **49 passed**，`test_research_visible_output.py` **34 passed**。没有调用模型、网络搜索、数据库或生产名单。
+- **仍开放：** 上述都是隔离候选工作树。Runtime/StockQA facade 及 Company Agent facade 尚未全部进入 owner canonical HEAD；下一步先由独立 reviewer 对本轮整改复审，再在 owner提交固定后运行一次 clean-clone 全单元+集成验收。模块化主线尚未完成，不能把候选绿测称为已发布跨仓接线。
+
+## 2026-11-10 Runtime 边界复审补充与当前状态
+
+- Runtime 独立复审对边界扫描器提出了三轮相邻反例：`builtins.getattr` 的导入/赋值别名、模块级函数/导入/普通赋值重绑定、函数本地及条件分支中的 facade import；并指出推导式目标若被当作外层模块别名会产生误报。均先增加反例复现，再改为按模块/函数/控制流顺序传播可识别别名，并单独跟踪推导式目标作用域。
+- Runtime 候选验证：`tests/test_module_boundaries.py + integration_tests` **22 passed**；当前完整收集为 **218 unit / 16 groups / 28 modules + 7 integration**。`tools/verify_document_claims.py` 现检查摘要、命令输出和集成数字之间不能互相矛盾，运行通过；`git diff --check` 和相关脚本 `py_compile` 通过。没有运行整套单测/发布门，也未调用模型、搜索、生产数据库或真实公司流程。
+- StockQA 同一候选边界/答案恢复组合 **84 passed**，独立复审 ACCEPT；版本化 `known_outcome_journal`、`owner_budget_continuation` 已进入导入/导出检查。StockQA 和 Runtime 当前改动仍在 owner 工作树候选状态。
+- **当前结论仍 OPEN：** Runtime 最后一次独立复审待回；StockQA、Company Agent、Agent Runtime 的 facade 还未同时固定为可干净检出的 owner commit。上述边界测试通过只证明当前已登记源码路径及反例，不代表 Python 运行时沙箱，也不代表跨仓发布/生产接线完成。
+
+## 2026-11-11 Runtime namespace boundary 末轮整改
+
+- **新的独立反例：** reviewer 在源码扫描器上复现了 `vars(api)`、`api.__dict__`、`getattr(api, "__dict__")` 先取模块命名空间、再读取私有项时不报违规。TDD 先增加这些反例并确认 RED，再让 namespace 获取本身成为违规；同时识别 `from builtins import vars as ...`、`builtins.vars` 及其简单别名。
+- **接口合同：** `CompanyAgentOperations` 新增精确 dataclass field 顺序断言；Runtime `api.__all__` 新增精确 allowlist 断言。候选 Runtime `acceptance-traceability.md` 将“private implementation isolation”改为源码级 import/access 边界，并注明它不是运行时沙箱。
+- **最终定向验证：** `tests/test_module_boundaries.py`、`integration_tests/test_current_sources.py`、`tests/test_company_agent_api_compat.py`、`tests/test_preflight_before_claim.py`、`tests/test_public_api.py` 合计 **36 passed**。反例首次 RED，修复后全绿；DTO 精确字段断言并入既有测试，未额外增加测试节点。
+- **独立审查：** `/root/runtime_full_diff_audit` 对该整改 **ACCEPT**，其复跑时为包含独立 DTO 字段测试的37项版本；随后将同一字段断言并入既有测试，最终定向组合为36 passed。审查其 alias vars 与 dunder getattr 相邻场景，未发现本轮残余 P1/P2。审查限定于当前候选差异，不代表 full owner suite、canonical 发布或 clean-checkout 跨仓集成通过。
+- **跨仓最新快照：** Company Agent 本地 `master@793bfbc` 已含 `api.py`，计划里的 `d0280f5` 已过时；当前本地 refs 没有 `origin/master`，远端发布待确认。StockQA `master@4c24789` 的 HEAD 不含其 facade；Runtime `codex/agent-run-02@5839ef4` 的 HEAD 不含 `api.py`，仅候选工作树存在。故完整模块化结论仍 OPEN。
+- **范围说明：** Company Agent DTO 是常规消费者使用的有界操作集合，不是恶意 Python 隔离设施；底层函数对象仍可被 Python 反射。静态边界回归保护已声明的源码访问方式，不宣称阻断任意 `exec`/introspection。
+- **较大测试组复核：** Runtime `tests/` 完整套件曾尝试运行但未通过。根因包括：fixture 调用 `import_frozen_modules()` 却未导入（已修）；集成收集已是 7 项而断言仍写 6（已修，15 项关联测试通过）；handoff 记 218 项而当前实际收集 219 项；当前冻结 pin `28d20b2` 与分支 HEAD `5839ef4` 及未提交交付差异不一致。Windows 默认深层 temp 下 4 个 copy/relocation 反例触发长路径错误；改用 IQS 根下短 basetemp 后，这 4 个反例全部通过。未将整仓 suite 报为通过，也未刷新未冻结候选的发布 pin。
+- 独立 reviewer 对测试 harness 收尾另外核验 `integration_tests` **7/7 passed**，确认 root conftest 初始化和 socket denial 生效；此项不替代完整 owner suite 或冻结 pin 验收。
