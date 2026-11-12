@@ -1,5 +1,24 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-12 八个外仓施工包已并入；总控 IQS 收尾进行中
+
+MC-SW、MC-CA、MC-IN、MC-TH、MC-QA、MC-RT、MC-UI、MC-DASH 均已逐包核验、提交并快进并入各自源仓；8 个临时施工 worktree 已回收。MC-IQS 是第九条总控线，目前仍在根仓处理。每个外仓源仓原有的数据库、生成快照、CodeGraph、记忆文件与个人实验文件均保留。
+
+| 包 | 主线提交 | 合并后复核 |
+|---|---|---|
+| MC-SW | StockWiki `f2bc73f` | 169 passed / 1 skipped；未做生产迁移 |
+| MC-CA | Company Agent `ba54694` | 38 passed；本地 `.codegraph` 保留 |
+| MC-IN | Industry Research `2b2fc54` | 232 passed / 105 subtests；独立复审 ACCEPT |
+| MC-TH | Theme `99ac207` | 96 passed；读取 MC-SW 真实 2.7 公共 fixture |
+| MC-QA | StockQA `749f6e1` | 100 passed / 1 skipped；10 个既有未跟踪用户文件保留 |
+| MC-RT | Runtime `f58e0c4` | 210 passed / 1 skip；current 25、legacy 7/1 skip、integration 6；LF 字节检查修正后通过 |
+| MC-UI | UI `3ed6391` | unittest 298 OK / 6 skipped；static boundary 22 passed / 1 skipped；本地生成快照哈希不变 |
+| MC-DASH | Dashboard `3e401cf` | 367 passed；I7/C38 与 4 个显式场景仍由 MC-IQS 组合闭合 |
+
+**尚未完成：** MC-IQS 尚未把 StockWiki C38 名单请求接入当前公开服务；C5 快照及启动接线、QA/CA/RT 固定提交组合、真实 UI 与 Dashboard 公开路径集成、相邻恢复与可选字段测试、独立总控审查仍未完成。不得把八个包的各自绿测说成全项目模块化完成。
+
+本轮只触碰每个施工包已核对并由用户授权的代码范围；未调用收费 API、未写正式名单/业务数据库。以后继续按 MC-IQS 和 C38→C5→I1–I7 次序收尾，最后只做一次独立集成审查。
+
 ## 2026-11-11 九仓未提交/未并线盘点完成
 
 **当前新增进展：改动归属已查清并写回原9张MC卡，已安全清理临时产物并合入一组真实漏合修复；模块化专项仍未完成。** 详见[盘点与处理总表](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)。

@@ -598,3 +598,11 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - **范围说明：** Company Agent DTO 是常规消费者使用的有界操作集合，不是恶意 Python 隔离设施；底层函数对象仍可被 Python 反射。静态边界回归保护已声明的源码访问方式，不宣称阻断任意 `exec`/introspection。
 - **较大测试组复核：** Runtime `tests/` 完整套件曾尝试运行但未通过。根因包括：fixture 调用 `import_frozen_modules()` 却未导入（已修）；集成收集已是 7 项而断言仍写 6（已修，15 项关联测试通过）；handoff 记 218 项而当前实际收集 219 项；当前冻结 pin `28d20b2` 与分支 HEAD `5839ef4` 及未提交交付差异不一致。Windows 默认深层 temp 下 4 个 copy/relocation 反例触发长路径错误；改用 IQS 根下短 basetemp 后，这 4 个反例全部通过。未将整仓 suite 报为通过，也未刷新未冻结候选的发布 pin。
 - 独立 reviewer 对测试 harness 收尾另外核验 `integration_tests` **7/7 passed**，确认 root conftest 初始化和 socket denial 生效；此项不替代完整 owner suite 或冻结 pin 验收。
+
+## 2026-11-12 八个外仓包并线与合并后验证
+
+- **逐包合入并回收工作树：** StockWiki `f2bc73f`、Company Agent `ba54694`、Industry Research `2b2fc54`、Theme `99ac207`、StockQA `749f6e1`、Runtime `f58e0c4`、UI `3ed6391`、Dashboard `3e401cf`。均在真实源仓做 fast-forward；未做 cherry-pick 后重复叠加，也未创建新远端。
+- **验证：** StockWiki 169 passed/1 skipped；Company Agent 38 passed；Industry Research 232 passed/105 subtests，独立 reviewer ACCEPT；Theme 合并后 96 passed；StockQA 合并后 100 passed/1 skipped；Runtime 合并后四组分别为 210 passed/1 设计 skip、current 25 passed、legacy 7 passed/1已知历史 skip、integration 6 passed；UI 298 OK/6 skipped，静态边界 22 passed/1 skipped；Dashboard 公共替换/边界组 367 passed。
+- **总控定位到并修正 Runtime 本地字节不一致：** `tests/test_batch_carrier.py` 和 `tests/test_research_response_taxonomy.py` 工作区有 CRLF，提交 blob 为 LF；仅归一为已提交字节，未改语义。另把 pytest TEMP/TMP 放进各仓忽略的隔离目录，解决自测临时目录导致字节完整性测试误跳过；四套 Runtime 测试最终全部通过。
+- **只清理本轮包树与本轮测试根。** StockWiki 数据/日志、StockQA 10 个个人或历史 untracked 项、UI 两份生成 JSON 与 `.codegraph`、Dashboard 的 SQLite、probe 与 memory 文件均保留；Theme/QA/RT/UI/DASH 合并后源仓已有状态逐项核过。没有动生产数据库、名单或调用收费 API。
+- **尚未完成：** MC-IQS 主线还有 28 个已知 tracked WIP，尚未执行最终组合；Dashboard 交接诚实披露 C38/I7 组合依赖和 4 个相邻场景的显式覆盖欠项。八个包并入只是准备好可检出的 owner 版本，不是全项目解耦完成。下一步先由 MC-IQS 集成 StockWiki C38，再实现 C5 snapshot/启动公开边界，接着做 QA/CA/RT 真实组合和 I1–I7，补上 Dashboard 相邻场景测试，最后进行一次独立集成审查。

@@ -238,3 +238,11 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - **Owner 发布链：** Company Agent 本地 `master@793bfbc` 已包含 facade，但本地没有 `origin/master` ref，不能推断远端已发布。StockQA `master@4c24789` 与 Runtime `codex/agent-run-02@5839ef4` 的 HEAD 尚无其 facade。干净安装时仍不能依赖未提交候选。
 - **项目判断：** 模块所有权/接口表与常见源码边界回归已成形；跨仓 API 的固定提交、clean-checkout 集成及其独立审查未完成。因此回答“模块化设计已落地一部分；全项目解耦尚未完成”。
 - **完整 Runtime suite 不能当绿：** 一次 `tests/` 全量运行失败。已修复三个 fixture NameError 的共同根因和旧 6 项 integration assertion，相关测试通过；Windows 深层临时目录的四个迁移/复制用例在短 basetemp 下通过。仍有实际收集数 219 与 handoff 218 不符，以及冻结 pin 与当前未提交 delivery 不符；在最终候选 commit/hand-off 刷新之前，这些是未关闭的发布一致性问题。它们不是模块边界专项失败，但阻止把 Runtime 候选称为完整交付。
+
+## 2026-11-12 外仓合并后发现
+
+- 八个外仓包已并入各自源分支；MC-IQS 仍是唯一大块未完成的主线。根仓 28 个已登记的 tracked WIP 属于 MC-IQS，必须在提交/改动前逐项承接；大量历史 docs、`.mimosa` hook 状态、临时候选 git 目录和已有测试材料不是这次的清理目标。
+- Runtime 两个受 `eol=lf` 约束的文件工作区原是 CRLF，而 HEAD blob 为 LF；先校准工作区到提交 blob，再刷新对应 Git stat 元数据；内容 diff 为零。合并后换行/原字节检查与四套测试均通过。
+- Runtime `test_written_bytes_match_the_committed_blob` 会把 pytest 默认放在仓库根的 `tmp*` 临时目录当成 Git 改动并跳过。复测时将 TEMP/TMP 与 basetemp 指向 `.gitignore` 已覆盖的 `runs/<唯一测试目录>`，确保检查实际执行且测试后只删除本次目录。
+- StockQA 在 `%TEMP%` basetemp 路径权限拒绝，改到仓库 `.test-runs` 隔离目录后 100/1 skip。Theme 第一次从 IQS cwd 调用测试，pytest 报错是 cwd 错；改为 Theme 源仓根运行后 96/96 通过。
+- Dashboard 已公开说明四项还需总控完成：C38 owner/消费者组合、I7 真实 IQS wire、将四个相邻场景补成明确正反例；镜像 allowlist 公共资源归 MC-IQS/D01，不能在 Dashboard 另造合同。不要把这四项隐去或重复发返修卡；直接在 MC-IQS 集成中归属并补齐。
