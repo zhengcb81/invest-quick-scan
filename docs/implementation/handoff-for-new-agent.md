@@ -2,9 +2,9 @@
 
 ## 2026-11-13 I3 当前接续
 
-I3 卡在从原生已付回答恢复到入库回执。保持原 StockQA 工作库与 StockWiki 消费回执为状态来源。历史规则读取、任务构造和原工作范围查询使用原注册数据，实时权限在注册事务、领取和实际 HTTP 边界校验。注册写入前与提交前各检查一次，已落盘结果按原回执返回。
+I3 的隔离全链已通过。原 StockQA 工作库与 StockWiki 消费回执是状态来源。历史规则读取、任务构造和原工作范围查询使用原注册数据，实时权限在注册事务、领取和实际 HTTP 边界校验。已付回答和脱敏端点标识一起持久化，旧版已验证记录仍可读取。
 
-隔离复测用 `tests/integration/test_qa_c06_02_subprocess_cli.py::test_real_subprocess_shared_recovery_restores_saved_receipt_then_pauses_unknown`。在同一套临时数据上验证已收、结果未知、从未发送、封包、导入、ACK 和第二次恢复。最新结果查 `progress.md` 的 2026-11-13 I3 条目。固定来源 I1–I7 组合及独立总审仍待完成。
+隔离复测用 `tests/integration/test_qa_c06_02_subprocess_cli.py::test_real_subprocess_shared_recovery_restores_saved_receipt_then_pauses_unknown`。同一套临时数据验证已收、结果未知、从未发送、封包、导入、ACK 和第二次恢复，耗时 240.24 秒。下一步按既有集成计划固定来源复跑 I1–I7，并做一次独立总审。
 
 ## 2026-11-11 接手先看：改动盘点已落到原分包
 

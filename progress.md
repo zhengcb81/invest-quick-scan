@@ -12,7 +12,7 @@
 - **I6 原工作台：** 新增真实 `open_dashboard.py --no-refresh`、当前UI/浏览器、任务页重开E2E；loopback受限执行环境中首跑被Windows socketpair限制，提权后用例1 passed/7.56秒，进程/资源清理。它使用未登记任务，启动按钮为disabled，因此只证明重开只读，不足以签收。已确认可用隔离正式bundle/WorkStore、临时StockQA兼容runner和确定性本地回答stub，补真实HTTP显式start→tasks状态读取→页面reload并断言不二次start。
 - **I3/I7本轮真实隔离证据：** `test_unknown_intent_cold_native_e2e.py` 现有底层行为例为 **1 passed/0 skipped，410.519秒，付费API 0，外网拒绝，临时根清理**；另一次 shared native E2E **1 passed，551.48秒，付费API 0，临时源码副本清理**。后者从运行时各仓工作树复制文件且没有捕获当时 HEAD/diff/hash，故只作行为证据，不算固定提交组合通过；unknown 行为测试还需断言 `all_slots_completed=false`。相关运行记录在 `runs/test-reports/i3-unknown-final-20261113T021734Z/` 和 `runs/qa-public-seams-2026-11-02/shared-engine-native-current-final-20261113.log`。
 
-**当前结论：** 模块专项仍开放。I1、I2、I4、I5、I6、I7 已有定向通过记录。I3 的最新进度见本文件末尾的根因修复记录。I3 全链通过后，进行固定来源组合复跑与一次独立总审。
+**当前结论：** 模块专项仍开放。I1–I7 已有定向通过记录，I3 的通过证据见本文件末尾。下一步进行固定来源组合复跑与一次独立总审。
 
 ## 2026-11-11 各模块WIP与未并线审查、精确清理及小修并线
 
@@ -636,3 +636,4 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - 后续端到端在原生 MiMo SDK 实际使用的 HTTP 入口注入脚本，首题已收到并完成。第二题被未结算预算拦下，夹具此前没有传计价函数。补上已核实用量的合成计价，超时请求仍保持未结算。相关回归组合 **116 passed**。恢复路由身份、只读投影与原 checkpoint 重封的 **11 项**另行通过。
 - 第三轮隔离 E2E 在 **229 秒**复现完整中断状态：首题回答已保存，第二题原生请求超时并持久化为未知，Agent 检查点仅有第二题待处理 intent，后两题尚未派发。恢复准备随后拒绝生产者写出的 `provider@…` 端点标识，因为旧读取方只接受 `model@…`。这轮临时根已清理，付费请求为零。接续仍须验证兼容旧记录，以及在 Agent 回执尚未写入时从 StockQA 已持久化回答恢复。
 - StockQA 将脱敏端点标识与原生回答、回执一起落盘，保留旧版已验证的端点标识，Runtime 从公开 owner 接口取同一标识。下一轮已确认两边记录一致。修正 Windows 子进程审计后，公开恢复 CLI 返回 0，已恢复首题、将第二题列为未知暂停、后两题列为未发送，`API_requests=0`。该轮断在隔离夹具将 Windows 内部 loopback 初始化计作网络尝试，尚未进入 StockWiki 导入。Runtime 相关定向 **37 passed**，StockQA 有序恢复与发布定向 **66 passed**，覆盖范围可与早期组合重叠。下一轮复测只忽略该系统初始化事件，外层仍禁止套接字。
+- 同一隔离库的 I3 公共路径最终 **1 passed / 240.24 秒**。真实 StockQA/Company Agent/Runtime/StockWiki 代码，只有 MiMo HTTP 脚本化。首题从原生回答恢复后封包并导入，第二题的原生未知 intent 触发暂停，后两题仍未发送，其中一题已准备但无发送意图。重复恢复及同一包导入、ACK 均保持原回答、包字节、观察和回执，StockWiki 只有一条原入库回执。两次恢复模型请求均为 0，隔离目录已清理。StockQA 端点和恢复相邻组 **55 passed**，公开合同组 **32 passed**。Runtime 本地提交 `369a44b`，无远端。StockQA 注册事务与任务构造修复 `b1e9be7` 已核实推送到既有 `origin/master`。固定来源 I1–I7 仍待复跑。
