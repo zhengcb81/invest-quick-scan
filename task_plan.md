@@ -1,23 +1,25 @@
 # invest-quick-scan 当前实施计划
 
-## 2026-11-12 八个外仓施工包已并入；总控 IQS 收尾进行中
+## 2026-11-13 并行模块审查状态（以本节为当前状态）
 
-MC-SW、MC-CA、MC-IN、MC-TH、MC-QA、MC-RT、MC-UI、MC-DASH 均已逐包核验、提交并快进并入各自源仓；8 个临时施工 worktree 已回收。MC-IQS 是第九条总控线，目前仍在根仓处理。每个外仓源仓原有的数据库、生成快照、CodeGraph、记忆文件与个人实验文件均保留。
+八个外仓包已合入各自仓库，IQS 的 C38/C5 已实现。I1、I2、I4、I5、I6、I7 有定向通过记录，仍需用固定来源组合复跑。I3 现集中处理原生已付回答恢复和入库回执。诊断已定位到历史读取和任务构造重复触发实时权限检查，以及注册事务嵌套检查。相关修复已通过定向测试，完整 I3 尚待验收。
 
 | 包 | 主线提交 | 合并后复核 |
 |---|---|---|
 | MC-SW | StockWiki `f2bc73f` | 169 passed / 1 skipped；未做生产迁移 |
 | MC-CA | Company Agent `ba54694` | 38 passed；本地 `.codegraph` 保留 |
-| MC-IN | Industry Research `2b2fc54` | 232 passed / 105 subtests；独立复审 ACCEPT |
-| MC-TH | Theme `99ac207` | 96 passed；读取 MC-SW 真实 2.7 公共 fixture |
+| MC-IN | Industry Research I5 `bb0c3b9`（`origin/main`已核对） | 全仓历史232 passed /105 subtests；I5客户端95 passed /13 subtests；独立ACCEPT |
+| MC-TH | Theme I5 `00e4fbd`（本地提交，无remote） | 全仓历史96 passed；I5集成101 passed /1既有skip；独立ACCEPT |
 | MC-QA | StockQA `749f6e1` | 100 passed / 1 skipped；10 个既有未跟踪用户文件保留 |
 | MC-RT | Runtime `f58e0c4` | 210 passed / 1 skip；current 25、legacy 7/1 skip、integration 6；LF 字节检查修正后通过 |
 | MC-UI | UI `3ed6391` | unittest 298 OK / 6 skipped；static boundary 22 passed / 1 skipped；本地生成快照哈希不变 |
-| MC-DASH | Dashboard `3e401cf` | 367 passed；I7/C38 与 4 个显式场景仍由 MC-IQS 组合闭合 |
+| MC-DASH | Dashboard `3e401cf` | 367 passed；由 MC-IQS 做真实组合接线与剩余相邻向量验收 |
 
-**尚未完成：** MC-IQS 尚未把 StockWiki C38 名单请求接入当前公开服务；C5 快照及启动接线、QA/CA/RT 固定提交组合、真实 UI 与 Dashboard 公开路径集成、相邻恢复与可选字段测试、独立总控审查仍未完成。不得把八个包的各自绿测说成全项目模块化完成。
+**已经完成的 MC-IQS 工作：** StockWiki C38 `membership_request/1.0.0` 已经接入 IQS 的固定公开 CLI；同键重放、不同负载冲突、owner 版本 pin、HTTP 读写及重启后历史读取在隔离 StockWiki workspace 验证。C5 单一快照、兼容分段投影、IQS 自有启动装配和 `--no-refresh` / `--plan` 行为已落地；UI 静态资源由 `src/app` 提供，IQS 不再读 UI 生成回答文件。相关 C38/C5 组 **120 passed**；包含共享引擎、Dashboard、C5/C38和公共边界的核心组合 **296 passed**；题库/路由组 **148 passed、216 subtests passed**。
 
-本轮只触碰每个施工包已核对并由用户授权的代码范围；未调用收费 API、未写正式名单/业务数据库。以后继续按 MC-IQS 和 C38→C5→I1–I7 次序收尾，最后只做一次独立集成审查。
+**仍未完成：** I3 隔离全链和 I1–I7 固定来源组合。I2 标准 Runner 的 31 题冷跑、热恢复已通过（31.55 秒），I4 新鲜缓存、热复用、过期刷新和只读历史组合已通过（376.88 秒），I6 工作台实际启动、HTTP 查状态和重开不重复启动已通过（2 项）。I3 新一轮越过原超时点进入共享引擎，结果为未完成，仍需核对模型脚本、保存、封包、导入及重复回执。
+
+本轮 C38/C5 和前置回归均用隔离数据、loopback 及脚本响应；未调用收费 API、未写正式名单/业务数据库。Windows 深层 pytest 临时路径问题通过仓库忽略目录下短路径解决；只在 sandbox 阻止原子 hard-link 的发布测试改用获准的本机测试执行环境后通过，均未修改生产代码来绕过测试环境限制。
 
 ## 2026-11-11 九仓未提交/未并线盘点完成
 
@@ -139,7 +141,7 @@ MC-SW、MC-CA、MC-IN、MC-TH、MC-QA、MC-RT、MC-UI、MC-DASH 均已逐包核�
 
 ## Next Step
 
-**沿原9张MC卡进入分域实施，第一步归拢现有源码，而不是重新排查全仓。** [入场盘点](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)和每卡精确并线项已完成：MC-QA/RT收齐两个候选与canonical，MC-SW先并C38公开名单owner及依赖，MC-IQS移植匹配消费者并提供C5快照，其他模块按本卡并行TDD。源码/测试自包含后一次当前版本组合I1–I7与集中独审，再发布并返回F05/W11/G4。没有自主启动9个实施worker，不增加小节点回执或历史pin门。Dashboard本轮三项小修复已并；其余明确待并项在各卡中，不用重复询问授权。
+**当前唯一的下一步是跑通 I3 的隔离端到端。** 通过公开接口按原任务的持久 intent、response、checkpoint 和 delivery 接续，核对已收回答零请求恢复、未知请求暂停、从未发送分类，以及封包、入库和回执的重复接续。普通 checkpoint 的 unknown-only 按原合同处理。历史读取和任务构造检查原注册数据与归档。实时权限在注册、领取和 HTTP 派发的边界检查。完成后按 integration-and-handoff.md 固定来源复跑 I1–I7，做一次独立总审并对齐 PWF 与交接，按归属提交和推送，再回到 F05/W11/G4。
 
 ### 模块化与松耦合的完成定义（由本轮域级TDD路线收敛）
 

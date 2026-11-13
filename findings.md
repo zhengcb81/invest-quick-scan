@@ -1,5 +1,12 @@
 # 当前发现、风险与决策
 
+## 2026-11-13 I1–I7并行审查新发现
+
+- **I2普通扫描已补足逐题闭环证据。** StockQA 31题子进程链验证每题从原始response到checkpoint、standard answer与delivery的一致绑定，并在第二冷进程撤掉HTTP后核对warm前后持久化状态不变。定向测试1 passed/31.55秒，付费API0，独立复核未发现边界放宽。
+- **I3首轮unknown-only修复不完整。** StockQA CLI当前只查WorkStore发送状态和StockWiki发送前subject dispatch receipt；该receipt不是模型调用的native response receipt。未执行CompanyResearchRuntime公开 `recover_intent()` 的原生intent查找，因此“暂停unknown”测试无法证明安全原答可恢复。正确边界在CompanyResearchRuntime/Runtime/Company Agent的版本化公开facade；不得从OwnerRefresh port访问 `.native` 或内部service。需覆盖原生回执可恢复、无回执暂停、已收到+未知混合、never-sent状态语义，保留普通checkpoint unknown-only拒绝。
+- **I4当前报错来自两类测试环境/时间夹具错位。** Owner preview 在默认sandbox因隔离owner目录的 `os.link` 被拒；提权后证明产品入口可通过。把请求时钟设在过去会让synthetic响应早于已注册send-intent，随后被正确拒绝。当前改用跨子进程一致、仅测试作用域的时钟模拟；没有依据修改生产缓存/owner规则。
+- **I6新用例只完成只读重开负例。** 真实launcher/UI和任务状态接口能显示局部任务，重开后没有写请求，但由于测试未登记可运行bundle，启动按钮为disabled。需要用隔离正式bundle与本地确定性runner覆盖显式start、任务状态GET、reload后不重复start。
+
 ## 2026-11-11 改动盘点纠正
 
 “还有很多分支”并不等于很多未合功能：QA旧G2、IQS F05/E12和Industry报告已吸收；Runtime的唯一codex分支本来就是主线。另一方面，StockWiki C38仍缺129条已交付路径，IQS名单authority也缺，Dashboard消费端已在main，这才是具体的版本断层。已把归拢顺序放回MC-SW/MC-IQS，不加新支线或新门。
@@ -246,3 +253,22 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - Runtime `test_written_bytes_match_the_committed_blob` 会把 pytest 默认放在仓库根的 `tmp*` 临时目录当成 Git 改动并跳过。复测时将 TEMP/TMP 与 basetemp 指向 `.gitignore` 已覆盖的 `runs/<唯一测试目录>`，确保检查实际执行且测试后只删除本次目录。
 - StockQA 在 `%TEMP%` basetemp 路径权限拒绝，改到仓库 `.test-runs` 隔离目录后 100/1 skip。Theme 第一次从 IQS cwd 调用测试，pytest 报错是 cwd 错；改为 Theme 源仓根运行后 96/96 通过。
 - Dashboard 已公开说明四项还需总控完成：C38 owner/消费者组合、I7 真实 IQS wire、将四个相邻场景补成明确正反例；镜像 allowlist 公共资源归 MC-IQS/D01，不能在 Dashboard 另造合同。不要把这四项隐去或重复发返修卡；直接在 MC-IQS 集成中归属并补齐。
+
+## 2026-11-12 I5 消费者查询拒绝的根因
+
+第一轮 I5 对 Industry 请求返回 `subject_contract_output_invalid`，并非 StockWiki 拒绝了规范 Industry 身份。调试请求把 `consumer_id` 配成 `industry-research-i5-test`；旧 `get_profiles` schema 明确只接受已登记消费者，而 Industry 的正式客户端默认 ID 是 `industry-research`。保持请求其余字段不变、只换成该规范 ID 后，Theme 与 Industry 的完整正向公共查询组合通过。此处应由测试夹具遵守协议，不应放宽消费者身份合同。
+
+另有独立的真实兼容问题：Industry 能力客户端只识别旧 `additional_query_wires`，无法读取 StockWiki 1.2.0 公开的 versioned result envelope。Industry 侧已补双版本解析和 query/export 能力要求，并用版本类型、版本错配、协议错配及缺 operation 正反例锁定。独立审查发现类型守卫遗漏后已修复并复审 ACCEPT。提交 `67e078b` 已推到已有 `industry-research` `origin/main`，远端 SHA 已核对。
+
+## 2026-11-12 MC-IQS 固定组合复核
+
+- 端到端有序路由复测已确认：有效期 24h 的隔离委托可完成；首选 Mimo 401 后由备用模型返回已付答案；恢复测试必须使用 owner 的 `execution_routes(None)` 响应专用投影（`eligible=false`），这是 StockQA 生产恢复入口实际使用的路由形状。传入普通当期模型配置的 raw route 会被正确拒绝，因此 E2E 夹具已按生产恢复入口构造 response-only route，并让公开协调器从原任务状态选择它，而不是由测试硬编码恢复分支。
+- 首轮复跑暴露的是 E2E 测试本身的旧调用约定：直接导入 `registered_recovery_routes` 时漏了必需的 `store=`，且这会把测试绑到 StockQA 内部函数。已删掉该导入，改为通过 owner route projection 和 `run_ordered_company_scan(..., recovery_only=True)` 验证恢复。
+- StockQA 的不透明 Company Agent task 访问现改用 `api.task_snapshot()` 分离 JSON projection；`test_shared_company_routes.py` **28 passed**。StockWiki schema 7 的只读查询兼容集合复用一个 owner 常量，查询/事实定向组合 **49 passed、1 skipped**。
+- 全程只用合成公司、脚本 provider response 和隔离数据库；未使用真实 API、搜索服务或生产库。
+
+## 2026-11-13 I3 恢复与派发的边界
+
+单题隔离诊断在 240 秒内未到模型脚本。构造输入约 23 秒，注册约 70 秒，构造执行会话约 14 秒。修复全量快照深拷贝后，35 秒采样栈已推进到历史答题资源读取调用 StockWiki 的实时同意检查。历史资源由原上下文、归档包 ID 和资源摘要验证，派发资格由现行同意、原工作绑定、预算和租约决定。让纯读取与任务构造调用实时检查会造成重复 CLI 和暂时不可用时的误拒。
+
+注册内部的嵌套批处理在同一 SQLite 写事务里重复实时检查，且提交后的额外检查可能把已落盘的动作报成失败。注册保留写入前和提交前检查，已有动作纯重放只检查一次，涉及写入续接 cell 时在提交前再检查。实际领取与 HTTP 前校验保留。

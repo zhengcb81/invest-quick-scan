@@ -1,5 +1,11 @@
 # 当前接手说明
 
+## 2026-11-13 I3 当前接续
+
+I3 卡在从原生已付回答恢复到入库回执。保持原 StockQA 工作库与 StockWiki 消费回执为状态来源。历史规则读取、任务构造和原工作范围查询使用原注册数据，实时权限在注册事务、领取和实际 HTTP 边界校验。注册写入前与提交前各检查一次，已落盘结果按原回执返回。
+
+隔离复测用 `tests/integration/test_qa_c06_02_subprocess_cli.py::test_real_subprocess_shared_recovery_restores_saved_receipt_then_pauses_unknown`。在同一套临时数据上验证已收、结果未知、从未发送、封包、导入、ACK 和第二次恢复。最新结果查 `progress.md` 的 2026-11-13 I3 条目。固定来源 I1–I7 组合及独立总审仍待完成。
+
 ## 2026-11-11 接手先看：改动盘点已落到原分包
 
 先读[九仓盘点/实际处理](parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)，再读自己那张MC卡的新“入场盘点与并线清单”。不重做全仓审计，不再把旧祖先或等价分支整体合回；只在动手前复核当前HEAD和将改路径。各仓仍可能有writer，Dashboard本轮已观察到测试路径迁移。

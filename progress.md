@@ -1,5 +1,19 @@
 # 当前进度与阶段证据
 
+## 2026-11-13 I1–I7 并行模块审查（进行中，不代表专项完成）
+
+按公开接口/状态矩阵分域并行审查并合并同源根因，避免逐个反例打补丁：I1公开facade和I7 Dashboard已独立ACCEPT；I5 Theme/Industry已修复、独审和提交；I2普通31题恢复链增强后通过；I3被独立审查发现仍缺原生intent查询，当前不签收；I4与I6继续完成组合用例，最后用固定源码组合复核。
+
+- **I2 普通/共享持久化：** 普通 `main_with_llm` 31题真实子进程链已逐题断言唯一attempt与work/question绑定、原生response、checkpoint/standard answer、ready delivery观察/模型/截止日；第二个冷进程撤掉HTTP stub后复用31题、model_calls=0、发送日志不变，attempt/checkpoint/delivery完整快照相同。隔离定向测试1 passed/31.55秒，owned runtime清理成功，付费API0。非作者审查认可测试覆盖结构；共享部分现有paid partial与12题native恢复例已核覆盖，但仍在I1–I7固定来源组合复跑时收尾。
+- **I3 unknown 回执：** 初始公开CLI复现和首轮修复已证明unknown-only不重发，但独立审查发现它只查StockQA发送状态及StockWiki发送前subject receipt，没有调用CompanyResearchRuntime公开 `recover_intent()` 查询Runtime原生模型intent/response；当前新增E2E只手工构造StockQA uncertain attempt，不能证明原生回执可恢复/缺失时暂停。原生路径必须经版本化CompanyResearchRuntime、Runtime和Company Agent public facade，禁止 `.native` 或私有service穿透；补回执存在、缺失、mixed与never-sent场景，并保留ordinary checkpoint unknown-only拒绝。首轮1 passed/140.16秒只作为窄行为证据，I3仍OPEN。
+- **测试隔离纠正：** I3 早期两次尝试错误地沿用了环境变量指向的两个预存 `.iqs-*` 源码测试根；只生成了两个零字节日志和两个PID attestation文件。按运行时间清单确认无数据库/名单变更，随后仅删除这四个本轮文件，两个旧根其余内容保留并核实本轮没有新文件。后续回归将把源码运行根、owner库、logs和attestation都放入本次pytest临时目录；未把这两次尝试计为验收。
+- **I4 缓存：** 暂无证据表明freshness/TTL产品逻辑有误，仍缺fresh→过期刷新→持久化→只读查询不续期的组合闭环。StockQA continuation CLI原始输出 `status=ok, rows=[]`；此前路径错误因只读源仓日志CWD已解决。refresh preview拒绝在提权隔离执行后确认是Windows sandbox对临时owner目录 `os.link(staging,path)` 的PermissionError，不是业务拒绝；随后统一使用过去3天逻辑时钟又让synthetic response早于原始send/registration，正确触发 `subject_dispatch_response_time_mismatch`。当前正在使用跨子进程一致的test-only时钟，不改外仓源码，不放宽owner校验。
+- **I5 Theme/Industry：** RED复现默认截止日下分页续页可返回自洽但不同日期的 query hash，旧实现会合并跨日期事实。首个成功页固定cutoff/query hash/snapshot，续页显式携带cutoff并对漂移页拒绝合并。非作者总复审 **ACCEPT**；Industry 95 passed/13 subtests，Theme 101 passed/1既有skip。Industry提交`bb0c3b9`已快进推送，`origin/main`实核到完整SHA `bb0c3b9255cca0944e5f127e42cd10a3797eae52`；Theme提交`00e4fbd`本地干净提交，仓库没有配置remote，未新建远端。两仓仅提交I5精确文件，外仓工作树干净。
+- **I6 原工作台：** 新增真实 `open_dashboard.py --no-refresh`、当前UI/浏览器、任务页重开E2E；loopback受限执行环境中首跑被Windows socketpair限制，提权后用例1 passed/7.56秒，进程/资源清理。它使用未登记任务，启动按钮为disabled，因此只证明重开只读，不足以签收。已确认可用隔离正式bundle/WorkStore、临时StockQA兼容runner和确定性本地回答stub，补真实HTTP显式start→tasks状态读取→页面reload并断言不二次start。
+- **I3/I7本轮真实隔离证据：** `test_unknown_intent_cold_native_e2e.py` 现有底层行为例为 **1 passed/0 skipped，410.519秒，付费API 0，外网拒绝，临时根清理**；另一次 shared native E2E **1 passed，551.48秒，付费API 0，临时源码副本清理**。后者从运行时各仓工作树复制文件且没有捕获当时 HEAD/diff/hash，故只作行为证据，不算固定提交组合通过；unknown 行为测试还需断言 `all_slots_completed=false`。相关运行记录在 `runs/test-reports/i3-unknown-final-20261113T021734Z/` 和 `runs/qa-public-seams-2026-11-02/shared-engine-native-current-final-20261113.log`。
+
+**当前结论：** 模块专项仍开放。I1、I2、I4、I5、I6、I7 已有定向通过记录。I3 的最新进度见本文件末尾的根因修复记录。I3 全链通过后，进行固定来源组合复跑与一次独立总审。
+
 ## 2026-11-11 各模块WIP与未并线审查、精确清理及小修并线
 
 总控及三个只读agent核9个源仓、各自注册工作树和候选副本，输出[四份详细报告及处理索引](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/intake-audit/README.md)。分清真祖先、patch等价、手工重做、实质缺失与本地未推送；审查结果加入原9张MC卡，不新发一批。StockWiki/IQS C38名单authority确实未归主线，已写明版本/依赖/合流测试；QA/Runtime有效WIP和旧快照参考完整保留，Theme新harness/Industry边界测试不误删。
@@ -606,3 +620,18 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - **总控定位到并修正 Runtime 本地字节不一致：** `tests/test_batch_carrier.py` 和 `tests/test_research_response_taxonomy.py` 工作区有 CRLF，提交 blob 为 LF；仅归一为已提交字节，未改语义。另把 pytest TEMP/TMP 放进各仓忽略的隔离目录，解决自测临时目录导致字节完整性测试误跳过；四套 Runtime 测试最终全部通过。
 - **只清理本轮包树与本轮测试根。** StockWiki 数据/日志、StockQA 10 个个人或历史 untracked 项、UI 两份生成 JSON 与 `.codegraph`、Dashboard 的 SQLite、probe 与 memory 文件均保留；Theme/QA/RT/UI/DASH 合并后源仓已有状态逐项核过。没有动生产数据库、名单或调用收费 API。
 - **尚未完成：** MC-IQS 主线还有 28 个已知 tracked WIP，尚未执行最终组合；Dashboard 交接诚实披露 C38/I7 组合依赖和 4 个相邻场景的显式覆盖欠项。八个包并入只是准备好可检出的 owner 版本，不是全项目解耦完成。下一步先由 MC-IQS 集成 StockWiki C38，再实现 C5 snapshot/启动公开边界，接着做 QA/CA/RT 真实组合和 I1–I7，补上 Dashboard 相邻场景测试，最后进行一次独立集成审查。
+
+## 2026-11-12 I5 研究消费者正向组合接续
+
+- **误拒根因：** I5 首次集成输入把 Industry 的 `consumer_id` 写成测试专用后缀 `industry-research-i5-test`。StockWiki 内部为 facts 查询复用的 `get_profiles` wire 正确按 `schemas/quick_scan/query-v2.schema.json` 限制消费者 ID；Industry 的生产默认值是 `industry-research`。将夹具改为规范 ID 后，未发现 StockWiki 对真实 Industry consumer ID 的产品误拒。
+- **实际消费者修复：** StockWiki 当前 capabilities `1.2.0` 返回版本化 `schema_version/protocol/result.supported_query_wires` envelope，而 Industry 之前只读旧 `additional_query_wires`。Industry `tools/quick_scan_client.py` 现识别新旧 envelope、校验版本与协议、要求 facts query 和 export 两个操作均声明，并从 result 读取 producer readiness；保留旧格式兼容。TDD 补非字符串版本、版本不匹配、protocol 不匹配三例（修复前 **1 failed / 2 passed**）；修复后 `tests/test_quick_scan_client.py` **86 passed / 11 subtests passed**。
+- **跨仓真实接口验证与发布：** `tests/test_research_consumers_owner_integration.py` 通过真实 StockWiki CLI、Theme 与 Industry 当前公开客户端，使用同一隔离合成事实库完成 capabilities、查询、分页、关闭并重开 consumer 后按 snapshot 回放及导出；测试前后 owner workspace 全文件 SHA-256 一致。I5 集成 **1 passed (60.42s)**。独立 reviewer `/root/review_modularity_current` 接受 consumer ID 夹具修正；独立 reviewer `/root/review_i5_industry_capabilities` 对 Industry 修复 diff 返回 **ACCEPT**。Industry 提交 `67e078b` 已推送既有 `origin/main`，远端 `refs/heads/main` 核对为同一完整 SHA `67e078b9fbab47a5d237e628752814071dbfa57f`；owner 工作树 clean。无模型/搜索请求、生产数据库写入或名单变更。
+- **剩余范围：** 已完成 I5 正向 query/cursor/capture replay/export 的当前 owner 组合。I5 错身份/错 operation 反例及其他 I1–I7 场景仍需逐项确认；这不代表全项目模块化收尾。
+
+## 2026-11-13 I3 根因修复与复跑
+
+- 隔离诊断确认历史语义读取调用实时权限 CLI。已分离历史归档读取和任务构造，工作范围校验沿原注册工作项读取。StockQA owner port **18 passed**，任务工厂 **11 passed**。两组均先复现针对性反例。独立审查确认原输入与归档绑定、owner 替换反例、领取和实际请求前检查仍在。
+- SQLite 原注册复用同一写入逻辑，去除重复权限调用，保留提交前撤权整笔回滚。注册与并发组修复前 **2 failed / 23 passed**，补上回调不可篡改原输入的反例后 **26 passed**。独立复审通过。隔离样本注册阶段由约 **70 秒降到 41–50 秒**。
+- 第一轮混合态隔离 E2E 在约 215 秒进入共享引擎并得到未完成结果。此轮使用的是历史读取修复后的快照，尚未包含任务工厂和注册事务改动。脚本环境无付费 API，临时运行根已清理。待同一用例验证原生回执、封包、公开导入和 ACK 幂等后再签收 I3。
+- 后续端到端在原生 MiMo SDK 实际使用的 HTTP 入口注入脚本，首题已收到并完成。第二题被未结算预算拦下，夹具此前没有传计价函数。补上已核实用量的合成计价，超时请求仍保持未结算。相关回归组合 **116 passed**。恢复路由身份、只读投影与原 checkpoint 重封的 **11 项**另行通过。
+- 第三轮隔离 E2E 在 **229 秒**复现完整中断状态：首题回答已保存，第二题原生请求超时并持久化为未知，Agent 检查点仅有第二题待处理 intent，后两题尚未派发。恢复准备随后拒绝生产者写出的 `provider@…` 端点标识，因为旧读取方只接受 `model@…`。这轮临时根已清理，付费请求为零。接续仍须验证兼容旧记录，以及在 Agent 回执尚未写入时从 StockQA 已持久化回答恢复。
