@@ -395,8 +395,10 @@ def test_i6_explicit_ui_start_is_read_once_after_reopen_with_local_runner(tmp_pa
                 run_id = started["run"]["run_id"]
                 assert run_id.startswith("run-")
 
-                page.wait_for_function(
-                    "runId => document.body.innerText.includes(runId)", arg=run_id, timeout=15000)
+                # The start receipt displays the ID before the task list has refreshed.
+                task_row = page.get_by_role('row').filter(
+                    has=page.get_by_text(run_id, exact=True))
+                task_row.wait_for(state='visible', timeout=20000)
                 task_gets_before_reload = [response for response in responses
                     if response.request.method == "GET" and response.url.endswith("/api/product/tasks")]
                 assert task_gets_before_reload, "the live UI must read task state through public HTTP after start"
@@ -416,7 +418,7 @@ def test_i6_explicit_ui_start_is_read_once_after_reopen_with_local_runner(tmp_pa
                 assert reopened_tasks.value.status == 200
                 reopened = reopened_tasks.value.json()["data"]["tasks"]
                 assert len(reopened) == 1 and reopened[0]["run_id"] == run_id
-                page.get_by_text(run_id, exact=True).wait_for(state="visible", timeout=10000)
+                task_row.wait_for(state='visible', timeout=10000)
                 assert sum(method == "POST" and url.endswith("/api/product/tasks/start")
                            for method, url in requests) == 1, \
                     "reopening the UI must never submit a second start"

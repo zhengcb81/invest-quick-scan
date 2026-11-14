@@ -65,6 +65,7 @@ def _stop_dashboard(process, reader):
 
 
 def test_dashboard_launcher_uses_the_selected_checkout_public_entry(tmp_path):
+    ui, _, config = _dashboard_fixture(tmp_path)
     checkout = tmp_path / 'other-iqs'
     scripts = checkout / 'scripts'
     scripts.mkdir(parents=True)
@@ -75,7 +76,8 @@ def test_dashboard_launcher_uses_the_selected_checkout_public_entry(tmp_path):
         encoding='utf8',
     )
     (scripts / 'checkout_marker.py').write_text('MARKER = "selected-checkout"\n', encoding='utf8')
-    args = ['--data-root', str(checkout), '--plan']
+    args = ['--data-root', str(checkout), '--ui-root', str(ui), '--dashboard-config', str(config),
+            '--port', '0', '--no-refresh', '--plan']
     result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(DASHBOARD), *args],
                             cwd=tmp_path, env=_env(tmp_path), capture_output=True,
                             text=True, encoding='utf8', timeout=15)
@@ -84,8 +86,10 @@ def test_dashboard_launcher_uses_the_selected_checkout_public_entry(tmp_path):
     marker, entry, forwarded = json.loads(result.stdout)
     assert marker == 'selected-checkout'
     assert Path(entry) == (scripts / 'open_dashboard.py').resolve()
-    assert forwarded[forwarded.index('--data-root') + 1] == str(checkout.resolve())
-    assert '--plan' in forwarded
+    for flag, expected in [('--data-root', checkout), ('--ui-root', ui), ('--dashboard-config', config)]:
+        assert Path(forwarded[forwarded.index(flag) + 1]) == expected.resolve()
+    assert forwarded[forwarded.index('--port') + 1] == '0'
+    assert {'--plan', '--no-refresh'} <= set(forwarded)
 
 
 def test_company_dashboard_serves_static_ui_and_one_owner_snapshot_without_ui_runtime(tmp_path):
