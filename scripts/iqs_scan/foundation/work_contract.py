@@ -270,10 +270,7 @@ def transition_allowed(current: str, target: str, *, now: str | None = None,
 def transition_work_item(work_item: dict, target: str, *,
                          scope_owner_entity_id: str | None = None, **proof) -> bool:
     """Validate the persisted item before deriving transition identity/proofs."""
-    try:
-        from .contract_validation import validate_work_item
-    except ImportError:
-        from .contract_validation import validate_work_item
+    from .contract_validation import validate_work_item
 
     validate_work_item(work_item, scope_owner_entity_id=scope_owner_entity_id)
     proof_attempt_id = proof.pop("uncertain_attempt_id", None)

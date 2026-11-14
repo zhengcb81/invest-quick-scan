@@ -21,18 +21,11 @@ from datetime import datetime, timezone
 from contextlib import contextmanager
 import uuid
 
-try:
-    from .dashboard_locks import control_lock, ControlBusyError
-except ImportError:
-    from .dashboard_locks import control_lock, ControlBusyError
+from .dashboard_locks import control_lock, ControlBusyError
 
 
-try:
-    from .dashboard_errors import DashboardExecutionError
-    from .dashboard_json import decode_owner_json
-except ImportError:
-    from .dashboard_errors import DashboardExecutionError
-    from .dashboard_json import decode_owner_json
+from .dashboard_errors import DashboardExecutionError
+from .dashboard_json import decode_owner_json
 
 
 def _now():
@@ -398,10 +391,7 @@ class ExecutionGateway:
 
     def delivery_registration(self, bundle_id):
         """Identify the original output scope, independent of future sends."""
-        try:
-            from .dashboard_delivery import describe_delivery_scope
-        except ImportError:
-            from .dashboard_delivery import describe_delivery_scope
+        from .dashboard_delivery import describe_delivery_scope
         key, bundle = self._select({'bundle_id': bundle_id}, recovery=True)
         scope = describe_delivery_scope(bundle)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
@@ -410,10 +400,7 @@ class ExecutionGateway:
 
     def delivery_receivers(self, bundle_id):
         """Read exact original outbox destination facts; do not bind a receiver."""
-        try:
-            from .dashboard_delivery import read_delivery_receivers
-        except ImportError:
-            from .dashboard_delivery import read_delivery_receivers
+        from .dashboard_delivery import read_delivery_receivers
         _, bundle = self._select({'bundle_id': bundle_id}, recovery=True)
         return read_delivery_receivers(bundle=bundle, config=self.config, call=self._call)
 
@@ -491,10 +478,7 @@ class ExecutionGateway:
                 "received_response_scope_verified": bool(recovery_only), "registered_action_checked": True}
 
     def _read_work_scope(self, bundle, root, runtime):
-        try:
-            from .dashboard_delivery import read_work_scope
-        except ImportError:
-            from .dashboard_delivery import read_work_scope
+        from .dashboard_delivery import read_work_scope
         return read_work_scope(bundle=bundle, config=self.config, call=self._call)
 
     def _inspect_work(self, bundle, root, runtime, admission):
@@ -1257,10 +1241,7 @@ class ExecutionGateway:
         return self._delivery_control(bundle, 'acknowledge', {'receipt': receipt})
 
     def export_delivery(self, payload):
-        try:
-            from .dashboard_delivery import export_deliveries
-        except ImportError:
-            from .dashboard_delivery import export_deliveries
+        from .dashboard_delivery import export_deliveries
         name, bundle = self._select(payload, recovery=True)
         return export_deliveries(bundle_id=name, bundle=bundle, config=self.config,
             state_root=self.state_root, call=self._call,

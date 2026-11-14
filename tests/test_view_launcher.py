@@ -64,6 +64,30 @@ def _stop_dashboard(process, reader):
     assert not reader.is_alive()
 
 
+def test_dashboard_launcher_uses_the_selected_checkout_public_entry(tmp_path):
+    checkout = tmp_path / 'other-iqs'
+    scripts = checkout / 'scripts'
+    scripts.mkdir(parents=True)
+    (scripts / 'open_dashboard.py').write_text(
+        'import json, sys\nfrom pathlib import Path\n'
+        'from checkout_marker import MARKER\n'
+        'print(json.dumps([MARKER, str(Path(sys.argv[0]).resolve()), sys.argv[1:]]))\n',
+        encoding='utf8',
+    )
+    (scripts / 'checkout_marker.py').write_text('MARKER = "selected-checkout"\n', encoding='utf8')
+    args = ['--data-root', str(checkout), '--plan']
+    result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(DASHBOARD), *args],
+                            cwd=tmp_path, env=_env(tmp_path), capture_output=True,
+                            text=True, encoding='utf8', timeout=15)
+
+    assert result.returncode == 0, result.stderr
+    marker, entry, forwarded = json.loads(result.stdout)
+    assert marker == 'selected-checkout'
+    assert Path(entry) == (scripts / 'open_dashboard.py').resolve()
+    assert forwarded[forwarded.index('--data-root') + 1] == str(checkout.resolve())
+    assert '--plan' in forwarded
+
+
 def test_company_dashboard_serves_static_ui_and_one_owner_snapshot_without_ui_runtime(tmp_path):
     process, reader, ready, ui, state, snapshot = _start_dashboard(tmp_path)
     try:
@@ -128,7 +152,7 @@ def test_company_dashboard_runs_the_current_ui_source_as_static_content(tmp_path
 
 def test_company_dashboard_composes_current_ui_with_isolated_stockwiki_owner(tmp_path):
     """The product snapshot must cross the real public StockWiki CLI boundary."""
-    stockwiki = ROOT.parent / 'StockWiki'
+    stockwiki = Path(os.environ.get('IQS_STOCKWIKI_ROOT', ROOT.parent / 'StockWiki')).resolve()
     if not (stockwiki / 'stockwiki' / 'quick_scan_dashboard_cli.py').is_file():
         pytest.skip('Current StockWiki public owner source is unavailable.')
     ui = Path(os.environ.get('IQS_UI_ROOT', ROOT.parent / 'iqs-question-bank-ui-lab')).resolve()

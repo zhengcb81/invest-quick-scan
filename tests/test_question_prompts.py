@@ -29,9 +29,10 @@ def imported_modules(path):
 
 class QuestionPromptBoundaryTests(unittest.TestCase):
     def test_orchestrator_and_answer_builder_share_prompts_without_importing_each_other(self):
-        question_sets = imported_modules(ROOT / "scripts" / "question_sets.py")
-        standard_answers = imported_modules(ROOT / "scripts" / "standard_answers.py")
-        prompts_path = ROOT / "scripts" / "question_prompts.py"
+        package = ROOT / "scripts" / "iqs_scan"
+        question_sets = imported_modules(package / "questions/question_sets.py")
+        standard_answers = imported_modules(package / "answers/standard_answers.py")
+        prompts_path = package / "questions/question_prompts.py"
 
         self.assertTrue(prompts_path.is_file(), "a dedicated prompt contract module is required")
         prompt_imports = imported_modules(prompts_path)
@@ -39,7 +40,8 @@ class QuestionPromptBoundaryTests(unittest.TestCase):
         self.assertNotIn("question_sets", prompt_imports)
         self.assertNotIn("standard_answers", prompt_imports)
         self.assertIn("question_prompts", question_sets)
-        self.assertIn("question_prompts", standard_answers)
+        self.assertIn("iqs_scan.questions.api", standard_answers)
+        self.assertIs(sa.standard_prompt, qp.standard_prompt)
 
     def test_clean_process_imports_succeed_in_both_orders(self):
         for imports in (("standard_answers", "question_sets", "question_prompts"),

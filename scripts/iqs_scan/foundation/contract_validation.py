@@ -1431,10 +1431,7 @@ def validate_exchange_package(value: dict) -> None:
     _validate_202012(EXCHANGE_SCHEMA, value)
     if value.get("extensions"):
         raise ValueError("unregistered exchange extensions are forbidden")
-    try:
-        from .exchange_contract import validate_package_integrity
-    except ImportError:
-        from .exchange_contract import validate_package_integrity
+    from .exchange_contract import validate_package_integrity
 
     validate_package_integrity(value)
 

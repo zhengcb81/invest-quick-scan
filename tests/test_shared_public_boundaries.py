@@ -44,126 +44,118 @@ def _stockqa_imports(node):
     return {name for name in names if name.split('.')[0] == 'src'}
 
 
+IMPORTERS = {'__import__', 'importlib.import_module'}
+SPECIAL_MEMBERS = {
+    ('importlib', 'import_module'): 'importlib.import_module',
+    ('builtins', '__import__'): '__import__',
+    ('builtins', 'vars'): 'builtins.vars',
+}
+
+
+def _special_operations(value, aliases):
+    if isinstance(value, ast.Name):
+        return aliases.get(value.id, set())
+    if isinstance(value, ast.Attribute):
+        owner, member = value.value, value.attr
+    elif (isinstance(value, ast.Call) and isinstance(value.func, ast.Name)
+          and value.func.id == 'getattr' and len(value.args) >= 2
+          and isinstance(value.args[1], ast.Constant) and isinstance(value.args[1].value, str)):
+        owner, member = value.args[0], value.args[1].value
+    elif isinstance(value, ast.Call):
+        return {name for importer in _special_operations(value.func, aliases) & IMPORTERS
+                if (name := _literal_import_target(value, importer)) in {'importlib', 'builtins'}}
+    else:
+        return set()
+    return {SPECIAL_MEMBERS[(module, member)] for module in _special_operations(owner, aliases)
+            if (module, member) in SPECIAL_MEMBERS}
+
+
 def _dynamic_import_aliases(tree):
-    """Map common importlib/builtins aliases to their canonical call names."""
-    modules = {"importlib": "importlib", "builtins": "builtins"}
-    functions = {"__import__": "__import__", "vars": "builtins.vars"}
+    """Track ordinary aliases without reassignments making the scan oscillate."""
+    aliases = {name: {name} for name in ('importlib', 'builtins', '__import__')}
+    aliases['vars'] = {'builtins.vars'}
+    assignments = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name in {"importlib", "builtins"}:
-                    modules[alias.asname or alias.name] = alias.name
+                if alias.name in {'importlib', 'builtins'}:
+                    aliases.setdefault(alias.asname or alias.name, set()).add(alias.name)
         elif isinstance(node, ast.ImportFrom):
-            if node.module == "importlib":
-                for alias in node.names:
-                    if alias.name == "import_module":
-                        functions[alias.asname or alias.name] = "importlib.import_module"
-            elif node.module == "builtins":
-                for alias in node.names:
-                    if alias.name in {"__import__", "vars"}:
-                        functions[alias.asname or alias.name] = (
-                            "__import__" if alias.name == "__import__" else "builtins.vars")
-
-    def binding(value):
-        if isinstance(value, ast.Name):
-            if value.id in modules:
-                return "module", modules[value.id]
-            if value.id in functions:
-                return "function", functions[value.id]
-        if (
-            isinstance(value, ast.Call)
-            and isinstance(value.func, ast.Name)
-            and value.func.id == "getattr"
-            and len(value.args) >= 2
-            and isinstance(value.args[1], ast.Constant)
-            and isinstance(value.args[1].value, str)
-        ):
-            owner = binding(value.args[0])
-            member = value.args[1].value
-            if owner == ("module", "importlib") and member == "import_module":
-                return "function", "importlib.import_module"
-            if owner == ("module", "builtins") and member == "__import__":
-                return "function", "__import__"
-            if owner == ("module", "builtins") and member == "vars":
-                return "function", "builtins.vars"
-        if isinstance(value, ast.Attribute) and isinstance(value.value, ast.Name):
-            owner = modules.get(value.value.id)
-            if owner == "importlib" and value.attr == "import_module":
-                return "function", "importlib.import_module"
-            if owner == "builtins" and value.attr == "__import__":
-                return "function", "__import__"
-            if owner == "builtins" and value.attr == "vars":
-                return "function", "builtins.vars"
-        return None
+            for alias in node.names:
+                if alias.name == '*':
+                    for (module, member), canonical in SPECIAL_MEMBERS.items():
+                        if module == node.module:
+                            aliases.setdefault(member, set()).add(canonical)
+                    continue
+                canonical = SPECIAL_MEMBERS.get((node.module, alias.name))
+                if canonical:
+                    aliases.setdefault(alias.asname or alias.name, set()).add(canonical)
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None:
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            assignments.extend((target.id, node.value) for target in targets if isinstance(target, ast.Name))
 
     changed = True
     while changed:
         changed = False
-        for node in ast.walk(tree):
-            if not isinstance(node, (ast.Assign, ast.AnnAssign)) or node.value is None:
-                continue
-            resolved = binding(node.value)
-            if resolved is None:
-                continue
-            kind, canonical = resolved
-            aliases = modules if kind == "module" else functions
-            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-            for target in targets:
-                if isinstance(target, ast.Name) and aliases.get(target.id) != canonical:
-                    aliases[target.id] = canonical
-                    changed = True
-    return modules, functions
+        for name, value in assignments:
+            added = _special_operations(value, aliases) - aliases.get(name, set())
+            if added:
+                aliases.setdefault(name, set()).update(added)
+                changed = True
+    return aliases
 
 
-def _dynamic_import_name(function, modules, functions):
-    if isinstance(function, ast.Name):
-        return functions.get(function.id)
-    if (isinstance(function, ast.Attribute) and function.attr == "import_module"
-            and isinstance(function.value, ast.Name)
-            and modules.get(function.value.id) == "importlib"):
-        return "importlib.import_module"
-    if (isinstance(function, ast.Call) and isinstance(function.func, ast.Name)
-            and function.func.id == "getattr" and len(function.args) >= 2
-            and isinstance(function.args[1], ast.Constant)
-            and isinstance(function.args[1].value, str)):
-        owner = modules.get(ast.unparse(function.args[0]))
-        member = function.args[1].value
-        if owner == "importlib" and member == "import_module":
-            return "importlib.import_module"
-        if owner == "builtins" and member == "__import__":
-            return "__import__"
-        if owner == "builtins" and member == "vars":
-            return "builtins.vars"
+def _special_calls(tree):
+    aliases = _dynamic_import_aliases(tree)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call):
+            operations = _special_operations(node.func, aliases)
+            if operations:
+                yield node, operations
+
+
+def _call_argument(node, index, name):
+    if len(node.args) > index:
+        return node.args[index]
+    return next((item.value for item in node.keywords if item.arg == name), None)
+
+
+def _literal_import_target(node, importer, source_package=None):
+    target = _call_argument(node, 0, 'name')
+    if not isinstance(target, ast.Constant) or not isinstance(target.value, str):
+        return None
+    name = target.value
+    if source_package is None:
+        return name
+    if importer == '__import__':
+        level = _call_argument(node, 4, 'level')
+        if level is None:
+            return name
+        if not isinstance(level, ast.Constant) or not isinstance(level.value, int) or level.value < 0:
+            return None
+        return importlib.util.resolve_name('.' * level.value + name, source_package)
+    if not name.startswith('.'):
+        return name
+    package = _call_argument(node, 1, 'package')
+    if isinstance(package, ast.Name) and package.id == '__package__':
+        return importlib.util.resolve_name(name, source_package)
+    if isinstance(package, ast.Constant) and isinstance(package.value, str) and package.value:
+        return importlib.util.resolve_name(name, package.value)
     return None
 
 
 def _integration_imports(tree):
     """Return literal imports, including aliased importlib/__import__ calls."""
-    modules = set()
-    module_aliases, function_aliases = _dynamic_import_aliases(tree)
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ImportFrom) and node.module:
-            modules.add(node.module)
-        elif isinstance(node, ast.Import):
-            modules.update(alias.name for alias in node.names)
-        elif isinstance(node, ast.Call):
-            function = _dynamic_import_name(node.func, module_aliases, function_aliases)
-            if (function in {'__import__', 'importlib.import_module'}
-                    and node.args and isinstance(node.args[0], ast.Constant)
-                    and isinstance(node.args[0].value, str)):
-                modules.add(node.args[0].value)
+    modules = {name for _, name, _, _ in _static_imports(tree) if name}
+    modules.update(name for node, operations in _special_calls(tree)
+                   for importer in operations & IMPORTERS
+                   if (name := _literal_import_target(node, importer)) is not None)
     return modules
 
 
 def _dynamic_import_calls(tree):
-    module_aliases, function_aliases = _dynamic_import_aliases(tree)
-    return [
-        (node.lineno, _dynamic_import_name(node.func, module_aliases, function_aliases))
-        for node in ast.walk(tree)
-        if isinstance(node, ast.Call)
-        and _dynamic_import_name(node.func, module_aliases, function_aliases)
-        in {'__import__', 'importlib.import_module'}
-    ]
+    return [(node.lineno, importer) for node, operations in _special_calls(tree)
+            for importer in sorted(operations & IMPORTERS)]
 
 
 @pytest.mark.parametrize('filename,functions', [
@@ -560,8 +552,32 @@ def test_local_private_scanner_catches_dynamic_attribute_lookup():
     )
 
 
+def _static_imports(tree, source_package=None):
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for item in node.names:
+                yield node.lineno, item.name, None, item.asname or item.name
+        elif isinstance(node, ast.ImportFrom):
+            name = node.module or ''
+            if node.level and source_package:
+                name = importlib.util.resolve_name('.' * node.level + name, source_package)
+            for item in node.names:
+                yield node.lineno, name, item.name, item.asname or item.name
+
+
+def _dotted_reference(node):
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        parent = _dotted_reference(node.value)
+        if parent:
+            return f'{parent}.{node.attr}'
+    return None
+
+
 def _cross_domain_public_api_violations(tree, source_name, domains, facade_exports,
-                                        allowed_edges, local_modules=None):
+                                        allowed_edges, local_modules=None, *, imports=None,
+                                        source_package=None, special_calls=None):
     """Require cross-domain calls to use an explicitly declared public facade.
 
     Same-domain implementation modules may collaborate internally. A boundary
@@ -576,43 +592,24 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
         return []
     local_modules = set(domains) if local_modules is None else set(local_modules)
 
-    imported = {}
-    violations = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ImportFrom) and node.module:
-            target = node.module.rsplit('.', 1)[-1]
-            if target in local_modules and target not in domains:
-                violations.append((source_name, target, '<module>', 'local_target_unclassified'))
-                continue
-            if target not in local_modules or domains[target] == source_domain:
-                continue
-            symbols = {item.name for item in node.names}
-            imported.setdefault(target, set()).update(symbols)
-        elif isinstance(node, ast.Import):
-            for item in node.names:
-                target = item.name.rsplit('.', 1)[-1]
-                if target in local_modules and target not in domains:
-                    violations.append((source_name, target, '<module>', 'local_target_unclassified'))
-                    continue
-                if target not in local_modules or domains[target] == source_domain:
-                    continue
-                imported.setdefault(target, set())
-                imported[target].add("<module>")
-
-    aliases = {}
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for item in node.names:
-                target = item.name.rsplit('.', 1)[-1]
-                if target in imported:
-                    aliases[item.asname or item.name.split('.')[0]] = target
-        elif isinstance(node, ast.ImportFrom) and node.module:
-            target = node.module.rsplit('.', 1)[-1]
-            if target in imported:
-                for item in node.names:
-                    aliases[item.asname or item.name] = (target, item.name)
+    def local_module(name):
+        return name if name in local_modules else name.rsplit('.', 1)[-1]
 
     ambiguous_alias = object()
+    imported = {}
+    aliases = {}
+    violations = []
+    bindings = _static_imports(tree) if imports is None else imports
+    for _, name, operation, binding in bindings:
+        target = local_module(name)
+        if target in local_modules and target not in domains:
+            violations.append((source_name, target, '<module>', 'local_target_unclassified'))
+            continue
+        if target not in local_modules or domains[target] == source_domain:
+            continue
+        imported.setdefault(target, set()).add(operation or '<module>')
+        value = (target, operation) if operation else target
+        aliases[binding] = value if aliases.get(binding, value) == value else ambiguous_alias
 
     def imported_object(value):
         if isinstance(value, ast.Name):
@@ -628,6 +625,9 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
                 return known[0]
             return ambiguous_alias
         if isinstance(value, ast.Attribute):
+            qualified = aliases.get(_dotted_reference(value))
+            if qualified is not None:
+                return qualified
             parent = imported_object(value.value)
             if parent is ambiguous_alias:
                 return ambiguous_alias
@@ -691,14 +691,11 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
                 violations.append((source_name, '<ambiguous>', ast.unparse(node.args[0]),
                                    'ambiguous_imported_alias'))
 
-    module_aliases, function_aliases = _dynamic_import_aliases(tree)
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Call):
-            continue
+    calls = _special_calls(tree) if special_calls is None else special_calls
+    for node, operations in calls:
         # Reading a peer module's namespace bypasses the declared export list
         # even when the caller never spells the private attribute in source.
-        if (_dynamic_import_name(node.func, module_aliases, function_aliases) == 'builtins.vars'
-                and node.args):
+        if 'builtins.vars' in operations and node.args:
             target = imported_object(node.args[0])
             if isinstance(target, str) and target in imported:
                 violations.append((source_name, target, '<module_namespace>',
@@ -709,20 +706,19 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
             elif target is ambiguous_alias:
                 violations.append((source_name, '<ambiguous>', '<module_namespace>',
                                    'ambiguous_imported_alias'))
-        dynamic_name = _dynamic_import_name(node.func, module_aliases, function_aliases)
-        if dynamic_name not in {'__import__', 'importlib.import_module'}:
-            continue
-        if not node.args or not isinstance(node.args[0], ast.Constant) or not isinstance(node.args[0].value, str):
-            violations.append((source_name, '<dynamic>', '<dynamic_import>',
-                               'dynamic_import_target_must_be_literal'))
-            continue
-        imported_name = node.args[0].value.rsplit('.', 1)[-1]
-        if imported_name in local_modules and imported_name not in domains:
-            violations.append((source_name, imported_name, '<dynamic_import>',
-                               'local_target_unclassified'))
-        elif imported_name in domains and domains[imported_name] != source_domain:
-            violations.append((source_name, imported_name, '<dynamic_import>',
-                               'cross_domain_dynamic_import_forbidden'))
+        for importer in operations & IMPORTERS:
+            name = _literal_import_target(node, importer, source_package)
+            if name is None:
+                violations.append((source_name, '<dynamic>', '<dynamic_import>',
+                                   'dynamic_import_target_must_be_literal'))
+                continue
+            imported_name = local_module(name)
+            if imported_name in local_modules and imported_name not in domains:
+                violations.append((source_name, imported_name, '<dynamic_import>',
+                                   'local_target_unclassified'))
+            elif imported_name in domains and domains[imported_name] != source_domain:
+                violations.append((source_name, imported_name, '<dynamic_import>',
+                                   'cross_domain_dynamic_import_forbidden'))
 
     for node in ast.walk(tree):
         if (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
@@ -799,74 +795,71 @@ REGISTERED_EXPERIMENT_MODULES = {
 }
 
 
-def _capability_edge_violations(source, owner, exports, legacy):
+def _capability_edge_violations(source, owner, exports, legacy, *, source_package=None):
     tree = ast.parse(source)
+    source_package = source_package or f'iqs_scan.{owner}'
     violations = []
-    suffixes = set(CAPABILITY_DEPENDENCIES)
-    for node in ast.walk(tree):
-        imports = []
-        if isinstance(node, ast.Import):
-            imports = [(item.name, None) for item in node.names]
-        elif isinstance(node, ast.ImportFrom):
-            name = node.module or ''
-            if node.level:
-                if node.level == 1:
-                    continue
-                # From a top-level capability module, two dots reach iqs_scan.
-                name = 'iqs_scan' + ('.' + name if name else '')
-            imports = [(name, item.name) for item in node.names]
-        for name, operation in imports:
-            name = name.removeprefix('scripts.')
-            if name in legacy or name == 'scripts' and operation in legacy:
-                violations.append((node.lineno, name, operation, 'use_capability_api'))
-                continue
-            if name == 'iqs_scan' and operation in suffixes:
-                violations.append((node.lineno, name, operation, 'use_capability_api'))
-                continue
-            if not name.startswith('iqs_scan.'):
-                continue
-            parts = name.split('.')
-            domain = parts[1]
-            if domain == owner:
-                continue
-            if domain not in CAPABILITY_DEPENDENCIES[owner]:
-                violations.append((node.lineno, name, operation, 'dependency_direction'))
-                continue
-            if not (len(parts) == 3 and parts[2] == 'api' or
-                    len(parts) == 2 and operation == 'api'):
-                violations.append((node.lineno, name, operation, 'use_capability_api'))
-            elif len(parts) == 3 and operation is not None and operation not in exports.get(domain, ()):
-                violations.append((node.lineno, name, operation, 'operation_not_exported'))
+    public_imports = []
 
-    # Reuse the existing alias/member checks at the real facade boundary.
-    facade_modules = {domain: f'{domain}_facade' for domain in exports}
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ImportFrom) and node.module:
-            parts = node.module.split('.')
-            if parts[:1] != ['iqs_scan'] or len(parts) not in {2, 3}:
+    def classify(line, name, operation, binding):
+        canonical = name.removeprefix('scripts.')
+        if (canonical in legacy or name == 'scripts' or name.startswith('scripts.iqs_scan')
+                or canonical == 'iqs_scan' and operation != 'REPO_ROOT'):
+            violations.append((line, name, operation, 'use_capability_api'))
+            return
+        parts = canonical.split('.')
+        if parts[0] != 'iqs_scan' or len(parts) < 2 or parts[1] == owner:
+            return
+        domain = parts[1]
+        api = f'iqs_scan.{domain}.api'
+        if domain not in CAPABILITY_DEPENDENCIES[owner]:
+            violations.append((line, name, operation, 'dependency_direction'))
+        elif binding is None:
+            violations.append((line, name, operation, 'cross_domain_dynamic_import_forbidden'))
+        elif canonical == api and domain in exports:
+            public_imports.append((line, api, operation, binding))
+        elif canonical == f'iqs_scan.{domain}' and operation == 'api' and domain in exports:
+            public_imports.append((line, api, None, binding))
+        else:
+            violations.append((line, name, operation, 'use_capability_api'))
+
+    imports = list(_static_imports(tree, source_package))
+    for line, name, operation, binding in imports:
+        classify(line, name, operation, binding)
+
+    # An unaliased dotted import also binds the package root in Python.
+    if any(name.startswith('iqs_scan.') and name == binding and operation is None
+           for _, name, operation, binding in imports):
+        qualified_facades = {name for _, name, operation, binding in public_imports
+                             if operation is None and name == binding}
+        parents = {node.value for node in ast.walk(tree) if isinstance(node, ast.Attribute)}
+        for node in ast.walk(tree):
+            if node in parents or not isinstance(getattr(node, 'ctx', None), ast.Load):
                 continue
-            domain = parts[1]
-            if domain not in facade_modules or domain == owner:
+            name = _dotted_reference(node)
+            if not name or (name != 'iqs_scan' and not name.startswith('iqs_scan.')):
                 continue
-            if len(parts) == 3 and parts[2] == 'api':
-                node.module = facade_modules[domain]
-            elif len(node.names) == 1 and node.names[0].name == 'api':
-                binding = node.names[0].asname or 'api'
-                node.__class__ = ast.Import
-                node.names = [ast.alias(name=facade_modules[domain], asname=binding)]
-        elif isinstance(node, ast.Import):
-            for item in node.names:
-                parts = item.name.split('.')
-                if (len(parts) == 3 and parts[0] == 'iqs_scan' and parts[2] == 'api'
-                        and parts[1] in facade_modules and item.asname):
-                    item.name = facade_modules[parts[1]]
-    facade_owners = {name: domain for domain, name in facade_modules.items()}
+            if name == 'iqs_scan.REPO_ROOT' or name.startswith(f'iqs_scan.{owner}.'):
+                continue
+            if not any(name == api or name.startswith(f'{api}.') for api in qualified_facades):
+                violations.append((node.lineno, name, None, 'use_capability_api'))
+
+    calls = list(_special_calls(tree))
+    for node, operations in calls:
+        for importer in operations & IMPORTERS:
+            name = _literal_import_target(node, importer, source_package)
+            if name is not None:
+                classify(node.lineno, name, None, None)
+
+    # Reuse the common alias/member checks with the real, fully qualified facade names.
+    facade_owners = {f'iqs_scan.{domain}.api': domain for domain in exports}
     facade_owners['consumer'] = owner
-    facade_exports = {facade_modules[domain]: names for domain, names in exports.items()}
-    allowed = {('consumer', facade_modules[domain]): exports[domain]
-               for domain in CAPABILITY_DEPENDENCIES[owner] if domain in exports}
+    facade_exports = {name: exports[domain] for name, domain in facade_owners.items() if name != 'consumer'}
+    allowed = {('consumer', name): names for name, names in facade_exports.items()
+               if facade_owners[name] in CAPABILITY_DEPENDENCIES[owner]}
     violations.extend(_cross_domain_public_api_violations(
-        tree, 'consumer.py', facade_owners, facade_exports, allowed))
+        tree, 'consumer.py', facade_owners, facade_exports, allowed,
+        imports=public_imports, source_package=source_package, special_calls=calls))
     return violations
 
 
@@ -902,8 +895,9 @@ def test_capability_source_uses_versioned_public_interfaces():
         for path in (PACKAGE / domain).rglob('*.py'):
             allowed_legacy = REGISTERED_EXPERIMENT_MODULES.get(path.name, set()) if domain == 'experiments' else set()
             violations.extend((path.relative_to(PACKAGE), violation) for violation in
-                              _capability_edge_violations(path.read_text(encoding='utf8'),
-                                                          domain, exports, legacy - allowed_legacy))
+                              _capability_edge_violations(
+                                  path.read_text(encoding='utf8'), domain, exports, legacy - allowed_legacy,
+                                  source_package='.'.join(('iqs_scan', *path.relative_to(PACKAGE).parts[:-1]))))
     assert not violations, '\n'.join(map(str, violations))
 
 
@@ -917,6 +911,25 @@ def test_capability_source_uses_versioned_public_interfaces():
     'from ..questions.question_sets import compose',
     'import question_sets',
     'from scripts import question_sets',
+    'from importlib import import_module\nimport_module("question_sets")',
+    'import importlib\nimportlib.import_module("iqs_scan.questions.question_sets")',
+    'import importlib as imp\nimp.import_module("..questions.question_sets", __package__)',
+    'from importlib import import_module\nimport_module(name=".question_sets", package="iqs_scan.questions")',
+    'import builtins as bi\nbi.__import__("iqs_scan.questions.question_sets")',
+    '__import__("questions.question_sets", globals(), level=2)',
+    'import importlib\nloader = importlib.import_module\nloader = __import__\nloader("question_sets")',
+    'module = __import__("importlib")\nmodule.import_module("iqs_scan.questions.question_sets")',
+    'from importlib import *\nimport_module("iqs_scan.questions.question_sets")',
+    'import importlib\nimportlib.import_module("iqs_scan.questions.api")',
+    'import iqs_scan.questions.api\niqs_scan.questions.api._private()',
+    'import iqs_scan.questions.api\npeer = iqs_scan.questions.api\npeer._private()',
+    'import iqs_scan.questions.api\niqs_scan.questions.question_sets.compose()',
+    'import iqs_scan.questions.api\npeer = iqs_scan.questions\npeer.question_sets.compose()',
+    'from ..questions import api as peer\npeer._private()',
+    'from ..questions.api import compose_questions as compose\ncompose._private()',
+    'from scripts import iqs_scan\niqs_scan.questions.question_sets.compose()',
+    'from scripts.iqs_scan.questions import api',
+    'import iqs_scan\niqs_scan.questions.question_sets.compose()',
 ])
 def test_capability_edges_reject_implementation_imports_and_reverse_direction(source):
     assert _capability_edge_violations(
@@ -927,8 +940,9 @@ def test_capability_edges_allow_public_facade_and_same_domain_implementation():
     assert not _capability_edge_violations(
         'from .dashboard_http import product_handler\n'
         'from iqs_scan.questions import api as questions\n'
-        'from iqs_scan.questions.api import compose_questions\n'
-        'questions.compose_questions()', 'workbench',
+        'from ..questions.api import compose_questions\n'
+        'import iqs_scan.questions.api\n'
+        'questions.compose_questions()\niqs_scan.questions.api.compose_questions()', 'workbench',
         {'questions': {'compose_questions'}}, {'question_sets'})
 
 

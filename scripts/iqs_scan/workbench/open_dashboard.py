@@ -7,6 +7,7 @@ import argparse
 import json
 import mimetypes
 from pathlib import Path, PurePosixPath
+import subprocess
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import unquote, urlsplit
@@ -38,13 +39,6 @@ def _load_config(path: Path | None, data_root: Path, validate_config):
     raw = json.loads(path.read_text(encoding="utf-8-sig"), object_pairs_hook=pairs,
                      parse_constant=lambda value: (_ for _ in ()).throw(ValueError("nonfinite configuration")))
     return validate_config(raw, data_root)
-
-
-def _load_runtime():
-    from .dashboard_http import product_handler
-    from .dashboard_service import DashboardService, validate_config
-    from .workbench_snapshot import build_workbench_snapshot, load_workbench_snapshot, write_workbench_snapshot
-    return product_handler, DashboardService, validate_config, build_workbench_snapshot, load_workbench_snapshot, write_workbench_snapshot
 
 
 def _handler(static_root: Path, snapshot_path: Path, load_snapshot):
@@ -143,7 +137,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="本机公司快扫工作台；浏览不调用模型，启动不运行测试。")
     parser.add_argument("--ui-root", type=Path, default=ROOT.parent / "iqs-question-bank-ui-lab",
                         help="UI源码仓，只读取 src/app 静态文件")
-    parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS配置、题库与运行数据根目录")
+    parser.add_argument("--data-root", type=Path, default=ROOT, help="要运行的IQS检出目录，包含代码、配置和题库")
     parser.add_argument("--port", type=int, default=8765, help="本机端口；0 表示由系统分配")
     parser.add_argument("--no-refresh", action="store_true", help="仅读取已有展示快照，不重新读取owner或写快照")
     parser.add_argument("--dashboard-config", type=Path, help="本机owner与执行配置；默认config/dashboard.local.json")
@@ -156,10 +150,24 @@ def main(argv=None):
     static_root = ui_root / "src" / "app"
     if not (static_root / "index.html").is_file():
         parser.exit(2, "UI static app is missing; provide --ui-root with src/app/index.html.\n")
-    if not data_root.is_dir():
-        parser.exit(2, "Data root is missing; provide --data-root.\n")
+    if data_root != ROOT:
+        entry = data_root / "scripts" / "open_dashboard.py"
+        if not entry.is_file():
+            parser.exit(2, "Provide --data-root with an IQS checkout containing scripts/open_dashboard.py.\n")
+        # Start the selected checkout through its CLI in its own interpreter.
+        command = [sys.executable, "-B", "-X", "utf8", str(entry), "--data-root", str(data_root),
+                   "--ui-root", str(ui_root), "--port", str(args.port)]
+        if args.dashboard_config is not None:
+            command.extend(["--dashboard-config", str(args.dashboard_config.resolve())])
+        if args.no_refresh:
+            command.append("--no-refresh")
+        if args.plan:
+            command.append("--plan")
+        return subprocess.run(command, check=False).returncode
 
-    product_handler, DashboardService, validate_config, build_snapshot, load_snapshot, write_snapshot = _load_runtime()
+    from .dashboard_http import product_handler
+    from .dashboard_service import DashboardService, validate_config
+    from .workbench_snapshot import build_workbench_snapshot, load_workbench_snapshot, write_workbench_snapshot
     config_path = args.dashboard_config.resolve() if args.dashboard_config else data_root / "config" / "dashboard.local.json"
     try:
         config = _load_config(args.dashboard_config.resolve() if args.dashboard_config else None,
@@ -179,12 +187,12 @@ def main(argv=None):
     try:
         service = DashboardService(root=data_root, config_path=config_path)
         if not args.no_refresh:
-            snapshot = build_snapshot(data_root, service.config)
-            write_snapshot(snapshot_path, snapshot)
+            snapshot = build_workbench_snapshot(data_root, service.config)
+            write_workbench_snapshot(snapshot_path, snapshot)
     except Exception as error:
         sys.stderr.write(f"Cannot build the read-only dashboard snapshot: {getattr(error, 'code', 'snapshot_export_failed')}\n")
         return 2
-    handler = product_handler(_handler(static_root, snapshot_path, load_snapshot), service)
+    handler = product_handler(_handler(static_root, snapshot_path, load_workbench_snapshot), service)
     try:
         server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
     except OSError as error:

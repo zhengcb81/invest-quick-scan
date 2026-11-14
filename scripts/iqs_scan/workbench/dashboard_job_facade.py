@@ -30,17 +30,10 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-try:
-    from .dashboard_errors import DashboardExecutionError
-    from .dashboard_locks import control_lock, ControlBusyError
-except ImportError:
-    from .dashboard_errors import DashboardExecutionError
-    from .dashboard_locks import control_lock, ControlBusyError
+from .dashboard_errors import DashboardExecutionError
+from .dashboard_locks import control_lock, ControlBusyError
 
-try:
-    from .dashboard_iqs_link import company_return_entity, safe_entity_id, safe_return_to
-except ImportError:
-    from .dashboard_iqs_link import company_return_entity, safe_entity_id, safe_return_to
+from .dashboard_iqs_link import company_return_entity, safe_entity_id, safe_return_to
 
 
 OWNER_ID = "invest-quick-scan"

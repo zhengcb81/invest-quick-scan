@@ -11,10 +11,7 @@ import threading
 import time
 import uuid
 
-try:
-    from .dashboard_locks import control_lock, ControlBusyError
-except ImportError:
-    from .dashboard_locks import control_lock, ControlBusyError
+from .dashboard_locks import control_lock, ControlBusyError
 
 
 class DashboardJobError(ValueError):

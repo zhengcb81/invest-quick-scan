@@ -8,10 +8,7 @@ from pathlib import Path
 import sys
 import tempfile
 
-try:
-    from .dashboard_errors import DashboardExecutionError
-except ImportError:
-    from .dashboard_errors import DashboardExecutionError
+from .dashboard_errors import DashboardExecutionError
 
 
 DELIVERY_REQUEST_PROTOCOL = 'stockqa.delivery_scope_request/1.0.0'

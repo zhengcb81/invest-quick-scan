@@ -8,6 +8,7 @@ work queue. Explicit issuer-only apply uses the original owner bootstrap API.
 from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
+from iqs_scan.foundation.api import JsonSchemaValidationError, validate_entity
 
 import copy
 from contextlib import contextmanager
@@ -437,10 +438,7 @@ def _apply_guard(config, preview_id):
     Kernel release on process death permits unrelated company preparation.
     Candidate apply-started markers still prevent blind retry of partial work.
     """
-    try:
-        from .dashboard_locks import control_lock, ControlBusyError
-    except ImportError:
-        from .dashboard_locks import control_lock, ControlBusyError
+    from .dashboard_locks import control_lock, ControlBusyError
     try:
         with control_lock(_control_path(config)):
             yield
@@ -803,18 +801,14 @@ def _snapshot(config, payload):
     if not isinstance(reply, dict) or set(reply) not in ({'identity', 'selection'}, {'identity', 'selection_error'}):
         raise DashboardPrepareError('native_response_invalid', 'Original owner did not return its identity snapshot', 502)
     identity = reply['identity']
-    try:
-        from . import contract_validation as cv
-    except ImportError:
-        from iqs_scan.foundation import api as cv
     # The exact G2b identity is validated by the consuming IQS contract before
     # any listing, subject, route anchor or owner selection refusal is used.
     try:
         context = identity['trusted_context']
-        cv.validate_entity(identity['payload'], trusted_identity_receipts=context['identity_receipts'],
+        validate_entity(identity['payload'], trusted_identity_receipts=context['identity_receipts'],
             trusted_source_bindings=context['source_bindings'], trusted_market_registry=context['market_registry'],
             wire_profile='stockwiki-g2b/1.1.0')
-    except (ValueError, KeyError, TypeError, AttributeError, cv.JsonSchemaValidationError):
+    except (ValueError, KeyError, TypeError, AttributeError, JsonSchemaValidationError):
         raise DashboardPrepareError('owner_identity_contract_invalid',
             'Complete or correct the original identity attributes and evidence, then create a new bank preview', 409,
             {'required_action': 'repair_original_identity_and_create_new_preview'}) from None
