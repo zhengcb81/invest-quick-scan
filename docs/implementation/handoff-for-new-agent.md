@@ -4,7 +4,7 @@
 
 先读根[实施计划](../../task_plan.md)的当前状态与 Next Step，以及[固定来源与验证结果](parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。IQS 十个能力域已进入 `scripts/iqs_scan`，旧 CLI 路径可用。新域间依赖使用 `api.py`、HTTP 或公开 JSON 命令。StockQA 拥有发送和保存，StockWiki 拥有公司身份、名单和入库，工作台与 Dashboard 消费各自公开接口。
 
-下一主线从 F05/W11/G4 的真实业务使用接续。先核现有真实单题的 owner 观察、查询与导出，再用 TH/IN 真实入口补足覆盖。现有隔离联测已验证工程接线。直接复用已有案例和运行记录，实际新扫描继续遵守原费用和持久化规则。固定提交之外的历史版本以当时的证据为准。
+下一主线从 F05/W11/G4 的真实覆盖接续。已复核真实 `FACT_10` 的 19 条候选，Theme 与 Industry 公开命令均能读取和导出，严格模式暂无已验证关系。复用 `runs/f05-real-facts-20261109/isolated-fact-store` 时以原位置只读，另配临时 `capture-root`，保持路径派生的 owner 身份。继续补两主题严格正反例、多主体定向补扫和 G4 的研究输出。原 8766 工作台已按现有配置启动，题库和名单快照可读。固定提交之外的历史版本以当时的证据为准。
 
 ## 2026-11-13 I3 接续记录
 

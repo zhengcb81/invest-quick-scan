@@ -7,6 +7,13 @@
 - 固定 I1–I7 均通过，I1 为 196 项和 71 个子测试，I6 为 19 项通过，两个历史 VIEW 夹具未安装，I7 为 2 项。普通 31 题与共享原生执行、混合冷恢复、有效期与过期、公开事实消费的实际节点和来源见[联测报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。默认快速套件 1127 项、391 个子测试通过；最后一组事实能力负例及历史施工归档检查 27 项通过。
 - 独立审查拒绝过动态导入、别名绕行和数据根误拒，修复后 `final_boundary_review` ACCEPT。Dashboard `b03e14b` 已推，远端 `e6a9efc` 包含该提交。未调用收费 API，未触及正式工作库或名单。
 
+## 2026-11-14 原工作台与真实事实消费
+
+- IQS 模块化交接 `3f4f7ee` 已推送并核对 `origin/master`。原工作台重新启动，首页、设置、doctor、任务和宁德时代结果均有公开 HTTP 成功响应。缺失展示快照用 `workbench_snapshot_cli.py` 生成；展示 48 模块、222 评分题、61 信息题、215 家名单。正式业务库与名单未写入，模型和搜索请求均为零。
+- 使用 `3f4f7ee`、StockWiki `21cf489`、Theme `00e4fbd`、Industry `bb0c3b9`，从已有真实 `FACT_10` 原观察读取。Theme 查询首两页并保持 snapshot，导出 19 条候选；严格查询给出 `no_match_partial`、0 条已验证关系。Industry capabilities `ready`，采齐 4 页 19 条，导出 `ok`，生成独立报告栏目。档案原库文件哈希一致，临时捕获和报告已清理。事实范围仍限该题。
+- W11 定向与增量回归 `test_explicit_subset_preserves_full_bank_and_registers_only_selected_native_question`、`test_multiple_questions_for_one_field_stay_distinct_and_scope_is_not_truncated` 和 `test_time05_scope_update.py` 合计 4 项通过。真实范围扩展仍见根计划。
+- 已回收本轮两个 Git 工作树、测试副本和数据库。Windows 仍锁住一个空目录外壳，检查为 0 个文件。本地薄证据保留于 `runs/_modularity_20261114/evidence`。
+
 ## 2026-11-13 I1–I7 并行模块审查（历史快照）
 
 按公开接口/状态矩阵分域并行审查并合并同源根因，避免逐个反例打补丁：I1公开facade和I7 Dashboard已有独立审查；I5 Theme/Industry已修复、独审和提交；I2普通31题恢复链通过；I3原生 intent 回执、付费回答恢复、unknown 暂停、未发送分类及入库 ACK 的隔离全链现已通过（见本文件 2026-11-13 I3 末尾记录），早期“缺原生 intent 查询”文字属于该修复前快照；I4、I6 已有定向通过记录。**仍未完成的是这些场景在固定提交组合上的复跑及一次独立总审。**
