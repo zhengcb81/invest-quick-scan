@@ -30,15 +30,29 @@ from .question_selection import (
 )
 
 ROOT = REPO_ROOT
-API_PROTOCOL = "iqs.question-manifest-api/1.0.0"
+API_PROTOCOL = "iqs.question-manifest-api/1.1.0"
 PUBLIC_API_EXPORTS = frozenset({
     "API_PROTOCOL", "PUBLIC_API_EXPORTS", "METRIC_CONTRACT_VERSION",
-    "archived_facts", "fact_questions", "metric_mapping", "published_method_id",
+    "archived_facts", "fact_questions", "metric_contract_version_for_schema",
+    "metric_mapping", "published_method_id",
     "question_field_id",
     "select_fact_questions", "validate_manifest_metric_contract",
     "validate_published_manifest",
 })
-METRIC_CONTRACT_VERSION = '1.0.0'
+METRIC_CONTRACT_VERSION = '1.1.0'
+SUPPORTED_METRIC_CONTRACT_VERSIONS = frozenset({'1.0.0', '1.1.0'})
+
+
+def metric_contract_version_for_schema(schema):
+    """Read the metric contract version frozen with a module package.
+
+    Packages created before the explicit marker are contract 1.0.0. Their
+    mapping semantics remain unchanged even when the authoring schema advances.
+    """
+    version = schema.get('x-metric-contract-version', '1.0.0')
+    if version not in SUPPORTED_METRIC_CONTRACT_VERSIONS:
+        raise ValueError('unsupported metric contract version')
+    return version
 
 
 def question_field_id(question):
@@ -52,6 +66,9 @@ def metric_mapping(question, *, metric_schema=None, root=None):
     schema = metric_schema or library.read_json(local_root / 'schemas/quick_scan/metric.schema.json')
     properties = schema['definitions']['QuestionMetricMapping']['properties']
     generic_diagnostics = 'diagnostic' in properties['dimension']['enum'] and 'framework' in properties
+    metric_version = metric_contract_version_for_schema(schema)
+    aggregation_roles = schema.get('definitions', {}).get('AggregationRole', {}).get('enum', [])
+    supports_context_only = 'context_only' in aggregation_roles
     framework = question.get('framework')
     diagnostic = question.get('aggregation', 'scored') == 'diagnostic'
     if diagnostic:
@@ -59,6 +76,12 @@ def metric_mapping(question, *, metric_schema=None, root=None):
             'dupont': 'dupont', 'porter': 'porter', 'recovery': 'recovery_watch'
         }.get(framework, 'diagnostic' if generic_diagnostics else 'recovery_watch')
         aggregation_role = 'diagnostic_only'
+    elif (metric_version == '1.1.0'
+          and supports_context_only
+          and question.get('comparison_role') == 'context'):
+        contract_dimension = ('growth' if question['dimension'] == 'growth' else
+                              'valuation' if question['dimension'] == 'valuation' else 'quality')
+        aggregation_role = 'context_only'
     elif question['dimension'] == 'growth':
         contract_dimension, aggregation_role = 'growth', 'growth_core'
     elif question['dimension'] == 'valuation':
@@ -89,12 +112,15 @@ def validate_manifest_metric_contract(manifest, *, root=None):
     """Return authoritative mappings for a 3.1 manifest; leave older formats readable."""
     if 'metric_contract_version' not in manifest:
         return None
-    if manifest.get('metric_contract_version') != METRIC_CONTRACT_VERSION:
+    if manifest.get('metric_contract_version') not in SUPPORTED_METRIC_CONTRACT_VERSIONS:
         raise ValueError('unsupported metric contract version')
     local_root = Path(root) if root else ROOT
     if 'module_package_id' in manifest:
         return validate_published_manifest(manifest, root=local_root)
     catalog, modules = library.load_library(root=local_root)
+    authoring_schema = library.read_json(local_root / 'schemas/quick_scan/metric.schema.json')
+    if manifest.get('metric_contract_version') != metric_contract_version_for_schema(authoring_schema):
+        raise ValueError('metric contract version differs from the active schema')
     if manifest.get('template_version') != catalog['version']:
         raise ValueError('metric-enriched manifest must match the loaded question catalog version')
     canonical = {q['id']: (q, module_id) for module_id, module in modules.items()
@@ -198,7 +224,10 @@ def validate_published_manifest(manifest, *, root):
     if release['schema_version'] == '2.0.0':
         expected_hashes[release['routing_policy_ref']] = release['routing_policy_sha256']
     metric_reference = 'schemas/quick_scan/metric.schema.json'
-    expected_hashes[metric_reference] = module_contract.module_digest(package['format_resources'][metric_reference])
+    metric_schema = package['format_resources'][metric_reference]
+    if manifest.get('metric_contract_version') != metric_contract_version_for_schema(metric_schema):
+        raise ValueError('metric contract version differs from the frozen schema')
+    expected_hashes[metric_reference] = module_contract.module_digest(metric_schema)
     if manifest.get('answer_format') == 'standard-1':
         for reference in ('schemas/answer-content.schema.json', 'questions/metric-registry.json'):
             expected_hashes[reference] = module_contract.module_digest(package['format_resources'][reference])

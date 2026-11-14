@@ -1682,7 +1682,7 @@ def test_paid_seal_ignores_later_new_send_settings_and_missing_budget(deployment
     wait_done(gateway, run_id)
     command = json.loads(Path(json.loads(path.read_text(encoding='utf-8'))['result_path']).read_text(encoding='utf-8'))['argv']
     assert '--seal-deliveries' in command and '--spend-authorization' not in command
-    assert json.loads(path.read_text())['bundle_fingerprint'] == original_record['bundle_fingerprint']
+    assert json.loads(path.read_text(encoding='utf-8'))['bundle_fingerprint'] == original_record['bundle_fingerprint']
 
 
 def test_successful_partial_paid_recovery_keeps_original_scan_resumable(deployment):

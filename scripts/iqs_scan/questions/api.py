@@ -12,6 +12,7 @@ from .question_library import (
 )
 from .question_manifest import (
     fact_questions,
+    metric_contract_version_for_schema,
     validate_manifest_metric_contract,
     question_field_id,
     select_fact_questions,
@@ -43,11 +44,12 @@ from .question_sets import (
 )
 from .frozen_release_projection import (
     create_execution_profile,
+    create_company_assessment_v2,
     create_projection,
     create_question_config,
 )
 
-API_PROTOCOL = "iqs.questions-api/1.0.0"
+API_PROTOCOL = "iqs.questions-api/1.1.0"
 
 __all__ = (
     "ALWAYS_APPLICABLE_DIAGNOSTICS",
@@ -56,6 +58,7 @@ __all__ = (
     "basic_questions",
     "compose_from_route",
     "compose_questions",
+    "create_company_assessment_v2",
     "create_execution_profile",
     "create_projection",
     "create_question_config",
@@ -65,6 +68,7 @@ __all__ = (
     "load_bank_manifest",
     "load_library",
     "load_package",
+    "metric_contract_version_for_schema",
     "observation_ingest_ready",
     "question_field_id",
     "question_fingerprint",

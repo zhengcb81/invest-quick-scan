@@ -154,7 +154,56 @@
 
 ## Next Step
 
-**下一主线节点为 F05/W11/G4 的真实覆盖。** 已有真实单题的公开查询、导出及两个研究入口通过。沿原计划补足两个主题的严格正反例、来源验证与多主体定向补扫，检查原预算、范围与回执；同时保留研究侧独立结论。批量可靠性按认可池与原预算累积。
+**下一主线节点仍为 F05/W11/G4 的真实覆盖。** 已有真实单题的公开查询、导出及两个研究入口通过。沿原计划补足两个主题的严格正反例、来源验证与多主体定向补扫，检查原预算、范围与回执；同时保留研究侧独立结论、批量可靠性按认可池与原预算累积。本轮先并行处理 2026-11-09 Dashboard owner 改进清单中仍有效的 IQS/StockWiki 软件项，并把真实数据/付费操作与代码修复分开，见下节。
+
+## 2026-11-14 Dashboard owner 改进项接入 PWF 与分仓实施
+
+### 输入与口径
+
+- IQS 输入：[investment-dashboard/handoffs/owner-requests/invest-quick-scan/IMPROVEMENTS.md](C:/Users/郑曾波/Projects/investment-dashboard/handoffs/owner-requests/invest-quick-scan/IMPROVEMENTS.md)。
+- StockWiki 输入：[investment-dashboard/handoffs/owner-requests/stockwiki/IMPROVEMENTS.md](C:/Users/郑曾波/Projects/investment-dashboard/handoffs/owner-requests/stockwiki/IMPROVEMENTS.md)。两份文件日期为 2026-11-09，基于当时快照；本计划以本轮源码、测试和最新进展复核结果为准，不照搬旧阻塞标签。
+- IQS 与 StockWiki 各自保留实现、测试和仓内 PWF；本文件由 IQS 总控维护跨仓状态。并行线按 owner/目录拆开，禁止多 agent 改同一文件。保留所有现有用户改动、历史资料、生产数据与名单。
+
+### 当前复核状态
+
+| 来源项 | 当前判定 | 实施边界 |
+|---|---|---|
+| SW-1 / IQS-1：36 题 owner manifest / company result | **代码合同已实现并通过独立复审；E07真实结果仍未闭环**。IQS v2 producer 输出和 StockWiki owner `company_assessment/2` 以真实 IQS 题库实际生成的53题 envelope 做隔离 publish/readback；未生成答案。历史扫描仍只有1/36条 owner观察（另一历史产物有2个scored），不能声称36题已完成。 | V2为 additive DTO：每组一 rubric/aggregation role，完整绑定原 immutable package/release/question hashes；组间不汇总、不生成公司总分，v1不变。生产数据须由真实回答和既有owner导入路径提供；不伪造答案、临时回填ID、重贴package/release或覆盖历史记录。 |
+| SW-2：旧 universe 写路径越过 schema-7 membership request authority | **仍 OPEN，等待schema6兼容性整改与最终独立复审**。`save_member`绕行和schema6→7迁移竞态已修；首轮独审发现自动准入未来schema守卫缺失，修后又发现守卫过度收紧到schema7、会拒绝受支持的schema6自动准入。 | Store/Universe/Candidates/Maintenance/Backup上一轮73 passed和static通过是中间证据，不能作为最终签收。最终语义为手工schema7写必须有request receipt；自动准入独立于手工request，schema6/7均允许其既有原子策略路径，schema5及future schema拒绝且零写；版本读取与写入同在`BEGIN IMMEDIATE`。UI 2000实体E2E seed为15.6秒，但浏览器阶段180秒未结束，不能记通过，需定位或明确环境限制。 |
+| SW-3：药明、阿里、MDB 的 research 数据 | **代码/读取链不是本轮阻塞；真实研究内容仍缺，且本轮未重查生产覆盖**。历史样本曾显示无数据，不能外推为当前值。 | 仅记录真实身份绑定、正式研究观察和来源覆盖；不得把合成数据当真实。真实模型研究或写生产 wiki 需走原owner操作，隔离代码实施不代做。 |
+| SW-4：StockWiki owner 读面 checkout 可移植性 | **未复现代码缺陷**：当前 query CLI 显式接收 `--root`，测试夹具使用 `tmp_path`；旧报告中的固定路径符号不存在。 | `query-v2`测试因C06运行时环境条件跳过；本轮以源码/夹具检查为证，不记该测试通过。 |
+| SW-5：名单幂等请求 reason | 旧清单已报告完成。 | 只核现行测试/实现是否仍满足，不重复实现。 |
+| IQS-2：药明、阿里、MDB bundle 准备与登记 | **软件流程已存在；具体主体实际登记状态仍未证实**。当前本机有 62 个 bundle，但从可见文本查不到目标公司只表示 ID 不透明，不足以证明未登记。 | 查 identity owner 的只读主体映射/登记状态；真实准备与登记另按原流程执行，不把目标公司硬编码到产品；隔离软件测试不改用户配置、名单或正式 bundle。 |
+| IQS-3：多 bundle 显式选择 | **IQS侧显式选择已验证**：`explicit_scope.bundle_id` 进入 owner job facade，registration 与实际 start 沿同一bundle绑定，缺省多包仍返回`bundle_selection_required`。另发现一项独立Dashboard恢复问题，转列I7跨仓缺口。 | 不增加bundle字段或新门。Dashboard M8须按已知ID类型查询，修复后覆盖ID格式重叠、不得重提交及原command链接。 |
+| IQS-4：真实付费 formal 成本样本 | **仍属真实运行验收**，不能由离线测试代替。 | 代码代理不得派发模型请求；待确认原配置已有授权额度/预算余额后再由总控沿现有 UI/runner 验收，不另建许可系统。 |
+| IQS-5：历史基线测试失败归属 | **已收口为测试可移植性修复**：显式 UTF-8 读取固定 JSON 后，相关 Dashboard execution/recovery 组合169 passed、1 skipped；无产品代码改变。 | 保留测试修复与组合结果；另列的M8 ID冲突是新发现，不是该历史编码基线。 |
+
+### SW-2 第二轮 store-boundary 根修范围
+
+- 独立复审在第一轮 wrapper 修复后发现 `save_member()` / `save_member_in_transaction()` 可绕开 schema-7 request receipt，且版本检查与写操作分开会有迁移竞态。修复必须在 `BEGIN IMMEDIATE` 写事务内判 schema，并保证任意连接不能在 schema 7 无正式 receipt 写 member/history。
+- 单独的自动纳入权由 `quick_scan_maintenance.apply_auto()` 执行：它按已保存策略、已核实主体和资格规则判定，并在一笔事务中写 member/history 与 `scan_intent`。这是一种独立、可审计的自动 authority，不是手工 request；必须保持其 intent/成员原子性且证明裸 store 调用不能绕过条件。
+- store 守卫会影响 6 个既有 C06/owner 测试文件的 9 个直接 `save_member` fixtures。总控已把这些仅测试侧调用点纳入最小范围：schema 7 fixtures 改用现有 request authority；专门验证 schema 6 旧 API 的用例使用真实 schema 6 数据库。自动审批曾因旧范围说明拒绝第一轮尝试；总控已明确扩展并要求若再次被拒则停止，不换工具绕过。
+
+### Company assessment v2 公开 wire 对齐
+
+- IQS V2 producer与StockWiki owner均已通过独立复审。当前新package/pointer为`pkg_07dc0d62fd89a008c474ffae0cb9be5ad7411f67333e81f1a12751cb4693a703` / metric contract `1.1.0`；旧`1.0.0` package与release lock未改变。新producer测试13 passed；与`test_question_manifest.py`合跑16 passed、2 subtests；`test_question_sets.py`正常权限隔离复跑70 passed、174 subtests。StockWiki owner文件107 passed；以IQS active package实际生成53题并在临时owner workspace publish/readback通过。`comparison_role`递归断言只允许其出现在`lineage_provenance.question_mappings`。SW-2最终schema6/7兼容修复及Dashboard M8交叉ID问题仍未关闭。
+- V2 manifest（owner 请求的 `request.manifest`）：`{protocol:"stockwiki.company_assessment/2", schema_version:"2.0.0", entity_id, source_release, source_release_sha256, lineage_provenance, lineage_provenance_sha256, lineage_groups}`。观察 refs 按 owner 请求的 observations 字段单独绑定。现有 v1 保持原 schema、行为和记录不变。
+- `source_release` 是原 frozen manifest 完整对象及可复算哈希，保留真实 `module_package_id/module_release_id`、catalog、所有问题定义与哈希。SHA 使用 StockWiki `canonical_sha256`：UTF-8、`ensure_ascii=False`、排序键、分隔符 `(',', ':')`、`allow_nan=False`。
+- 重要：IQS 原 projection 的 score `source_release.questions` 不含 `comparison_role`；不能因 V2 需要角色校验而把该字段回写/强制要求于原 release。role 只存在于 provenance，StockWiki 必须依据冻结 metric contract/schema 版本和 role 语义校验；只把 question ID、release 中实际存在的 rubric/construct/response/hash 字段与 provenance 逐题比对。跨仓 golden 必须由 IQS 真实 producer projection 形状生成，不用手工补 role 的合成 source。
+- 角色映射不写回/增补 `source_release`。V2 `lineage_provenance` 绑定 source module/release IDs、metric contract version/schema hash、`source_release_sha256`，并按 qid 排序逐题携带冻结的 `metric_contract`、`comparison_role/construct_id/rubric_version/response_kind` 和 definition/semantic hashes；另对 provenance 本身计算 canonical hash。StockWiki 核实字段映射、问题覆盖及原 release/hash 一致；它不声称独自重跑 IQS archive composer。producer不得改写任何历史 frozen release；旧产物缺可信映射依据时不能推断新 role。
+- lineage 分组键是 `(rubric_version, aggregation_role)`。每组 `lineage_group_id` 固定为 `lg_` + `canonical_sha256({source_release_sha256,rubric_version,aggregation_role,question_ids:sorted(ids)})[:20]`。分组必须无遗漏、无重复覆盖 source questions；组内 rubric 与 aggregation role 各自一致。
+- 每条 observation ref 至少含 `observation_id,payload_sha256,question_id,source_release_sha256,lineage_group_id,question_definition_sha256,question_semantic_sha256`，owner 核实精确绑定。`construct_id=null` 仅允许 `diagnostic_only`、`information_only`、`context_only`；三者均不得进入任何评分聚合，其他评分角色必须有非空构念。metric contract 1.0.0 的正式 role 为 quality/growth/valuation core 与 diagnostic_only；1.1.0 只新增 context_only。`information_only` 不是 metric schema role，只能从 fact 且 source metric_contract/comparison_role/construct_id 均为空（原题定义可省略这些键）的事实题派生；provenance 中显式记录 null，不改写 source_release。1.0.0 历史 `context + quality_core + null` 包仍按旧规则读取，但不得在 V2 声称为新语义；未知未来版本也不自动获得新能力。任何组间/公司总分不计算，`aggregate_score=null`。
+- `comparison_role` 仅存在于 provenance，合法值为 `core|context|diagnostic`（fact为null）；score metric dimensions按冻结版本校验：1.0.0为 `quality|growth|valuation|recovery_watch|dupont|porter|fact`，1.1.0新增 `diagnostic`。core只允许 quality→quality_core、growth→growth_core、valuation→valuation_core，且构念非空；context只允许 quality/growth/valuation维度，且仅1.1.0映射为context_only；diagnostic只允许相应版本 schema 定义的 recovery_watch/dupont/porter/fact/diagnostic 诊断维度，映射diagnostic_only且critical_risk=false。fact response本身无metric_contract和dimension，按定义派生information_only。owner必须验证这些映射关系，而不只检查role枚举合法。
+- 同一 historical mixed run 不能只改导出包 ID/版本；生产者必须用原 immutable source release 和实际 observation refs。producer可以诚实表示部分观察，但 StockWiki 注册的正式 company assessment 仍须覆盖完整 release 题目集；不完整 observations 明确拒绝为 `manifest_incomplete`，不伪装成完整结果。完整结构不代表每题都有有效分数：Dashboard来源报告的owner workspace是1/36条观察（IQS_12待审），另一个历史扫描artifact有2个scored；二者均是数据缺口，代码不补造。
+
+### 并行实施包与完成标准
+
+1. **StockWiki membership owner**：SW-2 根因与回归；复核 SW-4/SW-5；为 SW-1/SW-3 留下状态。独占 StockWiki universe/store代码和相关测试，不触碰任何业务库/名单。
+2. **StockWiki result owner**：增加兼容的 `company_assessment/2` lineage groups；v1只读/写契约保持，组间不可聚合。独占 company assessment owner files/tests，与 membership owner 写入文件完全分离。
+3. **IQS question/result owner**：按StockWiki v2公开合同实现 IQS-1 producer 输出和专属测试；修复新冻结题库中 `comparison_role=context` 被错误映射到核心角色的根因，新增版本化 `context_only` metric role，并验证source release/答案绑定。旧冻结 package/release 保持原样，不回写历史。
+4. **IQS execution owner**：核实 IQS-2/IQS-3 的通用 bundle 准备、选择和公开接线；复核 IQS-4/IQS-5 但不触发付费扫描。与 question/result owner 使用分离模块目录和测试文件。
+
+各 agent 先对照本计划与当前 HEAD/工作树，目标文件若已有并行修改则只读报告冲突、不得覆盖。四条实现线已分别启动：StockWiki membership owner、StockWiki result owner、IQS question/result owner、IQS execution owner。每条线以针对性隔离测试证明 RED→GREEN，报告精确改动文件和命令；总控最后复核跨仓合同、状态证据与 PWF，再进行一次独立整体验收。没有证据的范围保持 OPEN。完成本轮后恢复主线 F05/W11/G4，不扩出新任务线。
 
 ### 模块化与松耦合的完成定义（由本轮域级TDD路线收敛）
 

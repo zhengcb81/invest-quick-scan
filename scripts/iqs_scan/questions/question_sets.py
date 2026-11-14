@@ -30,7 +30,7 @@ from .question_prompts import (
 from .question_fingerprints import question_fingerprint
 from . import question_selection as _selection_contract
 
-API_PROTOCOL = "iqs.question-composition-api/1.0.0"
+API_PROTOCOL = "iqs.question-composition-api/1.1.0"
 PUBLIC_API_EXPORTS = frozenset({
     "API_PROTOCOL", "PUBLIC_API_EXPORTS", "compose_from_route", "compose",
     "basic_questions", "load_library",
@@ -253,6 +253,7 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
     mandatory = (route_decision['dispatch_plan']['mandatory_question_ids'] if route_v2 else ())
     metric_reference = 'schemas/quick_scan/metric.schema.json'
     metric_schema = package['format_resources'][metric_reference]
+    metric_contract_version = manifest_contract.metric_contract_version_for_schema(metric_schema)
     facts = []
     if fact_question_ids is not None:
         if answer_format != 'standard-1':
@@ -318,7 +319,7 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
         'source_sha256': source_hashes,
         'question_count': len(manifest_questions),
         'quality_weights': QUALITY_WEIGHTS,
-        'metric_contract_version': METRIC_CONTRACT_VERSION,
+        'metric_contract_version': metric_contract_version,
         'question_metric_mappings': metric_mappings,
         'questions': manifest_questions,
     }
