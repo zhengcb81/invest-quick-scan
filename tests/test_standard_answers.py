@@ -578,7 +578,7 @@ class VisibleExplanationCompatibilityTests(unittest.TestCase):
     def test_historical_answer_schema_is_compatibly_read_without_rewriting_it(self):
         manifest, answers, _ = fixture()
         answer = next(iter(answers.values()))
-        old = sa.library.read_json(ROOT / "schemas/answer-content.schema.json")
+        old = sa.read_resource(ROOT / "schemas/answer-content.schema.json")
         old["properties"]["summary"]["maxLength"] = 800
         old["additionalProperties"] = False
         before = copy.deepcopy(old)

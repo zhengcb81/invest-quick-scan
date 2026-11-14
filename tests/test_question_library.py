@@ -12,6 +12,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
+PACKAGE = SCRIPTS / "iqs_scan"
 sys.path.insert(0, str(SCRIPTS))
 
 
@@ -28,28 +29,29 @@ def imported_modules(path):
 
 class QuestionLibraryBoundaryTests(unittest.TestCase):
     def test_answer_builder_uses_shared_library_for_general_helpers(self):
-        answer_tree, answer_imports = imported_modules(SCRIPTS / "standard_answers.py")
-        self.assertIn("question_library", answer_imports)
-        self.assertIn("question_manifest", answer_imports)
-        self.assertNotIn("question_sets", answer_imports)
+        _, answer_imports = imported_modules(PACKAGE / "answers/standard_answers.py")
+        self.assertIn("iqs_scan.questions.api", answer_imports)
+        self.assertIn("iqs_scan.foundation.api", answer_imports)
+        self.assertNotIn("iqs_scan.questions.question_sets", answer_imports)
 
     def test_library_has_no_upward_or_effectful_imports(self):
-        path = SCRIPTS / "question_library.py"
+        path = PACKAGE / "questions/question_library.py"
         self.assertTrue(path.is_file(), "shared question-library contract has not been extracted")
         _, imports = imported_modules(path)
         forbidden = {
-            "question_sets", "standard_answers", "requests", "httpx", "urllib.request",
+            "question_sets", "standard_answers", "iqs_scan.answers", "iqs_scan.answers.api",
+            "requests", "httpx", "urllib.request",
             "sqlite3", "stockqa", "llm_client", "llm_provider",
         }
         self.assertFalse(forbidden.intersection(imports), sorted(forbidden.intersection(imports)))
 
     def test_prompt_and_catalog_layers_share_one_json_io_implementation(self):
-        library_tree, library_imports = imported_modules(SCRIPTS / "question_library.py")
-        prompt_tree, prompt_imports = imported_modules(SCRIPTS / "question_prompts.py")
-        json_io_tree, _ = imported_modules(SCRIPTS / "json_io.py")
-        question_cli_tree, _ = imported_modules(SCRIPTS / "question_sets.py")
-        self.assertIn("json_io", library_imports)
-        self.assertIn("json_io", prompt_imports)
+        library_tree, library_imports = imported_modules(PACKAGE / "questions/question_library.py")
+        prompt_tree, prompt_imports = imported_modules(PACKAGE / "questions/question_prompts.py")
+        json_io_tree, _ = imported_modules(PACKAGE / "foundation/json_io.py")
+        question_cli_tree, _ = imported_modules(PACKAGE / "questions/question_sets.py")
+        self.assertIn("iqs_scan.foundation.api", library_imports)
+        self.assertIn("iqs_scan.foundation.api", prompt_imports)
         self.assertFalse(any(isinstance(node, ast.FunctionDef) and node.name == "read_json"
                              for node in [*library_tree.body, *prompt_tree.body,
                                           *question_cli_tree.body]))

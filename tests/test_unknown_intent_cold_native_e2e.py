@@ -125,7 +125,7 @@ def _child_run(config_path, phase, diagnostic_path):
         settings = json.loads(Path(config_path).read_text(encoding="utf8"))
         task, services = construct(settings["settings"])
         contract = _task_snapshot(task)
-        engine = load("native_unknown_shared_engine", CODE / "scripts/shared_company_engine.py")
+        from iqs_scan.execution import api as engine
         from src.providers import llm_research_client as sdk
         from src.utils.quick_scan_company_api import create_company_research_runtime
         import requests

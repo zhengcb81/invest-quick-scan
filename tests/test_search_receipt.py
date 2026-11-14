@@ -1,13 +1,10 @@
 """Offline search receipt tests bound to an owner search exposure."""
 
-import importlib.util
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("search_receipt", ROOT / "scripts/search_receipt.py")
-receipt_module = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(receipt_module)
+from scripts import search_receipt as receipt_module
 
 
 def exposure():

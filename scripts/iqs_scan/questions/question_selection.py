@@ -1,0 +1,184 @@
+"""Pure selection rules for composed quick-scan question modules.
+
+The CLI and manifest validator depend on this module as a stable domain
+boundary. It owns routing-to-question selection, budget trimming and release
+locks; it does not own file output or answer normalization.
+"""
+
+from iqs_scan import REPO_ROOT
+
+from pathlib import Path
+
+from iqs_scan.foundation import api as module_contract
+from . import question_library as library
+
+ROOT = REPO_ROOT
+
+
+def select_from_module_ids(profile, mode, modules, selected_modules, mandatory_question_ids=(),
+                           *, include_basic=False):
+    if mode not in ('quick', 'full'):
+        raise ValueError('mode must be quick or full')
+    if len(selected_modules) != len(set(selected_modules)) or 'common' not in selected_modules:
+        raise ValueError('selection requires one common module and no duplicates')
+    if any(module_id not in modules for module_id in selected_modules):
+        raise ValueError('selection contains an unpublished module')
+    selected_set = set(selected_modules)
+    for module_id in selected_modules:
+        module = modules[module_id]
+        if set(module.get('dependencies', [])) - selected_set:
+            raise ValueError(f'{module_id}: missing selected dependency')
+        if set(module.get('conflicts', [])) & selected_set:
+            raise ValueError(f'{module_id}: selected module conflict')
+    chosen = []
+    for module_id in selected_modules:
+        for original in modules[module_id]['questions']:
+            if (mode == 'full' or original['priority'] == 1 or original.get('critical')
+                    or original['id'] in mandatory_question_ids or (include_basic and
+                        module_id in ('common', *library.ALWAYS_APPLICABLE_DIAGNOSTICS))):
+                chosen.append({**original, 'module_id': module_id})
+    # A specialised replacement may be essential even when marked lower priority.
+    chosen_ids = {q['id'] for q in chosen}
+    for module_id in selected_modules:
+        if modules[module_id]['kind'] != 'types':
+            continue
+        for q in modules[module_id]['questions']:
+            if q['id'] not in chosen_ids and any(t in chosen_ids for t in q.get('replaces', [])):
+                chosen.append({**q, 'module_id': module_id})
+    replacements = {t: q['id'] for q in chosen for t in q.get('replaces', [])}
+    if sum(len(q.get('replaces', [])) for q in chosen) != len(replacements):
+        raise ValueError('selected modules replace the same core construct twice')
+    common_critical = {q['id'] for q in modules['common']['questions'] if q.get('critical')}
+    for q in chosen:
+        if common_critical.intersection(q.get('replaces', [])):
+            q['critical'] = True
+    chosen = [q for q in chosen if q['id'] not in replacements]
+    chosen.sort(key=lambda q: (selected_modules.index(q['module_id']), q['id']))
+    return chosen, selected_modules, replacements
+
+
+def select_questions(profile, mode, modules, contexts=None, *, root=None, default_diagnostics=None,
+                     include_basic=True):
+    library.validate_profile(profile, modules, contexts, root=Path(root) if root else ROOT)
+    if mode == 'quick' and len(profile.get('overlays', [])) > 2:
+        raise ValueError('more than two material overlays: use full instead of silently omitting risks')
+    extensions = [module_id for module_id, module in modules.items()
+                  if module['kind'] == 'common_extensions'
+                  and module.get('activation', {}).get('mode') == 'automatic'
+                  and not module.get('deprecated_in')]
+    selected = ['common', *sorted(extensions), *sorted(profile.get('common_extension_modules', [])),
+                profile['company_type'], *sorted(profile.get('industry_modules', [])), profile['stage']]
+    if profile.get('cycle_sensitive'):
+        selected.append('cyclical')
+    selected.extend(sorted(profile.get('overlays', [])))
+    # RULE-SCOPE-DECISION-19（所有者 2026-10-24）：dupont/porter 对所有公司必做，
+    # 组装默认恒入；仅当 profile 在 diagnostic_exclusions 显式排除（并给理由）时缺席。
+    excluded_diagnostics = set(profile.get('diagnostic_exclusions', []))
+    defaults = (library.ALWAYS_APPLICABLE_DIAGNOSTICS if default_diagnostics is None
+                else default_diagnostics)
+    selected.extend(sorted(set(profile.get('diagnostic_modules', []))
+                           | (set(defaults) - excluded_diagnostics)))
+    if (profile.get('recovery_review') or profile['stage'] in ('turnaround', 'declining')
+            or 'distressed' in profile.get('overlays', [])):
+        selected.append('recovery')
+    selected.extend(sorted(profile.get('investment_lenses', [])))
+    selected = list(dict.fromkeys(selected))
+    return select_from_module_ids(profile, mode, modules, selected, include_basic=include_basic)
+
+
+def select_questions_for_route(profile, mode, modules, selected_module_ids, mandatory_question_ids=(),
+                               *, include_basic=False):
+    """S06 seam: a verified partial route may contain common and known risks only."""
+    priority = {'common': 0, 'common_extensions': 1, 'types': 2, 'industries': 3,
+                'stages': 4, 'overlays': 5, 'diagnostics': 6, 'lenses': 7}
+    ordered = sorted(selected_module_ids, key=lambda module_id: (
+        priority.get(modules[module_id]['kind'], 99), module_id))
+    return select_from_module_ids(profile, mode, modules, ordered, mandatory_question_ids,
+                                  include_basic=include_basic)
+
+
+# Compatibility alias for older callers; peer modules use the public selector.
+_select_from_module_ids = select_from_module_ids
+
+
+def apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True, reserved=0):
+    """Trim optional follow-ups while retaining the complete shared questionnaire.
+
+    ``protect_basic=False`` is only for reading a previously frozen manifest
+    written before basic-required-v1; new dispatches must use the default.
+    Diagnostic coverage is independent of scoring aggregation and critical risk.
+    """
+    if type(protect_basic) is not bool:
+        raise ValueError('protect_basic must be boolean')
+    if set(mandatory_question_ids) - {q['id'] for q in questions}:
+        raise ValueError('selected questionnaire omits a mandatory routed question')
+    if maximum is None:
+        return questions, []
+    if type(maximum) is not int or maximum < 1:
+        raise ValueError('max_questions must be a positive integer')
+    required = [q for q in questions if q.get('comparison_role') == 'core' or q.get('critical')
+                or q['id'] in mandatory_question_ids or (protect_basic and
+                    q.get('module_id') in ('common', *library.ALWAYS_APPLICABLE_DIAGNOSTICS))]
+    if len(required) + reserved > maximum:
+        raise ValueError('question budget below mandatory core, basic diagnostics and critical-risk coverage'
+                         f' (required={len(required) + reserved}, max_questions={maximum})')
+    optional = [q for q in questions if q not in required]
+    kept_ids = {q['id'] for q in required + optional[:maximum - len(required) - reserved]}
+    kept = [q for q in questions if q['id'] in kept_ids]
+    deferred = [{'question_id': q['id'], 'module_id': q['module_id'],
+                 'reason': 'question_count_budget'} for q in questions if q['id'] not in kept_ids]
+    return kept, deferred
+
+
+def published_selection(profile, mode, modules, release, route_decision, contexts, package=None,
+                        *, root=None, historical_profile_defaults=False):
+    local_root = Path(root) if root else ROOT
+    if route_decision is None:
+        if release['schema_version'] == '2.0.0':
+            raise ValueError('routing policy v2 requires a frozen route decision')
+        defaults = None
+        if historical_profile_defaults:
+            # Immutable 3.0.0 diagnostics were optional. 3.0.1 introduced the
+            # owner-mandated defaults. Never infer historical selection from
+            # today's catalog or a manifest's untrusted module list.
+            defaults = tuple(mid for mid in library.ALWAYS_APPLICABLE_DIAGNOSTICS
+                             if module_contract.parse_version(modules[mid]['version']) >= (3, 0, 1))
+        return select_questions(profile, mode, modules, contexts, root=local_root,
+                                default_diagnostics=defaults, include_basic=not historical_profile_defaults)
+    if route_decision.get('schema_version') == '2.0.0':
+        from . import routing as route_engine
+
+        route_engine.validate_route_snapshot(route_decision, root=local_root)
+        if (package is None or route_decision['module_package_id'] != package['package_id']
+                or profile != route_engine.profile_from_route(route_decision)):
+            raise ValueError('route package or profile differs from frozen routing context')
+        if mode != route_decision['dispatch_plan']['resolved_mode']:
+            raise ValueError('requested mode differs from frozen routing dispatch')
+        if route_decision['dispatch_plan']['status'] not in {'ready', 'ready_common_and_risk'}:
+            raise ValueError(route_decision['dispatch_plan']['status'])
+        selected = route_decision['dispatch_plan'].get('eligible_module_ids',
+                    [item['module_id'] for item in route_decision['module_decisions'] if item['decision'] == 'selected'])
+        return select_questions_for_route(profile, mode, modules, selected,
+                                           route_decision['dispatch_plan']['mandatory_question_ids'],
+                                           include_basic=module_contract.parse_version(release['router_version']) >= (2, 5, 0))
+    module_contract.validate_route_decision(route_decision, release)
+    if route_decision['entity_id'] != profile.get('entity_id') or route_decision['as_of'] != profile.get('as_of'):
+        raise ValueError('route decision identity/cutoff differs from profile')
+    selected_items = [item for item in route_decision['module_decisions']
+                      if item['decision'] == 'selected']
+    for item in selected_items:
+        module_id = item['module_id']
+        if modules[module_id]['kind'] == 'lenses':
+            reasons = profile.get('lens_rationale', {})
+            if (item['basis'] != 'manual' or module_id not in profile.get('investment_lenses', [])
+                    or not isinstance(reasons, dict) or not isinstance(reasons.get(module_id), str)
+                    or not reasons[module_id].strip()):
+                raise ValueError(f'{module_id}: manual lens requires explicit user selection and rationale')
+    selected = [item['module_id'] for item in selected_items]
+    return select_questions_for_route(profile, mode, modules, selected)
+
+
+def module_locks(release, selected):
+    by_id = {entry['module_id']: entry for entry in release['modules']}
+    return [{key: by_id[module_id][key] for key in ('module_id', 'version', 'artifact_ref', 'artifact_sha256')}
+            for module_id in selected]

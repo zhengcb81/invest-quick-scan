@@ -1,7 +1,6 @@
 """Offline binding tests: exposure document <-> owner policy cell."""
 
 import hashlib
-import importlib.util
 import json
 from pathlib import Path
 
@@ -10,11 +9,7 @@ sys_path = str(ROOT / "scripts")
 import sys
 
 sys.path.insert(0, sys_path)
-SPEC = importlib.util.spec_from_file_location(
-    "search_exposure_binding", ROOT / "scripts/search_exposure_binding.py"
-)
-binding = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(binding)
+from scripts import search_exposure_binding as binding
 
 
 def exposure(tmp_path, **overrides):

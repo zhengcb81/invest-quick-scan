@@ -1,8 +1,6 @@
-"""Current configured native StockWiki math; never alters sys.path."""
-def legacy_freshness_status(meta, now):
-    from stockwiki.quick_scan_freshness import freshness_status
-    return freshness_status(meta, now)
+"""Compatibility module for the workbench clock policy."""
+import sys
 
-def legacy_ttl_valid_until(observed_at, ttl_hours):
-    from stockwiki.quick_scan_freshness import ttl_valid_until
-    return ttl_valid_until(observed_at, ttl_hours)
+from iqs_scan.workbench.iqs_temporal_vendor import legacy_oracle as _implementation
+
+sys.modules[__name__] = _implementation

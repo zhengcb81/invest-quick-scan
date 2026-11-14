@@ -15,7 +15,7 @@ import question_sets as qs  # noqa: E402
 
 class QuestionManifestBoundaryTests(unittest.TestCase):
     def test_standard_answers_imports_manifest_contract_without_question_sets(self):
-        source = (ROOT / "scripts" / "standard_answers.py").read_text(encoding="utf-8")
+        source = (ROOT / "scripts/iqs_scan/answers/standard_answers.py").read_text(encoding="utf-8")
         tree = ast.parse(source)
         imported_modules = set()
         for node in ast.walk(tree):
@@ -24,13 +24,13 @@ class QuestionManifestBoundaryTests(unittest.TestCase):
             elif isinstance(node, ast.ImportFrom) and node.module:
                 imported_modules.add(node.module)
 
-        self.assertIn("question_manifest", imported_modules)
+        self.assertIn("iqs_scan.questions.api", imported_modules)
         self.assertNotIn("question_sets", imported_modules)
 
     def test_manifest_and_selection_contracts_do_not_import_the_cli_orchestrator(self):
         for module_name in ("question_manifest.py", "question_selection.py"):
             with self.subTest(module=module_name):
-                tree = ast.parse((ROOT / "scripts" / module_name).read_text(encoding="utf-8"))
+                tree = ast.parse((ROOT / "scripts/iqs_scan/questions" / module_name).read_text(encoding="utf-8"))
                 imports = set()
                 for node in ast.walk(tree):
                     if isinstance(node, ast.Import):

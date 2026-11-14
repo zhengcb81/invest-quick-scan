@@ -1,7 +1,6 @@
 """The editable template is configuration, never proof of a working provider."""
 import copy
 import contextlib
-import importlib.util
 import io
 import json
 from pathlib import Path
@@ -11,9 +10,7 @@ from unittest.mock import patch
 from jsonschema import ValidationError
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('model_policy', ROOT / 'scripts/model_policy.py')
-mp = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mp)
+from scripts import model_policy as mp
 
 
 class ModelPolicyTests(unittest.TestCase):

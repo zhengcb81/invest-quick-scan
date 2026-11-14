@@ -5,7 +5,6 @@ claim provider execution, persistent budgeting, or multi-process behavior.
 """
 import copy
 import json
-import importlib.util
 from pathlib import Path
 import unittest
 
@@ -14,9 +13,7 @@ from jsonschema import Draft202012Validator, ValidationError
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schemas/model-policy.schema.json").read_text(encoding="utf-8"))
 TEMPLATE = json.loads((ROOT / "examples/model-policy.template.json").read_text(encoding="utf-8"))
-spec = importlib.util.spec_from_file_location("model_policy", ROOT / "scripts/model_policy.py")
-model_policy = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(model_policy)
+from scripts import model_policy as model_policy
 
 
 class ProvidersAndBudgetContractTests(unittest.TestCase):

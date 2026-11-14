@@ -1,21 +1,14 @@
 """Offline binding tests between receipts, task exposure and checkpoint."""
 
-import importlib.util
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-SPEC = importlib.util.spec_from_file_location(
-    "search_checkpoint_binding", ROOT / "scripts/search_checkpoint_binding.py"
-)
-binding = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(binding)
+from scripts import search_checkpoint_binding as binding
 
-SPEC2 = importlib.util.spec_from_file_location("search_receipt", ROOT / "scripts/search_receipt.py")
-receipts = importlib.util.module_from_spec(SPEC2)
-SPEC2.loader.exec_module(receipts)
+from scripts import search_receipt as receipts
 
 
 def exposure():

@@ -12,10 +12,10 @@ import model_config  # noqa: E402
 def test_minimax_model_is_canonical_and_single_sourced():
     assert model_config.get("minimax")["model"] == "MiniMax-M3.1-Flash"
     for path in (
-        ROOT / "scripts/thin_scan.py",
-        ROOT / "scripts/batching_benchmark.py",
-        ROOT / "scripts/batching_benchmark_report.py",
-        ROOT / "scripts/accuracy_pilot.py",
+        ROOT / "scripts/iqs_scan/execution/thin_scan.py",
+        ROOT / "scripts/iqs_scan/experiments/batching_benchmark.py",
+        ROOT / "scripts/iqs_scan/experiments/batching_benchmark_report.py",
+        ROOT / "scripts/iqs_scan/experiments/accuracy_pilot.py",
     ):
         text = path.read_text(encoding="utf-8")
         assert not re.search(r"MiniMax-M3(?!\.1-Flash)", text), path.name
@@ -78,7 +78,7 @@ def test_thin_scan_consumes_the_mapped_search_provider():
         assert field in provider, f"thin_scan needs {field} on the search provider"
     assert hasattr(thin_scan, "search"), "thin_scan must keep its search entrypoint"
     # The scan must not resolve credentials through the raw config field name.
-    source = (ROOT / "scripts/thin_scan.py").read_text(encoding="utf-8")
+    source = (ROOT / "scripts/iqs_scan/execution/thin_scan.py").read_text(encoding="utf-8")
     assert 'provider["api_key_env"]' not in source
 
 def test_hardcoded_provider_tables_do_not_drift_from_the_config():

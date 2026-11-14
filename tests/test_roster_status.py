@@ -75,13 +75,10 @@ def test_roster_counts_and_actions(tmp_path):
 def test_archived_identity_audit_has_no_ticker_specific_evidence_bypass(tmp_path, capsys):
     import hashlib
     import json
-    import runpy
     import sqlite3
     from contextlib import closing
     from pathlib import Path
-    script = Path(__file__).resolve().parents[1] / 'scripts/verified_evidence_audit.py'
-    module = runpy.run_path(str(script))
-    main = module['main']
+    from scripts.verified_evidence_audit import main
     # Isolate the old pilot-payload path too: a missing archive must not pass
     # simply because this one ticker's identifier can be recomputed.
     main.__globals__['ROOT'] = tmp_path

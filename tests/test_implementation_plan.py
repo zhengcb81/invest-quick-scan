@@ -1,7 +1,6 @@
 """Catch broken handoffs, missing oracles and falsely labelled planning evidence."""
 import contextlib
 import copy
-import importlib.util
 import io
 import json
 from pathlib import Path
@@ -10,9 +9,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("implementation_plan", ROOT / "scripts/implementation_plan.py")
-ip = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(ip)
+from scripts import implementation_plan as ip
 
 
 class ImplementationPlanTests(unittest.TestCase):

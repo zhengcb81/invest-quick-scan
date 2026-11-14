@@ -36,8 +36,9 @@ def load(name, path):
     return module
 
 
-engine = load("native_shared_engine", CODE / "scripts/shared_company_engine.py")
-factory = load("native_shared_task", CODE / "scripts/shared_company_task.py")
+sys.path.insert(0, str(CODE / "scripts"))
+from iqs_scan.execution import api as execution
+engine = factory = execution
 from src.providers.llm_client import LLMClient
 from src.runners.llm_runner import QuickScanWorkLifecycle
 from src.utils.quick_scan_owner_research import OwnerResearchServices

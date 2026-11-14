@@ -1,24 +1,9 @@
-"""Retired historical subject generator; use StockWiki's public subject CLI.
+"""Compatibility entry for iqs_scan.execution.owner_admission_subject."""
+import sys
 
-The old experiment generated verified payloads from a ticker and fixed period.
-Its implementation remains in Git history. This compatibility command parses
-old arguments only to direct callers to the actual identity/subject owner.
-"""
-from __future__ import annotations
+from iqs_scan.execution import owner_admission_subject as _implementation
 
-import argparse
-
-
-def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--ticker", required=True)
-    parser.add_argument("--workspace", required=True)
-    parser.add_argument("--out")
-    parser.add_argument("--scope-as-of")
-    parser.add_argument("--apply", action="store_true")
-    parser.parse_args(argv)
-    raise SystemExit("Legacy subject generation is retired; use StockWiki analysis-subject-import with an explicit verified entity/security and independently established subject payload")
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__ == '__main__':
+    raise SystemExit(_implementation.main())
+else:
+    sys.modules[__name__] = _implementation

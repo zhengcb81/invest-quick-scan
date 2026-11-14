@@ -40,7 +40,8 @@ def load(name, path):
     spec.loader.exec_module(module)
     return module
 
-engine = load("shared_company_engine_candidate", PACKAGE / "scripts/shared_company_engine.py")
+sys.path.insert(0, str(PACKAGE / "scripts"))
+from iqs_scan.execution import shared_company_engine as engine
 helpers = load("composition_company_helpers", COMPANY / "tests/conftest.py")
 from iqs_company_agent_lab import synthfixtures as sf
 from iqs_company_agent_lab.runtime import SyntheticReplayPort, SyntheticCrash, SavedResponseBoundary

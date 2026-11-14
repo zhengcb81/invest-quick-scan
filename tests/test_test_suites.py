@@ -1,5 +1,4 @@
 """Coverage and selection contracts for split testing; no product runtime."""
-import importlib.util
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -9,9 +8,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("split_test_runner", ROOT / "scripts/run_tests.py")
-runner = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(runner)
+from scripts import run_tests as runner
 
 
 def fixture_manifest(tmp_path):

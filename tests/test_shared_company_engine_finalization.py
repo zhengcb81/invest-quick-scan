@@ -4,7 +4,6 @@ The original owner software / SQLite / SDK positive lives in the opt-in native
 E2E. These fast units test the glue's all-before-write guards and idempotence.
 """
 import copy
-import importlib.util
 import json
 import os
 import sys
@@ -17,9 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, os.environ.get("IQS_STOCKQA_ROOT", str(ROOT.parent / "StockQAbyLLM")))
 sys.path.insert(0, os.environ.get("IQS_COMPANY_AGENT_ROOT", str(ROOT.parent / "iqs-company-agent-lab")) + "/src")
 sys.path.insert(0, os.environ.get("IQS_AGENT_RUNTIME_ROOT", str(ROOT.parent / "iqs-agent-runtime-lab")) + "/src")
-spec = importlib.util.spec_from_file_location("finalization_engine", ROOT / "scripts/shared_company_engine.py")
-engine = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(engine)
+from scripts import shared_company_engine as engine
 from src.utils.quick_scan_owner_research import OwnerResearchServices
 from iqs_company_agent_lab.evidence import EvidenceBoard
 from iqs_company_agent_lab.api import create_owner_task, task_snapshot

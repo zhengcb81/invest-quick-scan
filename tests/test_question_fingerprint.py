@@ -77,7 +77,7 @@ class QuestionFingerprintTests(unittest.TestCase):
                 question, manifest["profile"], contexts, legacy_package, release, "standard-1"))
 
     def test_answer_builder_uses_the_stable_manifest_contract_module(self):
-        source = (ROOT / "scripts" / "standard_answers.py").read_text(encoding="utf-8")
+        source = (ROOT / "scripts/iqs_scan/answers/standard_answers.py").read_text(encoding="utf-8")
         tree = ast.parse(source)
         imports = {
             node.module for node in ast.walk(tree)
@@ -85,7 +85,7 @@ class QuestionFingerprintTests(unittest.TestCase):
         }
         imports.update(alias.name for node in ast.walk(tree) if isinstance(node, ast.Import)
                        for alias in node.names)
-        self.assertIn("question_manifest", imports)
+        self.assertIn("iqs_scan.questions.api", imports)
         self.assertNotIn("question_sets", imports)
 
 

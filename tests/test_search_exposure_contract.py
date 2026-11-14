@@ -1,16 +1,11 @@
 """Offline contract tests for owner-approved bounded search exposure."""
 
 import hashlib
-import importlib.util
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location(
-    "search_exposure_contract", ROOT / "scripts/search_exposure_contract.py"
-)
-contract = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(contract)
+from scripts import search_exposure_contract as contract
 
 
 def document(tmp_path, **overrides):

@@ -9,7 +9,7 @@ from test_shared_answer_semantics import engine, helpers, original, native_bound
 def test_unrelated_registry_extension_does_not_reject_original_answer(original, monkeypatch):
     import standard_answers
     task, qid, answer, context = original
-    old_reader = standard_answers.library.read_json
+    old_reader = standard_answers.read_json
 
     def extended(path):
         data = old_reader(path)
@@ -18,7 +18,7 @@ def test_unrelated_registry_extension_does_not_reject_original_answer(original, 
             data["metrics"]["new.unrelated_metric"] = {"unit": "ratio"}
         return data
 
-    monkeypatch.setattr(standard_answers.library, "read_json", extended)
+    monkeypatch.setattr(standard_answers, "read_json", extended)
     callback = engine._frozen_answer_semantics(task, context)
     before = copy.deepcopy(answer)
     callback(answer, qid)
@@ -34,7 +34,7 @@ def test_recovery_uses_original_resources_after_current_resources_evolve(origina
     package, _, _, _ = module_registry.load_current(root=standard_answers.ROOT)
     context.update(answer_schema_sha256=standard_answers.digest(package["format_resources"]["schemas/answer-content.schema.json"]),
                    metric_registry_sha256=standard_answers.digest(package["format_resources"]["questions/metric-registry.json"]))
-    old_reader = standard_answers.library.read_json
+    old_reader = standard_answers.read_json
     registry = old_reader(standard_answers.ROOT / "questions/metric-registry.json")
     metric_id, spec = next(iter(registry["metrics"].items()))
     row = metric()
@@ -51,7 +51,7 @@ def test_recovery_uses_original_resources_after_current_resources_evolve(origina
             data["metrics"][metric_id]["unit"] = "percent" if spec["unit"] != "percent" else "ratio"
         return data
 
-    monkeypatch.setattr(standard_answers.library, "read_json", evolved)
+    monkeypatch.setattr(standard_answers, "read_json", evolved)
     before = copy.deepcopy(answer)
     engine._frozen_answer_semantics(task, context)(answer, qid)
     assert answer == before
@@ -63,7 +63,7 @@ def test_owner_package_resources_remain_bound_and_current_file_is_not_read(origi
     task, qid, answer, context = original
     package, _, _, _ = module_registry.load_current(root=standard_answers.ROOT)
     context["questions"] = {qid: {"metadata": {"module_package_id": package["package_id"]}}}
-    monkeypatch.setattr(standard_answers.library, "read_json", lambda _: pytest.fail("current resource read"))
+    monkeypatch.setattr(standard_answers, "read_json", lambda _: pytest.fail("current resource read"))
     engine._frozen_answer_semantics(task, context)(copy.deepcopy(answer), qid)
     wrong = copy.deepcopy(context)
     wrong["answer_schema_sha256"] = "f" * 64
@@ -147,6 +147,7 @@ def test_production_selects_original_owner_release_root(native_bound, monkeypatc
     import shutil
     import module_registry
     import standard_answers
+    from iqs_scan.questions import api as questions
     task, qid, answer, services, _, _ = native_bound
     package, _, _, _ = module_registry.load_current(root=standard_answers.ROOT)
     runtime = engine._company_runtime(services, engine._task_contract(task))
@@ -156,12 +157,12 @@ def test_production_selects_original_owner_release_root(native_bound, monkeypatc
     shutil.copytree(standard_answers.ROOT / "questions/releases", release_root / "questions/releases")
     shutil.copytree(standard_answers.ROOT / "schemas", release_root / "schemas")
     seen = []
-    original_loader = module_registry.load_package
+    original_loader = questions.load_package
     def load_original(package_id, *, root):
         seen.append(root)
         assert root == release_root
         return original_loader(package_id, root=root)
-    monkeypatch.setattr(module_registry, "load_package", load_original)
+    monkeypatch.setattr(questions, "load_package", load_original)
     def owner_resources(observed):
         observed = copy.deepcopy(observed)
         observed["questions"][qid]["metadata"]["module_package_id"] = package["package_id"]

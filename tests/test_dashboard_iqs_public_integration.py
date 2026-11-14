@@ -46,13 +46,16 @@ def _build_dashboard_web(source: Path, target_root: Path, tmp_path: Path) -> Pat
     if not npm:
         pytest.skip("npm is required to build the current Dashboard frontend")
     web_root = source / "apps" / "web"
-    if not (web_root / "node_modules" / ".bin" / "vite.cmd").is_file() and not (web_root / "node_modules").is_dir():
+    installed = Path(os.environ.get("IQS_DASHBOARD_TEST_WEB_ROOT", web_root)).resolve()
+    if not (installed / "node_modules").is_dir():
         pytest.skip("Dashboard frontend dependencies are not installed")
+    for manifest in ("package.json", "package-lock.json"):
+        assert (installed / manifest).read_bytes() == (web_root / manifest).read_bytes(), manifest
     dist = target_root / "apps" / "web" / "dist"
     build_env = dict(os.environ, TEMP=str(tmp_path), TMP=str(tmp_path))
     result = subprocess.run(
         [npm, "run", "build", "--", "--outDir", str(dist), "--emptyOutDir"],
-        cwd=web_root, env=build_env, capture_output=True, text=True, encoding="utf-8", timeout=240,
+        cwd=installed, env=build_env, capture_output=True, text=True, encoding="utf-8", timeout=240,
     )
     assert result.returncode == 0, result.stdout[-6000:] + "\n" + result.stderr[-6000:]
     assert (dist / "index.html").is_file(), "build must emit a temporary frontend index"

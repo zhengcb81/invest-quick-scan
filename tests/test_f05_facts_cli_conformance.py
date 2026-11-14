@@ -298,8 +298,8 @@ def test_cli_output_is_canonical_json():
 
 def test_facts_consumer_cli_does_not_import_stockwiki_implementation():
     """IQS talks to the owner via the versioned public JSON CLI, not imports."""
-    paths = (LAB_ROOT / 'scripts' / 'query_facts_contract.py',
-             LAB_ROOT / 'scripts' / 'query_contract_cli.py')
+    package = LAB_ROOT / 'scripts' / 'iqs_scan' / 'query'
+    paths = (package / 'query_facts_contract.py', package / 'query_contract_cli.py')
     violations = []
     for path in paths:
         tree = ast.parse(path.read_text(encoding='utf-8'), filename=str(path))

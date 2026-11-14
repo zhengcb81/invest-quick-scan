@@ -1,5 +1,4 @@
 """Product execution boundary tests; every child is a temporary fake owner CLI."""
-import importlib.util
 import json
 from pathlib import Path
 import sys
@@ -10,9 +9,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts'))
-spec = importlib.util.spec_from_file_location("iqs_dashboard_execution_test", ROOT / "scripts/dashboard_execution.py")
-gateway_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(gateway_module)
+from scripts import dashboard_execution as gateway_module
 ExecutionGateway = gateway_module.ExecutionGateway
 DashboardExecutionError = gateway_module.DashboardExecutionError
 

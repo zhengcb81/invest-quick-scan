@@ -1,44 +1,6 @@
-"""Pure metric-row uniqueness for the unchanged standard-answer wire format.
+"""Compatibility entry for iqs_scan.foundation.metric_coordinates."""
+import sys
 
-The row's owning answer/fact item supplies its economic scope. Definition text,
-value and evidence are not coordinates and cannot disguise a duplicate. Segment
-metrics belong to separate fact items or explicitly scoped custom metric IDs.
-Single legacy rows may have unknown dates; repeated IDs need an explicit end.
-"""
+from iqs_scan.foundation import metric_coordinates as _implementation
 
-import json
-from typing import Any
-
-API_PROTOCOL = "iqs.metric-coordinate-api/1.0.0"
-PUBLIC_API_EXPORTS = frozenset({
-    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "validate_metric_coordinates",
-})
-
-
-def metric_coordinate(metric: dict[str, Any]) -> tuple[Any, ...]:
-    return tuple(
-        metric.get(key) for key in ("metric_id", "period_start", "period_end", "basis", "currency")
-    )
-
-
-def validate_metric_coordinates(metrics: list[dict[str, Any]]) -> None:
-    """Accept distinct periods/bases/currencies; reject duplicate/ambiguous rows."""
-    by_id: dict[str, list[dict[str, Any]]] = {}
-    for metric in metrics:
-        previous = by_id.setdefault(metric["metric_id"], [])
-        for other in previous:
-            if metric_coordinate(metric) == metric_coordinate(other):
-                if json.dumps(metric, sort_keys=True, allow_nan=False) == json.dumps(
-                    other, sort_keys=True, allow_nan=False
-                ):
-                    continue  # Exact redundancy; preserve raw rows and never sum it twice.
-                raise ValueError("duplicate metric coordinate")
-            if metric.get("unit") != other.get("unit"):
-                raise ValueError("repeated metric has incompatible unit")
-            if not metric.get("period_end") or not other.get("period_end"):
-                raise ValueError("repeated metric requires explicit period_end")
-            if all(
-                metric.get(key) == other.get(key) for key in ("period_end", "basis", "currency")
-            ) and (not metric.get("period_start") or not other.get("period_start")):
-                raise ValueError("duplicate metric with ambiguous period_start")
-        previous.append(metric)
+sys.modules[__name__] = _implementation

@@ -11,6 +11,21 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+PACKAGE = ROOT / 'scripts' / 'iqs_scan'
+EXECUTION = PACKAGE / 'execution'
+ANSWERS = PACKAGE / 'answers'
+
+def test_capability_package_owns_code_and_legacy_import_resolves_to_it(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
+    from iqs_scan.foundation import api
+    import module_contract
+    from scripts import module_contract as qualified_legacy
+
+    assert api.module_digest({'b': 2, 'a': 1}) == module_contract.digest({'a': 1, 'b': 2})
+    assert api.module_digest is module_contract.digest
+    assert qualified_legacy is module_contract
+    assert Path(module_contract.__file__).resolve().parent == ROOT / 'scripts/iqs_scan/foundation'
+
 
 EXPECTED_OWNER_APIS = {
     'stockqa': 'stockqa.company-scan-public-api/1.7.0',
@@ -157,7 +172,7 @@ def _dynamic_import_calls(tree):
     ('shared_company_task.py', {'create_company_scan_task', 'create_native_task'}),
 ])
 def test_production_composition_does_not_reach_into_stockqa_private_objects(filename, functions):
-    source = ROOT / 'scripts' / filename
+    source = EXECUTION / filename
     tree = ast.parse(source.read_text(encoding='utf8'))
     violations = []
     for function in tree.body:
@@ -177,7 +192,7 @@ def test_production_composition_does_not_reach_into_stockqa_private_objects(file
 
 
 def test_task_factory_imports_only_the_owner_company_scan_contract():
-    source = ROOT / 'scripts/shared_company_task.py'
+    source = EXECUTION / 'shared_company_task.py'
     tree = ast.parse(source.read_text(encoding='utf8'))
     foreign_modules = {
         module
@@ -189,7 +204,7 @@ def test_task_factory_imports_only_the_owner_company_scan_contract():
 
 @pytest.mark.parametrize('filename', ['shared_company_engine.py', 'shared_company_task.py'])
 def test_company_composition_never_reads_raw_owner_state(filename):
-    tree = ast.parse((ROOT / 'scripts' / filename).read_text(encoding='utf8'))
+    tree = ast.parse((EXECUTION / filename).read_text(encoding='utf8'))
     forbidden = {'input_raw', 'bundle', 'entries', 'plan', 'proof'}
     violations = [
         (node.lineno, node.attr)
@@ -200,7 +215,7 @@ def test_company_composition_never_reads_raw_owner_state(filename):
 
 
 def test_engine_uses_the_owner_port_instead_of_the_store_or_runner():
-    source = ROOT / 'scripts/shared_company_engine.py'
+    source = EXECUTION / 'shared_company_engine.py'
     tree = ast.parse(source.read_text(encoding='utf8'))
     violations = []
     for node in ast.walk(tree):
@@ -217,7 +232,7 @@ def test_engine_uses_the_owner_port_instead_of_the_store_or_runner():
 
 @pytest.mark.parametrize('filename', ['shared_company_engine.py', 'shared_company_task.py'])
 def test_company_composition_uses_only_versioned_public_owner_facades(filename):
-    tree = ast.parse((ROOT / 'scripts' / filename).read_text(encoding='utf8'))
+    tree = ast.parse((EXECUTION / filename).read_text(encoding='utf8'))
     modules = _integration_imports(tree)
     external = {
         name for name in modules
@@ -232,7 +247,7 @@ def test_company_composition_uses_only_versioned_public_owner_facades(filename):
 
 
 def test_company_composition_does_not_discover_peer_modules_by_file_layout():
-    paths = [ROOT / 'scripts' / name for name in ('shared_company_engine.py', 'answer_validation.py')]
+    paths = [EXECUTION / 'shared_company_engine.py', ANSWERS / 'answer_validation.py']
     violations = []
     for path in paths:
         tree = ast.parse(path.read_text(encoding='utf8'))
@@ -246,52 +261,23 @@ def test_company_composition_does_not_discover_peer_modules_by_file_layout():
     assert not violations, violations
 
 
-def test_answer_validation_peers_publish_the_versioned_semantics_used_by_the_consumer(monkeypatch):
+def test_owner_compatibility_module_uses_the_packaged_answer_semantics(monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
     import answer_validation
-    import standard_answers
-    import question_prompts
-    import shared_company_engine
+    from iqs_scan.answers import api
+    from iqs_scan.execution import shared_company_engine
 
     assert answer_validation.API_PROTOCOL == 'iqs.answer-validation-api/1.1.0'
-    assert 'project_original_semantic_resources' in answer_validation.PUBLIC_API_EXPORTS
-    assert standard_answers.ANSWER_VALIDATION_API_PROTOCOL == 'iqs.standard-answer-validation/1.0.0'
-    assert question_prompts.SEMANTIC_RULES_API_PROTOCOL == 'iqs.question-prompt-semantics/1.0.0'
-    assert shared_company_engine._answer_validation_api() is answer_validation
+    assert Path(answer_validation.__file__).resolve() == ROOT / 'scripts/answer_validation.py'
+    assert answer_validation.project_original_semantic_resources is api.project_original_semantic_resources
 
+    def unavailable(*args, **kwargs):
+        raise api.AnswerSemanticsRejected('original_semantic_resources_unavailable')
 
-@pytest.mark.parametrize('peer', ['standard_answers', 'question_prompts'])
-def test_frozen_semantics_rejects_missing_or_incompatible_collaborator_protocol(monkeypatch, peer):
-    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
-    import answer_validation
-
-    standard_protocol = 'iqs.standard-answer-validation/1.0.0'
-    prompt_protocol = 'iqs.question-prompt-semantics/1.0.0'
-    standards = ModuleType('standard_answers')
-    prompts = ModuleType('question_prompts')
-    standards.ANSWER_VALIDATION_API_PROTOCOL = standard_protocol
-    prompts.SEMANTIC_RULES_API_PROTOCOL = prompt_protocol
-    if peer == 'standard_answers':
-        standards.ANSWER_VALIDATION_API_PROTOCOL = 'iqs.standard-answer-validation/9.0.0'
-    else:
-        prompts.SEMANTIC_RULES_API_PROTOCOL = 'iqs.question-prompt-semantics/9.0.0'
-    monkeypatch.setitem(sys.modules, 'standard_answers', standards)
-    monkeypatch.setitem(sys.modules, 'question_prompts', prompts)
-
-    with pytest.raises(answer_validation.AnswerSemanticsRejected,
-                       match='original_standard_answer_validator_required'):
-        answer_validation.frozen_answer_semantics(None, {}, release_root=ROOT)
-
-
-def test_shared_engine_rejects_an_unsupported_answer_validation_protocol(monkeypatch):
-    monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
-    import answer_validation
-    import shared_company_engine
-
-    monkeypatch.setattr(answer_validation, 'API_PROTOCOL', 'iqs.answer-validation-api/9.0.0')
+    monkeypatch.setattr(api, 'frozen_answer_semantics', unavailable)
     with pytest.raises(shared_company_engine.SharedEngineRejected,
-                       match='answer_validation_api_version_unsupported'):
-        shared_company_engine._answer_validation_api()
+                       match='original_semantic_resources_unavailable'):
+        shared_company_engine._frozen_answer_semantics(None, {})
 
 
 def test_missing_owner_public_api_is_normalized_before_preflight_imports(monkeypatch):
@@ -414,7 +400,7 @@ def test_company_agent_required_operations_match_direct_engine_imports(monkeypat
     monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
     import shared_company_ports as ports
 
-    tree = ast.parse((ROOT / 'scripts' / 'shared_company_engine.py').read_text(encoding='utf8'))
+    tree = ast.parse((EXECUTION / 'shared_company_engine.py').read_text(encoding='utf8'))
     imported = {
         alias.name
         for node in ast.walk(tree)
@@ -770,223 +756,6 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
     return sorted(set(violations))
 
 
-_SCRIPTS = ROOT / 'scripts'
-# This inventory is deliberately explicit: adding a script without assigning
-# it to a layer fails the architecture suite instead of silently defaulting.
-EXPECTED_SCRIPT_MODULES = frozenset('''
-accuracy_assessment accuracy_followup accuracy_pilot accuracy_report answer_validation
-applic_llm_compare applic_llm_probe applic_pipeline_check bank_lint bank_manifest_preflight
-batching_benchmark_archive batching_benchmark_report batching_benchmark c06_authority
-company_agent_contrast_launcher company_agent_contrast company_agent_research_pilot
-compose_company_bank contract_validation coverage_gaps dashboard_batches
-dashboard_company_projection dashboard_delivery_jobs dashboard_delivery dashboard_errors
-dashboard_execution dashboard_http dashboard_iqs_link dashboard_job_facade dashboard_jobs
-dashboard_json dashboard_locks dashboard_membership_request dashboard_owner dashboard_prepare
-dashboard_service dashboard_temporal deepseek_search_client deployment_contract exchange_contract
-facts_authority_build facts_authority_check facts_compose facts_context_build facts_context_check
-facts_pack_check facts_pack_page facts_registry financial_mechanical_check frozen_release_projection
-g0_candidate_manifest handoff_reference_check identity_contract_cli implementation_plan json_io
-metric_coordinates mimo_json_mode_probe mimo_pilot_extension mimo_pilot_results
-mimo_pilot_review_summary mimo_pro_pilot model_config model_invocation provider_transport
-model_policy module_contract module_registry
-observation_import_preflight observation_profiles observation_provenance_check one_click
-open_dashboard owner_admission_subject owner_job_cli parallel_handoff_cli pipeline_review_apply
-pipeline_review_pack profile_page profile_readiness query_capabilities_contract
-query_capabilities_vendor_contract query_contract_cli query_contract query_facts_contract
-query_field_assessment query_pool_assessment_contract query_pool_contract query_pool_scope_contract
-query_research_contract query_review_lead_contract query_vendor_contract question_bank
-question_fingerprints question_library question_manifest question_prompts question_selection
-question_sets refresh_contract_cli refresh_contract roster_status route_store_handoff routing_contract
-routing run_answers_page run_tests scan_result_check scan_summary scoring_rubrics
-search_checkpoint_binding search_exposure_binding search_exposure_contract search_receipt
-shared_company_engine shared_company_ports shared_company_task standard_answers status_report
-stockqa_adapter stockwiki_g2b_acceptance stockwiki_mapping_contract subject_context_export
-subject_dispatch_cli subject_dispatch_contract task_receipts thin_analyze thin_compare thin_median
-thin_retest thin_scan verified_evidence_audit view_quick_scan work_contract
-workbench_snapshot_cli workbench_snapshot zai_route_diagnostic
-'''.split())
-
-APPLICATION_MODULES = frozenset('''
-bank_lint bank_manifest_preflight compose_company_bank coverage_gaps deployment_contract
-facts_authority_build facts_authority_check facts_compose facts_context_build facts_context_check
-facts_pack_check facts_pack_page facts_registry financial_mechanical_check identity_contract_cli
-implementation_plan model_policy observation_provenance_check one_click pipeline_review_apply
-profile_page profile_readiness refresh_contract_cli roster_status route_store_handoff
-run_answers_page run_tests scan_result_check scan_summary scoring_rubrics status_report
-thin_analyze thin_compare thin_median thin_retest thin_scan
-'''.split())
-
-DOMAIN_MODULES = {name: 'application' for name in APPLICATION_MODULES}
-DOMAIN_MODULES.update({
-    **{name: 'question_bank' for name in {
-        'question_bank', 'question_fingerprints', 'question_library', 'question_manifest',
-        'question_prompts', 'question_selection', 'question_sets', 'module_registry',
-        'routing', 'routing_contract', 'metric_coordinates', 'standard_answers',
-        'stockqa_adapter', 'frozen_release_projection',
-    }},
-    'answer_validation': 'answer_semantics',
-    **{name: 'orchestration' for name in {
-        'shared_company_engine', 'shared_company_ports', 'shared_company_task',
-        'owner_admission_subject', 'owner_job_cli', 'subject_dispatch_cli', 'task_receipts',
-        'search_checkpoint_binding', 'search_exposure_binding', 'search_exposure_contract',
-    }},
-    **{path.stem: 'workbench' for path in _SCRIPTS.glob('dashboard_*.py')},
-    **{name: 'workbench' for name in {
-        'c06_authority', 'open_dashboard',
-        'workbench_snapshot', 'workbench_snapshot_cli', 'view_quick_scan',
-    }},
-    **{name: 'foundation' for name in {
-        'json_io', 'module_contract', 'contract_validation', 'observation_profiles',
-        'exchange_contract', 'work_contract', 'search_receipt',
-    }},
-    **{name: 'query_contracts' for name in {
-        'query_capabilities_contract', 'query_capabilities_vendor_contract',
-        'query_contract_cli', 'query_contract', 'query_facts_contract',
-        'query_field_assessment', 'query_pool_assessment_contract', 'query_pool_contract',
-        'query_pool_scope_contract', 'query_research_contract',
-        'query_review_lead_contract', 'query_vendor_contract', 'refresh_contract',
-        'subject_dispatch_contract', 'subject_context_export',
-    }},
-    **{name: 'provider_execution' for name in {
-        'model_config', 'model_invocation', 'provider_transport',
-    }},
-    **{name: 'experiments' for name in {
-        'accuracy_assessment', 'accuracy_followup', 'accuracy_pilot', 'accuracy_report',
-        'applic_llm_compare', 'applic_llm_probe', 'applic_pipeline_check',
-        'batching_benchmark_archive', 'batching_benchmark_report', 'batching_benchmark',
-        'company_agent_contrast_launcher', 'company_agent_contrast',
-        'company_agent_research_pilot', 'deepseek_search_client', 'mimo_json_mode_probe',
-        'mimo_pilot_extension', 'mimo_pilot_results', 'mimo_pilot_review_summary',
-        'mimo_pro_pilot', 'zai_route_diagnostic', 'pipeline_review_pack',
-    }},
-    **{name: 'acceptance' for name in {
-        'stockwiki_g2b_acceptance', 'stockwiki_mapping_contract', 'verified_evidence_audit',
-        'observation_import_preflight', 'handoff_reference_check', 'parallel_handoff_cli',
-        'g0_candidate_manifest',
-    }},
-})
-
-DOMAIN_PUBLIC_EDGES = {
-    ('dashboard_prepare', 'module_registry'): {'load_package', 'FACT_BANK_RESOURCE'},
-    ('dashboard_prepare', 'question_sets'): {'compose_from_route'},
-    ('dashboard_prepare', 'routing'): {'resolve_route_decision'},
-    ('dashboard_prepare', 'refresh_contract'): {'validate_route_targets'},
-    ('dashboard_prepare', 'frozen_release_projection'): {'create_question_config'},
-    ('c06_authority', 'module_registry'): {'load_package', 'observation_ingest_ready'},
-    ('c06_authority', 'question_manifest'): {'validate_manifest_metric_contract'},
-    ('c06_authority', 'standard_answers'): {'digest', 'observation_metadata'},
-    ('c06_authority', 'subject_context_export'): {'attach_subject_context'},
-    ('dashboard_delivery', 'frozen_release_projection'): {'create_projection'},
-    ('frozen_release_projection', 'module_registry'): {'load_package', 'observation_ingest_ready'},
-    ('frozen_release_projection', 'question_manifest'): {'validate_manifest_metric_contract'},
-    ('frozen_release_projection', 'standard_answers'): {'question_field_id'},
-    ('workbench_snapshot', 'question_library'): {
-        'read_json', 'load_library', 'ALWAYS_APPLICABLE_DIAGNOSTICS',
-    },
-    ('answer_validation', 'module_registry'): {'load_package'},
-    ('answer_validation', 'standard_answers'): {
-        'digest', 'read_resource', 'ANSWER_VALIDATION_API_PROTOCOL', 'validate_content',
-    },
-    ('answer_validation', 'question_prompts'): {
-        'SEMANTIC_RULES_API_PROTOCOL', 'typed_semantic_rules',
-        'legacy_typed_semantic_rules',
-    },
-    ('shared_company_engine', 'answer_validation'): {
-        'API_PROTOCOL', 'PUBLIC_API_EXPORTS', 'AnswerSemanticsRejected',
-        'frozen_answer_semantics', 'project_original_semantic_resources',
-    },
-    ('query_contract', 'standard_answers'): {'validate_content', 'validate_visible_channels'},
-    ('refresh_contract', 'query_contract'): {
-        'index_subject_refs', 'parse_utc_timestamp', 'profile_query_schema',
-    },
-    ('subject_dispatch_contract', 'query_contract'): {'validate_original_semantics'},
-    ('subject_dispatch_cli', 'query_contract'): {'load_document'},
-    ('subject_dispatch_cli', 'query_vendor_contract'): {'original_observation'},
-    ('subject_dispatch_cli', 'subject_dispatch_contract'): {
-        'bind_original', 'digest', 'validate_dispatch_request', 'validate_receipt',
-    },
-    ('subject_dispatch_cli', 'frozen_release_projection'): {
-        'create_execution_profile', 'create_projection', 'create_question_config',
-    },
-    ('query_field_assessment', 'work_contract'): {'freshness_status', 'parse_utc'},
-}
-
-API_PROTOCOL_FIELDS = {
-    'json_io': 'API_PROTOCOL',
-    'module_contract': 'API_PROTOCOL',
-    'contract_validation': 'API_PROTOCOL',
-    'observation_profiles': 'API_PROTOCOL',
-    'exchange_contract': 'API_PROTOCOL',
-    'work_contract': 'API_PROTOCOL',
-    'search_receipt': 'API_PROTOCOL',
-    'question_bank': 'API_PROTOCOL',
-    'question_manifest': 'API_PROTOCOL',
-    'module_registry': 'API_PROTOCOL',
-    'question_library': 'API_PROTOCOL',
-    'question_sets': 'API_PROTOCOL',
-    'routing': 'API_PROTOCOL',
-    'metric_coordinates': 'API_PROTOCOL',
-    'frozen_release_projection': 'API_PROTOCOL',
-    'refresh_contract': 'API_PROTOCOL',
-    'query_contract': 'API_PROTOCOL',
-    'subject_dispatch_contract': 'API_PROTOCOL',
-    'query_vendor_contract': 'API_PROTOCOL',
-    'subject_context_export': 'API_PROTOCOL',
-    'standard_answers': 'ANSWER_VALIDATION_API_PROTOCOL',
-    'question_prompts': 'SEMANTIC_RULES_API_PROTOCOL',
-    'answer_validation': 'API_PROTOCOL',
-    'model_config': 'API_PROTOCOL',
-    'model_invocation': 'API_PROTOCOL',
-    'provider_transport': 'API_PROTOCOL',
-}
-
-
-def _script_inventory_violations(actual_modules, expected_modules, domain_modules,
-                                 application_modules):
-    actual_modules = set(actual_modules)
-    expected_modules = set(expected_modules)
-    domain_modules = dict(domain_modules)
-    violations = []
-    violations.extend((name, 'script_not_in_inventory')
-                      for name in actual_modules - expected_modules)
-    violations.extend((name, 'inventory_entry_missing_from_scripts')
-                      for name in expected_modules - actual_modules)
-    violations.extend((name, 'script_has_no_domain')
-                      for name in actual_modules - set(domain_modules))
-    violations.extend((name, 'domain_assignment_not_in_inventory')
-                      for name in set(domain_modules) - expected_modules)
-    actual_application = {name for name, domain in domain_modules.items()
-                          if domain == 'application'}
-    violations.extend((name, 'application_layer_not_explicit')
-                      for name in actual_application ^ set(application_modules))
-    return sorted(violations)
-
-
-def _declared_public_api(path):
-    tree = ast.parse(path.read_text(encoding='utf8'))
-    exports = set()
-    protocol = None
-    protocol_field = API_PROTOCOL_FIELDS.get(path.stem)
-    for node in tree.body:
-        if not isinstance(node, (ast.Assign, ast.AnnAssign)):
-            continue
-        targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-        names = {target.id for target in targets if isinstance(target, ast.Name)}
-        value = node.value
-        if 'PUBLIC_API_EXPORTS' in names:
-            if isinstance(value, (ast.Set, ast.List, ast.Tuple)):
-                exports.update(item.value for item in value.elts
-                               if isinstance(item, ast.Constant) and isinstance(item.value, str))
-            elif (isinstance(value, ast.Call) and isinstance(value.func, ast.Name)
-                  and value.func.id in {'frozenset', 'set', 'tuple', 'list'}
-                  and value.args and isinstance(value.args[0], (ast.Set, ast.List, ast.Tuple))):
-                exports.update(item.value for item in value.args[0].elts
-                               if isinstance(item, ast.Constant) and isinstance(item.value, str))
-        if protocol_field and protocol_field in names and isinstance(value, ast.Constant):
-            protocol = value.value
-    return protocol, exports
-
-
 def _defined_module_symbols(path):
     """Names that a module actually binds, without importing it or running I/O."""
     tree = ast.parse(path.read_text(encoding='utf8'))
@@ -1006,45 +775,161 @@ def _defined_module_symbols(path):
     return names
 
 
-def test_cross_domain_script_imports_use_declared_versioned_public_operations():
-    scripts = _SCRIPTS
-    script_paths = sorted(scripts.glob('*.py'))
-    local_modules = {path.stem for path in script_paths}
-    inventory_violations = _script_inventory_violations(
-        local_modules, EXPECTED_SCRIPT_MODULES, DOMAIN_MODULES, APPLICATION_MODULES)
-    assert not inventory_violations, '\n'.join(map(repr, inventory_violations))
-    facade_exports = {}
-    protocols = {}
-    for module in API_PROTOCOL_FIELDS:
-        path = scripts / f'{module}.py'
-        protocol, exports = _declared_public_api(path)
-        facade_exports[module] = exports
-        protocols[module] = protocol
+# Depend on the public API of a lower capability. Repository commands
+# and experiments can compose capabilities at the edge of the application.
+CAPABILITY_DEPENDENCIES = {
+    'foundation': set(),
+    'questions': {'foundation'},
+    'answers': {'foundation', 'questions'},
+    'query': {'foundation', 'answers'},
+    'providers': set(),
+    'execution': {'foundation', 'questions', 'answers', 'query', 'providers'},
+    'workbench': {'foundation', 'questions', 'answers', 'query', 'execution'},
+    'tools': {'foundation', 'questions', 'answers', 'query', 'providers', 'execution', 'workbench'},
+    'experiments': {'foundation', 'questions', 'answers', 'query', 'providers', 'execution'},
+    'acceptance': {'foundation', 'questions', 'answers', 'query', 'workbench'},
+}
+
+# These imports belong to a different checkout deliberately selected by the
+# registered experiment, not this repository's execution or research service.
+REGISTERED_EXPERIMENT_MODULES = {
+    'company_agent_contrast_launcher.py': {'company_agent_contrast', 'company_agent_research_pilot', 'standard_answers'},
+    'company_agent_contrast.py': {'standard_answers'},
+    'company_agent_research_pilot.py': {'standard_answers'},
+}
+
+
+def _capability_edge_violations(source, owner, exports, legacy):
+    tree = ast.parse(source)
     violations = []
-    for source in script_paths:
-        tree = ast.parse(source.read_text(encoding='utf8'))
-        violations.extend(_cross_domain_public_api_violations(
-            tree, source.name, DOMAIN_MODULES, facade_exports, DOMAIN_PUBLIC_EDGES,
-            local_modules,
-        ))
-    assert not violations, '\n'.join(map(repr, violations))
-    for module, protocol_field in API_PROTOCOL_FIELDS.items():
-        assert re.fullmatch(r'[A-Za-z0-9_.-]+/\d+\.\d+\.\d+', protocols.get(module, '')), (
-            f'{module} must publish a semantic-versioned API protocol')
-        assert protocol_field in facade_exports[module]
-        assert 'PUBLIC_API_EXPORTS' in facade_exports[module]
-        bound = _defined_module_symbols(scripts / f'{module}.py')
-        missing = facade_exports[module] - bound
-        assert not missing, f'{module} declares names it does not bind: {sorted(missing)}'
+    suffixes = set(CAPABILITY_DEPENDENCIES)
+    for node in ast.walk(tree):
+        imports = []
+        if isinstance(node, ast.Import):
+            imports = [(item.name, None) for item in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            name = node.module or ''
+            if node.level:
+                if node.level == 1:
+                    continue
+                # From a top-level capability module, two dots reach iqs_scan.
+                name = 'iqs_scan' + ('.' + name if name else '')
+            imports = [(name, item.name) for item in node.names]
+        for name, operation in imports:
+            name = name.removeprefix('scripts.')
+            if name in legacy or name == 'scripts' and operation in legacy:
+                violations.append((node.lineno, name, operation, 'use_capability_api'))
+                continue
+            if name == 'iqs_scan' and operation in suffixes:
+                violations.append((node.lineno, name, operation, 'use_capability_api'))
+                continue
+            if not name.startswith('iqs_scan.'):
+                continue
+            parts = name.split('.')
+            domain = parts[1]
+            if domain == owner:
+                continue
+            if domain not in CAPABILITY_DEPENDENCIES[owner]:
+                violations.append((node.lineno, name, operation, 'dependency_direction'))
+                continue
+            if not (len(parts) == 3 and parts[2] == 'api' or
+                    len(parts) == 2 and operation == 'api'):
+                violations.append((node.lineno, name, operation, 'use_capability_api'))
+            elif len(parts) == 3 and operation is not None and operation not in exports.get(domain, ()):
+                violations.append((node.lineno, name, operation, 'operation_not_exported'))
+
+    # Reuse the existing alias/member checks at the real facade boundary.
+    facade_modules = {domain: f'{domain}_facade' for domain in exports}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module:
+            parts = node.module.split('.')
+            if parts[:1] != ['iqs_scan'] or len(parts) not in {2, 3}:
+                continue
+            domain = parts[1]
+            if domain not in facade_modules or domain == owner:
+                continue
+            if len(parts) == 3 and parts[2] == 'api':
+                node.module = facade_modules[domain]
+            elif len(node.names) == 1 and node.names[0].name == 'api':
+                binding = node.names[0].asname or 'api'
+                node.__class__ = ast.Import
+                node.names = [ast.alias(name=facade_modules[domain], asname=binding)]
+        elif isinstance(node, ast.Import):
+            for item in node.names:
+                parts = item.name.split('.')
+                if (len(parts) == 3 and parts[0] == 'iqs_scan' and parts[2] == 'api'
+                        and parts[1] in facade_modules and item.asname):
+                    item.name = facade_modules[parts[1]]
+    facade_owners = {name: domain for domain, name in facade_modules.items()}
+    facade_owners['consumer'] = owner
+    facade_exports = {facade_modules[domain]: names for domain, names in exports.items()}
+    allowed = {('consumer', facade_modules[domain]): exports[domain]
+               for domain in CAPABILITY_DEPENDENCIES[owner] if domain in exports}
+    violations.extend(_cross_domain_public_api_violations(
+        tree, 'consumer.py', facade_owners, facade_exports, allowed))
+    return violations
 
 
-def test_script_inventory_rejects_unclassified_and_implicitly_application_modules():
-    assert _script_inventory_violations(
-        actual_modules={'known_script', 'new_script'},
-        expected_modules={'known_script', 'new_script'},
-        domain_modules={'known_script': 'application', 'new_script': 'application'},
-        application_modules={'known_script'},
-    ) == [('new_script', 'application_layer_not_explicit')]
+def test_capability_source_uses_versioned_public_interfaces():
+    domains = {directory.name for directory in PACKAGE.iterdir()
+               if directory.is_dir() and (directory / '__init__.py').is_file()}
+    assert domains == set(CAPABILITY_DEPENDENCIES)
+    exports = {}
+    for domain in sorted(domains):
+        path = PACKAGE / domain / 'api.py'
+        if not path.is_file():
+            continue
+        tree = ast.parse(path.read_bytes())
+        declarations = {
+            node.targets[0].id: ast.literal_eval(node.value)
+            for node in tree.body if isinstance(node, ast.Assign)
+            and isinstance(node.targets[0], ast.Name)
+            and node.targets[0].id in {'__all__', 'API_PROTOCOL'}
+        }
+        names = declarations['__all__']
+        assert len(names) == len(set(names)), path
+        assert set(names) <= _defined_module_symbols(path), path
+        if 'API_PROTOCOL' in declarations:
+            assert re.fullmatch(r'[a-zA-Z0-9_.-]+/\d+\.\d+\.\d+', declarations['API_PROTOCOL']), path
+        else:
+            # The answer facade inherits the already published owner version.
+            assert domain == 'answers' and 'API_PROTOCOL' in names
+        exports[domain] = frozenset(names)
+
+    legacy = {path.stem for path in (ROOT / 'scripts').glob('*.py')} - {'__init__'}
+    violations = []
+    for domain in sorted(domains):
+        for path in (PACKAGE / domain).rglob('*.py'):
+            allowed_legacy = REGISTERED_EXPERIMENT_MODULES.get(path.name, set()) if domain == 'experiments' else set()
+            violations.extend((path.relative_to(PACKAGE), violation) for violation in
+                              _capability_edge_violations(path.read_text(encoding='utf8'),
+                                                          domain, exports, legacy - allowed_legacy))
+    assert not violations, '\n'.join(map(str, violations))
+
+
+@pytest.mark.parametrize('source', [
+    'from iqs_scan.questions.question_sets import compose',
+    'from iqs_scan.questions import question_sets',
+    'from iqs_scan.questions.api import _private',
+    'from iqs_scan.questions import api as peer\npeer._private()',
+    'from iqs_scan.questions import api\napi.unadvertised()',
+    'from iqs_scan.experiments import api',
+    'from ..questions.question_sets import compose',
+    'import question_sets',
+    'from scripts import question_sets',
+])
+def test_capability_edges_reject_implementation_imports_and_reverse_direction(source):
+    assert _capability_edge_violations(
+        source, 'workbench', {'questions': {'compose_questions'}}, {'question_sets'})
+
+
+def test_capability_edges_allow_public_facade_and_same_domain_implementation():
+    assert not _capability_edge_violations(
+        'from .dashboard_http import product_handler\n'
+        'from iqs_scan.questions import api as questions\n'
+        'from iqs_scan.questions.api import compose_questions\n'
+        'questions.compose_questions()', 'workbench',
+        {'questions': {'compose_questions'}}, {'question_sets'})
 
 
 def test_cross_domain_scanner_rejects_unlisted_public_helpers_but_accepts_facade_exports():
@@ -1256,40 +1141,11 @@ def _local_private_reference_violations(tree, module_aliases, local_modules,
     return sorted(set(violations))
 
 
-def _local_private_api_violations():
-    scripts = ROOT / 'scripts'
-    local_modules = {path.stem for path in scripts.glob('*.py')}
-    violations = []
-    for source in scripts.glob('*.py'):
-        tree = ast.parse(source.read_text(encoding='utf8'))
-        module_aliases = {}
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Import):
-                for item in node.names:
-                    root = item.name.split('.')[0]
-                    if root in local_modules:
-                        module_aliases[item.asname or root] = root
-            elif isinstance(node, ast.ImportFrom) and node.module:
-                module = node.module.rsplit('.', 1)[-1]
-                if module in local_modules:
-                    for item in node.names:
-                        if item.name.startswith('_'):
-                            violations.append((source.name, node.lineno, module, item.name))
-        violations.extend(_local_private_reference_violations(
-            tree, module_aliases, local_modules, source.name
-        ))
-    return sorted(set(violations))
-
-
-def test_iqs_script_modules_call_peer_modules_only_through_public_names():
-    assert not _local_private_api_violations()
-
-
 def test_company_composition_never_reads_owner_task_or_runner_implementation_fields():
     paths = (
-        ROOT / 'scripts/shared_company_engine.py',
-        ROOT / 'scripts/shared_company_task.py',
-        ROOT / 'scripts/answer_validation.py',
+        EXECUTION / 'shared_company_engine.py',
+        EXECUTION / 'shared_company_task.py',
+        ANSWERS / 'answer_validation.py',
     )
     implementation_fields = {
         'raw', 'questions', 'question_ids', 'company_doc', 'company_ref',
@@ -1312,9 +1168,9 @@ def test_company_composition_never_reads_owner_task_or_runner_implementation_fie
 
 def test_company_composition_does_not_import_concrete_owner_task_or_runner_types():
     paths = (
-        ROOT / 'scripts/shared_company_engine.py',
-        ROOT / 'scripts/shared_company_task.py',
-        ROOT / 'scripts/answer_validation.py',
+        EXECUTION / 'shared_company_engine.py',
+        EXECUTION / 'shared_company_task.py',
+        ANSWERS / 'answer_validation.py',
     )
     forbidden = {'LoadedTask', 'Runner', 'EventJournal', 'RuntimeBridgePort'}
     violations = []

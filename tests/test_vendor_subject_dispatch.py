@@ -176,7 +176,8 @@ def test_profile_dialects_cannot_use_private_contract_helpers():
     ) + tuple(sorted(own_resource_consumers))
     violations = []
     for name in consumers:
-        source = scripts / f'{name}.py'
+        package = 'execution' if name == 'subject_dispatch_cli' else 'query'
+        source = scripts / 'iqs_scan' / package / f'{name}.py'
         tree = ast.parse(source.read_text(encoding='utf-8-sig'), filename=str(source))
         aliases = {
             entry.asname or entry.name

@@ -1,11 +1,8 @@
 """Tiny real subprocess checks for isolation and failure accounting."""
-import importlib.util
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location("split_test_subprocess_runner", ROOT / "scripts/run_tests.py")
-runner = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(runner)
+from scripts import run_tests as runner
 
 
 def test_real_pytest_process_denies_network_removes_key_and_cleans_own_temp(tmp_path, monkeypatch):

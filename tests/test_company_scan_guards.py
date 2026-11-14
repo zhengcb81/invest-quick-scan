@@ -1,7 +1,6 @@
 """Pure negative preflight seams; no mock is a native owner positive."""
 
 import copy
-import importlib.util
 import json
 import os
 import sys
@@ -26,11 +25,7 @@ BRIDGE = (
 )
 sys.path.insert(0, str(COMPANY / "src"))
 sys.path.insert(0, str(BRIDGE / "src"))
-spec = importlib.util.spec_from_file_location(
-    "scan_engine_guard_fixture", ROOT / "scripts/shared_company_engine.py"
-)
-engine = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(engine)
+from scripts import shared_company_engine as engine
 from iqs_company_agent_lab.canonical import canonical_json, sha256_hex
 from iqs_company_agent_lab.scan_profile import build_scan_profile
 from iqs_company_agent_lab.task import LoadedTask

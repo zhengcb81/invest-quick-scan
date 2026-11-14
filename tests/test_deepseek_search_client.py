@@ -1,6 +1,5 @@
 """Offline DeepSeek Search client tests; transport is injected."""
 
-import importlib.util
 import json
 from pathlib import Path
 
@@ -8,11 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 import sys
 
 sys.path.insert(0, str(ROOT / "scripts"))
-SPEC = importlib.util.spec_from_file_location(
-    "deepseek_search_client", ROOT / "scripts/deepseek_search_client.py"
-)
-client = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(client)
+from scripts import deepseek_search_client as client
 
 
 def exposure():

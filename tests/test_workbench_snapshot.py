@@ -93,13 +93,19 @@ def test_snapshot_cli_plan_does_not_create_output_or_read_owner(tmp_path):
 
 
 def test_snapshot_cli_writes_only_the_explicit_output_with_unconfigured_owner(tmp_path):
+    import shutil
+
+    resources = tmp_path / 'resources'
+    resources.mkdir()
+    for directory in ('questions', 'schemas'):
+        shutil.copytree(ROOT / directory, resources / directory)
     config = tmp_path / 'dashboard.json'
     state = tmp_path / 'state'
     config.write_text(json.dumps({'workspace_root': '', 'state_root': str(state),
                                   'workspace_kind': 'unconfigured'}), encoding='utf8')
     output = tmp_path / 'published' / 'snapshot.json'
     done = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(ROOT / 'scripts' / 'workbench_snapshot_cli.py'),
-                           '--data-root', str(ROOT), '--dashboard-config', str(config), '--output', str(output)],
+                           '--data-root', str(resources), '--dashboard-config', str(config), '--output', str(output)],
                           cwd=tmp_path, capture_output=True, text=True, encoding='utf8', timeout=30)
     assert done.returncode == 0, done.stderr
     result = json.loads(done.stdout)
@@ -108,4 +114,5 @@ def test_snapshot_cli_writes_only_the_explicit_output_with_unconfigured_owner(tm
     assert snapshot['availability']['bank'] == 'available'
     assert snapshot['availability']['roster'] == snapshot['availability']['answers'] == 'unavailable'
     assert snapshot['manifest']['counts']['entities'] is None
+    assert not (resources / 'scripts').exists()
     assert not state.exists()

@@ -23,7 +23,7 @@ def load(name, path):
     return module
 
 
-engine = load("semantic_engine_units", ROOT / "scripts/shared_company_engine.py")
+from iqs_scan.execution import shared_company_engine as engine
 helpers = load("semantic_company_helpers", COMPANY_AGENT_ROOT / "tests/conftest.py")
 standard_tests = load("semantic_body_fixtures", ROOT / "tests/test_standard_answers.py")
 from iqs_company_agent_lab.runner import Runner

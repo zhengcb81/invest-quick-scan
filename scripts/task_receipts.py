@@ -1,19 +1,9 @@
-"""Retired command stub for the former engineering task-receipt verifier.
+"""Compatibility entry for iqs_scan.execution.task_receipts."""
+import sys
 
-Historical source and tests are preserved in
-docs/implementation/archive/task-receipts-v2-legacy/ and are not active gates.
-"""
-import json
+from iqs_scan.execution import task_receipts as _implementation
 
-
-def main() -> int:
-    print(json.dumps({
-        "status": "retired",
-        "code": "task_receipt_workflow_retired",
-        "archive": "docs/implementation/archive/task-receipts-v2-legacy/README.md",
-    }, separators=(",", ":")))
-    return 3
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__ == '__main__':
+    raise SystemExit(_implementation.main())
+else:
+    sys.modules[__name__] = _implementation

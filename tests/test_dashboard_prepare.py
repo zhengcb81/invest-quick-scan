@@ -60,10 +60,9 @@ def test_work_binding_transport_refuses_duplicate_projection_keys(monkeypatch, t
 
 @pytest.mark.parametrize('arguments', [[], ['--apply']])
 def test_legacy_subject_apply_is_retired_before_any_workspace_access(tmp_path, arguments):
-    import runpy
-    module = runpy.run_path(str(Path(__file__).resolve().parents[1] / 'scripts/owner_admission_subject.py'))
+    from scripts.owner_admission_subject import main
     with pytest.raises(SystemExit, match='Legacy subject generation is retired'):
-        module['main'](['--ticker', 'AMBIGUOUS', '--workspace', str(tmp_path / 'absent'), *arguments])
+        main(['--ticker', 'AMBIGUOUS', '--workspace', str(tmp_path / 'absent'), *arguments])
     assert not list(tmp_path.iterdir())
 
 
@@ -585,7 +584,7 @@ def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_
         "apply_seconds": apply_seconds, "execution_previews": inspected, "API_requests": 0,
         "work_ledger_unchanged_by_execution_preview": True,
         "source_sha256": {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-                          for path in (ROOT / "scripts/dashboard_prepare.py", Path(__file__))}}
+                          for path in (ROOT / "scripts/iqs_scan/workbench/dashboard_prepare.py", Path(__file__))}}
     (base / "native-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
@@ -805,7 +804,7 @@ def test_explicit_original_issuer_bootstrap_is_readonly_until_apply_and_keeps_dr
             "details": {key: value for key, value in error.details.items() if key in fields},
             "completed_phases": gateway.preparation(preview["preview_id"])["completed_phases"],
             "elapsed_apply_seconds": time.perf_counter() - started, "API_requests": 0,
-            "prepare_source_sha256": hashlib.sha256((ROOT / "scripts/dashboard_prepare.py").read_bytes()).hexdigest()}
+            "prepare_source_sha256": hashlib.sha256((ROOT / "scripts/iqs_scan/workbench/dashboard_prepare.py").read_bytes()).hexdigest()}
         (base / "bootstrap-stage-report.json").write_text(json.dumps(thin, indent=2), encoding="utf-8")
         pytest.fail(f"Original bootstrap chain refused: {error.code}; {thin['details']}; phases={thin['completed_phases']}")
     assert result["status"] == "prepared" and result["question_count_total"] == 36
@@ -817,7 +816,7 @@ def test_explicit_original_issuer_bootstrap_is_readonly_until_apply_and_keeps_dr
         "apply_seconds": time.perf_counter() - started,
         "scope_question_counts": [item["question_count"] for item in result["execution_bundles"]],
         "completed_phases": gateway.preparation(preview["preview_id"])["result"]["status"],
-        "API_requests": 0, "prepare_source_sha256": hashlib.sha256((ROOT / "scripts/dashboard_prepare.py").read_bytes()).hexdigest()}
+        "API_requests": 0, "prepare_source_sha256": hashlib.sha256((ROOT / "scripts/iqs_scan/workbench/dashboard_prepare.py").read_bytes()).hexdigest()}
     (base / "bootstrap-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
