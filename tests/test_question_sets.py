@@ -297,7 +297,7 @@ class QuestionSetTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             qs.compose(profile, 'quick', tmp)
             manifest = qs.read_json(Path(tmp) / 'manifest.json')
-        self.assertEqual(manifest['metric_contract_version'], '1.0.0')
+        self.assertEqual(manifest['metric_contract_version'], '1.1.0')
         self.assertEqual(len(manifest['question_metric_mappings']), manifest['question_count'])
         by_id = {item['question_id']: item for item in manifest['question_metric_mappings']}
         self.assertEqual(by_id['IQS_22']['aggregation_role'], 'valuation_core')
