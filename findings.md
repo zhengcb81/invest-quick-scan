@@ -320,3 +320,10 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - 根据冻结 `metric.schema.json` 的版本化维度enum，1.0.0为 quality/growth/valuation/recovery_watch/dupont/porter/fact，1.1.0只新增 diagnostic。core只允许 quality/growth/valuation 分别映射 quality_core/growth_core/valuation_core；context只允许这三类维度并在1.1.0映射 context_only；diagnostic只允许相应版本声明的诊断维度并映射 diagnostic_only、critical_risk=false；fact response本身无metric_contract/dimension。拒绝未知维度，不用默认 quality_core 回退。
 - IQS-2 的本地配置有 62 个登记 bundle，但通过公司名称在 bundle 文本中检索无命中不能证明缺登记，因为 bundle/entity identity 可为不透明 ID；必须经 owner 的只读 identity mapping 查询后再判。IQS-4 仍需实际 paid scan，执行线没有发送模型或 API 请求。
 - IQS-5 定向测试发现一项 Windows 默认编码假设：`test_paid_seal_ignores_later_new_send_settings_and_missing_budget` 用系统默认编码读 UTF-8 JSON。显式指定 UTF-8 后完整相关组合 `test_dashboard_execution.py + test_dashboard_unusable_recovery.py` 为 169 passed / 1 skipped；隔离 TEMP 已清理。问题属于测试可移植性，不是产品语义故障。
+
+## 2026-11-14 owner 改进复审后的稳定结论
+
+- **company_assessment/2 契约已可用，但不等于历史结果补齐。** IQS producer保持原 `source_release` 不变，角色只在 `lineage_provenance.question_mappings`；实际递归断言已固定这一边界。StockWiki owner可校验v1.0/v1.1维度与role映射、7字段观察引用hash、旧V1读取和partial拒绝；V2不计算总分。53题真实active package只验证结构发布/读回，没有回答内容，不能解决原真实36题数据覆盖不足。
+- **schema-7手工与自动成员准入是两种不同权限。** 手工写在schema7需 durable membership request receipt；自动准入仍走受持久化策略、身份、挂牌、排除、配额核验的独立原子authority `apply_auto/admit_with_intent`，同时写member/history/scan_intent。自动authority支持schema6与7；schema5与future schema拒绝且零写。`save_member`版本检查在同一 `BEGIN IMMEDIATE` 中，从而挡住schema6迁移至7的竞态。
+- **测试结果要注明环境边界。** SW2核心75项和静态检查通过，独立终审ACCEPT。普通沙箱的Playwright sync driver启动受限；以正常权限运行隔离2000实体UI分页E2E后 **1 passed/27.73s**，共17条loopback请求，临时库和截图清理。不能把普通沙箱启动问题记成产品失败。
+- **同一轮核出的未收敛项：** IQS-2目标公司实际bundle映射未读证；IQS-4真实付费样本未跑；SW-3实际研究覆盖未重查；固定Dashboard M8在 `owner_job_id` 与 `command_id` 格式重叠时可返回空command的unknown视图，需在I7/消费者适配路径修复。它们都不能由合成fixture替代。

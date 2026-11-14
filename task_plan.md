@@ -169,7 +169,7 @@
 | 来源项 | 当前判定 | 实施边界 |
 |---|---|---|
 | SW-1 / IQS-1：36 题 owner manifest / company result | **代码合同已实现并通过独立复审；E07真实结果仍未闭环**。IQS v2 producer 输出和 StockWiki owner `company_assessment/2` 以真实 IQS 题库实际生成的53题 envelope 做隔离 publish/readback；未生成答案。历史扫描仍只有1/36条 owner观察（另一历史产物有2个scored），不能声称36题已完成。 | V2为 additive DTO：每组一 rubric/aggregation role，完整绑定原 immutable package/release/question hashes；组间不汇总、不生成公司总分，v1不变。生产数据须由真实回答和既有owner导入路径提供；不伪造答案、临时回填ID、重贴package/release或覆盖历史记录。 |
-| SW-2：旧 universe 写路径越过 schema-7 membership request authority | **仍 OPEN，等待schema6兼容性整改与最终独立复审**。`save_member`绕行和schema6→7迁移竞态已修；首轮独审发现自动准入未来schema守卫缺失，修后又发现守卫过度收紧到schema7、会拒绝受支持的schema6自动准入。 | Store/Universe/Candidates/Maintenance/Backup上一轮73 passed和static通过是中间证据，不能作为最终签收。最终语义为手工schema7写必须有request receipt；自动准入独立于手工request，schema6/7均允许其既有原子策略路径，schema5及future schema拒绝且零写；版本读取与写入同在`BEGIN IMMEDIATE`。UI 2000实体E2E seed为15.6秒，但浏览器阶段180秒未结束，不能记通过，需定位或明确环境限制。 |
+| SW-2：旧 universe 写路径越过 schema-7 membership request authority | **代码根修与独立复审已关闭**。Store直写绕行、schema6→7迁移竞态和自动准入未来版本边界已修；第三轮复审 ACCEPT。 | Store/Universe/Candidates/Maintenance/Backup **75 passed**、static通过；新增六例 **6 passed**。手工schema7写必须有request receipt；自动准入是独立 authority，schema6/7均保留原子策略路径，schema5/future8拒绝且零写；版本检查与写入同在`BEGIN IMMEDIATE`。提权隔离跑唯一2000实体UI分页E2E后 **1 passed/27.73s**、17条loopback请求；普通沙箱启动Playwright driver会卡住，提权正常运行。 |
 | SW-3：药明、阿里、MDB 的 research 数据 | **代码/读取链不是本轮阻塞；真实研究内容仍缺，且本轮未重查生产覆盖**。历史样本曾显示无数据，不能外推为当前值。 | 仅记录真实身份绑定、正式研究观察和来源覆盖；不得把合成数据当真实。真实模型研究或写生产 wiki 需走原owner操作，隔离代码实施不代做。 |
 | SW-4：StockWiki owner 读面 checkout 可移植性 | **未复现代码缺陷**：当前 query CLI 显式接收 `--root`，测试夹具使用 `tmp_path`；旧报告中的固定路径符号不存在。 | `query-v2`测试因C06运行时环境条件跳过；本轮以源码/夹具检查为证，不记该测试通过。 |
 | SW-5：名单幂等请求 reason | 旧清单已报告完成。 | 只核现行测试/实现是否仍满足，不重复实现。 |
@@ -180,13 +180,14 @@
 
 ### SW-2 第二轮 store-boundary 根修范围
 
-- 独立复审在第一轮 wrapper 修复后发现 `save_member()` / `save_member_in_transaction()` 可绕开 schema-7 request receipt，且版本检查与写操作分开会有迁移竞态。修复必须在 `BEGIN IMMEDIATE` 写事务内判 schema，并保证任意连接不能在 schema 7 无正式 receipt 写 member/history。
-- 单独的自动纳入权由 `quick_scan_maintenance.apply_auto()` 执行：它按已保存策略、已核实主体和资格规则判定，并在一笔事务中写 member/history 与 `scan_intent`。这是一种独立、可审计的自动 authority，不是手工 request；必须保持其 intent/成员原子性且证明裸 store 调用不能绕过条件。
+- 独立复审发现的 `save_member()` 绕行及迁移竞态已修：schema读取与member/history写入在同一 `BEGIN IMMEDIATE`；schema7无正式request receipt不能写入。
+- 单独的自动纳入权由 `quick_scan_maintenance.apply_auto()` 执行：按已保存策略、已核实主体和资格规则判定，在一笔事务中写member/history与`scan_intent`。它是独立、可审计的自动authority，不是手工request；事务守卫支持历史schema6与当前schema7，schema5/future8拒绝且不写，schema6/7意图失败回滚。
 - store 守卫会影响 6 个既有 C06/owner 测试文件的 9 个直接 `save_member` fixtures。总控已把这些仅测试侧调用点纳入最小范围：schema 7 fixtures 改用现有 request authority；专门验证 schema 6 旧 API 的用例使用真实 schema 6 数据库。自动审批曾因旧范围说明拒绝第一轮尝试；总控已明确扩展并要求若再次被拒则停止，不换工具绕过。
 
 ### Company assessment v2 公开 wire 对齐
 
-- IQS V2 producer与StockWiki owner均已通过独立复审。当前新package/pointer为`pkg_07dc0d62fd89a008c474ffae0cb9be5ad7411f67333e81f1a12751cb4693a703` / metric contract `1.1.0`；旧`1.0.0` package与release lock未改变。新producer测试13 passed；与`test_question_manifest.py`合跑16 passed、2 subtests；`test_question_sets.py`正常权限隔离复跑70 passed、174 subtests。StockWiki owner文件107 passed；以IQS active package实际生成53题并在临时owner workspace publish/readback通过。`comparison_role`递归断言只允许其出现在`lineage_provenance.question_mappings`。SW-2最终schema6/7兼容修复及Dashboard M8交叉ID问题仍未关闭。
+- **提交状态：** IQS本轮producer/PWF提交`a8df5b99a600cc698a100d4d8bbe7ae15178615d`已推送并核对`origin/master`同SHA；StockWiki 23个精确文件已提交本地`0450506fc94adbfecd33001c244221a42ba0a00d`，该仓当前未配置任何remote，未创建新remote或擅自换目标。StockWiki剩余untracked仅是用户研究DB、Dashboard onboarding/research-binding、logs和runs/c16b，均保留未暂存。
+- IQS V2 producer、StockWiki company-result owner及SW-2 membership均已通过独立复审。当前新package/pointer为`pkg_07dc0d62fd89a008c474ffae0cb9be5ad7411f67333e81f1a12751cb4693a703` / metric contract `1.1.0`；旧`1.0.0` package与release lock未改变。新producer测试13 passed；与`test_question_manifest.py`合跑16 passed、2 subtests；`test_question_sets.py`正常权限隔离复跑70 passed、174 subtests。StockWiki company-result owner文件107 passed；以IQS active package实际生成53题并在临时owner workspace publish/readback通过。`comparison_role`递归断言只允许其出现在`lineage_provenance.question_mappings`。SW-2目标组合75 passed、static通过、最终独立ACCEPT。剩余未闭项为真实SW-3数据、IQS-2实际bundle登记证明、IQS-4付费成本样本及Dashboard M8交叉ID集成缺口。
 - V2 manifest（owner 请求的 `request.manifest`）：`{protocol:"stockwiki.company_assessment/2", schema_version:"2.0.0", entity_id, source_release, source_release_sha256, lineage_provenance, lineage_provenance_sha256, lineage_groups}`。观察 refs 按 owner 请求的 observations 字段单独绑定。现有 v1 保持原 schema、行为和记录不变。
 - `source_release` 是原 frozen manifest 完整对象及可复算哈希，保留真实 `module_package_id/module_release_id`、catalog、所有问题定义与哈希。SHA 使用 StockWiki `canonical_sha256`：UTF-8、`ensure_ascii=False`、排序键、分隔符 `(',', ':')`、`allow_nan=False`。
 - 重要：IQS 原 projection 的 score `source_release.questions` 不含 `comparison_role`；不能因 V2 需要角色校验而把该字段回写/强制要求于原 release。role 只存在于 provenance，StockWiki 必须依据冻结 metric contract/schema 版本和 role 语义校验；只把 question ID、release 中实际存在的 rubric/construct/response/hash 字段与 provenance 逐题比对。跨仓 golden 必须由 IQS 真实 producer projection 形状生成，不用手工补 role 的合成 source。
