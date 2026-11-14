@@ -69,6 +69,7 @@ def test_dashboard_launcher_uses_the_selected_checkout_public_entry(tmp_path):
     checkout = tmp_path / 'other-iqs'
     scripts = checkout / 'scripts'
     scripts.mkdir(parents=True)
+    (scripts / 'dashboard_service.py').touch()
     (scripts / 'open_dashboard.py').write_text(
         'import json, sys\nfrom pathlib import Path\n'
         'from checkout_marker import MARKER\n'
@@ -92,10 +93,15 @@ def test_dashboard_launcher_uses_the_selected_checkout_public_entry(tmp_path):
     assert {'--plan', '--no-refresh'} <= set(forwarded)
 
 
-def test_dashboard_launcher_accepts_a_data_directory_without_code(tmp_path):
+@pytest.mark.parametrize('unrelated_script', [False, True])
+def test_dashboard_launcher_accepts_a_data_directory_without_code(tmp_path, unrelated_script):
     ui, state, config = _dashboard_fixture(tmp_path)
     data = tmp_path / 'resources'
     data.mkdir()
+    if unrelated_script:
+        unrelated = data / 'scripts' / 'open_dashboard.py'
+        unrelated.parent.mkdir()
+        unrelated.write_text('raise AssertionError("this is not an IQS checkout")\n', encoding='utf8')
     result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(DASHBOARD),
                              '--data-root', str(data), '--ui-root', str(ui),
                              '--dashboard-config', str(config), '--plan'],

@@ -2,6 +2,8 @@
 
 当前状态唯一入口为[根计划](../../../task_plan.md)，不要按旧波次“可派发/正在施工”推断仍有活动writer。[完整旧并行日志](../archive/pwf-through-2026-10-31/docs/implementation/parallel-lanes/README.md)原字节保留，旧卡/锁/审查原件仍在原路径。
 
+活跃产品模块按[模块化路线图与 TDD](packages/2026-11-11-modularity-closeout/README.md)交接。早期施工包的输入锁记录发布时的文件与依赖，随历史材料一并保留。
+
 最近四包已经验收收口：[ANSWER/PERF](../reviews/SUPPORT-CLOSE-2026-10-31/report.md)、[TIME/RESULT原服务](../reviews/TIME-RESULT-WIRING-2026-10-31/report.md)。比较和名单组件已在10/30接原UI；“尚待挂载/扫描暂停”是旧状态。PERF候选未启用；TH/IN正式消费者仍未验收，不因其他包完工自动转绿。
 
 本次没有新发施工包，不声称所有历史Lab都有活跃writer或所有卡均已实现。后续确需拆分时只拆关键路径上接口稳定、目录互斥的任务，复用已交付组件，先核真实writer。每包集中独审一次并修尽问题，正式交接锁最终C/hash、测试、接口、剩余缺项和清理；总控负责原服务集成与真实E2E，交接形状不授生产/金融资格。

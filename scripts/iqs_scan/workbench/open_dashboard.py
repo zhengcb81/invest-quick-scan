@@ -152,8 +152,10 @@ def main(argv=None):
         parser.exit(2, "UI static app is missing; provide --ui-root with src/app/index.html.\n")
     if not data_root.is_dir():
         parser.exit(2, "Data root is missing; provide --data-root.\n")
-    entry = data_root / "scripts" / "open_dashboard.py"
-    if data_root != ROOT and entry.is_file() and entry.resolve() != Path(sys.argv[0]).resolve():
+    scripts = data_root / "scripts"
+    entry = scripts / "open_dashboard.py"
+    if (data_root != ROOT and entry.is_file() and (scripts / "dashboard_service.py").is_file()
+            and entry.resolve() != Path(sys.argv[0]).resolve()):
         # Start the selected checkout through its CLI in its own interpreter.
         command = [sys.executable, "-B", "-X", "utf8", str(entry), "--data-root", str(data_root),
                    "--ui-root", str(ui_root), "--port", str(args.port)]

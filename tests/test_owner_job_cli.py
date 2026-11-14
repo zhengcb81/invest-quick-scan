@@ -215,7 +215,7 @@ def test_submit_draft_scope_refused_over_http(product):
 
 def test_invalid_job_ids_rejected_at_boundary(product):
     status, reply = call(product, path='/api/product/jobs/evil-id')
-    assert status in (404, 405) and reply['ok'] is False
+    assert status == 400 and reply['error']['code'] == 'owner_job_id_invalid'
     status, reply = call(product, 'POST', '/api/product/jobs/run-11111111111111111111111111111111/retry',
                          json.dumps({'idempotency_key': 'k'}), write_headers(product))
     # Unknown run reaches the facade and fails honestly as an owner-side refusal.

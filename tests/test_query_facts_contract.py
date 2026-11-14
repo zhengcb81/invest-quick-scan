@@ -39,7 +39,7 @@ def digest(value):
 
 
 def test_schema_is_byte_copy_of_frozen_owner_schema():
-    path = Path(fc.__file__).resolve().parents[1]/'schemas/quick_scan/query-facts-v2.7.schema.json'
+    path = Path(__file__).resolve().parents[1] / 'schemas/quick_scan/query-facts-v2.7.schema.json'
     assert hashlib.sha256(path.read_bytes()).hexdigest() == SCHEMA_SHA256
 
 

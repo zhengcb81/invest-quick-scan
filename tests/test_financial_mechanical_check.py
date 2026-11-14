@@ -114,5 +114,7 @@ def test_legacy_identity_audit_import_is_pure_and_has_no_company_exemptions():
     spec = importlib.util.spec_from_file_location('legacy_identity_audit', path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assert callable(module.main)
-    assert not hasattr(module, 'PRE_EXISTING')
+    from iqs_scan.acceptance import verified_evidence_audit
+
+    assert module.main is verified_evidence_audit.main
+    assert not hasattr(verified_evidence_audit, 'PRE_EXISTING')

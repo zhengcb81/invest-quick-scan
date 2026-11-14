@@ -29,12 +29,13 @@ def test_default_basic_coverage_includes_all_framework_questions():
 
 def test_default_basic_coverage_grows_from_library_without_a_fixed_limit(monkeypatch):
     import copy
-    import question_sets
-    catalog, original = question_sets.load_library()
+    from iqs_scan.questions import api as questions
+
+    catalog, original = questions.load_active_bank()
     modules = copy.deepcopy(original)
     extra = {**modules['common']['questions'][0], 'id': 'EXPANDED_CORE', 'construct_id': 'EXPANDED_CORE'}
     modules['common']['questions'].append(extra)
-    monkeypatch.setattr(question_sets, 'load_library', lambda: (catalog, modules))
+    monkeypatch.setattr(questions, 'load_active_bank', lambda: (catalog, modules))
     assert 'EXPANDED_CORE' in {q['id'] for q in thin_scan.default_basic_questions()}
 
 

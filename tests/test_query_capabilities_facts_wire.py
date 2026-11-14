@@ -6,9 +6,12 @@ facts-* operations the public CLI actually routes, and every 2.0.0-2.6.0 wire
 entry must survive byte-identical.
 """
 import copy
+import sys
+from pathlib import Path
 
 import pytest
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import query_contract as core
 import query_capabilities_contract as caps
 import query_capabilities_vendor_contract as vendor
@@ -144,12 +147,11 @@ def test_wire_set_matches_owner_projection_even_when_shape_schema_allows_count()
     response = build_11(request=capabilities_request(), context=context)
     caps.VALIDATOR.validate(response)
     wires = response['result']['supported_query_wires']
-    for broken_wires in (wires + [VENDOR_WIRE], wires[:6]):
+    for broken_wires in (list(reversed(wires)), wires[:-1]):
         broken = copy.deepcopy(response)
         broken['result']['supported_query_wires'] = broken_wires
-        # Both payloads remain valid JSON shape. The public contract must also
-        # bind the reported capabilities to the independently projected owner
-        # list instead of pretending the schema's generic maxItems is exact.
+        # Both shapes are valid JSON. The public contract also binds order and
+        # coverage to the independently projected owner list.
         caps.VALIDATOR.validate(broken)
         with pytest.raises(ValueError):
             caps.validate_response(response=broken, request=capabilities_request(),
@@ -159,7 +161,9 @@ def test_wire_set_matches_owner_projection_even_when_shape_schema_allows_count()
                                context=context)
     vendor.VALIDATOR.validate(vendor_response)
     vendor_wires = vendor_response['result']['supported_query_wires']
-    for broken_wires in (vendor_wires + [VENDOR_WIRE], vendor_wires[:7]):
+    substituted = [{**wire, 'operations': ['get_profiles']} if wire == FACTS_WIRE else wire
+                   for wire in vendor_wires]
+    for broken_wires in (list(reversed(vendor_wires)), substituted):
         broken = copy.deepcopy(vendor_response)
         broken['result']['supported_query_wires'] = broken_wires
         vendor.VALIDATOR.validate(broken)

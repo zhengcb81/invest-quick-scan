@@ -52,13 +52,27 @@ SPECIAL_MEMBERS = {
 }
 
 
+def _possible_values(value):
+    """Follow ordinary syntax that chooses a value without interpreting Python."""
+    if isinstance(value, (ast.NamedExpr, ast.Starred, ast.Subscript)):
+        yield from _possible_values(value.value)
+    elif isinstance(value, ast.IfExp):
+        yield from _possible_values(value.body)
+        yield from _possible_values(value.orelse)
+    elif isinstance(value, (ast.BoolOp, ast.Dict, ast.List, ast.Tuple, ast.Set)):
+        for item in value.values if isinstance(value, (ast.BoolOp, ast.Dict)) else value.elts:
+            yield from _possible_values(item)
+    else:
+        yield value
+
+
 def _special_operations(value, aliases):
+    return set().union(*(_special_value(item, aliases) for item in _possible_values(value)))
+
+
+def _special_value(value, aliases):
     if isinstance(value, ast.Name):
         return aliases.get(value.id, set())
-    if isinstance(value, ast.IfExp):
-        return _special_operations(value.body, aliases) | _special_operations(value.orelse, aliases)
-    if isinstance(value, ast.BoolOp):
-        return set().union(*(_special_operations(item, aliases) for item in value.values))
     if isinstance(value, ast.Attribute):
         owner, member = value.value, value.attr
     elif (isinstance(value, ast.Call) and isinstance(value.func, ast.Name)
@@ -78,16 +92,29 @@ def _assignment_bindings(target, value):
     if isinstance(target, ast.Name):
         yield target.id, value
     elif isinstance(target, (ast.Tuple, ast.List)) and isinstance(value, (ast.Tuple, ast.List)):
-        if len(target.elts) == len(value.elts):
-            for slot, member in zip(target.elts, value.elts):
-                yield from _assignment_bindings(slot, member)
+        slots, members = target.elts, value.elts
+        star = next((index for index, slot in enumerate(slots) if isinstance(slot, ast.Starred)), None)
+        if star is not None and len(members) >= len(slots) - 1:
+            end = len(members) - (len(slots) - star - 1)
+            members = [*members[:star], ast.List(elts=members[star:end], ctx=ast.Load()), *members[end:]]
+        if len(slots) == len(members):
+            for slot, member in zip(slots, members):
+                yield from _assignment_bindings(slot.value if isinstance(slot, ast.Starred) else slot, member)
+
+
+def _assignments(tree):
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                yield from _assignment_bindings(target, node.value)
+        elif isinstance(node, (ast.AnnAssign, ast.NamedExpr)) and node.value is not None:
+            yield from _assignment_bindings(node.target, node.value)
 
 
 def _dynamic_import_aliases(tree):
     """Track ordinary aliases without reassignments making the scan oscillate."""
     aliases = {name: {name} for name in ('importlib', 'builtins', '__import__')}
     aliases['vars'] = {'builtins.vars'}
-    assignments = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
@@ -103,11 +130,8 @@ def _dynamic_import_aliases(tree):
                 canonical = SPECIAL_MEMBERS.get((node.module, alias.name))
                 if canonical:
                     aliases.setdefault(alias.asname or alias.name, set()).add(canonical)
-        elif isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None:
-            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-            for target in targets:
-                assignments.extend(_assignment_bindings(target, node.value))
 
+    assignments = list(_assignments(tree))
     changed = True
     while changed:
         changed = False
@@ -626,18 +650,24 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
         aliases[binding] = value if aliases.get(binding, value) == value else ambiguous_alias
 
     def imported_object(value):
+        choices = [imported_value(item) for item in _possible_values(value)]
+        known = [choice for choice in choices if choice is not None]
+        if not known:
+            return None
+        if all(choice == known[0] for choice in choices):
+            return known[0]
+        return ambiguous_alias
+
+    def imported_value(value):
         if isinstance(value, ast.Name):
             return aliases.get(value.id)
         if isinstance(value, ast.Call):
-            return imported_object(value.func)
-        if isinstance(value, ast.IfExp):
-            branches = (imported_object(value.body), imported_object(value.orelse))
-            known = [branch for branch in branches if branch is not None]
-            if not known:
-                return None
-            if all(branch == known[0] for branch in known) and len(known) == len(branches):
-                return known[0]
-            return ambiguous_alias
+            called = imported_object(value.func)
+            # A public function's returned DTO is local data. Constructors
+            # remain linked to their public classes for private-member checks.
+            if isinstance(called, tuple) and called[1].split('.', 1)[0][:1].isupper():
+                return called
+            return ambiguous_alias if called is ambiguous_alias else None
         if isinstance(value, ast.Attribute):
             qualified = aliases.get(_dotted_reference(value))
             if qualified is not None:
@@ -653,30 +683,21 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
 
     # Carry imported module and public-object aliases through ordinary
     # assignments (``alias = peer`` and ``service = peer.Service``).
+    assignments = list(_assignments(tree))
     changed = True
     while changed:
         changed = False
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Assign):
-                targets = node.targets
-                value = node.value
-            elif isinstance(node, ast.AnnAssign):
-                targets = [node.target]
-                value = node.value
-            else:
+        for binding, expression in assignments:
+            resolved = imported_object(expression)
+            if resolved is None:
                 continue
-            for target_node in targets:
-                for binding, expression in _assignment_bindings(target_node, value):
-                    resolved = imported_object(expression)
-                    if resolved is None:
-                        continue
-                    existing = aliases.get(binding)
-                    if existing is None:
-                        aliases[binding] = resolved
-                        changed = True
-                    elif existing is not ambiguous_alias and existing != resolved:
-                        aliases[binding] = ambiguous_alias
-                        changed = True
+            existing = aliases.get(binding)
+            if existing is None:
+                aliases[binding] = resolved
+                changed = True
+            elif existing is not ambiguous_alias and existing != resolved:
+                aliases[binding] = ambiguous_alias
+                changed = True
 
     for node in ast.walk(tree):
         if isinstance(node, ast.Attribute):
@@ -937,6 +958,15 @@ def test_capability_source_uses_versioned_public_interfaces():
     'loader("iqs_scan.questions.question_sets")',
     'import importlib\nloader, = (importlib.import_module,)\n'
     'loader("iqs_scan.questions.question_sets")',
+    'import importlib\nloader, *_ = (importlib.import_module,)\n'
+    'loader("iqs_scan.questions.question_sets")',
+    'import importlib\n*_, loader = (fallback, importlib.import_module)\n'
+    'loader("iqs_scan.questions.question_sets")',
+    'import importlib\n*loader, = (importlib.import_module,)\n'
+    'loader[0]("iqs_scan.questions.question_sets")',
+    'import importlib\nloaders = {"local": importlib.import_module}\n'
+    'loaders["local"]("iqs_scan.questions.question_sets")',
+    'import importlib\n(loader := importlib.import_module)("iqs_scan.questions.question_sets")',
     'import importlib\n(importlib if flag else fallback).import_module("iqs_scan.questions.question_sets")',
     'import importlib\nimportlib.import_module("iqs_scan.questions.api")',
     'import iqs_scan.questions.api\niqs_scan.questions.api._private()',
@@ -945,6 +975,11 @@ def test_capability_source_uses_versioned_public_interfaces():
     'import iqs_scan.questions.api\npeer = iqs_scan.questions\npeer.question_sets.compose()',
     'from ..questions import api as peer\npeer._private()',
     'from ..questions import api\npeer, = (api,)\npeer._private()',
+    'from ..questions import api\npeer, *_ = (api,)\npeer._private()',
+    'from ..questions import api\n*peer, = (api,)\npeer[0]._private()',
+    'from ..questions import api\npeers = {"q": api}\npeers["q"]._private()',
+    'from ..questions import api\n(peer := api)._private()',
+    'from ..questions import api\nif (peer := api):\n    peer._private()',
     'from ..questions.api import compose_questions as compose\ncompose._private()',
     'from scripts import iqs_scan\niqs_scan.questions.question_sets.compose()',
     'from scripts.iqs_scan.questions import api',

@@ -3,7 +3,9 @@ import sys
 
 from iqs_scan.acceptance import verified_evidence_audit as _implementation
 
+main = _implementation.main
+
 if __name__ == '__main__':
-    raise SystemExit(_implementation.main())
+    raise SystemExit(main())
 else:
     sys.modules[__name__] = _implementation

@@ -8,6 +8,7 @@ the distinction between "the provider answered, but had nothing" and "the call
 failed".
 """
 import sys
+import urllib.request
 from pathlib import Path
 
 import pytest
@@ -129,7 +130,7 @@ def _raise_on_urlopen(monkeypatch, exc):
     """Make urllib.request.urlopen raise, exercising the real post_json guard."""
     def boom(*args, **kwargs):
         raise exc
-    monkeypatch.setattr(thin_scan.urllib.request, "urlopen", boom)
+    monkeypatch.setattr(urllib.request, "urlopen", boom)
 
 
 def test_model_timeout_is_returned_as_an_error_not_raised(monkeypatch):

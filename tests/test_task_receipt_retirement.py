@@ -14,7 +14,8 @@ ARCHIVE = ROOT / "docs/implementation/archive/task-receipts-v2-legacy"
 
 class TaskReceiptRetirementTests(unittest.TestCase):
     def test_historical_phase_39_40_do_not_keep_retired_receipt_gates_open(self):
-        plan_text = (ROOT / "task_plan.md").read_text(encoding="utf-8")
+        historical_plan = ROOT / "docs/implementation/archive/pwf-through-2026-10-31/task_plan.md"
+        plan_text = historical_plan.read_text(encoding="utf-8")
         phase39 = plan_text.split("## Phase 39:", 1)[1].split("## Phase 40:", 1)[0]
         phase40 = plan_text.split("## Phase 40:", 1)[1].split("## Phase 41:", 1)[0]
         for phase_name, phase_text in (("Phase 39", phase39), ("Phase 40", phase40)):
