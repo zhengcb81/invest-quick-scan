@@ -10,6 +10,12 @@ import hashlib
 import json
 import copy
 
+API_PROTOCOL = "iqs.exchange-contract-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "canonical_sha256", "validate_package_integrity",
+    "independent_support",
+})
+
 
 _FORBIDDEN_EVIDENCE_KEYS = {
     "source_manifest", "source_manifest_id", "source_manifest_ids",

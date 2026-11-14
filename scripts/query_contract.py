@@ -12,6 +12,15 @@ import standard_answers
 from referencing import Registry, Resource
 
 ROOT=Path(__file__).resolve().parents[1]
+API_PROTOCOL = "iqs.query-contract-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "ProfileQueryDialect",
+    "parse_utc_timestamp", "query_sha256", "seal_response",
+    "observation_variant_key", "index_subject_refs", "original_observation",
+    "validate_original_semantics", "validate_owner_observation_reference",
+    "validate_subject_ref_shape", "validate_request", "validate_response",
+    "profile_query_schema", "load_document",
+})
 _PROFILE_SCHEMA=json.loads((ROOT/'schemas/quick_scan/query-v2.schema.json').read_bytes())
 _PROFILE_VALIDATOR=Draft202012Validator(_PROFILE_SCHEMA,format_checker=FormatChecker())
 _SUBJECT_REF_VALIDATOR=Draft202012Validator(_PROFILE_SCHEMA['$defs']['SubjectRef'],format_checker=FormatChecker())

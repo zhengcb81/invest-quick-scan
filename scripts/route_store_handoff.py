@@ -41,7 +41,7 @@ def _read(path, kind):
     if len(raw) > MAX_INPUT_BYTES:
         raise RouteBundleError(kind + "_too_large")
     try:
-        document = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=module_contract._unique_object)
+        document = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=module_contract.unique_json_object)
         if not isinstance(document, dict):
             raise ValueError("object required")
         # The existing strict serializer also rejects NaN/Infinity/1e400 at

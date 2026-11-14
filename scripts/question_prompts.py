@@ -12,6 +12,10 @@ from json_io import read_json
 
 ROOT = Path(__file__).resolve().parents[1]
 SEMANTIC_RULES_API_PROTOCOL = "iqs.question-prompt-semantics/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "SEMANTIC_RULES_API_PROTOCOL", "PUBLIC_API_EXPORTS", "typed_semantic_rules",
+    "legacy_typed_semantic_rules",
+})
 
 ANSWER_RULE = (
     '请实际联网检索；优先公司、交易所和监管机构公开网页，无需下载财报。'

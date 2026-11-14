@@ -15,11 +15,14 @@ CANDIDATE = ROOT.parent.name == "production-task-candidate"
 PROJECTS = next(
     p.parent for p in Path(__file__).resolve().parents if (p / "task_plan.md").is_file()
 )
-COMPANY = ROOT.parent / "company" if CANDIDATE else PROJECTS / "iqs-company-agent-lab"
+COMPANY = Path(os.environ.get(
+    "IQS_COMPANY_AGENT_ROOT",
+    str(ROOT.parent / "company" if CANDIDATE else PROJECTS / "iqs-company-agent-lab"),
+))
 BRIDGE = (
     Path(json.loads((ROOT.parent / "runtime.json").read_text(encoding="utf8"))["root"]) / "bridge"
     if CANDIDATE
-    else PROJECTS / "iqs-agent-runtime-lab"
+    else Path(os.environ.get("IQS_AGENT_RUNTIME_ROOT", PROJECTS / "iqs-agent-runtime-lab"))
 )
 sys.path.insert(0, str(COMPANY / "src"))
 sys.path.insert(0, str(BRIDGE / "src"))
@@ -109,6 +112,10 @@ def use_scan_runtime(monkeypatch, services):
             import src.utils.quick_scan_company_context as context
             return context.company_scan_inputs(services.lifecycle)
 
+        def original_scan_context(self):
+            import src.utils.quick_scan_company_context as context
+            return context.company_scan_contract(services.lifecycle)
+
         def supports_intent_recovery(self):
             return True
 
@@ -174,6 +181,7 @@ def test_new_capabilities_do_not_claim_multiturn_or_search_proof():
 def test_pure_scan_construction_does_not_recheck_current_permissions(monkeypatch):
     """Data-projection unit only, not a native admission positive."""
     from iqs_company_agent_lab.scan_profile import native_input_references
+    import iqs_company_agent_lab.api as company_api
     import iqs_company_agent_lab.scan_profile as scan_profile
     import src.utils.quick_scan_company_context as public_context
 
@@ -198,7 +206,21 @@ def test_pure_scan_construction_does_not_recheck_current_permissions(monkeypatch
     t.owner_binding = copy.deepcopy(binding)
     t.task_sha256 = sha256_hex(t.raw)
     monkeypatch.setattr(public_context, "company_scan_inputs", lambda lifecycle: original)
+    monkeypatch.setattr(public_context, "company_scan_contract", lambda lifecycle: SimpleNamespace(
+        native_input_references=refs,
+        observation_context=copy.deepcopy(original.observation_context),
+        identity_payload={},
+        module_locks=(),
+        route_provider="synthetic",
+        route_model="m",
+        route_id="r",
+    ))
     monkeypatch.setattr(scan_profile, "native_company_projection", lambda identity, ref: t.company_doc)
+    monkeypatch.setattr(
+        company_api,
+        "native_company_projection",
+        lambda identity, ref: t.company_doc,
+    )
     monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: None)
     controls = []
     owner = SimpleNamespace(check=lambda: pytest.fail("pure construction must not invoke current permission I/O"),

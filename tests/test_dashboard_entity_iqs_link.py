@@ -1,8 +1,8 @@
 """B03 LIVE-OWNER-VERIFY-REPAIR-01: the entity route must carry the IQSLink.
 
 RED (before the fix): `/api/product/entity` answered with the owner entity
-payload plus the draft track only. The frozen G-IQS-01 `IQSLink` declaration
-never travelled with the entity, so the Dashboard `get_result` composition
+payload only. The frozen G-IQS-01 `IQSLink` declaration never travelled with
+the entity, so the Dashboard `get_result` composition
 fell back to the legacy partial declaration: the composed `routes.results`
 lost the latest company result's `result_id` pin, the first-observation
 anchor and the return context.
@@ -136,14 +136,14 @@ def test_entity_route_collapses_a_cross_scope_return(tmp_path):
     assert reply['data']['iqs_link']['return_to'] == link.FALLBACK_RETURN
 
 
-def test_entity_route_keeps_the_draft_track_separate(tmp_path):
-    """The draft track stays beside the entity; it is not the link."""
+def test_entity_route_does_not_depend_on_ui_generated_answers(tmp_path):
+    """Entity reads are owner-owned; the UI repository is not a data source."""
     service = service_for(tmp_path, dashboard_origin='http://127.0.0.1:43219')
     code, reply = service.dispatch('GET', '/api/product/entity?id=ENT_A')
     assert code == 200, reply
     data = reply['data']
-    assert 'draft_runs' in data
-    assert data['draft_source_label']
+    assert 'draft_runs' not in data
+    assert 'draft_source_status' not in data
     assert 'iqs_link' in data
 
 

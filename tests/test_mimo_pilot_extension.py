@@ -68,9 +68,9 @@ class ExtensionTests(unittest.TestCase):
             rows={'answers':[dict(question_id='Q',status='unknown',score=None,confidence='low',rationale='缺口',
                           evidence_refs=[],claims=[],counterevidence='不足',sensitivity='补充')]}
             class Client:
-                def __init__(self,*args,**kwargs):configs.append(dict(b._thread_context.observer.params))
+                def __init__(self,*args,**kwargs):configs.append(dict(b.current_transport_observer().params))
                 def send_request(self,*args):
-                    b._thread_context.observer.receipt={'finish_reason':'stop'}
+                    b.current_transport_observer().receipt={'finish_reason':'stop'}
                     return json.dumps(rows)
             company=dict(entity_id='synthetic',canonical_name='synthetic',identity_file_sha256='a'*64)
             with patch.object(b,'read_key',return_value='synthetic'):

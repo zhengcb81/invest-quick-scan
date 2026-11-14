@@ -70,6 +70,60 @@ def test_owner_package_resources_remain_bound_and_current_file_is_not_read(origi
     engine._frozen_answer_semantics(task, wrong)(copy.deepcopy(answer), qid)
 
 
+def test_semantic_resource_projection_is_detached_path_free_and_replayable(original):
+    import json
+    import answer_validation
+    import module_registry
+    import standard_answers
+
+    task, qid, answer, context = original
+    package, _, _, _ = module_registry.load_current(root=standard_answers.ROOT)
+    context["questions"] = {qid: {"metadata": {"module_package_id": package["package_id"]}}}
+
+    projected = answer_validation.project_original_semantic_resources(
+        context, release_root=standard_answers.ROOT
+    )
+
+    assert projected["protocol"] == "iqs.answer-semantic-resources/1.0.0"
+    assert projected["module_package_id"] == package["package_id"]
+    assert set(projected["format_resources"]) == {
+        "schemas/answer-content.schema.json",
+        "questions/metric-registry.json",
+    }
+    assert str(standard_answers.ROOT) not in json.dumps(projected, ensure_ascii=False)
+    assert all(not isinstance(value, bytes) for value in projected.values())
+    callback = engine._frozen_answer_semantics(
+        task, context, semantic_resources=projected
+    )
+    before = copy.deepcopy(answer)
+    callback(answer, qid)
+    assert answer == before
+
+
+def test_semantic_resource_projection_rejects_changed_payload_or_context(original):
+    import copy
+    import module_registry
+    import standard_answers
+    import answer_validation
+
+    task, qid, answer, context = original
+    package, _, _, _ = module_registry.load_current(root=standard_answers.ROOT)
+    context["questions"] = {qid: {"metadata": {"module_package_id": package["package_id"]}}}
+    projected = answer_validation.project_original_semantic_resources(
+        context, release_root=standard_answers.ROOT
+    )
+
+    changed_payload = copy.deepcopy(projected)
+    changed_payload["format_resources"]["schemas/answer-content.schema.json"]["x-tampered"] = True
+    with pytest.raises(engine.SharedEngineRejected, match="original_semantic_resources_digest_mismatch"):
+        engine._frozen_answer_semantics(task, context, semantic_resources=changed_payload)
+
+    changed_context = copy.deepcopy(context)
+    changed_context["questions"][qid]["metadata"]["module_package_id"] = "pkg_" + "0" * 64
+    with pytest.raises(engine.SharedEngineRejected, match="original_semantic_context_mismatch"):
+        engine._frozen_answer_semantics(task, changed_context, semantic_resources=projected)
+
+
 def test_historical_resource_lookup_skips_missing_current_and_unrelated_bad_archive(original, monkeypatch, tmp_path):
     import shutil
     import module_registry
@@ -89,16 +143,14 @@ def test_historical_resource_lookup_skips_missing_current_and_unrelated_bad_arch
 
 
 def test_production_selects_original_owner_release_root(native_bound, monkeypatch, tmp_path):
-    import json
+    import answer_validation
     import shutil
     import module_registry
     import standard_answers
-    from types import SimpleNamespace
-    import src.utils.quick_scan_company_context as company_context
     task, qid, answer, services, _, _ = native_bound
-    original_inputs = company_context.company_scan_inputs(services.lifecycle)
     package, _, _, _ = module_registry.load_current(root=standard_answers.ROOT)
-    context = copy.deepcopy(original_inputs.observation_context)
+    runtime = engine._company_runtime(services, engine._task_contract(task))
+    context = copy.deepcopy(runtime.original_scan_context().observation_context)
     context["questions"][qid]["metadata"]["module_package_id"] = package["package_id"]
     release_root = tmp_path / "separate-release"
     shutil.copytree(standard_answers.ROOT / "questions/releases", release_root / "questions/releases")
@@ -110,9 +162,15 @@ def test_production_selects_original_owner_release_root(native_bound, monkeypatc
         assert root == release_root
         return original_loader(package_id, root=root)
     monkeypatch.setattr(module_registry, "load_package", load_original)
-    monkeypatch.setattr(company_context, "company_scan_inputs", lambda _: SimpleNamespace(
-        observation_context=context,
-        input_raw={"owner-config.json": json.dumps({"iqs_release_root": str(release_root)}).encode()}))
+    def owner_resources(observed):
+        observed = copy.deepcopy(observed)
+        observed["questions"][qid]["metadata"]["module_package_id"] = package["package_id"]
+        return answer_validation.project_original_semantic_resources(
+            observed, release_root=release_root
+        )
+
+    services.owner.observation_context = context
+    services.owner.original_semantic_resources = owner_resources
     callback = engine._production_answer_semantics(task, services)
     callback.base_semantic_validator(copy.deepcopy(answer), qid)
     assert seen == [release_root]
@@ -149,7 +207,7 @@ def test_unknown_pending_member_does_not_hide_previously_completed_members(tmp_p
     # Composition boundary only; original owner/SQLite proof is exercised by
     # test_paid_partial_cold_native_e2e, rather than by this observation double.
     import test_shared_company_engine as fixture
-    import iqs_agent_runtime_lab.port
+    import iqs_agent_runtime_lab.api
     engine = fixture.engine
     task = fixture.helpers.make_task("fixed3", "readonly-earlier-members")
 
@@ -170,7 +228,23 @@ def test_unknown_pending_member_does_not_hide_previously_completed_members(tmp_p
     monkeypatch.setattr(engine, "inspect_native_recovery", lambda *a, **k:
         {"decision": "pause_for_inspection", "saved_receipt": None})
     fresh = fixture.ContextPort(task)
-    monkeypatch.setattr(iqs_agent_runtime_lab.port, "create_runtime_port", lambda *a, **k: fresh)
+    monkeypatch.setattr(iqs_agent_runtime_lab.api, "create_runtime_port", lambda *a, **k: fresh)
+
+    class ReadOnlyRuntime:
+        def inspect_attempt(self, _reference):
+            return {"known": True}
+
+        def supports_intent_recovery(self):
+            return True
+
+        def recover_intent(self, _intent):
+            return {"decision": "pause_for_inspection", "saved_receipt": None}
+
+        def attempt_observations(self, *, transport_origin):
+            assert transport_origin == "scripted_wire"
+            return ReadOnly(old).attempt_observations(transport_origin=transport_origin)
+
+    monkeypatch.setattr(engine, "_company_runtime", lambda *_args, **_kwargs: ReadOnlyRuntime())
 
     class ReadOnly(fixture.SyntheticObservations):
         def inspect_attempt(self, ref):

@@ -16,6 +16,11 @@ import time
 from urllib.parse import parse_qs, urlencode, urlsplit
 from dashboard_locks import control_lock, ControlBusyError
 from dashboard_owner import valid_timeout_seconds, TIMEOUT_SECONDS_MAX
+from dashboard_membership_request import (
+    apply_keyed_membership,
+    membership_history as read_membership_history,
+    membership_request_read as read_membership_request,
+)
 from dashboard_job_facade import (LIMITS_REF_REGISTRY, MAPPING_VERSION, WIRE_PROTOCOL,
                                   OWNER_JOB_ID_PATTERN as JOB_ID_PATTERN)
 
@@ -194,10 +199,9 @@ def validate_config(value, root):
 
 
 class DashboardService:
-    def __init__(self, root=ROOT, config_path=None, ui_root=None, owner_factory=None, execution_factory=None, prepare_factory=None):
+    def __init__(self, root=ROOT, config_path=None, owner_factory=None, execution_factory=None, prepare_factory=None):
         self.root = Path(root).resolve()
         self.config_path = Path(config_path or self.root/'config/dashboard.local.json').resolve()
-        self.ui_root = Path(ui_root or self.root.parent/'iqs-question-bank-ui-lab').resolve()
         self.csrf_token = secrets.token_urlsafe(32)
         self._lock = threading.RLock()
         self._commands_in_flight = 0
@@ -661,24 +665,6 @@ class DashboardService:
             return {'available': False, 'blocked_reasons': [getattr(exc, 'code', 'owner_unavailable')],
                     'message': str(exc)[:500]}
 
-    def _drafts(self, entity_id):
-        path = self.ui_root/'src/generated/answers.json'
-        result = {'draft_runs': [], 'draft_source_label': '历史薄草稿，与当前owner观察分开',
-                  'draft_source_status': 'missing'}
-        try:
-            if not path.is_file():
-                return result
-            document = json.loads(path.read_text(encoding='utf8'))
-            if (not isinstance(document, dict) or not isinstance(document.get('runs'), list)
-                    or any(not isinstance(run, dict) for run in document['runs'])):
-                raise ValueError('invalid optional draft document')
-            result.update(draft_runs=[run for run in document['runs'] if run.get('entity_id') == entity_id],
-                          draft_source_status='available')
-        except (OSError, UnicodeError, ValueError, RecursionError):
-            result.update(draft_source_status='unavailable', draft_source_warning='draft_source_unavailable',
-                          draft_source_label='历史薄草稿暂不可用；正式结果仍可查看')
-        return result
-
     def _request_view(self, target):
         """Capture one deployment and its existing adapters before slow I/O.
 
@@ -786,7 +772,11 @@ class DashboardService:
             if path == 'jobs':
                 return self._job_facade().list_jobs(cursor=query.get('cursor'),
                     limit=query.get('limit', 50))
-            match = re.fullmatch(rf'jobs/({JOB_ID_PATTERN})', path)
+            # Keep the public command-binding fallback reachable: adapters may
+            # first probe an owner_job_id and, on owner_job_id_invalid, resolve
+            # the same value as a Dashboard command_id through jobs/commands/.
+            # The facade remains the authority that validates owner job IDs.
+            match = re.fullmatch(r'jobs/([A-Za-z0-9][A-Za-z0-9._:\-]{0,127})', path)
             if match:
                 return self._job_facade().get_status(match[1])
             match = re.fullmatch(r'jobs/commands/([A-Za-z0-9][A-Za-z0-9._:\-]{0,127})', path)
@@ -899,7 +889,6 @@ class DashboardService:
                 if not entity_id:
                     raise ProductError('entity_required', '请选择已注册公司。')
                 result = self._gateway('owner').entity_view(entity_id)
-                result['entity'].update(self._drafts(entity_id))
                 return result
             if path in {'entity', 'history', 'facts'}:
                 entity_id = query.get('id', query.get('entity_id', ''))
@@ -907,7 +896,6 @@ class DashboardService:
                     raise ProductError('entity_required', '请选择已注册公司。')
                 result = getattr(self._gateway('owner'), path)(entity_id)
                 if path == 'entity':
-                    result.update(self._drafts(entity_id))
                     # G-IQS-01: the frozen `IQSLink` travels with the entity so
                     # a consumer reads one declaration instead of guessing. An
                     # unconfigured or unreadable owner still yields an explicit
@@ -928,6 +916,36 @@ class DashboardService:
                 return result
             if path == 'universe':
                 return self._gateway('owner').universe_list(query.get('universe_id', self.config['universe_id']))
+            if path == 'universe/request':
+                allowed = {'universe_id', 'idempotency_key', 'request_id'}
+                if set(query) - allowed or any(len(raw_query.get(key, [])) > 1 for key in allowed):
+                    raise ProductError('invalid_query', '成员请求查询参数无效。')
+                payload = {key: query[key] for key in allowed if key in query}
+                return read_membership_request(self._gateway('owner'), payload)
+            if path == 'universe/history':
+                allowed = {'universe_id', 'entity_id', 'limit', 'after_version', 'version_pin'}
+                if set(query) - allowed or any(len(raw_query.get(key, [])) > 1 for key in allowed):
+                    raise ProductError('invalid_query', '成员历史查询参数无效。')
+                try:
+                    limit_raw = query.get('limit', '50')
+                    if (not limit_raw.isascii() or not limit_raw.isdecimal() or len(limit_raw) > 3):
+                        raise ValueError('limit')
+                    limit = int(limit_raw)
+                    def optional_version(name):
+                        value = query.get(name)
+                        if value is None:
+                            return None
+                        if not value.isascii() or not value.isdecimal() or len(value) > 12:
+                            raise ValueError(name)
+                        return int(value)
+                    after_version = optional_version('after_version')
+                    version_pin = optional_version('version_pin')
+                except ValueError:
+                    raise ProductError('invalid_query', '成员历史分页或版本参数无效。') from None
+                return read_membership_history(self._gateway('owner'), {
+                    'universe_id': query.get('universe_id', self.config['universe_id']),
+                    'entity_id': query.get('entity_id'), 'limit': limit,
+                    'after_version': after_version, 'version_pin': version_pin})
             if path == 'delivery':
                 return self._gateway('owner').delivery_status(query.get('package_id'))
             if path == 'link':
@@ -1008,6 +1026,8 @@ class DashboardService:
                 if path == 'import/apply':
                     bundle = self.config['import_bundles'].get(body.get('bundle_id'), {})
                     return self._apply_import(self._gateway('owner'),bundle,body)
+                if path == 'universe/apply' and body.get('idempotency_key') is not None:
+                    return apply_keyed_membership(self._gateway('owner'), body)
                 return getattr(self._gateway('owner'), action)(body)
             if path == 'jobs/submit':
                 return self._job_facade().submit_run_scan(body)

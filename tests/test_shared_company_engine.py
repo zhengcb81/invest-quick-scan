@@ -18,12 +18,20 @@ PACKAGE = Path(__file__).resolve().parents[1]
 IQS_ROOT = next(p for p in Path(__file__).resolve().parents if (p / "task_plan.md").is_file())
 IS_CANDIDATE = PACKAGE.name == "composition-candidate"
 BASE = PACKAGE.parent if IS_CANDIDATE else PACKAGE / "runs/shared-engine-production-2026-10-18"
-COMPANY = BASE / "company-candidate" if IS_CANDIDATE else PACKAGE.parent / "iqs-company-agent-lab"
-STOCKQA = BASE / "native-integration-candidate" if IS_CANDIDATE else PACKAGE.parent / "StockQAbyLLM"
+COMPANY = Path(os.environ.get(
+    "IQS_COMPANY_AGENT_ROOT",
+    BASE / "company-candidate" if IS_CANDIDATE else PACKAGE.parent / "iqs-company-agent-lab",
+))
+STOCKQA = Path(os.environ.get(
+    "IQS_STOCKQA_ROOT",
+    BASE / "native-integration-candidate" if IS_CANDIDATE else PACKAGE.parent / "StockQAbyLLM",
+))
 OWNER_UTILS = BASE / "owner-services-candidate/src/utils" if IS_CANDIDATE else STOCKQA / "src/utils"
 sys.path.insert(0, str(COMPANY / "src"))
 sys.path.insert(0, str(STOCKQA))
-sys.path.insert(0, str(IQS_ROOT.parent / "iqs-agent-runtime-lab/src"))
+sys.path.insert(0, os.environ.get(
+    "IQS_AGENT_RUNTIME_ROOT", str(IQS_ROOT.parent / "iqs-agent-runtime-lab")
+) + "/src")
 
 def load(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
@@ -374,6 +382,8 @@ def test_resume_proven_unsent_preserves_original_task_and_one_request_cap(tmp_pa
         # composition. Native admission and wire remain explicit test seams;
         # this does not grant an owner or physical-send positive.
         from src.utils.quick_scan_owner_research import OwnerResearchServices
+        from src.utils.quick_scan_owner_refresh_api import adapt_owner_refresh
+        from src.utils.quick_scan_owner_refresh import OwnerRefreshSession
         from src.utils.quick_scan_result_outbox import canonical_sha256
         from src.utils.quick_scan_work_store import QuickScanWorkStore
         from tests.unit.test_quick_scan_work_store import _created
@@ -384,9 +394,24 @@ def test_resume_proven_unsent_preserves_original_task_and_one_request_cap(tmp_pa
             lease = store.claim(work_id, lease_seconds=300)
             store.release_unsent(work_id, lease)
             entries[qid] = dict(kind="work", work_item_id=work_id)
+        owner_session = OwnerRefreshSession(
+            client=object(),
+            current=None,
+            plan={"fields": []},
+            scopes={},
+            projection={},
+            identity={},
+            store=store,
+            observation_context={},
+            recovery_only=True,
+        )
+        owner_session.entries = entries
+        owner_session.requested_question_ids = tuple(task.question_ids)
+        owner_port = adapt_owner_refresh(owner_session)
         class NativeUnsent(OwnerResearchServices):
             def __init__(self):
-                self.store, self.owner = store, SimpleNamespace(entries=entries)
+                self.store = store
+                self.owner = owner_port
                 self.questions = dict.fromkeys(task.question_ids)
                 self._task_sha256 = canonical_sha256(task.raw)
             def _assert_registered_inputs(self, **kwargs):

@@ -280,7 +280,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     import model_config
-    import thin_scan
+    from model_invocation import ask_model
 
     route = model_config.routes()[args.model]
     companies = []
@@ -296,7 +296,7 @@ def main(argv: list[str] | None = None) -> int:
         catalog_path=args.catalog,
         ledger_path=args.ledger,
         out_dir=args.out,
-        model_call=thin_scan.ask_model,
+        model_call=ask_model,
         provider=route,
         context=args.context,
         tag=args.tag,

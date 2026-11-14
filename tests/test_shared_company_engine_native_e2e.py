@@ -10,7 +10,6 @@ import os
 from pathlib import Path
 import subprocess
 import sys
-from contextlib import closing
 
 import pytest
 
@@ -21,15 +20,10 @@ _ENV_NAMES = ("SystemRoot", "SYSTEMROOT", "WINDIR", "PATH", "TEMP", "TMP", "PYTH
     "PYTHONDONTWRITEBYTECODE", "PYTHONPATH", "IQS_C06_RUN_INTEGRATION", "IQS_C06_OWN",
     "IQS_C06_COMPOSITION_CODE_ROOT", "IQS_C06_COMPANY_ROOT", "IQS_C06_BRIDGE_ROOT")
 SAFE_ENV = {name: os.environ[name] for name in _ENV_NAMES if name in os.environ}
-# This is an explicitly isolated test process. Original fixture code also uses
-# dict(os.environ); constrain that process before importing any fixture/client.
-os.environ.clear()
-os.environ.update(SAFE_ENV)
-
-OWN = Path(os.environ["IQS_C06_OWN"])
-CODE = Path(os.environ["IQS_C06_COMPOSITION_CODE_ROOT"])
-COMPANY = Path(os.environ["IQS_C06_COMPANY_ROOT"])
-BRIDGE = Path(os.environ["IQS_C06_BRIDGE_ROOT"])
+OWN = Path(SAFE_ENV["IQS_C06_OWN"]).resolve()
+CODE = Path(SAFE_ENV["IQS_C06_COMPOSITION_CODE_ROOT"]).resolve()
+COMPANY = Path(SAFE_ENV["IQS_C06_COMPANY_ROOT"]).resolve()
+BRIDGE = Path(SAFE_ENV["IQS_C06_BRIDGE_ROOT"]).resolve()
 sys.path.insert(0, str(COMPANY / "src"))
 sys.path.insert(0, str(BRIDGE / "src"))
 
@@ -49,6 +43,7 @@ from src.runners.llm_runner import QuickScanWorkLifecycle
 from src.utils.quick_scan_owner_research import OwnerResearchServices
 from src.utils.quick_scan_refresh_admission import RefreshAdmissionService
 from src.utils.quick_scan_refresh_execution import prepare_execution
+from src.utils.quick_scan_owner_refresh_api import adapt_owner_refresh
 from tests.integration.test_c06_subject_public_e2e import actual
 from tests.integration.test_c06_refresh_admission import setup_admission
 from tests.unit.test_quick_scan_budget import _policy
@@ -59,17 +54,21 @@ def construct(config):
         input_paths={name: Path(config["bundle"]) / name for name in
             ("manifest.json", "identity.json", "authority.json", "owner-config.json", "questions.json")},
         process_env=dict(SAFE_ENV))
-    first = owner.requested_question_ids[0]
-    ref = owner.native.observation_context["questions"][first]["subject_binding"]["subject_ref"]
+    owner_port = adapt_owner_refresh(owner)
+    owner_snapshot = owner_port.snapshot()
+    # This helper is a test composition root: the official QA CLI owns the
+    # mutable store; its detached public snapshot intentionally omits it.
+    first = owner_snapshot.requested_question_ids[0]
+    ref = owner_snapshot.observation_context["questions"][first]["subject_binding"]["subject_ref"]
     policy = config["policy"]
     route = policy["routes"][0]
     lifecycle = QuickScanWorkLifecycle(owner.service.store, entity_id=ref["entity_id"],
-        run_id="NATIVE_SHARED_12", scan_id="NATIVE_SHARED_12_SCAN", identity=owner.bundle["identity"],
+        run_id="NATIVE_SHARED_12", scan_id="NATIVE_SHARED_12_SCAN", identity=owner_snapshot.bundle["identity"],
         transport_managed=True, route_id=route["id"], provider_name=route["provider_config_ref"],
         model_requested="mimo-v2.6-pro", budget_policy=policy, budget_route=route,
-        owner_refresh_session=owner, observation_context=owner.native.observation_context,
-        scope_by_question=owner.scope_bindings,
-        generation_by_question={qid: owner.existing_work(qid)["generation"] for qid in owner.requested_question_ids})
+        owner_refresh_session=owner_port, observation_context=owner_snapshot.observation_context,
+        scope_by_question=dict(owner_snapshot.scope_bindings),
+        generation_by_question={qid: owner_port.existing_work(qid)["generation"] for qid in owner_snapshot.requested_question_ids})
     task = factory.create_native_task(lifecycle, experiment_id="native-shared-software-e2e",
         run_id="NATIVE_SHARED_12", strategy_id="free_agent")
     client = LLMClient("SCRIPTED-NOT-A-SECRET", "mimo-v2.6-pro",
@@ -80,10 +79,18 @@ def construct(config):
     return task, services
 
 
+def _task_snapshot(task):
+    """Use the Company Agent consumer DTO for opaque owner task handles."""
+    from iqs_company_agent_lab.api import task_snapshot
+    return task_snapshot(task)
+
+
 def child_run(config_path, phase):
     config = json.loads(Path(config_path).read_text(encoding="utf8"))
     base = Path(config["root"])
+    policy = config["policy"]
     task, services = construct(config)
+    task_contract = _task_snapshot(task)
     from src.providers import llm_research_client as sdk
     from iqs_company_agent_lab import synthfixtures as sf
     posts = []
@@ -92,13 +99,13 @@ def child_run(config_path, phase):
         status_code = 200
         headers = {"x-request-id": "scripted-native-owner-12"}
         def __init__(self):
-            answers = [sf.gen_insufficient(row["question"]) for row in task.questions]
+            answers = [sf.gen_insufficient(row["question"]) for row in task_contract["questions"]]
             for answer in answers:
                 answer["status"] = "not_applicable"
                 answer["summary"] = "[Synthetic software fixture] No real company finding."
             self.content = json.dumps(dict(id="scripted-native-owner-response", model="mimo-v2.6-pro",
                 choices=[dict(message=dict(role="assistant", content=json.dumps({"answers": answers,
-                    "declared_question_ids": task.question_ids}),
+                    "declared_question_ids": task_contract["question_ids"]}),
                     reasoning_content="PRIVATE-NATIVE-REASONING-NEVER-PERSIST"), finish_reason="stop")],
                 usage=dict(prompt_tokens=1200, prompt_tokens_details=dict(cached_tokens=400),
                     completion_tokens=1200, completion_tokens_details=dict(reasoning_tokens=200)))).encode("utf8")
@@ -141,9 +148,9 @@ def child_run(config_path, phase):
     assert not summary["owner_authority_verified"] and not summary["financial_qualification_granted"]
     assert summary["cash_cost"] is None
     assert report["runtime_observations"] == summary
-    with closing(services.store._connect()) as connection:
-        assert connection.execute("SELECT COUNT(*) FROM quick_scan_budget_attempt").fetchone()[0] == 1
-    for qid in task.question_ids:
+    assert services.store.get_quick_scan_budget_status(policy["policy_id"])["requests"] == 1
+    assert len(posts) == 0, "cold replay must not send another model request"
+    for qid in task_contract["question_ids"]:
         assert services.store.get_answer_checkpoint(services.owner.existing_work(qid)["work_item_id"]) is None
     result_payload = dict(scripted_posts=len(posts), slots=len(result["run"]["slots"]), runtime_summary=summary,
                           original_owner_rechecked=True, official_search_checkpoint_created=False)
@@ -166,11 +173,22 @@ def test_original_twelve_owner_sdk_runner_and_process_resume_zero_new_http(actua
     config_file = tmp_path / "owned-native-test.json"
     config_file.write_text(json.dumps(config), encoding="utf8")
     for phase, expected in (("crash", 86), ("resume", 0)):
-        completed = subprocess.run([sys.executable, "-B", str(Path(__file__)), phase, str(config_file)],
-            cwd=OWN / "qa", capture_output=True, env=dict(SAFE_ENV, PYTHONDONTWRITEBYTECODE="1"), timeout=600)
-        (tmp_path / (phase + ".stdout.log")).write_bytes(completed.stdout[-16000:])
-        (tmp_path / (phase + ".stderr.log")).write_bytes(completed.stderr[-16000:])
-        assert completed.returncode == expected, completed.stderr[-4000:].decode(errors="replace")
+        stdout_path = tmp_path / (phase + ".stdout.log")
+        stderr_path = tmp_path / (phase + ".stderr.log")
+        try:
+            with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+                completed = subprocess.run(
+                    [sys.executable, "-B", str(Path(__file__)), phase, str(config_file)],
+                    cwd=OWN / "qa",
+                    stdout=stdout,
+                    stderr=stderr,
+                    env=dict(SAFE_ENV, PYTHONDONTWRITEBYTECODE="1"),
+                    timeout=600,
+                )
+        except subprocess.TimeoutExpired as error:
+            diagnostic = stderr_path.read_bytes()[-4000:].decode(errors="replace")
+            raise AssertionError(f"native {phase} child timed out: {diagnostic}") from error
+        assert completed.returncode == expected, stderr_path.read_bytes()[-4000:].decode(errors="replace")
     payload = json.loads((tmp_path / "recovery-result.json").read_text(encoding="utf8"))
     assert payload["slots"] == 12 and payload["scripted_posts"] == 0
     assert payload["official_search_checkpoint_created"] is False

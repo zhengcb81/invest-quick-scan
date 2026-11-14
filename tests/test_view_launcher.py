@@ -15,41 +15,196 @@ SCRIPT=ROOT/'scripts/view_quick_scan.py'
 DASHBOARD=ROOT/'scripts/open_dashboard.py'
 
 
-def test_company_dashboard_missing_source_is_actionable(tmp_path):
-    done = subprocess.run([sys.executable, '-B', str(DASHBOARD), '--ui-root', str(tmp_path/'missing')],
-                          cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
-    assert done.returncode == 2 and '--ui-root' in done.stderr and 'Traceback' not in done.stderr
+def _dashboard_fixture(tmp_path, ui_root=None, *, config_overrides=None):
+    ui = Path(ui_root).resolve() if ui_root is not None else tmp_path / 'ui'
+    if ui_root is None:
+        app = ui / 'src' / 'app'
+        app.mkdir(parents=True)
+        (app / 'index.html').write_text('<!doctype html><title>IQS UI</title>', encoding='utf8')
+    state = tmp_path / 'state'
+    config = tmp_path / 'dashboard.json'
+    config_value = {'state_root': str(state), 'workspace_root': '',
+                    'workspace_kind': 'unconfigured', **(config_overrides or {})}
+    config.write_text(json.dumps(config_value), encoding='utf8')
+    return ui, state, config
 
 
-@pytest.mark.parametrize('no_refresh', [False, True])
-def test_company_dashboard_reuses_existing_serve_without_startup_tests(tmp_path, no_refresh):
-    ui = tmp_path/'ui'
-    (ui/'scripts').mkdir(parents=True)
-    (ui/'scripts'/'serve.py').write_text(
-        'import json, os, sys\nprint(json.dumps({"args":sys.argv[1:],"root":os.environ["IQS_DATA_ROOT"],"cwd":os.getcwd()}))\n',
-        encoding='utf8')
-    command = [sys.executable, '-B', str(DASHBOARD), '--ui-root', str(ui)]
+def _start_dashboard(tmp_path, *, no_refresh=False, existing_snapshot=None, ui_root=None,
+                     config_overrides=None):
+    ui, state, config = _dashboard_fixture(tmp_path, ui_root, config_overrides=config_overrides)
+    snapshot = state / 'workbench' / 'snapshot.json'
+    if existing_snapshot is not None:
+        snapshot.parent.mkdir(parents=True)
+        snapshot.write_bytes(existing_snapshot)
+    command = [sys.executable, '-B', '-X', 'utf8', str(DASHBOARD), '--ui-root', str(ui),
+               '--dashboard-config', str(config), '--port', '0']
     if no_refresh:
         command.append('--no-refresh')
-    done = subprocess.run(command, cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
-    assert done.returncode == 0, done.stderr
-    launched = json.loads(done.stdout.splitlines()[-1])
-    assert launched['args'] == ['--no-test', '--port', '8765'] + (['--no-build'] if no_refresh else [])
-    assert Path(launched['cwd']) == ui and Path(launched['root']) == ROOT
+    process = subprocess.Popen(command, cwd=tmp_path, env=_env(tmp_path), stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, text=True, encoding='utf8')
+    lines = queue.Queue()
+    reader = threading.Thread(target=lambda: lines.put(process.stdout.readline()), daemon=True)
+    reader.start()
+    try:
+        ready = json.loads(lines.get(timeout=30))
+    except Exception:
+        process.kill()
+        stdout, stderr = process.communicate(timeout=10)
+        raise AssertionError(f'dashboard failed to start: {stdout}\n{stderr}')
+    return process, reader, ready, ui, state, snapshot
 
 
-def test_company_dashboard_plan_and_failure_do_not_report_success(tmp_path):
-    ui = tmp_path/'ui'
-    (ui/'scripts').mkdir(parents=True)
-    (ui/'scripts'/'serve.py').write_text('raise SystemExit(7)\n', encoding='utf8')
-    data = tmp_path/'product-only'
-    (data/'scripts').mkdir(parents=True)
-    (data/'scripts'/'dashboard_service.py').touch()
-    command = [sys.executable, '-B', str(DASHBOARD), '--ui-root', str(ui), '--data-root', str(data)]
-    planned = subprocess.run(command + ['--plan'], cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
-    assert planned.returncode == 0 and json.loads(planned.stdout)['tests'] is False
-    failed = subprocess.run(command, cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
-    assert failed.returncode == 7
+def _stop_dashboard(process, reader):
+    if process.poll() is None:
+        process.terminate()
+    process.wait(timeout=10)
+    reader.join(timeout=2)
+    process.stdout.close()
+    process.stderr.close()
+    assert not reader.is_alive()
+
+
+def test_company_dashboard_serves_static_ui_and_one_owner_snapshot_without_ui_runtime(tmp_path):
+    process, reader, ready, ui, state, snapshot = _start_dashboard(tmp_path)
+    try:
+        assert ready['status'] == 'ready' and ready['model_calls'] == ready['network_calls'] == 0
+        with urllib.request.urlopen(ready['url'], timeout=10) as response:
+            assert 'IQS UI' in response.read().decode('utf8')
+        with urllib.request.urlopen(ready['url'] + 'api/product/setup', timeout=10) as response:
+            assert json.loads(response.read())['ok'] is True
+        with urllib.request.urlopen(ready['url'] + 'generated/snapshot.json', timeout=10) as response:
+            document = json.loads(response.read())
+        assert document['protocol'] == 'iqs.workbench-snapshot/1.0.0'
+        assert document['availability']['bank'] == 'available'
+        assert document['availability']['roster'] == 'unavailable'
+        assert document['manifest']['counts']['entities'] is None
+        with urllib.request.urlopen(ready['url'] + 'generated/bank.json', timeout=10) as response:
+            assert json.loads(response.read()) == document['bank']
+        with pytest.raises(urllib.error.HTTPError) as escaped:
+            urllib.request.urlopen(ready['url'] + '%2e%2e/%2e%2e/dashboard.json', timeout=10)
+        assert escaped.value.code == 404
+        assert snapshot.is_file()
+        assert sorted(path.relative_to(ui).as_posix() for path in ui.rglob('*') if path.is_file()) == ['src/app/index.html']
+    finally:
+        _stop_dashboard(process, reader)
+
+
+def test_company_dashboard_no_refresh_reads_existing_snapshot_without_rewriting_it(tmp_path):
+    original = b'{"old":"snapshot"}\n'
+    process, reader, ready, _ui, _state, snapshot = _start_dashboard(
+        tmp_path, no_refresh=True, existing_snapshot=original)
+    try:
+        with urllib.request.urlopen(ready['url'] + 'generated/snapshot.json', timeout=10) as response:
+            document = json.loads(response.read())
+        assert set(document['availability'].values()) == {'unavailable'}
+        assert snapshot.read_bytes() == original
+    finally:
+        _stop_dashboard(process, reader)
+
+
+def test_company_dashboard_runs_the_current_ui_source_as_static_content(tmp_path):
+    ui = Path(os.environ.get('IQS_UI_ROOT', ROOT.parent / 'iqs-question-bank-ui-lab')).resolve()
+    if not (ui / 'src' / 'app' / 'index.html').is_file():
+        pytest.skip('Current UI source is unavailable; provide IQS_UI_ROOT for this cross-repository smoke test.')
+    process, reader, ready, _ui, state, snapshot = _start_dashboard(tmp_path, ui_root=ui)
+    try:
+        for asset in ('', 'styles/app.css', 'store.js'):
+            with urllib.request.urlopen(ready['url'] + asset, timeout=10) as response:
+                body = response.read()
+                assert response.status == 200 and body
+                if asset == 'store.js':
+                    assert b'/generated/snapshot.json' in body
+        with urllib.request.urlopen(ready['url'] + 'generated/snapshot.json', timeout=10) as response:
+            document = json.loads(response.read())
+        assert document['availability']['bank'] == 'available'
+        assert document['bank']['question_count'] > 0
+        assert document['availability']['roster'] == 'unavailable'
+        assert snapshot.is_file() and snapshot.parent.parent == state
+        assert all(not source['path'].startswith('src/generated/')
+                   for source in document['manifest']['sources'])
+    finally:
+        _stop_dashboard(process, reader)
+
+
+def test_company_dashboard_composes_current_ui_with_isolated_stockwiki_owner(tmp_path):
+    """The product snapshot must cross the real public StockWiki CLI boundary."""
+    stockwiki = ROOT.parent / 'StockWiki'
+    if not (stockwiki / 'stockwiki' / 'quick_scan_dashboard_cli.py').is_file():
+        pytest.skip('Current StockWiki public owner source is unavailable.')
+    ui = Path(os.environ.get('IQS_UI_ROOT', ROOT.parent / 'iqs-question-bank-ui-lab')).resolve()
+    if not (ui / 'src' / 'app' / 'index.html').is_file():
+        pytest.skip('Current UI source is unavailable; provide IQS_UI_ROOT for this cross-repository test.')
+
+    owner_workspace = tmp_path / 'owner-workspace'
+    seed = r'''
+import sys
+from pathlib import Path
+stockwiki = Path(sys.argv[1])
+sys.path.insert(0, str(stockwiki / 'tests'))
+from test_quick_scan_universe import _seed, _entity, _plant
+from stockwiki.quick_scan_universe import add_member
+store, _ = _seed(Path(sys.argv[2]), 'IQS_WORKBENCH_TEST')
+_plant(store, _entity('ENT_IQS_WORKBENCH', ticker='600001', name='Isolated Workbench Member'))
+add_member(store, 'IQS_WORKBENCH_TEST', 'ENT_IQS_WORKBENCH',
+           added_reason='isolated workbench integration', at='2026-11-12T00:00:00Z')
+'''
+    seed_env = _env(tmp_path)
+    seed_env['PYTHONPATH'] = os.pathsep.join((str(stockwiki), str(stockwiki / 'tests')))
+    seeded = subprocess.run([sys.executable, '-B', '-X', 'utf8', '-c', seed,
+                             str(stockwiki), str(owner_workspace)],
+                            cwd=stockwiki, env=seed_env, capture_output=True,
+                            text=True, encoding='utf8', timeout=60)
+    assert seeded.returncode == 0, seeded.stderr
+
+    def file_hashes(root):
+        import hashlib
+        return {path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+                for path in root.rglob('*') if path.is_file()}
+
+    owner_before = file_hashes(owner_workspace)
+    process, reader, ready, _ui, state, snapshot_path = _start_dashboard(
+        tmp_path, ui_root=ui, config_overrides={
+            'stockwiki_root': str(stockwiki),
+            'workspace_root': str(owner_workspace),
+            'stockwiki_python': sys.executable,
+            'universe_id': 'IQS_WORKBENCH_TEST',
+            'workspace_kind': 'isolated_test',
+        })
+    try:
+        assert ready['status'] == 'ready'
+        assert ready['model_calls'] == ready['network_calls'] == 0
+        with urllib.request.urlopen(ready['url'] + 'generated/snapshot.json', timeout=20) as response:
+            snapshot = json.loads(response.read())
+        assert snapshot['protocol'] == 'iqs.workbench-snapshot/1.0.0'
+        assert snapshot['availability']['bank'] == snapshot['availability']['roster'] == 'available'
+        assert snapshot['bank']['question_count'] > 0
+        assert {'common', 'dupont', 'porter'} <= set(snapshot['bank']['always_applicable_modules'])
+        assert snapshot['roster']['entities'] == 1
+        assert snapshot['roster']['rows'][0]['entity_id'] == 'ENT_IQS_WORKBENCH'
+        assert snapshot['roster']['rows'][0]['name'] == 'Isolated Workbench Member'
+        assert snapshot['roster']['rows'][0]['listings'][0] == {
+            'market': 'CN', 'ticker': '600001', 'status': 'active'}
+        assert snapshot_path.is_file() and snapshot_path.parent.parent == state
+        with urllib.request.urlopen(ready['url'], timeout=10) as response:
+            assert response.status == 200 and response.read()
+        assert file_hashes(owner_workspace) == owner_before
+    finally:
+        _stop_dashboard(process, reader)
+
+
+def test_company_dashboard_plan_and_missing_static_root_are_actionable(tmp_path):
+    missing = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(DASHBOARD), '--ui-root', str(tmp_path/'missing'), '--plan'],
+                             cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
+    assert missing.returncode == 2 and '--ui-root' in missing.stderr and 'Traceback' not in missing.stderr
+    ui, state, config = _dashboard_fixture(tmp_path)
+    planned = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(DASHBOARD), '--ui-root', str(ui), '--data-root', str(ROOT),
+                              '--dashboard-config', str(config), '--port', '0', '--plan'],
+                             cwd=tmp_path, env=_env(tmp_path), capture_output=True, text=True, encoding='utf8', timeout=20)
+    assert planned.returncode == 0
+    details = json.loads(planned.stdout)
+    assert details['refresh'] is False and details['tests'] is False
+    assert details['model_calls'] is False and details['owner_reads'] is False and details['writes'] is False
+    assert not state.exists()
 
 
 def _env(tmp_path):

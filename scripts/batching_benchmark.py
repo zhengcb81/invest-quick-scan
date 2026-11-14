@@ -21,6 +21,7 @@ import threading
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace, ModuleType
@@ -463,6 +464,28 @@ class TransportObserver:
 _thread_context = threading.local()
 
 
+def current_transport_observer():
+    """Return the observer bound to this thread, or ``None`` outside a call."""
+    return getattr(_thread_context, 'observer', None)
+
+
+@contextmanager
+def transport_observer(observer):
+    """Temporarily bind an observer and restore the prior nested scope."""
+    previous = current_transport_observer()
+    _thread_context.observer = observer
+    try:
+        yield observer
+    finally:
+        if previous is None:
+            try:
+                del _thread_context.observer
+            except AttributeError:
+                pass
+        else:
+            _thread_context.observer = previous
+
+
 def install_observer(module):
     original = module.http_client_manager.get_sync_session
     delegate = original()
@@ -507,12 +530,12 @@ def call_chunk(module, delegate, ledger, run, company, questions, evidence, rout
               evidence_sha256=fingerprint(evidence),questions_sha256=fingerprint(questions),
               cache_key=key,identity_sha256=company['identity_file_sha256'])
     observer=TransportObserver(delegate,ledger,route,meta,params)
-    _thread_context.observer=observer
-    client=module.LLMClient(read_key(cfg['key_env']),cfg['model'],cfg['endpoint'],timeout=180,provider_name=route)
     start=time.monotonic()
     result=dict(**meta,route=route,created_at=now(),cache_hit=False)
     try:
-        content=client.send_request(prompt,system)
+        with transport_observer(observer):
+            client=module.LLMClient(read_key(cfg['key_env']),cfg['model'],cfg['endpoint'],timeout=180,provider_name=route)
+            content=client.send_request(prompt,system)
         # Keep only bounded final structured answers, never reasoning/raw response.
         try:
             rows=parse_answers(content,meta['question_ids'],[e['source_id'] for e in evidence])
@@ -549,8 +572,6 @@ def call_chunk(module, delegate, ledger, run, company, questions, evidence, rout
                     result['item_inspection_error']=str(err)[:100]
     except Exception as exc:
         result.update(state='failed',exception_type=type(exc).__name__,answers=[])
-    finally:
-        _thread_context.observer=None
     result.update(receipt=observer.receipt,wall_s=round(time.monotonic()-start,3))
     write_json(run/'results'/(chunk+'.json'),result)
     if result['state']=='valid':

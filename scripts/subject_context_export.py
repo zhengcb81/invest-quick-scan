@@ -3,6 +3,11 @@ import copy
 import query_contract as qc
 import subject_dispatch_contract as dc
 
+API_PROTOCOL = "iqs.subject-context-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "attach_subject_context",
+})
+
 def attach_subject_context(context,manifest,binding,*,listing_bindings=None):
     if context.get('schema')!='stockqa.quick_scan_observation_context/1.0.0':
         raise ValueError('subject_context_requires_original_context1')

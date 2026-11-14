@@ -251,11 +251,12 @@ def request(run,module,delegate,ledger,slug,route,variant,qs,arm,warm=False):
     cfg=b.ROUTES[route];meta=dict(arm=arm,company=slug,entity_id=company['entity_id'],question_ids=[q['question_id'] for q in qs],
         evidence_sha256=b.fingerprint(context),questions_sha256=b.fingerprint(qs),prompt_sha256=b.fingerprint(dict(system=SYSTEM,prompt=prompt)),
         run_fingerprint=binding,variant=variant,cache_key=key)
-    observer=b.TransportObserver(delegate,ledger,route,meta,params);b._thread_context.observer=observer
+    observer=b.TransportObserver(delegate,ledger,route,meta,params)
     start=time.monotonic();result=dict(**meta,route=route,created_at=b.now(),state='failed',answers=[])
     try:
-        client=module.LLMClient(b.read_key(cfg['key_env']),cfg['model'],cfg['endpoint'],timeout=180,provider_name=route)
-        content=client.send_request(prompt,SYSTEM)
+        with b.transport_observer(observer):
+            client=module.LLMClient(b.read_key(cfg['key_env']),cfg['model'],cfg['endpoint'],timeout=180,provider_name=route)
+            content=client.send_request(prompt,SYSTEM)
         try:
             rows=parse(content,meta['question_ids'],[s['source_id'] for s in context])
             if observer.receipt is None or observer.receipt.get('finish_reason')!='stop':raise ValueError('non_stop_finish')
@@ -265,7 +266,6 @@ def request(run,module,delegate,ledger,slug,route,variant,qs,arm,warm=False):
             result.update(state='invalid_answer',parse_error=type(exc).__name__+':'+str(exc)[:100],final_content_sha256=hashlib.sha256(content.encode()).hexdigest())
     except Exception as exc:
         result['exception_type']=type(exc).__name__
-    finally:b._thread_context.observer=None
     result.update(receipt=observer.receipt,wall_s=round(time.monotonic()-start,3))
     b.write_json(run/'results'/(arm+'.json'),result)
     if result['state']=='valid' and cache.get(key) is None:cache.put(key,result)

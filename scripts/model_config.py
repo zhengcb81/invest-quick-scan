@@ -6,6 +6,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config/models.json"
+API_PROTOCOL = "iqs.model-route-config-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "load", "models", "search", "get", "routes",
+})
 
 
 def load(path: Path | None = None) -> dict:

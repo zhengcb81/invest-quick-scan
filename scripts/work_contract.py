@@ -10,6 +10,11 @@ import hashlib
 import json
 import re
 
+API_PROTOCOL = "iqs.work-contract-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "freshness_status", "parse_utc",
+})
+
 
 _UTC_TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|\+00:00)$")
 _IDENTIFIER = re.compile(r"^[A-Za-z0-9_.-]{1,160}$")

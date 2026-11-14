@@ -3,6 +3,12 @@ import module_registry
 import question_manifest
 import standard_answers
 
+API_PROTOCOL = "iqs.frozen-question-projection-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "create_question_config",
+    "create_projection", "create_execution_profile",
+})
+
 
 def create_question_config(manifest, *, root):
     """Explicit identified transport from the SAME valid immutable release.

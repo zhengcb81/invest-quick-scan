@@ -142,6 +142,15 @@ def test_status_declares_job_facade_routes(product):
     assert 'iqs.bundle.spend_authorization' in facade['limits_ref_registry']
 
 
+def test_command_id_probe_reaches_facade_owner_id_validation(product):
+    # IqsJobAdapter probes GET jobs/{id} before falling back to the public
+    # GET jobs/commands/{command_id} route. The router must not mask the
+    # facade's typed owner_job_id_invalid response with a 405.
+    status, reply = call(product, path='/api/product/jobs/dash-cmd-1')
+    assert status == 400
+    assert reply['error']['code'] == 'owner_job_id_invalid'
+
+
 def test_submit_requires_csrf_like_every_write(product):
     status, reply = call(product, 'POST', '/api/product/jobs/submit',
                          json.dumps({'command_request': COMMAND}),

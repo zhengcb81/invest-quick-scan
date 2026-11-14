@@ -12,7 +12,6 @@ import json
 import os
 import subprocess
 import sys
-from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -37,15 +36,15 @@ _ENV_NAMES = (
     "IQS_C06_BRIDGE_ROOT",
 )
 SAFE_ENV = {name: os.environ[name] for name in _ENV_NAMES if name in os.environ}
-# This is an explicitly isolated test process. Original fixture code also uses
-# dict(os.environ); constrain that process before importing any fixture/client.
-os.environ.clear()
-os.environ.update(SAFE_ENV)
-
-OWN = Path(os.environ["IQS_C06_OWN"])
-CODE = Path(os.environ["IQS_C06_COMPOSITION_CODE_ROOT"])
-COMPANY = Path(os.environ["IQS_C06_COMPANY_ROOT"])
-BRIDGE = Path(os.environ["IQS_C06_BRIDGE_ROOT"])
+# StockQA's public fixtures write this path into owner policy contracts, which
+# require configured roots to be absolute. Normalize it before importing any
+# fixture/client so the caller may select the isolated worktree relatively.
+if "IQS_C06_OWN" in SAFE_ENV:
+    SAFE_ENV["IQS_C06_OWN"] = str(Path(SAFE_ENV["IQS_C06_OWN"]).resolve())
+OWN = Path(SAFE_ENV["IQS_C06_OWN"]).resolve()
+CODE = Path(SAFE_ENV["IQS_C06_COMPOSITION_CODE_ROOT"]).resolve()
+COMPANY = Path(SAFE_ENV["IQS_C06_COMPANY_ROOT"]).resolve()
+BRIDGE = Path(SAFE_ENV["IQS_C06_BRIDGE_ROOT"]).resolve()
 sys.path.insert(0, str(COMPANY / "src"))
 sys.path.insert(0, str(BRIDGE / "src"))
 
@@ -65,6 +64,7 @@ from src.runners.llm_runner import QuickScanWorkLifecycle
 from src.utils.quick_scan_owner_research import OwnerResearchServices
 from src.utils.quick_scan_refresh_admission import RefreshAdmissionService
 from src.utils.quick_scan_refresh_execution import prepare_execution
+from src.utils.quick_scan_owner_refresh_api import adapt_owner_refresh
 
 from tests.delegated_fixture import setup_delegated as setup_admission
 from tests.integration.test_c06_subject_public_e2e import actual
@@ -88,13 +88,18 @@ def construct(config):
         process_env=dict(SAFE_ENV),
         recovery_only=config.get("recovery_only", False),
     )
+    # The owner crosses into the consumer through its published DTO/port.
+    # The store handle remains a test-composition bootstrap detail because the
+    # contract intentionally keeps mutable storage out of detached snapshots.
+    owner_port = adapt_owner_refresh(owner)
+    owner_snapshot = owner_port.snapshot()
     if config.get("llm_config_file"):
-        owner.assert_executor_policy(config["llm_config_file"], config["policy"],
-                                     executor_store=owner.service.store)
-    first = owner.requested_question_ids[0]
-    ref = owner.native.observation_context["questions"][first]["subject_binding"]["subject_ref"]
+        owner_port.assert_executor_policy(config["llm_config_file"], config["policy"],
+                                          executor_store=owner.service.store)
+    first = owner_snapshot.requested_question_ids[0]
+    ref = owner_snapshot.observation_context["questions"][first]["subject_binding"]["subject_ref"]
     policy = config["policy"]
-    route = (owner.execution_routes(policy)[0] if config.get("recovery_only")
+    route = (owner_port.execution_routes(policy)[0] if config.get("recovery_only")
              else policy["routes"][0])
     external = None
     if config.get("external_policy"):
@@ -104,7 +109,7 @@ def construct(config):
         external = dict(
             policy=load_search_policy(config["external_policy"]),
             model_policy=config.get("model_policy", policy),
-            question_manifest_sha256=owner.bundle["manifest"]["manifest_sha256"],
+            question_manifest_sha256=owner_snapshot.bundle["manifest"]["manifest_sha256"],
             health_store=QuickScanProviderHealth(Path(config["root"]) / "search-health.sqlite"),
             unknown_reset_cooldown_seconds=60,
             rate_limit_cooldown_seconds=20,
@@ -112,21 +117,21 @@ def construct(config):
     lifecycle = QuickScanWorkLifecycle(
         owner.service.store,
         entity_id=ref["entity_id"],
-        run_id=owner.record["inputs"]["run_id"],
-        scan_id=owner.record["inputs"]["scan_id"],
-        identity=owner.bundle["identity"],
+        run_id=owner_snapshot.record["inputs"]["run_id"],
+        scan_id=owner_snapshot.record["inputs"]["scan_id"],
+        identity=owner_snapshot.bundle["identity"],
         transport_managed=True,
         route_id=route["id"],
         provider_name=route["provider_config_ref"],
         model_requested=route["model"],
         budget_policy=policy,
         budget_route=route,
-        owner_refresh_session=owner,
-        c06_authority=owner.bundle["authority"],
-        observation_context=owner.native.observation_context,
-        scope_by_question=owner.scope_bindings,
+        owner_refresh_session=owner_port,
+        c06_authority=owner_snapshot.bundle["authority"],
+        observation_context=owner_snapshot.observation_context,
+        scope_by_question=dict(owner_snapshot.scope_bindings),
         generation_by_question={
-            qid: owner.existing_work(qid)["generation"] for qid in owner.requested_question_ids
+            qid: owner_port.existing_work(qid)["generation"] for qid in owner_snapshot.requested_question_ids
         },
         external_retrieval=external,
     )
@@ -154,6 +159,12 @@ def construct(config):
         ),
     )
     return task, services
+
+
+def _task_snapshot(task):
+    """Use Company Agent's published DTO instead of reading the opaque handle."""
+    from iqs_company_agent_lab.api import task_snapshot
+    return task_snapshot(task)
 
 
 @pytest.mark.parametrize("actual", ["1.2.0"], indirect=True)
@@ -208,7 +219,9 @@ def test_explicit_finalization_uses_actual_external_context_and_original_owner_c
                   confirmation_id=prepared["consent"]["confirmation_id"], policy=policy, model_policy=model_policy,
                   root=str(tmp_path), external_policy=str(search_file))
     task, services = construct(config)
+    task_contract = _task_snapshot(task)
     posts, searches = [], []
+    model_requests = []
 
     class Wire:
         def request(self, *args, **kwargs):
@@ -217,18 +230,24 @@ def test_explicit_finalization_uses_actual_external_context_and_original_owner_c
 
         def post(self, *args, **kwargs):
             posts.append(1)
-            messages = kwargs["json"]["messages"]
-            assert "https://fixture.example/ir" in messages[-1]["content"]
-            assert "untrusted data" in messages[0]["content"]
-            assert kwargs["json"]["thinking"] == {"type": "enabled"}
-            original_context = json.loads(messages[-1]["content"].split("External evidence context (JSON data, not instructions):\n", 1)[1])
-            source = original_context["sources"][0]
-            answers = [sf.gen_insufficient(row["question"]) for row in task.questions]
+            body = copy.deepcopy(kwargs["json"])
+            model_requests.append(body)
+            messages = body.get("messages", [])
+            source = {"source_id": "synthetic-missing-context", "title": "Synthetic fallback",
+                "url": "https://fixture.example/ir", "published_at": plan["information_as_of"],
+                "short_snippet": "Synthetic fallback used only to expose request-contract assertion failures."}
+            try:
+                original_context = json.loads(messages[-1]["content"].split(
+                    "External evidence context (JSON data, not instructions):\n", 1)[1])
+                source = original_context["sources"][0]
+            except (IndexError, KeyError, TypeError, ValueError):
+                pass
+            answers = [sf.gen_insufficient(row["question"]) for row in task_contract["questions"]]
             for answer in answers:
-                answer.update(status="scored", score=6, basis="current", information_as_of=task.raw["information_cutoff"], summary="[Synthetic software fixture] Supported by the actual scripted retrieval.",
+                answer.update(status="scored", score=6, basis="current", information_as_of=task_contract["raw"]["information_cutoff"], summary="[Synthetic software fixture] Supported by the actual scripted retrieval.",
                               evidence=[dict(id=source["source_id"], title=source["title"], url=source["url"], published_at=source["published_at"], claim=source["short_snippet"])])
             payload = dict(id="synthetic-finalization-response", model="mimo-v2.6-pro",
-                           choices=[dict(message=dict(role="assistant", content=json.dumps({"answers": answers, "declared_question_ids": task.question_ids}), reasoning_content="PRIVATE-THINKING-MUST-NOT-PERSIST"), finish_reason="stop")],
+                           choices=[dict(message=dict(role="assistant", content=json.dumps({"answers": answers, "declared_question_ids": task_contract["question_ids"]}), reasoning_content="PRIVATE-THINKING-MUST-NOT-PERSIST"), finish_reason="stop")],
                            usage=dict(prompt_tokens=1200, prompt_tokens_details=dict(cached_tokens=400), completion_tokens=1200, completion_tokens_details=dict(reasoning_tokens=200)))
             encoded = json.dumps(payload).encode()
             response = _response(encoded)
@@ -241,9 +260,17 @@ def test_explicit_finalization_uses_actual_external_context_and_original_owner_c
                    max_output_tokens=4096, session_input_tokens=240000, session_output_tokens=48000,
                    wall_seconds=900, logical_clock=False)
     result = engine.execute_shared_engine(task, services, session, tmp_path / "native-export", session_dir=tmp_path / "native-session", transport_origin="scripted_wire")
-    assert result["all_slots_completed"] and posts == [1] and searches == [1]
+    assert posts == [1], result
+    assert searches == [1], result
+    assert len(model_requests) == 1
+    requested_body = model_requests[0]
+    requested_messages = requested_body.get("messages", [])
+    assert "https://fixture.example/ir" in requested_messages[-1]["content"]
+    assert "untrusted data" in requested_messages[0]["content"]
+    assert requested_body["thinking"] == {"type": "enabled"}
+    assert result["all_slots_completed"], result
     assert all(slot["answer"]["status"] == "scored" and slot["answer"]["score"] == 6 for slot in result["run"]["slots"])
-    work_id = services.owner.existing_work(task.question_ids[0])["work_item_id"]
+    work_id = services.owner.existing_work(task_contract["question_ids"][0])["work_item_id"]
     # RED baseline: research execution alone is deliberately not production finalization.
     assert services.store.get_answer_checkpoint(work_id) is None
     original_attempts = services.store.list_attempts(work_id)
@@ -261,7 +288,7 @@ def test_explicit_finalization_uses_actual_external_context_and_original_owner_c
     assert delivery is not None and delivery["state"] == "ready"
     before = (copy.deepcopy(checkpoint), copy.deepcopy(services.store.list_attempts(work_id)))
     again = engine.finalize_shared_engine(task, restored, tmp_path / "native-export")
-    assert again["reused_question_ids"] == task.question_ids
+    assert again["reused_question_ids"] == task_contract["question_ids"]
     assert (services.store.get_answer_checkpoint(work_id), services.store.list_attempts(work_id)) == before
     assert services.store.get_result_delivery(work_id) == delivery
     assert posts == [1] and searches == [1] and len(services.store.list_attempts(work_id)) == 1
@@ -284,6 +311,7 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
     settings = dict(root=str(tmp_path), deployment=str(prepared['deployment_file']),
                     confirmation_id=prepared['consent']['confirmation_id'], bundle=str(prepared['bundle']), policy=policy)
     task, services = construct(settings)
+    task_contract = _task_snapshot(task)
     excerpt = 'SYNTHETIC-CONTEXT-CANARY: same-period OCF=100; cash capex=40; no real company finding.'
     record = dict(evidence_id='synthetic-primary', scope='issuer', period_start='2025-01-01', period_end='2025-12-31',
                   unit='thousand', currency='CNY', accounting_basis='synthetic', source_url='https://provided.example.org/statement',
@@ -292,7 +320,7 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
                   support_status='supported', supersedes_id=None, limitations=['Synthetic software fixture only.'])
     config = dict(schema_version='1.0.0', iqs_root=str(CODE), company_agent_root=str(COMPANY),
                   runtime_bridge_root=str(BRIDGE), state_root=str(tmp_path/'shared'),
-                  evidence_boards=[{'subject_ref': task.raw['owner_binding']['subject_ref'], 'records':[record]}])
+                  evidence_boards=[{'subject_ref': task_contract['raw']['owner_binding']['subject_ref'], 'records':[record]}])
     before_config = copy.deepcopy(config)
     # Observe and re-raise real boundary failures: an incomplete run alone
     # cannot distinguish a send-binding error from a rejected answer.
@@ -335,10 +363,10 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
             assert record['source_url'] in json.dumps(context['evidence'])
             assert '"published_at": null' in json.dumps(context['evidence'])
             selected = context['requested_question_ids']
-            answers = [sf.gen_insufficient(row['question']) for row in task.questions if row['question_id'] in selected]
+            answers = [sf.gen_insufficient(row['question']) for row in task_contract['questions'] if row['question_id'] in selected]
             for answer in answers:
                 answer.update(status='scored', score=6, confidence='medium',
-                              information_as_of=task.raw['information_cutoff'],
+                              information_as_of=task_contract['raw']['information_cutoff'],
                               period_start=record['period_start'], period_end=record['period_end'], basis='current',
                               summary='[Synthetic software fixture] Cash after cash capex is 60 thousand CNY.',
                               evidence=[dict(id=record['evidence_id'], title='Synthetic statement',
@@ -357,16 +385,16 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
             response.content = json.dumps(payload).encode()
             return response
     monkeypatch.setattr(http_client_manager,'get_sync_session',lambda:Wire())
-    questions = [Question(row['question']['prompt'],question_id=row['question_id']) for row in task.questions]
+    questions = [Question(row['question']['prompt'],question_id=row['question_id']) for row in task_contract['questions']]
     arguments = dict(config=config, questions=questions, cost_resolver=services.cost_resolver,
                      question_pack_size=1, max_output_tokens=4096, transport_origin='scripted_wire')
     result = run_shared_company_scan(services.lifecycle, services.client, **arguments)
-    assert {row['question_id'] for row in result['checkpoints']} == set(task.question_ids) and len(posts) == 2
+    assert {row['question_id'] for row in result['checkpoints']} == set(task_contract['question_ids']) and len(posts) == 2
     from types import SimpleNamespace
     hydrator = QAEngine(SimpleNamespace(get_provider_name=lambda:'hydrate-only'), work_item_lifecycle=services.lifecycle)
     hydrated = hydrator.hydrate_questions(questions)
     assert len(hydrated.results) == 2
-    work_ids = [services.owner.existing_work(qid)['work_item_id'] for qid in task.question_ids]
+    work_ids = [services.owner.existing_work(qid)['work_item_id'] for qid in task_contract['question_ids']]
     original = [services.store.get_answer_checkpoint(w) for w in work_ids]
     assert all(row['payload']['answer']['status']=='scored' and row['payload']['answer']['score']==6 for row in original)
     assert all(services.store.get_standard_answer(work_id)['answer']['evidence'][0]['url']==record['source_url']
@@ -394,7 +422,9 @@ def test_original_shared_entry_search_context_finalization_and_zero_send_reuse(a
 def child_run(config_path, phase):
     config = json.loads(Path(config_path).read_text(encoding="utf8"))
     base = Path(config["root"])
+    policy = config["policy"]
     task, services = construct(config)
+    task_contract = _task_snapshot(task)
     from iqs_company_agent_lab import synthfixtures as sf
     from src.providers import llm_research_client as sdk
 
@@ -407,12 +437,12 @@ def child_run(config_path, phase):
         def __init__(self, selected):
             answers = [
                 sf.gen_insufficient(row["question"])
-                for row in task.questions
+                for row in task_contract["questions"]
                 if row["question_id"] in selected
             ]
             for answer in answers:
                 answer["status"] = "not_applicable"
-                answer["information_as_of"] = task.raw["information_cutoff"]
+                answer["information_as_of"] = task_contract["raw"]["information_cutoff"]
                 answer["summary"] = "[Synthetic software fixture] No real company finding."
             self.content = json.dumps(
                 dict(
@@ -447,7 +477,7 @@ def child_run(config_path, phase):
             posts.append(1)
             context = json.loads(kwargs["json"]["messages"][-1]["content"].splitlines()[-1])
             selected = context["requested_question_ids"]
-            if phase != "crash" and task.question_ids[0] in selected:
+            if phase != "crash" and task_contract["question_ids"][0] in selected:
                 raise AssertionError("native saved first response must never be posted again")
             assert kwargs["json"]["thinking"] == {"type": "enabled"}
             assert len(kwargs["json"]["messages"]) >= 2
@@ -505,11 +535,9 @@ def child_run(config_path, phase):
     )
     assert summary["cash_cost"] is None
     assert report["runtime_observations"] == summary
-    with closing(services.store._connect()) as connection:
-        assert (
-            connection.execute("SELECT COUNT(*) FROM quick_scan_budget_attempt").fetchone()[0] == 2
-        )
-    for qid in task.question_ids:
+    assert services.store.get_quick_scan_budget_status(policy["policy_id"])["requests"] == 2
+    assert len(posts) == 1, "resume may send only the remaining original question"
+    for qid in task_contract["question_ids"]:
         assert (
             services.store.get_answer_checkpoint(services.owner.existing_work(qid)["work_item_id"])
             is None
@@ -541,6 +569,7 @@ def test_original_shared_partial_pack_saved_before_confirmed_refusal_32k(actual,
     settings = dict(root=str(tmp_path), deployment=str(prepared["deployment_file"]),
                     confirmation_id=prepared["consent"]["confirmation_id"], bundle=str(prepared["bundle"]), policy=policy)
     source_task, services = construct(settings)
+    source_task_contract = _task_snapshot(source_task)
     shared_config = dict(schema_version="1.0.0", iqs_root=str(CODE), company_agent_root=str(COMPANY),
                          runtime_bridge_root=str(BRIDGE), state_root=str(tmp_path / "shared"))
     sent = []
@@ -554,9 +583,9 @@ def test_original_shared_partial_pack_saved_before_confirmed_refusal_32k(actual,
             selected = json.loads(body["messages"][-1]["content"].splitlines()[-1])["requested_question_ids"]
             assert len(selected) == 1
             if len(sent) == 1:
-                answers = [sf.gen_insufficient(row["question"]) for row in source_task.questions if row["question_id"] in selected]
+                answers = [sf.gen_insufficient(row["question"]) for row in source_task_contract["questions"] if row["question_id"] in selected]
                 for answer in answers:
-                    answer.update(status="not_applicable", information_as_of=source_task.raw["information_cutoff"],
+                    answer.update(status="not_applicable", information_as_of=source_task_contract["raw"]["information_cutoff"],
                                   summary="[Synthetic software fixture] Completed first pack, no real financial finding.")
                 response = _b01_thinking_response("mimo_chat_completions", "mimo-v2.6-pro",
                     final=json.dumps({"answers": answers, "declared_question_ids": selected}))
@@ -570,7 +599,7 @@ def test_original_shared_partial_pack_saved_before_confirmed_refusal_32k(actual,
             return response
 
     monkeypatch.setattr(http_client_manager, "get_sync_session", lambda: Wire())
-    questions = [Question(row["question"]["prompt"], question_id=row["question_id"]) for row in source_task.questions]
+    questions = [Question(row["question"]["prompt"], question_id=row["question_id"]) for row in source_task_contract["questions"]]
     with pytest.raises(ValueError, match="shared_company_scan_incomplete"):
         run_shared_company_scan(services.lifecycle, services.client, config=shared_config,
             questions=questions, cost_resolver=services.cost_resolver,
@@ -625,16 +654,22 @@ def test_original_dynamic_scan_owner_sdk_process_resume_no_duplicate_http(actual
     config_file = tmp_path / "owned-native-test.json"
     config_file.write_text(json.dumps(config), encoding="utf8")
     for phase, expected in (("crash", 86), ("resume", 0)):
-        completed = subprocess.run(
-            [sys.executable, "-B", str(Path(__file__)), phase, str(config_file)],
-            cwd=OWN / "qa",
-            capture_output=True,
-            env=dict(SAFE_ENV, PYTHONDONTWRITEBYTECODE="1"),
-            timeout=900,
-        )
-        (tmp_path / (phase + ".stdout.log")).write_bytes(completed.stdout[-16000:])
-        (tmp_path / (phase + ".stderr.log")).write_bytes(completed.stderr[-16000:])
-        assert completed.returncode == expected, completed.stderr[-4000:].decode(errors="replace")
+        stdout_path = tmp_path / (phase + ".stdout.log")
+        stderr_path = tmp_path / (phase + ".stderr.log")
+        try:
+            with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+                completed = subprocess.run(
+                    [sys.executable, "-B", str(Path(__file__)), phase, str(config_file)],
+                    cwd=OWN / "qa",
+                    stdout=stdout,
+                    stderr=stderr,
+                    env=dict(SAFE_ENV, PYTHONDONTWRITEBYTECODE="1"),
+                    timeout=900,
+                )
+        except subprocess.TimeoutExpired as error:
+            diagnostic = stderr_path.read_bytes()[-4000:].decode(errors="replace")
+            raise AssertionError(f"native {phase} child timed out: {diagnostic}") from error
+        assert completed.returncode == expected, stderr_path.read_bytes()[-4000:].decode(errors="replace")
     payload = json.loads((tmp_path / "recovery-result.json").read_text(encoding="utf8"))
     assert payload["slots"] == 2 and payload["scripted_posts"] == 1
     assert payload["official_search_checkpoint_created"] is False

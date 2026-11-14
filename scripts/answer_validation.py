@@ -9,7 +9,18 @@ import copy
 import json
 from pathlib import Path
 
-API_PROTOCOL = "iqs.answer-validation-api/1.0.0"
+API_PROTOCOL = "iqs.answer-validation-api/1.1.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "AnswerSemanticsRejected",
+    "original_answer_resources",
+    "project_original_semantic_resources",
+    "frozen_answer_semantics",
+})
+SEMANTIC_RESOURCES_PROTOCOL = "iqs.answer-semantic-resources/1.0.0"
+_SEMANTIC_RESOURCE_KEYS = (
+    "schemas/answer-content.schema.json",
+    "questions/metric-registry.json",
+)
 
 class AnswerSemanticsRejected(ValueError):
     """The original frozen answer context cannot be validated."""
@@ -47,7 +58,7 @@ def original_answer_resources(context, root):
     # keys, not a requirement that today's catalog still has the same hash.
     legacy_resources = None
     try:
-        resources = {name: standard_answers.library.read_json(root / name) for name in names.values()}
+        resources = {name: standard_answers.read_resource(root / name) for name in names.values()}
         legacy_resources = resources
         if matches(resources):
             return resources
@@ -70,7 +81,91 @@ def original_answer_resources(context, root):
     raise AnswerSemanticsRejected("original_answer_resources_unavailable")
 
 
-def frozen_answer_semantics(task, context, *, release_root=None):
+def _context_package_id(context):
+    questions = context.get("questions", {}) if isinstance(context, dict) else None
+    if not isinstance(questions, dict):
+        raise AnswerSemanticsRejected("original_answer_context_required")
+    package_ids = {
+        row.get("metadata", {}).get("module_package_id")
+        for row in questions.values()
+        if isinstance(row, dict) and isinstance(row.get("metadata"), dict)
+        and row["metadata"].get("module_package_id") is not None
+    }
+    if len(package_ids) > 1 or any(not isinstance(value, str) or not value for value in package_ids):
+        raise AnswerSemanticsRejected("original_answer_resource_package_mismatch")
+    return next(iter(package_ids), None)
+
+
+def project_original_semantic_resources(context, *, release_root):
+    """Resolve the original owner's frozen semantic files into a path-free DTO.
+
+    ``release_root`` is a transient resolver input. It is never returned or
+    persisted; callers receive only the two detached JSON resources used by the
+    answer validator, their content digests, and the bound observation context.
+    """
+    import standard_answers
+
+    from pathlib import Path
+
+    if not isinstance(context, dict):
+        raise AnswerSemanticsRejected("original_answer_context_required")
+    try:
+        root = Path(release_root)
+        if not root.is_absolute():
+            raise ValueError("absolute_release_root_required")
+        resources = original_answer_resources(context, root)
+        selected = {key: copy.deepcopy(resources[key]) for key in _SEMANTIC_RESOURCE_KEYS}
+        projected = {
+            "protocol": SEMANTIC_RESOURCES_PROTOCOL,
+            "context_sha256": standard_answers.digest(context),
+            "module_package_id": _context_package_id(context),
+            "resource_digests": {
+                key: standard_answers.digest(value) for key, value in selected.items()
+            },
+            "format_resources": selected,
+        }
+        json.dumps(projected, ensure_ascii=False, sort_keys=True, allow_nan=False)
+        return projected
+    except AnswerSemanticsRejected:
+        raise
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        raise AnswerSemanticsRejected("original_semantic_resources_unavailable") from error
+
+
+def _resources_from_projection(context, projection):
+    import standard_answers
+
+    expected_fields = {
+        "protocol", "context_sha256", "module_package_id", "resource_digests",
+        "format_resources",
+    }
+    if not isinstance(projection, dict) or set(projection) != expected_fields:
+        raise AnswerSemanticsRejected("original_semantic_resources_projection_invalid")
+    if (
+        projection.get("protocol") != SEMANTIC_RESOURCES_PROTOCOL
+        or projection.get("context_sha256") != standard_answers.digest(context)
+        or projection.get("module_package_id") != _context_package_id(context)
+    ):
+        raise AnswerSemanticsRejected("original_semantic_context_mismatch")
+    resources = projection.get("format_resources")
+    digests = projection.get("resource_digests")
+    if (
+        not isinstance(resources, dict)
+        or set(resources) != set(_SEMANTIC_RESOURCE_KEYS)
+        or not isinstance(digests, dict)
+        or set(digests) != set(_SEMANTIC_RESOURCE_KEYS)
+        or any(not isinstance(resources[key], dict) for key in _SEMANTIC_RESOURCE_KEYS)
+        or any(
+            not isinstance(digests[key], str)
+            or digests[key] != standard_answers.digest(resources[key])
+            for key in _SEMANTIC_RESOURCE_KEYS
+        )
+    ):
+        raise AnswerSemanticsRejected("original_semantic_resources_digest_mismatch")
+    return copy.deepcopy(resources)
+
+
+def frozen_answer_semantics(task, context, *, release_root=None, semantic_resources=None):
     """Validate original questions; whole registry hashes are provenance only.
 
     Adding an unrelated metric or schema annotation must not invalidate an
@@ -90,8 +185,13 @@ def frozen_answer_semantics(task, context, *, release_root=None):
             or getattr(question_prompts, "SEMANTIC_RULES_API_PROTOCOL", None)
             != "iqs.question-prompt-semantics/1.0.0"):
         raise AnswerSemanticsRejected("original_standard_answer_validator_required")
-    root = Path(release_root) if release_root is not None else scripts.parent
-    resources = original_answer_resources(context, root)
+    if semantic_resources is not None:
+        if release_root is not None:
+            raise AnswerSemanticsRejected("ambiguous_original_semantic_resources")
+        resources = _resources_from_projection(context, semantic_resources)
+    else:
+        root = Path(release_root) if release_root is not None else scripts.parent
+        resources = original_answer_resources(context, root)
     schema = resources["schemas/answer-content.schema.json"]
     registry = resources["questions/metric-registry.json"]
     from iqs_company_agent_lab.api import task_from_snapshot, task_snapshot

@@ -28,6 +28,13 @@ from question_selection import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+API_PROTOCOL = "iqs.question-manifest-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "METRIC_CONTRACT_VERSION",
+    "archived_facts", "fact_questions", "metric_mapping", "published_method_id",
+    "select_fact_questions", "validate_manifest_metric_contract",
+    "validate_published_manifest",
+})
 METRIC_CONTRACT_VERSION = '1.0.0'
 
 
@@ -78,7 +85,7 @@ def validate_manifest_metric_contract(manifest, *, root=None):
         raise ValueError('unsupported metric contract version')
     local_root = Path(root) if root else ROOT
     if 'module_package_id' in manifest:
-        return _validate_published_manifest(manifest, root=local_root)
+        return validate_published_manifest(manifest, root=local_root)
     catalog, modules = library.load_library(root=local_root)
     if manifest.get('template_version') != catalog['version']:
         raise ValueError('metric-enriched manifest must match the loaded question catalog version')
@@ -125,7 +132,7 @@ def validate_manifest_metric_contract(manifest, *, root=None):
     return by_id
 
 
-def _published_method_id(questions, profile, contexts, package, release, answer_format):
+def published_method_id(questions, profile, contexts, package, release, answer_format):
     core = sorted((q['construct_id'], question_fingerprint(q, profile, contexts, package, release,
                                                             answer_format))
                   for q in questions if q['comparison_role'] == 'core')
@@ -168,7 +175,7 @@ def archived_facts(package, profile, mode, ids):
     return selected
 
 
-def _validate_published_manifest(manifest, *, root):
+def validate_published_manifest(manifest, *, root):
     package, modules, release, contexts = module_registry.load_package(
         manifest['module_package_id'], root=root)
     renderer = renderer_for_release(release['renderer_version'], package['renderer_rules_sha256'])
@@ -280,8 +287,13 @@ def _validate_published_manifest(manifest, *, root):
                 or observed.get('semantic_sha256') != question_fingerprint(
                     source, profile, contexts, package, release, answer_format)):
             raise ValueError('manifest question prompt or semantic fingerprint mismatch')
-    if manifest.get('method_id') != _published_method_id(
+    if manifest.get('method_id') != published_method_id(
             [q for q in expected if q.get('response_kind', 'score') == 'score'],
             profile, contexts, package, release, answer_format):
         raise ValueError('manifest core method fingerprint mismatch')
     return {item['question_id']: item for item in expected_mappings}
+
+
+# Compatibility aliases for older callers; peer modules use public names.
+_published_method_id = published_method_id
+_validate_published_manifest = validate_published_manifest

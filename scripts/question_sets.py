@@ -28,6 +28,12 @@ from question_prompts import (
 from question_fingerprints import question_fingerprint
 import question_selection as _selection_contract
 
+API_PROTOCOL = "iqs.question-composition-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "compose_from_route", "compose",
+    "basic_questions", "load_library",
+})
+
 ROOT = Path(__file__).resolve().parents[1]
 DIMENSIONS = {
     'business': '商业模式', 'moat': '竞争优势', 'execution': '执行组织',
@@ -124,7 +130,7 @@ def validate_profile(profile, modules, contexts=None):
 
 
 def _select_from_module_ids(profile, mode, modules, selected_modules, mandatory_question_ids=()):
-    return _selection_contract._select_from_module_ids(
+    return _selection_contract.select_from_module_ids(
         profile, mode, modules, selected_modules, mandatory_question_ids)
 
 
@@ -191,12 +197,12 @@ def _question_fingerprint(q, profile, contexts, package, release, answer_format)
 
 
 def _published_method_id(questions, profile, contexts, package, release, answer_format):
-    return manifest_contract._published_method_id(
+    return manifest_contract.published_method_id(
         questions, profile, contexts, package, release, answer_format)
 
 
 def _validate_published_manifest(manifest):
-    return manifest_contract._validate_published_manifest(manifest, root=ROOT)
+    return manifest_contract.validate_published_manifest(manifest, root=ROOT)
 
 
 def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=None,
@@ -1159,7 +1165,7 @@ def main():
         elif args.command == 'compose':
             result = compose(read_json(args.profile), args.mode, args.out_dir, args.answer_format,
                              package_id=args.module_package_id,
-                             route_decision=module_registry._read_json(Path(args.route_decision)) if args.route_decision else None,
+                             route_decision=module_registry.read_json(Path(args.route_decision)) if args.route_decision else None,
                              max_questions=args.max_questions, now_utc=args.now_utc,
                              expected_route_decision_id=args.expected_route_decision_id,
                              fact_question_ids=args.fact_question_id)
@@ -1174,7 +1180,7 @@ def main():
                 renderer_rules_sha256=renderer_rules_sha256(), activate=args.activate)
         elif args.command == 'routing-v2-request':
             import routing as route_engine
-            request = route_engine.build_route_request(module_registry._read_json(Path(args.identity)),
+            request = route_engine.build_route_request(module_registry.read_json(Path(args.identity)),
                                                        package_id=args.module_package_id, root=ROOT)
             if request['request_protocol'] not in {
                     'stockqa-route-confidence-1', 'stockqa-route-confidence-2', 'stockqa-route-confidence-3'}:
@@ -1187,16 +1193,16 @@ def main():
             result = {'question_id': 'ROUTE_02', 'prompt_sha256': request['prompt_sha256'], 'out_dir': str(output)}
         elif args.command == 'resolve-route':
             import routing as route_engine
-            inputs = module_registry._read_json(Path(args.input))
+            inputs = module_registry.read_json(Path(args.input))
             route_response = (Path(args.candidate).read_text(encoding='utf-8-sig')
                               if args.candidate else None)
-            execution_receipt = (module_registry._read_json(Path(args.execution_receipt))
+            execution_receipt = (module_registry.read_json(Path(args.execution_receipt))
                                  if args.execution_receipt else None)
             result = route_engine.resolve_route_decision(inputs, package_id=args.module_package_id,
                 route_response=route_response,
                 execution_receipt=execution_receipt,
-                user_policy=module_registry._read_json(Path(args.user_policy)) if args.user_policy else None,
-                previous_decision=module_registry._read_json(Path(args.previous_decision)) if args.previous_decision else None,
+                user_policy=module_registry.read_json(Path(args.user_policy)) if args.user_policy else None,
+                previous_decision=module_registry.read_json(Path(args.previous_decision)) if args.previous_decision else None,
                 expected_previous_decision_id=args.expected_previous_decision_id,
                 now_utc=args.now_utc, root=ROOT)
             if Path(args.output).exists():
@@ -1205,7 +1211,7 @@ def main():
             result = {'decision_id': result['decision_id'], 'status': result['status'],
                       'dispatch_status': result['dispatch_plan']['status'], 'output': args.output}
         elif args.command == 'compose-route':
-            result = compose_from_route(module_registry._read_json(Path(args.route_decision)), args.out_dir,
+            result = compose_from_route(module_registry.read_json(Path(args.route_decision)), args.out_dir,
                 now_utc=args.now_utc, expected_route_decision_id=args.expected_route_decision_id,
                 answer_format=args.answer_format, max_questions=args.max_questions,
                 fact_question_ids=args.fact_question_id)

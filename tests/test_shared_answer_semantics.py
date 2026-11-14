@@ -2,6 +2,7 @@
 import copy
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -9,8 +10,9 @@ from types import SimpleNamespace
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "scripts"), str(ROOT.parent / "StockQAbyLLM"),
-                str(ROOT.parent / "iqs-company-agent-lab/src")]
+STOCKQA_ROOT = Path(os.environ.get("IQS_STOCKQA_ROOT", ROOT.parent / "StockQAbyLLM"))
+COMPANY_AGENT_ROOT = Path(os.environ.get("IQS_COMPANY_AGENT_ROOT", ROOT.parent / "iqs-company-agent-lab"))
+sys.path[:0] = [str(ROOT / "scripts"), str(STOCKQA_ROOT), str(COMPANY_AGENT_ROOT / "src")]
 
 
 def load(name, path):
@@ -22,7 +24,7 @@ def load(name, path):
 
 
 engine = load("semantic_engine_units", ROOT / "scripts/shared_company_engine.py")
-helpers = load("semantic_company_helpers", ROOT.parent / "iqs-company-agent-lab/tests/conftest.py")
+helpers = load("semantic_company_helpers", COMPANY_AGENT_ROOT / "tests/conftest.py")
 standard_tests = load("semantic_body_fixtures", ROOT / "tests/test_standard_answers.py")
 from iqs_company_agent_lab.runner import Runner
 from iqs_company_agent_lab.runtime import SyntheticReplayPort
@@ -307,12 +309,27 @@ def native_bound(original, monkeypatch):
 
     class UnitRuntimePort:
         """Detached public Runtime DTO for glue-only semantic tests."""
+        def original_scan_context(self):
+            observed = getattr(services.owner, "observation_context", context)
+            return SimpleNamespace(observation_context=copy.deepcopy(observed))
+
         def original_inputs(self):
             return SimpleNamespace(
                 observation_context=copy.deepcopy(context),
                 input_raw={"owner-config.json": json.dumps(
                     {"iqs_release_root": str(ROOT)}
                 ).encode("utf8")},
+            )
+
+        def original_semantic_resources(self):
+            from answer_validation import project_original_semantic_resources
+
+            observed = self.original_scan_context().observation_context
+            resolver = getattr(services.owner, "original_semantic_resources", None)
+            if callable(resolver):
+                return resolver(copy.deepcopy(observed))
+            return project_original_semantic_resources(
+                observed, release_root=ROOT
             )
 
         def answer_source_context(self, question_id, reference, observed_context):
@@ -537,7 +554,7 @@ def test_scan_undated_source_retains_unknown_and_requires_known_availability(ori
 
 @pytest.mark.parametrize('allow_undated', [False, True])
 def test_evidence_replay_keeps_original_acceptance_policy(allow_undated):
-    scan_helpers = load('semantic_scan_fixtures', ROOT.parent / 'iqs-company-agent-lab/tests/test_scan_profile.py')
+    scan_helpers = load('semantic_scan_fixtures', COMPANY_AGENT_ROOT / 'tests/test_scan_profile.py')
     from iqs_company_agent_lab.replay import ReplayEngine
     from iqs_company_agent_lab.evidence import EvidenceBoard
     task = scan_helpers.scan_task(qs=scan_helpers.questions(1))

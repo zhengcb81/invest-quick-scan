@@ -206,7 +206,7 @@ def adapt_quick_scan_result(result: dict, identity: dict) -> dict:
     description = answer["description"]
     if not isinstance(description, str):
         raise ValueError("StockQA route description must contain serialized candidate JSON")
-    candidate = json.loads(description, object_pairs_hook=mc._unique_object)
+    candidate = json.loads(description, object_pairs_hook=mc.unique_json_object)
     if (not isinstance(candidate, dict)
             or set(candidate) != {"schema_version", "question_id", "candidates"}
             or candidate["schema_version"] != "2.0.0"

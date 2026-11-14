@@ -18,6 +18,11 @@ import module_contract as contract
 
 
 ROOT = Path(__file__).resolve().parents[1]
+API_PROTOCOL = "iqs.question-registry-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "load_package", "FACT_BANK_RESOURCE",
+    "observation_ingest_ready",
+})
 FACT_BANK_RESOURCE = 'questions/facts.json'
 PACKAGE_PATTERN = re.compile(r"^pkg_[a-f0-9]{64}$")
 RELEASE_PATTERN = re.compile(r"^modrel_[a-f0-9]{64}$")
@@ -43,9 +48,13 @@ def _filesystem_path(path: Path) -> Path:
     return Path(absolute)
 
 
-def _read_json(path: Path) -> dict:
+def read_json(path: Path) -> dict:
     return json.loads(_filesystem_path(path).read_bytes().decode("utf-8-sig"),
-                      object_pairs_hook=contract._unique_object)
+                      object_pairs_hook=contract.unique_json_object)
+
+
+# Compatibility alias for older callers; new peer modules use read_json.
+_read_json = read_json
 
 
 def _reject_symlink_components(path: Path, root: Path, message: str) -> None:
@@ -120,7 +129,7 @@ def _write_immutable(path: Path, raw: bytes) -> None:
 
 def source_catalog(root: Path = ROOT) -> tuple[dict, dict[str, dict], dict[str, bytes]]:
     """Read the sole editable scored catalog, rejecting duplicate registration."""
-    catalog = _read_json(root / "questions" / "catalog.json")
+    catalog = read_json(root / "questions" / "catalog.json")
     entries = catalog.get("modules")
     if not isinstance(entries, list) or not entries:
         raise ValueError("catalog modules must be nonempty")
@@ -139,7 +148,7 @@ def source_catalog(root: Path = ROOT) -> tuple[dict, dict[str, dict], dict[str, 
                 or native.is_symlink()):
             raise ValueError("catalog module path leaves questions/ or is a symlink")
         raw = native.read_bytes()
-        module = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=contract._unique_object)
+        module = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=contract.unique_json_object)
         if (module.get("module_id") != module_id or module.get("kind") != item.get("kind")
                 or item.get("question_count") != len(module.get("questions", []))):
             raise ValueError(f"catalog registration differs from {module_id} module")
@@ -183,7 +192,7 @@ def _legacy_baseline_hashes(root: Path) -> dict[str, str]:
         raise ValueError("legacy module baseline unavailable") from exc
     if hashlib.sha256(raw).hexdigest() != LEGACY_BASELINE_SHA256:
         raise ValueError("legacy module baseline hash mismatch")
-    baseline = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=contract._unique_object)
+    baseline = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=contract.unique_json_object)
     if (not isinstance(baseline, dict)
             or set(baseline) != {"schema_version", "release_id", "modules"}
             or baseline["schema_version"] != "1.0.0"
@@ -229,7 +238,7 @@ def validate_source_registry(*, root: Path = ROOT) -> tuple[dict, dict[str, dict
     """Validate current authoring files, deriving legacy status from exact bytes."""
     root = Path(root)
     catalog, modules, raw_modules = source_catalog(root)
-    contexts = _read_json(root / "questions" / "scoring-contexts.json")
+    contexts = read_json(root / "questions" / "scoring-contexts.json")
     hashes = {module_id: hashlib.sha256(raw).hexdigest()
               for module_id, raw in raw_modules.items()}
     legacy_ids = _verified_legacy_ids(root, modules, hashes)
@@ -254,7 +263,7 @@ def load_package(package_id: str, *, root: Path = ROOT) -> tuple[dict, dict[str,
     """Resolve a historic package only from its verified archive and lock."""
     root = Path(root)
     try:
-        package = _read_json(_package_path(root, package_id))
+        package = read_json(_package_path(root, package_id))
     except OSError as exc:
         raise ValueError('module package unavailable') from exc
     if not isinstance(package, dict) or package.get("package_id") != package_id:
@@ -282,7 +291,7 @@ def load_package(package_id: str, *, root: Path = ROOT) -> tuple[dict, dict[str,
     if package_id != "pkg_" + contract.digest(body):
         raise ValueError("module package content hash mismatch")
     try:
-        release = _read_json(_lock_path(root, body["release_id"]))
+        release = read_json(_lock_path(root, body["release_id"]))
     except OSError as exc:
         raise ValueError('module release lock unavailable') from exc
     modules = contract.validate_release(release, _artifact_loader(root))
@@ -305,7 +314,7 @@ def _load_routing_policy(root: Path, release: dict, modules: dict) -> dict:
     raw = _filesystem_path(_safe_path(root, release["routing_policy_ref"])).read_bytes()
     if hashlib.sha256(raw).hexdigest() != release["routing_policy_sha256"]:
         raise ValueError("routing policy archive hash mismatch")
-    policy = json.loads(raw.decode("utf-8"), object_pairs_hook=contract._unique_object)
+    policy = json.loads(raw.decode("utf-8"), object_pairs_hook=contract.unique_json_object)
     validate_policy(policy, modules)
     if policy["router_version"] != release["router_version"]:
         raise ValueError("routing policy version differs from release")
@@ -320,7 +329,7 @@ def load_routing_policy(package_id: str, *, root: Path = ROOT) -> dict:
 
 
 def load_current(*, root: Path = ROOT) -> tuple[dict, dict[str, dict], dict, dict]:
-    pointer = _read_json(Path(root) / "questions" / "releases" / "current.json")
+    pointer = read_json(Path(root) / "questions" / "releases" / "current.json")
     if not isinstance(pointer, dict) or set(pointer) != {"package_id"}:
         raise ValueError("invalid current module package pointer")
     return load_package(pointer["package_id"], root=root)
@@ -371,7 +380,7 @@ def publish_fact_bank(package_id: str, *, root: Path = ROOT) -> dict:
     package, modules, _, _ = load_package(package_id, root=root)
     if not observation_ingest_ready(package):
         raise ValueError('fact bank requires an observation-ready release')
-    bank = _read_json(root / FACT_BANK_RESOURCE)
+    bank = read_json(root / FACT_BANK_RESOURCE)
     validate_fact_bank(bank, modules)
     body = {key: value for key, value in package.items() if key != 'package_id'}
     body['format_resources'] = {**body['format_resources'], FACT_BANK_RESOURCE: bank}
@@ -401,15 +410,15 @@ def publish(*, root: Path = ROOT, renderer_version: str, router_version: str,
         raise ValueError("activate must be boolean")
     root = Path(root)
     catalog, modules, raw_modules = source_catalog(root)
-    contexts = _read_json(root / "questions" / "scoring-contexts.json")
+    contexts = read_json(root / "questions" / "scoring-contexts.json")
     previous = _historical_packages(root)
     baseline_hashes = _legacy_baseline_hashes(root)
     if not previous and set(modules) != set(baseline_hashes):
         raise ValueError("first release must freeze the known 48-module baseline")
     if not re.fullmatch(r"[a-f0-9]{64}", renderer_rules_sha256):
         raise ValueError("invalid renderer rules digest")
-    contract._version(renderer_version)
-    contract._version(router_version)
+    contract.parse_version(renderer_version)
+    contract.parse_version(router_version)
     policy_artifact = None
     if routing_policy is not None:
         from routing_contract import validate_policy
@@ -420,7 +429,7 @@ def publish(*, root: Path = ROOT, renderer_version: str, router_version: str,
         policy_sha = hashlib.sha256(policy_raw).hexdigest()
         policy_ref = f"questions/releases/routing/router_{router_version.replace('.', '_')}-{policy_sha}.json"
         policy_artifact = (policy_ref, policy_raw, policy_sha)
-    elif contract._version(router_version) >= (2, 0, 0):
+    elif contract.parse_version(router_version) >= (2, 0, 0):
         raise ValueError("router v2 requires a frozen routing policy")
     retired = set()
     history_questions: dict[str, tuple[str, str]] = {}
@@ -428,16 +437,16 @@ def publish(*, root: Path = ROOT, renderer_version: str, router_version: str,
     for past_package, past_modules, past_release, _ in previous:
         if (policy_artifact and past_release["schema_version"] == "2.0.0"
                 and past_release["routing_policy_sha256"] != policy_artifact[2]
-                and contract._version(router_version) <= contract._version(past_release["router_version"])):
+                and contract.parse_version(router_version) <= contract.parse_version(past_release["router_version"])):
             raise ValueError("routing policy changed without router version increase")
         if (past_package["renderer_rules_sha256"] != renderer_rules_sha256
-                and contract._version(renderer_version) <= contract._version(past_release["renderer_version"])):
+                and contract.parse_version(renderer_version) <= contract.parse_version(past_release["renderer_version"])):
             raise ValueError("renderer rules changed without renderer version increase")
         retired.update(past_release["retired_question_ids"])
         if set(past_modules) - set(modules):
             raise ValueError("previously published module removed from active catalog")
         for module_id, old in past_modules.items():
-            version = contract._version(old["version"])
+            version = contract.parse_version(old["version"])
             same_version = versions_by_module.setdefault(module_id, {}).get(version)
             if same_version is not None and same_version != old:
                 raise ValueError(f"{module_id}: historical version has conflicting content")
@@ -456,7 +465,7 @@ def publish(*, root: Path = ROOT, renderer_version: str, router_version: str,
         latest = ordered[-1]
         current = modules[module_id]
         if current != latest:
-            if contract._version(current["version"]) <= contract._version(latest["version"]):
+            if contract.parse_version(current["version"]) <= contract.parse_version(latest["version"]):
                 raise ValueError(f"{module_id}: changed or rolled-back published module version")
             contract.validate_upgrade(latest, current)
     artifact_hashes = {module_id: hashlib.sha256(raw).hexdigest()
@@ -497,7 +506,7 @@ def publish(*, root: Path = ROOT, renderer_version: str, router_version: str,
         artifacts[policy_ref] = policy_raw
     release = contract.seal_release(release_body)
     contract.validate_release(release, artifacts.__getitem__)
-    resources = {reference: _read_json(root / reference) for reference in (
+    resources = {reference: read_json(root / reference) for reference in (
         "schemas/answer-content.schema.json", "questions/metric-registry.json",
         "schemas/quick_scan/score.schema.json", "schemas/quick_scan/metric.schema.json",
         "schemas/observation.schema.json")}

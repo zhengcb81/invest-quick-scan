@@ -14,6 +14,11 @@ import module_registry
 ROOT = Path(__file__).resolve().parents[1]
 __all__ = ["ROOT", "read_json", "write_json", "load_library", "valid_url", "validate_profile",
            "ALWAYS_APPLICABLE_DIAGNOSTICS"]
+API_PROTOCOL = "iqs.question-library-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "ROOT", "read_json", "write_json", "load_library", "valid_url", "validate_profile",
+    "ALWAYS_APPLICABLE_DIAGNOSTICS", "API_PROTOCOL", "PUBLIC_API_EXPORTS",
+})
 
 ALWAYS_APPLICABLE_DIAGNOSTICS = ("dupont", "porter")
 """诊断默认必选集（RULE-SCOPE-DECISION-19，所有者 2026-10-24 裁定）。

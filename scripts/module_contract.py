@@ -17,6 +17,15 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_ROOT = ROOT / "schemas" / "quick_scan"
+API_PROTOCOL = "iqs.shared-contracts-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "canonical_bytes", "digest",
+    "unique_json_object", "parse_version", "question_definition_sha256",
+    "seal_release", "validate_registry", "validate_release", "validate_upgrade",
+    "core_construct_ids", "validate_schema", "validate_module",
+    "validate_route_decision", "ROUTE_SCHEMA",
+    "seal_route_decision",
+})
 
 
 def _schema(name: str) -> dict:
@@ -82,8 +91,18 @@ def _version(value: str) -> tuple[int, int, int]:
     return tuple(int(part) for part in value.split("."))
 
 
+def parse_version(value: str) -> tuple[int, int, int]:
+    """Parse a module/release semantic version for peer modules."""
+    return _version(value)
+
+
 def _validate(schema: dict, value: object) -> None:
     Draft202012Validator(schema, format_checker=FormatChecker()).validate(value)
+
+
+def validate_schema(schema: dict, value: object) -> None:
+    """Validate a protocol fragment supplied by a peer module."""
+    _validate(schema, value)
 
 
 def validate_module(module: dict, *, core_ids: frozenset[str] | None = None,

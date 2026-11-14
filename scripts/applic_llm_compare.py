@@ -179,14 +179,14 @@ def main(argv: list[str] | None = None) -> int:
                 reports[model_id] = json.loads(path.read_text(encoding="utf-8"))
     else:
         import model_config
-        import thin_scan
+        from model_invocation import ask_model
         routes = model_config.routes()
         for model_id in args.model:
             route = routes[model_id]
             report = probe.run_probe(
                 companies=companies, snapshot_path=args.snapshot,
                 catalog_path=args.catalog, ledger_path=None,
-                out_dir=args.out / model_id, model_call=thin_scan.ask_model,
+                out_dir=args.out / model_id, model_call=ask_model,
                 provider=route, tag=model_id, chunk=args.chunk,
             )
             (args.out / f"report-{model_id}.json").write_text(

@@ -137,7 +137,10 @@ _local_helper(bundle)
 
 
 def test_dashboard_uses_public_interfaces():
-    files = sorted(SCRIPTS.glob("dashboard_*.py")) + [SCRIPTS / "open_dashboard.py"]
+    files = sorted(SCRIPTS.glob("dashboard_*.py")) + [
+        SCRIPTS / "open_dashboard.py", SCRIPTS / "workbench_snapshot.py",
+        SCRIPTS / "workbench_snapshot_cli.py",
+    ]
     modules = {path.stem for path in files}
     violations = [
         f"{path.name}:{line}: {symbol}"
@@ -145,6 +148,29 @@ def test_dashboard_uses_public_interfaces():
         for line, symbol in _private_edges(path.read_text(encoding="utf-8-sig"), dashboard_modules=modules)
     ]
     assert not violations, "Dashboard must use public interfaces:\n" + "\n".join(violations)
+
+
+def test_workbench_composition_does_not_import_or_read_ui_runtime():
+    files = [SCRIPTS / "open_dashboard.py", SCRIPTS / "workbench_snapshot.py",
+             SCRIPTS / "workbench_snapshot_cli.py", SCRIPTS / "dashboard_service.py"]
+    forbidden = ("iqs_question_bank_ui_lab", "build_data", "iqs-question-bank-ui-lab.scripts")
+    violations = []
+    for path in files:
+        source = path.read_text(encoding="utf-8-sig")
+        tree = ast.parse(source)
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                names = [alias.name for alias in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                names = [node.module or ""]
+            else:
+                continue
+            violations.extend(f"{path.name}:{node.lineno}:{name}" for name in names
+                              if any(token in name for token in forbidden))
+    service = (SCRIPTS / "dashboard_service.py").read_text(encoding="utf-8-sig")
+    if "src/generated/answers.json" in service:
+        violations.append("dashboard_service.py: reads UI-generated answer history")
+    assert not violations, "IQS workbench must consume UI only as static content:\n" + "\n".join(violations)
 
 
 def _owner_implementation_references(source):
@@ -175,7 +201,7 @@ def test_owner_implementation_transport_is_detected(source):
 
 @pytest.mark.parametrize("filename", [
     "dashboard_owner.py", "dashboard_company_projection.py", "dashboard_delivery.py",
-    "dashboard_execution.py", "dashboard_prepare.py",
+    "dashboard_execution.py", "dashboard_prepare.py", "dashboard_membership_request.py",
 ])
 def test_migrated_owner_clients_only_call_public_commands(filename):
     path = SCRIPTS / filename

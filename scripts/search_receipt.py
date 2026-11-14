@@ -13,6 +13,11 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
+API_PROTOCOL = "iqs.search-receipt-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "utc_now", "canonical_sha256",
+    "from_response", "validate",
+})
 SCHEMA = json.loads((ROOT / "schemas/quick_scan/search-receipt-v1.schema.json").read_bytes())
 VALIDATOR = Draft202012Validator(SCHEMA)
 

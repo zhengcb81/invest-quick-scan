@@ -1132,6 +1132,216 @@ def test_cache_preview_exposes_existing_results_without_an_apply_or_job(original
     assert not (directory/'apply-started.json').exists()
 
 
+def test_i4_fresh_reuse_expiry_refresh_and_readonly_history_do_not_extend_cache(original, monkeypatch):
+    """Drive one isolated owner question through warm reuse and expiry.
+
+    The test uses the existing synthetic runner completion helper: the native
+    ledger, sealing, acknowledgement, and StockWiki observation import are
+    real, while no model/network request is made. External CLI processes run
+    from this test's temporary directory so their relative logs never touch
+    the sibling source checkout.
+    """
+    from datetime import datetime, timedelta, timezone
+    from test_dashboard_unusable_recovery import _deliver, _synthetic_response
+    from src.utils.quick_scan_work_store import QuickScanWorkStore
+    from stockwiki.paths import WorkspacePaths
+    from stockwiki.quick_scan_observations import QuickScanObservationStore
+    from scripts import dashboard_prepare as prepare
+
+    gateway, base, config = original
+    start = datetime.now(timezone.utc).replace(microsecond=0)
+    clock = [start]
+    monkeypatch.setattr(prepare, "_now", lambda: clock[0].isoformat().replace("+00:00", "Z"))
+
+    # The owner and executor are separate real CLI processes. Give only those
+    # isolated children the same controllable clock as IQS, so an exact TTL
+    # boundary is tested without future-request refusals or time-inconsistent
+    # synthetic receipts. The shim and every child cwd live under this fixture.
+    clock_shim = base / "clock-shim"
+    clock_shim.mkdir()
+    (clock_shim / "sitecustomize.py").write_text(
+        "import datetime as _datetime, os, subprocess\n"
+        "_real_datetime = _datetime.datetime\n"
+        "class _FrozenDateTime(_real_datetime):\n"
+        "    @classmethod\n"
+        "    def now(cls, tz=None):\n"
+        "        raw = os.environ.get('IQS_TEST_CLOCK')\n"
+        "        if not raw:\n"
+        "            return super().now(tz)\n"
+        "        value = _real_datetime.fromisoformat(raw.replace('Z', '+00:00'))\n"
+        "        return value.astimezone(tz) if tz is not None else value.replace(tzinfo=None)\n"
+        "_datetime.datetime = _FrozenDateTime\n"
+        "_real_run = subprocess.run\n"
+        "def _clocked_run(*args, **kwargs):\n"
+        "    env = dict(kwargs.get('env') or os.environ)\n"
+        "    existing = env.get('PYTHONPATH', '')\n"
+        "    shim = os.path.dirname(__file__)\n"
+        "    env['PYTHONPATH'] = os.pathsep.join(x for x in (shim, existing) if x)\n"
+        "    env['IQS_TEST_CLOCK'] = os.environ.get('IQS_TEST_CLOCK', '')\n"
+        "    kwargs['env'] = env\n"
+        "    return _real_run(*args, **kwargs)\n"
+        "subprocess.run = _clocked_run\n",
+        encoding="utf-8",
+    )
+
+    from stockwiki import quick_scan_observations as owner_observations
+    from stockwiki import quick_scan_subject_dispatch as owner_dispatch
+
+    class FrozenOwnerDateTime(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return clock[0].astimezone(tz) if tz is not None else clock[0].replace(tzinfo=None)
+
+    monkeypatch.setattr(owner_observations, "datetime", FrozenOwnerDateTime)
+    monkeypatch.setattr(owner_dispatch, "datetime", FrozenOwnerDateTime)
+    monkeypatch.setattr(prepare, "datetime", FrozenOwnerDateTime)
+
+    # All writable owner/runtime state is inside the existing temporary fixture.
+    owner_policy_path = base / "owner" / "config" / "quick_scan_refresh.json"
+    owner_policy = json.loads(owner_policy_path.read_bytes())
+    owner_policy["cache_clock"] = "successful_scan"
+    owner_policy_path.write_text(json.dumps(owner_policy), encoding="utf-8")
+
+    real_run = subprocess.run
+    cli_cwds = {}
+
+    def run_from_owned_cwd(command, *args, **kwargs):
+        raw_cwd = kwargs.get("cwd")
+        if raw_cwd is not None:
+            external_root = Path(raw_cwd).resolve()
+            env = dict(kwargs.get("env") or os.environ)
+            existing = env.get("PYTHONPATH")
+            if external_root in {WIKI.resolve(), QA.resolve()}:
+                name = "stockwiki" if external_root == WIKI.resolve() else "stockqa"
+                safe_cwd = base / "cli-cwd" / name
+                safe_cwd.mkdir(parents=True, exist_ok=True)
+                env["PYTHONPATH"] = os.pathsep.join(
+                    value for value in (str(clock_shim), str(external_root), existing) if value
+                )
+                kwargs["cwd"] = safe_cwd
+                cli_cwds[name] = safe_cwd
+            elif external_root == base or base in external_root.parents:
+                env["PYTHONPATH"] = os.pathsep.join(
+                    value for value in (str(clock_shim), existing) if value
+                )
+            else:
+                return real_run(command, *args, **kwargs)
+            env["IQS_TEST_CLOCK"] = clock[0].isoformat().replace("+00:00", "Z")
+            kwargs["env"] = env
+        return real_run(command, *args, **kwargs)
+
+    monkeypatch.setattr(subprocess, "run", run_from_owned_cwd)
+
+    # Keep the public gateway methods and real owner CLIs, but execute the
+    # small IQS worker operation in-process so the test can relocate only the
+    # child CLI working directories away from the external source checkouts.
+    def worker(operation, payload):
+        if operation == "snapshot":
+            return prepare._snapshot(config, payload)
+        if operation == "cache_preview":
+            return prepare._cache_preview(config, payload)
+        if operation == "bank_reuse":
+            return prepare._reusable_bank(config, payload)
+        if operation == "apply":
+            return prepare._apply(config, payload)
+        raise AssertionError(f"unexpected IQS worker operation: {operation}")
+
+    monkeypatch.setattr(gateway, "_worker", worker)
+    selection = {"entity_id": ENTITY, "as_of": start.date().isoformat(), "question_ids": ["IQS_01"]}
+
+    first = gateway.bank_preview(selection)
+    assert first["can_apply"] is True
+    initial = gateway.apply({key: first[key] for key in ("preview_id", "preview_token")})
+    initial_bundle = next(
+        row["execution_bundle"]
+        for row in initial["execution_bundles"]
+        if row["execution_bundle"]["scope"] == "entity"
+    )
+    Path(base / "frozen-manifest.json").write_bytes(Path(initial_bundle["manifest"]).read_bytes())
+    work_store = QuickScanWorkStore(base / "work.sqlite", clock=lambda: clock[0].timestamp())
+    work_id, authority, routes, paths = _synthetic_response(work_store, initial_bundle, "IQS_01")
+    _deliver(work_store, work_id, authority, routes, paths, base)
+
+    observations = QuickScanObservationStore(WorkspacePaths.from_root(base / "owner"))
+    original_rows = observations.observations_for_entity(ENTITY)
+    assert len(original_rows) == 1
+    old_observation_id = original_rows[0]["observation_id"]
+    source_db = observations.database_path
+    before_fresh = source_db.read_bytes()
+
+    warm = gateway.bank_preview(selection)
+    assert warm["cache_only_available"] is True
+    assert warm["cached_result"]["status"] == "cached"
+    assert warm["API_requests"] == 0 and warm["dispatch_started"] is False
+    assert source_db.read_bytes() == before_fresh
+
+    # The UI's explicit apply action must also take the cached branch. A
+    # preview hit alone does not prove the user-facing apply path avoids a
+    # second admission or execution.
+    before_warm_apply_work = (base / "work.sqlite").read_bytes()
+    before_warm_apply_admission = tree(base / "admission-runs")
+    before_warm_apply_inputs = tree(base / "inputs")
+    warm_apply = gateway.apply({key: warm[key] for key in ("preview_id", "preview_token")})
+    assert warm_apply["status"] == "cached"
+    assert warm_apply["execution_bundles"] == []
+    assert warm_apply["API_requests"] == 0 and warm_apply["dispatch_started"] is False
+    assert warm_apply["owner_state_changed"] is False
+    reused = [
+        item["observation_id"]
+        for scope in warm_apply["cached_scopes"]
+        for item in scope["items"]
+        if item["question_id"] == "IQS_01"
+    ]
+    assert reused == [old_observation_id]
+    assert source_db.read_bytes() == before_fresh
+    assert (base / "work.sqlite").read_bytes() == before_warm_apply_work
+    assert tree(base / "admission-runs") == before_warm_apply_admission
+    assert tree(base / "inputs") == before_warm_apply_inputs
+
+    # At the exact successful-scan TTL boundary the old result is stale and a
+    # normal, user-selected refresh may register one successor work item.
+    clock[0] = start + timedelta(hours=24)
+    expired = gateway.bank_preview(selection)
+    assert expired["cache_only_available"] is False
+    refreshed = gateway.apply({key: expired[key] for key in ("preview_id", "preview_token")})
+    refreshed_row = next(
+        row for row in refreshed["execution_bundles"]
+        if row["execution_bundle"]["scope"] == "entity"
+    )
+    refreshed_bundle = refreshed_row["execution_bundle"]
+    registrations = refreshed_row["admission"]["registration"]["items"]
+    assert len(registrations) == 1 and registrations[0]["question_id"] == "IQS_01"
+    new_id, authority, routes, paths = _synthetic_response(work_store, refreshed_bundle, "IQS_01")
+    _deliver(work_store, new_id, authority, routes, paths, base)
+
+    # Public owner history is the exported observation view. Reads must leave
+    # the source observation database byte-identical and return both versions.
+    request = {"protocol": "stockwiki.quick_scan_dashboard_request/1.0.0",
+               "operation": "history", "payload": {"entity_id": ENTITY}}
+    command = [sys.executable, "-B", "-X", "utf8", "-m", "stockwiki.quick_scan_dashboard_cli",
+               "--root", str(base / "owner"), "--universe-id", "TEST",
+               "--workspace-kind", "isolated_test"]
+    env = dict(_env(), PYTHONPATH=os.pathsep.join((str(clock_shim), str(WIKI))))
+    env["IQS_TEST_CLOCK"] = clock[0].isoformat().replace("+00:00", "Z")
+    before_history = source_db.read_bytes()
+    history_process = real_run(command, input=json.dumps(request).encode("utf-8"),
+                               capture_output=True, cwd=cli_cwds["stockwiki"], env=env, timeout=60)
+    assert history_process.returncode == 0, history_process.stderr.decode("utf-8", "replace")
+    history = json.loads(history_process.stdout)["result"]
+    assert history["count"] == 2
+    assert {row["observation_id"] for row in history["observations"]} == {
+        old_observation_id, observations.observations_for_entity(ENTITY)[-1]["observation_id"]
+    }
+    after_history = source_db.read_bytes()
+    assert after_history == before_history
+
+    # A read/export at the next exact boundary cannot renew the refreshed row.
+    clock[0] = start + timedelta(hours=48)
+    stale_again = gateway.bank_preview(selection)
+    assert stale_again["cache_only_available"] is False
+    assert source_db.read_bytes() == after_history
+
+
 @pytest.mark.parametrize('clock',[None,'successful_scan'])
 def test_readonly_cache_preview_preserves_native_dates_and_binds_selected_scope(tmp_path, monkeypatch, clock):
     from scripts import dashboard_prepare as prepare

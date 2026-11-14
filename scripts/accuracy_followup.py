@@ -196,11 +196,13 @@ def score_request(run,module,delegate,ledger,slug,route,arm,warm=False):
     meta=dict(arm=arm,company=slug,entity_id=company['entity_id'],question_ids=[q['question_id'] for q in qs],variant='enhanced',
         evidence_sha256=b.fingerprint(context),questions_sha256=b.fingerprint(qs),run_fingerprint=binding,cache_key=key,
         prompt_sha256=b.fingerprint(dict(system=SCORE_SYSTEM,prompt=prompt)))
-    observer=b.TransportObserver(delegate,ledger,route,meta,params);b._thread_context.observer=observer
+    observer=b.TransportObserver(delegate,ledger,route,meta,params)
     started=time.monotonic();result=dict(**meta,route=route,created_at=b.now(),state='failed',answers=[])
     try:
-        cfg=b.ROUTES[route];client=module.LLMClient(b.read_key(cfg['key_env']),cfg['model'],cfg['endpoint'],timeout=180,provider_name=route)
-        content=client.send_request(prompt,SCORE_SYSTEM)
+        cfg=b.ROUTES[route]
+        with b.transport_observer(observer):
+            client=module.LLMClient(b.read_key(cfg['key_env']),cfg['model'],cfg['endpoint'],timeout=180,provider_name=route)
+            content=client.send_request(prompt,SCORE_SYSTEM)
         try:
             rows=b.parse_answers(content,meta['question_ids'],[x['source_id'] for x in context])
             if not observer.receipt or observer.receipt.get('finish_reason')!='stop' or observer.receipt.get('actual_model')!=cfg['model']:raise ValueError('score_receipt_invalid')
@@ -208,7 +210,6 @@ def score_request(run,module,delegate,ledger,slug,route,arm,warm=False):
         except (ValueError,TypeError) as exc:
             result.update(state='invalid_answer',parse_error=type(exc).__name__,final_content_sha256=b.fingerprint(content))
     except Exception as exc:result['exception_type']=type(exc).__name__
-    finally:b._thread_context.observer=None
     result.update(receipt=observer.receipt,wall_s=round(time.monotonic()-started,3))
     b.write_json(run/'score-results'/(arm+'.json'),result)
     if result['state']=='valid' and cache.get(key) is None:cache.put(key,result)

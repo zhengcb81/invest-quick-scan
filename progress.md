@@ -2,7 +2,7 @@
 
 ## 2026-11-13 I1–I7 并行模块审查（进行中，不代表专项完成）
 
-按公开接口/状态矩阵分域并行审查并合并同源根因，避免逐个反例打补丁：I1公开facade和I7 Dashboard已独立ACCEPT；I5 Theme/Industry已修复、独审和提交；I2普通31题恢复链增强后通过；I3被独立审查发现仍缺原生intent查询，当前不签收；I4与I6继续完成组合用例，最后用固定源码组合复核。
+按公开接口/状态矩阵分域并行审查并合并同源根因，避免逐个反例打补丁：I1公开facade和I7 Dashboard已有独立审查；I5 Theme/Industry已修复、独审和提交；I2普通31题恢复链通过；I3原生 intent 回执、付费回答恢复、unknown 暂停、未发送分类及入库 ACK 的隔离全链现已通过（见本文件 2026-11-13 I3 末尾记录），早期“缺原生 intent 查询”文字属于该修复前快照；I4、I6 已有定向通过记录。**仍未完成的是这些场景在固定提交组合上的复跑及一次独立总审。**
 
 - **I2 普通/共享持久化：** 普通 `main_with_llm` 31题真实子进程链已逐题断言唯一attempt与work/question绑定、原生response、checkpoint/standard answer、ready delivery观察/模型/截止日；第二个冷进程撤掉HTTP stub后复用31题、model_calls=0、发送日志不变，attempt/checkpoint/delivery完整快照相同。隔离定向测试1 passed/31.55秒，owned runtime清理成功，付费API0。非作者审查认可测试覆盖结构；共享部分现有paid partial与12题native恢复例已核覆盖，但仍在I1–I7固定来源组合复跑时收尾。
 - **I3 unknown 回执：** 初始公开CLI复现和首轮修复已证明unknown-only不重发，但独立审查发现它只查StockQA发送状态及StockWiki发送前subject receipt，没有调用CompanyResearchRuntime公开 `recover_intent()` 查询Runtime原生模型intent/response；当前新增E2E只手工构造StockQA uncertain attempt，不能证明原生回执可恢复/缺失时暂停。原生路径必须经版本化CompanyResearchRuntime、Runtime和Company Agent public facade，禁止 `.native` 或私有service穿透；补回执存在、缺失、mixed与never-sent场景，并保留ordinary checkpoint unknown-only拒绝。首轮1 passed/140.16秒只作为窄行为证据，I3仍OPEN。
@@ -13,6 +13,15 @@
 - **I3/I7本轮真实隔离证据：** `test_unknown_intent_cold_native_e2e.py` 现有底层行为例为 **1 passed/0 skipped，410.519秒，付费API 0，外网拒绝，临时根清理**；另一次 shared native E2E **1 passed，551.48秒，付费API 0，临时源码副本清理**。后者从运行时各仓工作树复制文件且没有捕获当时 HEAD/diff/hash，故只作行为证据，不算固定提交组合通过；unknown 行为测试还需断言 `all_slots_completed=false`。相关运行记录在 `runs/test-reports/i3-unknown-final-20261113T021734Z/` 和 `runs/qa-public-seams-2026-11-02/shared-engine-native-current-final-20261113.log`。
 
 **当前结论：** 模块专项仍开放。I1–I7 已有定向通过记录，I3 的通过证据见本文件末尾。下一步进行固定来源组合复跑与一次独立总审。
+
+## 2026-11-13 平铺脚本、类封装与边界合同回归
+
+- **设计裁定：** 不对每个脚本机械套类。类用于有状态、资源或生命周期对象；领域规则按能力域封装，跨域用版本化 facade/DTO/CLI，依赖在应用组合根接线。Python 的 `_private` 只是约定，类不会形成访问控制。若按域迁移目录，逐域新增包 facade并保留旧 CLI 薄入口，避免一次搬动136个脚本。
+- **基线确认：** 本仓当前 `scripts/` 有 **136** 个 Python 脚本；源代码依赖检查曾计得 **226** 条直接导入边、未发现静态循环。无循环不代表低耦合；边界缺少完整归属和API操作声明，才让同类跨域访问能以普通公开 helper/对象成员出现。
+- **架构测试根修：** 清单要求全部136项逐一归层，应用层有独立显式清单；API协议需是语义版本，公开导出必须实际绑定。扫描器支持无别名/有别名跨域导入、常见 importlib/__import__、简单变量链、导入类、构造实例与条件表达式来源合并后的私有成员、`getattr`、`vars`；冲突别名保守失败。冻结模块loader测试现在逐项核对“锁定模块名→loader函数→相同字面导入”，不再替换掉真实loader后只测字典调用。
+- **实际暴露的问题：** RED阶段及独审逐步发现清单漏项、源文件/导入目标未归类会静默跳过、公开声明有未绑定名称、实验launcher的动态导入不透明、模块别名/对象别名/构造实例私有访问漏检、测试断言分支覆盖不足。已修复归属、API声明、延迟导入显式映射、扫描器和夹具；扫描器遇多来源赋值时改为稳定的ambiguous结果，不再循环传播。
+- **验证：** `tests/test_shared_public_boundaries.py tests/test_company_agent_contrast_launcher.py` **80 passed**。受影响合同组合（question manifest、standard answers、routing、module/exchange/query/subject-dispatch/deployment）在具有正常临时硬链接权限的本机隔离路径 **158 passed、57 subtests passed**。一次沙箱内重复组合失败主要来自Windows临时目录硬链接权限，不是产品断言；提权隔离重跑通过。没有模型/搜索API、业务数据库或名单写入。
+- **独审/范围：** 独立审查先后补出公开类无别名导入、构造实例和常量`getattr`三个漏检，均加入反例并修复。最终审查者从当前差异独立复跑 **80 passed（14.70秒）并 ACCEPT**，结论仅限常见显式导入、别名、构造、条件表达式与成员访问路径；不是运行时安全沙箱。固定来源I1–I7组合仍未复跑，不能据此宣称模块化专项完成。
 
 ## 2026-11-11 各模块WIP与未并线审查、精确清理及小修并线
 

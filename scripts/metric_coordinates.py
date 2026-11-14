@@ -9,6 +9,11 @@ Single legacy rows may have unknown dates; repeated IDs need an explicit end.
 import json
 from typing import Any
 
+API_PROTOCOL = "iqs.metric-coordinate-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "validate_metric_coordinates",
+})
+
 
 def metric_coordinate(metric: dict[str, Any]) -> tuple[Any, ...]:
     return tuple(

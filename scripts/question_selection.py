@@ -13,8 +13,8 @@ import question_library as library
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def _select_from_module_ids(profile, mode, modules, selected_modules, mandatory_question_ids=(),
-                            *, include_basic=False):
+def select_from_module_ids(profile, mode, modules, selected_modules, mandatory_question_ids=(),
+                           *, include_basic=False):
     if mode not in ('quick', 'full'):
         raise ValueError('mode must be quick or full')
     if len(selected_modules) != len(set(selected_modules)) or 'common' not in selected_modules:
@@ -81,7 +81,7 @@ def select_questions(profile, mode, modules, contexts=None, *, root=None, defaul
         selected.append('recovery')
     selected.extend(sorted(profile.get('investment_lenses', [])))
     selected = list(dict.fromkeys(selected))
-    return _select_from_module_ids(profile, mode, modules, selected, include_basic=include_basic)
+    return select_from_module_ids(profile, mode, modules, selected, include_basic=include_basic)
 
 
 def select_questions_for_route(profile, mode, modules, selected_module_ids, mandatory_question_ids=(),
@@ -91,8 +91,12 @@ def select_questions_for_route(profile, mode, modules, selected_module_ids, mand
                 'stages': 4, 'overlays': 5, 'diagnostics': 6, 'lenses': 7}
     ordered = sorted(selected_module_ids, key=lambda module_id: (
         priority.get(modules[module_id]['kind'], 99), module_id))
-    return _select_from_module_ids(profile, mode, modules, ordered, mandatory_question_ids,
-                                   include_basic=include_basic)
+    return select_from_module_ids(profile, mode, modules, ordered, mandatory_question_ids,
+                                  include_basic=include_basic)
+
+
+# Compatibility alias for older callers; peer modules use the public selector.
+_select_from_module_ids = select_from_module_ids
 
 
 def apply_question_budget(questions, maximum, mandatory_question_ids=(), *, protect_basic=True, reserved=0):
@@ -136,7 +140,7 @@ def published_selection(profile, mode, modules, release, route_decision, context
             # owner-mandated defaults. Never infer historical selection from
             # today's catalog or a manifest's untrusted module list.
             defaults = tuple(mid for mid in library.ALWAYS_APPLICABLE_DIAGNOSTICS
-                             if module_contract._version(modules[mid]['version']) >= (3, 0, 1))
+                             if module_contract.parse_version(modules[mid]['version']) >= (3, 0, 1))
         return select_questions(profile, mode, modules, contexts, root=local_root,
                                 default_diagnostics=defaults, include_basic=not historical_profile_defaults)
     if route_decision.get('schema_version') == '2.0.0':
@@ -154,7 +158,7 @@ def published_selection(profile, mode, modules, release, route_decision, context
                     [item['module_id'] for item in route_decision['module_decisions'] if item['decision'] == 'selected'])
         return select_questions_for_route(profile, mode, modules, selected,
                                            route_decision['dispatch_plan']['mandatory_question_ids'],
-                                           include_basic=module_contract._version(release['router_version']) >= (2, 5, 0))
+                                           include_basic=module_contract.parse_version(release['router_version']) >= (2, 5, 0))
     module_contract.validate_route_decision(route_decision, release)
     if route_decision['entity_id'] != profile.get('entity_id') or route_decision['as_of'] != profile.get('as_of'):
         raise ValueError('route decision identity/cutoff differs from profile')

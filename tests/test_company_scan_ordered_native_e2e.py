@@ -28,6 +28,12 @@ def test_original_ordered_shared_refusal_fallback_and_zero_send_resume(actual, t
         for r in policy["routes"]]
     prepared = setup_admission(actual, tmp_path, policy=policy, provider="mimo",
         selected_question_count=2, refresh_version="1.6.0", ordered_route_targets=targets)
+    from datetime import datetime, timedelta, timezone
+
+    consent_expiry = datetime.fromisoformat(
+        prepared["consent"]["delegation"]["expires_at"].replace("Z", "+00:00")
+    )
+    assert consent_expiry > datetime.now(timezone.utc) + timedelta(hours=12)
     accepted = RefreshAdmissionService(prepared["deployment_file"], process_env=dict(SAFE_ENV)).admit(
         prepared["consent"]["confirmation_id"])
     assert accepted["status"] == "accepted"
@@ -62,10 +68,10 @@ def test_original_ordered_shared_refusal_fallback_and_zero_send_resume(actual, t
                 return response
             assert len(sent) == 2 and body["model"] == targets[1]["model"]
             selected = json.loads(body["messages"][-1]["content"].splitlines()[-1])["requested_question_ids"]
-            assert set(selected) == set(task.question_ids)
-            answers = [sf.gen_insufficient(row["question"]) for row in task.questions]
+            assert set(selected) == set(task_contract["question_ids"])
+            answers = [sf.gen_insufficient(row["question"]) for row in task_contract["questions"]]
             for answer in answers:
-                answer.update(status="not_applicable", information_as_of=task.raw["information_cutoff"],
+                answer.update(status="not_applicable", information_as_of=task_contract["raw"]["information_cutoff"],
                     summary="[Synthetic software fixture] No real company finding or financial rating.")
             response = _b01_thinking_response("mimo_chat_completions", targets[1]["model"],
                 final=json.dumps({"answers": answers, "declared_question_ids": selected}))
@@ -73,19 +79,30 @@ def test_original_ordered_shared_refusal_fallback_and_zero_send_resume(actual, t
             return response
 
     monkeypatch.setattr(http_client_manager, "get_sync_session", lambda: Wire())
-    questions = [Question(row["question"]["prompt"], question_id=row["question_id"]) for row in task.questions]
-    from src.utils.quick_scan_shared_company import _modules, registered_recovery_routes
-    shared_engine, _ = _modules(config)
+    # Native tasks are opaque owner handles. The coordinator uses the detached
+    # JSON contract projection instead of reaching into LoadedTask internals.
+    from iqs_company_agent_lab.api import task_snapshot
+    task_contract = task_snapshot(task)
+    questions = [Question(row["question"]["prompt"], question_id=row["question_id"])
+        for row in task_contract["questions"]]
+    import importlib
+    # Resolve the configured engine by its public module name; tests should not
+    # depend on the coordinator's private loader helper or tuple shape.
+    shared_engine = importlib.import_module("shared_company_engine")
     def interrupt_publication(*args, **kwargs):
         raise RuntimeError("scripted_publication_interrupt_after_paid_response")
     with monkeypatch.context() as interrupted:
         interrupted.setattr(shared_engine, "finalize_shared_engine", interrupt_publication)
-        with pytest.raises(RuntimeError, match="scripted_publication_interrupt"):
+        # This injected publication hook is called by the public coordinator
+        # after the engine returns, so the test-owned interruption propagates.
+        with pytest.raises(
+            RuntimeError, match="scripted_publication_interrupt_after_paid_response"
+        ):
             run_ordered_company_scan(services.lifecycle, clients, config=config, questions=questions,
                 cost_resolver=services.cost_resolver, question_pack_size=2, max_output_tokens=32768,
                 transport_origin="scripted_wire")
     assert len(sent) == 2
-    work_ids = [services.owner.existing_work(q)["work_item_id"] for q in task.question_ids]
+    work_ids = [services.owner.existing_work(q)["work_item_id"] for q in task_contract["question_ids"]]
     assert all(services.store.get_answer_checkpoint(wid) is None for wid in work_ids)
     assert services.store.company_scan_progress(work_ids)["model_requests"] == 2
     monkeypatch.setattr(http_client_manager, "get_sync_session",
@@ -93,9 +110,19 @@ def test_original_ordered_shared_refusal_fallback_and_zero_send_resume(actual, t
     original_config = llm_config.read_bytes()
     llm_config.unlink()  # Paid-only recovery must not require today's key/endpoint file.
     _, paid = construct(dict(settings, recovery_only=True))
-    recovery_routes = registered_recovery_routes(paid.owner, policy)
-    assert [r["id"] for r in recovery_routes] == [targets[1]["route_id"]]
-    recovery_clients = [(r, c) for r, c in clients if r["id"] == targets[1]["route_id"]]
+    # Mirror the production recovery runner: the owner returns only routes
+    # bound to received responses, explicitly marked response-only. The
+    # coordinator still selects the original route from durable progress.
+    recovery_routes = paid.owner.execution_routes(None)
+    assert [route["id"] for route in recovery_routes] == [targets[1]["route_id"]]
+    recovery_clients = [
+        (
+            route,
+            LLMClient("", route["model"], "", provider_name=route["provider"]),
+        )
+        for route in recovery_routes
+    ]
+    assert all(route["eligible"] is False for route, _ in recovery_clients)
     run_ordered_company_scan(paid.lifecycle, recovery_clients, config=config, questions=questions,
         cost_resolver=paid.cost_resolver, question_pack_size=2, max_output_tokens=32768,
         transport_origin="scripted_wire", recovery_only=True)

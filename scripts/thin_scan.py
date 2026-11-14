@@ -14,14 +14,13 @@ import html
 import json
 import os
 import sys
-import urllib.error
-import urllib.request
 from datetime import date, datetime, time, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import question_bank  # noqa: E402
 import model_config  # noqa: E402
+import provider_transport  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config/models.json"
@@ -61,38 +60,7 @@ def default_basic_questions():
             for question in question_sets.basic_questions(modules)]
 
 
-def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict]:
-    """POST JSON and never raise on transport failure.
-
-    Returns (status, payload). A timeout or connection error yields status 0 with
-    an error marker so one bad request degrades that question instead of aborting
-    a multi-question run. Before this, a single read timeout escaped urllib and
-    killed a 38-question scan 158 seconds in, discarding every collected answer.
-    """
-    data = json.dumps(body, ensure_ascii=False).encode("utf-8")
-    request = urllib.request.Request(url, data=data, method="POST", headers={
-        "Authorization": "Bearer " + key,
-        "Content-Type": "application/json",
-    })
-    try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            return response.status, json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as error:
-        raw = error.read()
-        try:
-            payload = json.loads(raw.decode("utf-8"))
-        except ValueError:
-            payload = {"error": raw.decode("utf-8", "replace")[:500]}
-        return error.code, payload
-    except TimeoutError:
-        return 0, {"error": "timeout"}
-    except urllib.error.URLError as error:
-        reason = getattr(error, "reason", error)
-        if isinstance(reason, TimeoutError):
-            return 0, {"error": "timeout"}
-        return 0, {"error": "transport", "detail": str(reason)[:200]}
-    except (OSError, ValueError) as error:
-        return 0, {"error": "transport", "detail": str(error)[:200]}
+post_json = provider_transport.post_json
 
 
 def search_with_status(provider: dict, query: str, count: int) -> tuple[list[dict], str | None]:
@@ -304,39 +272,10 @@ def normalize_bank_answer(raw: dict) -> dict:
 
 
 def ask_model(provider: dict, prompt: str, max_tokens: int = 1200) -> dict:
-    key = os.environ.get(provider["key_env"], "")
-    body = {"model": provider["model"], "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0, "max_tokens": max_tokens}
-    status, payload = post_json(provider["endpoint"], key, body, 90)
-    if status == 0:
-        marker = (payload or {}).get("error") if isinstance(payload, dict) else None
-        return {"error": "model_timeout" if marker == "timeout" else "model_transport_error"}
-    if status != 200 or not isinstance(payload, dict):
-        return {"error": f"model_http_{status}"}
-    choices = payload.get("choices") or []
-    if not choices:
-        return {"error": "model_no_choice"}
-    choice = choices[0] or {}
-    text = ((choice.get("message") or {}).get("content")) or ""
-    # Reasoning models may spend the entire budget thinking. An empty content with
-    # finish_reason=length is a budget exhaustion, not malformed JSON; naming it
-    # separately keeps the cause visible in problems instead of hiding behind
-    # model_not_json. reasoning_content is never accepted as the answer.
-    if not text.strip() and choice.get("finish_reason") == "length":
-        return {"error": "model_truncated_no_content"}
-    try:
-        answer, _ = json.JSONDecoder().raw_decode(text.strip())
-    except ValueError:
-        start, end = text.find("{"), text.rfind("}")
-        if start < 0 or end <= start:
-            return {"error": "model_not_json"}
-        try:
-            answer = json.loads(text[start:end + 1])
-        except ValueError:
-            return {"error": "model_not_json"}
-    usage = payload.get("usage") or {}
-    answer["_usage"] = {"prompt_tokens": usage.get("prompt_tokens"), "completion_tokens": usage.get("completion_tokens")}
-    return answer
+    """Compatibility entry point; orchestration and experiments use the API."""
+    import model_invocation
+
+    return model_invocation.ask_model(provider, prompt, max_tokens, transport=post_json)
 
 
 def clean_answer(raw: dict, sources: list[dict]) -> tuple[dict, list[str]]:

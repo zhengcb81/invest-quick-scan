@@ -34,6 +34,77 @@ REQUIRED_MODULES = ('company_agent_contrast', 'company_agent_research_pilot',
     'src.providers.llm_client', 'src.providers.llm_research_client',
     'src.utils.quick_scan_work_store', 'src.utils.quick_scan_work_transport')
 
+# Imports stay deferred until the frozen input hashes have been checked, while
+# every allowed module remains statically inspectable by the boundary suite.
+def _load_company_agent_contrast():
+    import company_agent_contrast as module
+    return module
+
+def _load_company_agent_research_pilot():
+    import company_agent_research_pilot as module
+    return module
+
+def _load_standard_answers():
+    import standard_answers as module
+    return module
+
+def _load_iqs_answer_codec():
+    import iqs_answer_codec as module
+    return module
+
+def _load_iqs_session_packing():
+    import iqs_session_packing as module
+    return module
+
+def _load_iqs_claim_guard():
+    import iqs_claim_guard as module
+    return module
+
+def _load_iqs_company_agent_lab():
+    import iqs_company_agent_lab as module
+    return module
+
+def _load_iqs_agent_evaluation_lab():
+    import iqs_agent_evaluation_lab as module
+    return module
+
+def _load_llm_client():
+    import src.providers.llm_client as module
+    return module
+
+def _load_llm_research_client():
+    import src.providers.llm_research_client as module
+    return module
+
+def _load_quick_scan_work_store():
+    import src.utils.quick_scan_work_store as module
+    return module
+
+def _load_quick_scan_work_transport():
+    import src.utils.quick_scan_work_transport as module
+    return module
+
+FROZEN_MODULE_LOADERS = {
+    'company_agent_contrast': _load_company_agent_contrast,
+    'company_agent_research_pilot': _load_company_agent_research_pilot,
+    'standard_answers': _load_standard_answers,
+    'iqs_answer_codec': _load_iqs_answer_codec,
+    'iqs_session_packing': _load_iqs_session_packing,
+    'iqs_claim_guard': _load_iqs_claim_guard,
+    'iqs_company_agent_lab': _load_iqs_company_agent_lab,
+    'iqs_agent_evaluation_lab': _load_iqs_agent_evaluation_lab,
+    'src.providers.llm_client': _load_llm_client,
+    'src.providers.llm_research_client': _load_llm_research_client,
+    'src.utils.quick_scan_work_store': _load_quick_scan_work_store,
+    'src.utils.quick_scan_work_transport': _load_quick_scan_work_transport,
+}
+
+def load_frozen_module(name):
+    try:
+        return FROZEN_MODULE_LOADERS[name]()
+    except KeyError as error:
+        raise ValueError('module_not_registered') from error
+
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True,
                       separators=(',', ':'), allow_nan=False)
@@ -102,8 +173,10 @@ def activate_sources(root, registration):
 
 def assert_imports(root, registration):
     for name, relative in registration['module_bindings'].items():
-        module = importlib.import_module(name)
-        if Path(module.__file__).resolve() != confined(root, relative):
+        load_frozen_module(name)
+        spec = importlib.util.find_spec(name)
+        if (spec is None or spec.origin is None
+                or Path(spec.origin).resolve() != confined(root, relative)):
             raise ValueError('import_origin_mismatch')
 
 def cohort(experiment_id, phase):

@@ -2,6 +2,11 @@
 import json
 from pathlib import Path
 
+API_PROTOCOL = "iqs.json-file-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "read_json", "write_json",
+})
+
 
 def read_json(path):
     """Read UTF-8 JSON and tolerate an optional BOM in existing inputs."""

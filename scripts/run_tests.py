@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GROUPS = ("fast", "integration", "e2e", "native")
 PROFILES = (*GROUPS, "offline", "all")
 NATIVE_ENV = ("IQS_C06_OWN", "IQS_C06_COMPOSITION_CODE_ROOT", "IQS_C06_COMPANY_ROOT", "IQS_C06_BRIDGE_ROOT")
-CHILD = """import sys, ipaddress, socket
+NETWORK_GUARD = """import sys, ipaddress, socket
 def loopback(value):
     try:
         return ipaddress.ip_address(value).is_loopback
@@ -38,7 +38,8 @@ def deny(event, args):
                  'socket.gethostbyname', 'socket.gethostbyaddr', 'socket.getnameinfo'}:
         raise RuntimeError('offline_test_network_forbidden')
 sys.addaudithook(deny)
-import pytest
+"""
+CHILD = """import sys, pytest
 raise SystemExit(pytest.main(sys.argv[1:]))
 """
 
@@ -106,17 +107,33 @@ def run_group(root, name, files, output, temp_root=None):
         if owned.resolve().parent != Path(temp_root or tempfile.gettempdir()).resolve():
             raise ValueError("test_temporary_root_outside_selected_parent")
         environment = clean_environment(owned, native=name == "native")
+        guard_dir = owned / "python"
+        guard_dir.mkdir()
+        (guard_dir / "sitecustomize.py").write_text(NETWORK_GUARD, encoding="utf8")
+        inherited_pythonpath = environment.get("PYTHONPATH")
+        environment["PYTHONPATH"] = os.pathsep.join(
+            value for value in (str(guard_dir), inherited_pythonpath) if value
+        )
+        working_directory = root
+        if name == "native":
+            # StockQA's logger uses a relative ``logs/`` path at import time.
+            # Native tests can therefore never create logs in this checkout.
+            working_directory = owned / "qa"
+            working_directory.mkdir()
         arguments = ["-q", "-p", "no:cacheprovider", "--durations=20",
-            "--basetemp", str(owned / "pytest"), "--junitxml", str(output / (name + ".xml")),
+            "--rootdir", str(root), "--basetemp", str(owned / "pytest"),
+            "--junitxml", str(output / (name + ".xml")),
             *[str(root / "tests" / file) for file in files]]
         with (output / (name + ".log")).open("xb") as stream:
             completed = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", CHILD, *arguments],
-                cwd=root, env=environment, stdout=stream, stderr=subprocess.STDOUT)
+                cwd=working_directory, env=environment, stdout=stream, stderr=subprocess.STDOUT)
             exit_code = completed.returncode
     result = dict(name=name, files=files, exit_code=exit_code,
         elapsed_seconds=round(time.perf_counter() - started, 3), temporary_root_removed=not owned.exists(),
-        api_keys_removed=True, network_denied_in_pytest_process=False,
-        external_network_denied_in_pytest_process=True, literal_tcp_loopback_allowed=True,
+        api_keys_removed=True, network_denied_in_pytest_process=True,
+        external_network_denied_in_pytest_process=True,
+        external_network_denied_in_subprocesses=True, literal_tcp_loopback_allowed=True,
+        stockqa_relative_logs_isolated=name == "native",
         log=str(output / (name + ".log")))
     xml = output / (name + ".xml")
     if xml.exists():

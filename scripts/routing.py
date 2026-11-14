@@ -26,6 +26,14 @@ original read semantics; new incomplete dispatches require a refreshed route.
 from routing_contract import (AXES, PREDICATES, BASE_SHARES, STRATEGIC_SHARES,
     POSITION, RECOVERY_POSITIONS, SHARES, FACT_KEYS, validate_policy)
 
+API_PROTOCOL = "iqs.question-routing-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "resolve_route_decision",
+    "validate_route_snapshot", "validate_route_for_execution",
+    "validate_recorded_route_execution", "build_route_request",
+    "profile_from_route", "publish_routing_package",
+})
+
 def _utc(value):
     if not isinstance(value, str):
         raise ValueError("trusted routing clock must be an ISO UTC string")
@@ -157,7 +165,7 @@ def resolve_module_dependency_closure(selected_module_ids, modules, module_decis
 
 
 def publish_routing_package(*, root=ROOT, renderer_version, renderer_rules_sha256, activate=False):
-    policy = registry._read_json(Path(root) / "questions/routing-policy.v2.json")
+    policy = registry.read_json(Path(root) / "questions/routing-policy.v2.json")
     return registry.publish(root=Path(root), renderer_version=renderer_version,
                             router_version=policy["router_version"], renderer_rules_sha256=renderer_rules_sha256,
                             routing_policy=policy, activate=activate)
@@ -226,7 +234,7 @@ def parse_route_response(value, route_input):
     """Read the existing StockQA native envelope; never interpret its score as company quality."""
     identity = _identity(route_input)
     if isinstance(value, str):
-        value = json.loads(value, object_pairs_hook=mc._unique_object)
+        value = json.loads(value, object_pairs_hook=mc.unique_json_object)
     if isinstance(value, dict) and value.get("schema_version") in {
             "stockqa.quick_scan_result/1.0.0", "stockqa.quick_scan_result/1.1.0"}:
         import stockqa_adapter
@@ -249,7 +257,7 @@ def parse_route_response(value, route_input):
         raise ValueError("unscored classification must use null, never a placeholder score")
     if not isinstance(value["description"], str):
         raise ValueError("native routing description must be serialized candidate JSON")
-    candidate = json.loads(value["description"], object_pairs_hook=mc._unique_object)
+    candidate = json.loads(value["description"], object_pairs_hook=mc.unique_json_object)
     if (not isinstance(candidate, dict) or set(candidate) != {"schema_version", "question_id", "candidates"}
             or candidate["schema_version"] != "2.0.0" or candidate["question_id"] != "ROUTE_02"
             or not isinstance(candidate["candidates"], list)):
@@ -274,7 +282,7 @@ def _fact(fact, identity, rules):
     if not isinstance(fact["sources"], list) or not fact["sources"]:
         raise ValueError("objective candidate needs source evidence")
     for source in fact["sources"]:
-        mc._validate(mc.ROUTE_SCHEMA["$defs"]["SourceV2"], source)
+        mc.validate_schema(mc.ROUTE_SCHEMA["$defs"]["SourceV2"], source)
         if source["entity_id"] != identity["entity_id"] or (source["published_at"] != "unknown" and source["published_at"] > identity["as_of"]):
             raise ValueError("candidate source identity or cutoff mismatch")
     result = copy.deepcopy(fact)
@@ -408,7 +416,7 @@ def resolve_route_decision(route_input, *, package_id, route_response=None, exec
             raise ValueError("invalid ROUTE_02 candidate envelope")
         request = build_route_request(route_input, package_id=package_id, root=root)
         receipt_schema = mc.ROUTE_SCHEMA["$defs"]["RouteV2"]["properties"]["execution"]["anyOf"][1]
-        mc._validate(receipt_schema, execution_receipt)
+        mc.validate_schema(receipt_schema, execution_receipt)
         if request["request_protocol"] == "stockqa-route-confidence-3":
             if (not isinstance(answer_sha256, str) or not re.fullmatch(r"[a-f0-9]{64}", answer_sha256)
                     or execution_receipt.get("answer_sha256") != answer_sha256):
@@ -682,7 +690,7 @@ def minimum_question_count(modules, mandatory_question_ids=()) -> int:
 
 def _mandatory_questions(selected, rules, modules, policy):
     mandatory = {qid for mid in selected for qid in rules[mid]['mandatory_question_ids']}
-    if mc._version(policy['router_version']) >= (2, 5, 0):
+    if mc.parse_version(policy['router_version']) >= (2, 5, 0):
         mandatory.update(q['id'] for q in modules['common']['questions']
                          if q.get('comparison_role') != 'core')
     return sorted(mandatory)

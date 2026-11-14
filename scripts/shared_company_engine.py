@@ -15,7 +15,7 @@ import tempfile
 import time
 from pathlib import Path
 
-PROTOCOL = "iqs.shared-company-engine/1.0.0"
+PROTOCOL = "iqs.shared-company-engine/1.1.0"
 
 class SharedEngineRejected(ValueError):
     pass
@@ -90,23 +90,26 @@ def capabilities():
             "original_RuntimeBridgePort",
             "native_safe_visible_output",
         ],
-        # Preserve the v1 capability envelope for existing StockQA readers.
-        # These describe the historical registered sample profile; generic
-        # task admission is derived from the owner task contract below.
-        "registered_question_count": 12,
-        "registered_cutoff": "2026-10-13",
+        # Historical sample metadata is informational only. Execution is
+        # derived from the bound task and StockQA's endpoint capabilities.
+        "legacy_sample_profile": {
+            "registered_question_count": 12,
+            "cutoff": "2026-10-13",
+            "provider": "mimo",
+            "pack_size_range": [1, 12],
+        },
         "strategies": ["fixed3", "free_agent", "evidence_agent"],
         "generation_mode": "native_one_shot_question_pack",
-        "question_pack_provider": "mimo",
         "company_scan": {
             "task_protocol": "iqs.company-scan-task/1.0.0",
             "profile_protocol": "iqs.company-scan-profile/1.0.0",
             "factory": "create_company_scan_task",
             "question_set": "original_approved_nonempty_unique_subset",
             "cutoff": "original_owner_actual_cutoff",
-            "pack_size_range": [1, 12],
+            "pack_size_range": "owner_admitted_positive_range",
             "mode": "one_shot_packs",
             "provider_selection": "original_stockqa_endpoint_capabilities",
+            "required_execution_controls": ["thinking_enabled", "max_output_tokens"],
             "automatic_cross_model_fallback": False,
             "resource_defaults": "derived_from_actual_question_packs",
             "search_queries": 0,
@@ -161,8 +164,6 @@ def preflight(task, services, session_config):
         # historical responses as newly sent requests in the new summary.
         raise SharedEngineRejected("fresh_owner_service_observer_required")
     _production_answer_semantics(task, runtime)
-    if runtime.provider != "mimo":
-        raise SharedEngineRejected("native_one_shot_question_pack_requires_mimo")
     runtime.check_admission()
     runtime.assert_execution_controls(
         pack_size=max(pack_sizes),
@@ -177,8 +178,12 @@ def _answer_validation_api():
     _ensure_script_import_path()
     import answer_validation
 
-    if getattr(answer_validation, "API_PROTOCOL", None) != "iqs.answer-validation-api/1.0.0":
+    if getattr(answer_validation, "API_PROTOCOL", None) != "iqs.answer-validation-api/1.1.0":
         raise SharedEngineRejected("answer_validation_api_version_unsupported")
+    if "project_original_semantic_resources" not in getattr(
+        answer_validation, "PUBLIC_API_EXPORTS", frozenset()
+    ):
+        raise SharedEngineRejected("answer_validation_api_operation_missing")
     return answer_validation
 
 
@@ -191,11 +196,16 @@ def _original_answer_resources(context, root):
         raise SharedEngineRejected(str(error)) from error
 
 
-def _frozen_answer_semantics(task, context, *, release_root=None):
+def _frozen_answer_semantics(task, context, *, release_root=None, semantic_resources=None):
     """Delegate answer validation to the IQS-owned public validation module."""
     api = _answer_validation_api()
     try:
-        return api.frozen_answer_semantics(task, context, release_root=release_root)
+        return api.frozen_answer_semantics(
+            task,
+            context,
+            release_root=release_root,
+            semantic_resources=semantic_resources,
+        )
     except api.AnswerSemanticsRejected as error:
         raise SharedEngineRejected(str(error)) from error
 
@@ -212,11 +222,21 @@ def _production_answer_semantics(task, services, *, for_publication=False):
     if contract["company_doc"].get("origin") != "owner_public":
         return None
     runtime = _company_runtime(services, contract)
-    inputs = runtime.original_inputs()
+    inputs = runtime.original_scan_context()
     context = inputs.observation_context
-    owner_config = json.loads(inputs.input_raw["owner-config.json"])
-    original = _frozen_answer_semantics(contract, context,
-        release_root=owner_config["iqs_release_root"])
+    # Load the consumer's declared public resolver before the owner asks it to
+    # project resources, so the owner can verify the API's configured code root.
+    _answer_validation_api()
+    # The owner resolves its original frozen package. Only a detached, path-free
+    # semantic resource DTO crosses the runtime boundary; production never falls
+    # back to the current IQS code/release tree.
+    try:
+        resources = runtime.original_semantic_resources()
+    except (TypeError, ValueError) as error:
+        raise SharedEngineRejected(str(error) or "original_semantic_resources_unavailable") from error
+    original = _frozen_answer_semantics(
+        contract, context, semantic_resources=resources
+    )
 
     def validate_native(answer, question_id, *, attempt_ref, evidence_board):
         original(answer, question_id)
@@ -329,7 +349,6 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
     from iqs_company_agent_lab.api import canonical_json
     from iqs_company_agent_lab.api import build_runner_checkpoint, write_checkpoint
     from iqs_company_agent_lab.api import event_journal_projection, runner_event_projection
-    from iqs_company_agent_lab.api import raise_saved_response_boundary
 
     class CheckpointedPort:
         def _save(self, intent, receipt=None):
@@ -369,6 +388,7 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
                 # End local replay with the slots already recovered. There is
                 # no fabricated receipt or pending checkpoint for an unasked
                 # question, and unknown work never reaches the live port.
+                from iqs_company_agent_lab.api import raise_saved_response_boundary
                 raise_saved_response_boundary("replay_only_saved_responses_exhausted")
             self._save(envelope["intent"])
             if recover_intent is not None:
@@ -390,6 +410,7 @@ def _pending_port(port, runner_ref, session_dir, history_journals=(), recover_in
 
         def search(self, envelope):
             if replay_only:
+                from iqs_company_agent_lab.api import raise_saved_response_boundary
                 raise_saved_response_boundary("replay_only_new_search_forbidden")
             return port.search(envelope)
 
@@ -709,18 +730,15 @@ def _scan_preflight(task, services, session_config):
             raise SharedEngineRejected("scan_profile_native_pack_group_mismatch")
     # Compare display/provenance bytes against the ACTUAL native owner, not
     # just a caller-provided self-consistent profile. No second quote or grant.
-    from iqs_company_agent_lab.api import (
-        native_company_projection,
-        native_input_references,
-    )
+    from iqs_company_agent_lab.api import native_company_projection
 
-    original = runtime.original_inputs()
-    refs = native_input_references(original.input_raw)
+    original = runtime.original_scan_context()
+    refs = dict(original.native_input_references)
     subject = original.observation_context["questions"][question_ids[0]][
         "subject_binding"
     ]["subject_ref"]
     company = native_company_projection(
-        json.loads(original.input_raw["identity.json"]).get("payload"), subject
+        dict(original.identity_payload), subject
     )
     expected_runtime = dict(
         protocol="iqs.company-scan-runtime/1.0.0",
@@ -741,7 +759,7 @@ def _scan_preflight(task, services, session_config):
         raw.get("native_inputs") != refs
         or contract["company_doc"] != company
         or contract["runtime_profile"] != expected_runtime
-        or raw.get("module_locks") != original.bundle["manifest"]["module_locks"]
+        or raw.get("module_locks") != [dict(lock) for lock in original.module_locks]
         or raw.get("owner_binding") != binding
         or contract.get("owner_binding") != binding
     ):

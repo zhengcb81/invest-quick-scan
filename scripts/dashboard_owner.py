@@ -17,6 +17,7 @@ else:
 PROTOCOL = "iqs.dashboard.owner/1.0.0"
 REQUEST_PROTOCOL = "stockwiki.quick_scan_dashboard_request/1.0.0"
 REPLY_PROTOCOL = "stockwiki.quick_scan_dashboard_reply/1.0.0"
+MEMBERSHIP_REQUEST_PROTOCOL = "stockwiki.membership_request/1.0.0"
 OWNER_COMMAND = "stockwiki.quick_scan_dashboard_cli"
 _ID = re.compile(r"^[A-Za-z0-9_.:-]{1,200}$")
 _ROOTS = ("stockwiki_root", "workspace_root")
@@ -169,11 +170,115 @@ class OwnerGateway:
             raise DashboardOwnerError(value["code"], value["message"], value["status"], value.get("details"))
         return response["result"]
 
+    def _membership_request_command(self, operation, payload):
+        """Use StockWiki's fixed public membership-request CLI only.
+
+        The executable path and workspace root come from trusted deployment
+        configuration. Business JSON cannot choose a module, command, or path.
+        """
+        allowed_fields = {
+            "apply": {"action", "universe_id", "entity_id", "reason", "priority", "pin",
+                      "idempotency_key", "expected_member_version", "expected_identity_revision"},
+            "lookup": {"universe_id", "idempotency_key", "request_id"},
+            "history": {"universe_id", "entity_id", "limit", "after_version", "version_pin"},
+        }
+        if operation not in allowed_fields:
+            raise DashboardOwnerError("owner_operation_unknown", "Unsupported membership operation", 404)
+        payload = _payload(payload, allowed_fields[operation])
+        config = self._deployment()
+        code = Path(config["stockwiki_root"])
+        cli = code / "dashboard_membership_request_cli.py"
+        if not cli.is_file():
+            raise DashboardOwnerError(
+                "owner_membership_request_unsupported",
+                "The configured StockWiki release does not provide the membership request protocol",
+                503, {"required_protocol": "stockwiki.membership_request/1.0.0"})
+        command = [config["stockwiki_python"], "-B", "-X", "utf8", str(cli), operation,
+                   "--root", config["workspace_root"]]
+        try:
+            wire = json.dumps(payload, ensure_ascii=False, allow_nan=False)
+            result = subprocess.run(command, cwd=code, input=wire, text=True, encoding="utf-8",
+                                    errors="strict", capture_output=True,
+                                    timeout=config.get("timeout_seconds", 30), env=_env())
+        except (ValueError, TypeError, RecursionError) as error:
+            raise DashboardOwnerError("invalid_payload", "Expected a serializable JSON object") from error
+        except subprocess.TimeoutExpired as error:
+            raise DashboardOwnerError("owner_timeout", "StockWiki membership request timed out", 504) from error
+        except OSError as error:
+            raise DashboardOwnerError("owner_process_unavailable", "Cannot start StockWiki interpreter", 503) from error
+        except UnicodeError as error:
+            raise DashboardOwnerError("owner_response_invalid", "StockWiki returned invalid UTF-8", 502) from error
+        if len(result.stdout.encode("utf-8")) > _MAX_BYTES or len(result.stderr.encode("utf-8")) > 16_384:
+            raise DashboardOwnerError("owner_response_too_large", "StockWiki response exceeded the dashboard limit", 502)
+        try:
+            if result.returncode == 0:
+                response = decode_owner_json(result.stdout)
+                if (not isinstance(response, dict)
+                        or response.get("protocol") != MEMBERSHIP_REQUEST_PROTOCOL):
+                    raise ValueError("invalid_membership_response")
+                if operation == "apply":
+                    valid = (isinstance(response.get("canonical_payload"), dict)
+                             and isinstance(response.get("request_id"), str))
+                elif operation == "lookup":
+                    valid = response.get("status") in {"found", "not_found"}
+                    if response.get("status") == "found":
+                        valid = isinstance(response.get("request"), dict)
+                else:
+                    valid = isinstance(response.get("items"), list)
+                if not valid:
+                    raise ValueError("invalid_membership_response")
+                return response
+            error_response = decode_owner_json(result.stderr)
+            if (not isinstance(error_response, dict)
+                    or error_response.get("schema_version") != "stockwiki.membership_request/1.0.0"
+                    or not isinstance(error_response.get("error_code"), str)):
+                raise ValueError("invalid_membership_error")
+        except (ValueError, RecursionError) as error:
+            raise DashboardOwnerError("owner_response_invalid", "StockWiki membership CLI returned an invalid response", 502) from error
+        code = error_response["error_code"]
+        status = {
+            "membership_request_invalid": 400,
+            "unknown_request_field": 400,
+            "request_not_json": 400,
+            "request_not_object": 400,
+            "idempotency_key_conflict": 409,
+            "membership_state_conflict": 409,
+            "member_version_conflict": 409,
+            "identity_revision_conflict": 409,
+            "membership_history_pin_unavailable": 409,
+            "entity_not_found": 404,
+            "universe_not_found": 404,
+            "membership_request_not_found": 404,
+            "internal_refused": 503,
+        }.get(code, 400)
+        raise DashboardOwnerError(code, "StockWiki refused the membership request", status,
+                                  {"owner_protocol": "stockwiki.membership_request/1.0.0"})
+
+    def membership_request_capability(self):
+        """Report code-level protocol availability without opening owner data."""
+        try:
+            config = self._deployment()
+            available = (Path(config["stockwiki_root"]) / "dashboard_membership_request_cli.py").is_file()
+        except DashboardOwnerError:
+            available = False
+        return {"protocol": "stockwiki.membership_request/1.0.0", "supported": available,
+                "reason": None if available else "owner_membership_request_unsupported"}
+
+    def membership_request_apply(self, payload):
+        return self._membership_request_command("apply", payload)
+
+    def membership_request_read(self, payload):
+        return self._membership_request_command("lookup", payload)
+
+    def membership_history(self, payload):
+        return self._membership_request_command("history", payload)
+
     def status(self):
         try:
-            return self._call("status")
+            return {**self._call("status"), "membership_request": self.membership_request_capability()}
         except DashboardOwnerError as error:
             return {"protocol": PROTOCOL, "available": False, "status": "unavailable",
+                    "membership_request": self.membership_request_capability(),
                     "error": error.as_dict(), "network_calls": 0, "llm_calls": 0}
 
     def search(self, query="", limit=50, offset=0, filters=None, *, conditions=None,

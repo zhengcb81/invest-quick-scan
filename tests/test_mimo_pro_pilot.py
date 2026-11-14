@@ -100,9 +100,9 @@ class PilotTests(unittest.TestCase):
             configs=[]
             class FakeClient:
                 def __init__(self,*args,**kwargs):
-                    configs.append(b._thread_context.observer.params.copy())
+                    configs.append(b.current_transport_observer().params.copy())
                 def send_request(self,*args):
-                    b._thread_context.observer.receipt={'finish_reason':'stop'}
+                    b.current_transport_observer().receipt={'finish_reason':'stop'}
                     return json.dumps(rows)
             module=SimpleNamespace(LLMClient=FakeClient)
             company={'canonical_name':'fixture','entity_id':'ENT_fixture','identity_file_sha256':'a'*64}

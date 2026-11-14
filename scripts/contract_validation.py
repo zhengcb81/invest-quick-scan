@@ -22,6 +22,12 @@ from referencing import Registry, Resource
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_ROOT = ROOT / "schemas"
+API_PROTOCOL = "iqs.content-contract-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "JsonSchemaValidationError",
+    "validate_parsed_answer", "validate_entity", "identity_schema_for_wire_profile",
+    "validate_analysis_subject", "validate_work_item",
+})
 
 
 def _load(path: str) -> dict:

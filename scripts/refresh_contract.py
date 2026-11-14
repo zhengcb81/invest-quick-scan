@@ -16,6 +16,13 @@ from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 from query_vendor_contract import profile_query_schema as vendor_profile_query_schema
 from referencing import Registry, Resource
 
+API_PROTOCOL = "iqs.refresh-preview-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "validate_route_targets",
+    "MAX_BYTES", "create_preview", "digest", "validate_policy",
+    "validate_preview", "validate_request",
+})
+
 SCHEMA = json.loads(
     (Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.schema.json").read_bytes()
 )

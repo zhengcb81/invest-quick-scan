@@ -35,7 +35,10 @@ def test_current_manifest_partitions_every_test_file_exactly_once():
 
 
 def test_test_child_permits_owned_literal_loopback_but_rejects_external_network(tmp_path):
-    fixture=tmp_path/'test_network_fixture.py'
+    root = tmp_path / "fixture-root"
+    tests = root / "tests"
+    tests.mkdir(parents=True)
+    fixture = tests / "test_network_fixture.py"
     fixture.write_text('''import socket, threading
 def test_loopback():
     with socket.socket() as server:
@@ -76,10 +79,15 @@ def test_dns_entrypoints():
         with pytest.raises(RuntimeError,match='offline_test_network_forbidden'):
             resolve()
 ''',encoding='utf-8')
-    env=runner.clean_environment(tmp_path)
-    result=subprocess.run([sys.executable,'-B','-c',runner.CHILD,str(fixture),'-q','-p','no:cacheprovider'],
-        cwd=tmp_path,env=env,capture_output=True,text=True,encoding='utf-8',timeout=30)
-    assert result.returncode==0,result.stdout+result.stderr
+    output = tmp_path / "runner-output"
+    output.mkdir()
+    temp_root = tmp_path / "runner-temp"
+    temp_root.mkdir()
+    result = runner.run_group(
+        root, "fast", ["test_network_fixture.py"], output, temp_root=temp_root
+    )
+    assert result["exit_code"] == 0, (output / "fast.log").read_text(encoding="utf-8")
+    assert result["temporary_root_removed"] is True
 
 
 @pytest.mark.parametrize("mutation", ["unassigned", "missing", "duplicate", "traversal"])

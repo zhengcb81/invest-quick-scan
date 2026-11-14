@@ -6,6 +6,7 @@ offline tests never touch the network.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 import urllib.error
@@ -87,7 +88,7 @@ def search(
             "result_count": 0,
             "cost_micros": 0,
             "currency": exposure["currency"],
-            "response_sha256": receipts.hashlib.sha256(body).hexdigest(),
+            "response_sha256": hashlib.sha256(body).hexdigest(),
             "error_reason": "http_" + str(status),
         }
         receipts.validate(receipt, exposure=exposure)

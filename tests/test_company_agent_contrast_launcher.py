@@ -1,5 +1,6 @@
 """Keyless synthetic fixtures; no production DB and no provider requests."""
 import copy
+import ast
 import json
 import socket
 import sys
@@ -11,6 +12,28 @@ import pytest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 import company_agent_contrast_launcher as launch
+
+def test_frozen_module_loader_inventory_matches_literal_imports():
+    source=Path(launch.__file__).read_text(encoding='utf-8')
+    tree=ast.parse(source)
+    assignment=next(node for node in tree.body if isinstance(node,ast.Assign)
+        and any(isinstance(target,ast.Name) and target.id=='FROZEN_MODULE_LOADERS'
+                for target in node.targets))
+    assert isinstance(assignment.value,ast.Dict)
+    mapping={key.value:value.id for key,value in zip(assignment.value.keys,assignment.value.values)
+        if isinstance(key,ast.Constant) and isinstance(value,ast.Name)}
+    assert set(mapping)==set(launch.REQUIRED_MODULES)
+    functions={node.name:node for node in tree.body
+        if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef))}
+    for module_name,loader_name in mapping.items():
+        loader=functions[loader_name]
+        imports=[alias.name for node in ast.walk(loader) if isinstance(node,ast.Import)
+            for alias in node.names if alias.asname=='module']
+        assert imports==[module_name], (module_name,loader_name,imports)
+        assert any(isinstance(node,ast.Return) and isinstance(node.value,ast.Name)
+            and node.value.id=='module' for node in ast.walk(loader))
+    with pytest.raises(ValueError,match='module_not_registered'):
+        launch.load_frozen_module('unregistered.module')
 
 @pytest.fixture(autouse=True)
 def no_network(monkeypatch):

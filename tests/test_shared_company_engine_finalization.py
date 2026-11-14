@@ -6,6 +6,7 @@ E2E. These fast units test the glue's all-before-write guards and idempotence.
 import copy
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -13,9 +14,9 @@ from types import SimpleNamespace
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT.parent / "StockQAbyLLM"))
-sys.path.insert(0, str(ROOT.parent / "iqs-company-agent-lab/src"))
-sys.path.insert(0, str(ROOT.parent / "iqs-agent-runtime-lab/src"))
+sys.path.insert(0, os.environ.get("IQS_STOCKQA_ROOT", str(ROOT.parent / "StockQAbyLLM")))
+sys.path.insert(0, os.environ.get("IQS_COMPANY_AGENT_ROOT", str(ROOT.parent / "iqs-company-agent-lab")) + "/src")
+sys.path.insert(0, os.environ.get("IQS_AGENT_RUNTIME_ROOT", str(ROOT.parent / "iqs-agent-runtime-lab")) + "/src")
 spec = importlib.util.spec_from_file_location("finalization_engine", ROOT / "scripts/shared_company_engine.py")
 engine = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(engine)
@@ -29,7 +30,22 @@ class MapperOnlyServices(OwnerResearchServices):
     def __init__(self, task, *, expired=False, proof_bad=False):
         self.task, self.saves, self.restores = task, [], []
         self.expired, self.proof_bad = expired, proof_bad
-        self.owner = SimpleNamespace(bundle={"authority": {}}, entries={q: {"kind": "work", "work_item_id": "WORK_" + q} for q in task_snapshot(task)["question_ids"]})
+        self.owner = SimpleNamespace(
+            bundle={"authority": {}},
+            entries={
+                q: {"kind": "work", "work_item_id": "WORK_" + q}
+                for q in task_snapshot(task)["question_ids"]
+            },
+        )
+        self.owner.snapshot = lambda: SimpleNamespace(
+            bundle=self.owner.bundle,
+            entries=self.owner.entries,
+            recovery_only=False,
+            observation_context={},
+            ordered_route_targets=None,
+            plan={"information_cutoff": "2026-10-15"},
+            proof={},
+        )
         self.rows, self.checkpoints, self.standards = {}, {}, {}
         for q in task_snapshot(task)["question_ids"]:
             self.rows["WORK_" + q] = {"work_item_id": "WORK_" + q, "question_id": q, "status": "leased"}

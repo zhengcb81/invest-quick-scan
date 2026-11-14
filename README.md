@@ -21,7 +21,15 @@ python scripts/open_dashboard.py
 python scripts/open_dashboard.py --ui-root "C:/path/to/iqs-question-bank-ui-lab" --data-root "C:/path/to/invest-quick-scan"
 ```
 
-`--no-refresh`只查看已有展示快照；`--port 8766`指定首选端口；`--plan`只显示启动配置。正常打开页面和筛选不调用模型，不运行测试，不会补造缺失评分。
+启动器由 IQS 自己提供本机服务，只读取 UI 仓库 `src/app` 下的静态资源，不调用其脚本。正常启动会生成一份只读展示快照到连接配置的 `state_root/workbench/snapshot.json`；名单通过 StockWiki 公开接口读取。`--no-refresh`只使用现有快照，不刷新题库/名单、不写快照；快照缺失或损坏时页面会标明不可用，产品 API 仍可使用。正常浏览不调用模型、不运行测试，也不会补造缺失评分。
+
+`--port 8766`指定首选端口；`--plan`只显示启动范围，不启动服务或写快照。需要单独导出展示快照时，必须显式指定输出文件：
+
+```powershell
+python scripts/workbench_snapshot_cli.py --output "C:/path/to/snapshot.json" --dashboard-config config/dashboard.local.json
+```
+
+导出只保存题库/版本、可读取的名单投影、可用性与来源摘要，不保存网页或财报正文。历史回答源尚未接入时显示“不可用/未知”，不会当成零条结果。
 
 ## 题库与公司结果
 

@@ -23,11 +23,22 @@ from metric_coordinates import metric_coordinate, validate_metric_coordinates
 
 ROOT = library.ROOT
 ANSWER_VALIDATION_API_PROTOCOL = "iqs.standard-answer-validation/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "ANSWER_VALIDATION_API_PROTOCOL", "PUBLIC_API_EXPORTS", "digest", "read_resource",
+    "validate_content", "validate_visible_channels", "compose_facts",
+    "question_field_id", "observation_metadata", "metric_coordinate",
+    "validate_metric_coordinates",
+})
 
 
 def digest(value):
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
                                      separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+
+
+def read_resource(path):
+    """Read one answer resource through the owning question-library API."""
+    return library.read_json(path)
 
 
 def visible_answer_schema(schema):

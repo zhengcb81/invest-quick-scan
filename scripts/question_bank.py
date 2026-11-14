@@ -12,6 +12,10 @@ import json
 from pathlib import Path
 
 CORE_PREFIX = "IQS_"
+API_PROTOCOL = "iqs.question-bank-manifest-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "load_manifest", "summarize",
+})
 
 
 def file_sha256(path: Path) -> str:

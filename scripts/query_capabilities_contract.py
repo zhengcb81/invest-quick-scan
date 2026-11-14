@@ -21,6 +21,17 @@ WIRES = [dict(schema_version='2.0.0', operations=['get_profiles']),
 OPERATIONS = ['get_profiles', 'search', 'candidate_set', 'nominate', 'report_conflict', 'research_context',
     'query_facts', 'export_facts']
 MARKETS = ['CN', 'HK', 'US']
+# These are the owner database generations this public consumer contract has
+# explicitly verified it can read. Keep the compatibility knowledge in one
+# named table instead of embedding version magic in source-watermark parsing.
+# A new owner schema must be added here only when its exposed query tables and
+# serializers remain compatible with this reader.
+OWNER_SOURCE_SCHEMA_VERSIONS = {
+    'universe': frozenset({5, 6, 7}),
+    'identity': frozenset({5, 6, 7}),
+    'analysis_subjects': frozenset({1}),
+    'observations': frozenset({2, 3, 4}),
+}
 INTERFACES = [
     dict(component='StockWiki', entry_type='module', entry_point='stockwiki.quick_scan_refresh_owner_cli',
         purpose='refresh_preview', selectors=['--root', '--iqs-code-root', '--request'], permission_boundary='fixed_owner_configuration_readonly_preview'),
@@ -89,9 +100,8 @@ def _context(value):
             or mark['status'] not in {'available', 'missing', 'read_error', 'schema_unavailable'}
             or type(mark['sequence']) is not int or mark['sequence'] < 0 or profiles.parse_utc_timestamp(mark['read_at']) > at):
             raise ValueError('capabilities_source_invalid')
-        versions = {'universe': {5, 6}, 'identity': {5, 6}, 'analysis_subjects': {1}, 'observations': {2, 3, 4}}
         if mark['status'] == 'available' and (type(mark['schema_version']) is not int
-            or mark['schema_version'] not in versions[mark['namespace']]
+            or mark['schema_version'] not in OWNER_SOURCE_SCHEMA_VERSIONS[mark['namespace']]
             or not isinstance(mark['content_sha256'], str) or not re.fullmatch('[a-f0-9]{64}', mark['content_sha256'])):
             raise ValueError('capabilities_available_source_invalid')
     identity = next(mark for mark in marks if mark['namespace'] == 'identity')

@@ -21,6 +21,27 @@ def answer(qid='Q1', **updates):
 
 
 class BenchmarkTests(unittest.TestCase):
+    def test_transport_observer_scope_restores_nested_and_exception_context(self):
+        self.assertIsNone(b.current_transport_observer())
+        outer, inner = object(), object()
+        with b.transport_observer(outer):
+            self.assertIs(b.current_transport_observer(), outer)
+            with b.transport_observer(inner):
+                self.assertIs(b.current_transport_observer(), inner)
+            self.assertIs(b.current_transport_observer(), outer)
+            with self.assertRaisesRegex(RuntimeError, 'synthetic'):
+                with b.transport_observer(inner):
+                    raise RuntimeError('synthetic')
+            self.assertIs(b.current_transport_observer(), outer)
+        self.assertIsNone(b.current_transport_observer())
+
+    def test_transport_observer_scope_is_thread_local(self):
+        marker = object()
+        with b.transport_observer(marker):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                self.assertIsNone(pool.submit(b.current_transport_observer).result())
+            self.assertIs(b.current_transport_observer(), marker)
+
     def test_caps_cannot_expand_human_authorization(self):
         with tempfile.TemporaryDirectory(dir=ROOT) as tmp:
             for caps in ({'model_cap':b.AUTHORIZED_CAPS['model']+1},{'search_cap':201},{'usd_cap':26},

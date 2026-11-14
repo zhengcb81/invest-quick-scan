@@ -13,6 +13,11 @@ import stat
 from jsonschema import Draft202012Validator
 
 ROOT=Path(__file__).resolve().parents[1]
+API_PROTOCOL="iqs.observation-profile-api/1.0.0"
+PUBLIC_API_EXPORTS=frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "schema_for", "profile_descriptor",
+    "validate_profile_descriptor",
+})
 VENDOR_HTTP_IDENTITY='vendor-http-identity-v1'
 SUPPORTED_VERSIONS=frozenset({'1.0.0','1.1.0','1.2.0'})
 _BASE_RESOURCES=frozenset({'schemas/observation.schema.json','schemas/answer-content.schema.json','questions/metric-registry.json'})

@@ -8,6 +8,11 @@ from jsonschema import Draft202012Validator, FormatChecker
 from observation_profiles import schema_for
 from query_contract import ProfileQueryDialect, query_sha256, seal_response
 
+API_PROTOCOL = "iqs.query-vendor-contract-api/1.0.0"
+PUBLIC_API_EXPORTS = frozenset({
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "ProfileQueryDialect",
+    "original_observation", "validate_request",
+})
 
 __all__ = ['profile_query_schema', 'query_sha256', 'original_observation',
            'seal_response', 'validate_request', 'validate_response']

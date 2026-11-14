@@ -7,6 +7,11 @@ import re
 import query_contract as qc
 import module_contract
 
+API_PROTOCOL='iqs.subject-dispatch-contract-api/1.0.0'
+PUBLIC_API_EXPORTS=frozenset({
+    'API_PROTOCOL','PUBLIC_API_EXPORTS','PROTOCOL','digest','validate_dispatch_request',
+    'validate_receipt','bind_original',
+})
 PROTOCOL='stockwiki.subject_dispatch_request/1.0.0'
 FIELDS={'protocol','subject_ref','work_item_id','work_request_id','execution_attempt_id',
         'provider','model_requested','identity_revision','question_id','field_id',

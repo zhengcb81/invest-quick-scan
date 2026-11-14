@@ -16,7 +16,7 @@ def main(argv=None):
     try:
         with args.input.open('rb') as handle:raw=handle.read(contract.MAX_BYTES+1)
         if len(raw)>contract.MAX_BYTES:raise ValueError('refresh_input_too_large')
-        value=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=module_contract._unique_object)
+        value=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=module_contract.unique_json_object)
         if not isinstance(value,dict):raise ValueError('refresh_object_required')
         if args.operation=='targets':
             if set(value)-{'ordered_route_targets','provider','model'} or 'ordered_route_targets' not in value:

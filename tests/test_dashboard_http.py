@@ -23,11 +23,43 @@ class LoopbackServer(http.server.ThreadingHTTPServer):
 
 
 class Owner:
-    def __init__(self, config): self.config = config
+    def __init__(self, config): self.config = config; self.requests = {}; self.history = []
     def status(self): return {'available': True, 'network_calls': 0}
     def search(self, *args, **kwargs): return {'args': args, 'selection': kwargs, 'snapshot': {'ordered_ids':['e1','e2']}}
     def coverage(self): return {'field_catalog': []}
     def universe_apply(self, body): return {'applied': True, 'payload': body}
+    def universe_preview(self, body):
+        return {'status': 'preview', 'can_apply': True, 'preview_token': 'preview-1',
+                'member': {'version': 0}, 'entity': {'identity_revision': 2}}
+    def membership_request_read(self, body):
+        key = body.get('idempotency_key')
+        value = self.requests.get((body.get('universe_id'), key)) if key else None
+        if body.get('request_id'):
+            value = next((row for row in self.requests.values()
+                          if row['request']['request_id'] == body['request_id']), None)
+        return value or {'status': 'not_found'}
+    def membership_request_apply(self, body):
+        canonical = {key: body[key] for key in ('action', 'universe_id', 'entity_id', 'reason',
+                                                 'priority', 'pin', 'expected_member_version',
+                                                 'expected_identity_revision')}
+        receipt = {'protocol': 'stockwiki.membership_request/1.0.0', 'status': 'applied',
+                   'request_id': 'REQ_HTTP', 'request_scope': 'ws:default', 'workspace_scope': 'ws',
+                   'universe_id': body['universe_id'], 'entity_id': body['entity_id'],
+                   'action': body['action'], 'idempotency_key': body['idempotency_key'],
+                   'payload_sha256': 'sha-http', 'canonical_payload': canonical,
+                   'member_version': 1, 'created_at': '2026-11-12T00:00:00Z',
+                   'member': {'entity_id': body['entity_id'], 'version': 1}}
+        request = {**receipt, 'receipt': receipt}
+        self.requests[(body['universe_id'], body['idempotency_key'])] = {
+            'status': 'found', 'request': request}
+        self.history = [{'version': 1, 'snapshot': receipt['member']}]
+        return receipt
+    def membership_history(self, body):
+        return {'universe_id': body['universe_id'], 'entity_id': body['entity_id'],
+                'items': self.history[:body['limit']], 'total': len(self.history),
+                'limit': body['limit'], 'after_version': body['after_version'],
+                'version_pin': body['version_pin'] or len(self.history), 'has_more': False,
+                'next_after_version': self.history[-1]['version'] if self.history else None}
 
 
 class Execution:
@@ -91,6 +123,33 @@ def test_mutation_requires_token_and_original_route(product):
     status, reply = call(product, 'POST', '/api/product/universe/apply', '{"entity_id":"e1"}', write_headers(product))
     assert status == 200 and reply['data']['payload'] == {'entity_id':'e1'}
     assert call(product, 'POST', '/app.js', '{}', write_headers(product))[0] == 405
+
+
+def test_membership_request_public_routes_replay_and_history_over_http(product):
+    semantic = {'action': 'add', 'universe_id': 'default', 'entity_id': 'ENT_HTTP',
+                'reason': 'http test', 'priority': 0, 'pin': False}
+    status, preview = call(product, 'POST', '/api/product/universe/preview',
+                           json.dumps(semantic), write_headers(product))
+    assert status == 200 and preview['data']['status'] == 'preview'
+    request = {**semantic, 'idempotency_key': 'HTTP-1',
+               'preview_token': preview['data']['preview_token']}
+    status, applied = call(product, 'POST', '/api/product/universe/apply',
+                           json.dumps(request), write_headers(product))
+    assert status == 200 and applied['data']['status'] == 'applied'
+    assert applied['data']['request_protocol'] == 'iqs.dashboard.member_request/1.0.0'
+
+    # A lost-response retry needs no still-current preview token.
+    retry = {**semantic, 'idempotency_key': 'HTTP-1'}
+    status, replay = call(product, 'POST', '/api/product/universe/apply',
+                          json.dumps(retry), write_headers(product))
+    assert status == 200 and replay['data']['status'] == 'replayed'
+    assert replay['data']['request_id'] == applied['data']['request_id']
+
+    status, receipt = call(product, path='/api/product/universe/request?universe_id=default&idempotency_key=HTTP-1')
+    assert status == 200 and receipt['data']['status'] == 'found'
+    assert receipt['data']['request']['request_id'] == applied['data']['request_id']
+    status, history = call(product, path='/api/product/universe/history?universe_id=default&entity_id=ENT_HTTP')
+    assert status == 200 and [row['version'] for row in history['data']['items']] == [1]
 
 
 @pytest.mark.parametrize('body', ['[]', '{"x":NaN}', '{"x":1,"x":2}', '{', '{"x":'+ '['*1100 + '0' + ']'*1100 + '}'])
@@ -365,37 +424,26 @@ def test_read_keeps_original_deployment_during_config_change_and_snapshot_cannot
 
 
 @pytest.mark.parametrize('document', ['{', '[]', '{"runs":{}}', '{"runs":["bad-row"]}'])
-def test_bad_optional_drafts_do_not_hide_formal_entity(tmp_path, document):
+def test_entity_reads_ignore_ui_generated_answers(tmp_path, monkeypatch, document):
     class FormalOwner(Owner):
         def entity(self, entity_id): return {'entity': {'entity_id': entity_id}, 'groups': ['formal']}
         def entity_view(self, entity_id): return {'entity': self.entity(entity_id), 'temporal_shadow': {}}
-    service = DashboardService(tmp_path, ui_root=tmp_path/'ui', owner_factory=FormalOwner)
-    source = service.ui_root/'src/generated/answers.json'
+    service = DashboardService(tmp_path, owner_factory=FormalOwner)
+    source = tmp_path/'ui/src/generated/answers.json'
     source.parent.mkdir(parents=True)
     source.write_text(document, encoding='utf8')
+    original = Path.read_text
+    def read(path, *args, **kwargs):
+        if path == source:
+            raise AssertionError('IQS product route read a UI-owned answer file')
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, 'read_text', read)
     for endpoint in ('entity', 'entity-view'):
         status, reply = service.dispatch('GET', f'/api/product/{endpoint}?id=ENT_FORMAL')
         assert status == 200, reply
         formal = reply['data']['entity'] if endpoint == 'entity-view' else reply['data']
-        assert formal['groups'] == ['formal'] and formal['draft_runs'] == []
-        assert formal['draft_source_status'] == 'unavailable'
-        assert formal['draft_source_warning'] == 'draft_source_unavailable'
-
-
-def test_optional_draft_read_error_keeps_formal_result(tmp_path, monkeypatch):
-    class FormalOwner(Owner):
-        def entity(self, entity_id): return {'entity': {'entity_id': entity_id}, 'groups': ['formal']}
-    service = DashboardService(tmp_path, ui_root=tmp_path/'ui', owner_factory=FormalOwner)
-    source = service.ui_root/'src/generated/answers.json'
-    source.parent.mkdir(parents=True)
-    source.write_text('{"runs": []}', encoding='utf8')
-    original = Path.read_text
-    def read(path, *args, **kwargs):
-        if path == source: raise PermissionError('optional source denied')
-        return original(path, *args, **kwargs)
-    monkeypatch.setattr(Path, 'read_text', read)
-    status, reply = service.dispatch('GET', '/api/product/entity?id=ENT_FORMAL')
-    assert status == 200 and reply['data']['draft_source_status'] == 'unavailable'
+        assert formal['groups'] == ['formal']
+        assert 'draft_runs' not in formal and 'draft_source_status' not in formal
 
 
 def test_new_deployment_defaults_and_template_do_not_select_a_historical_experiment(tmp_path):

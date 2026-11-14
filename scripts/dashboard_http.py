@@ -36,9 +36,32 @@ def product_handler(base_handler, service):
                 self.wfile.write(raw)
 
         def _deny(self, status, code, message):
+            self._drain_rejected_body()
             self.close_connection = True
             self._reply(status, {'ok': False, 'error': {'code': code, 'message': message, 'details': {}}})
             return False
+
+        def _drain_rejected_body(self):
+            """Consume a small declared body before closing, so TCP delivers the denial."""
+            if getattr(self, '_request_body_consumed', False) or self.command not in {'POST', 'PUT', 'PATCH', 'DELETE'}:
+                return
+            if self.headers.get('Transfer-Encoding') is not None:
+                return
+            lengths = self.headers.get_all('Content-Length', [])
+            if len(lengths) != 1 or not lengths[0].isascii() or not lengths[0].isdecimal():
+                return
+            length = int(lengths[0])
+            if not 0 <= length <= MAX_BODY:
+                return
+            if length:
+                try:
+                    self.connection.settimeout(2)
+                    body = self.rfile.read(length)
+                except OSError:
+                    return
+                if len(body) != length:
+                    return
+            self._request_body_consumed = True
 
         def _guard(self, write=False):
             port = self.server.server_address[1]
@@ -103,6 +126,7 @@ def product_handler(base_handler, service):
             try:
                 self.connection.settimeout(10)
                 raw = self.rfile.read(length)
+                self._request_body_consumed = len(raw) == length
                 if len(raw) != length:
                     raise ValueError('incomplete body')
                 body = json.loads(raw.decode('utf-8'), parse_constant=_json_constant, object_pairs_hook=_unique_object)

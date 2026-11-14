@@ -57,7 +57,7 @@
 
 ### C5a 启动：复用 IQS 现有用户入口
 
-保持`python scripts/open_dashboard.py --ui-root <UI仓根> --port <port> --dashboard-config <local.json>`。`--ui-root`明确仍是UI仓根/同形发布资源包根，静态资源根为其公开的`src/`，原`/#/dashboard`首页实际加载`src/app/index.html`（保留原资源相对URL行为）；只读取声明的静态资源，不能执行该根scripts。由IQS拥有监听器、DashboardService及product_handler装配。
+保持`python scripts/open_dashboard.py --ui-root <UI仓根> --port <port> --dashboard-config <local.json>`。`--ui-root`明确仍是UI仓根/同形发布资源包根，公开静态资源根是`src/app/`，其`index.html`映射到`/`，相对`./styles`、`./vendor`和`./main.js`仍从该目录读取；这与UI兼容shim的`APP_DIR`一致。只允许常见前端静态后缀并拒绝路径逃逸/链接，不能执行该根scripts。由IQS拥有监听器、DashboardService及product_handler装配。
 
 普通启动由IQS内部调用自己的export实现，原子生成到配置`state_root/workbench/snapshot.json`（未配置时沿IQS现有默认state_root），不写UI仓、不导入或执行UI build_data。IQS同时提供下述generated HTTP读接口；浏览不会再触发build或模型。`--no-refresh`只读已有快照；不存在/损坏时公开状态标不可用，正式任务/结果/设置仍可用。`--plan`仅显示计划、无生成/写入/启动。
 
@@ -120,3 +120,15 @@ UI旧`serve.py`只是调用此公开CLI的兼容shim，把旧`--no-build`映射�
 删除或移出产品默认入口：手写测试计数、历史review/freeze pin一致性、同义schema原字节hash、未声明的实现文件布局检查、无关owner版本/新发送资格对只读和旧答保存的阻挡、域内每个helper版本审批。
 
 判别原则：删除后若可构造错公司/重复收费/丢原答的反例，这是必要约束，简化实现而非删掉；若只影响文档、排版、无关目录或已不消费的凭证，就是冗余。不得以“安全”为名恢复旧门，也不能为求绿取消有业务意义的验证。
+
+## 6. 平铺脚本与类封装的裁定
+
+**不把每个 `scripts/*.py` 改成一个类。** 类是组织对象状态和生命周期的工具，不是模块边界工具。只有对象确实持有状态、资源或需要明确生命周期时才用类，例如拥有连接/关闭流程的客户端、带租约状态的会话、维护不变量的工作单元。纯解析、投影、校验和策略选择用普通函数更直接。避免把多模块搬进一个 `QuickScanManager` 一类的大类。
+
+模块化的设计单位是**能力域/包**：题库路由、答案语义、公司执行编排、工作台、基础契约、查询契约、供应商执行、实验、验收。包公开一个稳定、版本化的 `api`/CLI/JSON 契约，跨域传窄 DTO；组装根负责注入 StockQA/StockWiki/其他 owner 的公开端口。CLI 脚本可以作为薄兼容入口，调用包 API；命令行兼容不要求保留跨域直导实现。
+
+当前仍有 136 个平铺脚本，测试里的逐项清单把它们分到上述 10 个能力层，并校验新增脚本或漏归层会失败。这是从现状走向包边界的过渡防线，**不代表代码目录已经搬成包，也不代表完整解耦已验收**。后续按域迁移：先为一个已验收域建立包 facade 和 DTO，再让现有脚本薄转发；定向合同与依赖方向测试通过后再迁下一个域。不要一次重命名 136 个路径或改掉现有 UI/CLI 入口。
+
+Python 的 `_private` 和双下划线都不是运行时权限控制。普通跨域源码一旦直接引用私有函数、对象成员或类实例的私有成员，架构回归应失败；公开类/对象自身要被明确导出。当前静态测试覆盖无别名/别名导入、简单变量转移、已导出类构造、有限条件表达式及常量 `getattr`；它不是同进程反射沙箱，不承诺阻止 `exec`、`sys.modules` 或任意动态代码。若未来要运行不可信插件，另用进程隔离，不再把边界扫描器扩写成 Python 解释器。
+
+本次精确验证：`tests/test_shared_public_boundaries.py` 与 `tests/test_company_agent_contrast_launcher.py` **80 passed**；题库、答案、路由、模块合同、查询/交换、派发与部署相邻组 **158 passed、57 subtests passed**。最终独立审查者从当前差异复跑 **80 passed（14.70秒）并 ACCEPT**，范围限于常见显式源码调用，不是运行时沙箱。I1–I7 固定提交组合也仍开放，因此本节只记录设计裁定和当前增量证据，不把专项标为完成。

@@ -15,6 +15,12 @@ import sys
 import pytest
 
 from scripts.dashboard_owner import DashboardOwnerError, OwnerGateway, _env
+from scripts.dashboard_membership_request import (
+    OWNER_PROTOCOL,
+    apply_keyed_membership,
+    membership_history,
+    membership_request_read,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 STOCKWIKI = Path(os.environ.get("IQS_DASHBOARD_TEST_STOCKWIKI_ROOT", ROOT.parent / "StockWiki"))
@@ -280,6 +286,80 @@ def test_member_list_projects_original_identity_name_and_security_without_writes
     assert member["identity_display_available"] is True
     assert member["entity_id"] == ENTITY and member["version"] == 1
     assert _tree(workspace) == before
+
+
+def test_real_membership_request_survives_gateway_restart_and_keeps_owner_history(owner):
+    gateway, workspace, _ = owner
+    command = {"action": "add", "universe_id": "TEST", "entity_id": ENTITY,
+               "reason": "isolated durable request", "priority": 0, "pin": False}
+    preview = gateway.universe_preview(command)
+    request = {**command, "idempotency_key": "DURABLE-1", "preview_token": preview["preview_token"]}
+    applied = apply_keyed_membership(gateway, request)
+    assert applied["status"] == "applied"
+    assert applied["request_protocol"] == "iqs.dashboard.member_request/1.0.0"
+    assert applied["member_version"] == 1
+    assert applied["canonical_payload"]["expected_identity_revision"] == 1
+
+    # A new adapter instance models a process restart. The durable owner,
+    # rather than process memory, supplies the receipt before preview checks.
+    restarted = OwnerGateway(gateway.config)
+    replay = apply_keyed_membership(restarted, {**command, "idempotency_key": "DURABLE-1"})
+    assert replay["status"] == "replayed"
+    assert replay["idempotent_replay"] is True
+    assert replay["request_id"] == applied["request_id"]
+    assert replay["member_version"] == applied["member_version"]
+
+    with pytest.raises(DashboardOwnerError) as conflict:
+        apply_keyed_membership(restarted, {**command, "reason": "changed meaning",
+                                            "idempotency_key": "DURABLE-1"})
+    assert conflict.value.code == "idempotency_key_conflict"
+    found = membership_request_read(restarted, {"request_id": applied["request_id"]})
+    assert found["protocol"] == "iqs.dashboard.member_request/1.0.0"
+    assert found["owner_protocol"] == OWNER_PROTOCOL
+    assert found["status"] == "found"
+    assert found["request"]["payload_sha256"] == applied["payload_sha256"]
+    page = membership_history(restarted, {"universe_id": "TEST", "entity_id": ENTITY, "limit": 10})
+    assert page["protocol"] == "iqs.dashboard.member_request/1.0.0"
+    assert page["owner_protocol"] == OWNER_PROTOCOL
+    assert [row["version"] for row in page["items"]] == [1]
+    assert page["version_pin"] == 1
+
+
+@pytest.mark.parametrize(('operation', 'payload', 'legacy_reply'), [
+    ('lookup', {'universe_id': 'U', 'idempotency_key': 'K'}, {'status': 'not_found'}),
+    ('history', {'universe_id': 'U', 'entity_id': 'E', 'limit': 10}, {'items': []}),
+])
+def test_membership_read_rejects_unversioned_owner_success(tmp_path, monkeypatch,
+                                                            operation, payload, legacy_reply):
+    from types import SimpleNamespace
+
+    from scripts.dashboard_owner import OwnerGateway
+
+    code = tmp_path / 'stockwiki-code'
+    workspace = tmp_path / 'stockwiki-workspace'
+    code.mkdir()
+    workspace.mkdir()
+    (code / 'dashboard_membership_request_cli.py').write_text('# isolated owner seam\n', encoding='utf8')
+    reply = dict(legacy_reply)
+    monkeypatch.setattr(subprocess, 'run', lambda *_args, **_kwargs: SimpleNamespace(
+        returncode=0, stdout=json.dumps(reply), stderr=''))
+    gateway = OwnerGateway({'stockwiki_root': str(code), 'workspace_root': str(workspace),
+                            'stockwiki_python': sys.executable})
+    method = gateway.membership_request_read if operation == 'lookup' else gateway.membership_history
+
+    with pytest.raises(DashboardOwnerError) as error:
+        method(payload)
+    assert error.value.code == 'owner_response_invalid'
+
+    reply['protocol'] = OWNER_PROTOCOL
+    accepted = method(payload)
+    assert accepted['protocol'] == OWNER_PROTOCOL
+    assert accepted['status'] == 'not_found' if operation == 'lookup' else accepted['items'] == []
+
+    reply['protocol'] = 'stockwiki.membership_request/99.0.0'
+    with pytest.raises(DashboardOwnerError) as unsupported:
+        method(payload)
+    assert unsupported.value.code == 'owner_response_invalid'
 
 
 def test_candidate_lookup_projects_original_identity_and_keeps_search_dto_unchanged(owner):

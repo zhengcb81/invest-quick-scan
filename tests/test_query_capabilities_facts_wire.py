@@ -139,24 +139,31 @@ def test_honesty_constants_are_unchanged():
         assert result['full_C06_milestone_accepted'] is False
 
 
-def test_wire_count_bounds_are_closed_in_both_schemas():
+def test_wire_set_matches_owner_projection_even_when_shape_schema_allows_count():
     context = owner_context()
     response = build_11(request=capabilities_request(), context=context)
+    caps.VALIDATOR.validate(response)
     wires = response['result']['supported_query_wires']
     for broken_wires in (wires + [VENDOR_WIRE], wires[:6]):
         broken = copy.deepcopy(response)
         broken['result']['supported_query_wires'] = broken_wires
-        with pytest.raises(ValueError, match='capabilities_response_invalid'):
+        # Both payloads remain valid JSON shape. The public contract must also
+        # bind the reported capabilities to the independently projected owner
+        # list instead of pretending the schema's generic maxItems is exact.
+        caps.VALIDATOR.validate(broken)
+        with pytest.raises(ValueError):
             caps.validate_response(response=broken, request=capabilities_request(),
                                    source_context=context, index=None,
                                    scope_context=None)
     vendor_response = build_12(request=capabilities_request(schema_version='1.2.0'),
                                context=context)
+    vendor.VALIDATOR.validate(vendor_response)
     vendor_wires = vendor_response['result']['supported_query_wires']
     for broken_wires in (vendor_wires + [VENDOR_WIRE], vendor_wires[:7]):
         broken = copy.deepcopy(vendor_response)
         broken['result']['supported_query_wires'] = broken_wires
-        with pytest.raises(ValueError, match='capabilities_document_invalid'):
+        vendor.VALIDATOR.validate(broken)
+        with pytest.raises(ValueError):
             vendor.validate_response(response=broken, request=capabilities_request(
                 schema_version='1.2.0'), source_context=context, index=None,
                 scope_context=None)
@@ -180,3 +187,31 @@ def test_request_validation_round_trip_is_unchanged_for_old_payloads():
         caps.validate_request(dict(request, message_type='response'))
     with pytest.raises(ValueError, match='capabilities_request_invalid'):
         caps.validate_request(dict(request, schema_version='9.9.9'))
+
+
+@pytest.mark.parametrize('namespace', ['universe', 'identity'])
+@pytest.mark.parametrize('schema_version', [5, 6, 7])
+def test_owner_capability_context_accepts_each_declared_read_schema(namespace, schema_version):
+    context = owner_context()
+    for mark in context['source_watermarks']:
+        if mark['namespace'] == namespace:
+            mark['schema_version'] = schema_version
+    context['context_sha256'] = core._digest(
+        {key: value for key, value in context.items() if key != 'context_sha256'})
+
+    response = build_11(request=capabilities_request(), context=context)
+
+    assert response['result']['watermark']['source_watermarks'] == context['source_watermarks']
+
+
+@pytest.mark.parametrize('namespace', ['universe', 'identity'])
+def test_owner_capability_context_rejects_unknown_read_schema(namespace):
+    context = owner_context()
+    for mark in context['source_watermarks']:
+        if mark['namespace'] == namespace:
+            mark['schema_version'] = 99
+    context['context_sha256'] = core._digest(
+        {key: value for key, value in context.items() if key != 'context_sha256'})
+
+    with pytest.raises(ValueError, match='capabilities_available_source_invalid'):
+        build_11(request=capabilities_request(), context=context)
