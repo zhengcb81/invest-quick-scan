@@ -1,0 +1,80 @@
+{
+  "protocol": "iqs.compare_view.validate_delivery/1.1.0",
+  "mode": "remediation",
+  "package_id": "UI-COMPARE-28-R1",
+  "handoff_path": "docs/handoff/UI-COMPARE-28/remediation-01/handoff.json",
+  "remediation_lock_sha256": "042326af82d6d321942abcc1622abcc2f3d73ecd29cfd9ac13d478f4ee8a5473",
+  "original_lock_sha256": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad",
+  "sections": {
+    "remediation_lock": {
+      "ok": true,
+      "findings": [],
+      "deliveries": 2,
+      "additional_sources": 4
+    },
+    "original_input_lock": {
+      "ok": true,
+      "source_package_id": "UI-COMPARE-28",
+      "files_checked": 16,
+      "original_lock_sha256": "680c4d7de15f2afd140bbe127ceb6cb9b65eabd1a1c5313de81843a9c67189ad",
+      "findings": []
+    },
+    "schemas": {
+      "ok": true,
+      "schemas": [
+        {
+          "file": "alignment.schema.json",
+          "sha256": "45dabb50deed70958a552d40c49c7cde628088fe976e0d43404354c256c6b37d",
+          "closed": true,
+          "$id": "urn:iqs:ui-comparison-alignment:1.0.0"
+        },
+        {
+          "file": "matrix-model.schema.json",
+          "sha256": "66180a11b3fc5bab2c5289475d2c0be05d075f4e618f058fceeb00a765a8f7b0",
+          "closed": true,
+          "$id": "urn:iqs:ui-comparison-matrix:1.0.0"
+        },
+        {
+          "file": "owner-pair-verdict.schema.json",
+          "sha256": "53cc5edab86a171c192471f3919aaeae420cb99fe5b5acdab8f3e6765fc8bb32",
+          "closed": true,
+          "$id": "urn:iqs:ui-comparison-owner-pair-verdict:1.0.0"
+        },
+        {
+          "file": "record-projection.schema.json",
+          "sha256": "5d0d404e66fb352f4f8202b11c8ab95ee9d54942b8f3df4bfc33a325fcd2ef31",
+          "closed": true,
+          "$id": "urn:iqs:ui-comparison-record:1.0.0"
+        },
+        {
+          "file": "selection.schema.json",
+          "sha256": "166f72176510cae55a5e5c22ddd1d31732934a6c8d28bbf498f5eb4069108434",
+          "closed": true,
+          "$id": "urn:iqs:ui-comparison-selection:1.0.0"
+        },
+        {
+          "file": "view-state.schema.json",
+          "sha256": "5f26107a07fa8a6a9da679247b2c1e9eded0a30ac4ac194e9d44238a10002f9d",
+          "closed": true,
+          "$id": "urn:iqs:ui-comparison-view-state:1.0.0"
+        }
+      ],
+      "findings": []
+    },
+    "handoff": {
+      "ok": true,
+      "path": "docs/handoff/UI-COMPARE-28/remediation-01/handoff.json",
+      "sha256": "1a23ca032c3cedd426d22eff93910d4a867f0699ed12db2aea963758c2fe0435",
+      "status": "complete",
+      "review_status": "approved",
+      "findings": [],
+      "package_id_actual": "UI-COMPARE-28-R1"
+    },
+    "review": {
+      "ok": true,
+      "findings": []
+    }
+  },
+  "ok": true,
+  "note": "R1 shape validation only. A pass does not make the independent review valid, the product wired, or production/financial qualification granted. The R1 lock and the original 21-lock are distinct: the review binds the R1 lock, the original 21 references are verified under their own source package id."
+}

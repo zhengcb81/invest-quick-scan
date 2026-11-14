@@ -1,0 +1,51 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-21T20:55:00Z",
+  "task_source": "../../../tasks.json",
+  "coordinator_write_scope": "C:/Users/郑曾波/Projects/invest-quick-scan",
+  "workers_dispatched": true,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "APPLIC-RESOLVE-14",
+      "lane_id": "iqs",
+      "document": "APPLIC-RESOLVE-14.md",
+      "task_ids": [
+        "S06",
+        "W15"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-applic-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "schemas",
+        "data",
+        "src",
+        "tests",
+        "scripts",
+        "design",
+        "review",
+        "demo",
+        "docs",
+        ".tmp",
+        "docs/handoff/APPLIC-RESOLVE-14"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "offline_applicability_data_candidate_only",
+      "task_ids_semantics": "support_only: declares which planned tasks this card supplies an offline candidate for (S06 evidence-based route decisions, W15 persisted route snapshots with owner override); completion of these tasks is NOT delegated and NOT claimed",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none",
+      "depends_on": [
+        "QUESTION-BANK-UPGRADE-12",
+        "UI-BANK-EXPLORER-13"
+      ],
+      "consumer": "UI-BANK-EXPLORER-13 (ApplicabilityResolver reads exported snapshot shape)",
+      "handoff_protocol": "docs/implementation/parallel-lanes/handoff.schema.json#1.0.0",
+      "exit_codes": "integration-contract section 2: 0/1(evaluate only)/2/3"
+    }
+  ]
+}

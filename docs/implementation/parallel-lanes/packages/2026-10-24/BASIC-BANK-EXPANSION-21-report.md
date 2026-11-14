@@ -34,7 +34,7 @@
 
 ## 2. AC-01：零行为变化（逐字节）
 
-方法：把 HEAD 版本的四个脚本与 rubric schema 还原到一份工作树副本，与当前工作树**分别**跑同一探针（`.test-scratch/ac01_probe.py`），比对 24 个 compose 摘要 + 库校验 + 路由最小题数 + rubric 发布 ID + summarize 摘要。
+方法：把 HEAD 版本的四个脚本与 rubric schema 还原到一份工作树副本，与当前工作树**分别**跑同一探针（[`evidence/ac01_probe.py`](evidence/ac01_probe.py)），比对 24 个 compose 摘要 + 库校验 + 路由最小题数 + rubric 发布 ID + summarize 摘要。原始机器结果保留在 [`evidence/ac01-result.json`](evidence/ac01-result.json)。
 
 结果：**唯一差异是两个新增的报告字段**（`library.core_constructs`、`library.common_questions`，均为 `None → 24` 的**新增键**）。以下全部逐字节相同：
 
