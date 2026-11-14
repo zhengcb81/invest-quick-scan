@@ -92,6 +92,23 @@ def test_dashboard_launcher_uses_the_selected_checkout_public_entry(tmp_path):
     assert {'--plan', '--no-refresh'} <= set(forwarded)
 
 
+def test_dashboard_launcher_accepts_a_data_directory_without_code(tmp_path):
+    ui, state, config = _dashboard_fixture(tmp_path)
+    data = tmp_path / 'resources'
+    data.mkdir()
+    result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(DASHBOARD),
+                             '--data-root', str(data), '--ui-root', str(ui),
+                             '--dashboard-config', str(config), '--plan'],
+                            cwd=tmp_path, env=_env(tmp_path), capture_output=True,
+                            text=True, encoding='utf8', timeout=15)
+
+    assert result.returncode == 0, result.stderr
+    plan = json.loads(result.stdout)
+    assert Path(plan['data_root']) == data.resolve()
+    assert Path(plan['snapshot_path']) == (state / 'workbench' / 'snapshot.json').resolve()
+    assert not plan['writes'] and not state.exists()
+
+
 def test_company_dashboard_serves_static_ui_and_one_owner_snapshot_without_ui_runtime(tmp_path):
     process, reader, ready, ui, state, snapshot = _start_dashboard(tmp_path)
     try:

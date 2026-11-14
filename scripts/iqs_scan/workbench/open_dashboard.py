@@ -137,7 +137,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="本机公司快扫工作台；浏览不调用模型，启动不运行测试。")
     parser.add_argument("--ui-root", type=Path, default=ROOT.parent / "iqs-question-bank-ui-lab",
                         help="UI源码仓，只读取 src/app 静态文件")
-    parser.add_argument("--data-root", type=Path, default=ROOT, help="要运行的IQS检出目录，包含代码、配置和题库")
+    parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS配置、题库与运行数据根目录，也可选择另一份IQS检出")
     parser.add_argument("--port", type=int, default=8765, help="本机端口；0 表示由系统分配")
     parser.add_argument("--no-refresh", action="store_true", help="仅读取已有展示快照，不重新读取owner或写快照")
     parser.add_argument("--dashboard-config", type=Path, help="本机owner与执行配置；默认config/dashboard.local.json")
@@ -150,10 +150,10 @@ def main(argv=None):
     static_root = ui_root / "src" / "app"
     if not (static_root / "index.html").is_file():
         parser.exit(2, "UI static app is missing; provide --ui-root with src/app/index.html.\n")
-    if data_root != ROOT:
-        entry = data_root / "scripts" / "open_dashboard.py"
-        if not entry.is_file():
-            parser.exit(2, "Provide --data-root with an IQS checkout containing scripts/open_dashboard.py.\n")
+    if not data_root.is_dir():
+        parser.exit(2, "Data root is missing; provide --data-root.\n")
+    entry = data_root / "scripts" / "open_dashboard.py"
+    if data_root != ROOT and entry.is_file() and entry.resolve() != Path(sys.argv[0]).resolve():
         # Start the selected checkout through its CLI in its own interpreter.
         command = [sys.executable, "-B", "-X", "utf8", str(entry), "--data-root", str(data_root),
                    "--ui-root", str(ui_root), "--port", str(args.port)]

@@ -55,6 +55,10 @@ SPECIAL_MEMBERS = {
 def _special_operations(value, aliases):
     if isinstance(value, ast.Name):
         return aliases.get(value.id, set())
+    if isinstance(value, ast.IfExp):
+        return _special_operations(value.body, aliases) | _special_operations(value.orelse, aliases)
+    if isinstance(value, ast.BoolOp):
+        return set().union(*(_special_operations(item, aliases) for item in value.values))
     if isinstance(value, ast.Attribute):
         owner, member = value.value, value.attr
     elif (isinstance(value, ast.Call) and isinstance(value.func, ast.Name)
@@ -68,6 +72,15 @@ def _special_operations(value, aliases):
         return set()
     return {SPECIAL_MEMBERS[(module, member)] for module in _special_operations(owner, aliases)
             if (module, member) in SPECIAL_MEMBERS}
+
+
+def _assignment_bindings(target, value):
+    if isinstance(target, ast.Name):
+        yield target.id, value
+    elif isinstance(target, (ast.Tuple, ast.List)) and isinstance(value, (ast.Tuple, ast.List)):
+        if len(target.elts) == len(value.elts):
+            for slot, member in zip(target.elts, value.elts):
+                yield from _assignment_bindings(slot, member)
 
 
 def _dynamic_import_aliases(tree):
@@ -92,7 +105,8 @@ def _dynamic_import_aliases(tree):
                     aliases.setdefault(alias.asname or alias.name, set()).add(canonical)
         elif isinstance(node, (ast.Assign, ast.AnnAssign)) and node.value is not None:
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-            assignments.extend((target.id, node.value) for target in targets if isinstance(target, ast.Name))
+            for target in targets:
+                assignments.extend(_assignment_bindings(target, node.value))
 
     changed = True
     while changed:
@@ -651,19 +665,18 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
                 value = node.value
             else:
                 continue
-            resolved = imported_object(value)
-            if resolved is None:
-                continue
             for target_node in targets:
-                if not isinstance(target_node, ast.Name):
-                    continue
-                existing = aliases.get(target_node.id)
-                if existing is None:
-                    aliases[target_node.id] = resolved
-                    changed = True
-                elif existing is not ambiguous_alias and existing != resolved:
-                    aliases[target_node.id] = ambiguous_alias
-                    changed = True
+                for binding, expression in _assignment_bindings(target_node, value):
+                    resolved = imported_object(expression)
+                    if resolved is None:
+                        continue
+                    existing = aliases.get(binding)
+                    if existing is None:
+                        aliases[binding] = resolved
+                        changed = True
+                    elif existing is not ambiguous_alias and existing != resolved:
+                        aliases[binding] = ambiguous_alias
+                        changed = True
 
     for node in ast.walk(tree):
         if isinstance(node, ast.Attribute):
@@ -920,12 +933,18 @@ def test_capability_source_uses_versioned_public_interfaces():
     'import importlib\nloader = importlib.import_module\nloader = __import__\nloader("question_sets")',
     'module = __import__("importlib")\nmodule.import_module("iqs_scan.questions.question_sets")',
     'from importlib import *\nimport_module("iqs_scan.questions.question_sets")',
+    'import importlib\nloader = importlib.import_module if flag else fallback\n'
+    'loader("iqs_scan.questions.question_sets")',
+    'import importlib\nloader, = (importlib.import_module,)\n'
+    'loader("iqs_scan.questions.question_sets")',
+    'import importlib\n(importlib if flag else fallback).import_module("iqs_scan.questions.question_sets")',
     'import importlib\nimportlib.import_module("iqs_scan.questions.api")',
     'import iqs_scan.questions.api\niqs_scan.questions.api._private()',
     'import iqs_scan.questions.api\npeer = iqs_scan.questions.api\npeer._private()',
     'import iqs_scan.questions.api\niqs_scan.questions.question_sets.compose()',
     'import iqs_scan.questions.api\npeer = iqs_scan.questions\npeer.question_sets.compose()',
     'from ..questions import api as peer\npeer._private()',
+    'from ..questions import api\npeer, = (api,)\npeer._private()',
     'from ..questions.api import compose_questions as compose\ncompose._private()',
     'from scripts import iqs_scan\niqs_scan.questions.question_sets.compose()',
     'from scripts.iqs_scan.questions import api',
