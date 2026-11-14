@@ -38,6 +38,9 @@ def test_test_child_permits_owned_literal_loopback_but_rejects_external_network(
     fixture = tests / "test_network_fixture.py"
     fixture.write_text('''import socket, threading
 def test_loopback():
+    from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+    with ThreadingHTTPServer(('127.0.0.1', 0), BaseHTTPRequestHandler) as server:
+        assert server.server_name == '127.0.0.1'
     with socket.socket() as server:
         server.bind(('127.0.0.1',0));server.listen(1)
         def accept():

@@ -282,16 +282,16 @@ def test_owner_compatibility_module_uses_the_packaged_answer_semantics(monkeypat
 
 def test_missing_owner_public_api_is_normalized_before_preflight_imports(monkeypatch):
     monkeypatch.syspath_prepend(str(ROOT / 'scripts'))
-    import builtins
     import shared_company_engine as engine
 
-    original_import = builtins.__import__
-    def fail_owner_import(name, *args, **kwargs):
+    original_import = importlib.import_module
+
+    def fail_owner_import(name, package=None):
         if name == 'iqs_company_agent_lab.api':
             raise ModuleNotFoundError(name)
-        return original_import(name, *args, **kwargs)
+        return original_import(name, package)
 
-    monkeypatch.setattr(builtins, '__import__', fail_owner_import)
+    monkeypatch.setattr(importlib, 'import_module', fail_owner_import)
     with pytest.raises(engine.SharedEngineRejected, match='company_scan_owner_api_unavailable'):
         engine.preflight(object(), object(), {})
 

@@ -26,6 +26,10 @@ def loopback(value):
         return ipaddress.ip_address(value).is_loopback
     except (TypeError, ValueError):
         return False
+_getfqdn = socket.getfqdn
+def _local_getfqdn(name=''):
+    return name if loopback(name) else _getfqdn(name)
+socket.getfqdn = _local_getfqdn
 def deny(event, args):
     if event == 'socket.connect':
         address = args[1]

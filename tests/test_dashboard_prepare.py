@@ -235,7 +235,7 @@ def original(request):
     if not (WIKI / "stockwiki/identity_g2b.py").is_file() or not (QA / "src/utils/quick_scan_refresh_admission.py").is_file():
         pytest.skip("Explicit integration dependencies: original sibling StockWiki and StockQA")
     # State belongs to IQS; every owner/ledger/runtime is still disposable.
-    with tempfile.TemporaryDirectory(prefix="dashboard-prepare-test-", dir=ROOT / "runs") as own:
+    with tempfile.TemporaryDirectory(prefix="p-") as own:
         base = Path(own)
         source = r'''
 import json,sys
