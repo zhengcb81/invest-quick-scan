@@ -174,9 +174,15 @@
 | SW-4：StockWiki owner 读面 checkout 可移植性 | **未复现代码缺陷**：当前 query CLI 显式接收 `--root`，测试夹具使用 `tmp_path`；旧报告中的固定路径符号不存在。 | `query-v2`测试因C06运行时环境条件跳过；本轮以源码/夹具检查为证，不记该测试通过。 |
 | SW-5：名单幂等请求 reason | 旧清单已报告完成。 | 只核现行测试/实现是否仍满足，不重复实现。 |
 | IQS-2：药明、阿里、MDB bundle 准备与登记 | **软件流程已存在；具体主体实际登记状态仍未证实**。当前本机有 62 个 bundle，但从可见文本查不到目标公司只表示 ID 不透明，不足以证明未登记。 | 查 identity owner 的只读主体映射/登记状态；真实准备与登记另按原流程执行，不把目标公司硬编码到产品；隔离软件测试不改用户配置、名单或正式 bundle。 |
-| IQS-3：多 bundle 显式选择 | **IQS侧显式选择已验证**：`explicit_scope.bundle_id` 进入 owner job facade，registration 与实际 start 沿同一bundle绑定，缺省多包仍返回`bundle_selection_required`。另发现一项独立Dashboard恢复问题，转列I7跨仓缺口。 | 不增加bundle字段或新门。Dashboard M8须按已知ID类型查询，修复后覆盖ID格式重叠、不得重提交及原command链接。 |
+| IQS-3：多 bundle 显式选择 | **IQS侧显式选择已验证**：`explicit_scope.bundle_id` 进入 owner job facade，registration 与实际 start 沿同一bundle绑定，缺省多包仍返回`bundle_selection_required`。曾列出的Dashboard恢复缺陷已由Dashboard `b03e14bb` 修复：当前服务先走公开 `CommandLookupPort` 精确查命令，只有 `command_unknown` 才回退 owner job 查询。新增服务层重叠ID回归已通过。 | 不增加bundle字段或新门。保留现有不得重提交、原command链接与命令优先查找语义。 |
 | IQS-4：真实付费 formal 成本样本 | **仍属真实运行验收**，不能由离线测试代替。 | 代码代理不得派发模型请求；待确认原配置已有授权额度/预算余额后再由总控沿现有 UI/runner 验收，不另建许可系统。 |
-| IQS-5：历史基线测试失败归属 | **已收口为测试可移植性修复**：显式 UTF-8 读取固定 JSON 后，相关 Dashboard execution/recovery 组合169 passed、1 skipped；无产品代码改变。 | 保留测试修复与组合结果；另列的M8 ID冲突是新发现，不是该历史编码基线。 |
+| IQS-5：历史基线测试失败归属 | **已收口为测试可移植性修复**：显式 UTF-8 读取固定 JSON 后，相关 Dashboard execution/recovery 组合169 passed、1 skipped；无产品代码改变。 | 保留测试修复与组合结果；M8 ID 查找是另一项历史问题，现由Dashboard公开命令查询路径修复，服务层回归已通过。 |
+
+### Dashboard M8 command/job ID 恢复复核
+
+- 旧记录依据 Dashboard `3e401cf`，现已被当前主线覆盖。当前 Dashboard `main@50602dee7c6fbecaa744004a4184bdc6bc7b2765` 包含 `63f6820` 与 `b03e14bb`：真实 `getJob` 服务路径先通过公开 `CommandLookupPort.get_command_status()` 查精确命令，仅在 `command_unknown` 后才按 owner job ID 回退。command ID 即使外形类似 `run-<32hex>`，也不误走 owner-job 查询；公开合同仍保留 opaque string，不添加前缀门禁。
+- 在 Dashboard `tests/unit/m8-jobs/test_m8_jobs_ops.py` 添加服务层回归：真实 `create_service().execute("getJob")` 通过带调用记录的 public fake，验证重叠形状 command id 精确返回且没有 owner-job 探测，并验证 command unknown 时 owner-job fallback 仍工作。独立审查 ACCEPT。
+- 当前目标组合 **34 passed**：M8 ops unit、IQS M8 adapter integration、原命令丢答后的真实 Dashboard browser recovery；只出现既有 websockets 弃用提示。测试使用隔离系统 TEMP 根并在结束后清理；无 API、数据库或名单写入。该增量是 service-level 边界回归补强，不改 Dashboard 生产逻辑。测试提交 `50602dee7c6fbecaa744004a4184bdc6bc7b2765` 已推至 Dashboard 既有 `origin/main`，远端同SHA核对通过。
 
 ### SW-2 第二轮 store-boundary 根修范围
 
@@ -187,7 +193,7 @@
 ### Company assessment v2 公开 wire 对齐
 
 - **提交状态：** IQS本轮producer/PWF提交`a8df5b99a600cc698a100d4d8bbe7ae15178615d`已推送并核对`origin/master`同SHA；StockWiki 23个精确文件已提交本地`0450506fc94adbfecd33001c244221a42ba0a00d`，该仓当前未配置任何remote，未创建新remote或擅自换目标。StockWiki剩余untracked仅是用户研究DB、Dashboard onboarding/research-binding、logs和runs/c16b，均保留未暂存。
-- IQS V2 producer、StockWiki company-result owner及SW-2 membership均已通过独立复审。当前新package/pointer为`pkg_07dc0d62fd89a008c474ffae0cb9be5ad7411f67333e81f1a12751cb4693a703` / metric contract `1.1.0`；旧`1.0.0` package与release lock未改变。新producer测试13 passed；与`test_question_manifest.py`合跑16 passed、2 subtests；`test_question_sets.py`正常权限隔离复跑70 passed、174 subtests。StockWiki company-result owner文件107 passed；以IQS active package实际生成53题并在临时owner workspace publish/readback通过。`comparison_role`递归断言只允许其出现在`lineage_provenance.question_mappings`。SW-2目标组合75 passed、static通过、最终独立ACCEPT。剩余未闭项为真实SW-3数据、IQS-2实际bundle登记证明、IQS-4付费成本样本及Dashboard M8交叉ID集成缺口。
+- IQS V2 producer、StockWiki company-result owner及SW-2 membership均已通过独立复审。当前新package/pointer为`pkg_07dc0d62fd89a008c474ffae0cb9be5ad7411f67333e81f1a12751cb4693a703` / metric contract `1.1.0`；旧`1.0.0` package与release lock未改变。新producer测试13 passed；与`test_question_manifest.py`合跑16 passed、2 subtests；`test_question_sets.py`正常权限隔离复跑70 passed、174 subtests。StockWiki company-result owner文件107 passed；以IQS active package实际生成53题并在临时owner workspace publish/readback通过。`comparison_role`递归断言只允许其出现在`lineage_provenance.question_mappings`。SW-2目标组合75 passed、static通过、最终独立ACCEPT。尚未闭合的真实数据/运行项为SW-3覆盖复核、IQS-2实际bundle登记证明及IQS-4付费成本样本；Dashboard M8重叠ID恢复已由后续Dashboard提交修复，并通过服务层回归，见本节后续记录。
 - V2 manifest（owner 请求的 `request.manifest`）：`{protocol:"stockwiki.company_assessment/2", schema_version:"2.0.0", entity_id, source_release, source_release_sha256, lineage_provenance, lineage_provenance_sha256, lineage_groups}`。观察 refs 按 owner 请求的 observations 字段单独绑定。现有 v1 保持原 schema、行为和记录不变。
 - `source_release` 是原 frozen manifest 完整对象及可复算哈希，保留真实 `module_package_id/module_release_id`、catalog、所有问题定义与哈希。SHA 使用 StockWiki `canonical_sha256`：UTF-8、`ensure_ascii=False`、排序键、分隔符 `(',', ':')`、`allow_nan=False`。
 - 重要：IQS 原 projection 的 score `source_release.questions` 不含 `comparison_role`；不能因 V2 需要角色校验而把该字段回写/强制要求于原 release。role 只存在于 provenance，StockWiki 必须依据冻结 metric contract/schema 版本和 role 语义校验；只把 question ID、release 中实际存在的 rubric/construct/response/hash 字段与 provenance 逐题比对。跨仓 golden 必须由 IQS 真实 producer projection 形状生成，不用手工补 role 的合成 source。

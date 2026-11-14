@@ -6,6 +6,7 @@
 - 固定 StockWiki `f2bc73f` 的第 7 版身份库被读路径的 `{5,6}` 误拒。独立隔离复现记录 `schema_unavailable`，将兼容性声明集中到存储域后，F05 原生测试 31 项通过（1 个需要 Git fixture 的历史项未纳入），5/6/7 兼容与未知版本拒绝 4 项通过。StockWiki 精确修复 `9a62022` 已入本地 master，无远端。并行的名单改动与研究来源适配分支保留。
 - 固定 I1–I7 均通过，I1 为 196 项和 71 个子测试，I6 为 19 项通过，两个历史 VIEW 夹具未安装，I7 为 2 项。普通 31 题与共享原生执行、混合冷恢复、有效期与过期、公开事实消费的实际节点和来源见[联测报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。默认快速套件 1127 项、391 个子测试通过；最后一组事实能力负例及历史施工归档检查 27 项通过。
 - 独立审查拒绝过动态导入、别名绕行和数据根误拒，修复后 `final_boundary_review` ACCEPT。Dashboard `b03e14b` 已推，远端 `e6a9efc` 包含该提交。未调用收费 API，未触及正式工作库或名单。
+- **Dashboard M8 交叉 ID 记录已对齐。** 旧缺陷记录基于 Dashboard `3e401cf`，当前主线 `50602dee7c6fbecaa744004a4184bdc6bc7b2765`（远端 `origin/main` 同SHA）包含 `b03e14bb`，服务层先查公开 command ledger、仅 `command_unknown` 才回退 owner job。独立审查确认不是当前产品缺陷。为守住完整跨域调用顺序，Dashboard 新增两个 M8 service regression，分别覆盖重叠形状 command 精确查询与 command unknown 后 owner-job fallback；unit + IQS adapter integration + browser recovery **34 passed**，独立审查 ACCEPT。只改测试、不改 Dashboard 生产逻辑；Dashboard 的 `.workbuddy-ai/` 用户未跟踪目录保留。
 
 ## 2026-11-14 原工作台与真实事实消费
 
