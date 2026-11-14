@@ -143,7 +143,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="本机公司快扫工作台；浏览不调用模型，启动不运行测试。")
     parser.add_argument("--ui-root", type=Path, default=ROOT.parent / "iqs-question-bank-ui-lab",
                         help="UI源码仓，只读取 src/app 静态文件")
-    parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS代码与题库根目录")
+    parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS配置、题库与运行数据根目录")
     parser.add_argument("--port", type=int, default=8765, help="本机端口；0 表示由系统分配")
     parser.add_argument("--no-refresh", action="store_true", help="仅读取已有展示快照，不重新读取owner或写快照")
     parser.add_argument("--dashboard-config", type=Path, help="本机owner与执行配置；默认config/dashboard.local.json")

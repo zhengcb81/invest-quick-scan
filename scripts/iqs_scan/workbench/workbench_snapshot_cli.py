@@ -35,7 +35,7 @@ def _config(path: Path | None, data_root: Path) -> dict:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS code/data root")
+    parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS configuration and question resources")
     parser.add_argument("--dashboard-config", type=Path, help="Optional local owner configuration")
     parser.add_argument("--output", type=Path, required=True, help="Explicit snapshot output path")
     parser.add_argument("--plan", action="store_true", help="Print the export plan without reading owners or writing")
@@ -43,7 +43,7 @@ def main(argv=None) -> int:
     root = args.data_root.resolve()
     output = args.output.resolve()
     if not root.is_dir():
-        parser.error("--data-root must point to an IQS source root")
+        parser.error("--data-root must point to an existing IQS data directory")
     if args.plan:
         print(json.dumps({"data_root": str(root), "output": str(output),
                           "reads_owner": False, "model_calls": False, "writes": False}, ensure_ascii=False))

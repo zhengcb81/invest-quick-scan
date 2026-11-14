@@ -17,7 +17,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
-DASHBOARD = ROOT.parent / "investment-dashboard"
+DASHBOARD = Path(os.environ.get("IQS_DASHBOARD_ROOT", ROOT.parent / "investment-dashboard")).resolve()
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(0, str(ROOT / "tests"))
 
@@ -168,7 +168,6 @@ def test_dashboard_m6_m8_use_live_iqs_http_cli_and_read_after_lost_submit(tmp_pa
 
             def lose_one_successful_submit_response(owner, argv, **kwargs):
                 operation = argv[argv.index("--operation") + 1]
-                assert argv[argv.index("--origin") + 1] == origin
                 assert argv[argv.index("--origin") + 1] == origin
                 cli_operations.append(operation)
                 result = real_run_cli(owner, argv, **kwargs)

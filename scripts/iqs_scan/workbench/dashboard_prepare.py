@@ -125,8 +125,6 @@ def _ordered_route_targets(policy):
     if policy.get("protocol") != "stockwiki.refresh_owner_policy/1.6.0":
         return None
     try:
-        # IQS's original contract modules import their peers as CLI modules.
-        # Support both dashboard package imports and the existing worker CLI.
         from iqs_scan.query.api import validate_route_targets
         targets = validate_route_targets(policy.get("ordered_route_targets"),
                                          provider=policy["provider"], model=policy["model"])
