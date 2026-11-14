@@ -147,7 +147,10 @@ def test_wire_set_matches_owner_projection_even_when_shape_schema_allows_count()
     response = build_11(request=capabilities_request(), context=context)
     caps.VALIDATOR.validate(response)
     wires = response['result']['supported_query_wires']
-    for broken_wires in (list(reversed(wires)), wires[:-1]):
+    # This version also accepts a syntactically valid extra entry in the wire
+    # shape. Only the owner projection can decide whether it was advertised.
+    extra = {'schema_version': '2.6.0', 'operations': ['search']}
+    for broken_wires in (list(reversed(wires)), wires[:-1], wires + [extra]):
         broken = copy.deepcopy(response)
         broken['result']['supported_query_wires'] = broken_wires
         # Both shapes are valid JSON. The public contract also binds order and

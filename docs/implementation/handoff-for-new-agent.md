@@ -1,6 +1,12 @@
 # 当前接手说明
 
-## 2026-11-13 I3 当前接续
+## 2026-11-14 模块化组合交接
+
+先读根[实施计划](../../task_plan.md)的当前状态与 Next Step，以及[固定来源与验证结果](parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。IQS 十个能力域已进入 `scripts/iqs_scan`，旧 CLI 路径可用。新域间依赖使用 `api.py`、HTTP 或公开 JSON 命令。StockQA 拥有发送和保存，StockWiki 拥有公司身份、名单和入库，工作台与 Dashboard 消费各自公开接口。
+
+下一主线从 F05/W11/G4 的真实业务使用接续。先核现有真实单题的 owner 观察、查询与导出，再用 TH/IN 真实入口补足覆盖。现有隔离联测已验证工程接线。直接复用已有案例和运行记录，实际新扫描继续遵守原费用和持久化规则。固定提交之外的历史版本以当时的证据为准。
+
+## 2026-11-13 I3 接续记录
 
 I3 的隔离全链已通过。原 StockQA 工作库与 StockWiki 消费回执是状态来源。历史规则读取、任务构造和原工作范围查询使用原注册数据，实时权限在注册事务、领取和实际 HTTP 边界校验。已付回答和脱敏端点标识一起持久化，旧版已验证记录仍可读取。
 
@@ -14,7 +20,7 @@ Dashboard三个小修复已ff主线0addea2（29项通过/非作者diff独审）�
 
 71个pytest目录和6个明确残留文件已经删除，约1.53GB；有效候选根/源码/原答/运行库/历史证据均在，不要按tmp前缀扩大清理。旧副本对照、全部未提交路径、worktree/分支状态和测试命令都在报告。剩余是原9包TDD/组合实施，本次盘点不是模块化完成。IQS/Dashboard本地未推送的源提交按卡的完整发布组合收齐后正常发布，现有授权继续有效，不反复问。
 
-## 2026-11-11 接手续令（优先于下方历史）
+## 2026-11-11 当时的接手续令（历史）
 
 用户要求先从各模块架构做细规划，供多个harness并行TDD收口。本轮不继续零散源码修补。先读根PWF和[本轮总路线](parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)、[实际调查](parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)、[公共契约/TDD](parallel-lanes/packages/2026-11-11-modularity-closeout/contracts-and-tdd.md)、[整合交接](parallel-lanes/packages/2026-11-11-modularity-closeout/integration-and-handoff.md)。规划已由三个非作者agent复核通过，歧义已修正。9包未在本轮启动，用户可分派8个外仓包，IQS由总控负责。
 

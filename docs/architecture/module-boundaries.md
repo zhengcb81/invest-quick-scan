@@ -1,10 +1,10 @@
 # 活跃产品模块的架构与边界
 
-最后实际调查：2026-11-11。**整体模块化仍未完成。** 本页分开目标设计与实现状态，不把扫描器通过、局部ACCEPT或磁盘候选当作已经交付。
+2026-11-14 更新。活跃产品的模块边界已落到源码包、公开协议和隔离联测。固定来源、测试覆盖和审查范围见[组合验证报告](../implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。
 
 详细执行入口：[有限收尾路线图](../implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)、[实际架构证据](../implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/architecture-audit.md)、[公开契约/TDD](../implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/contracts-and-tdd.md)、[整合/交接](../implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/integration-and-handoff.md)。旧日期报告只说明当时验证范围。
 
-## 目标依赖图
+## 产品依赖图
 
 ```mermaid
 flowchart LR
@@ -21,23 +21,29 @@ flowchart LR
  IN[行业研究] -->|公共facts query/export| SW
 ```
 
-图是目标逻辑依赖，不代表当前每条线均已发布。QA对RT提供effects是协议实现/装配，不允许RT业务import QA具体provider/store，故不能由图中的运行期回调推断静态双向依赖。
+QA 对 Runtime 提供协议声明的 effects。Runtime 消费该协议和 Company Agent 的任务 DTO。QA 的具体 provider 与 store 留在 QA 内部。
 
 ## Owner与能力域
 
 |owner|能力域/唯一责任|公开边界|当前状态|
 |---|---|---|---|
-|IQS|题库/路由、答案语义、扫描编排、工作台应用；不拥有外仓数据库|已有module/task/answer APIs、HTTP与owner CLI；C5公开启动/展示snapshot本轮拟收口|HEAD fbe5b39，含bb20529，另有WIP；API floor当前QA≥1.7/CA2.3/RT1.4|
-|StockQA|provider、搜索、额度、paid response、逐题保存/恢复、outbox|company-scan facade、owner refresh/lifecycle ports|HEAD4c24789无facade；canonical磁盘1.5，候选1.8，需归拢提交|
-|Company Agent|task/策略/runner/事件/checkpoint语义|api2.3、task DTO1.1、opaque句柄|793bfbc已提交；保留封装，补公共行为/组合验证|
-|Runtime|会话/工具/receipt薄适配，不新增预算库|api1.4、services1.0、四操作句柄|5839ef4无api，候选未提交；冻结测试与当前组合需分开|
-|StockWiki|身份名单、观察入库/ACK、刷新准备、查询投影、交付对账|已有identity/dashboard/prepare/query CLI；facts2.7|12c441e已提交边界调整；宽control、域间环与源码布局检查仍需根修|
-|原8766工作台|显示/用户草稿/API client|目标只消费公开snapshot/HTTP，提供静态资源|正确仓iqs-question-bank-ui-lab@47d5354；当前仍反向加载IQS源码与历史目录|
-|统一Dashboard|自己的application/domain/ports/adapters与展示|QuickScanPort、JobPort、生成DTO；合同0.1.2-d|b707473；只收口m0/m6/m8注入/方向，不重开九模块工程|
-|Theme|主题研究本地输出、只读消费|StockWiki公共2.7 query/export CLI|3352b58有WIP；schema原字节格式误拒已确认|
-|Industry|行业研究本地输出、只读消费|同一公共2.7 wire|7d49ca3；验证协议重复解释与局部失败行为|
+|IQS|题库、路由、答案语义、扫描编排和工作台|域 `api.py`、owner CLI/HTTP、C5 展示快照、C38 名单请求|十个能力域包已入 `master`，原 CLI 路径可用|
+|StockQA|供应商、搜索、额度、已付回答、逐题保存/恢复、交付|company-scan API 1.8、owner refresh/lifecycle|固定提交 `f6897ac`，原生子进程完成冷重启与接续|
+|Company Agent|任务、策略、runner、事件和 checkpoint|API 2.3、task DTO 1.1、不透明句柄|固定提交 `ba54694`|
+|Runtime|会话、工具和原生回执适配|API 1.4、services 1.0、不透明句柄|固定提交 `369a44b`，历史冻结回放有独立入口|
+|StockWiki|身份、名单、观察入库、ACK、刷新、查询和交付对账|identity/dashboard/prepare/query CLI、facts 2.7|固定提交 `9a62022`，读取兼容身份 schema 5/6/7|
+|原8766工作台|展示、交互和用户草稿|静态资源、公开 snapshot 和 HTTP|固定提交 `3ed6391`，由 IQS 启动与装配|
+|统一 Dashboard|自己的 application/domain、客户端和展示|QuickScanPort、JobPort、命令查询、合同 0.1.2-d|固定提交 `b03e14b`，真实浏览器验证命令接续|
+|Theme|主题研究结果与只读消费|StockWiki 公共 facts 2.7 query/export|固定提交 `00e4fbd`，真实隔离 CLI 消费通过|
+|Industry|行业研究结果与只读消费|StockWiki 公共 facts 2.7 query/export|固定提交 `bb0c3b9`，真实隔离 CLI 消费通过|
 
 company-wiki继续拥有原件/来源EvidenceSpan，快扫只用公开SourceRef，不把文档下载或其内部重构纳入本专项。历史viewer、实验Lab不作为新增产品owner。
+
+## IQS 包布局
+
+`scripts/iqs_scan` 内的 `foundation`、`questions`、`answers`、`query`、`providers`、`execution` 和 `workbench` 承载产品实现。`experiments`、`acceptance` 和 `tools` 从外侧组合能力。共享操作经对应域 `api.py` 的显式导出进入，工作台主要经 CLI/HTTP 对外。基础契约保持单向依赖，题库和答案共用题义标识，执行编排在组合点连接各 owner。
+
+有状态的执行网关、工作台服务和持久化适配器封装状态及生命周期。解析、验证、路由和投影保留纯函数。旧 `scripts/*.py` 文件保留原命令和旧 Python 导入兼容，规范内的调用使用公开 API。StockQA 现行答案语义接口仍能从已发布路径 `scripts/answer_validation.py` 读取。
 
 ## 设计层的封装要求
 
@@ -55,10 +61,8 @@ company-wiki继续拥有原件/来源EvidenceSpan，快扫只用公开SourceRef�
 - 当前提交源码在新进程运行，不加载冻结实验conftest；通过原SDK脚本化wire与隔离库执行到ACK/查询/UI。
 - 每包一次独审、总控一次组合独审；手写用例计数不作为运行门。
 
-有限退出范围为路线图中的I1–I7与列明能力域。通过后关闭架构专项，继续原F05/W11/G4、质量和规模目标；这些业务目标不反过来成为无期限的模块化验收条件。
+架构验收范围为路线图中的 I1–I7 与列明能力域。正式事实覆盖、研究消费、质量和规模继续沿根 PWF 验收。
 
 ## 历史证据如何理解
 
-11/09 F05/E12真实单题/已付恢复、11/10候选接口回归、11/11 Runtime36项及独审ACCEPT都保留在根progress和原报告。它们有真实价值，但不能证明新的9仓组合已发布。Runtime“current_sources”的7项仍使用冻结来源；旧218/219和pin问题从当前默认功能验收剥离，不继续刷新历史回执求绿。
-
-本轮仅完成架构调查/规划，没有新运行产品测试或收费API；各包实际进度以根task_plan和本目录路线图为准。
+11/09 F05/E12 的真实单题和已付恢复、11/10 候选接口回归、11/11 Runtime 的局部独审保留在根进度与原报告。当前组合通过原 SDK、隔离 owner 库、脚本化传输和本机浏览器验证。旧实验继续从各自的冻结源码回放，原运行记录无需续签。

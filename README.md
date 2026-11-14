@@ -15,11 +15,13 @@ python scripts/open_dashboard.py
 
 终端打印本机地址，默认 `http://127.0.0.1:8765/`。端口被占用时使用其他空闲端口，以终端输出为准。浏览器打开后进入工作台。五个工作区为总览、扫描、公司研究、题库和设置；各自包含原有子页面，旧地址仍可使用。可维护名单、查看原结果、按题义和分数条件筛选、比较不同观测，并预览和运行已登记扫描包。Ctrl+C停止服务。
 
-界面源码默认位于同级目录 `iqs-question-bank-ui-lab`；运行环境需要Python。代码与数据目录分开时：
+界面源码默认位于同级目录 `iqs-question-bank-ui-lab`。可用以下参数指定静态界面和 IQS 资源位置。
 
 ```powershell
 python scripts/open_dashboard.py --ui-root "C:/path/to/iqs-question-bank-ui-lab" --data-root "C:/path/to/invest-quick-scan"
 ```
+
+`--data-root` 接受单独的数据目录。选择另一份含工作台入口的 IQS 检出时，会在独立进程运行该检出的公开启动命令。要启动扫描，按原配置连接 StockQA、StockWiki 和模型环境。
 
 启动器由 IQS 自己提供本机服务，只读取 UI 仓库 `src/app` 下的静态资源，不调用其脚本。正常启动会生成一份只读展示快照到连接配置的 `state_root/workbench/snapshot.json`；名单通过 StockWiki 公开接口读取。`--no-refresh`只使用现有快照，不刷新题库/名单、不写快照；快照缺失或损坏时页面会标明不可用，产品 API 仍可使用。正常浏览不调用模型、不运行测试，也不会补造缺失评分。
 

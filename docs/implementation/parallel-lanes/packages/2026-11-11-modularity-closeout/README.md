@@ -1,22 +1,22 @@
 # 模块化与解耦：有限收尾路线图
 
-2026-11-12。状态：八个外仓施工包已逐个验收、提交并快进并入各自主线；MC-IQS 总控代码及跨仓组合仍在实施。本目录取代根 PWF 中“继续追加边界反例、刷新旧回执直到全绿”的旧下一步，不撤销已通过的真实扫描、恢复和入库成果。
+2026-11-14 更新。活跃模块实现已进入各自主线，十个 IQS 域包和八个外部组件经固定来源联测。详见[组合验证报告](fixed-combination-2026-11-14.md)。下方保留原施工路线与分工。
 
 ### 最新并线状态
 
 |包|主线|当前提交|验证结论|后续归属|
 |---|---|---|---|---|
-|MC-SW|StockWiki `master`|`f2bc73f`|169 passed / 1 skipped|已并；无生产迁移|
+|MC-SW|StockWiki `master`|`9a62022`|身份 schema 5/6/7 兼容，I4/I5 通过|已并，后续 `21cf489` 包含该修复|
 |MC-CA|Company Agent `master`|`ba54694`|38 passed|已并|
-|MC-IN|Industry Research `main`|`2b2fc54`|232 passed / 105 subtests；独立 ACCEPT|已并；远端推送待最终组合后核对|
-|MC-TH|Theme `master`|`99ac207`|96 passed，真实 MC-SW 2.7 fixture|已并|
-|MC-QA|StockQA `master`|`749f6e1`|100 passed / 1 skipped|已并；保留未跟踪用户资料|
-|MC-RT|Runtime `codex/agent-run-02`|`f58e0c4`|210 passed / 1 skip；current 25；legacy 7/1 skip；integration 6|已并；字节换行问题经总控修正|
+|MC-IN|Industry Research `main`|`bb0c3b9`|当前 I5 读取同一隔离 owner 快照|已并、已发布|
+|MC-TH|Theme `master`|`00e4fbd`|当前 I5 读取同一隔离 owner 快照|已并，本地仓|
+|MC-QA|StockQA `master`|`f6897ac`|当前 I2/I3 完成普通与共享保存和恢复|已并、已发布|
+|MC-RT|Runtime `codex/agent-run-02`|`369a44b`|当前 API 1.4 与 StockQA、CA 组合|已并，本地仓|
 |MC-UI|UI `master`|`3ed6391`|298 OK / 6 skipped；边界 22/1 skip|已并；C5 真服务由总控接线|
-|MC-DASH|Dashboard `main`|`3e401cf`|替换/边界组 367 passed|已并；I7、C38 和四个相邻向量待总控验收|
-|MC-IQS|IQS `master`|进行中|尚未做最终组合回归|继续本 PWF 主线|
+|MC-DASH|Dashboard `main`|`b03e14b`|I7 的真实 Chromium、HTTP、CLI 接续通过|已并、已发布|
+|MC-IQS|IQS `master`|见组合验证报告|十个能力域，固定 I1–I7|回根 PWF 主线|
 
-临时包工作树均已回收；各源仓中早已存在的 SQLite、代码索引、生成 JSON、用户记忆、pilot 文件和历史资料保留。外仓局部绿测不等于 I1–I7 完成；MC-IQS 完成后才做一次固定组合审查。
+固定组合使用独立检出、隔离数据库和本地回环。以报告中的提交和实际结果为准。
 
 ## 本轮新增的入场结果
 
@@ -67,7 +67,7 @@
 
 ```mermaid
 flowchart TD
- A[当前位置：架构规划与九仓改动盘点已完成<br/>清理及Dashboard小修已并线] --> B[准备：选择已有候选<br/>公开接口约定与隔离工作树]
+ A[架构规划与九仓改动盘点] --> B[选择已有候选<br/>公开接口与隔离工作树]
  B --> QA[QA：执行与持久化]
  B --> CA[CA：任务与恢复]
  B --> RT[RT：薄适配与测试分层]
@@ -87,7 +87,7 @@ flowchart TD
  TH --> X
  IN --> X
  X --> R[独立集成审查并修复]
- R --> END[关闭模块化专项<br/>恢复原PWF的F05/W11/G4及规模主线]
+ R --> END[模块化工程验收完成<br/>当前主线：F05/W11/G4及规模化]
 ```
 
 图中依赖是**真实接线顺序**，不是让消费者等 owner 全部完工才能写测试。各包可先用相同公开向量和最小替身开发。

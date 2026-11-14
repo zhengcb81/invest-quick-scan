@@ -2,11 +2,12 @@
 
 ## 2026-11-14 能力域迁移与固定组合验证
 
-- 保存前序 IQS 工作为 `e63cef4`，十个能力域迁移为 `465d567`，隔离测试修正为 `5d4798c`。已有静态边界测试扫描实现目录并核对包的依赖方向及公开导出。原 CLI 通过薄入口启动；StockQA 兼容的 `answer_validation.py` 模块原址仍供 owner 读取。冻结题包字段映射由题库提供，查询和答案复用此契约。
+- 保存前序 IQS 工作为 `e63cef4`，十个能力域迁移为 `465d567`。最终代码 `30c30c0` 由架构测试直接扫描实现包，核对方向和公开导出。原 CLI 保留，StockQA 经原 `answer_validation.py` 读取公开答案语义接口。冻结题包字段映射由题库提供。
 - 固定 StockWiki `f2bc73f` 的第 7 版身份库被读路径的 `{5,6}` 误拒。独立隔离复现记录 `schema_unavailable`，将兼容性声明集中到存储域后，F05 原生测试 31 项通过（1 个需要 Git fixture 的历史项未纳入），5/6/7 兼容与未知版本拒绝 4 项通过。StockWiki 精确修复 `9a62022` 已入本地 master，无远端。并行的名单改动与研究来源适配分支保留。
-- 固定 IQS `5d4798c` 的 I1 为 163 项及 71 个子测试通过；I2 普通扫描 1 项通过；I6 为 10 项通过。迁移相邻组 210 项及 10 个子测试通过。I2 共享、I3 和 I5 正在用 StockWiki `9a62022` 复跑。I4 需要短 Windows 源码根并保留准备状态目录的归属约束。I7 已用 Dashboard 固定 lockfile 安装依赖并成功构建，提交后读回命令 ID 仍有失败，正在定位。
+- 固定 I1–I7 均通过，I1 为 196 项和 71 个子测试，I6 为 19 项通过，两个历史 VIEW 夹具未安装，I7 为 2 项。普通 31 题与共享原生执行、混合冷恢复、有效期与过期、公开事实消费的实际节点和来源见[联测报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。默认快速套件 1127 项、391 个子测试通过；最后一组事实能力负例及历史施工归档检查 27 项通过。
+- 独立审查拒绝过动态导入、别名绕行和数据根误拒，修复后 `final_boundary_review` ACCEPT。Dashboard `b03e14b` 已推，远端 `e6a9efc` 包含该提交。未调用收费 API，未触及正式工作库或名单。
 
-## 2026-11-13 I1–I7 并行模块审查（进行中，不代表专项完成）
+## 2026-11-13 I1–I7 并行模块审查（历史快照）
 
 按公开接口/状态矩阵分域并行审查并合并同源根因，避免逐个反例打补丁：I1公开facade和I7 Dashboard已有独立审查；I5 Theme/Industry已修复、独审和提交；I2普通31题恢复链通过；I3原生 intent 回执、付费回答恢复、unknown 暂停、未发送分类及入库 ACK 的隔离全链现已通过（见本文件 2026-11-13 I3 末尾记录），早期“缺原生 intent 查询”文字属于该修复前快照；I4、I6 已有定向通过记录。**仍未完成的是这些场景在固定提交组合上的复跑及一次独立总审。**
 
@@ -18,7 +19,7 @@
 - **I6 原工作台：** 新增真实 `open_dashboard.py --no-refresh`、当前UI/浏览器、任务页重开E2E；loopback受限执行环境中首跑被Windows socketpair限制，提权后用例1 passed/7.56秒，进程/资源清理。它使用未登记任务，启动按钮为disabled，因此只证明重开只读，不足以签收。已确认可用隔离正式bundle/WorkStore、临时StockQA兼容runner和确定性本地回答stub，补真实HTTP显式start→tasks状态读取→页面reload并断言不二次start。
 - **I3/I7本轮真实隔离证据：** `test_unknown_intent_cold_native_e2e.py` 现有底层行为例为 **1 passed/0 skipped，410.519秒，付费API 0，外网拒绝，临时根清理**；另一次 shared native E2E **1 passed，551.48秒，付费API 0，临时源码副本清理**。后者从运行时各仓工作树复制文件且没有捕获当时 HEAD/diff/hash，故只作行为证据，不算固定提交组合通过；unknown 行为测试还需断言 `all_slots_completed=false`。相关运行记录在 `runs/test-reports/i3-unknown-final-20261113T021734Z/` 和 `runs/qa-public-seams-2026-11-02/shared-engine-native-current-final-20261113.log`。
 
-**当前结论：** 模块专项仍开放。I1–I7 已有定向通过记录，I3 的通过证据见本文件末尾。下一步进行固定来源组合复跑与一次独立总审。
+**当时状态。** I1–I7 已有定向通过记录，I3 的通过证据见本文件末尾。固定来源与独立总审见上方 11-14 记录。
 
 ## 2026-11-13 平铺脚本、类封装与边界合同回归
 
