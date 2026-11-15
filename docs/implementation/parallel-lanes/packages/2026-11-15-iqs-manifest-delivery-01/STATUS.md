@@ -88,19 +88,83 @@ manifest §4 写"register→import→publish-release"，实际代码顺序不可
 
 ## 7. 重跑 runbook（每一步的前置与预算门）
 
+**2026-11-15 执行记录（操作者指令"根据你的建议操作"授权后）：**
+
+- R0 预算核验 ✓：ledger 93 attempts 实花 $2.18 / cap $25（`runs/u25-live/work.sqlite` quick_scan_budget_attempt）。
+- 前置修复（零花费）：owner workspace `scan.sqlite` schema 6→7（StockWiki master 0450506 的 SW-2 迁移，
+  owner 自带 `apply_v7`，迁移前字节备份 `scan.sqlite.bak-schema6-20261115`）；QA ledger `work.sqlite`
+  schema 26→27（`QuickScanWorkStore` 自带迁移，备份 `work.sqlite.bak-schema26-20261115`）——两者都是
+  owner 自身迁移器，只读检查（`route_store_schema_unavailable`/`refresh_executor_schema_unavailable`）暴露的版本差。
+- **Phase 1a（11-08 遗留 leased 释放）**：`WORK_1844c0e5…`(IQS_09)、`WORK_e2cbace8…`(IQS_10) 因 11-08
+  search_unverified 失败持有过期租约（attempt phase=response_available，钱已花、响应已收）。沿 owner
+  协议释放：StockQA `quick_scan_work_decision_inspect_cli --intent` derive ✓（两笔，intent+诊断证据文件
+  在 `runs/manifest-delivery-01-decisions/`）→ StockWiki `quick_scan_refresh_owner_cli
+  --work-decision-request` preview（wdp1_…）→ **delegation 通道** install（wdg1_…，agent 溯源如实记录
+  ZCode-manifest-delivery-01，authorization user-2026-11-15-manifest-delivery-01-operator-directed-recovery）
+  → `--confirm-work-decision-delegated` 确认（rc1_4be56ce3… / rc1_3ad5e7db…，reason=answer_validation_rejected，
+  diagnostic=standard_answer_invalid，即 SW 缺陷报告 IQS-DEFECT-2026-11-08 中 manual_review 的协议内处置）
+  → StockQA `quick_scan_work_decision_apply_cli` 应用 → 两项 **leased→failed**（终态）。0 API、0 付费。
+- 准备：bank_reuse 逐字节复用 11-08 冻结 manifest（459f1945…，as_of=2026-11-08、mode=full、subject
+  ASJ_9ef10f84@1）——未重冻结、未改题库。prepjob_44e21b3f… registered，bundles dashboard-44e21b3f…-1/-2。
+- 试跑门（Phase 1b）：首个付费派发包 search 回执实测 **executed + 真实 receipt + 6 source_urls**
+ （11-08 的 unverified 未复现）→ 门通过，放行全量。
+- 批次：batch-f00023ec230b46c2bd2dd59e2fbfdaff running（旧空批 batch-3f6e7327 已 abandon，无花费）；
+  run-49122d17… 36 题全部 resume_existing_work，result_ready 8 题检查点水合零花费，IQS_09/10/12 走新代际。
+- **中途租约超时（已恢复）**：u25 配置 pack_size=4 使 IQS_17–20 包超出 work_lease_seconds=600——4 题转
+  uncertain，运行器按级联语义退出，批次 blocked（16 result_ready 保留）。4 笔 provider 响应实际均已到账
+ （completed + search executed + 真实回执，late receipt 入账）。处置：同 owner 协议四笔
+  known_response_resolution（reason=known_response_no_accepted_answer，确认 rc1_4f6017b0/rc1_8835f86e/
+  rc1_628a507c/rc1_75c5774b，0 API）→ uncertain→failed → **根因修复 pack_size 4→2**（10-31 成功配置；
+  manifest 未动，frozen bank 459f1945 复用不变）→ 服务重启 → 重新准备（prepjob_750cbbe4…，pack_size=2）
+  → 批次 batch-13f80bdc… 重启续跑。期间花费增量 ≈$0.03/包，均在 cap 内。
+- **第二轮：输出截断（已恢复）**：max_output_tokens=16384 使 DUPONT_04/05 响应 response_status=length
+ （截断）。同协议 output_length 决议（rc1_8da1088d/rc1_18a80232）→ failed → **根因修复 max_output_tokens
+  16384→32768**（与 10-31 成功运行同值）→ 重启批次。DUPONT_04/05 gen2 成功（executed）。
+- **第三轮：DUPONT_06/07 连续 search_unverified**：gen1–gen3 三连败（0 URL，provider 对该题包未执行
+  检索）。gen3 决议（rc1_376ebc86/rc1_8b87fd6b）→ gen4 第 4 次尝试**成功**（executed+6 URLs）——provider
+  侧检索不稳定性逐次随机，重试有效。
+- **第四轮：PORTER_01/02 content_filter——协议缺口，按门槛停下**：响应 response_status=**content_filter**
+ （provider 内容过滤拒绝；`content_filter` 一词在 StockQA/StockWiki/IQS 三仓代码中均无映射）。
+  known_response_resolution 受理集仅 {completed, length}；retry_unusable_answer 需先有 resolution；
+  runner 的 fail_received_without_answer 需有效租约（已过期）——**三仓均无任何协议路径可关闭该状态**。
+  28/36 已覆盖（26 result_ready + 1 delivered 前代 + PORTER_01/02 之外全部就绪），PORTER_01/02 遗留
+  expired-leased，PORTER_03–05 与 security IQS_22–24 pending（批次编排要求 entity 全过后才启动 security）。
+  **本轮至此停止付费重试**：session 花费 $0.33 / 累计 $2.51（cap $25，93→107 attempts 全部 settled）。
+- 结论：**36 题不可全部覆盖 → 本轮无法交付**（owner manifest 禁止裁剪；register 在 manifest_incomplete
+  上硬拒）。缺口解除需要操作者在三个选项中决策（见 §10）。
+
+**级联风险处置（按建议执行的调整）**：未修改 StockQA 引擎——`recover_expired`/stopped_reason 是预算安全
+机制，临阵改动风险大于收益；级联恢复改由 owner 协议承担（leased/uncertain → work-decision → 新代际），
+与 10-26 CATL 恢复先例同一通路。每次中断可按此恢复，代价仅为新增派发，已花部分不重付（检查点复用）。
+
 | 步 | 内容 | 门 |
 |---|---|---|
-| R0 | 操作者确认 MiMo 预算（现行政策 `runs/u25-live/budget-policy.json`：单批 cap $25、单请求 ≤$0.25、--require-search） | **§2.3 强制** |
-| R1 | 试跑 1 包 2 题（新 prepare → bundle，pack_size=2），验证 mimo search 回执（search_receipt_id/source_urls 非空） | ≤$0.5；建议但可跳过 |
-| R2 | 全量 36 题：new prepare（活动包 pkg_07dc0d62 会生成新冻结 manifest + 新 bundle id）→ batch → run | cap $25 |
-| R3 | 交付：delivery pipeline 产出 C06 包（consumer=StockWiki）+ 用真实 36 refs 重建 V2 请求（§3 同法） | 交回附 SHA-256 清单 |
+| R0 | 操作者确认 MiMo 预算（现行政策 `runs/u25-live/budget-policy.json`：单批 cap $25、单请求 ≤$0.25、--require-search） | **§2.3 强制** ✓已获 |
+| R1 | 试跑门：首个付费包 search 回执健康检查 | ✓通过 |
+| R2 | 全量 36 题续跑（同冻结 bank resume） | cap $25 内 |
+| R3 | 交付：delivery pipeline 产出 C06 包 + 真实 36 refs 重建 V2 请求 + V1 投影 | 交回附 SHA-256 清单 |
 | R4 | SW operator 四步（§6 顺序）由 SW harness/操作者执行 | 红线：IQS 侧不代执行 |
 | R5 | 验收：SW read formal → Dashboard `get_result` | 见 §8 已知边界 |
 
-**级联风险（重跑前置告知）**：11-08 的级联失败根因在 StockQA `src/core/qa_engine.py`
-（`stopped_reason` 一旦置位，后续全部 not_dispatched，批次 blocked 无恢复路径）。该仓不在本包授权内；
-不修则重跑可能再次在首个 search_unverified 题包后级联中止（已消耗部分不退）。建议操作者决定是否
-先立 StockQA 失败隔离专项，或接受风险直接重跑。
+## 10. 待操作者决策：content_filter 协议缺口与剩余 8 题
+
+**缺口定义**：provider（mimo）以 `response_status=content_filter` 终止响应时，StockQA
+`known_response_resolution` 只受理 `completed`/`length`；`retry_unusable_answer` 依赖先有 resolution；
+runner `fail_received_without_answer` 需未过期租约。过期租约 + content_filter 响应的工作项在现行
+三仓协议下**永久卡死**（既不能关闭进 failed，也不能重新派发）。这同时阻塞 prepare（bank_reuse 要
+所有未完工作同冻结 bank）与批次启动（owner_work_unknown）。
+
+**选项**（按代价排序）：
+
+| 选项 | 内容 | 代价/风险 |
+|---|---|---|
+| A | StockQA 协议补丁：`known_response_resolution` 受理集加入 `content_filter`（及同型的未知 provider 终态），owner 决议凭物理回执关闭进 failed，后续沿既有重试代际恢复 | 一小包变更+测试；改的是已冻结执行 owner，需 SW/总控确认边界 |
+| B | 等 mimo 侧内容过滤行为变化后重试（PORTER 题材触发过滤具随机性可能消失） | 时间不可控；期间 workspace 卡在 28/36 |
+| C | 接受 28/36 放弃本轮 formal（不推荐） | 违反 §2.1 不裁剪；E07 无法闭环 |
+
+本轮证据：`runs/manifest-delivery-01-decisions/`（全部 intent/derive/confirmation，20 笔决议全记录）、
+`runs/manifest-delivery-01-*.{json,log}`（preview/apply/batch/start 全链）、备份
+`scan.sqlite.bak-schema6-20261115`、`work.sqlite.bak-schema26-20261115`。
 
 ## 8. 与 manifest 条款的偏差登记
 
