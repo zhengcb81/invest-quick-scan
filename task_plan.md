@@ -1,5 +1,11 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-15 OWNERPKG-IQS-MANIFEST-01（中微36题 owner manifest 交付）
+
+回应 Dashboard D00 的 MANIFEST-DELIVERY-01。本轮零 MiMo 预算（重跑按 §2.3 待操作者确认额度，未派发任何付费请求）。完成：①数据缺口证实——manifest §2.2 引用的 run-4205968 实为 **1/36 题 scope run**（`result.json.scope.json`：requested_question_count=1、whole_manifest_answered=false），11-08 完整批次失败（2 scored + 6 insufficient + 25 error + 3 题未跑），**36 题 scored/answered 观测数为 0**，交付必须先重跑；②SW workspace 落点更正——IQS worker_read 传 `--root config["workspace_root"]`，真实交付目标是仓内 `runs/r25-live/owner-workspace`（store_id 哈希逐位吻合 SW-PROJECTION-01 实跑日志），非 StockWiki checkout；③形状离线验证——用真实冻结 manifest（prepare_4283c570，pkg_0151/modrel_9973）构造 V2 请求（6 个 lineage group 完整划分 36 题、12 个 diagnostic_only 题 construct=null 如实承载），SW `_validated_v2_manifest` **PASS**；同题 V1 投影被 SW 拒为 `manifest_invalid`；④§2.1 不可满足三角证明——IQS_06 自初始基线即 rubric 2.0.0（1.0.0 定义从未存在）、题库契约"同 ID 禁改 rubric/构念 + common 必须恰有 IQS_01–24"使 31×1.0.0 与 5×2.0.0 均无法合法归一、diagnostic 题 construct=null 是目录权威设计；⑤可执行 operator 顺序更正为 publish-release→import→record-authority→register（import 入口先 `require_published_release`）。
+
+**已知边界：** V2 混尺度下 SW read 可达 formal（manifest §1 字面目标达成），但 Dashboard 冻结 adapter 要求 `scale_version` 非空字符串（`_map_company_result` lineage_unknown 拒绝），`latest_formal` 仍 null——E07 全链需 Dashboard 契约接受 V2 `scale_versions`（另立包）。重跑前置风险：11-08 级联失败根因在 StockQA `qa_engine.py`（`stopped_reason` 置位后全部 not_dispatched、批次 blocked 无恢复），该仓不在本包授权内，不修则重跑可能再次级联中止。状态与 runbook：[STATUS.md](docs/implementation/parallel-lanes/packages/2026-11-15-iqs-manifest-delivery-01/STATUS.md)（证据含 SHA 清单）。待操作者三决策：MiMo 预算（试跑→全量）、形状路线确认（默认 V2 诚实交付）、StockQA 失败隔离是否先立专项。
+
 ## 2026-11-14 能力域包迁移与固定提交验收
 
 十个能力域已迁入 `scripts/iqs_scan`，原 CLI 路径仍可运行。域间走显式导出的 API、HTTP 或 owner CLI，有状态的网关与适配器各自维护状态。固定组合核对普通和共享执行、冷恢复、缓存刷新、事实消费、原工作台和 Dashboard。测试与部署边界见[组合验证报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。
@@ -168,7 +174,7 @@
 
 | 来源项 | 当前判定 | 实施边界 |
 |---|---|---|
-| SW-1 / IQS-1：36 题 owner manifest / company result | **代码合同已实现并通过独立复审；E07真实结果仍未闭环**。IQS v2 producer 输出和 StockWiki owner `company_assessment/2` 以真实 IQS 题库实际生成的53题 envelope 做隔离 publish/readback；未生成答案。历史扫描仍只有1/36条 owner观察（另一历史产物有2个scored），不能声称36题已完成。 | V2为 additive DTO：每组一 rubric/aggregation role，完整绑定原 immutable package/release/question hashes；组间不汇总、不生成公司总分，v1不变。生产数据须由真实回答和既有owner导入路径提供；不伪造答案、临时回填ID、重贴package/release或覆盖历史记录。 |
+| SW-1 / IQS-1：36 题 owner manifest / company result | **代码合同已实现并通过独立复审；E07真实结果仍未闭环**。IQS v2 producer 输出和 StockWiki owner `company_assessment/2` 以真实 IQS 题库实际生成的53题 envelope 做隔离 publish/readback；未生成答案。历史扫描仍只有1/36条 owner观察（另一历史产物有2个scored），不能声称36题已完成。2026-11-15 OWNERPKG-IQS-MANIFEST-01 核清：run-4205968 为1/36 scope run、36题观测数为0须重跑（预算待确认）、真实workspace=r25-live、V2形状离线PASS/V1拒绝、§2.1单rubric三角不可满足，见[STATUS.md](docs/implementation/parallel-lanes/packages/2026-11-15-iqs-manifest-delivery-01/STATUS.md)。 | V2为 additive DTO：每组一 rubric/aggregation role，完整绑定原 immutable package/release/question hashes；组间不汇总、不生成公司总分，v1不变。生产数据须由真实回答和既有owner导入路径提供；不伪造答案、临时回填ID、重贴package/release或覆盖历史记录。 |
 | SW-2：旧 universe 写路径越过 schema-7 membership request authority | **代码根修与独立复审已关闭**。Store直写绕行、schema6→7迁移竞态和自动准入未来版本边界已修；第三轮复审 ACCEPT。 | Store/Universe/Candidates/Maintenance/Backup **75 passed**、static通过；新增六例 **6 passed**。手工schema7写必须有request receipt；自动准入是独立 authority，schema6/7均保留原子策略路径，schema5/future8拒绝且零写；版本检查与写入同在`BEGIN IMMEDIATE`。提权隔离跑唯一2000实体UI分页E2E后 **1 passed/27.73s**、17条loopback请求；普通沙箱启动Playwright driver会卡住，提权正常运行。 |
 | SW-3：药明、阿里、MDB 的 research 数据 | **代码/读取链不是本轮阻塞；真实研究内容仍缺，且本轮未重查生产覆盖**。历史样本曾显示无数据，不能外推为当前值。 | 仅记录真实身份绑定、正式研究观察和来源覆盖；不得把合成数据当真实。真实模型研究或写生产 wiki 需走原owner操作，隔离代码实施不代做。 |
 | SW-4：StockWiki owner 读面 checkout 可移植性 | **未复现代码缺陷**：当前 query CLI 显式接收 `--root`，测试夹具使用 `tmp_path`；旧报告中的固定路径符号不存在。 | `query-v2`测试因C06运行时环境条件跳过；本轮以源码/夹具检查为证，不记该测试通过。 |
