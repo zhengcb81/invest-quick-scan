@@ -23,7 +23,7 @@
 | run-4205968bd06a48edbfd5b3ea1463fe9b 只答了 IQS_12（requested_question_count=1，whole_manifest_answered=false），answer_status=insufficient_evidence | `runs/dashboard-runtime/run-4205968bd06a48edbfd5b3ea1463fe9b/result.json.scope.json` |
 | "delivered=1" 指 1 个交付作业（deliveryjob_f23a4709…，package_count=1），不是 36 题 | `runs/dashboard-runtime/delivery-jobs/deliveryjob_f23a4709e662a9c1ce810b00b4d71d99.json` |
 | 11-08 完整批次 batch-598c4601… 失败：2 scored + 6 insufficient_evidence + 25 error（IQS_09/10 search_unverified 后 23 题 not_dispatched）+ security 3 题未跑，批次 blocked | `runs/dashboard-runtime/batches/batch-598c460180c9447cac423e5e117c93c6.json`；SW 侧 `StockWiki/docs/handoff/SW-COMPANY-PROJECTION-01/IQS-DEFECT-2026-11-08-run-cascade.md` |
-| SW owner workspace（=IQS 侧 `runs/r25-live/owner-workspace`，见 §6）中微观测仅 1 条（IQS_12，insufficient_evidence，不可用） | 该 workspace `scan_observations.sqlite` 实测 count=1 |
+| SW owner workspace（=IQS 侧 `runs/r25-live/owner-workspace`，见 §6）中微观测仅 1 条（IQS_12，insufficient_evidence，不可用） | 该 workspace `scan_observations.sqlite` 全表 120 条（跨 4 实体），其中 ENT_99deceb6（中微）实体观测 count=1 |
 | SW register 可用门槛：publication_status=published ∧ answer_status∈{scored,answered} ∧ qualification∉{rejected,conflict}；insufficient_evidence 不可入 formal | `StockWiki/stockwiki/public_company_assessments.py:60-61`（`_USABLE_ANSWER_STATUS`/`_REFUSED_QUALIFICATION`） |
 
 **推论**：中微 36 题 scored/answered 观测数为 0；任何"交付"都必须以真实重跑产出为前提，无捷径。
@@ -39,8 +39,10 @@
 - **SW 校验**：`stockwiki.public_company_assessments._validated_v2_manifest` → **PASS**（离线只读调用，未写 SW 任何文件）。
 - **V1 反例**：同一 36 题 V1 投影 → SW `_validated_manifest_v1` → **manifest_invalid**（null construct 先触发；
   混 rubric 会触发 `scale_lineage_mixed`）——复现 SW-PROJECTION-01 的实测拒绝。
-- 活动包 pkg_07dc0d62（metric contract 1.1.0，222 题）同构：214×1.0.0 + 8×2.0.0、162 个 diagnostic_only null
-  construct——V2 分组语义正是为此设计；53 题 envelope 的隔离 publish/readback 此前已通过（root PWF 2026-11-14 节）。
+- 活动包 pkg_07dc0d62（metric contract 1.1.0，222 题）同构：214×1.0.0 + 8×2.0.0、162 个 score 题
+  construct=null（其中 comparison_role=diagnostic 16 个、context 146 个，均为不可比构念，V2 中归入
+  diagnostic_only/context_only 聚合组）——V2 分组语义正是为此设计；53 题 envelope 的隔离
+  publish/readback 此前已通过（root PWF 2026-11-14 节）。
 
 证据：`evidence/v2-register-request-dryrun.json`（V2 请求候选，observations 留空占位——重跑后按真实观测 refs 重建）、
 `evidence/v1-projection-dryrun.json`（V1 反例）。
