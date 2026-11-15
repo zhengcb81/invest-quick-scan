@@ -132,6 +132,22 @@ manifest §4 写"register→import→publish-release"，实际代码顺序不可
   **本轮至此停止付费重试**：session 花费 $0.33 / 累计 $2.51（cap $25，93→107 attempts 全部 settled）。
 - 结论：**36 题不可全部覆盖 → 本轮无法交付**（owner manifest 禁止裁剪；register 在 manifest_incomplete
   上硬拒）。缺口解除需要操作者在三个选项中决策（见 §10）。
+- **操作者选 A（StockQA 协议补丁）→ 已交付并生效**：分支 `codex/qa-content-filter-resolution-01`
+  commit `14f1a1c`（pre-commit 全绿）——中性 `known_response_no_accepted_answer` 受理集加入
+  `content_filter`（命名常量 `_NO_ACCEPTED_ANSWER_RESPONSE_STATUSES`；specific-fault reasons 仍要求
+  completed）。测试：参数化 +content_filter 正例、反例测试保证 missing_question_answer/
+  answer_validation_rejected 仍拒绝 content_filter（4 passed；该文件其余 11 败为迁移前基线既有红，
+  stash 对照确认与补丁无关）。**PORTER_01/02 随即以该 reason 决议成功**（rc1_37d77cc8/rc1_3342172f），
+  gen2 重扫 executed——覆盖升至 **35/36**（PORTER_03–05 亦在本轮完成）。
+- **entity 包首次全过（owner_ready）→ security 包首启**：IQS_23/24 成功，IQS_22 被 runner 判
+  invalid_question（failed 终态，completed 响应）。其决议 intent/derive 已备好
+  （`IQS_22-intent.json`/`IQS_22-derive.json`，reason=answer_validation_rejected），但 owner preview
+  拒 `subject_contract_output_invalid`（IQS 侧合同 CLI 对 receipt 的校验子进程在 owner CLI 环境中
+  失败；同调用进程内复现与手工子进程复现均 PASS——**待查点**：IQS_22 的 dispatch_manifest_sha256
+  为 `55881869…` 而非冻结 bank `459f1945…`，security 包派发可能绑定了不同 manifest 引用，需聚焦
+  诊断 owner CLI 环境下合同子进程的失败差异）。**干净暂停点：无 leased/uncertain 卡死项**，
+  IQS_22 随时可沿已备好的决议继续；session 累计花费 $2.67（113 attempts 全 settled，cap $25）。
+  下次续跑只需：诊断 IQS_22 preview 拒因 → 决议 → 重扫 1 题 → 交付链。
 
 **级联风险处置（按建议执行的调整）**：未修改 StockQA 引擎——`recover_expired`/stopped_reason 是预算安全
 机制，临阵改动风险大于收益；级联恢复改由 owner 协议承担（leased/uncertain → work-decision → 新代际），
