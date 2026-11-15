@@ -1,5 +1,21 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-15 PWF 对账与模块边界收敛
+
+I1–I7 固定来源组合已于 11-14 完成；测试范围、固定 commit、快速套件结果和独立 `final_boundary_review` ACCEPT 见[固定组合报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。旧路线图 P2/P3/P4 已纠正为完成。真实业务范围 F05/W11/G4、名单/公司覆盖和部署运维仍按主计划单独推进，不拿软件组合验收代替。
+
+### 当前代码状态与测试边界
+
+本仓当前检出为 `codex/iqs-manifest-delivery-01@ecb4a5d`；`master`/`origin/master` 仍在 `3d9243c`。本分支在 `3d9243c` 之上新增 `239838b` 与 `ecb4a5d`，改动仅涉及 MANIFEST-DELIVERY-01 的计划、状态及证据文件，没有改变模块实现代码。各 owner 当前 HEAD 与产品源码 WIP：StockQA `master@f6897ac`（4 个源码/测试 WIP）；StockWiki `master@0450506`（7 个源码/配置/测试 WIP）；Dashboard `main@3f83bb5`，另有 tracked WIP `handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md`；Theme `master@00e4fbd`；Industry `main@bb0c3b9`；Company Agent `master@ba54694`；Runtime `codex/agent-run-02@369a44b`；原工作台 UI `master@3ed6391`（2 个生成 JSON WIP）。本轮另更新了 8 个外部模块 PWF 与 Dashboard D00 相关 PWF；这些文档改动也不属于固定组合。具体路径和测试 pin 见[路线图](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)。
+
+模块收口之外仍开放的 owner 计划继续独立有效：StockWiki company-assessment-lineage-v2 等总控跨合同复核；StockWiki dashboard-owner-improvements Phase 4 仍在进行；Dashboard D00 的 B-04 仍为其 PWF 下一步。固定组合只关闭 I1–I7，不覆盖或清除这些业务计划。
+
+### 架构复核结论
+
+独立复核未发现新的跨域私有实现调用。此前提出的“核心域应支持同一进程多资源根”建议已复查并撤回：项目按单个 IQS checkout 运行，随版本发布的 schema、题库、指标注册表属于代码资源，用该 checkout 的 `REPO_ROOT` 定位是合理的；不需要多 checkout 资源注入框架。运行期状态、workspace、数据库、模型配置和 owner 数据则由部署配置或 owner 公共接口选择。公开 Dashboard 启动器解析 `data_root`/配置后把 `state_root` 和 `workspace_root` 交给服务；现有隔离测试分别覆盖 Dashboard 快照/任务状态根与 StockWiki workspace（`test_view_launcher.py`、`test_dashboard_iqs_public_integration.py`、`test_dashboard_prepare.py`）。本地配置将运行目录显式放在 checkout 内是部署选择，不是隐式路径泄漏。没有证据支持修改生产代码或新增多根支持；P5 以“审查后无需改码”关闭。
+
+模块化收尾按固定范围已完成：能力域公开 API、依赖方向、私域负例、兼容 DTO、真实 owner/HTTP/CLI 与 UI 组合均在固定 pin 下通过。它不宣称 Python 同进程具备反射安全沙箱；新跨域能力仍由 owner 的公开 API/wire 提供并用边界测试守住。后续实质工作回到根计划中的产品主线，不再把抽象路径争议作为新门禁。
+
 ## 2026-11-15 OWNERPKG-IQS-MANIFEST-01（中微36题 owner manifest 交付）
 
 回应 Dashboard D00 的 MANIFEST-DELIVERY-01。本轮零 MiMo 预算（重跑按 §2.3 待操作者确认额度，未派发任何付费请求）。完成：①数据缺口证实——manifest §2.2 引用的 run-4205968 实为 **1/36 题 scope run**（`result.json.scope.json`：requested_question_count=1、whole_manifest_answered=false），11-08 完整批次失败（2 scored + 6 insufficient + 25 error + 3 题未跑），**36 题 scored/answered 观测数为 0**，交付必须先重跑；②SW workspace 落点更正——IQS worker_read 传 `--root config["workspace_root"]`，真实交付目标是仓内 `runs/r25-live/owner-workspace`（store_id 哈希逐位吻合 SW-PROJECTION-01 实跑日志），非 StockWiki checkout；③形状离线验证——用真实冻结 manifest（prepare_4283c570，pkg_0151/modrel_9973）构造 V2 请求（6 个 lineage group 完整划分 36 题、12 个 diagnostic_only 题 construct=null 如实承载），SW `_validated_v2_manifest` **PASS**；同题 V1 投影被 SW 拒为 `manifest_invalid`；④§2.1 不可满足三角证明——IQS_06 自初始基线即 rubric 2.0.0（1.0.0 定义从未存在）、题库契约"同 ID 禁改 rubric/构念 + common 必须恰有 IQS_01–24"使 31×1.0.0 与 5×2.0.0 均无法合法归一、diagnostic 题 construct=null 是目录权威设计；⑤可执行 operator 顺序更正为 publish-release→import→record-authority→register（import 入口先 `require_published_release`）。
@@ -140,7 +156,7 @@
 |Dashboard 公司结果与任务|跨仓代码在各自主线|Dashboard `b03e14b` 已发布至 `origin/main`。固定 Chromium/HTTP 验证公司结果、提交响应丢失后查回原命令以及一次提交|
 |原部署|已启动并实测|`http://127.0.0.1:8766/` 的题库、名单、历史结果与任务可读，doctor 检查通过。原部署仍为 `isolated_research`|
 |远端持续集成|按仓记录固定提交和远端|本轮以实际隔离联测为证据。远端运行状态与 Git ref 核对各自记录|
-|模块解耦|十域包和八个依赖仓的公开边界已接通|固定来源、TDD、独审和发布见[组合验证报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)|
+|模块解耦|I1–I7 固定来源组合、TDD 边界与独立审查已完成；双资源根提议经复核撤回|固定来源与运行证据见[组合验证报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)；路径归属裁定见本节及[契约](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/contracts-and-tdd.md)|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|

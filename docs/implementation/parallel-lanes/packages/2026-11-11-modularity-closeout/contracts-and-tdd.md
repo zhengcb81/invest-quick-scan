@@ -17,6 +17,12 @@
 
 方向规则以**域**为单位。域内文件可协作，普通helper不独立版本化。逻辑循环应拆纯值与装配，不为“文件无环”搬来搬去。只在组合根允许选择实现和设置包加载路径。
 
+### 路径与资源归属
+
+- 随同一个 IQS checkout 版本发布的 schema、题库、指标注册表及规则表是代码资源，允许按该 checkout 的 `REPO_ROOT` 定位。项目不要求一个进程同时加载多个 IQS 代码版本；不为此引入多根资源注入框架。
+- workspace、数据库、任务状态、模型策略和运行产物是可变运行数据：由公开启动器/部署配置传入 state/workspace root，或由对应 owner 的公开接口管理。兼容 CLI 可以有显式默认目录；组合根负责解析默认并把最终路径传给下层服务。
+- 测试用隔离根验证该配置流向，不把“路径必须在 checkout 外”当新门禁。当前公开 launcher 的 owner-workspace 与临时 state 根由 `test_view_launcher.py` 覆盖；公开 M8 的任务状态/接续由 `test_dashboard_iqs_public_integration.py` 覆盖。
+
 ## 2. 已有跨仓契约
 
 ### C1 StockQA ↔ IQS / CA / Runtime
