@@ -6,9 +6,9 @@ I1–I7 固定来源组合已于 11-14 完成；测试范围、固定 commit、�
 
 ### 当前代码状态与测试边界
 
-本仓当前检出为 `codex/iqs-manifest-delivery-01@ecb4a5d`；`master`/`origin/master` 仍在 `3d9243c`。本分支在 `3d9243c` 之上新增 `239838b` 与 `ecb4a5d`，改动仅涉及 MANIFEST-DELIVERY-01 的计划、状态及证据文件，没有改变模块实现代码。各 owner 当前 HEAD 与产品源码 WIP：StockQA `master@f6897ac`（4 个源码/测试 WIP）；StockWiki `master@0450506`（7 个源码/配置/测试 WIP）；Dashboard `main@3f83bb5`，另有 tracked WIP `handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md`；Theme `master@00e4fbd`；Industry `main@bb0c3b9`；Company Agent `master@ba54694`；Runtime `codex/agent-run-02@369a44b`；原工作台 UI `master@3ed6391`（2 个生成 JSON WIP）。本轮另更新了 8 个外部模块 PWF 与 Dashboard D00 相关 PWF；这些文档改动也不属于固定组合。具体路径和测试 pin 见[路线图](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)。
+模块代码状态以本轮只读对账的源代码基线为准；之后落地的 owner PWF 同步提交仅改 Markdown，不代表源代码重新验收。IQS 的 MANIFEST-DELIVERY-01 计划/状态/证据提交也不改模块实现。各 owner 代码基线与 WIP：StockQA master@f6897ac（4 个源码/测试 WIP）；StockWiki master@0450506（10 个源码/配置/测试 tracked WIP）；Dashboard main@3f83bb5（tracked WIP handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md，以及一份尚未跟踪的 company-wiki owner handoff 副本）；Theme master@00e4fbd；Industry main@bb0c3b9；Company Agent master@ba54694；Runtime codex/agent-run-02@369a44b；原工作台 UI master@3ed6391（2 个生成 JSON WIP）。代码基线与固定组合测试 pin 分开记录，PWF-only提交在最新进度记录中逐仓列出。具体路径和测试 pin 见路线图。
 
-模块收口之外仍开放的 owner 计划继续独立有效：StockWiki company-assessment-lineage-v2 等总控跨合同复核；StockWiki dashboard-owner-improvements Phase 4 仍在进行；Dashboard D00 的 B-04 仍为其 PWF 下一步。固定组合只关闭 I1–I7，不覆盖或清除这些业务计划。
+模块收口之外仍开放的 owner 计划继续独立有效：StockWiki company-assessment-lineage-v2 等总控跨合同复核；StockWiki dashboard-owner-improvements Phase 4 仍在进行；Dashboard D00 的 B-04 仍为其 PWF 下一步。Dashboard 新出现的 company-wiki CANDIDATES-FIX-01 交接副本称 owner 修复已并入主线；只读核对确认 owner master@09fe9ca 包含其所列 569615ec，该项不替代 Dashboard B-04 验收。固定组合只关闭 I1–I7，不覆盖或清除这些业务计划。
 
 ### 架构复核结论
 

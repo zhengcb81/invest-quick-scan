@@ -4,19 +4,19 @@
 
 ### 最新并线状态
 
-|包|最新 checkout（2026-11-15）|固定组合测试 pin|已验事实与当前状态|
+|包|代码基线（2026-11-15 对账；PWF-only提交另列）|固定组合测试 pin|已验事实与当前状态|
 |---|---|---|---|
-|MC-SW|StockWiki `master@0450506`（7 个源码 WIP；本轮 2 个 PWF 文件修改）|`9a62022`|固定 I4/I5 通过；当前 checkout 含该 pin，但较新改动未重跑|
-|MC-CA|Company Agent `master@ba54694`（本轮 2 个 PWF 文件修改）|`ba54694`|API 2.3 当前组合通过|
-|MC-IN|Industry Research `main@bb0c3b9`（本轮 2 个 PWF 文件修改）|`bb0c3b9`|I5 从同一隔离 owner 快照读取；已发布|
-|MC-TH|Theme `master@00e4fbd`（本轮 2 个 PWF 文件修改）|`00e4fbd`|I5 从同一隔离 owner 快照读取；仓库未配置 remote|
-|MC-QA|StockQA `master@f6897ac`（4 个源码 WIP；本轮 2 个 PWF 文件修改）|`f6897ac`|I2/I3 普通与共享保存恢复通过；WIP 未纳入组合|
-|MC-RT|Runtime `codex/agent-run-02@369a44b`（本轮 2 个 PWF 文件修改）|`369a44b`|API 1.4 与 StockQA、CA 当前组合通过；仓库未配置 remote|
-|MC-UI|UI `master@3ed6391`（2 个 generated JSON WIP；本轮 2 个 PWF 文件修改）|`3ed6391`|I6 固定组合通过；两个历史 VIEW 外部夹具 skip；WIP 未纳入组合|
-|MC-DASH|Dashboard `main@3f83bb5`（tracked WIP：`handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md`；本轮 2 个 PWF 文件修改）|`b03e14b`|I7 Chromium、HTTP、CLI 接续通过；较新的 checkout 未重跑固定组合|
-|MC-IQS|IQS `codex/iqs-manifest-delivery-01@ecb4a5d`；`master@3d9243c`|报告中的 I1–I7 多提交固定组合|额外两提交改 MANIFEST-DELIVERY-01 计划、状态及证据文件，不改模块实现代码；模块组合未被重跑，P5 复核后关闭|
+|MC-SW|StockWiki 源码基线 master@0450506（10 个 tracked 源码/配置/测试 WIP）|9a62022|固定 I4/I5 通过；后续 PWF-only提交不含于组合，10 个源码 WIP 未重跑|
+|MC-CA|Company Agent 源码基线 master@ba54694|ba54694|API 2.3 当前组合通过；后续 PWF-only提交不改代码|
+|MC-IN|Industry Research 源码基线 main@bb0c3b9|bb0c3b9|I5 从同一隔离 owner 快照读取；后续 PWF-only提交不改代码|
+|MC-TH|Theme 源码基线 master@00e4fbd|00e4fbd|I5 从同一隔离 owner 快照读取；仓库未配置 remote；后续 PWF-only提交不改代码|
+|MC-QA|StockQA 源码基线 master@f6897ac（4 个源码/测试 WIP）|f6897ac|I2/I3 普通与共享保存恢复通过；后续 PWF-only提交不改代码，WIP 未纳入组合|
+|MC-RT|Runtime 源码基线 codex/agent-run-02@369a44b|369a44b|API 1.4 与 StockQA、CA 当前组合通过；仓库未配置 remote；后续 PWF-only提交不改代码|
+|MC-UI|UI 源码基线 master@3ed6391（2 个 generated JSON WIP）|3ed6391|I6 固定组合通过；两个历史 VIEW 外部夹具 skip；后续 PWF-only提交不改代码，WIP 未纳入组合|
+|MC-DASH|Dashboard 源码基线 main@3f83bb5（tracked filing-fetch IMPROVEMENTS；另有 untracked company-wiki handoff 副本）|b03e14b|I7 Chromium、HTTP、CLI 接续通过；之后 D00 PWF-only提交不改代码，当前 checkout 未重跑固定组合|
+|MC-IQS|IQS 模块代码基线 codex/iqs-manifest-delivery-01@ecb4a5d；master@3d9243c|报告中的 I1–I7 多提交固定组合|后续提交仅改 MANIFEST-DELIVERY-01 与本次 PWF 文件，不改模块实现代码；模块组合未被重跑，P5 复核后关闭|
 
-以上“固定组合测试 pin”与“最新 checkout”分别记录；不得用后者替代前者的测试证据。表中并行源码 WIP 与本轮 PWF 文档改动均未进入固定组合。StockWiki 无 remote；Company Agent、Runtime、原工作台和 Theme 为本地仓。详细 HEAD/status 对账由根 PWF 持有。
+以上“固定组合测试 pin”与“源码基线”分别记录；不得用后者替代前者的测试证据。表中并行源码 WIP 与 PWF-only 文档提交均未进入固定组合。StockWiki 无 remote；Company Agent、Runtime、原工作台和 Theme 为本地仓。PWF同步提交及 StockQA/Industry 推送回执由根进度记录，详细 HEAD/status 对账由根 PWF 持有。
 
 StockWiki 的 company-assessment-lineage-v2 与 dashboard-owner-improvements、Dashboard D00/B-04 是独立活动计划；本收口不替它们签收。各 owner PWF 顶部的 2026-11-15 状态同步只更新固定组合交接，不覆盖原 scope。
 

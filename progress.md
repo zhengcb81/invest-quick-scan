@@ -720,9 +720,15 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - **StockWiki提交：** 已将SW-1 V2 owner、SW-2 membership根修、两份子PWF、golden和精确测试文件提交为 `0450506fc94adbfecd33001c244221a42ba0a00d`（master）。只暂存本轮23个文件；untracked公司研究SQLite、Dashboard onboarding/research-binding、logs及runs/c16b均未触碰。StockWiki当前没有配置remote，所以仅本地提交，不创建新remote。
 # 2026-11-15 PWF 对账与架构复核
 
-- IQS 当前检出为 `codex/iqs-manifest-delivery-01@ecb4a5d`；`master`/`origin/master` 为 `3d9243c`。新增两提交 `239838b`、`ecb4a5d` 是 MANIFEST-DELIVERY-01 的计划、状态及证据文件修订，不触及模块实现代码。当前本仓跟踪改动仅为本轮 PWF/路线图文件；大量既有未跟踪取证、工具及保留目录未触碰。
-- 当前 owner 树与固定测试 pin 分别记录：StockQA `master@f6897ac`（4 个源码/测试 WIP）；StockWiki `master@0450506`（7 个源码/配置/测试 WIP）；Dashboard `main@3f83bb5`（tracked WIP：`handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md`）；Theme `master@00e4fbd`；Industry `main@bb0c3b9`；Company Agent `master@ba54694`；Runtime `codex/agent-run-02@369a44b`；UI `master@3ed6391`（2 个 generated JSON WIP）。本轮另更新了 8 个 owner 模块 PWF 与 Dashboard D00 相关 PWF；这些文档改动和原产品 WIP 均未进入固定组合。本次未改写原并行源码 WIP。
+- IQS 当前模块代码基线为 codex/iqs-manifest-delivery-01@ecb4a5d；后续仅追加本地 PWF-only 提交，master/origin/master 仍以 3d9243c 为基线。239838b、ecb4a5d 是 MANIFEST-DELIVERY-01 计划、状态及证据文件修订，不触及模块实现代码。当前 IQS 跟踪改动仅为本轮 PWF/路线图文件；大量既有未跟踪取证、工具及保留目录未触碰。
+- 当前 owner 树与固定测试 pin 分别记录：StockQA 代码基线 master@f6897ac（4 个源码/测试 WIP）；StockWiki 代码基线 master@0450506（10 个源码/配置/测试 tracked WIP）；Dashboard 代码基线 main@3f83bb5（tracked WIP：handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md，另有 untracked company-wiki CANDIDATES-FIX-01 交接副本）；Theme master@00e4fbd；Industry main@bb0c3b9；Company Agent master@ba54694；Runtime codex/agent-run-02@369a44b；UI master@3ed6391（2 个 generated JSON WIP）。各仓后续 PWF-only 提交不代表源代码重验，提交清单见本记录末尾。本次未改写并行源码 WIP。
 - 固定组合的实际测试 pin 仍以报告为准，尤其 StockWiki `9a62022`、Dashboard `b03e14b` 与 IQS 多提交固定来源不能由当前 checkout HEAD 替代。路线图现同时显示当前 HEAD、tested pin、WIP 和范围差别。
 - 独立架构复核结论：此前拟议的双资源根/资源注入不是必要需求，撤回该整改。随 checkout 版本发布的 schema/题库/指标资源用代码根定位合理；运行数据根由启动入口和配置传递。当前显式配置把数据放在 checkout 内是部署决定，不构成代码层隐式泄漏。现有 `test_view_launcher.py` 覆盖明确 workspace 与临时 state 根下的真实公开 StockWiki 读取和快照写入；`test_dashboard_iqs_public_integration.py` 覆盖显式 state 根下公开 HTTP/CLI 任务与接续。未确认产品架构缺陷，无生产代码改动。
 - 结论：I1–I7 固定组合及最终独立边界审查完成；没有新的模块化阻断。未在本轮重跑模型/API、生产数据库或名单操作。owner PWF 同步作为本轮文档收口完成；不改历史施工记录。
-- 最终独立 PWF 复核 **PASS**：核对 IQS 当前 HEAD/固定测试 pin/ MANIFEST 文档提交描述、Dashboard tracked WIP、六个已关闭模块的 Next Step 及 Dashboard B-04 的开放状态；未发现活动指令矛盾。复核确认本轮仅改计划/进度/合同文档，无产品源码改动；因此未重跑产品测试。
+- 最终独立 PWF 复核 PASS：核对 IQS 当前 HEAD/固定测试 pin/MANIFEST 文档提交描述、Dashboard tracked WIP、六个已关闭模块的 Next Step 及 Dashboard B-04 的开放状态；未发现活动指令矛盾。复核确认本轮仅改计划/进度/合同文档，无产品源码改动；因此未重跑产品测试。
+
+## 2026-11-15 PWF 提交与最新 WIP 补记
+
+固定组合 pin 不变；owner PWF 的同步提交只改 Markdown，不构成源码重测。首轮精确提交：IQS 5b475f9（本地）；StockQA 69406e8（已推 origin/master）；StockWiki b12d577（本地，无 remote）；Theme 057ca43（本地，无 remote）；Industry 58749da（已推 origin/main）；Company Agent ce5b4cc（本地，无 remote）；Runtime e2fbc3a（本地，无 remote）；原工作台 UI 36f0902（本地，无 remote）；Dashboard D00 0257ac1（本地分支，无配置上游）。PWF 后续状态更正仍只提交精确 Markdown 路径。
+
+最新只读快照发现 StockWiki 有 10 个 tracked 源码/配置/测试 WIP：config/companies.yaml、config/extraction_policy.yaml、stockwiki/cli_parsers/company.py、stockwiki/document_signals.py、stockwiki/documents.py、stockwiki/enrichment.py、stockwiki/llm_provider.py、stockwiki/services/company.py、stockwiki/sources.py、tests/test_documents.py；均未纳入 I4/I5 固定组合，也未触碰。Dashboard 有 tracked filing-fetch IMPROVEMENTS 与 untracked company-wiki HANDOFF-CANDIDATES-FIX-01 副本；后者报告 owner master@09fe9ca 包含 569615ec fix commit，复核只确认 ancestry，不替代 D00 对其消费，也不改变 B-04 状态。
