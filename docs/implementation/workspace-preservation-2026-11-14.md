@@ -1,6 +1,6 @@
 # Workspace preservation index — 2026-11-14
 
-This is the directory-level marker for useful local files that are not part of the tracked product tree. A path marked **recursive** covers the files and folders below it as they existed at this inventory. A standalone path covers that exact file only. New temporary files are not automatically covered: classify them, mark useful ones here, and remove the rest.
+This is the directory-level marker for useful local files that are not part of the tracked product tree. A path marked **recursive** covers the files and folders below it as they existed at this inventory. A standalone path covers that exact file only. New temporary files are not automatically covered: classify them, mark useful ones here, and remove the rest. Revalidated 2026-11-15.
 
 The inventory is local-workspace guidance. It does not authorize publishing private run data, local settings, credentials, or source copies to Git. Product development remains paused.
 
@@ -9,7 +9,7 @@ The inventory is local-workspace guidance. It does not authorize publishing priv
 | Path | Why it is kept | Handling |
 |---|---|---|
 | `.mimosa/` | Active Codex/Mimosa session, hook, lock, and baseline state. The directory changes while this workspace is open. | Local tool state; do not commit or clean during an active session. |
-| `.worktrees/` | Six independent work trees: `dashboard-iqs-protocol-20261109`, `e12-safe-job-closeout-20261109`, `stockqa-delivery-port-20261109`, `stockqa-shared-owner-first`, `stockwiki-dashboard-ports-20261109`, and `sw-f05-fact-ingest-20261109`. Includes external-repository checkouts and candidate work not all merged into IQS. | Preserve until each owning repository confirms merge or discard. |
+| `.worktrees/` | Five independent work trees currently present: `e12-safe-job-closeout-20261109`, `stockqa-delivery-port-20261109`, `stockqa-shared-owner-first`, `stockwiki-dashboard-ports-20261109`, and `sw-f05-fact-ingest-20261109`. Includes external-repository checkouts and candidate work not all merged into IQS. | Preserve until each owning repository confirms merge or discard. |
 | `.tmp-stockqa-current-wt-20261110/` | StockQA candidate branch/source with substantive uncommitted changes. | Preserve as a candidate; do not merge by directory cleanup. |
 | `.tmp-modularity-runtime-20261110/` | Runtime candidate branch/source with substantive uncommitted changes. | Preserve as a candidate; do not merge by directory cleanup. |
 | `.tmp-modularity-stockqa-20261110/` | StockQA candidate source and tests with substantive changes. | Preserve as a candidate. |
@@ -42,16 +42,18 @@ The inventory is local-workspace guidance. It does not authorize publishing priv
 - Removed 16 obsolete root-level recovery helper scripts/logs: 23,834 bytes. The two forensic outputs listed above remain because the review directly cites them.
 - Removed 10 zero-byte `logs/stock_qa_*.log` files, the empty `.benchmarks/` directory, the expired `.audit_scratch_path.txt`, and a 57-byte `nul` file containing a shell redirection error.
 - On 2026-11-15, removed three junctions under `runs/mcsrc12-closeout-20261112-a2/` that pointed to the live IQS, StockQA, and StockWiki roots. Each link target was verified before removal and still existed afterward; the run's adjacent captured test artifacts remain.
+- The repository-wide ignored/untracked inventory also found generated Python caches outside `runs/`. Removed 345 cache directories / 2,269 files / 161,225,452 bytes across candidates, archived inputs/reviews, scripts/tests, and one preserved worktree. No product source or run report was deleted.
+- Final inventory used `git -c core.longpaths=true status --porcelain --ignored --untracked-files=normal`: 3,028 status records were all covered by the marked roots or exact files; cache directories remaining: 0; long-path warnings: 0; tracked edits at scan time: 0. Git's `normal` mode collapses directory entries, so this is an entry count, not a physical-file count.
 - The earlier cleanup and both F05 worktree removals are recorded in the 2026-11-14 section of [`progress.md`](../../progress.md).
 
 ## Disposable patterns
 
-These patterns are **not preservation markers**. If they reappear, remove them after confirming no running Python/pytest job owns the workspace:
+These generated cache patterns are **not preservation markers**. If they reappear anywhere under the repository (including candidate snapshots and archived inputs/reviews), remove them after confirming no running Python/pytest job owns the workspace. Do not traverse `.git/` or remove local tool state such as `.codegraph/`, `.mimosa/`, `.workbuddy-ai/`, or `.zcode/`:
 
-- `runs/**/__pycache__/`
-- `runs/**/.pytest_cache/`
-- `runs/**/.mypy_cache/`
-- `runs/**/.ruff_cache/`
+- `**/__pycache__/`
+- `**/.pytest_cache/`
+- `**/.mypy_cache/`
+- `**/.ruff_cache/`
 - zero-byte `logs/stock_qa_*.log`
 - root-level `.tmp_*` helpers, except the two exact forensic files listed above
 
