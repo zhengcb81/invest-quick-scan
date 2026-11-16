@@ -162,6 +162,34 @@ manifest §4 写"register→import→publish-release"，实际代码顺序不可
 | R4 | SW operator 四步（§6 顺序）由 SW harness/操作者执行 | 红线：IQS 侧不代执行 |
 | R5 | 验收：SW read formal → Dashboard `get_result` | 见 §8 已知边界 |
 
+## 11. 2026-11-16 续跑终态：交付链四步完成，formal 仍被 SW 答案可用性门拒
+
+**续跑完成（自暂停点起）**：①IQS_22 preview 拒因定位——**security 作用层的题需要对应范围的
+permission 请求**（11-08 的 entity 请求只含 33 个 entity 字段；security 3 题属另一 subject_ref，
+用 `rv1_b009d0eb…`（request_id `dashboard-d4a0543a…-2-refresh`）重建后 preview→confirm→
+apply 一次通过，rc1_7adae578）；②重启批次后 **36/36 全部 result_ready**，entity+security 双包
+同批 **owner_ready**（历史首次）；③owner 交付 33+3 包、**0 错误码**，36 条观测全部 published 入
+owner store；④SW operator 链：publish-release（V2 owner manifest，36 题，sequence 1）→ import
+（V1 source projection 绑定 artifact）→ record-authority（36 题，sequence 1）→ **register 被拒**：
+`observation_answer_unusable`。
+
+**数据真相（可复核）**：36 题中 **scored 8 题**（IQS_01=7、IQS_02=5、IQS_24=5、PORTER_01..05=6/7/7/6/6）、
+**insufficient_evidence 28 题**（IQS_03–23 + DUPONT_01–07）。这是 provider 的诚实判定：每答仅 2 条
+证据，检索片段缺少题目要求的定量输入（杜邦分解输入、单位经济、关键人员记录、客户集中度等），
+模型据实留空 score=null。SW 的公司结果权威要求 manifest 每题都有 scored/answered 观测，故
+`register` 必然被拒；裁剪 manifest 会被 `publish-release` 以 release_of_record_conflict 拒绝
+（store 已持有同家族 36 题观测），放宽规则属 owner 合同变更——两条捷径均不可用，也都不走。
+
+**读面现状**：`read` 从 `company_not_registered` 前进到 **`company_result_not_registered`**（实体已注册、
+release of record 与 authority 已发布、观测齐备；只缺可评分的答案）。
+
+**交付物**：`delivery/`（V2 owner manifest、V1 source projection、含 36 真实 refs 的 register 请求、
+36 个 C06 包、拒绝/读面/registry 证据、42 文件 SHA256SUMS、HANDOFF.md）。
+
+**唯一剩余开口（研究质量，非交付形状）**：28 题转 scored 才能产生 formal。可选 A 提高检索证据密度后
+重问 28 题（≈$1，转化率未知）、B 用更新截止日 2026-11-16 重扫（≈$1.3）、C 接受本轮 36/36 已交付但无
+formal。形态、覆盖、权威、导入四项已闭环。
+
 ## 10. 待操作者决策：content_filter 协议缺口与剩余 8 题
 
 **缺口定义**：provider（mimo）以 `response_status=content_filter` 终止响应时，StockQA
