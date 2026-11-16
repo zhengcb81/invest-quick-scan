@@ -179,7 +179,8 @@ owner store；④SW operator 链：publish-release（V2 owner manifest，36 题�
 证据，检索片段缺少题目要求的定量输入（杜邦分解输入、单位经济、关键人员记录、客户集中度等），
 模型据实留空 score=null。SW 的公司结果权威要求 manifest 每题都有 scored/answered 观测，故
 `register` 必然被拒；裁剪 manifest 会被 `publish-release` 以 release_of_record_conflict 拒绝
-（store 已持有同家族 36 题观测），放宽规则属 owner 合同变更——两条捷径均不可用，也都不走。
+（store 已持有同家族 36 题观测，受控实测见 `delivery/truncation-refusal.json`），放宽规则属 owner
+合同变更——两条捷径均不可用，也都不走。
 
 **读面现状**：`read` 当前返回 **`company_result_not_registered`**（证据 `read-after.json`；
 11-15 暂停点前同命令实测为 `company_not_registered`，仓库未存该次输出）（实体已注册、
