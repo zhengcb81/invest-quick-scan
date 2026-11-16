@@ -1,8 +1,26 @@
 # 模块化与解耦：有限收尾路线图
 
-2026-11-15 对账。I1–I7 固定来源组合已于 2026-11-14 验收，测试 pin 见[组合验证报告](fixed-combination-2026-11-14.md)。该组合阶段已关闭。后续独立只读架构复核撤回了“双资源根注入”建议：只读 schema/题库/指标资源跟随单一 IQS checkout 合理；运行 workspace、数据库和状态路径走显式配置或 owner API。现有公开入口测试覆盖明确 workspace 与状态根，没有发现需要改生产代码的模块边界缺陷。真实业务数据、G3/G4 和扩容属于根 PWF 主线，不作为模块化复验门。
+### 2026-11-16 分仓 PWF 与接口演进
 
-### 最新并线状态
+11-14 固定组合完成后，按实际接线继续做两项演进。StockQA 在已付恢复中按其原回执/结算判断，兼容未来供应商结束标签。Dashboard 使用原 IQS 公开读面消费 StockWiki V2 多尺度，并把 M7 表达式兼容交回具体接口。当前定向测试和独审记录见根 PWF。
+
+|模块|PWF 位置|当前验证或实施|
+|---|---|---|
+|IQS|仓根 `task_plan.md`、`findings.md`、`progress.md`|真实 StockWiki CLI 与 Dashboard 公开 HTTP 组合，包含旧单尺度、新混尺度和原 M8 接续|
+|StockQA|StockQAbyLLM `.planning/modularity-closeout-20261111/`|已结算中性无答案、混合恢复、事务撤权与旧回执 57 项通过。代码 `322887f`|
+|StockWiki|StockWiki `.planning/modularity-closeout-20261111/` 及 11-14 V2/名单两个子计划|名单和 V2 已并线。当前 V1/V2 三项定向通过，研究状态按最新 owner 交接|
+|Company Agent|iqs-company-agent-lab `.planning/modularity-closeout-20261111/`|API 2.3 的 task/恢复 16 项通过|
+|Runtime|iqs-agent-runtime-lab `.planning/modularity-closeout-20261111/`|API 1.4、窄 services 和依赖边界 39 项通过|
+|原工作台|iqs-question-bank-ui-lab `.planning/modularity-closeout-20261111/`|公开快照与启动边界 17 项及 22 子测试通过|
+|Dashboard|investment-dashboard D00 `.planning/unified-dashboard-2026-10-26/` 及 M6/M7|混尺度最新/历史和公式试运行去版本绑定，前端 38 项、构建及 I7 Chromium 通过|
+|Theme|analyze-theme-value-chain `.planning/modularity-closeout-20261111/`|公开事实向量和身份合同 13 项通过|
+|Industry|industry-research `.planning/modularity-closeout-20261111/`|同一公开向量和模块边界 40 项及 92 子测试通过|
+
+实际业务接续依旧沿总控主线。中微 35/36，末题决议已确认，完整登记待实际补题。F05/W11、G4 及规模验收继续按各自证据状态推进。
+
+2026-11-15 对账快照。I1–I7 固定来源组合已于 2026-11-14 验收，测试 pin 见[组合验证报告](fixed-combination-2026-11-14.md)。该组合阶段已关闭。独立架构复核确认只读 schema、题库和指标资源跟随单一 IQS checkout，运行 workspace、数据库和状态路径走显式配置或 owner API。
+
+### 2026-11-15 并线状态与固定来源（历史）
 
 |包|代码基线（2026-11-15 对账；PWF-only提交另列）|固定组合测试 pin|已验事实与当前状态|
 |---|---|---|---|

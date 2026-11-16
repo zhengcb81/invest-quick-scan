@@ -23,7 +23,10 @@ sys.path.insert(0, str(ROOT / "tests"))
 
 from dashboard_http import product_handler
 from dashboard_service import DashboardService
-from test_dashboard_company_result import Owner as AssessmentOwner, RESULT_SNAPSHOT
+from test_dashboard_company_result import (
+    B03_STOCKWIKI_ROOT, Owner as AssessmentOwner, RESULT_SNAPSHOT, _seed_workspace, _serve,
+)
+from dashboard_company_projection import read_company_assessment
 from test_dashboard_entity_iqs_link import ENTITY_PAYLOAD
 from test_owner_job_cli import COMMAND as IQS_COMMAND
 from test_owner_job_cli import Execution as FakeExecution
@@ -96,6 +99,62 @@ def _dashboard_modules():
     from backend.dashboard.adapters.transport import CliResult, JsonHttpTransport
     from backend.dashboard.transport.http import create_app
     return IqsQuickScanAdapter, IqsJobAdapter, CliResult, JsonHttpTransport, create_app
+
+
+@pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / "dashboard_company_assessment_cli.py").is_file(),
+                    reason="StockWiki public assessment CLI is unavailable")
+def test_m6_mixed_scale_read_uses_public_stockwiki_iqs_and_dashboard_interfaces(tmp_path, monkeypatch):
+    _clear_test_credentials(monkeypatch)
+    from fastapi.testclient import TestClient
+
+    IqsQuickScanAdapter, _, _, JsonHttpTransport, create_app = _dashboard_modules()
+    workspace = tmp_path / "assessments"
+    workspace.mkdir()
+    result_id = _seed_workspace(workspace, mixed_scales=True)
+    entity_id = "ENT_11111111-1111-4111-8111-111111111111"
+    owner_config = {
+        "workspace_root": str(workspace),
+        "stockwiki_root": str(B03_STOCKWIKI_ROOT),
+        "stockwiki_python": sys.executable,
+    }
+
+    class RealAssessmentReads(Owner):
+        def company_result(self, entity_id, result_id=None):
+            return read_company_assessment(
+                owner_config, "company_result", {"entity_id": entity_id, "result_id": result_id}
+            )
+
+        def company_history(self, entity_id, limit=20, offset=0):
+            return read_company_assessment(
+                owner_config, "company_history", {"entity_id": entity_id, "limit": limit, "offset": offset}
+            )
+
+    def owner_bytes():
+        return {path.relative_to(workspace): path.read_bytes()
+                for path in workspace.rglob("*") if path.is_file()}
+
+    before = owner_bytes()
+    server, port, _ = _serve(tmp_path, owner=RealAssessmentReads, dashboard_origin=None)
+    try:
+        origin = f"http://127.0.0.1:{port}"
+        quick_scan = IqsQuickScanAdapter(JsonHttpTransport(origin, owner="invest-quick-scan"))
+        dashboard = create_app({"identity": Identity(), "quick_scan": quick_scan},
+                               tmp_path / "dashboard-data", allow_test_origin=True)
+        with TestClient(dashboard) as client:
+            response = client.get(f"/api/v1/companies/{entity_id}/quick-scan")
+        assert response.status_code == 200, response.text
+        view = response.json()
+        for result in (view["latest_formal"], view["history"][0]):
+            assert result["observation_id"] == result_id
+            assert result["scale_version"] is None
+            assert result["scale_versions"] == ["1.0.0", "2.0.0"]
+            assert result["score"] is None
+            assert len(result["provenance"]) == 3
+        assert f"result_id={result_id}" in view["link"]["routes"]["results"]
+        assert owner_bytes() == before
+    finally:
+        server.shutdown()
+        server.server_close()
 
 
 def test_dashboard_m6_m8_use_live_iqs_http_cli_and_read_after_lost_submit(tmp_path, monkeypatch, request):

@@ -734,3 +734,13 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 最新只读快照发现 StockWiki 有 10 个 tracked 源码/配置/测试 WIP：config/companies.yaml、config/extraction_policy.yaml、stockwiki/cli_parsers/company.py、stockwiki/document_signals.py、stockwiki/documents.py、stockwiki/enrichment.py、stockwiki/llm_provider.py、stockwiki/services/company.py、stockwiki/sources.py、tests/test_documents.py；均未纳入 I4/I5 固定组合，也未触碰。Dashboard 有 tracked filing-fetch IMPROVEMENTS 与 untracked company-wiki HANDOFF-CANDIDATES-FIX-01 副本；后者报告 owner master@09fe9ca 包含 569615ec fix commit，复核只确认 ancestry，不替代 D00 对其消费，也不改变 B-04 状态。
 
 最终 owner-PWF 同步提交：IQS 308d307（本地）；StockQA 9ffd566（已推 origin/master）；StockWiki 5f79e7b（本地、无 remote）；Theme fce79b7（本地、无 remote）；Industry c7a04ed（已推 origin/main）；Company Agent fe368ea（本地、无 remote）；Runtime 7fc9757（本地、无 remote）；UI 5453b33（本地、无 remote）；Dashboard D00 93b6357（本地分支无配置上游）。其后 IQS 的本地文档提交只记录和澄清根 PWF 回执，未改模块代码；StockQA 与 Industry 的远端推送均为 fast-forward；其他已有源码 WIP、未跟踪数据及交接材料均保持原样。
+
+## 2026-11-16 各模块 PWF 与公开边界演进
+
+- 九仓逐一核对真实提交、公开入口、边界测试和各自下一步。StockWiki 的研究 WIP 已经提交至其本地主线。另两份活动子计划的 V2 发布与名单根修状态已按 `0450506` 及独立验收修正。
+- StockQA 中性无答案用例旧实现对未知标签与缺标签有两个真实 RED。最终 `tests/unit/test_quick_scan_known_outcome.py` **57 passed**，覆盖回执与费用约束、旧状态、重复恢复、逐题继续以及 checkpoint 写入后撤权回滚。复跑使用实际 recovery-only 会话、合成回执与自有短临时路径。独立审查确认恢复与供应商标签解耦。代码 `322887f`、文档 `b702ed2` 已在 StockQA origin/master，远端精确核对。原 content-filter 分支只合入 PWF `9be7176`，其四个进行中源码和测试改动仍单独保留。
+- Dashboard `0.1.3-d` 兼容旧单尺度结果，V2 多尺度的正式及历史读面保留尺度列表、空公司分与原引用。M7 改以既有表达式应用接口判断。前端 **38 passed**、类型及 Vite 构建通过。OpenAPI 版本、Python 和 TypeScript 生成及 synthetic fixtures 对齐。独立审查通过。Dashboard `fd8b3db` 已快进推至 origin/main 并核对远端。
+- IQS 测试复用实际 StockWiki owner 的隔离 fixture。新组合从正式 V2 注册数据，经真实只读 CLI、IQS HTTP 和 Dashboard 路由，核对多尺度最近/历史、固定结果深链与读取前后 workspace 字节。受影响组合 **63 passed**。另从新 Dashboard 源构建实际 Chromium 的 I7，**1 passed / 39.35s**，HTTP/CLI 原命令查回且只提交一次。
+- 其余各仓定向验证：StockWiki V1/V2 与 IQS producer 3 项；Company Agent 16 项；Runtime 39 项；原工作台 17 项及 22 子测试；Theme 13 项；Industry 40 项及 92 子测试。Theme/Industry 最终使用相同 StockWiki 公开向量，清除了初次缺 fixture 位置的跳过。
+- PWF 文档提交：StockWiki `b4ca912`，Company Agent `2054ecf`，Runtime `cae47ec`，原工作台 `b8976c6`，Theme `9d6cbbf`，Industry `0a13e1a`。Industry 已推并核对 origin/main。上述文档同步与历史固定测试版本分别记录。
+- 独立核对 IQS_22 原回执和同一 manifest 的 owner 预览、确认。以 11-16 21:15 UTC 的确认作为交付进度证据，真实覆盖仍为 **35/36**。该动作由原交付方完成。本轮工程复验只用隔离数据和回环传输，未产生新增模型费用。

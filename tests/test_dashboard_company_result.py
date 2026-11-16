@@ -526,14 +526,15 @@ def test_company_absence_is_returned_as_a_named_reason_not_zero(tmp_path):
 # -- real HTTP boundary ---------------------------------------------------------
 
 
-def _serve(tmp_path, owner=Owner):
-    service = service_for(tmp_path, owner=owner, dashboard_origin='http://127.0.0.1:43219')
+def _serve(tmp_path, owner=Owner, *, dashboard_origin='http://127.0.0.1:43219'):
+    service = service_for(tmp_path, owner=owner, dashboard_origin=dashboard_origin)
 
     class Static(http.server.BaseHTTPRequestHandler):
         def log_message(self, *args):
             pass
 
     server = LoopbackServer(('127.0.0.1', 0), product_handler(Static, service))
+    service.bind_runtime_origin(f'http://127.0.0.1:{server.server_address[1]}')
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server, server.server_address[1], service
@@ -741,7 +742,7 @@ def test_command_reports_a_named_unavailable_for_an_old_owner(tmp_path, old_comm
     assert error.value.status == 502
 
 
-def _seed_workspace(root: Path) -> str:
+def _seed_workspace(root: Path, *, mixed_scales: bool = False) -> str:
     """Use StockWiki's own synthetic seeder in a separate test process."""
     script = '''
 import sys
@@ -749,10 +750,30 @@ from pathlib import Path
 sys.path.insert(0, str(Path.cwd() / "tests"))
 from test_public_company_assessments import _seed_registered, E01
 from stockwiki.public_company_assessments import read_company_result
-paths = _seed_registered(Path(sys.argv[1]))
+root = Path(sys.argv[1])
+if sys.argv[2] == "mixed":
+    from test_public_company_assessments import (
+        _workspace, _mixed_rubric_source, _v2_manifest, _published_observation,
+        _import_v2_observations, _v2_register_request,
+    )
+    from stockwiki.public_company_assessments import register_company_assessment
+    paths = _workspace(root)
+    source = _mixed_rubric_source()
+    manifest = _v2_manifest(source, {
+        "IQS_A": "quality_core", "IQS_B": "diagnostic_only", "IQS_C": "growth_core",
+    })
+    observations = [
+        _published_observation(E01, qid, "obs_" + qid.lower(), manifest=source)
+        for qid in source["questions"]
+    ]
+    _import_v2_observations(paths, manifest, observations)
+    register_company_assessment(paths, _v2_register_request(E01, manifest, observations))
+else:
+    paths = _seed_registered(root)
 print(read_company_result(paths, entity_id=E01)["result"]["result_id"])
 '''
-    done = subprocess.run([sys.executable, '-B', '-c', script, str(root)],
+    done = subprocess.run([sys.executable, '-B', '-c', script, str(root),
+                           'mixed' if mixed_scales else 'single'],
                           cwd=B03_STOCKWIKI_ROOT, capture_output=True, timeout=300)
     assert done.returncode == 0, done.stderr.decode('utf-8', 'replace')
     return done.stdout.decode('utf-8').strip()
