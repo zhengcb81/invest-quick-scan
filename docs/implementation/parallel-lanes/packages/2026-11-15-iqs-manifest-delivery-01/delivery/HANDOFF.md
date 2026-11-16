@@ -10,9 +10,9 @@
 |---|---|---|
 | 36 题 formal 扫描 | 36/36 result_ready（entity 33 + security 3）；双 bundle 同批 owner_ready | `runs/dashboard-runtime/run-*/`、ledger `work.sqlite` |
 | owner 交付 | 33 + 3 包，**0 错误码**，观测全部 published 入 owner store | `delivery/packages/`（36 个 C06 包） |
-| `publish-release`（V2 owner manifest） | **published**，release_sequence=1，question_count=36 | `registry-state.json.published_release` |
-| `import`（V1 source projection 绑定） | artifact recorded（sequence 1），ACK 无 error_code | `registry-state.json.imported_release_artifact` |
-| `record-authority` | **recorded**，authority_sequence=1，question_count=36 | `registry-state.json.company_release_authority` |
+| `publish-release`（V2 owner manifest） | **published**，release_sequence=1，question_count=36 | `registry-state.json.published_release` + `operator-chain-replay.json` |
+| `import`（V1 source projection 绑定） | artifact recorded（sequence 1），ACK 无 error_code | `registry-state.json.imported_release_artifact` + `operator-chain-replay.json` |
+| `record-authority` | **recorded**，authority_sequence=1，question_count=36 | `registry-state.json.company_release_authority` + `operator-chain-replay.json` |
 | `register` | **拒绝**：`observation_answer_unusable` | `register-refusal.json` |
 | 公开读面 | `company_result_not_registered`（已从 company_not_registered 前进） | `read-after.json` |
 
@@ -36,9 +36,11 @@ pkg_0151…/modrel_9973、catalog 3.2.1、manifest_raw_sha256 459f1945…（逐�
 （如 DUPONT_01 缺归属普通股净利润/平均权益/周转率/税率等杜邦分解输入；IQS_09 缺关键岗位梯队与
 授权记录；IQS_17 缺客户集中度与单一来源替代认证成本）。模型据实留空（score=null）。
 
-**不可用捷径（owner 规则主动阻断，已实测）**：裁剪 manifest 至 8 题 → `publish-release` 以
-`release_of_record_conflict` 拒绝（store 已持有同家族 36 题观测）；放宽 SW 可用性规则 → 属于 owner
-合同变更，非本包授权。因此 formal 结果只能由**真实可评分答案**产生。
+**不可用捷径（owner 规则主动阻断，已受控实测）**：把裁剪到 8 个 scored 题的 V2 release
+（形状离线过 `_validated_v2_manifest`）提交 `publish-release` → exit 2、
+`release_of_record_conflict`（detail=DUPONT_02，即 store 已持有同家族被裁掉的题），
+证据 `truncation-refusal.json`；放宽 SW 可用性规则 → 属于 owner 合同变更，非本包授权。
+因此 formal 结果只能由**真实可评分答案**产生。
 
 ## 3. 待操作者决策（唯一剩余开口）
 
@@ -55,6 +57,6 @@ pkg_0151…/modrel_9973、catalog 3.2.1、manifest_raw_sha256 459f1945…（逐�
 - `release-v2-manifest.json` / `release-source-projection.json` / `register-request-v2.json`
 - `packages/pkg_*.json`（36 个 C06 交换包，consumer=StockWiki）
 - `register-refusal.json` / `read-after.json` / `registry-state.json`
-- `SHA256SUMS.txt`（42 个文件的 SHA-256）
+- `SHA256SUMS.txt`（45 个文件的 SHA-256）
 
 复算：`python -c "import hashlib,os;[print(hashlib.sha256(open(p,'rb').read()).hexdigest(),' ',p) for p in ...]"`
