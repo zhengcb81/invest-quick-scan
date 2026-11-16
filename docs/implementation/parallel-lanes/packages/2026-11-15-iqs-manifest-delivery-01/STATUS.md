@@ -184,7 +184,7 @@ owner store；④SW operator 链：publish-release（V2 owner manifest，36 题�
 release of record 与 authority 已发布、观测齐备；只缺可评分的答案）。
 
 **交付物**：`delivery/`（V2 owner manifest、V1 source projection、含 36 真实 refs 的 register 请求、
-36 个 C06 包、拒绝/读面/registry 证据、42 文件 SHA256SUMS、HANDOFF.md）。
+36 个 C06 包、拒绝/读面/registry 证据、43 文件 SHA256SUMS、HANDOFF.md）。
 
 **唯一剩余开口（研究质量，非交付形状）**：28 题转 scored 才能产生 formal。可选 A 提高检索证据密度后
 重问 28 题（≈$1，转化率未知）、B 用更新截止日 2026-11-16 重扫（≈$1.3）、C 接受本轮 36/36 已交付但无
