@@ -319,3 +319,8 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 - **IN-SOURCE-INTEGRATION-01：隔离候选包接受。** 代码结果 commit `ce7434bd46a9c74b2c1156e61ca56fc670d62c9a`，交接文档元数据本地提交 `e017e47fd3b24a861b8367d310cdb16629befb28`，缓存清理报告提交 `169c200f530ac2415b5adfb531807c7be41601af`（隔离 Lab，无 remote）。原交付测试记录为整个 tests 目录 **176 passed / 0 failed / 0 skipped**（pytest 与 stdlib runner 均通过），被沙箱拒绝的单个 CWD 回归后以授权权限复跑为 **1 passed**。总控验收发现 handoff 把三个产生文件的内容合并成一个无法映射到交付文件的哈希；已拆为 `SKILL.md`、`modules/company-evaluation.md`、`modules/report-generation.md` 三个 result-commit-bound SHA-256。IQS 公共 verifier 与 schema 均通过；独立 reviewer 对最终回执、哈希及边界复核 ACCEPT。最终报告 SHA-256 `4e94d7352a21a81e9c0d18013e691fd40c3cfa7bb9310b8c602467bc2c0c867b`，handoff SHA-256 `66f7106e6f1f0a14696d816f94a30cad7f6b2c1cef825572935708c2cd5bc490`。
 - **公共交接验证：** `scripts/parallel_handoff_cli.py --input <handoff.json> --package-id <id> --verify-references` 对两包均返回 `status=valid, errors=[]`。TH/IN 源仓候选代码只在各自 Labs；canonical skill 仓未修改。无真实公司扫描、生产 owner/DB 写入、网络或付费调用。
 - **主线状态：** 两个隔离候选包关闭；canonical 源仓合并、稳定 F05/W11 服务后的真实 owner 接线，以及技能入口的实服务 E2E 仍是主线后续工作。本次交付不能标记 F05、W11、G3 或 G4 产品验收完成。
+
+
+## 2026-11-17 模块自反馈接入
+
+[FB-IQS 逐题运行、评分尺度与快扫反馈](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/feedback-20261117.md) 进入规划，由 ROOT 负责调度和组合复验，本仓 owner 负责公开接口、定向回归及本地问题处置。
