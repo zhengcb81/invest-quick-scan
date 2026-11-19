@@ -111,7 +111,7 @@ def main(argv=None) -> int:
             return 2
 
     try:
-        projected = projection.project_result(envelope)
+        projected = projection.project_result(envelope, question_receipts=receipts)
     except projection.ProjectionError as error:
         print(json.dumps({"ok": False, "code": error.code, "status": error.status}))
         return 2

@@ -217,17 +217,44 @@ def _receipts():
     # re-issued; both finally landed as observations.
     for question_id in ("PORTER_01", "PORTER_02"):
         statuses[question_id]["answer_state"] = "insufficient_evidence"
-        statuses[question_id]["provider_terminal"] = "content_filter"
+        statuses[question_id]["provider_terminal_history"] = "content_filter"
     # DUPONT_04/05: truncated responses, re-issued at a larger output bound.
     for question_id in ("DUPONT_04", "DUPONT_05"):
         statuses[question_id]["answer_state"] = "insufficient_evidence"
-        statuses[question_id]["provider_terminal"] = "length"
+        statuses[question_id]["provider_terminal_history"] = "length"
     # DUPONT_06/07: three unverified searches before a successful fourth.
     for question_id in ("DUPONT_06", "DUPONT_07"):
         statuses[question_id]["answer_state"] = "insufficient_evidence"
-        statuses[question_id]["provider_terminal"] = "search_unverified"
+        statuses[question_id]["provider_terminal_history"] = "search_unverified"
     return {"source": "2026-11-15-iqs-manifest-delivery-01/STATUS.md",
             "questions": statuses}
+
+
+def _modelled_run_state():
+    """The mid-run states recorded in STATUS.md, on the real 36-question release.
+
+    MODELLED, not captured: the delivery later bound all 36 observations, so no
+    public snapshot ever looked like this. Only ``IQS_01`` is bound here; the
+    five questions the run log names are classified from their documented
+    terminal state, and every other question stays ``unknown``.
+    """
+    request, manifest, group_by_question = _request()
+    all_ids = sorted(group_by_question)
+    kept = ["IQS_01"]
+    snapshot = _snapshot(kept_question_ids=kept,
+                         declared_missing=[qid for qid in all_ids if qid not in kept],
+                         result_salt="modelled-run-state")
+    receipts = {"source": "MODELLED from 2026-11-15-iqs-manifest-delivery-01/STATUS.md",
+                "questions": {
+                    "IQS_01": {"status": "completed", "answer_state": "scored"},
+                    "PORTER_01": {"status": "provider_filtered"},
+                    "PORTER_02": {"status": "provider_filtered"},
+                    "DUPONT_04": {"status": "provider_truncated"},
+                    "DUPONT_05": {"status": "provider_truncated"},
+                    "IQS_22": {"status": "settled_unsaved",
+                               "answer_state": "answer_validation_rejected"},
+                }}
+    return snapshot, receipts
 
 
 def _dump(name, value):
@@ -310,6 +337,27 @@ def main():
     # 5. A legal single-scale control.
     _dump("result-single-scale.json", _single_scale_snapshot())
 
+    # 5b. A whole declared scale dropped: both 2.0.0 groups and their references
+    #     removed while ``scale_versions`` still lists 2.0.0.
+    two_zero = {group["lineage_group_id"] for group in manifest["lineage_groups"]
+                if group["rubric_version"] == "2.0.0"}
+    kept_10 = [question_id for question_id in all_ids
+               if group_by_question[question_id]["lineage_group_id"] not in two_zero]
+    dropped_scale = _snapshot(kept_question_ids=kept_10, declared_missing=[],
+                              result_salt="scale-dropped")
+    dropped_scale["lineage_groups"] = [
+        group for group in dropped_scale["lineage_groups"]
+        if group["lineage_group_id"] not in two_zero]
+    dropped_scale["observation_refs"] = [
+        reference for reference in dropped_scale["observation_refs"]
+        if reference["lineage_group_id"] not in two_zero]
+    dropped_scale["completeness"] = {
+        "manifest_question_count": len(kept_10),
+        "observed_count": len(kept_10),
+        "missing_question_ids": [],
+    }
+    _dump("result-scale-dropped.json", dropped_scale)
+
     # 6. Per-question receipts for the offline classification.
     _dump("receipts-manifest-delivery-01.json", _receipts())
 
@@ -319,6 +367,12 @@ def main():
 
     # 8. A real thin-scan run whose answers cover 24 of the bank's 38 questions.
     _dump("answers-partial-24of38.json", _answers_fixture())
+
+    # 9. MODELLED mid-run states: one bound observation plus the five questions
+    #    whose provider-side terminal states STATUS.md records.
+    run_state, run_receipts = _modelled_run_state()
+    _dump("result-modelled-run-states.json", run_state)
+    _dump("receipts-modelled-run-states.json", run_receipts)
 
     print("fixtures written:", sorted(path.name for path in OUT.glob("*.json")))
 

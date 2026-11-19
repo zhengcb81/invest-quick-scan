@@ -8,8 +8,8 @@ contradictory claim must be reported, never smoothed into "complete".
 
 Fixtures under ``tests/fixtures/company_coverage`` are derived from the real
 36-question V2 owner request saved by MANIFEST-DELIVERY-01; only the omissions
-used to exercise the feedback are injected. No company run, owner read or
-registry write happens here.
+used to exercise the feedback are injected, and the one modelled fixture says so
+in its own name. No company run, owner read or registry write happens here.
 """
 import json
 import sys
@@ -26,6 +26,8 @@ import dashboard_company_projection as projection  # noqa: E402
 
 FIXTURES = Path(__file__).resolve().parent / 'fixtures' / 'company_coverage'
 ENTITY = 'ENT_99deceb6-f58a-48b1-bd6b-437621015d76'
+RESULT_CHECKS = {'coverage-claim', 'scale-lineage', 'question-status',
+                 'missing-questions', 'release-binding', 'owner-absence'}
 
 
 def snapshot(name):
@@ -106,7 +108,10 @@ def test_complete_mixed_scale_result_keeps_every_group_scale():
     assert coverage['manifest_question_count'] == 36
     assert coverage['observed_count'] == 36
     assert coverage['missing_question_ids'] == []
+    assert coverage['unexpected_question_ids'] == []
     assert coverage['scale_versions'] == ['1.0.0', '2.0.0']
+    assert coverage['missing_scale_versions'] == []
+    assert coverage['undeclared_scale_versions'] == []
     pairs = {(group['rubric_version'], group['aggregation_role']) for group in coverage['groups']}
     assert pairs == {
         ('1.0.0', 'diagnostic_only'), ('1.0.0', 'growth_core'),
@@ -164,7 +169,7 @@ def test_a_complete_claim_over_a_partial_reference_set_is_not_forwarded_as_compl
     assert response['coverage']['claim_matches_refs'] is False
 
 
-def test_a_dropped_lineage_group_is_reported_as_an_empty_group():
+def test_an_honestly_declared_empty_group_stays_a_legal_partial_result():
     result = snapshot('result-group-dropped.json')
 
     coverage = coverage_api.derive_coverage(result)
@@ -178,12 +183,40 @@ def test_a_dropped_lineage_group_is_reported_as_an_empty_group():
     assert sorted(empty[0]['missing_question_ids']) == ['IQS_05', 'IQS_06', 'IQS_18']
     assert coverage['missing_question_ids'] == ['IQS_05', 'IQS_06', 'IQS_18']
     assert coverage['scale_versions'] == ['1.0.0', '2.0.0']
+    # The declaration is honest, so the snapshot is consistent with itself.
+    assert coverage['claim_matches_refs'] is True
+    assert coverage['missing_scale_versions'] == []
     # The dropped group is still published: a reader sees which scale is empty.
     response = projection.project_result(owner_payload(result))
     published = [group for group in response['coverage']['groups'] if group['empty']]
     assert [(group['rubric_version'], group['aggregation_role']) for group in published] == [
         ('2.0.0', 'quality_core')
     ]
+
+
+def test_a_scale_the_snapshot_declares_without_any_group_is_partial():
+    """Every group of a declared rubric removed while the scales still list it.
+
+    A single group removed next to a surviving group of the same rubric is not
+    decidable from the public snapshot alone (see the handoff's known limits).
+    """
+    result = snapshot('result-complete-mixed.json')
+    dropped = [group for group in result['lineage_groups']
+               if group['rubric_version'] == '2.0.0']
+    dropped_ids = {group['lineage_group_id'] for group in dropped}
+    result['lineage_groups'] = [group for group in result['lineage_groups']
+                                if group['lineage_group_id'] not in dropped_ids]
+    result['observation_refs'] = [reference for reference in result['observation_refs']
+                                  if reference['lineage_group_id'] not in dropped_ids]
+    result['completeness'] = {'manifest_question_count': 31, 'observed_count': 31,
+                              'missing_question_ids': []}
+
+    coverage = coverage_api.derive_coverage(result)
+
+    assert coverage['scale_versions'] == ['1.0.0', '2.0.0']
+    assert coverage['missing_scale_versions'] == ['2.0.0']
+    assert coverage['missing_question_ids'] == []
+    assert coverage['verdict'] == 'partial'
 
 
 def test_single_scale_result_is_complete_and_names_its_one_scale():
@@ -208,6 +241,21 @@ def test_question_and_group_order_do_not_change_coverage_identity():
     shuffled['lineage_groups'] = list(reversed(shuffled['lineage_groups']))
 
     assert coverage_api.derive_coverage(shuffled) == coverage_api.derive_coverage(result)
+
+
+def test_a_reference_outside_the_frozen_release_is_counted_separately():
+    result = snapshot('result-complete-mixed.json')
+    extra = dict(result['observation_refs'][0], question_id='NOT_IN_RELEASE',
+                 observation_id='obs_' + 'e' * 64)
+    result['observation_refs'].append(extra)
+
+    coverage = coverage_api.derive_coverage(result)
+
+    assert coverage['unexpected_question_ids'] == ['NOT_IN_RELEASE']
+    # The stray reference never inflates the result into "more than complete".
+    assert coverage['observed_count'] == 36
+    assert coverage['claim_matches_refs'] is True
+    assert coverage['verdict'] == 'complete'
 
 
 def test_receipts_separate_filtered_truncated_settled_and_not_run():
@@ -249,6 +297,19 @@ def test_receipts_separate_filtered_truncated_settled_and_not_run():
     answers = {question['question_id']: question.get('answer_state')
                for question in coverage['questions']}
     assert answers['Q1'] == 'scored'
+
+
+def test_a_settled_receipt_without_an_observation_is_never_called_completed():
+    result = snapshot('result-partial-35of36.json')
+
+    coverage = coverage_api.derive_coverage(result, receipts=receipts())
+
+    statuses = {question['question_id']: question['status'] for question in coverage['questions']}
+    # PORTER_05 has no bound observation: the receipt's "completed" means the
+    # attempt settled, not that the answer was saved.
+    assert statuses['PORTER_05'] == 'settled_unsaved'
+    assert 'PORTER_05' in coverage['receipt_conflicts']
+    assert coverage['verdict'] == 'partial'
 
 
 def test_receipts_for_an_unknown_question_or_word_are_refused():
@@ -315,7 +376,8 @@ def test_history_page_marks_each_partial_item_and_keeps_the_page_bounds():
 
 
 def _rows(result, *, supplied=None):
-    response = projection.project_result(owner_payload(result))
+    response = projection.project_result(owner_payload(result),
+                                         question_receipts=supplied)
     return feedback.observations(response, read='result', receipts=supplied)
 
 
@@ -336,41 +398,170 @@ def test_feedback_reports_a_partial_result_and_a_false_complete_claim():
     assert claim['origin_owner'] == 'invest-quick-scan'
     assert rows['missing-questions']['actual'] == 'missing-kept'
     assert rows['missing-questions']['disposition'] == 'expected'
-    assert rows['multi-group-lineage']['actual'] == 'no-group-loss'
-    assert rows['multi-group-lineage']['disposition'] == 'expected'
-    assert rows['multi-group-lineage']['owner'] == 'invest-quick-scan'
+    assert rows['scale-lineage']['actual'] == 'scales-addressable'
+    assert rows['scale-lineage']['disposition'] == 'expected'
+    assert rows['release-binding']['actual'] == 'refs-bind-frozen-questions'
+    assert set(rows) == RESULT_CHECKS
 
 
 def test_feedback_reports_a_complete_mixed_scale_result_as_expected():
     rows = _by_check(_rows(snapshot('result-complete-mixed.json')))
 
     assert rows['coverage-claim']['actual'] == 'claim-matches-refs'
-    assert rows['multi-group-lineage']['actual'] == 'no-group-loss'
+    assert rows['scale-lineage']['actual'] == 'scales-addressable'
     assert rows['question-status']['actual'] == 'statuses-published'
+    assert rows['missing-questions']['actual'] == 'missing-kept'
+    assert rows['release-binding']['actual'] == 'refs-bind-frozen-questions'
+    assert all(row['disposition'] == 'expected' for row in rows.values()), rows
+
+
+def test_an_honestly_declared_empty_group_is_disclosed_not_blamed():
+    rows = _by_check(_rows(snapshot('result-group-dropped.json')))
+
+    # A declared gap is legal partial data: the projection discloses it through
+    # coverage.groups[].empty and does not report a deviation against anyone.
+    assert rows['scale-lineage']['actual'] == 'scales-addressable'
+    assert rows['scale-lineage']['disposition'] == 'expected'
+    assert rows['coverage-claim']['actual'] == 'claim-matches-refs'
     assert rows['missing-questions']['actual'] == 'missing-kept'
     assert all(row['disposition'] == 'expected' for row in rows.values()), rows
 
 
-def test_feedback_discloses_a_dropped_group_without_calling_it_complete():
-    rows = _by_check(_rows(snapshot('result-group-dropped.json')))
+def test_a_scale_without_a_group_is_reported_against_the_owner():
+    result = snapshot('result-complete-mixed.json')
+    dropped = [group for group in result['lineage_groups']
+               if group['rubric_version'] == '2.0.0']
+    dropped_ids = {group['lineage_group_id'] for group in dropped}
+    result['lineage_groups'] = [group for group in result['lineage_groups']
+                                if group['lineage_group_id'] not in dropped_ids]
+    result['observation_refs'] = [reference for reference in result['observation_refs']
+                                  if reference['lineage_group_id'] not in dropped_ids]
+    result['completeness'] = {'manifest_question_count': 31, 'observed_count': 31,
+                              'missing_question_ids': []}
 
-    assert rows['multi-group-lineage']['actual'] == 'group-lost'
-    assert rows['multi-group-lineage']['disposition'] == 'deviation'
-    assert rows['multi-group-lineage']['issue_key'] == 'iqs-company-result-group-lost'
-    assert rows['multi-group-lineage']['owner'] == 'invest-quick-scan'
-    # The owner declared those three questions missing, so its claim is honest.
+    rows = _by_check(_rows(result))
+
+    assert rows['scale-lineage']['actual'] == 'scale-without-group'
+    assert rows['scale-lineage']['disposition'] == 'deviation'
+    assert rows['scale-lineage']['owner'] == 'stockwiki'
+    assert rows['scale-lineage']['issue_key'] == 'stockwiki-company-result-scale-lineage'
     assert rows['coverage-claim']['actual'] == 'claim-matches-refs'
-    assert rows['missing-questions']['actual'] == 'missing-kept'
 
 
-def test_an_injected_question_outside_every_group_is_reported_as_group_loss():
+def test_a_reference_outside_every_group_is_reported_as_a_lineage_break():
     result = snapshot('result-complete-mixed.json')
     result['observation_refs'][0]['lineage_group_id'] = 'lg_' + '9' * 20
 
     rows = _by_check(_rows(result))
 
-    assert rows['multi-group-lineage']['actual'] == 'group-lost'
-    assert rows['multi-group-lineage']['disposition'] == 'deviation'
+    assert rows['scale-lineage']['actual'] == 'scale-without-group'
+    assert rows['scale-lineage']['disposition'] == 'deviation'
+
+
+def test_a_reference_outside_the_release_is_reported_against_the_owner():
+    result = snapshot('result-complete-mixed.json')
+    result['observation_refs'].append(dict(result['observation_refs'][0],
+                                           question_id='NOT_IN_RELEASE',
+                                           observation_id='obs_' + 'e' * 64))
+
+    rows = _by_check(_rows(result))
+
+    assert rows['release-binding']['actual'] == 'refs-outside-release'
+    assert rows['release-binding']['disposition'] == 'deviation'
+    assert rows['release-binding']['owner'] == 'stockwiki'
+    # The stray reference does not turn a complete result into a partial one.
+    assert rows['coverage-claim']['actual'] == 'claim-matches-refs'
+
+
+def test_a_v2_result_without_its_groups_is_not_treated_as_a_v1_result():
+    result = snapshot('result-complete-mixed.json')
+    result.pop('lineage_groups')
+
+    coverage = coverage_api.derive_coverage(result)
+
+    assert coverage['assessment_protocol'] == 'stockwiki.company_assessment/2'
+    assert coverage['group_issue'] == 'lineage-groups-missing'
+    assert coverage['verdict'] == 'unknown'
+    assert _by_check(_rows(result))['scale-lineage']['actual'] == 'scale-without-group'
+
+
+def test_a_v1_result_without_groups_stays_a_declared_completeness_read():
+    result = snapshot('result-complete-mixed.json')
+    result.pop('lineage_groups')
+    result.pop('assessment_protocol')
+    result.pop('scale_versions')
+
+    coverage = coverage_api.derive_coverage(result)
+
+    assert coverage['basis'] == 'declared-completeness'
+    assert coverage['group_issue'] is None
+    assert coverage['verdict'] == 'complete'
+
+
+def test_a_projection_that_drops_a_declared_gap_is_reported():
+    envelope = projection.project_result(owner_payload(snapshot('result-partial-35of36.json')))
+    envelope['coverage']['missing_question_ids'] = []
+
+    rows = _by_check(feedback.observations(envelope, read='result'))
+
+    assert rows['missing-questions']['actual'] == 'missing-dropped'
+    assert rows['missing-questions']['disposition'] == 'deviation'
+    assert rows['missing-questions']['issue_key'] == 'iqs-company-result-missing-questions-dropped'
+
+
+def test_the_four_question_states_are_published_for_a_modelled_run():
+    result = snapshot('result-modelled-run-states.json')
+    supplied = receipts('receipts-modelled-run-states.json')
+
+    response = projection.project_result(owner_payload(result),
+                                         question_receipts=supplied)
+    statuses = {question['question_id']: question['status']
+                for question in response['coverage']['questions']}
+
+    assert statuses['IQS_01'] == 'completed'
+    assert statuses['PORTER_01'] == 'provider_filtered'
+    assert statuses['PORTER_02'] == 'provider_filtered'
+    assert statuses['DUPONT_04'] == 'provider_truncated'
+    assert statuses['DUPONT_05'] == 'provider_truncated'
+    assert statuses['IQS_22'] == 'settled_unsaved'
+    # A question with no receipt and no observation is not guessed.
+    assert statuses['IQS_03'] == 'unknown'
+    assert response['coverage']['verdict'] == 'partial'
+    rows = _by_check(feedback.observations(response, read='result', receipts=supplied))
+    assert rows['question-status']['actual'] == 'statuses-published'
+    assert rows['question-status']['disposition'] == 'expected'
+
+
+def test_a_history_read_reports_its_own_check_and_no_false_absence():
+    items = [{'result_id': 'cas_' + '4' * 20, 'status': 'formal',
+              'information_cutoff': '2026-11-08', 'registered_at': '2026-11-16T00:00:00Z',
+              'questionnaire_version': '3.2.1', 'scale_version': None,
+              'manifest_question_count': 36, 'observed_count': 35,
+              'aggregate_score': None,
+              'aggregate_score_reason': 'company_aggregate_authority_missing'}]
+    response = projection.project_history(history_payload(items), limit=20, offset=0)
+
+    rows = feedback.observations(response, read='history')
+
+    assert [row['check_id'] for row in rows] == ['history-coverage']
+    assert rows[0]['actual'] == 'items-marked'
+    assert rows[0]['disposition'] == 'expected'
+    assert rows[0]['step_id'] == f'company-history/{ENTITY}'
+
+
+def test_a_history_item_without_counts_is_reported_as_unmarked():
+    items = [{'result_id': 'cas_' + '5' * 20, 'status': 'formal',
+              'information_cutoff': '2026-11-08', 'registered_at': '2026-11-16T00:00:00Z',
+              'questionnaire_version': '3.2.1', 'scale_version': None,
+              'aggregate_score': None,
+              'aggregate_score_reason': 'company_aggregate_authority_missing'}]
+    response = projection.project_history(history_payload(items), limit=20, offset=0)
+
+    rows = feedback.observations(response, read='history')
+
+    assert rows[0]['actual'] == 'items-unmarked'
+    assert rows[0]['disposition'] == 'deviation'
+    assert rows[0]['issue_key'] == 'iqs-company-history-coverage-unmarked'
 
 
 def test_feedback_keeps_a_reasoned_absence_as_expected():
@@ -379,9 +570,10 @@ def test_feedback_keeps_a_reasoned_absence_as_expected():
 
     assert rows['owner-absence']['actual'] == 'reason-named'
     assert rows['owner-absence']['disposition'] == 'expected'
-    assert rows['coverage-claim']['disposition'] == 'unknown'
-    assert rows['coverage-claim']['actual'] == 'no-result'
-    assert rows['question-status']['disposition'] == 'unknown'
+    for check_id in ('coverage-claim', 'scale-lineage', 'question-status',
+                     'missing-questions', 'release-binding'):
+        assert rows[check_id]['disposition'] == 'unknown'
+        assert rows[check_id]['actual'] == 'no-result'
 
 
 def test_feedback_rows_carry_the_public_schema_and_a_stable_step_identity():
@@ -395,22 +587,9 @@ def test_feedback_rows_carry_the_public_schema_and_a_stable_step_identity():
         assert row['step_id'] == f'company-result/{ENTITY}'
         assert row['disposition'] in {'expected', 'deviation', 'unknown'}
         assert row['version'] == projection.PROJECTION_VERSION
-    assert {row['check_id'] for row in rows} == {
-        'coverage-claim', 'multi-group-lineage', 'question-status',
-        'missing-questions', 'owner-absence'}
+    assert {row['check_id'] for row in rows} == RESULT_CHECKS
     # Identity is derived from the public read, not from a wall clock.
     assert rows == _rows(snapshot('result-partial-35of36.json'))
-
-
-def test_a_projection_that_drops_a_declared_gap_is_reported():
-    envelope = projection.project_result(owner_payload(snapshot('result-partial-35of36.json')))
-    envelope['coverage']['missing_question_ids'] = []
-
-    rows = _by_check(feedback.observations(envelope, read='result'))
-
-    assert rows['missing-questions']['actual'] == 'missing-dropped'
-    assert rows['missing-questions']['disposition'] == 'deviation'
-    assert rows['missing-questions']['issue_key'] == 'iqs-company-result-missing-questions-dropped'
 
 
 def test_feedback_uses_the_native_run_and_attempt_identity(tmp_path):
@@ -426,7 +605,7 @@ def test_feedback_uses_the_native_run_and_attempt_identity(tmp_path):
                             version=projection.PROJECTION_VERSION) is True
 
     lines = out.read_text(encoding='utf-8').splitlines()
-    assert len(lines) == 5
+    assert len(lines) == 6
     for line in lines:
         row = json.loads(line)
         assert row['run_id'] == 'scan-abc123'
@@ -486,7 +665,7 @@ def test_the_public_read_emits_observations_and_keeps_its_business_output(tmp_pa
 
     assert envelope['owner_payload']['result'] == result
     rows = [json.loads(line) for line in out.read_text(encoding='utf-8').splitlines()]
-    assert len(rows) == 5
+    assert len(rows) == 6
     assert all(row['run_id'] == 'scan-real-1' for row in rows)
     claimed = next(row for row in rows if row['check_id'] == 'coverage-claim')
     assert claimed['actual'] == 'complete-claimed'
@@ -495,6 +674,39 @@ def test_the_public_read_emits_observations_and_keeps_its_business_output(tmp_pa
     again = projection.read_company_assessment(
         config, 'company_result', {'entity_id': ENTITY})
     assert again['owner_payload'] == envelope['owner_payload']
+
+
+def test_the_public_read_uses_the_supplied_receipts_in_its_published_coverage(tmp_path):
+    config = _cli_deployment(tmp_path)
+    result = snapshot('result-modelled-run-states.json')
+    supplied = receipts('receipts-modelled-run-states.json')
+    reply = {**owner_payload(result)['owner_payload'], 'entity_id': ENTITY, 'action': 'read'}
+    _cli_reply(config, ['read'], stdout=json.dumps(reply))
+    out = tmp_path / 'read.jsonl'
+    monkeypatch_env = {'RESEARCH_FEEDBACK_OUT': str(out)}
+    import os
+    previous = os.environ.get('RESEARCH_FEEDBACK_OUT')
+    os.environ.update(monkeypatch_env)
+    try:
+        envelope = projection.read_company_assessment(
+            config, 'company_result', {'entity_id': ENTITY},
+            question_receipts=supplied)
+        published = projection.project_result(envelope, question_receipts=supplied)
+    finally:
+        if previous is None:
+            os.environ.pop('RESEARCH_FEEDBACK_OUT', None)
+        else:
+            os.environ['RESEARCH_FEEDBACK_OUT'] = previous
+
+    statuses = {question['question_id']: question['status']
+                for question in published['coverage']['questions']}
+    assert statuses['PORTER_01'] == 'provider_filtered'
+    assert statuses['DUPONT_04'] == 'provider_truncated'
+    assert statuses['IQS_22'] == 'settled_unsaved'
+    # The rows are computed from the same receipt-aware coverage, so a receipt
+    # never produces a false "statuses-missing".
+    rows = _by_check(feedback.observations(published, read='result', receipts=supplied))
+    assert rows['question-status']['disposition'] == 'expected'
 
 
 def test_an_unwritable_observation_output_does_not_change_the_public_read(tmp_path, monkeypatch):
@@ -524,10 +736,24 @@ def test_the_replay_tool_records_a_temporary_public_response(tmp_path):
 
     assert code == 0
     rows = [json.loads(line) for line in out.read_text(encoding='utf-8').splitlines()]
-    assert len(rows) == 5
+    assert len(rows) == 6
     assert {row['run_id'] for row in rows} == {'replay-1'}
     claim = next(row for row in rows if row['check_id'] == 'coverage-claim')
     assert claim['actual'] == 'complete-claimed'
+
+
+def test_the_replay_tool_classifies_a_modelled_run_with_its_receipts(tmp_path):
+    import company_result_feedback as tool
+
+    out = tmp_path / 'tool.jsonl'
+    code = tool.main([
+        '--inject-result', str(FIXTURES / 'result-modelled-run-states.json'),
+        '--receipts', str(FIXTURES / 'receipts-modelled-run-states.json'),
+        '--out', str(out)])
+
+    assert code == 0
+    rows = [json.loads(line) for line in out.read_text(encoding='utf-8').splitlines()]
+    assert {row['disposition'] for row in rows} == {'expected'}
 
 
 def test_the_replay_tool_reports_a_refused_read_without_writing(tmp_path):

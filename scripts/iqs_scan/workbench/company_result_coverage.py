@@ -6,12 +6,16 @@ that public evidence only, which frozen questions were actually observed, which
 lineage group each belongs to, and what per-question state the evidence
 supports.
 
-Two rules shape it:
+Three rules shape it:
 
 * a partial snapshot stays partial — the derived verdict never becomes
-  ``complete`` while a frozen question has no bound observation;
+  ``complete`` while a frozen question has no bound observation, or while a
+  scale the snapshot declares has no group to carry it;
 * the owner's own claim is compared with its references instead of being
-  trusted, so a contradiction is reported rather than smoothed over.
+  trusted, so a contradiction is reported rather than smoothed over;
+* an observation is the only evidence that a question was saved. A receipt
+  saying "settled" without a bound observation is ``settled_unsaved``, never
+  ``completed``.
 
 Nothing here computes a score, re-ranks a question, re-issues a paid attempt or
 writes to the owner store. A question whose fate the evidence cannot decide is
@@ -23,7 +27,9 @@ from __future__ import annotations
 from typing import Any
 
 COVERAGE_PROTOCOL = "iqs.dashboard.company_coverage/1"
-COVERAGE_VERSION = "1.0.0"
+COVERAGE_VERSION = "1.1.0"
+# The owner's own declaration for a result that carries scale lineage groups.
+ASSESSMENT_PROTOCOL_V2 = "stockwiki.company_assessment/2"
 
 # The four states this lane must keep apart, plus the honest "no evidence" one.
 #   completed          an immutable observation is bound to the question
@@ -65,6 +71,10 @@ def _read_groups(result: dict[str, Any]) -> tuple[list[dict[str, Any]] | None, s
     """The owner's published lineage groups, or a named reason they are unreadable."""
     raw = result.get("lineage_groups")
     if raw is None:
+        # A v2 snapshot without its groups is not a v1 snapshot: the scale
+        # lineage it promised is missing, and that is a group loss.
+        if _text(result.get("assessment_protocol")) == ASSESSMENT_PROTOCOL_V2:
+            return None, "lineage-groups-missing"
         return None, None
     if not isinstance(raw, list) or not raw:
         return None, "lineage-groups-malformed"
@@ -187,17 +197,30 @@ def derive_coverage(result: Any, *, receipts: Any = None) -> dict[str, Any] | No
     known = set(by_question) | set(manifest_ids or ())
     normalized_receipts = _read_receipts(receipts, known)
 
+    # A reference to a question the frozen release does not contain is not
+    # coverage: it is counted separately so it can never inflate the result
+    # into "complete", nor disappear silently.
     if manifest_ids is not None:
+        unexpected = sorted(set(by_question) - set(manifest_ids))
+        observed_ids = [question_id for question_id in by_question
+                        if question_id in set(manifest_ids)]
         missing = sorted(set(manifest_ids) - set(by_question))
     else:
+        unexpected = []
+        observed_ids = sorted(by_question)
         missing = sorted(declared["missing_question_ids"] or [])
 
     manifest_count = (len(manifest_ids) if manifest_ids is not None
                       else declared["manifest_question_count"])
-    observed_count = len(by_question)
+    observed_count = len(observed_ids)
 
     claim_matches_refs = _claim_matches(declared, manifest_count, observed_count, missing,
                                         manifest_ids is not None)
+
+    published_scales = _scale_versions(result, groups)
+    group_rubrics = {group["rubric_version"] for group in groups or []}
+    missing_scale_versions = sorted(set(published_scales) - group_rubrics)
+    undeclared_scale_versions = sorted(group_rubrics - set(published_scales))
 
     if group_issue is not None:
         basis = "lineage-groups-unreadable"
@@ -210,7 +233,7 @@ def derive_coverage(result: Any, *, receipts: Any = None) -> dict[str, Any] | No
 
     if group_issue is not None:
         verdict = "unknown"
-    elif missing:
+    elif missing or missing_scale_versions:
         verdict = "partial"
     elif claim_matches_refs is False:
         verdict = "partial"
@@ -250,8 +273,8 @@ def derive_coverage(result: Any, *, receipts: Any = None) -> dict[str, Any] | No
     group_mismatch = sorted({
         reference["question_id"]
         for reference in references
-        if reference["lineage_group_id"] not in group_ids
-    }) if group_ids else []
+        if group_ids and reference["lineage_group_id"] not in group_ids
+    })
 
     return {
         "protocol": COVERAGE_PROTOCOL,
@@ -264,24 +287,41 @@ def derive_coverage(result: Any, *, receipts: Any = None) -> dict[str, Any] | No
         "manifest_question_count": manifest_count,
         "observed_count": observed_count,
         "missing_question_ids": missing,
+        "unexpected_question_ids": unexpected,
         "declared": declared,
         "scale_version": _text(result.get("scale_version")),
-        "scale_versions": _scale_versions(result, group_rows),
+        "scale_versions": published_scales,
+        "missing_scale_versions": missing_scale_versions,
+        "undeclared_scale_versions": undeclared_scale_versions,
         "groups": group_rows,
         "questions": questions,
         "status_counts": dict(sorted(status_counts.items())),
         "unclassified_question_ids": [question["question_id"] for question in questions
                                        if question["status"] == "unknown"],
         "group_mismatch_question_ids": group_mismatch,
-        "receipt_conflicts": sorted({
-            question_id
-            for question_id, receipt in normalized_receipts.items()
-            if question_id in by_question and receipt["status"] != "completed"
-        }),
+        "receipt_conflicts": _receipt_conflicts(normalized_receipts, by_question),
         "duplicate_question_ids": sorted(set(duplicate_question_ids)),
         "malformed_refs": malformed_refs,
         "group_issue": group_issue,
     }
+
+
+def _receipt_conflicts(receipts: dict[str, dict[str, Any]],
+                       by_question: dict[str, dict[str, Any]]) -> list[str]:
+    """Questions whose receipt and bound observation disagree.
+
+    Both directions matter: a receipt that says "never saved" for a question
+    that does have an observation, and a receipt that says "completed" for a
+    question with no observation at all (the settled-but-unsaved case).
+    """
+    conflicts = set()
+    for question_id, receipt in receipts.items():
+        saved = question_id in by_question
+        if saved and receipt["status"] != "completed":
+            conflicts.add(question_id)
+        elif not saved and receipt["status"] == "completed":
+            conflicts.add(question_id)
+    return sorted(conflicts)
 
 
 def _claim_matches(declared: dict[str, Any], manifest_count: int | None,
@@ -316,11 +356,12 @@ def _claim_matches(declared: dict[str, Any], manifest_count: int | None,
     return True
 
 
-def _scale_versions(result: dict[str, Any], group_rows: list[dict[str, Any]]) -> list[str]:
+def _scale_versions(result: dict[str, Any],
+                    groups: list[dict[str, Any]] | None) -> list[str]:
     published = _ids(result.get("scale_versions"))
     if published is not None and published:
         return sorted(set(published))
-    return sorted({group["rubric_version"] for group in group_rows})
+    return sorted({group["rubric_version"] for group in groups or []})
 
 
 def _questions(manifest_ids: list[str] | None, by_question: dict[str, dict[str, Any]],
@@ -335,7 +376,10 @@ def _questions(manifest_ids: list[str] | None, by_question: dict[str, dict[str, 
         if reference is not None:
             status = "completed"
         elif receipt is not None:
-            status = receipt["status"]
+            # A settled attempt without a bound observation was not saved, no
+            # matter what the receipt calls its terminal state.
+            status = ("settled_unsaved" if receipt["status"] == "completed"
+                      else receipt["status"])
         else:
             status = "unknown"
         questions.append({

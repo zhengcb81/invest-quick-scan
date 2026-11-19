@@ -6,12 +6,11 @@ no variable set, no file is opened and the business response is byte-identical.
 A failed write is reported on stderr only — the native exit code, the payload
 and the billing state stay exactly as the owner contract says.
 
-The rows describe checks this projection can make on its own public output:
-whether the owner's completeness claim agrees with the references it binds,
-whether every frozen scale group is still addressable, whether each question
-carries a status, whether a declared gap survived, and whether an absent result
-kept its named reason. They never carry a company body, a credential, a
-physical path or a paid attempt.
+The rows describe checks this projection can make on its own public output. A
+check that fails on the owner's own snapshot is attributed to that owner
+(``owner=stockwiki``, ``origin_owner=invest-quick-scan``); a check that fails on
+what this projection publishes is attributed here. They never carry a company
+body, a credential, a physical path or a paid attempt.
 """
 
 from __future__ import annotations
@@ -26,6 +25,7 @@ from typing import Any
 
 SCHEMA_VERSION = "feedback-observation/1"
 OWNER = "invest-quick-scan"
+OWNER_STOCKWIKI = "stockwiki"
 ENV_OUT = "RESEARCH_FEEDBACK_OUT"
 ENV_RUN_ID = "RESEARCH_FEEDBACK_RUN_ID"
 ENV_ATTEMPT_ID = "RESEARCH_FEEDBACK_ATTEMPT_ID"
@@ -35,7 +35,6 @@ DEFAULT_ATTEMPT_ID = "attempt-1"
 DISPOSITIONS = frozenset({"expected", "deviation", "unknown"})
 
 _STABLE_WORD = re.compile(r"^[a-z][a-z0-9_.:-]{0,63}$")
-_TOKEN = re.compile(r"^[A-Za-z0-9_.:/-]{1,200}$")
 _REFERENCE = re.compile(r"^[A-Za-z0-9_.:/@+-]{1,200}$")
 
 _FIELD_ORDER = ("schema_version", "owner", "origin_owner", "run_id", "attempt_id",
@@ -82,7 +81,9 @@ def _sanitize_reference(value: Any) -> str | None:
 def diagnose(error: BaseException) -> None:
     """Report an observation-plane fault on stderr, never in the business output."""
     if isinstance(error, OSError):
-        message = f"feedback observation write failed ({error.filename or 'output'}): {error.strerror}"
+        # The destination path stays out of the message: it can name a host
+        # location and this channel is not the owner's.
+        message = f"feedback observation write failed: {error.strerror or 'output unavailable'}"
     else:
         message = f"feedback observation skipped ({error.__class__.__name__})"
     try:
@@ -97,20 +98,20 @@ def observations(envelope: dict[str, Any], *, read: str, receipts: Any = None,
                  version: str | None = None) -> list[dict[str, Any]]:
     """Project the checks of one public read as ``feedback-observation/1`` rows."""
     entity_id = envelope.get("entity_id") or "unknown"
-    result = envelope.get("company_result")
     coverage = envelope.get("coverage")
+    result = envelope.get("company_result")
     reason = envelope.get("reason_code")
     result_id = result.get("result_id") if isinstance(result, dict) else None
-    resolved_version = _sanitize_reference(version) or _sanitize_reference(
-        envelope.get("projection_version")) or "company_assessment/unknown"
     base = {
         "schema_version": SCHEMA_VERSION,
         "origin_owner": OWNER,
         "run_id": _sanitize(run_id, DEFAULT_RUN_ID),
         "attempt_id": _sanitize(attempt_id, DEFAULT_ATTEMPT_ID),
         "step_id": f"company-{read}/{entity_id}",
-        "evidence_ref": f"iqs:company/{entity_id}/{result_id or reason or 'absent'}",
-        "version": resolved_version,
+        "evidence_ref": f"iqs:company/{entity_id}/{result_id or reason or 'page'}",
+        "version": (_sanitize_reference(version)
+                    or _sanitize_reference(envelope.get("projection_version"))
+                    or "company_assessment/unknown"),
     }
     rows: list[dict[str, Any]] = []
 
@@ -128,50 +129,64 @@ def observations(envelope: dict[str, Any], *, read: str, receipts: Any = None,
             row["issue_key"] = _stable_word("issue_key", issue_key)
         rows.append({key: row[key] for key in _FIELD_ORDER if key in row})
 
+    if read == "history":
+        _history_checks(add, coverage)
+        return rows
+
     absent = result is None
-
-    # 1. The owner's completeness claim against the references it binds.
-    if absent:
-        add("coverage-claim", "claim-matches-refs", "no-result", disposition="unknown")
-    elif not isinstance(coverage, dict):
-        add("coverage-claim", "claim-matches-refs", "coverage-absent",
-            disposition="unknown")
-    elif coverage.get("claim_matches_refs") is False:
-        add("coverage-claim", "claim-matches-refs", "complete-claimed",
-            owner="stockwiki", issue_key="stockwiki-company-result-completeness-claim")
-    else:
-        add("coverage-claim", "claim-matches-refs", "claim-matches-refs")
-
-    # 2. Every frozen scale group stays addressable with its own rubric/role.
     if absent or not isinstance(coverage, dict):
-        add("multi-group-lineage", "no-group-loss", "no-result", disposition="unknown")
-    elif (coverage.get("group_issue") is not None
-            or coverage.get("group_mismatch_question_ids")
-            or any(group.get("empty") for group in coverage.get("groups") or ())):
-        add("multi-group-lineage", "no-group-loss", "group-lost",
-            issue_key="iqs-company-result-group-lost")
+        for check_id, expected in (("coverage-claim", "claim-matches-refs"),
+                                   ("scale-lineage", "scales-addressable"),
+                                   ("question-status", "statuses-published"),
+                                   ("missing-questions", "missing-kept"),
+                                   ("release-binding", "refs-bind-frozen-questions")):
+            add(check_id, expected, "no-result", disposition="unknown")
     else:
-        add("multi-group-lineage", "no-group-loss", "no-group-loss")
+        # 1. The owner's completeness claim against the references it binds.
+        if coverage.get("claim_matches_refs") is False:
+            add("coverage-claim", "claim-matches-refs", "complete-claimed",
+                owner=OWNER_STOCKWIKI,
+                issue_key="stockwiki-company-result-completeness-claim")
+        else:
+            add("coverage-claim", "claim-matches-refs", "claim-matches-refs")
 
-    # 3. Every question the release froze carries a status in the projection.
-    if absent or not isinstance(coverage, dict):
-        add("question-status", "statuses-published", "no-result", disposition="unknown")
-    elif _statuses_missing(coverage, receipts):
-        add("question-status", "statuses-published", "statuses-missing",
-            issue_key="iqs-company-result-question-status-missing")
-    else:
-        add("question-status", "statuses-published", "statuses-published")
+        # 2. Every scale the snapshot declares is carried by a group, and every
+        #    group keeps its own rubric. An honestly empty group is a legal
+        #    partial result, not a lost scale: it is disclosed, not blamed.
+        if (coverage.get("group_issue") is not None
+                or coverage.get("group_mismatch_question_ids")
+                or coverage.get("missing_scale_versions")
+                or coverage.get("undeclared_scale_versions")):
+            add("scale-lineage", "scales-addressable", "scale-without-group",
+                owner=OWNER_STOCKWIKI,
+                issue_key="stockwiki-company-result-scale-lineage")
+        else:
+            add("scale-lineage", "scales-addressable", "scales-addressable")
 
-    # 4. A gap the owner declared is kept, not reduced away.
-    if absent or not isinstance(coverage, dict):
-        add("missing-questions", "missing-kept", "no-result", disposition="unknown")
-    elif _declared_gaps_dropped(coverage):
-        add("missing-questions", "missing-kept", "missing-dropped",
-            issue_key="iqs-company-result-missing-questions-dropped")
-    else:
-        add("missing-questions", "missing-kept", "missing-kept")
+        # 3. Every frozen question carries a status in the projection.
+        if _statuses_missing(coverage, receipts):
+            add("question-status", "statuses-published", "statuses-missing",
+                issue_key="iqs-company-result-question-status-missing")
+        else:
+            add("question-status", "statuses-published", "statuses-published")
 
-    # 5. An absent result keeps the owner's named reason.
+        # 4. A gap the owner declared is kept, not reduced away.
+        if _declared_gaps_dropped(coverage):
+            add("missing-questions", "missing-kept", "missing-dropped",
+                issue_key="iqs-company-result-missing-questions-dropped")
+        else:
+            add("missing-questions", "missing-kept", "missing-kept")
+
+        # 5. Every bound reference names a question of the frozen release.
+        if coverage.get("unexpected_question_ids"):
+            add("release-binding", "refs-bind-frozen-questions",
+                "refs-outside-release", owner=OWNER_STOCKWIKI,
+                issue_key="stockwiki-company-result-unexpected-questions")
+        else:
+            add("release-binding", "refs-bind-frozen-questions",
+                "refs-bind-frozen-questions")
+
+    # 6. An absent result keeps the owner's named reason.
     if not absent:
         add("owner-absence", "reason-named", "result-present", disposition="expected")
     elif isinstance(reason, str) and reason.strip():
@@ -180,6 +195,22 @@ def observations(envelope: dict[str, Any], *, read: str, receipts: Any = None,
         add("owner-absence", "reason-named", "reason-missing",
             issue_key="iqs-company-result-absence-unreasoned")
     return rows
+
+
+def _history_checks(add, coverage: Any) -> None:
+    """A bounded page carries counts only; it must still say which item is short."""
+    if not isinstance(coverage, dict) or not isinstance(coverage.get("items"), list):
+        add("history-coverage", "items-marked", "no-coverage", disposition="unknown")
+        return
+    items = coverage["items"]
+    if not items:
+        add("history-coverage", "items-marked", "no-items", disposition="unknown")
+    elif any(not isinstance(item, dict) or not item.get("verdict")
+             or item.get("verdict") == "unknown" for item in items):
+        add("history-coverage", "items-marked", "items-unmarked",
+            issue_key="iqs-company-history-coverage-unmarked")
+    else:
+        add("history-coverage", "items-marked", "items-marked")
 
 
 def _statuses_missing(coverage: dict[str, Any], receipts: Any) -> bool:
@@ -260,7 +291,8 @@ def observe(envelope: dict[str, Any], *, read: str, receipts: Any = None,
         rows = observations(envelope, read=read, receipts=receipts,
                             run_id=context.run_id, attempt_id=context.attempt_id,
                             version=context.version)
-    except (TypeError, ValueError, KeyError, AttributeError) as error:
+    except Exception as error:  # noqa: BLE001 - the observation plane is isolated
+        # Whatever goes wrong here is a tracking fault, never a business one.
         diagnose(error)
         return False
     return emit(context, rows)

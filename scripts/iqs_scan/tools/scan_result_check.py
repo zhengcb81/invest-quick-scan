@@ -50,18 +50,23 @@ def _coverage(document: dict, answered: int) -> tuple[str, int | None, list[str]
 
     Returns ``(verdict, manifest_question_count, missing_ids, missing_count)``.
     Without a bank count the checker cannot tell a short run from a small bank,
-    so the coverage stays ``unknown`` instead of being assumed complete.
+    so the coverage stays ``unknown`` instead of being assumed complete. A
+    document that merely declares "nothing missing" is not proof either: only a
+    count can close the question.
     """
     manifest_count = _bank_question_count(document)
     declared = _declared_missing(document)
+    if manifest_count is None:
+        if declared:
+            # Something is missing, but the total is unknown.
+            return "partial", None, declared, len(declared)
+        return "unknown", None, declared, None
     if declared is not None:
         missing_count = len(declared)
-        if manifest_count is not None and answered + missing_count != manifest_count:
+        if answered + missing_count != manifest_count:
             # The declaration and the answers disagree: report what is provable.
             missing_count = max(manifest_count - answered, missing_count)
         return ("partial" if missing_count else "complete"), manifest_count, declared, missing_count
-    if manifest_count is None:
-        return "unknown", None, None, None
     missing_count = max(manifest_count - answered, 0)
     return ("partial" if missing_count else "complete"), manifest_count, None, missing_count
 

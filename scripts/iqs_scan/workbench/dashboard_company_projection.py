@@ -25,7 +25,10 @@ from . import company_result_coverage
 from . import dashboard_company_feedback
 
 PROJECTION_PROTOCOL = "iqs.dashboard.company_assessment/1"
-PROJECTION_VERSION = "company_assessment/1.0.0"
+# 1.1.0 adds the derived ``coverage`` block (per-question status and per-group
+# scale). The owner-facing read is unchanged; consumers that do not know the
+# block ignore it.
+PROJECTION_VERSION = "company_assessment/1.1.0"
 # The owner's own declaration this projection was written against.
 OWNER_PROTOCOL = "stockwiki.company_assessment/1"
 OWNER_SCHEMA_VERSION = "1.0.0"
@@ -172,7 +175,7 @@ def read_company_assessment(
             raise ProjectionError("owner_projection_invalid", "owner result status is malformed", 502)
         if absent:
             raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
-        projected = project_result(envelope)
+        projected = project_result(envelope, question_receipts=question_receipts)
         result = projected["company_result"]
         if pin is not None and result is not None and result["result_id"] != pin:
             raise ProjectionError("company_result_pin_mismatch", "owner returned a different pinned result", 502)
@@ -243,11 +246,14 @@ def _checked_owner_read(owner: Any) -> dict[str, Any]:
     return owner
 
 
-def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
+def project_result(owner_payload: dict[str, Any], *,
+                   question_receipts: Any = None) -> dict[str, Any]:
     """Service half: shape one GET ``company/result`` response.
 
     The owner's honest absent reasons pass through verbatim; ``company_result``
     stays ``null`` unless the owner itself published a registered snapshot.
+    ``question_receipts`` lets an offline replay classify the questions the
+    snapshot does not bind; the live route has none and leaves them ``unknown``.
     """
     _require_owner_envelope(owner_payload, "result")
     owner = owner_payload["owner_payload"]
@@ -281,7 +287,8 @@ def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
         "reason_code": reason_code,
         # Derived from the snapshot's own references: a partial result stays
         # partial here even when the owner's completeness claim says otherwise.
-        "coverage": company_result_coverage.derive_coverage(result),
+        "coverage": company_result_coverage.derive_coverage(
+            result, receipts=question_receipts),
         "store_id": owner.get("store_id"),
         "registry_store_id": owner.get("registry_store_id"),
         "network_calls": 0,
