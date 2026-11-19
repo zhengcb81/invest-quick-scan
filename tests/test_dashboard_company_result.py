@@ -640,6 +640,16 @@ def test_company_read_uses_only_stockwiki_public_command(tmp_path):
     assert not list(Path(config['workspace_root']).iterdir())
 
 
+def test_company_read_accepts_additive_stockwiki_release(tmp_path):
+    config = _cli_deployment(tmp_path)
+    reply = {**_public_read_reply(), 'schema_version': '1.2.3', 'producer_build': 'diagnostic'}
+    _cli_reply(config, ['read'], stdout=json.dumps(reply))
+    owner = projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A'})
+    result = projection.project_result(owner)
+    assert result['company_result'] == RESULT_SNAPSHOT
+    assert result['network_calls'] == result['llm_calls'] == 0
+
+
 def test_company_read_refuses_nonfinite_numeric_exponent(tmp_path):
     config = _cli_deployment(tmp_path)
     reply = json.dumps(_public_read_reply())[:-1] + ',"additional_numeric":1e999}'
@@ -719,7 +729,7 @@ def test_company_history_refuses_unbound_or_ambiguous_public_reply(tmp_path, cas
 def test_company_read_maps_public_identity_store_refusal(tmp_path, owner_code, expected):
     config = _cli_deployment(tmp_path)
     _cli_reply(config, ['read'], stderr=json.dumps({
-        'schema_version': '1.0.0', 'error_code': owner_code, 'detail': 'owner-internal diagnostic',
+        'schema_version': '1.2.3', 'error_code': owner_code, 'detail': 'owner-internal diagnostic',
     }), returncode=2)
     with pytest.raises(projection.ProjectionError) as error:
         projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A'})

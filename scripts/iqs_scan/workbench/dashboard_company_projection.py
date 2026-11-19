@@ -76,6 +76,14 @@ class ProjectionError(Exception):
         self.status = status
 
 
+def _compatible_release(value: Any, baseline: str) -> bool:
+    """Match a published version family and major at this read boundary."""
+    if not isinstance(value, str):
+        return False
+    family = baseline.rsplit(".", 2)[0]
+    return re.fullmatch(re.escape(family) + r"\.[0-9]+\.[0-9]+", value) is not None
+
+
 def _identifier(value: Any, code: str) -> str:
     if not isinstance(value, str) or not value or len(value) > 256:
         raise ProjectionError(code, "identifier is missing or malformed")
@@ -216,7 +224,7 @@ def _raise_owner_refusal(raw: bytes) -> None:
     code = refusal.get("error_code") if isinstance(refusal, dict) else None
     if not isinstance(code, str) or not _ERROR_CODE.fullmatch(code):
         raise ProjectionError("owner_projection_invalid", "owner refusal is malformed", 502)
-    if refusal.get("schema_version") != OWNER_SCHEMA_VERSION:
+    if not _compatible_release(refusal.get("schema_version"), OWNER_SCHEMA_VERSION):
         raise ProjectionError("owner_protocol_unsupported", "owner company assessment protocol is unsupported", 502)
     if code == "invalid_invocation":
         # An older command does not support the strict identity option.
@@ -231,15 +239,15 @@ def _raise_owner_refusal(raw: bytes) -> None:
 def _checked_owner_read(owner: Any) -> dict[str, Any]:
     """Validate the owner's own read envelope before it is projected.
 
-    The owner's protocol/schema declaration is checked rather than assumed, so
-    a future owner shape is never relabelled under this projection version.
+    Check the declared protocol, compatible release and actual read fields.
     """
     if not isinstance(owner, dict):
         raise ProjectionError("owner_projection_invalid", "owner read is not an object", 502)
     for key in ("protocol", "schema_version", "network_calls", "llm_calls"):
         if key not in owner:
             raise ProjectionError("owner_projection_invalid", "owner read is missing envelope fields", 502)
-    if owner.get("protocol") != OWNER_PROTOCOL or owner.get("schema_version") != OWNER_SCHEMA_VERSION:
+    if (owner.get("protocol") != OWNER_PROTOCOL
+            or not _compatible_release(owner.get("schema_version"), OWNER_SCHEMA_VERSION)):
         raise ProjectionError("owner_protocol_unsupported", "owner company assessment protocol is unsupported", 502)
     if any(type(owner[key]) is not int or owner[key] != 0 for key in ("network_calls", "llm_calls")):
         raise ProjectionError("owner_projection_invalid", "owner read reported unexpected I/O", 502)
@@ -348,7 +356,7 @@ def _require_owner_envelope(owner_payload: Any, read: str) -> None:
         raise ProjectionError("owner_projection_invalid", "owner payload is missing", 502)
     if owner_payload.get("protocol") != PROJECTION_PROTOCOL:
         raise ProjectionError("owner_projection_invalid", "owner payload protocol mismatch", 502)
-    if owner_payload.get("projection_version") != PROJECTION_VERSION:
+    if not _compatible_release(owner_payload.get("projection_version"), PROJECTION_VERSION):
         raise ProjectionError("projection_version_unsupported", "company projection version is unsupported", 502)
     if owner_payload.get("read") != read:
         raise ProjectionError("owner_projection_invalid", "owner payload read kind mismatch", 502)

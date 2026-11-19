@@ -93,6 +93,26 @@ def history_payload(items, entity_id=ENTITY, limit=20, offset=0):
     }
 
 
+@pytest.mark.parametrize('version', ['company_assessment/1.0.0', 'company_assessment/1.2.3'])
+def test_projection_keeps_results_and_history_across_compatible_releases(version):
+    result = snapshot('result-complete-mixed.json')
+    for project, dto in (
+        (projection.project_result, owner_payload(result)),
+        (lambda value: projection.project_history(value, limit=20, offset=0),
+         history_payload([result])),
+    ):
+        expected = project(dto)
+        assert project({**dto, 'projection_version': version}) == expected
+
+
+@pytest.mark.parametrize('version', ['company_assessment/2.0.0', 'other/1.1.0', 'company_assessment/1'])
+def test_projection_refuses_unknown_release_family_or_major(version):
+    dto = owner_payload(snapshot('result-complete-mixed.json'))
+    with pytest.raises(projection.ProjectionError) as error:
+        projection.project_result({**dto, 'projection_version': version})
+    assert error.value.code == 'projection_version_unsupported'
+
+
 # -- derivation ---------------------------------------------------------------
 
 
