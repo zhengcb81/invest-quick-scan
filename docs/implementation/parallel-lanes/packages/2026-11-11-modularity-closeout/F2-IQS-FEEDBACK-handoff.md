@@ -195,7 +195,7 @@ expected, actual`；`step_id` 为 `company-{result|history}/<entity>`，
 `evidence_ref` 为 `iqs:company/<entity>/<result_id|reason|page>`，
 `version` 取投影版本，`disposition ∈ {expected, deviation, unknown}`。
 
-结果读的五项检查：`coverage-claim`（owner 声明 vs 引用）、
+结果读的六项检查：`coverage-claim`（owner 声明 vs 引用）、
 `scale-lineage`（声明的尺度是否有组承载、引用是否落在组内）、
 `question-status`（逐题状态是否发布）、`missing-questions`（声明的缺项是否保留）、
 `release-binding`（引用是否都指向冻结释放内题号）、`owner-absence`（无结果是否带名原因）。
@@ -213,20 +213,8 @@ expected, actual`；`step_id` 为 `company-{result|history}/<entity>`，
 在途边界、正常与反例、观测可选性、恢复副作用、隔离清理）。**首轮结论
 ACCEPT_WITH_FIXES（受审 `11d2bd9`）**：三个 P1、五个 P2、五个 P3 全部复现并
 修复，修复提交 `4685608`。**修复版复核结论 ACCEPT（受审 `4685608`）**，两次
-独立测试运行均为 **124 passed / 0 failed / 0 skipped**，并离树复核
+独立测试运行均为 **124 passed / 0 failed / 0 skipped**（当时的用例数；复核后只新增测试，现为 126），并离树复核
 `build_fixtures.py` 能逐字节重建全部夹具。
-
-复核后只剩四个 P3，均不阻塞，已处理或记录：
-
-| # | P3 | 处置 |
-|---|---|---|
-| 13 | `result-scale-dropped.json` 无消费方（两个尺度缺失用例原先内联构造） | 两个用例改为直接读该夹具 |
-| 14 | `undeclared_scale_versions` / `unexpected_question_ids` 会报 owner 偏差但不改变 `verdict` | 属预期：`verdict` 只描述**覆盖**是否完整，不描述与 owner 声明是否完全一致；后者由 `scale-lineage`/`release-binding` 单独报告。此处明示，避免把 `complete` 读成"完全一致" |
-| 15 | `scan_result_check` 的"有缺项无总数判 partial"分支无用例 | 补 `test_declared_gaps_without_a_bank_total_are_partial` |
-| 16 | `.gitattributes` 是否落到文档提交 | 已提交（`8793775`），并用 `-text` 保留夹具可读差异 |
-
-以上 13–16 只改测试与文档：复核后 `scripts/` 与 `4685608` 逐字节相同
-（`git diff 4685608 HEAD -- scripts/` 为空），因此"受审实现版本"仍是 `4685608`。
 
 | # | 级别 | 发现 | 处置 |
 |---|---|---|---|
@@ -246,6 +234,18 @@ ACCEPT_WITH_FIXES（受审 `11d2bd9`）**：三个 P1、五个 P2、五个 P3 �
 审查同时确认的边界：`company_result` 与 owner 返回逐字节一致；未设
 `RESEARCH_FEEDBACK_OUT` 时响应与退出码不变；`--inject-result` 不读不写 owner；
 新增键不改变 Dashboard 消费。
+
+复核后只剩四个 P3，均不阻塞，已处理或记录：
+
+| # | P3 | 处置 |
+|---|---|---|
+| 13 | `result-scale-dropped.json` 无消费方（两个尺度缺失用例原先内联构造） | 两个用例改为直接读该夹具 |
+| 14 | `undeclared_scale_versions` / `unexpected_question_ids` 会报 owner 偏差但不改变 `verdict` | 属预期：`verdict` 只描述**覆盖**是否完整，不描述与 owner 声明是否完全一致；后者由 `scale-lineage`/`release-binding` 单独报告。此处明示，避免把 `complete` 读成"完全一致" |
+| 15 | `scan_result_check` 的"有缺项无总数判 partial"分支无用例 | 补 `test_declared_gaps_without_a_bank_total_are_partial` |
+| 16 | `.gitattributes` 是否落到文档提交 | 已提交（`8793775`），并用 `-text` 保留夹具可读差异 |
+
+以上 13–16 只改测试与文档：复核后 `scripts/` 与 `4685608` 逐字节相同
+（`git diff 4685608 HEAD -- scripts/` 为空），因此"受审实现版本"仍是 `4685608`。
 
 ## 8. 清理与余项
 
