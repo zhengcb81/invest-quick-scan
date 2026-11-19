@@ -41,7 +41,7 @@ python -B -X utf8 scripts/scan_result_check.py --run runs/thin-bank-catl-full-20
 
 - RED：`tests/test_scan_result_check.py` 新增 5 例，5 failed（`KeyError:
   'coverage'`），见交接 §测试。
-- GREEN：同一批 5 例通过；原 9 例保持通过，`usable` 语义对无题库计数的
+- GREEN：同一批 5 例通过，另补 1 例「有缺项无题库总数判 partial」；原 9 例保持通过，`usable` 语义对无题库计数的
   旧运行不变（`coverage=unknown` 时仍按原规则判定）。
 
 ## 同类场景与反例

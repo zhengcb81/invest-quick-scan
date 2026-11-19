@@ -38,7 +38,27 @@
 | 公开结果版本 | 真实 workspace 无已登记结果：`company_result_not_registered`（`delivery/read-after.json`） |
 | 投影版本 | `iqs.dashboard.company_assessment/1` / `company_assessment/1.1.0`（新增 `coverage` 块） |
 
+### 2.1 原生作业与结果引用
+
+| 用途 | 原生标识 |
+|---|---|
+| 快扫检查的真实运行 | `runs/thin-bank-catl-full-2026-10-22/final`（宁德时代，as_of `2026-10-18`，`meta.when` `2026-10-22T21:36:25Z`），`pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f` / `modrel_18c097b26b82746d3b48d9f2da4858a15ce216bce39c2572d10c2dcef23d32b9`，method `core-constructs-v1/e4bfeeb96eb34888`，`bank.question_count=38`、答案 24 条 |
+| 公司读的 owner workspace | `runs/r25-live/owner-workspace`（store `qsobs_c2ce64820343a7b1` / registry `qsca_9db1fe38dd82c631`） |
+| 公司读的原生作业（只引用，未重跑） | 批次 `batch-f00023ec230b46c2bd2dd59e2fbfdaff`（abandoned）、`batch-13f80bdcf0bc4a5fbc4a9c1f2651cbb6`；运行 `run-49122d17c4bb4e6687dfefe88e543396`（entity scope 33 题，security 3 题另一请求） |
+| 公开结果 | 无——真实读返回 `company_result_not_registered`；`register` 仍被 `observation_answer_unusable` 拒绝 |
+| 注入样本的公开 result ID | `cas_83694b860296b314daed`（遗漏题）、`cas_0fd4e809aa4a51991b5d`（整尺度缺失）、`cas_f249ba4efffde1ab8dda`（如实声明空组）、`cas_79dfd1e49dbc8ff6dd2e`（建模四态）、`cas_d7549e797cad86d0484f`（完整对照） |
+| 本卡的 attempt | 真实读 `read-absent-2`（前一次 `read-absent-1` 因相对 workspace 路径被 owner 拒绝，无观察产出）；注入回放各用同名 attempt |
+
 ## 3. 复现与修复
+
+### 3.0 上游事实核对（只读，未改结论）
+
+按施工卡先核对了 MANIFEST-DELIVERY-01 的 `STATUS.md`：最终 **36/36 全部
+`result_ready`**（entity 33 题 + security 3 题），其中 **8 题 scored、28 题
+insufficient_evidence**；`register` 仍被 `observation_answer_unusable` 拒绝，
+读面停在 `company_result_not_registered`。最后一题 IQS_22 的处置是
+security 作用层重建 permission 请求后一次通过（`rc1_7adae578`），不是数据缺陷。
+本卡不改这些结论，只在其上做逐题覆盖与反馈。
 
 ### 3.1 快扫检查：24/38 被报成完整可用
 
@@ -112,8 +132,8 @@ diagnostic_only 12 / growth_core 1 / quality_core 15 / valuation_core 3，
 | `scripts/iqs_scan/tools/scan_result_check.py` | 覆盖判定（`coverage`/`manifest_question_count`/`missing_question_count`），`usable` 收紧 |
 | `scripts/iqs_scan/tools/company_result_feedback.py` | 新增：一次公开读或临时公开响应的回放 CLI |
 | `scripts/{company_result_coverage,dashboard_company_feedback,company_result_feedback}.py` | 新增：本仓兼容入口（`scripts/dashboard_company_projection.py` 原入口保留未动） |
-| `tests/test_company_result_coverage.py` | 新增 36 例 |
-| `tests/test_scan_result_check.py` | +5 例 |
+| `tests/test_company_result_coverage.py` | 新增 37 例 |
+| `tests/test_scan_result_check.py` | +6 例 |
 | `tests/test_dashboard_company_result.py` | 夹具自洽化：3 条声明对应 3 条引用（原先 3 声明配 1 引用，本身就是被本卡判定为矛盾的那种形状） |
 | `tests/test_dashboard_entity_iqs_link.py` | 固定信封跟随投影版本 1.1.0 |
 | `tests/fixtures/company_coverage/**` | 固定输入 + 生成脚本（含一份显式命名的建模夹具） |
@@ -135,8 +155,8 @@ C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_project
 
 | 命令 | 结果 |
 |---|---|
-| 上列四文件（含施工卡指定的三份） | **125 passed / 0 failed / 0 skipped**，62.33s |
-| 其中施工卡指定三份 | **88 passed / 0 failed / 0 skipped**，58.22s（base 83 passed / 67.08s） |
+| 上列四文件（含施工卡指定的三份） | **126 passed / 0 failed / 0 skipped**，83.48s |
+| 其中施工卡指定三份 | **89 passed / 0 failed / 0 skipped**，67.60s（base 83 passed / 67.08s） |
 | `tests/test_dashboard_module_boundaries.py tests/test_dashboard_entity_iqs_link.py tests/test_test_suites.py` | 45 passed |
 | `tests/test_dashboard_http.py` | 33 passed |
 | `tests/test_dashboard_owner.py` | 39 passed / **2 failed（base 即有）**：`membership_request_required: use apply_membership_request for schema 7+`，SW-2 名单守卫的既有红，与本卡无关 |
@@ -171,9 +191,11 @@ expected, actual`；`step_id` 为 `company-{result|history}/<entity>`，
 `release-binding`（引用是否都指向冻结释放内题号）、`owner-absence`（无结果是否带名原因）。
 历史页一项：`history-coverage`（每项是否带判定）。
 
-真实调用计数：真实读 1 次（StockWiki 公开命令子进程 1 个，模型调用 0，
-注册/发布/导入 0，写入 owner workspace 0 字节）；注入回放 5 次（不读不写
-owner，0 子进程）。
+真实调用计数：真实读 **2 次**（第 1 次因相对 workspace 路径被 owner 拒绝、无观察；
+第 2 次成功并归档）——每次 1 个 StockWiki 公开命令子进程、模型调用 0、
+注册/发布/导入 0、写入 owner workspace 0 字节；注入回放 **5 次**（归档的 5 份
+样本，不读不写 owner，0 子进程）。同一 result 重复读取只追加观察，不新增
+供应商发送或费用，见 `test_reading_the_same_result_twice_only_adds_observations`。
 
 ## 7. 独审与关闭记录
 
@@ -223,7 +245,10 @@ ACCEPT_WITH_FIXES（受审 `11d2bd9`）**：三个 P1、五个 P2、五个 P3 �
   未绕过，交 ROOT 或系统临时目录清理。样本正本在 `evidence/f2-iqs-feedback/`。
   pytest 自身的 `pytest-of-郑曾波/` 临时根由 pytest 管理，未手工删除。
 - 未改动：`runs/`（含 `runs/r25-live/owner-workspace` 全部字节）、StockWiki、
-  StockQA、Dashboard、company-wiki。本轮无远端操作。
+  StockQA、Dashboard、company-wiki。本轮**未推送远端**：`origin` 上只有
+  `master` 与三个 codex 分支，没有 `codex/iqs-manifest-delivery-01`，与
+  MANIFEST-DELIVERY-01 原线一致（本分支领先 `origin/master` 22 个提交，全部
+  本地）。推送属外部动作，留给 ROOT 按其发布安排决定。
 - 余项（交 ROOT 按公开观察验收）：
   1. **真实已登记结果下的复验**：本轮真实 workspace 仍是
      `company_result_not_registered`，`coverage` 在真实完整/部分快照上的表现
@@ -236,12 +261,17 @@ ACCEPT_WITH_FIXES（受审 `11d2bd9`）**：三个 P1、五个 P2、五个 P3 �
   3. **回执侧四态的真实样本**：`settled_unsaved`/`provider_filtered`/
      `provider_truncated` 目前由建模回执夹具证明，没有一次真实运行同时产出
      四种状态；接续时若原 scan 作业能给出逐题终态，可直接喂 `--receipts` 复验。
-  4. **已知边界**：某组连同题目一起消失、而同 rubric 的另一个组仍在时，公开
-     快照无法与"更小的释放"区分（`scale_versions` 是 rubric 级）。需要消费方
-     用 `source_release_sha256` 对冻结释放复核；本卡不声称能单独判定。
+  4. **已知边界**：
+     - 某组连同题目一起消失、而同 rubric 的另一个组仍在时，公开快照无法与
+       "更小的释放"区分（`scale_versions` 是 rubric 级）。需要消费方用
+       `source_release_sha256` 对冻结释放复核；本卡不声称能单独判定。
+     - V1 快照（无 `lineage_groups`）没有题目清单，投影只能报"数量缺口"
+       （`manifest_question_count` vs `observed_count`，`claim_matches_refs=false`），
+       `missing_question_ids` 只能是 owner 自己声明的那份；要逐题点名必须等
+       owner 发布 V2 的 lineage groups。
 
 ## 9. 机器摘要
 
 ```json
-{"lane":"F2-IQS-FEEDBACK","owner":"invest-quick-scan","worktree":"C:/Users/郑曾波/Projects/invest-quick-scan","base":"3dde7fa6a695644e646e48007916af4bda7f10af","implementation":"11d2bd9eb9dcfcf12042a1fb7bb510b783684a2a","reviewed_commit":"4685608e80d066f22eef39872d841e028de94c0e","tests":[{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py tests/test_company_result_coverage.py","result":"125 passed, 0 failed, 0 skipped (62.33s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py","result":"88 passed, 0 failed, 0 skipped (58.22s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_module_boundaries.py tests/test_dashboard_entity_iqs_link.py tests/test_test_suites.py","result":"45 passed"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_owner.py","result":"39 passed, 2 failed (pre-existing membership schema-7 guard)"}],"sample_refs":["docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/real-read-absent.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-partial-claiming-complete.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-scale-dropped.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-group-declared-empty.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-modelled-run-states.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-complete-mixed.jsonl"],"review_ref":"本文件 §7（首轮 ACCEPT_WITH_FIXES @11d2bd9，修复版 ACCEPT @4685608）","cleanup":"临时目录的报告/样本草稿已删；pytest basetemp 子树（28MB）受批量删除守卫保留；runs/、StockWiki、StockQA、Dashboard 未改","remaining":["真实已登记结果下的复验","Dashboard 消费入口复验","回执四态的真实样本","同 rubric 下单个组消失不可判定的边界"]}
+{"lane":"F2-IQS-FEEDBACK","owner":"invest-quick-scan","worktree":"C:/Users/郑曾波/Projects/invest-quick-scan","base":"3dde7fa6a695644e646e48007916af4bda7f10af","implementation":"11d2bd9eb9dcfcf12042a1fb7bb510b783684a2a","reviewed_commit":"4685608e80d066f22eef39872d841e028de94c0e","tests":[{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py tests/test_company_result_coverage.py","result":"126 passed, 0 failed, 0 skipped (83.48s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py","result":"89 passed, 0 failed, 0 skipped (67.60s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_module_boundaries.py tests/test_dashboard_entity_iqs_link.py tests/test_test_suites.py","result":"45 passed"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_owner.py","result":"39 passed, 2 failed (pre-existing membership schema-7 guard)"}],"sample_refs":["docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/real-read-absent.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-partial-claiming-complete.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-scale-dropped.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-group-declared-empty.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-modelled-run-states.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-complete-mixed.jsonl"],"review_ref":"本文件 §7（首轮 ACCEPT_WITH_FIXES @11d2bd9，修复版 ACCEPT @4685608）","cleanup":"临时目录的报告/样本草稿已删；pytest basetemp 子树（28MB）受批量删除守卫保留；runs/、StockWiki、StockQA、Dashboard 未改","remaining":["真实已登记结果下的复验","Dashboard 消费入口复验","回执四态的真实样本","同 rubric 下单个组消失不可判定的边界"]}
 ```

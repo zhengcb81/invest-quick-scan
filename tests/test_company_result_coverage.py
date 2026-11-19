@@ -705,6 +705,36 @@ def test_an_unwritable_observation_output_does_not_change_the_public_read(tmp_pa
     assert envelope['owner_payload']['result']['result_id'] == 'cas_' + '2' * 20
 
 
+def test_reading_the_same_result_twice_only_adds_observations(tmp_path, monkeypatch):
+    """A repeat read is one more owner read, never a new paid attempt."""
+    config = _cli_deployment(tmp_path)
+    result = snapshot('result-partial-35of36.json')
+    reply = {**owner_payload(result)['owner_payload'], 'entity_id': ENTITY, 'action': 'read'}
+    _cli_reply(config, ['read'], stdout=json.dumps(reply))
+    calls = tmp_path / 'owner-calls.txt'
+    script = Path(config['stockwiki_root']) / 'dashboard_company_assessment_cli.py'
+    script.write_text(
+        'import sys\n'
+        'from pathlib import Path\n'
+        f'Path({str(calls)!r}).open("a", encoding="utf-8").write("read\\n")\n'
+        f'sys.stdout.write({json.dumps(reply)!r})\n'
+        'raise SystemExit(0)\n', encoding='utf-8')
+    out = tmp_path / 'read.jsonl'
+    monkeypatch.setenv('RESEARCH_FEEDBACK_OUT', str(out))
+
+    first = projection.read_company_assessment(
+        config, 'company_result', {'entity_id': ENTITY})
+    second = projection.read_company_assessment(
+        config, 'company_result', {'entity_id': ENTITY})
+
+    assert first['owner_payload'] == second['owner_payload']
+    assert first['owner_payload']['network_calls'] == 0
+    assert first['owner_payload']['llm_calls'] == 0
+    # One owner read per call, and each call only appends its own observations.
+    assert calls.read_text(encoding='utf-8').splitlines() == ['read', 'read']
+    assert len(out.read_text(encoding='utf-8').splitlines()) == 12
+
+
 # -- the replay tool ----------------------------------------------------------
 
 
