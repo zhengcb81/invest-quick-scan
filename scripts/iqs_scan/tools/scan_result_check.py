@@ -6,9 +6,16 @@ credentials were missing, evidence was truncated, or the reasoning budget was
 exhausted. Exit codes did not reveal any of it. This checker inspects the artifacts
 and reports whether the run carries real, citable answers.
 
+A run can also answer only part of its frozen bank. Counting the answers that
+are present says nothing about the questions that are not: the report therefore
+compares the answers with the bank's own question count and names the coverage
+``complete`` / ``partial`` / ``unknown``. A partial run is honest data, but it
+is never a usable full result.
+
 Usage:
     python -B -X utf8 scripts/scan_result_check.py --run <dir>
-Exit codes: 0 = usable, 1 = completed but carries no scored answers, 2 = unusable.
+Exit codes: 0 = usable, 1 = completed but carries no scored answers or only
+part of its bank, 2 = unusable.
 """
 from __future__ import annotations
 
@@ -18,6 +25,45 @@ import sys
 from pathlib import Path
 
 REQUIRED_FILES = ("answers.json", "run-log.json", "index.html")
+
+
+def _bank_question_count(document: dict) -> int | None:
+    """The frozen bank's own question count, when the run records one."""
+    for holder in (document.get("bank"), (document.get("meta") or {}).get("bank")):
+        if not isinstance(holder, dict):
+            continue
+        count = holder.get("question_count")
+        if type(count) is int and count > 0:
+            return count
+    return None
+
+
+def _declared_missing(document: dict) -> list[str] | None:
+    missing = document.get("missing_question_ids")
+    if not isinstance(missing, list):
+        return None
+    return [item for item in missing if isinstance(item, str) and item]
+
+
+def _coverage(document: dict, answered: int) -> tuple[str, int | None, list[str] | None, int | None]:
+    """Compare the answers present with the bank this run was composed from.
+
+    Returns ``(verdict, manifest_question_count, missing_ids, missing_count)``.
+    Without a bank count the checker cannot tell a short run from a small bank,
+    so the coverage stays ``unknown`` instead of being assumed complete.
+    """
+    manifest_count = _bank_question_count(document)
+    declared = _declared_missing(document)
+    if declared is not None:
+        missing_count = len(declared)
+        if manifest_count is not None and answered + missing_count != manifest_count:
+            # The declaration and the answers disagree: report what is provable.
+            missing_count = max(manifest_count - answered, missing_count)
+        return ("partial" if missing_count else "complete"), manifest_count, declared, missing_count
+    if manifest_count is None:
+        return "unknown", None, None, None
+    missing_count = max(manifest_count - answered, 0)
+    return ("partial" if missing_count else "complete"), manifest_count, None, missing_count
 
 
 def check(run_dir: Path) -> dict:
@@ -40,6 +86,12 @@ def check(run_dir: Path) -> dict:
     report["searches"] = meta.get("searches")
     report["importable"] = answers_doc.get("importable")
     report["provenance"] = answers_doc.get("provenance")
+
+    verdict, manifest_count, missing_ids, missing_count = _coverage(answers_doc, len(answers))
+    report["coverage"] = verdict
+    report["manifest_question_count"] = manifest_count
+    report["missing_question_ids"] = missing_ids
+    report["missing_question_count"] = missing_count
 
     if not answers:
         report["problems"].append("answers.json contains no answers")
@@ -77,8 +129,17 @@ def check(run_dir: Path) -> dict:
     if report["scored"] == 0 and not report["problems"]:
         report["warnings"].append("no question reached a scored answer")
 
+    # A short run is honest data; presenting it as a full result is not.
+    if verdict == "partial" and missing_count:
+        report["warnings"].append(
+            f"run covers {len(answers)} of {manifest_count} frozen questions"
+            if manifest_count is not None else
+            f"run is missing {missing_count} frozen questions")
+    elif verdict == "unknown":
+        report["warnings"].append("the bank question count is not recorded; coverage is unknown")
+
     report["ok"] = not report["problems"]
-    report["usable"] = report["ok"] and report["scored"] > 0
+    report["usable"] = report["ok"] and report["scored"] > 0 and verdict != "partial"
     return report
 
 

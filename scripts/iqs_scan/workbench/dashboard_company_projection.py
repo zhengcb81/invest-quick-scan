@@ -21,6 +21,8 @@ import subprocess
 from typing import Any
 
 from .dashboard_json import decode_owner_json
+from . import company_result_coverage
+from . import dashboard_company_feedback
 
 PROJECTION_PROTOCOL = "iqs.dashboard.company_assessment/1"
 PROJECTION_VERSION = "company_assessment/1.0.0"
@@ -108,9 +110,16 @@ def _validated_history_payload(payload: Any) -> dict[str, Any]:
 
 
 def read_company_assessment(
-    config: dict, operation: str, payload: Any, *, environment: dict[str, str] | None = None
+    config: dict, operation: str, payload: Any, *, environment: dict[str, str] | None = None,
+    question_receipts: Any = None,
 ) -> dict[str, Any]:
-    """Read one company projection over the owner's versioned public command."""
+    """Read one company projection over the owner's versioned public command.
+
+    ``question_receipts`` is the optional per-question receipt summary an
+    offline replay can supply; the live read has no access to the scan owner's
+    receipts and leaves the unobserved questions ``unknown`` rather than
+    guessing why they are missing.
+    """
     if operation == "company_result":
         normalized = _validated_result_payload(payload)
         action, read = "read", "result"
@@ -163,16 +172,21 @@ def read_company_assessment(
             raise ProjectionError("owner_projection_invalid", "owner result status is malformed", 502)
         if absent:
             raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
-        result = project_result(envelope)["company_result"]
+        projected = project_result(envelope)
+        result = projected["company_result"]
         if pin is not None and result is not None and result["result_id"] != pin:
             raise ProjectionError("company_result_pin_mismatch", "owner returned a different pinned result", 502)
     else:
-        history = project_history(envelope, limit=normalized["limit"], offset=normalized["offset"])
-        unknown = history["registry_state"] == "entity_not_registered"
-        if absent != unknown or (absent and (history["items"] or history["page"]["total"] != 0)):
+        projected = project_history(envelope, limit=normalized["limit"], offset=normalized["offset"])
+        unknown = projected["registry_state"] == "entity_not_registered"
+        if absent != unknown or (absent and (projected["items"] or projected["page"]["total"] != 0)):
             raise ProjectionError("owner_projection_invalid", "owner history identity status is malformed", 502)
         if unknown:
             raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
+    # The public read is the one place a per-question observation is produced:
+    # the write is optional, isolated, and never changes the answer above.
+    dashboard_company_feedback.observe(
+        projected, read=read, receipts=question_receipts, version=PROJECTION_VERSION)
     return envelope
 
 
@@ -265,6 +279,9 @@ def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
         "entity_id": owner_payload["entity_id"],
         "company_result": result,
         "reason_code": reason_code,
+        # Derived from the snapshot's own references: a partial result stays
+        # partial here even when the owner's completeness claim says otherwise.
+        "coverage": company_result_coverage.derive_coverage(result),
         "store_id": owner.get("store_id"),
         "registry_store_id": owner.get("registry_store_id"),
         "network_calls": 0,
@@ -309,6 +326,9 @@ def project_history(owner_payload: dict[str, Any], *, limit: int, offset: int) -
         "entity_id": owner_payload["entity_id"],
         "items": items,
         "page": {"limit": limit, "offset": offset, "total": total},
+        # The page carries counts only; the summary says which items are short
+        # instead of letting a bounded page look uniformly complete.
+        "coverage": company_result_coverage.derive_history_coverage(items),
         "registry_state": owner.get("registry_state"),
         "registry_store_id": owner.get("registry_store_id"),
         "network_calls": 0,

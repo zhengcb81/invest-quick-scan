@@ -44,6 +44,10 @@ RESULT_SNAPSHOT = {
     'observation_refs': [
         {'observation_id': 'obs_a', 'question_id': 'IQS_A', 'field_id': 'score.iqs_a',
          'response_kind': 'score', 'payload_sha256': '0' * 64, 'question_version': '2.0.0'},
+        {'observation_id': 'obs_b', 'question_id': 'IQS_B', 'field_id': 'score.iqs_b',
+         'response_kind': 'score', 'payload_sha256': '1' * 64, 'question_version': '2.0.0'},
+        {'observation_id': 'obs_c', 'question_id': 'IQS_C', 'field_id': 'score.iqs_c',
+         'response_kind': 'score', 'payload_sha256': '2' * 64, 'question_version': '2.0.0'},
     ],
     'verification': {'observation_store': 'verified', 'mismatched_observation_ids': []},
     'honesty': {'financial_accuracy_proven': False, 'formal_research_accepted': False},
