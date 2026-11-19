@@ -51,7 +51,7 @@ python -B -X utf8 scripts/company_result_feedback.py \
   （`ModuleNotFoundError: No module named 'company_result_coverage'`，1 error）；
   同一批的 `tests/test_scan_result_check.py` 5 failed（`KeyError: 'coverage'`）。
 - GREEN：`test_company_result_coverage.py` 36 例通过（含 2 例回放入口），
-  四文件组合 **124 passed / 0 failed / 0 skipped**；
+  四文件组合 **125 passed / 0 failed / 0 skipped**；
   `test_dashboard_company_result.py` 61 例、`test_company_assessment_v2_projection.py`
   13 例、`test_scan_result_check.py` 14 例保持通过。
 

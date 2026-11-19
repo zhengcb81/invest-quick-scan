@@ -200,16 +200,7 @@ def test_a_scale_the_snapshot_declares_without_any_group_is_partial():
     A single group removed next to a surviving group of the same rubric is not
     decidable from the public snapshot alone (see the handoff's known limits).
     """
-    result = snapshot('result-complete-mixed.json')
-    dropped = [group for group in result['lineage_groups']
-               if group['rubric_version'] == '2.0.0']
-    dropped_ids = {group['lineage_group_id'] for group in dropped}
-    result['lineage_groups'] = [group for group in result['lineage_groups']
-                                if group['lineage_group_id'] not in dropped_ids]
-    result['observation_refs'] = [reference for reference in result['observation_refs']
-                                  if reference['lineage_group_id'] not in dropped_ids]
-    result['completeness'] = {'manifest_question_count': 31, 'observed_count': 31,
-                              'missing_question_ids': []}
+    result = snapshot('result-scale-dropped.json')
 
     coverage = coverage_api.derive_coverage(result)
 
@@ -428,16 +419,7 @@ def test_an_honestly_declared_empty_group_is_disclosed_not_blamed():
 
 
 def test_a_scale_without_a_group_is_reported_against_the_owner():
-    result = snapshot('result-complete-mixed.json')
-    dropped = [group for group in result['lineage_groups']
-               if group['rubric_version'] == '2.0.0']
-    dropped_ids = {group['lineage_group_id'] for group in dropped}
-    result['lineage_groups'] = [group for group in result['lineage_groups']
-                                if group['lineage_group_id'] not in dropped_ids]
-    result['observation_refs'] = [reference for reference in result['observation_refs']
-                                  if reference['lineage_group_id'] not in dropped_ids]
-    result['completeness'] = {'manifest_question_count': 31, 'observed_count': 31,
-                              'missing_question_ids': []}
+    result = snapshot('result-scale-dropped.json')
 
     rows = _by_check(_rows(result))
 

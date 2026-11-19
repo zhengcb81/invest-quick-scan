@@ -31,7 +31,7 @@
 | 实现提交 | `11d2bd9eb9dcfcf12042a1fb7bb510b783684a2a` |
 | 独审修复提交 | `4685608e80d066f22eef39872d841e028de94c0e` |
 | 首轮独审版本 | `11d2bd9eb9dcfcf12042a1fb7bb510b783684a2a`（ACCEPT_WITH_FIXES） |
-| 修复版确认 | 未返回（见 §7、§8 余项 0） |
+| 修复版确认 | `4685608e80d066f22eef39872d841e028de94c0e`（ACCEPT；其后仅测试与文档） |
 | 测试解释器 | `C:/Miniconda/python.exe`（3.13.9；本机唯一带 `yaml` 的解释器，StockWiki 夹具需要它） |
 | 问卷 / 释放 | `pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a` / `modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df`，catalog `3.2.1`，36 题 |
 | 实体 | `ENT_99deceb6-f58a-48b1-bd6b-437621015d76`（中微） |
@@ -135,7 +135,7 @@ C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_project
 
 | 命令 | 结果 |
 |---|---|
-| 上列四文件（含施工卡指定的三份） | **124 passed / 0 failed / 0 skipped**，64.96s |
+| 上列四文件（含施工卡指定的三份） | **125 passed / 0 failed / 0 skipped**，62.33s |
 | 其中施工卡指定三份 | **88 passed / 0 failed / 0 skipped**，58.22s（base 83 passed / 67.08s） |
 | `tests/test_dashboard_module_boundaries.py tests/test_dashboard_entity_iqs_link.py tests/test_test_suites.py` | 45 passed |
 | `tests/test_dashboard_http.py` | 33 passed |
@@ -180,11 +180,21 @@ owner，0 子进程）。
 未参与实现的独立 agent 对照施工卡做了一次大节点审查（任务覆盖、真实入口、
 在途边界、正常与反例、观测可选性、恢复副作用、隔离清理）。**首轮结论
 ACCEPT_WITH_FIXES（受审 `11d2bd9`）**：三个 P1、五个 P2、五个 P3 全部复现并
-修复，修复提交 `4685608`，修复后四文件 **124 passed**。
+修复，修复提交 `4685608`。**修复版复核结论 ACCEPT（受审 `4685608`）**，两次
+独立测试运行均为 **124 passed / 0 failed / 0 skipped**，并离树复核
+`build_fixtures.py` 能逐字节重建全部夹具。
 
-**对 `4685608` 的确认复核已发起，本轮未在时限内返回结论**（两次请求，均超时），
-因此本节只声明"已修复并复测"，不声明"复核通过"。该确认列为 §8 余项 0，由
-ROOT 或下一次会话收口。
+复核后只剩四个 P3，均不阻塞，已处理或记录：
+
+| # | P3 | 处置 |
+|---|---|---|
+| 13 | `result-scale-dropped.json` 无消费方（两个尺度缺失用例原先内联构造） | 两个用例改为直接读该夹具 |
+| 14 | `undeclared_scale_versions` / `unexpected_question_ids` 会报 owner 偏差但不改变 `verdict` | 属预期：`verdict` 只描述**覆盖**是否完整，不描述与 owner 声明是否完全一致；后者由 `scale-lineage`/`release-binding` 单独报告。此处明示，避免把 `complete` 读成"完全一致" |
+| 15 | `scan_result_check` 的"有缺项无总数判 partial"分支无用例 | 补 `test_declared_gaps_without_a_bank_total_are_partial` |
+| 16 | `.gitattributes` 是否落到文档提交 | 已提交（`8793775`），并用 `-text` 保留夹具可读差异 |
+
+以上 13–16 只改测试与文档：复核后 `scripts/` 与 `4685608` 逐字节相同
+（`git diff 4685608 HEAD -- scripts/` 为空），因此"受审实现版本"仍是 `4685608`。
 
 | # | 级别 | 发现 | 处置 |
 |---|---|---|---|
@@ -215,9 +225,6 @@ ROOT 或下一次会话收口。
 - 未改动：`runs/`（含 `runs/r25-live/owner-workspace` 全部字节）、StockWiki、
   StockQA、Dashboard、company-wiki。本轮无远端操作。
 - 余项（交 ROOT 按公开观察验收）：
-  0. **独审确认未返回**：首轮审查对 `11d2bd9` 给出 ACCEPT_WITH_FIXES，12 项已
-     修复并复测（`4685608`）；对 `4685608` 的确认复核两次请求均超时未返回，
-     需 ROOT 或下一次会话用同一批命令复核后收口。
   1. **真实已登记结果下的复验**：本轮真实 workspace 仍是
      `company_result_not_registered`，`coverage` 在真实完整/部分快照上的表现
      只有临时公开响应证据。等原交付方把 36 题转为可用答案并 `register` 成功后，
@@ -236,5 +243,5 @@ ROOT 或下一次会话收口。
 ## 9. 机器摘要
 
 ```json
-{"lane":"F2-IQS-FEEDBACK","owner":"invest-quick-scan","worktree":"C:/Users/郑曾波/Projects/invest-quick-scan","base":"3dde7fa6a695644e646e48007916af4bda7f10af","implementation":"11d2bd9eb9dcfcf12042a1fb7bb510b783684a2a","reviewed_commit":"4685608e80d066f22eef39872d841e028de94c0e","tests":[{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py tests/test_company_result_coverage.py","result":"124 passed, 0 failed, 0 skipped (64.96s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py","result":"88 passed, 0 failed, 0 skipped (58.22s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_module_boundaries.py tests/test_dashboard_entity_iqs_link.py tests/test_test_suites.py","result":"45 passed"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_owner.py","result":"39 passed, 2 failed (pre-existing membership schema-7 guard)"}],"sample_refs":["docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/real-read-absent.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-partial-claiming-complete.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-scale-dropped.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-group-declared-empty.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-modelled-run-states.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-complete-mixed.jsonl"],"review_ref":"本文件 §7（首轮 ACCEPT_WITH_FIXES，修复版确认未返回）","cleanup":"临时目录的报告/样本草稿已删；pytest basetemp 子树（28MB）受批量删除守卫保留；runs/、StockWiki、StockQA、Dashboard 未改","remaining":["修复版 4685608 的独立确认复核（两次请求超时未返回）","真实已登记结果下的复验","Dashboard 消费入口复验","回执四态的真实样本","同 rubric 下单个组消失不可判定的边界"]}
+{"lane":"F2-IQS-FEEDBACK","owner":"invest-quick-scan","worktree":"C:/Users/郑曾波/Projects/invest-quick-scan","base":"3dde7fa6a695644e646e48007916af4bda7f10af","implementation":"11d2bd9eb9dcfcf12042a1fb7bb510b783684a2a","reviewed_commit":"4685608e80d066f22eef39872d841e028de94c0e","tests":[{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py tests/test_company_result_coverage.py","result":"125 passed, 0 failed, 0 skipped (62.33s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_company_assessment_v2_projection.py tests/test_dashboard_company_result.py tests/test_scan_result_check.py","result":"88 passed, 0 failed, 0 skipped (58.22s)"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_module_boundaries.py tests/test_dashboard_entity_iqs_link.py tests/test_test_suites.py","result":"45 passed"},{"command":"C:/Miniconda/python.exe -B -m pytest -q tests/test_dashboard_owner.py","result":"39 passed, 2 failed (pre-existing membership schema-7 guard)"}],"sample_refs":["docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/real-read-absent.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-partial-claiming-complete.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-scale-dropped.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-group-declared-empty.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-modelled-run-states.jsonl","docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/evidence/f2-iqs-feedback/injected-complete-mixed.jsonl"],"review_ref":"本文件 §7（首轮 ACCEPT_WITH_FIXES @11d2bd9，修复版 ACCEPT @4685608）","cleanup":"临时目录的报告/样本草稿已删；pytest basetemp 子树（28MB）受批量删除守卫保留；runs/、StockWiki、StockQA、Dashboard 未改","remaining":["真实已登记结果下的复验","Dashboard 消费入口复验","回执四态的真实样本","同 rubric 下单个组消失不可判定的边界"]}
 ```

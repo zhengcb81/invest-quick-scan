@@ -138,6 +138,18 @@ def test_a_run_without_a_bank_question_count_reports_unknown_coverage(tmp_path):
     assert report["usable"]
 
 
+def test_declared_gaps_without_a_bank_total_are_partial(tmp_path):
+    """A gap list proves the run is short even when the total is unknown."""
+    answers = [_answer(qid="Q1"), _answer(qid="Q2")]
+    report = check.check(_write(tmp_path / "run", answers, missing=["Q3"]))
+
+    assert report["coverage"] == "partial"
+    assert report["manifest_question_count"] is None
+    assert report["missing_question_ids"] == ["Q3"]
+    assert report["missing_question_count"] == 1
+    assert not report["usable"]
+
+
 def test_the_saved_partial_run_is_reported_as_partial(tmp_path):
     run = tmp_path / "partial"
     run.mkdir()

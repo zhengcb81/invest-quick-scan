@@ -372,7 +372,7 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 - **两处「部分完成被误报为完整」已修**：`scripts/iqs_scan/tools/scan_result_check.py` 原先按答案条数判 `usable`，24/38 的真实运行被判完整可用、退出码 0；公司 result/history 读投影原先只转发 owner 快照，35 条引用配 `observed_count=36` 与真正完整无法区分。现在前者按冻结题库题量判 `partial`（`usable=false`、退出码 1），后者发布逐题覆盖 `coverage` 并保留每组原尺度。
 - **逐题四态**：`completed` / `settled_unsaved` / `provider_filtered` / `provider_truncated` / `not_run`，证据不足一律 `unknown`；回执只由离线回放提供，对不上题号即 `ValueError`，不静默丢弃。
 - **观察可选**：`RESEARCH_FEEDBACK_OUT` 未设时不写文件，写失败只上 stderr；真实入口一次读 = 1 个 owner 子进程、0 模型调用、0 注册/发布/导入，样本在 `evidence/f2-iqs-feedback/`。
-- **独审**：未参与实现的独立 agent 大节点审查 **ACCEPT_WITH_FIXES**（受审 `11d2bd9`；3×P1、5×P2、5×P3 全部复现并修复）。修复版 `4685608` 的确认复核两次请求均超时未返回，列为余项，不声明"复核通过"。
+- **独审**：未参与实现的独立 agent 大节点审查 **ACCEPT_WITH_FIXES**（受审 `11d2bd9`；3×P1、5×P2、5×P3 全部复现并修复），修复版 `4685608` 复核 **ACCEPT**（124 passed，两次运行；夹具离树逐字节重建）。复核后 4 个 P3 只改测试与文档，`scripts/` 与 `4685608` 逐字节相同。
 - **测试**：四文件 **124 passed**；施工卡指定三份 **88 passed**；边界/链接/套件 45 passed；HTTP 33 passed。既有红（owner 名单 2 例、Dashboard 浏览器 1 例）与本卡无关。
 - **余项**：真实已登记结果下的复验、Dashboard 消费入口复验、回执四态的真实样本；「同 rubric 下单个组连同题目消失」在公开快照上不可判定，需消费方用 `source_release_sha256` 对冻结释放复核，已写入交接 §8。
 
