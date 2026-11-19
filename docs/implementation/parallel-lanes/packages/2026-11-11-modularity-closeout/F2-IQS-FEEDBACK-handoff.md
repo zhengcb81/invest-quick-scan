@@ -88,10 +88,20 @@ security 作用层重建 permission 请求后一次通过（`rc1_7adae578`），
 ### 3.2 公司读投影：不发布逐题覆盖，部分与尺度缺组不可辨
 
 真实输入：MANIFEST-DELIVERY-01 交付的 36 题 V2 请求
-（`delivery/register-request-v2.json`，6 个 lineage group：`1.0.0`×
-diagnostic_only 12 / growth_core 1 / quality_core 15 / valuation_core 3，
-`2.0.0`× growth_core 2 / quality_core 3）。真实 workspace 没有已登记结果，
-所以按施工卡用**临时公开响应**注入偏差：
+（`delivery/register-request-v2.json`）。六个尺度组（`lineage_group_id` 由
+`source_release_sha256 + rubric_version + aggregation_role + sorted(question_ids)`
+派生，夹具里逐字节一致）：
+
+| rubric | aggregation_role | 题数 | lineage_group_id | 题号范围 |
+|---|---|---|---|---|
+| 1.0.0 | diagnostic_only | 12 | `lg_16340f79735b2cfa4aa3` | DUPONT_01…PORTER_05 |
+| 1.0.0 | growth_core | 1 | `lg_b1cf4655124efdacea41` | IQS_19 |
+| 1.0.0 | quality_core | 15 | `lg_3ea3342289d0eec675fb` | IQS_01…IQS_17 |
+| 1.0.0 | valuation_core | 3 | `lg_9c86dc2d3c5da6700034` | IQS_22…IQS_24 |
+| 2.0.0 | growth_core | 2 | `lg_d330c4c79002442cfdc3` | IQS_20…IQS_21 |
+| 2.0.0 | quality_core | 3 | `lg_357ef0ff66021b9271c8` | IQS_05…IQS_18 |
+
+真实 workspace 没有已登记结果，所以按施工卡用**临时公开响应**注入偏差：
 
 | 注入 | 结果 |
 |---|---|
