@@ -80,7 +80,6 @@ def validate_route_bundle(route_path, manifest_path, *, root=ROOT, expected_deci
             manifest.get("route_decision_id") != expected_decision_id):
         raise RouteBundleError("route_manifest_binding_mismatch")
     if (manifest.get("schema_version") != "3.1" or
-            manifest.get("metric_contract_version") != "1.0.0" or
             not isinstance(manifest.get("module_package_id"), str)):
         # Older readers can retain legacy snapshots; this new adapter must
         # never fall through the legacy validator's intentional None result.
@@ -91,10 +90,10 @@ def validate_route_bundle(route_path, manifest_path, *, root=ROOT, expected_deci
         raise RouteBundleError("route_invalid", type(exc).__name__) from exc
     try:
         mappings = question_manifest.validate_manifest_metric_contract(manifest, root=Path(root))
-        if mappings is None:
-            raise ValueError("released manifest validation required")
     except (ValueError, ValidationError, KeyError, TypeError, OSError) as exc:
         raise RouteBundleError("manifest_invalid", type(exc).__name__) from exc
+    if mappings is None:
+        raise RouteBundleError("published_manifest_required")
     if validation_mode == "execution":
         try:
             routing.validate_route_for_execution(route, root=Path(root), now_utc=now_utc,
