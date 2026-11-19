@@ -118,7 +118,7 @@ diagnostic_only 12 / growth_core 1 / quality_core 15 / valuation_core 3，
 | `tests/test_dashboard_entity_iqs_link.py` | 固定信封跟随投影版本 1.1.0 |
 | `tests/fixtures/company_coverage/**` | 固定输入 + 生成脚本（含一份显式命名的建模夹具） |
 | `tests/suites.json` | 登记新文件，并补登记此前遗漏的 `test_company_assessment_v2_projection.py`（`test_test_suites.py` 在 base 上即因此红） |
-| `.gitattributes` | 夹具 JSON `-text -diff`，防止行尾改写生成字节 |
+| `.gitattributes` | 夹具 JSON `-text`，防止行尾改写生成字节（保留文本差异可读） |
 | `skills/repair-iqs-issue/SKILL.md` | 新增：本仓问题处置技能 |
 | `docs/implementation/issues/F2-IQS-000{1,2}*.md` | 两张 `verified` 问题卡 |
 
