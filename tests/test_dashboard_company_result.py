@@ -486,6 +486,21 @@ def test_company_result_route_refuses_cross_scope_return(tmp_path):
     assert reply['data']['iqs_link']['return_to'] == link.FALLBACK_RETURN
 
 
+@pytest.mark.parametrize("return_query", ["", "&return=%2Fnot-a-callback",
+                                             "&return=%23%2Fcompany%2FENT_OTHER%2Fquickscan"])
+def test_rejected_or_missing_navigation_keeps_the_explicit_immutable_result(tmp_path, return_query):
+    service = service_for(tmp_path, dashboard_origin='http://127.0.0.1:43219')
+    result_id = RESULT_SNAPSHOT['result_id']
+    code, reply = service.dispatch(
+        'GET', f'/api/product/company/result?id=ENT_A&result_id={result_id}{return_query}')
+
+    assert code == 200, reply
+    assert reply['data']['company_result']['result_id'] == result_id
+    declaration = reply['data']['iqs_link']
+    assert declaration['return_to'] == link.FALLBACK_RETURN
+    assert f'result_id={result_id}' in declaration['routes']['results']
+
+
 def test_company_history_route_bounds_and_paging(tmp_path):
     service = service_for(tmp_path, dashboard_origin='http://127.0.0.1:43219')
     code, reply = service.dispatch('GET', '/api/product/company/history?id=ENT_A&limit=1&offset=0')

@@ -13,6 +13,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from dashboard_http import product_handler
 from dashboard_service import DashboardService
+from dashboard_owner import DashboardOwnerError
 
 
 class LoopbackServer(http.server.ThreadingHTTPServer):
@@ -29,6 +30,7 @@ class Owner:
     def coverage(self): return {'field_catalog': []}
     def universe_apply(self, body): return {'applied': True, 'payload': body}
     def universe_preview(self, body):
+        assert set(body) <= {"action", "universe_id", "entity_id", "reason", "priority", "pin"}
         return {'status': 'preview', 'can_apply': True, 'preview_token': 'preview-1',
                 'member': {'version': 0}, 'entity': {'identity_revision': 2}}
     def membership_request_read(self, body):
@@ -42,6 +44,13 @@ class Owner:
         canonical = {key: body[key] for key in ('action', 'universe_id', 'entity_id', 'reason',
                                                  'priority', 'pin', 'expected_member_version',
                                                  'expected_identity_revision')}
+        key = (body['universe_id'], body['idempotency_key'])
+        existing = self.requests.get(key)
+        if existing:
+            stored = existing['request']['receipt']
+            if stored['canonical_payload'] != canonical:
+                raise DashboardOwnerError('idempotency_key_conflict', 'changed request', 409)
+            return {**stored, 'idempotent_replay': True}
         receipt = {'protocol': 'stockwiki.membership_request/1.0.0', 'status': 'applied',
                    'request_id': 'REQ_HTTP', 'request_scope': 'ws:default', 'workspace_scope': 'ws',
                    'universe_id': body['universe_id'], 'entity_id': body['entity_id'],
@@ -128,18 +137,17 @@ def test_mutation_requires_token_and_original_route(product):
 def test_membership_request_public_routes_replay_and_history_over_http(product):
     semantic = {'action': 'add', 'universe_id': 'default', 'entity_id': 'ENT_HTTP',
                 'reason': 'http test', 'priority': 0, 'pin': False}
+    request = {**semantic, 'idempotency_key': 'HTTP-1', 'expected_member_version': 0}
     status, preview = call(product, 'POST', '/api/product/universe/preview',
-                           json.dumps(semantic), write_headers(product))
+                           json.dumps(request), write_headers(product))
     assert status == 200 and preview['data']['status'] == 'preview'
-    request = {**semantic, 'idempotency_key': 'HTTP-1',
-               'preview_token': preview['data']['preview_token']}
     status, applied = call(product, 'POST', '/api/product/universe/apply',
                            json.dumps(request), write_headers(product))
     assert status == 200 and applied['data']['status'] == 'applied'
     assert applied['data']['request_protocol'] == 'iqs.dashboard.member_request/1.0.0'
 
     # A lost-response retry needs no still-current preview token.
-    retry = {**semantic, 'idempotency_key': 'HTTP-1'}
+    retry = {**request, 'preview_token': 'a previous advisory token'}
     status, replay = call(product, 'POST', '/api/product/universe/apply',
                           json.dumps(retry), write_headers(product))
     assert status == 200 and replay['data']['status'] == 'replayed'

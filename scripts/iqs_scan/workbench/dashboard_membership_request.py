@@ -22,7 +22,7 @@ _FIELDS = frozenset({
     "preview_token",
 })
 _SEMANTIC_FIELDS = ("action", "universe_id", "entity_id", "reason", "priority", "pin")
-_CANONICAL_FIELDS = (*_SEMANTIC_FIELDS, "expected_member_version", "expected_identity_revision")
+_VERSION_FIELDS = ("expected_member_version", "expected_identity_revision")
 
 
 def _fail(code: str, message: str, status: int = 400, details: dict | None = None):
@@ -35,8 +35,8 @@ def _identifier(value: Any, field: str) -> str:
     return value
 
 
-def _version(value: Any, field: str, *, optional: bool = True) -> int | None:
-    if value is None and optional:
+def _version(value: Any, field: str) -> int | None:
+    if value is None:
         return None
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         _fail("invalid_payload", f"{field} must be a nonnegative integer")
@@ -67,9 +67,6 @@ def _request(payload: Any) -> dict[str, Any]:
         _fail("invalid_payload", "priority must be an integer")
     if not isinstance(pin, bool):
         _fail("invalid_payload", "pin must be a boolean")
-    preview_token = payload.get("preview_token")
-    if preview_token is not None and (not isinstance(preview_token, str) or len(preview_token) > 4096):
-        _fail("invalid_payload", "preview_token must be bounded text")
     expected_member_version = _version(payload.get("expected_member_version"), "expected_member_version")
     expected_identity_revision = _version(payload.get("expected_identity_revision"), "expected_identity_revision")
     return {
@@ -82,7 +79,6 @@ def _request(payload: Any) -> dict[str, Any]:
         "idempotency_key": key,
         "expected_member_version": expected_member_version,
         "expected_identity_revision": expected_identity_revision,
-        "preview_token": preview_token,
     }
 
 
@@ -106,58 +102,45 @@ def _response(receipt: Mapping[str, Any], status: str) -> dict[str, Any]:
     return result
 
 
-def apply_keyed_membership(owner: Any, payload: Mapping[str, Any]) -> dict[str, Any]:
-    """Lookup first, then confirm current preview, then ask owner to apply.
+def preview_keyed_membership(owner: Any, payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Show the current state; the write authority checks the submitted request."""
+    return owner.universe_preview(_semantic(_request(payload)))
 
-    Expected versions are captured from the owner's preview and enforced again
-    inside the owner's atomic write transaction. Replays return the stored
-    receipt before requiring a still-current preview token.
-    """
-    request = _request(payload)
+
+def _previous_receipt(owner: Any, request: Mapping[str, Any]) -> Mapping[str, Any] | None:
+    # Earlier IQS releases inserted preview-derived versions into the canonical
+    # request. A caller retrying that request may omit those inferred values.
     lookup = owner.membership_request_read({
         "universe_id": request["universe_id"], "idempotency_key": request["idempotency_key"]})
-    if not isinstance(lookup, dict) or lookup.get("status") not in {"found", "not_found"}:
-        _fail("owner_response_invalid", "StockWiki returned an invalid membership lookup", 502)
-    if lookup["status"] == "found":
-        stored = lookup.get("request")
-        canonical = stored.get("canonical_payload") if isinstance(stored, dict) else None
-        receipt = stored.get("receipt") if isinstance(stored, dict) else None
-        if not isinstance(canonical, dict) or not isinstance(receipt, dict):
-            _fail("owner_response_invalid", "StockWiki returned an incomplete membership request", 502)
-        if any(canonical.get(field) != request[field] for field in _SEMANTIC_FIELDS):
-            _fail("idempotency_key_conflict", "This key was already used for a different membership request", 409)
-        for field in ("expected_member_version", "expected_identity_revision"):
-            if request[field] is not None and canonical.get(field) != request[field]:
-                _fail("idempotency_key_conflict", "This key was already used with different version preconditions", 409)
-        return _response(receipt, "replayed")
+    if lookup.get("status") != "found":
+        return None
+    stored = lookup["request"]
+    canonical = stored.get("canonical_payload")
+    receipt = stored.get("receipt")
+    if not isinstance(canonical, dict) or not isinstance(receipt, dict):
+        _fail("owner_response_invalid", "StockWiki returned an incomplete membership request", 502)
+    if any(canonical.get(field) is None for field in _VERSION_FIELDS):
+        return None
+    if any(canonical.get(field) != request[field] for field in _SEMANTIC_FIELDS):
+        return None
+    if any(request[field] is not None and canonical.get(field) != request[field]
+           for field in _VERSION_FIELDS):
+        return None
+    return receipt
 
-    if not request["preview_token"]:
-        _fail("preview_required", "Review the current membership preview before applying", 409)
-    preview = owner.universe_preview({field: request[field] for field in _SEMANTIC_FIELDS})
-    if not isinstance(preview, dict) or preview.get("status") != "preview":
-        _fail("owner_response_invalid", "StockWiki returned an invalid membership preview", 502)
-    if preview.get("preview_token") != request["preview_token"]:
-        _fail("preview_stale", "Refresh and review the membership preview before applying", 409)
-    if preview.get("can_apply") is not True:
-        _fail("membership_state_conflict", "This action does not match current membership state", 409)
-    member = preview.get("member")
-    entity = preview.get("entity")
-    if member is not None and not isinstance(member, dict):
-        _fail("owner_response_invalid", "StockWiki returned an invalid member version", 502)
-    if not isinstance(entity, dict):
-        _fail("owner_response_invalid", "StockWiki preview did not include its identity revision", 502)
-    member_version = _version(member.get("version", 0) if member else 0, "member.version", optional=False)
-    identity_revision = _version(entity.get("identity_revision"), "entity.identity_revision", optional=False)
-    for field, current in (("expected_member_version", member_version),
-                           ("expected_identity_revision", identity_revision)):
-        if request[field] is not None and request[field] != current:
-            _fail("preview_stale", "Refresh and review the membership preview before applying", 409)
 
-    wire = {field: request[field] for field in _CANONICAL_FIELDS}
-    wire["idempotency_key"] = request["idempotency_key"]
-    wire["expected_member_version"] = member_version
-    wire["expected_identity_revision"] = identity_revision
-    receipt = owner.membership_request_apply(wire)
+def apply_keyed_membership(owner: Any, payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Submit once to StockWiki's atomic request authority."""
+    request = _request(payload)
+    try:
+        receipt = owner.membership_request_apply(request)
+    except DashboardOwnerError as error:
+        if error.code != "idempotency_key_conflict":
+            raise
+        previous = _previous_receipt(owner, request)
+        if previous is None:
+            raise
+        return _response(previous, "replayed")
     return _response(receipt, "replayed" if receipt.get("idempotent_replay") else "applied")
 
 

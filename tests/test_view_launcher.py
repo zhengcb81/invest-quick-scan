@@ -153,6 +153,23 @@ def test_company_dashboard_no_refresh_reads_existing_snapshot_without_rewriting_
         _stop_dashboard(process, reader)
 
 
+@pytest.mark.parametrize("configured_origin", [None, "http://localhost:48579"])
+def test_no_refresh_launcher_publishes_the_bound_link_origin(tmp_path, configured_origin):
+    overrides = {"dashboard_origin": configured_origin} if configured_origin else None
+    process, reader, ready, _, _, snapshot = _start_dashboard(
+        tmp_path, no_refresh=True, config_overrides=overrides)
+    try:
+        origin = configured_origin or ready["url"].rstrip("/")
+        with urllib.request.urlopen(ready["url"] + "api/product/link", timeout=10) as response:
+            declaration = json.load(response)["data"]
+        assert declaration["base_origin"] == origin
+        assert declaration["routes"]["results"] == f"{origin}/#/results"
+        assert declaration["return_to"] == "#/results"
+        assert not ready["refreshed"] and not snapshot.exists()
+    finally:
+        _stop_dashboard(process, reader)
+
+
 def test_company_dashboard_runs_the_current_ui_source_as_static_content(tmp_path):
     ui = Path(os.environ.get('IQS_UI_ROOT', ROOT.parent / 'iqs-question-bank-ui-lab')).resolve()
     if not (ui / 'src' / 'app' / 'index.html').is_file():
