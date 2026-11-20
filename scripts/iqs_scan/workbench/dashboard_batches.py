@@ -532,6 +532,9 @@ class BatchGateway:
             raise DashboardBatchError("batch_run_scope_mismatch", "原启动引用与冻结公司范围不一致", 409)
         entry["run_id"] = task["run_id"]
         entry["process_state"] = task.get("process_state")
+        # A matched original reference resolves launch uncertainty. Native work
+        # uncertainty is inspected separately once the process has stopped.
+        entry["launch_uncertain"] = False
         if task.get("process_state") in {"running", "starting"}:
             entry.update(state="running", blocked_reasons=[])
             return task
@@ -539,6 +542,10 @@ class BatchGateway:
         entry["last_inspection"] = self._inspection_summary(preview)
         if self._ready(preview):
             entry.update(state="owner_ready", blocked_reasons=[])
+        elif self._uncertain({"state": "blocked", "blocked_reasons": preview.get("blocked_reasons")}):
+            # Process exit alone says nothing about an in-flight/unknown native
+            # request. Keep that distinction before releasing another scope.
+            entry.update(state="blocked", blocked_reasons=preview["blocked_reasons"])
         elif task.get("process_state") == "needs_original_inspection":
             entry.update(state="blocked", blocked_reasons=["original_process_unknown"])
         elif task.get("process_state") in {"process_exited", "launch_failed"}:
@@ -584,11 +591,29 @@ class BatchGateway:
         return bool(entry.get("launch_uncertain") and entry["state"] != "owner_ready" or
             set(entry.get("blocked_reasons") or []) & {"launch_reference_unknown", "original_process_unknown",
                 "owner_work_unknown", "owner_work_uncertain", "batch_run_ambiguous", "batch_run_scope_mismatch",
-                "execution_tasks_invalid", "execution_tasks_truncated"})
+                "execution_tasks_invalid", "execution_tasks_truncated", "original_process_state_invalid"})
 
-    @staticmethod
-    def _prior_ready(entries, index):
-        return all(row["state"] == "owner_ready" for row in entries[:index] if row["entity_id"] == entries[index]["entity_id"])
+    @classmethod
+    def _prior_settled(cls, entries, index):
+        """Serialize same-company sends without making success a dependency.
+
+        Independent scopes can follow a known exited failure or a refusal before
+        launch. Active/unknown original work still owns the company send slot.
+        """
+        for row in entries[:index]:
+            if row["entity_id"] != entries[index]["entity_id"]:
+                continue
+            if cls._uncertain(row):
+                return False
+            if row["state"] == "owner_ready":
+                continue
+            if row["state"] == "failed" and row.get("process_state") in {"process_exited", "launch_failed"}:
+                continue
+            if row["state"] == "blocked" and not row.get("run_id"):
+                if not row.get("launch_requested_at") or cls._proved_prelaunch_refusal(row, row.get("prelaunch_refusal")):
+                    continue
+            return False
+        return True
 
     @classmethod
     def _settle(cls, record):
@@ -599,7 +624,7 @@ class BatchGateway:
             record["state"] = "running"
         elif all(row["state"] == "owner_ready" for row in entries):
             record["state"] = "owner_ready"
-        elif any(row["state"] == "selected" and cls._prior_ready(entries, index) for index, row in enumerate(entries)):
+        elif any(row["state"] == "selected" and cls._prior_settled(entries, index) for index, row in enumerate(entries)):
             record["state"] = "running"
         else:
             record["state"] = "blocked"
@@ -639,7 +664,7 @@ class BatchGateway:
                     break
                 if entry["state"] != "selected":
                     continue
-                if not self._prior_ready(record["entries"], index):
+                if not self._prior_settled(record["entries"], index):
                     continue
                 if entry["entity_id"] in other_entities:
                     continue

@@ -516,9 +516,9 @@ def compare(left, right, axis):
         reasons.append('information_date_unknown')
     if a['status'] not in ('scored', 'answered') or b['status'] not in ('scored', 'answered'):
         reasons.append('unavailable_answer')
-    if a['confidence'] == 'low' or b['confidence'] == 'low':
-        reasons.append('low_confidence')
     warnings = ['结构可比不等于来源已核验；不输出平均分或真值。']
+    if a['confidence'] == 'low' or b['confidence'] == 'low':
+        warnings.append('low_confidence: 暂定评分含证据缺口，差值仅供用户判断')
     if left['execution']['model_revision'] is None or right['execution']['model_revision'] is None:
         warnings.append('model_revision_unknown: 无法排除模型别名背后的版本变化')
     if a['items'] or b['items']:

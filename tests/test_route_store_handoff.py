@@ -81,6 +81,17 @@ def test_actual_producer_bundle_binds_raw_bytes_without_company_score(bundle):
     Draft202012Validator(handoff.DTO_SCHEMA, format_checker=FormatChecker()).validate(result)
 
 
+def test_declared_metric_version_must_match_the_frozen_package(bundle):
+    _, _, manifest_file, _ = bundle
+    manifest = json.loads(manifest_file.read_bytes())
+    current = manifest["metric_contract_version"]
+    manifest["metric_contract_version"] = "1.0.0" if current != "1.0.0" else "1.1.0"
+    manifest_file.write_text(json.dumps(manifest), encoding="utf-8")
+    with pytest.raises(handoff.RouteBundleError) as error:
+        validate(bundle)
+    assert error.value.code == "manifest_invalid"
+
+
 def test_current_execution_is_explicit_and_requires_trusted_time(bundle):
     with pytest.raises(handoff.RouteBundleError) as err:
         validate(bundle, validation_mode="execution")

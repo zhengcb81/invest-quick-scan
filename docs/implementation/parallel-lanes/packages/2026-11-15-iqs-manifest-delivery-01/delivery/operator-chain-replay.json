@@ -1,0 +1,18 @@
+{
+ "note": "idempotent replays of already-completed operator actions; already_present, zero writes",
+ "publish-release": {
+  "exit": 0,
+  "stdout": "{\"action\":\"publish-release\",\"llm_calls\":0,\"network_calls\":0,\"protocol\":\"stockwiki.company_assessment/1\",\"release_of_record\":{\"question_count\":36,\"release_sequence\":1,\"release_sha256\":\"10fc0feec0f4d8c8076176a22ca275120027b3c0d0b4dc0af9c6aea8e4cabd50\",\"status\":\"already_present\"},\"schema_version\":\"1.0.0\"}",
+  "stderr": ""
+ },
+ "import": {
+  "exit": 0,
+  "stdout": "{\"action\":\"import\",\"import\":{\"artifact\":{\"release_sha256\":\"a1b9d2c7c73f857f0e881d84e2f248db789035da15909401c824a91b19790085\",\"status\":\"already_present\"},\"receipt\":{\"acks\":[{\"ack_id\":\"ack_65ba6f12416ca9b12ad3fd73\",\"consumer\":{\"component\":\"StockWiki\",\"namespace\":\"quick_scan\",\"store_id\":\"qsobs_c2ce64820343a7b1\"},\"error_code\":null,\"item_id\":\"itm_4f631d0936e90069e5f99e69de17fccb969a0cfa8edf3d61163eb478967c2203\",\"observation_id\":\"obs_ad5fafe589fed77ffd50dcda32bc3ab7425074fe5ca37a7079daa00651ce9122\",\"package_id\":\"pkg_4eca2cf77d9cf5f46c8423e566e7b116a03502bd90678be0ecc475d06d084af5\",\"payload_sha256\":\"477c86bea8c9a24cac3360eab3c0b2d630d8b60bc8705070eb435c16bf131bfd\",\"received_at\":\"2026-11-16T22:10:27Z\",\"schema_version\":\"1.0.0\",\"status\":\"accepted\"}],\"package_id\":\"pkg_4eca2cf77d9cf5f46c8423e566e7b116a03502bd90678be0ecc475d06d084af5\",\"store_id\":\"qsobs_c2ce64820343a7b1\",\"summary\":{\"accepted\":1}}},\"llm_calls\":0,\"network_calls\":0,\"protocol\":\"stockwiki.company_assessment/1\",\"schema_version\":\"1.0.0\"}",
+  "stderr": ""
+ },
+ "record-authority": {
+  "exit": 0,
+  "stdout": "{\"action\":\"record-authority\",\"authority\":{\"authority_id\":\"cau_3420e17d2df46259eb08\",\"authority_sequence\":1,\"authority_sha256\":\"3420e17d2df46259eb08401f16a7fb1e9036a5bfdbbf7f2a16b452fc351c9f9d\",\"status\":\"already_present\"},\"llm_calls\":0,\"network_calls\":0,\"protocol\":\"stockwiki.company_assessment/1\",\"schema_version\":\"1.0.0\"}",
+  "stderr": ""
+ }
+}

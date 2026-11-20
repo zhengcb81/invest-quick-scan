@@ -1,0 +1,21 @@
+{
+ "test": "truncated 8-question V2 release attempted against the published 36-question family",
+ "kept_questions": [
+  "IQS_01",
+  "IQS_02",
+  "IQS_24",
+  "PORTER_01",
+  "PORTER_02",
+  "PORTER_03",
+  "PORTER_04",
+  "PORTER_05"
+ ],
+ "offline_validated_shape": "PASS",
+ "publish_release_exit_code": 2,
+ "publish_release_stdout": "",
+ "publish_release_stderr": "{\"detail\":\"DUPONT_02\",\"error_code\":\"release_of_record_conflict\",\"schema_version\":\"1.0.0\"}",
+ "note": "refused action; the code path raises before any registry write",
+ "tested_at_utc": "2026-11-16T23:10:00Z",
+ "command": "C:/Miniconda/python.exe -B -X utf8 dashboard_company_assessment_operator_cli.py publish-release --root <r25-live owner-workspace> --release <8-question truncated V2>",
+ "operator": "stockwiki.public_company_assessments.publish_release_of_record"
+}

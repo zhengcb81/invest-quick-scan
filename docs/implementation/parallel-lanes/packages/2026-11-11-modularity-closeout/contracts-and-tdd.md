@@ -17,14 +17,21 @@
 
 方向规则以**域**为单位。域内文件可协作，普通helper不独立版本化。逻辑循环应拆纯值与装配，不为“文件无环”搬来搬去。只在组合根允许选择实现和设置包加载路径。
 
+### 路径与资源归属
+
+- 随同一个 IQS checkout 版本发布的 schema、题库、指标注册表及规则表是代码资源，允许按该 checkout 的 `REPO_ROOT` 定位。项目不要求一个进程同时加载多个 IQS 代码版本；不为此引入多根资源注入框架。
+- workspace、数据库、任务状态、模型策略和运行产物是可变运行数据：由公开启动器/部署配置传入 state/workspace root，或由对应 owner 的公开接口管理。兼容 CLI 可以有显式默认目录；组合根负责解析默认并把最终路径传给下层服务。
+- 测试用隔离根验证该配置流向，不把“路径必须在 checkout 外”当新门禁。当前公开 launcher 的 owner-workspace 与临时 state 根由 `test_view_launcher.py` 覆盖；公开 M8 的任务状态/接续由 `test_dashboard_iqs_public_integration.py` 覆盖。
+
 ## 2. 已有跨仓契约
 
 ### C1 StockQA ↔ IQS / CA / Runtime
 
-- facade：`src.utils.quick_scan_company_api`。正式磁盘1.5与候选1.8须由MC-QA归拢；IQS当前最低要求1.7。**目标采用已实现候选1.8，消费者所需下限由实际所用操作决定**，不要仅因发布了1.8便无条件提高所有调用者下限。
+- facade：`src.utils.quick_scan_company_api`，当前已发布 StockQA 公开 API 为 1.8。消费者所需下限由实际所用操作决定。
 - 继续使用已有`create_native_task`、`create_company_scan_task`、`create_company_research_runtime`等公开操作；准确签名以候选facade及合同测试为准，兼容封装不改既有调用形状。
 - 不返回provider module、原SDK session、数据库store或生命周期实现；返回已有opaque runtime/session及脱离owner的投影。需要查状态应增加明确只读操作，不能返回原对象让调用者自行查。
 - 新发送检查身份/原题包/真实预算/lease/幂等。已付回答的读取、保存、补封不重新要求“今天可发送”或模型key。格式/研究质量问题作为逐题诊断保存，不能伪造HTTP失败诱导重发。
+- 已知响应无可接受答案时，StockQA 用原始 HTTP 回执、结算、租约和 checkpoint 状态完成中性结案。供应商 response_status 随原回执保留。声称具体解析或截断原因需要相应证据，重试使用既有公开授权。
 
 ### C2 Company Agent
 
@@ -91,7 +98,7 @@ UI旧`serve.py`只是调用此公开CLI的兼容shim，把旧`--no-build`映射�
 
 ### C6 Dashboard
 
-复用`QuickScanPort`、`JobPort`和generated DTO，不另起协议。IQS HTTP`/api/product/*`、`iqs-job/1` CLI保持原行为。application只要求ports；存储通过最小本地协议注入，在composition选择SavedViewStore。现有合同0.1.2-d不得由实现包手改生成物；确需变化交D00/D01统一处理。回包身份、scope、命令键、安全链接校验保留。
+复用 `QuickScanPort`、`JobPort` 和生成 DTO。IQS HTTP `/api/product/*`、`iqs-job/1` CLI 保持原入口。应用依赖 ports，组合根选择 SavedViewStore。Dashboard `0.1.3-d` 的最新和历史使用同一尺度映射，单尺度沿用 `scale_version`，多尺度使用 null 和 owner 的 `scale_versions`。公司总分仍由 owner 权威决定。发布合同以 OpenAPI 为源，生成 Python、TypeScript 和验证样例。筛选器使用自己提交的表达式版本，后端负责校验。主体、scope、命令键和链接按既有公开契约处理。
 
 ## 4. TDD统一矩阵
 

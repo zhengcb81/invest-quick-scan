@@ -1,5 +1,14 @@
 """Public Python operations owned by the foundation capability."""
 
+from .feedback_io import (
+    FEEDBACK_ATTEMPT_ENV,
+    FEEDBACK_OUT_ENV,
+    FEEDBACK_RUN_ENV,
+    FEEDBACK_SCHEMA,
+    append_feedback,
+    diagnose_feedback,
+    feedback_path,
+)
 from .json_io import (
     read_json,
     write_json,
@@ -58,8 +67,15 @@ API_PROTOCOL = "iqs.foundation-api/1.0.0"
 
 __all__ = (
     "API_PROTOCOL",
+    "FEEDBACK_ATTEMPT_ENV",
+    "FEEDBACK_OUT_ENV",
+    "FEEDBACK_RUN_ENV",
+    "FEEDBACK_SCHEMA",
     "JsonSchemaValidationError",
     "ROUTE_SCHEMA",
+    "append_feedback",
+    "diagnose_feedback",
+    "feedback_path",
     "build_search_receipt",
     "canonical_bytes",
     "core_construct_ids",

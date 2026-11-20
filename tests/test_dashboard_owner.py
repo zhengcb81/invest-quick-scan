@@ -298,7 +298,7 @@ def test_real_membership_request_survives_gateway_restart_and_keeps_owner_histor
     assert applied["status"] == "applied"
     assert applied["request_protocol"] == "iqs.dashboard.member_request/1.0.0"
     assert applied["member_version"] == 1
-    assert applied["canonical_payload"]["expected_identity_revision"] == 1
+    assert applied["canonical_payload"]["expected_identity_revision"] is None
 
     # A new adapter instance models a process restart. The durable owner,
     # rather than process memory, supplies the receipt before preview checks.

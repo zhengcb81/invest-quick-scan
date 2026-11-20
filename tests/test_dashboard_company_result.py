@@ -44,6 +44,10 @@ RESULT_SNAPSHOT = {
     'observation_refs': [
         {'observation_id': 'obs_a', 'question_id': 'IQS_A', 'field_id': 'score.iqs_a',
          'response_kind': 'score', 'payload_sha256': '0' * 64, 'question_version': '2.0.0'},
+        {'observation_id': 'obs_b', 'question_id': 'IQS_B', 'field_id': 'score.iqs_b',
+         'response_kind': 'score', 'payload_sha256': '1' * 64, 'question_version': '2.0.0'},
+        {'observation_id': 'obs_c', 'question_id': 'IQS_C', 'field_id': 'score.iqs_c',
+         'response_kind': 'score', 'payload_sha256': '2' * 64, 'question_version': '2.0.0'},
     ],
     'verification': {'observation_store': 'verified', 'mismatched_observation_ids': []},
     'honesty': {'financial_accuracy_proven': False, 'formal_research_accepted': False},
@@ -482,6 +486,21 @@ def test_company_result_route_refuses_cross_scope_return(tmp_path):
     assert reply['data']['iqs_link']['return_to'] == link.FALLBACK_RETURN
 
 
+@pytest.mark.parametrize("return_query", ["", "&return=%2Fnot-a-callback",
+                                             "&return=%23%2Fcompany%2FENT_OTHER%2Fquickscan"])
+def test_rejected_or_missing_navigation_keeps_the_explicit_immutable_result(tmp_path, return_query):
+    service = service_for(tmp_path, dashboard_origin='http://127.0.0.1:43219')
+    result_id = RESULT_SNAPSHOT['result_id']
+    code, reply = service.dispatch(
+        'GET', f'/api/product/company/result?id=ENT_A&result_id={result_id}{return_query}')
+
+    assert code == 200, reply
+    assert reply['data']['company_result']['result_id'] == result_id
+    declaration = reply['data']['iqs_link']
+    assert declaration['return_to'] == link.FALLBACK_RETURN
+    assert f'result_id={result_id}' in declaration['routes']['results']
+
+
 def test_company_history_route_bounds_and_paging(tmp_path):
     service = service_for(tmp_path, dashboard_origin='http://127.0.0.1:43219')
     code, reply = service.dispatch('GET', '/api/product/company/history?id=ENT_A&limit=1&offset=0')
@@ -526,14 +545,15 @@ def test_company_absence_is_returned_as_a_named_reason_not_zero(tmp_path):
 # -- real HTTP boundary ---------------------------------------------------------
 
 
-def _serve(tmp_path, owner=Owner):
-    service = service_for(tmp_path, owner=owner, dashboard_origin='http://127.0.0.1:43219')
+def _serve(tmp_path, owner=Owner, *, dashboard_origin='http://127.0.0.1:43219'):
+    service = service_for(tmp_path, owner=owner, dashboard_origin=dashboard_origin)
 
     class Static(http.server.BaseHTTPRequestHandler):
         def log_message(self, *args):
             pass
 
     server = LoopbackServer(('127.0.0.1', 0), product_handler(Static, service))
+    service.bind_runtime_origin(f'http://127.0.0.1:{server.server_address[1]}')
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server, server.server_address[1], service
@@ -635,6 +655,16 @@ def test_company_read_uses_only_stockwiki_public_command(tmp_path):
     assert not list(Path(config['workspace_root']).iterdir())
 
 
+def test_company_read_accepts_additive_stockwiki_release(tmp_path):
+    config = _cli_deployment(tmp_path)
+    reply = {**_public_read_reply(), 'schema_version': '1.2.3', 'producer_build': 'diagnostic'}
+    _cli_reply(config, ['read'], stdout=json.dumps(reply))
+    owner = projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A'})
+    result = projection.project_result(owner)
+    assert result['company_result'] == RESULT_SNAPSHOT
+    assert result['network_calls'] == result['llm_calls'] == 0
+
+
 def test_company_read_refuses_nonfinite_numeric_exponent(tmp_path):
     config = _cli_deployment(tmp_path)
     reply = json.dumps(_public_read_reply())[:-1] + ',"additional_numeric":1e999}'
@@ -714,7 +744,7 @@ def test_company_history_refuses_unbound_or_ambiguous_public_reply(tmp_path, cas
 def test_company_read_maps_public_identity_store_refusal(tmp_path, owner_code, expected):
     config = _cli_deployment(tmp_path)
     _cli_reply(config, ['read'], stderr=json.dumps({
-        'schema_version': '1.0.0', 'error_code': owner_code, 'detail': 'owner-internal diagnostic',
+        'schema_version': '1.2.3', 'error_code': owner_code, 'detail': 'owner-internal diagnostic',
     }), returncode=2)
     with pytest.raises(projection.ProjectionError) as error:
         projection.read_company_assessment(config, 'company_result', {'entity_id': 'ENT_A'})
@@ -741,7 +771,8 @@ def test_command_reports_a_named_unavailable_for_an_old_owner(tmp_path, old_comm
     assert error.value.status == 502
 
 
-def _seed_workspace(root: Path) -> str:
+def _seed_workspace(root: Path, *, mixed_scales: bool = False,
+                    answer_status: str | None = None, confidence: str | None = None) -> str:
     """Use StockWiki's own synthetic seeder in a separate test process."""
     script = '''
 import sys
@@ -749,10 +780,34 @@ from pathlib import Path
 sys.path.insert(0, str(Path.cwd() / "tests"))
 from test_public_company_assessments import _seed_registered, E01
 from stockwiki.public_company_assessments import read_company_result
-paths = _seed_registered(Path(sys.argv[1]))
+root = Path(sys.argv[1])
+if sys.argv[2] == "mixed":
+    from test_public_company_assessments import (
+        _workspace, _mixed_rubric_source, _v2_manifest, _published_observation,
+        _import_v2_observations, _v2_register_request,
+    )
+    from stockwiki.public_company_assessments import register_company_assessment
+    paths = _workspace(root)
+    source = _mixed_rubric_source()
+    manifest = _v2_manifest(source, {
+        "IQS_A": "quality_core", "IQS_B": "diagnostic_only", "IQS_C": "growth_core",
+    })
+    observations = [
+        _published_observation(E01, qid, "obs_" + qid.lower(), manifest=source)
+        for qid in source["questions"]
+    ]
+    if sys.argv[3]:
+        observations[1]["answer"].update(status=sys.argv[3], score=None)
+    if sys.argv[4]:
+        observations[1]["answer"]["confidence"] = sys.argv[4]
+    _import_v2_observations(paths, manifest, observations)
+    register_company_assessment(paths, _v2_register_request(E01, manifest, observations))
+else:
+    paths = _seed_registered(root)
 print(read_company_result(paths, entity_id=E01)["result"]["result_id"])
 '''
-    done = subprocess.run([sys.executable, '-B', '-c', script, str(root)],
+    done = subprocess.run([sys.executable, '-B', '-c', script, str(root),
+                           'mixed' if mixed_scales else 'single', answer_status or '', confidence or ''],
                           cwd=B03_STOCKWIKI_ROOT, capture_output=True, timeout=300)
     assert done.returncode == 0, done.stderr.decode('utf-8', 'replace')
     return done.stdout.decode('utf-8').strip()

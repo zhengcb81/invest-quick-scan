@@ -1,5 +1,70 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-20 暂定评分与证据强弱分开
+
+按用户最新要求，证据不足本身不应强制评分为空。有判断依据时给1–10暂定分，同时明确低置信度、已知依据、假设及缺失信息，让用户自行判断。事实数字仍须有真实出处，不为分数编造财务数据。复用既有 `scored`、`confidence`、`missing_fields` 和 `coverage`，不新造另一套分数/准入协议。
+
+|阶段|工作|状态|
+|---|---|---|
+|职责核查|普通/共享提示、保存、汇总及UI中“低置信度即清空分数”的条件|完成|
+|实现|新请求明确给暂定判断；保留低置信度分数与证据提示，旧冻结请求和原答案不改写|完成，六域已并线|
+|验收交付|针对性正反例、公开链路和独立审查；同步PWF并提交推送|完成，独审ACCEPT；有远端owner已推送|
+
+本轮实现和验证见[暂定评分报告](docs/implementation/reviews/PROVISIONAL-SCORING-2026-11-20/report.md)。原中微28条空分不倒填；原8个有分答案中1个低置信度现在明确标为暂定。下一步回既有F05/W11真实事实闭环，本轮不自动发起历史重评或扩大支线。
+
+## 2026-11-20 拒绝规则的设计收敛
+
+逐域核实实际误拒，并让公共接口按实际数据与操作职责工作。兼容版本由协议族和实际字段解释，已付恢复使用原冻结记录，回答质量与逐题状态可保存、入库和展示。身份、数据绑定、幂等、防重复收费及真实新发送额度由对应 owner 负责。
+
+|阶段|工作|状态|
+|---|---|---|
+|误拒盘点|追溯版本、标签、尺度、发布资格及恢复条件的实际拒绝证据|完成|
+|结果语义|保存/发布来源与回答质量分开，原始缺题与不足证据如实显示|完成|
+|兼容接线|公开接口及 V2 schema/metric 小版本兼容；独立 scope 不受已知失败串行阻挡|完成|
+|验收与 PWF|受影响正常与冲突场景、独立复审、原36题登记及公开链读回|完成；实现已推送，自建临时工作树已清理|
+
+中微原36题已登记为 `cas_6cab1b94d8f45d42c750`，公开 read/history 返回同一 formal 快照：8 scored、28 insufficient_evidence、总分为空。原部署配置的 StockWiki CLI→IQS HTTP→Dashboard adapter 已读回36题与28缺证据，未重问或修改原答案。formal 仅指原 owner 发布来源可核。回归421项，独立复审 ACCEPT，详见[本轮报告](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-20/report.md)。下文日期段是阶段历史，不覆盖本节；下一产品主线仍按既有 F05/W11、G4 与规模计划，不扩支线。
+
+## 2026-11-16 各模块 PWF 与接口演进（历史）
+
+保留 11-14 固定 I1–I7 的验收证据。对九个现行模块分别核对当前提交、公开边界、调用方、最新业务交接及本仓下一步。总控维护跨仓状态，各 owner 维护各自 PWF。
+
+|阶段|工作|状态|
+|---|---|---|
+|当前版本与归属|九仓公开入口、当前代码和 owner PWF 按[分仓路线图](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/README.md)对账|已核对|
+|StockQA 恢复合同|以已结算原响应和原任务状态处理无可保存答案。完成、截断、过滤及新的终止标签继续使用同一原回执|实现与独立复核通过，`322887f` 已随 `b702ed2` 推送|
+|StockWiki → IQS → Dashboard|V2 最新结果与历史显示多个实际尺度，保留原逐题引用和单尺度响应|已验收代码，Dashboard `fd8b3db` 已推|
+|Dashboard 公式筛选|表达式版本由其实际服务端验证，解除同全局版本白名单的绑定|已验收|
+|分仓 PWF|同步九仓和 StockWiki 两份已交付子计划。原 I1–I7 验收版本另见其报告|已同步|
+
+真实工作按最新证据更新。中微已到 35/36。11-16 IQS_22 owner 预览和确认经实物核验通过，仍待应用决议、真实末题及正式登记。StockWiki 的上一轮研究源码已提交。其新研究交接包含药明可读来源及阿里巴巴、MongoDB 仍缺的来源绑定。Dashboard B-04、E07 和 F05/W11/G4 的真实覆盖沿原计划推进。
+
+## 2026-11-15 PWF 对账与模块边界收敛（历史）
+
+I1–I7 固定来源组合已于 11-14 完成；测试范围、固定 commit、快速套件结果和独立 `final_boundary_review` ACCEPT 见[固定组合报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。旧路线图 P2/P3/P4 已纠正为完成。真实业务范围 F05/W11/G4、名单/公司覆盖和部署运维仍按主计划单独推进，不拿软件组合验收代替。
+
+### 当前代码状态与测试边界
+
+模块代码状态以本轮只读对账的源代码基线为准；之后落地的 owner PWF 同步提交仅改 Markdown，不代表源代码重新验收。IQS 的 MANIFEST-DELIVERY-01 计划/状态/证据提交也不改模块实现。各 owner 代码基线与 WIP：StockQA master@f6897ac（4 个源码/测试 WIP）；StockWiki master@0450506（10 个源码/配置/测试 tracked WIP）；Dashboard main@3f83bb5（tracked WIP handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md，以及一份尚未跟踪的 company-wiki owner handoff 副本）；Theme master@00e4fbd；Industry main@bb0c3b9；Company Agent master@ba54694；Runtime codex/agent-run-02@369a44b；原工作台 UI master@3ed6391（2 个生成 JSON WIP）。代码基线与固定组合测试 pin 分开记录，PWF-only提交在最新进度记录中逐仓列出。具体路径和测试 pin 见路线图。
+
+模块收口之外仍开放的 owner 计划继续独立有效：StockWiki company-assessment-lineage-v2 等总控跨合同复核；StockWiki dashboard-owner-improvements Phase 4 仍在进行；Dashboard D00 的 B-04 仍为其 PWF 下一步。Dashboard 新出现的 company-wiki CANDIDATES-FIX-01 交接副本称 owner 修复已并入主线；只读核对确认 owner master@09fe9ca 包含其所列 569615ec，该项不替代 Dashboard B-04 验收。固定组合只关闭 I1–I7，不覆盖或清除这些业务计划。
+
+### 架构复核结论
+
+独立复核未发现新的跨域私有实现调用。此前提出的“核心域应支持同一进程多资源根”建议已复查并撤回：项目按单个 IQS checkout 运行，随版本发布的 schema、题库、指标注册表属于代码资源，用该 checkout 的 `REPO_ROOT` 定位是合理的；不需要多 checkout 资源注入框架。运行期状态、workspace、数据库、模型配置和 owner 数据则由部署配置或 owner 公共接口选择。公开 Dashboard 启动器解析 `data_root`/配置后把 `state_root` 和 `workspace_root` 交给服务；现有隔离测试分别覆盖 Dashboard 快照/任务状态根与 StockWiki workspace（`test_view_launcher.py`、`test_dashboard_iqs_public_integration.py`、`test_dashboard_prepare.py`）。本地配置将运行目录显式放在 checkout 内是部署选择，不是隐式路径泄漏。没有证据支持修改生产代码或新增多根支持；P5 以“审查后无需改码”关闭。
+
+模块化收尾按固定范围已完成：能力域公开 API、依赖方向、私域负例、兼容 DTO、真实 owner/HTTP/CLI 与 UI 组合均在固定 pin 下通过。它不宣称 Python 同进程具备反射安全沙箱；新跨域能力仍由 owner 的公开 API/wire 提供并用边界测试守住。后续实质工作回到根计划中的产品主线，不再把抽象路径争议作为新门禁。
+
+## 2026-11-15 OWNERPKG-IQS-MANIFEST-01（中微36题历史执行记录）
+
+回应 Dashboard D00 的 MANIFEST-DELIVERY-01。本轮零 MiMo 预算（重跑按 §2.3 待操作者确认额度，未派发任何付费请求）。完成：①数据缺口证实——manifest §2.2 引用的 run-4205968 实为 **1/36 题 scope run**（`result.json.scope.json`：requested_question_count=1、whole_manifest_answered=false），11-08 完整批次失败（2 scored + 6 insufficient + 25 error + 3 题未跑），**36 题 scored/answered 观测数为 0**，交付必须先重跑；②SW workspace 落点更正——IQS worker_read 传 `--root config["workspace_root"]`，真实交付目标是仓内 `runs/r25-live/owner-workspace`（store_id 哈希逐位吻合 SW-PROJECTION-01 实跑日志），非 StockWiki checkout；③形状离线验证——用真实冻结 manifest（prepare_4283c570，pkg_0151/modrel_9973）构造 V2 请求（6 个 lineage group 完整划分 36 题、12 个 diagnostic_only 题 construct=null 如实承载），SW `_validated_v2_manifest` **PASS**；同题 V1 投影被 SW 拒为 `manifest_invalid`；④§2.1 不可满足三角证明——IQS_06 自初始基线即 rubric 2.0.0（1.0.0 定义从未存在）、题库契约"同 ID 禁改 rubric/构念 + common 必须恰有 IQS_01–24"使 31×1.0.0 与 5×2.0.0 均无法合法归一、diagnostic 题 construct=null 是目录权威设计；⑤可执行 operator 顺序更正为 publish-release→import→record-authority→register（import 入口先 `require_published_release`）。
+
+**已知边界：** V2 混尺度下 SW read 可达 formal（manifest §1 字面目标达成），但 Dashboard 冻结 adapter 要求 `scale_version` 非空字符串（`_map_company_result` lineage_unknown 拒绝），`latest_formal` 仍 null——E07 全链需 Dashboard 契约接受 V2 `scale_versions`（另立包）。重跑前置风险：11-08 级联失败根因在 StockQA `qa_engine.py`（`stopped_reason` 置位后全部 not_dispatched、批次 blocked 无恢复），该仓不在本包授权内，不修则重跑可能再次级联中止。状态与 runbook：[STATUS.md](docs/implementation/parallel-lanes/packages/2026-11-15-iqs-manifest-delivery-01/STATUS.md)（证据含 SHA 清单）。
+
+**2026-11-15 晚·重跑执行实录（操作者授权后；session 花费 $0.33 / 累计 $2.51，cap $25，107 attempts 全 settled）：** owner workspace 双库迁移（scan.sqlite 6→7、work.sqlite 26→27，均仓内自带迁移器 + 字节备份）；11-08 遗留 2 笔 leased 与后续超时/截断项共 **20 笔 owner work-decision 决议**全程留痕（`runs/manifest-delivery-01-decisions/`：intent/evidence/derive/delegation confirm rc1_* /apply recorded，0 伪造、0 手写账）；bank_reuse 逐字节复用冻结 manifest 459f1945；三轮根因修复：pack_size 4→2（租约超时级联）、max_output_tokens 16384→32768（响应截断 length）、search_unverified 靠重试代际突破（DUPONT_06/07 第 4 次成功 executed）。**最终 28/36 覆盖，本轮交付未成**：PORTER_01/02 响应 `response_status=content_filter`——provider 内容过滤状态在三仓代码零映射，决议不受理（仅 completed/length）、retry 依赖先有 resolution、runner 关闭需有效租约（已过期）→ **协议缺口致 2 题卡死**，连带 PORTER_03–05 与 security IQS_22–24 无法派发（批次编排 entity 全过才启 security）。36 题不可全盖 → register 必然 manifest_incomplete → 不交付（禁裁剪）。缺口分析与三选项（StockQA 协议补丁 / 等 provider 行为变化 / 放弃本轮）见 STATUS.md §10，待操作者决策。
+
+**2026-11-16 续跑终态（操作者选 A 后推进；累计花费 $2.7 内、cap $25）：** StockQA 协议补丁已交付（`codex/qa-content-filter-resolution-01` commit `14f1a1c`：中性 known_response_no_accepted_answer 受理集加入 content_filter，specific-fault reasons 仍限 completed；定向测试 4 绿、其余为迁移前基线既有红）。PORTER_01/02 随即决议成功（rc1_37d77cc8/rc1_3342172f）且 gen2 executed。**IQS_22 preview 拒因定位为 security 作用层需对应范围 permission 请求**（entity 请求只含 33 字段；用 11-08 security 请求 rv1_b009d0eb 重建后通过，rc1_7adae578）。**36/36 全部 result_ready、entity+security 双包同批 owner_ready（历史首次）**；owner 交付 33+3 包 0 错误码、36 观测全部 published 入 owner store。SW operator 链完成 publish-release（V2 owner manifest 36 题 sequence 1）→ import（V1 source projection 绑 artifact）→ record-authority（sequence 1），**register 被拒 observation_answer_unusable**：36 题中 scored 8（IQS_01/02/24 + PORTER_01–05）、**insufficient_evidence 28**（IQS_03–23 + DUPONT_01–07）——provider 诚实判定（每答仅 2 条证据、检索片段缺定量输入），非管道故障；裁剪 manifest 被 release_of_record_conflict 阻断、放宽规则属 owner 合同变更，两条捷径均不走。**读面从 company_not_registered 前进到 company_result_not_registered**；形态/覆盖/权威/导入四项已闭环，唯一剩余开口是 28 题转 scored（研究质量：提高检索证据密度 ≈$1 或换截止日 ≈$1.3，或接受无 formal）。交付包 `delivery/`（V2 manifest + V1 投影 + 36 refs 请求 + 36 C06 包 + 拒绝/读面/registry 证据 + 42 文件 SHA256SUMS + HANDOFF.md）。
+
 ## 2026-11-14 能力域包迁移与固定提交验收
 
 十个能力域已迁入 `scripts/iqs_scan`，原 CLI 路径仍可运行。域间走显式导出的 API、HTTP 或 owner CLI，有状态的网关与适配器各自维护状态。固定组合核对普通和共享执行、冷恢复、缓存刷新、事实消费、原工作台和 Dashboard。测试与部署边界见[组合验证报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。
@@ -134,7 +199,7 @@
 |Dashboard 公司结果与任务|跨仓代码在各自主线|Dashboard `b03e14b` 已发布至 `origin/main`。固定 Chromium/HTTP 验证公司结果、提交响应丢失后查回原命令以及一次提交|
 |原部署|已启动并实测|`http://127.0.0.1:8766/` 的题库、名单、历史结果与任务可读，doctor 检查通过。原部署仍为 `isolated_research`|
 |远端持续集成|按仓记录固定提交和远端|本轮以实际隔离联测为证据。远端运行状态与 Git ref 核对各自记录|
-|模块解耦|十域包和八个依赖仓的公开边界已接通|固定来源、TDD、独审和发布见[组合验证报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)|
+|模块解耦|I1–I7 固定来源组合、TDD 边界与独立审查已完成；双资源根提议经复核撤回|固定来源与运行证据见[组合验证报告](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)；路径归属裁定见本节及[契约](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/contracts-and-tdd.md)|
 |共享引擎实际入口|已接原UI，真实单题恢复/入库/复用已验|gen6已付恢复/ACK及普通cached1保留；本轮gen7另已零API保存/ACK，新旧观察并存；默认配置保持。未证明共享全公司36题/规模/金融全对；显式1.6顺位/原已付窗口隔离E2E已验；普通配置仍原1.1|
 |三市场真实工程闭环|已验收|微软/宁德时代/腾讯各36有效槽，共108；105原成功+3真实替代，原失败保留|
 |入库与历史恢复|已验收|原ACK、同配置冷重启108槽元数据一致、0新增HTTP；不等于TTL命中|
@@ -154,7 +219,7 @@
 
 ## Next Step
 
-**下一主线节点仍为 F05/W11/G4 的真实覆盖。** 已有真实单题的公开查询、导出及两个研究入口通过。沿原计划补足两个主题的严格正反例、来源验证与多主体定向补扫，检查原预算、范围与回执；同时保留研究侧独立结论、批量可靠性按认可池与原预算累积。本轮先并行处理 2026-11-09 Dashboard owner 改进清单中仍有效的 IQS/StockWiki 软件项，并把真实数据/付费操作与代码修复分开，见下节。
+**下一主线节点是 F05/W11/G4 的真实覆盖。** 使用已有公开查询、导出及两个研究入口，补足两个主题的严格正反例、来源验证和多主体定向补扫。中微 E07 由原交付方应用已确认的 IQS_22 决议，完成末题后经 StockWiki 正式登记，再做 Dashboard 真实读取。批量可靠性沿已认可的池与现行预算推进。
 
 ## 2026-11-14 Dashboard owner 改进项接入 PWF 与分仓实施
 
@@ -168,9 +233,9 @@
 
 | 来源项 | 当前判定 | 实施边界 |
 |---|---|---|
-| SW-1 / IQS-1：36 题 owner manifest / company result | **代码合同已实现并通过独立复审；E07真实结果仍未闭环**。IQS v2 producer 输出和 StockWiki owner `company_assessment/2` 以真实 IQS 题库实际生成的53题 envelope 做隔离 publish/readback；未生成答案。历史扫描仍只有1/36条 owner观察（另一历史产物有2个scored），不能声称36题已完成。 | V2为 additive DTO：每组一 rubric/aggregation role，完整绑定原 immutable package/release/question hashes；组间不汇总、不生成公司总分，v1不变。生产数据须由真实回答和既有owner导入路径提供；不伪造答案、临时回填ID、重贴package/release或覆盖历史记录。 |
+| SW-1 / IQS-1：36 题 owner manifest / company result | **V2 生产、发布及消费代码通过跨仓验证。** 真实中微 35/36，IQS_22 owner 预览和确认已有。完整观察和正式注册仍待原交付方。 | 各尺度和角色保留原 package、release 和 question hash。Dashboard `0.1.3-d` 透传尺度列表、逐题引用与空总分，既有 V1 读取兼容。运行历史见 [STATUS.md](docs/implementation/parallel-lanes/packages/2026-11-15-iqs-manifest-delivery-01/STATUS.md)。 |
 | SW-2：旧 universe 写路径越过 schema-7 membership request authority | **代码根修与独立复审已关闭**。Store直写绕行、schema6→7迁移竞态和自动准入未来版本边界已修；第三轮复审 ACCEPT。 | Store/Universe/Candidates/Maintenance/Backup **75 passed**、static通过；新增六例 **6 passed**。手工schema7写必须有request receipt；自动准入是独立 authority，schema6/7均保留原子策略路径，schema5/future8拒绝且零写；版本检查与写入同在`BEGIN IMMEDIATE`。提权隔离跑唯一2000实体UI分页E2E后 **1 passed/27.73s**、17条loopback请求；普通沙箱启动Playwright driver会卡住，提权正常运行。 |
-| SW-3：药明、阿里、MDB 的 research 数据 | **代码/读取链不是本轮阻塞；真实研究内容仍缺，且本轮未重查生产覆盖**。历史样本曾显示无数据，不能外推为当前值。 | 仅记录真实身份绑定、正式研究观察和来源覆盖；不得把合成数据当真实。真实模型研究或写生产 wiki 需走原owner操作，隔离代码实施不代做。 |
+| SW-3：药明、阿里、MDB 的 research 数据 | **StockWiki 已交付研究记录。** 药明 5 条 formal 中 3 条具 CWP 来源引用，阿里巴巴 1 条、MongoDB 2 条仍缺可用绑定。 | 以 StockWiki `docs/handoff/SW-RESEARCH-PRODUCTION-01/summary.md` 为准。Dashboard 使用有效 CWP owner 根后复验药明，阿里和 MongoDB 的发行人/原文引用由对应 owner 接续。 |
 | SW-4：StockWiki owner 读面 checkout 可移植性 | **未复现代码缺陷**：当前 query CLI 显式接收 `--root`，测试夹具使用 `tmp_path`；旧报告中的固定路径符号不存在。 | `query-v2`测试因C06运行时环境条件跳过；本轮以源码/夹具检查为证，不记该测试通过。 |
 | SW-5：名单幂等请求 reason | 旧清单已报告完成。 | 只核现行测试/实现是否仍满足，不重复实现。 |
 | IQS-2：药明、阿里、MDB bundle 准备与登记 | **软件流程已存在；具体主体实际登记状态仍未证实**。当前本机有 62 个 bundle，但从可见文本查不到目标公司只表示 ID 不透明，不足以证明未登记。 | 查 identity owner 的只读主体映射/登记状态；真实准备与登记另按原流程执行，不把目标公司硬编码到产品；隔离软件测试不改用户配置、名单或正式 bundle。 |
@@ -324,3 +389,20 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 ## 2026-11-17 模块自反馈接入
 
 [FB-IQS 逐题运行、评分尺度与快扫反馈](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/feedback-20261117.md) 进入规划，由 ROOT 负责调度和组合复验，本仓 owner 负责公开接口、定向回归及本地问题处置。
+
+## 2026-11-19 F2-IQS-FEEDBACK 逐题覆盖与混尺度反馈
+
+[施工卡](C:/Users/郑曾波/Projects/company-wiki/docs/plans/feedback-loop-2026-11-17/owner-cards/F2-IQS-FEEDBACK.md) 在本仓现有 harness 分支 `codex/iqs-manifest-delivery-01` 接续完成（base `3dde7fa`、实现 `11d2bd9`、独审修复 `4685608`），[交接与证据](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F2-IQS-FEEDBACK-handoff.md)。
+
+- **两处「部分完成被误报为完整」已修**：`scripts/iqs_scan/tools/scan_result_check.py` 原先按答案条数判 `usable`，24/38 的真实运行被判完整可用、退出码 0；公司 result/history 读投影原先只转发 owner 快照，35 条引用配 `observed_count=36` 与真正完整无法区分。现在前者按冻结题库题量判 `partial`（`usable=false`、退出码 1），后者发布逐题覆盖 `coverage` 并保留每组原尺度。
+- **逐题四态**：`completed` / `settled_unsaved` / `provider_filtered` / `provider_truncated` / `not_run`，证据不足一律 `unknown`；回执只由离线回放提供，对不上题号即 `ValueError`，不静默丢弃。
+- **观察可选**：`RESEARCH_FEEDBACK_OUT` 未设时不写文件，写失败只上 stderr；真实入口一次读 = 1 个 owner 子进程、0 模型调用、0 注册/发布/导入，样本在 `evidence/f2-iqs-feedback/`。
+- **独审**：未参与实现的独立 agent 大节点审查 **ACCEPT_WITH_FIXES**（受审 `11d2bd9`；3×P1、5×P2、5×P3 全部复现并修复），修复版 `4685608` 复核 **ACCEPT**（124 passed，两次运行；夹具离树逐字节重建）。复核后 4 个 P3 只改测试与文档，`scripts/` 与 `4685608` 逐字节相同。
+- **测试**：四文件 **126 passed**；施工卡指定三份 **89 passed**；边界/链接/套件 45 passed；HTTP 33 passed。既有红（owner 名单 2 例、Dashboard 浏览器 1 例）与本卡无关。
+- **余项**：真实已登记结果下的复验、Dashboard 消费入口复验、回执四态的真实样本；「同 rubric 下单个组连同题目消失」在公开快照上不可判定，需消费方用 `source_release_sha256` 对冻结释放复核，已写入交接 §8。
+
+## 2026-11-20 F4 IQS 快扫检查回执闭环
+
+- [x] 本仓原生快扫入口发布可选观察；按同一运行原件生成覆盖回执，复验后回告。工作树基于发布分支 c1dd6a4，候选源码 9a33d65985737435c0b9b9aee4d4c7a46916017d。
+- [x] 在真实本机宿主接通原作业查询、修复与回告恢复。用原 24/38 和两份历史阴性对照验证。记录中断、去重、老费用未知与零新调用。
+- [ ] ROOT 沿现有 IQS 发布分支接收候选、接入公开宿主配置并执行组合独审。[运行与交接](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)

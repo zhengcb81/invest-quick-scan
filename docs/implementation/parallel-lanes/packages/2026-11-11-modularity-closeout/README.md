@@ -1,22 +1,46 @@
 # 模块化与解耦：有限收尾路线图
 
-2026-11-14 更新。活跃模块实现已进入各自主线，十个 IQS 域包和八个外部组件经固定来源联测。详见[组合验证报告](fixed-combination-2026-11-14.md)。下方保留原施工路线与分工。
+### 2026-11-20 当前状态
 
-### 最新并线状态
+固定 I1–I7 收口证据保留。后续实际接口误拒已在对应 owner 修复并独审：兼容小版本、保存覆盖与回答质量、已知失败scope与未知发送分别处理。中微原36题已登记，8有分/28不足/总分null；原配置公共CLI/HTTP/adapter真实读链通过。下文35/36等为当时历史。各owner PWF与根PWF已更新，最新范围、提交和421项受影响验证见[整改报告](../../../reviews/GATE-SIMPLIFY-2026-11-20/report.md)。F05/W11、G4和规模内容继续原计划。
 
-|包|主线|当前提交|验证结论|后续归属|
-|---|---|---|---|---|
-|MC-SW|StockWiki `master`|`9a62022`|身份 schema 5/6/7 兼容，I4/I5 通过|已并，后续 `21cf489` 包含该修复|
-|MC-CA|Company Agent `master`|`ba54694`|38 passed|已并|
-|MC-IN|Industry Research `main`|`bb0c3b9`|当前 I5 读取同一隔离 owner 快照|已并、已发布|
-|MC-TH|Theme `master`|`00e4fbd`|当前 I5 读取同一隔离 owner 快照|已并，本地仓|
-|MC-QA|StockQA `master`|`f6897ac`|当前 I2/I3 完成普通与共享保存和恢复|已并、已发布|
-|MC-RT|Runtime `codex/agent-run-02`|`369a44b`|当前 API 1.4 与 StockQA、CA 组合|已并，本地仓|
-|MC-UI|UI `master`|`3ed6391`|298 OK / 6 skipped；边界 22/1 skip|已并；C5 真服务由总控接线|
-|MC-DASH|Dashboard `main`|`b03e14b`|I7 的真实 Chromium、HTTP、CLI 接续通过|已并、已发布|
-|MC-IQS|IQS `master`|见组合验证报告|十个能力域，固定 I1–I7|回根 PWF 主线|
+### 2026-11-16 分仓 PWF 与接口演进
 
-固定组合使用独立检出、隔离数据库和本地回环。以报告中的提交和实际结果为准。
+11-14 固定组合完成后，按实际接线继续做两项演进。StockQA 在已付恢复中按其原回执/结算判断，兼容未来供应商结束标签。Dashboard 使用原 IQS 公开读面消费 StockWiki V2 多尺度，并把 M7 表达式兼容交回具体接口。当前定向测试和独审记录见根 PWF。
+
+|模块|PWF 位置|当前验证或实施|
+|---|---|---|
+|IQS|仓根 `task_plan.md`、`findings.md`、`progress.md`|真实 StockWiki CLI 与 Dashboard 公开 HTTP 组合，包含旧单尺度、新混尺度和原 M8 接续|
+|StockQA|StockQAbyLLM `.planning/modularity-closeout-20261111/`|已结算中性无答案、混合恢复、事务撤权与旧回执 57 项通过。代码 `322887f`|
+|StockWiki|StockWiki `.planning/modularity-closeout-20261111/` 及 11-14 V2/名单两个子计划|名单和 V2 已并线。当前 V1/V2 三项定向通过，研究状态按最新 owner 交接|
+|Company Agent|iqs-company-agent-lab `.planning/modularity-closeout-20261111/`|API 2.3 的 task/恢复 16 项通过|
+|Runtime|iqs-agent-runtime-lab `.planning/modularity-closeout-20261111/`|API 1.4、窄 services 和依赖边界 39 项通过|
+|原工作台|iqs-question-bank-ui-lab `.planning/modularity-closeout-20261111/`|公开快照与启动边界 17 项及 22 子测试通过|
+|Dashboard|investment-dashboard D00 `.planning/unified-dashboard-2026-10-26/` 及 M6/M7|混尺度最新/历史和公式试运行去版本绑定，前端 38 项、构建及 I7 Chromium 通过|
+|Theme|analyze-theme-value-chain `.planning/modularity-closeout-20261111/`|公开事实向量和身份合同 13 项通过|
+|Industry|industry-research `.planning/modularity-closeout-20261111/`|同一公开向量和模块边界 40 项及 92 子测试通过|
+
+实际业务接续依旧沿总控主线。中微 35/36，末题决议已确认，完整登记待实际补题。F05/W11、G4 及规模验收继续按各自证据状态推进。
+
+2026-11-15 对账快照。I1–I7 固定来源组合已于 2026-11-14 验收，测试 pin 见[组合验证报告](fixed-combination-2026-11-14.md)。该组合阶段已关闭。独立架构复核确认只读 schema、题库和指标资源跟随单一 IQS checkout，运行 workspace、数据库和状态路径走显式配置或 owner API。
+
+### 2026-11-15 并线状态与固定来源（历史）
+
+|包|代码基线（2026-11-15 对账；PWF-only提交另列）|固定组合测试 pin|已验事实与当前状态|
+|---|---|---|---|
+|MC-SW|StockWiki 源码基线 master@0450506（10 个 tracked 源码/配置/测试 WIP）|9a62022|固定 I4/I5 通过；后续 PWF-only提交不含于组合，10 个源码 WIP 未重跑|
+|MC-CA|Company Agent 源码基线 master@ba54694|ba54694|API 2.3 当前组合通过；后续 PWF-only提交不改代码|
+|MC-IN|Industry Research 源码基线 main@bb0c3b9|bb0c3b9|I5 从同一隔离 owner 快照读取；后续 PWF-only提交不改代码|
+|MC-TH|Theme 源码基线 master@00e4fbd|00e4fbd|I5 从同一隔离 owner 快照读取；仓库未配置 remote；后续 PWF-only提交不改代码|
+|MC-QA|StockQA 源码基线 master@f6897ac（4 个源码/测试 WIP）|f6897ac|I2/I3 普通与共享保存恢复通过；后续 PWF-only提交不改代码，WIP 未纳入组合|
+|MC-RT|Runtime 源码基线 codex/agent-run-02@369a44b|369a44b|API 1.4 与 StockQA、CA 当前组合通过；仓库未配置 remote；后续 PWF-only提交不改代码|
+|MC-UI|UI 源码基线 master@3ed6391（2 个 generated JSON WIP）|3ed6391|I6 固定组合通过；两个历史 VIEW 外部夹具 skip；后续 PWF-only提交不改代码，WIP 未纳入组合|
+|MC-DASH|Dashboard 源码基线 main@3f83bb5（tracked filing-fetch IMPROVEMENTS；另有 untracked company-wiki handoff 副本）|b03e14b|I7 Chromium、HTTP、CLI 接续通过；之后 D00 PWF-only提交不改代码，当前 checkout 未重跑固定组合|
+|MC-IQS|IQS 模块代码基线 codex/iqs-manifest-delivery-01@ecb4a5d；master@3d9243c|报告中的 I1–I7 多提交固定组合|后续提交仅改 MANIFEST-DELIVERY-01 与本次 PWF 文件，不改模块实现代码；模块组合未被重跑，P5 复核后关闭|
+
+以上“固定组合测试 pin”与“源码基线”分别记录；不得用后者替代前者的测试证据。表中并行源码 WIP 与 PWF-only 文档提交均未进入固定组合。StockWiki 无 remote；Company Agent、Runtime、原工作台和 Theme 为本地仓。PWF同步提交及 StockQA/Industry 推送回执由根进度记录，详细 HEAD/status 对账由根 PWF 持有。
+
+StockWiki 的 company-assessment-lineage-v2 与 dashboard-owner-improvements、Dashboard D00/B-04 是独立活动计划；本收口不替它们签收。各 owner PWF 顶部的 2026-11-15 状态同步只更新固定组合交接，不覆盖原 scope。
 
 ## 本轮新增的入场结果
 
@@ -87,7 +111,8 @@ flowchart TD
  TH --> X
  IN --> X
  X --> R[独立集成审查并修复]
- R --> END[模块化工程验收完成<br/>当前主线：F05/W11/G4及规模化]
+ R --> C[固定组合 I1-I7 已验收]
+ C --> E[模块边界专项收口<br/>产品主线：F05/W11/G4及规模化]
 ```
 
 图中依赖是**真实接线顺序**，不是让消费者等 owner 全部完工才能写测试。各包可先用相同公开向量和最小替身开发。
@@ -98,11 +123,12 @@ flowchart TD
 |---|---|---|---|
 |P0 规划|调查各域、明确接口、拆包、独立审计划|本目录；不以此声称源码验收|已完成（见[规划审查](plan-review.md)）|
 |P1 固定输入|读取源仓/候选，保留 WIP，建立独立 worktree；按[契约](contracts-and-tdd.md)消除接口歧义|九仓盘点完成；八外仓已快进并入；根 IQS 28 tracked WIP 保留；临时包树已回收|已完成|
-|P2 分域收口|先 RED 或确认既有 GREEN，再最小设计修复；各包独审后形成自包含提交|八外仓代码与测试已提交并线；MC-IQS 的 C38/C5/组合入口仍在收尾|进行中|
-|P3 组合|总控仅从这些提交导出源码，在短临时根运行当前接口/恢复/查询/UI路径|QA/CA/RT/SW/IQS/UI/Dashboard 固定组合；保存恢复、公开快照与真实读取路径一次打通|未完成|
-|P4 发布与返回主线|合并各仓，配置一次选择兼容组合，核对远端/本地发布，再跑轻量部署 smoke|完成集成审查后推送适用的既有 remotes、核对 SHA；最终独审关闭专项|未开始|
+|P2 分域收口|各 owner 依 TDD 收口能力域并独审|八 owner 及 IQS 实现已进入各自主线；固定组合确认的现有能力保持|已完成|
+|P3 固定组合|固定版本组合在隔离根运行 I1–I7|`fixed-combination-2026-11-14.md`；快速套件 1127 项 + 391 子测试通过，独立 `final_boundary_review` ACCEPT|已完成|
+|P4 版本发布/保留|沿既有 remote 发布可推送仓，记录无 remote 的本地 owner 分支|各仓当前 HEAD 与固定测试 pin 已分开登记；未配置 remote 的仓不新建 remote|已完成（无 remote 的仓保持本地状态）|
+|P5 路径/资源边界复核|区分代码版本资源、CLI默认值与运行态数据根；确认真实入口的可替换性|只读复核确认题库/schema随单一 checkout；公开 Dashboard 配置传递 state/workspace；已有隔离测试覆盖；未发现产品代码缺陷|已完成；不实施双 checkout/双资源根框架|
 
-进度按阶段产物和责任线交付报告，不按测试数、卡数或“无下划线”百分比。八个 owner 包已形成可检出的主线版本，接下来集中完成 IQS 组合，不再扩新支线。
+进度按阶段产物和责任线交付报告，不按测试数、卡数或“无下划线”百分比。P0–P5 均已收口；P5 是架构假设复核而非代码施工。固定组合测试 pin 之外的较新 checkout 和并行 WIP 不被追认成已测。模块边界专项不扩大 AST 扫描器、不要求每个文件无环，也不重开 I1–I7 已验范围。
 
 ## 统一设计和 TDD 约定
 

@@ -22,7 +22,7 @@ API_PROTOCOL = "iqs.refresh-preview-api/1.0.0"
 PUBLIC_API_EXPORTS = frozenset({
     "API_PROTOCOL", "PUBLIC_API_EXPORTS", "validate_route_targets",
     "MAX_BYTES", "create_preview", "digest", "validate_policy",
-    "validate_preview", "validate_request",
+    "validate_preview", "validate_request", "validate_frozen_record",
 })
 
 SCHEMA = json.loads(
@@ -93,66 +93,25 @@ def digest(value):
     return module_contract.module_digest(value)
 
 
-def _shape(
-    value,
-    kind,
-    *,
-    currency_dialect=False,
-    control_dialect=False,
-    target_dialect=False,
-    exposure_dialect=False,
-    profile_exposure_dialect=False,
-    ordered_dialect=False,
-):
-    if kind != "OwnerState":
-        ordered_dialect = isinstance(value, dict) and value.get("protocol") in {
-            "iqs.refresh_request/1.6.0", "stockwiki.refresh_preview/1.6.0",
-            "stockwiki.refresh_owner_policy/1.6.0",
-        }
-        profile_exposure_dialect = isinstance(value, dict) and value.get("protocol") in {
-            "iqs.refresh_request/1.5.0",
-            "stockwiki.refresh_preview/1.5.0",
-            "stockwiki.refresh_owner_policy/1.5.0",
-        }
-        exposure_dialect = isinstance(value, dict) and value.get("protocol") in {
-            "iqs.refresh_request/1.4.0",
-            "stockwiki.refresh_preview/1.4.0",
-            "stockwiki.refresh_owner_policy/1.4.0",
-        }
-        currency_dialect = isinstance(value, dict) and value.get("protocol") in {
-            "iqs.refresh_request/1.1.0",
-            "stockwiki.refresh_preview/1.1.0",
-            "stockwiki.refresh_owner_policy/1.1.0",
-        }
-        control_dialect = isinstance(value, dict) and value.get("protocol") in {
-            "iqs.refresh_request/1.2.0",
-            "stockwiki.refresh_preview/1.2.0",
-            "stockwiki.refresh_owner_policy/1.2.0",
-        }
-        target_dialect = isinstance(value, dict) and value.get("protocol") in {
-            "iqs.refresh_request/1.3.0",
-            "stockwiki.refresh_preview/1.3.0",
-            "stockwiki.refresh_owner_policy/1.3.0",
-        }
-    schema = (
-        PROFILE_EXPOSURE_SCHEMA
-        if profile_exposure_dialect
-        else (
-            EXPOSURE_SCHEMA
-            if exposure_dialect
-            else (
-                TARGET_SCHEMA
-                if target_dialect
-                else (
-                    CONTROL_SCHEMA
-                    if control_dialect
-                    else CURRENCY_SCHEMA if currency_dialect else SCHEMA
-                )
-            )
-        )
+_SCHEMAS_BY_DIALECT = {
+    "1.0.0": SCHEMA,
+    "1.1.0": CURRENCY_SCHEMA,
+    "1.2.0": CONTROL_SCHEMA,
+    "1.3.0": TARGET_SCHEMA,
+    "1.4.0": EXPOSURE_SCHEMA,
+    "1.5.0": PROFILE_EXPOSURE_SCHEMA,
+    "1.6.0": ORDERED_SCHEMA,
+}
+
+
+def _shape(value, kind, *, request_protocol=None):
+    protocol = request_protocol
+    if protocol is None and isinstance(value, dict):
+        protocol = value.get("protocol")
+    schema = _SCHEMAS_BY_DIALECT.get(
+        protocol.rsplit("/", 1)[-1] if isinstance(protocol, str) else "",
+        SCHEMA,
     )
-    if ordered_dialect:
-        schema = ORDERED_SCHEMA
     try:
         if len(module_contract.canonical_bytes(value)) > MAX_BYTES:
             raise ValueError("refresh_input_too_large")
@@ -266,16 +225,7 @@ def _check_state(request, state):
         "iqs.refresh_request/1.2.0",
         "iqs.refresh_request/1.3.0",
     }
-    _shape(
-        state,
-        "OwnerState",
-        currency_dialect=request["protocol"] == "iqs.refresh_request/1.1.0",
-        control_dialect=controlled,
-        target_dialect=targeted,
-        exposure_dialect=request["protocol"] == "iqs.refresh_request/1.4.0",
-        profile_exposure_dialect=request["protocol"] == "iqs.refresh_request/1.5.0",
-        ordered_dialect=request["protocol"] == "iqs.refresh_request/1.6.0",
-    )
+    _shape(state, "OwnerState", request_protocol=request["protocol"])
     if request["protocol"] == "iqs.refresh_request/1.6.0":
         validate_route_targets(state["ordered_route_targets"],
                                provider=state["provider"], model=state["model"])
@@ -496,3 +446,23 @@ def validate_preview(preview, *, request, owner_state, now=None):
     ):
         raise ValueError("refresh_preview_expired")
     return copy.deepcopy(preview)
+
+
+
+def validate_frozen_record(*, request, preview, owner_state):
+    """Verify an original stored triple without applying a current planner or clock."""
+    _shape(request, "Request")
+    protocol = request["protocol"]
+    _shape(preview, "Preview", request_protocol=protocol)
+    _shape(owner_state, "OwnerState", request_protocol=protocol)
+
+    if (
+        preview["request_sha256"] != digest(request)
+        or preview["owner_state_sha256"] != digest(owner_state)
+        or preview["policy_sha256"] != owner_state["policy_sha256"]
+        or preview["preview_id"] != "rv1_" + digest(
+            {key: value for key, value in preview.items() if key != "preview_id"}
+        )
+    ):
+        raise ValueError("refresh_frozen_record_mismatch")
+    return {"request_protocol": protocol}

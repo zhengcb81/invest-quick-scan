@@ -46,7 +46,7 @@ Q01—Q03与Q12的离线调用契约通过独立复核。Q12定向测试64项通
 
 截至2026-09-24，Q12已让`quick_scan_result/1.0.0`公开回执输出原始输入题目哈希和成功attempt HTTP状态。本地screening导入器在StockQA原样CLI输出上通过隔离跨仓测试并得到8分筛选观察；任一绑定不匹配时仍失败关闭，保留reported值但不采用screening score。该验证在HTTP发送边界使用固定Responses API回包，不发起真实联网或模型调用。
 
-导入结果同时保留`reported_score/reported_status`和正式筛选字段。全部检查通过后可设`screening_checked`并颁发绑定实体、题目和结果摘要的`screening_audited`检查回执；不通过则保留reported值、正式分数置空。任何模型自报`accepted_ids`、`search_verified`或check level不能提升资格。低置信度不进入均分，未经核实的N/A不能从覆盖率分母扣除。正式深研级别仍由独立拥有者授予。
+导入结果同时保留`reported_score/reported_status`和正式筛选字段。全部检查通过后可设`screening_checked`并颁发绑定实体、题目和结果摘要的`screening_audited`检查回执；不通过则保留reported值、正式分数置空。任何模型自报`accepted_ids`、`search_verified`或check level不能提升资格。低置信度暂定分保留并参与现有汇总，另显式标出暂定题与证据缺口，未经核实的N/A不能从覆盖率分母扣除。正式深研级别仍由独立拥有者授予。
 
 ## 离线命令与端到端边界
 

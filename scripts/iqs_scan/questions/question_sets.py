@@ -494,7 +494,12 @@ def summarize(records, policy='legacy-all-questions', *, core_ids=None):
         quality = None
     all_applicable = [r for r in records if r['status'] != 'not_applicable']
     all_valid = [r for r in all_applicable if r['status'] == 'scored']
+    provisional = [r['id'] for r in all_valid if r.get('confidence') == 'low']
     return {'aggregation_policy': policy, 'dimensions': dimensions, 'quality_score': quality,
+            'provisional_question_ids': provisional,
+            'quality_score_provisional': quality is not None and any(
+                r['id'] in provisional and r['dimension'] in QUALITY_WEIGHTS
+                and r.get('aggregation', 'scored') != 'diagnostic' for r in base_records),
             'quality_coverage': round(coverage, 4),
             'all_question_coverage': round(len(all_valid) / len(all_applicable), 4) if all_applicable else 0,
             'growth_score': dimensions['growth']['score'],
@@ -579,15 +584,18 @@ def recovery_watch(records, manifest, summary):
         record = by_id.get(question_id, {})
         return record.get('score') if record.get('status') == 'scored' else None
 
-    strengths = [{'id': r['id'], 'question': r['question'], 'score': r['score']}
+    strengths = [{'id': r['id'], 'question': r['question'], 'score': r['score'],
+                  'confidence': r.get('confidence')}
                  for r in records if r['status'] == 'scored' and r['score'] >= 8
                  and r['dimension'] in QUALITY_WEIGHTS
                  and r.get('aggregation', 'scored') != 'diagnostic']
     weak_current = [effective(q) for q in ('IQS_06', 'IQS_08', 'IQS_11', 'IQS_20')
                     if score(effective(q)) is not None and score(effective(q)) <= 4]
     diagnostic_ids = ['RECOVERY_01', 'RECOVERY_02', 'RECOVERY_03', 'RECOVERY_04']
+    provisional = [r['id'] for r in records if r['status'] == 'scored' and r.get('confidence') == 'low']
     result = {'policy_version': 'recovery-watch-1', 'status': 'not_assessed',
-              'flags': [], 'strengths': strengths, 'weak_current_ids': weak_current,
+              'flags': ['provisional_scores'] if provisional else [],
+              'provisional_question_ids': provisional, 'strengths': strengths, 'weak_current_ids': weak_current,
               'critical_issues': summary['critical_issues'], 'quality_gate_overridden': False,
               'criteria': {}, 'missing_or_unusable_ids': []}
     if not replacement_mapping_verified:
@@ -595,13 +603,15 @@ def recovery_watch(records, manifest, summary):
         result['status'] = 'needs_verification'
     if not any(q in by_id for q in diagnostic_ids):
         if replacement_mapping_verified and strengths and weak_current:
-            result.update(status='review_suggested', flags=['mixed_strength_and_weakness'])
+            result['status'] = 'review_suggested'
+            result['flags'].append('mixed_strength_and_weakness')
         return result
 
     runway_ids = [effective('IQS_16')] + [q for q in
                   ('TURNAROUND_02', 'CYCLICAL_02', 'DISTRESSED_01') if q in by_id]
     required = diagnostic_ids + runway_ids
-    result['criteria'] = {q: {'score': score(q), 'status': by_id.get(q, {}).get('status', 'missing')}
+    result['criteria'] = {q: {'score': score(q), 'status': by_id.get(q, {}).get('status', 'missing'),
+                             'confidence': by_id.get(q, {}).get('confidence')}
                           for q in required}
     result['missing_or_unusable_ids'] = [q for q in required if score(q) is None]
     for q, flag in zip(diagnostic_ids, ('structural_impairment_risk', 'core_assets_impaired',
@@ -991,9 +1001,7 @@ def normalize_screening(manifest, bundle):
                            'information_as_of': content['information_as_of'],
                            'period_start': content['period_start'], 'period_end': content['period_end'],
                            'answer_content': content, 'observation_id': observation_id})
-            if status == 'scored' and content['confidence'] == 'low':
-                record.update({'status': 'low_confidence', 'score': None})
-            elif status == 'scored':
+            if status == 'scored':
                 record.update({'status': 'scored', 'score': reported_score})
             elif status == 'not_applicable':
                 record.update({'status': 'unknown', 'score': None,
@@ -1070,12 +1078,11 @@ def normalize(manifest, answers, review=None):
                 parsed = parse_answer(q, raw, profile['as_of'])
                 record['answer'] = parsed
                 record['reported_score'] = parsed['score']
+                record['confidence'] = parsed['confidence']
                 status = parsed['status']
                 if status in ('scored', 'not_applicable'):
                     if q['id'] not in accepted or not search_verified:
                         status = 'review_pending'
-                    elif status == 'scored' and parsed['confidence'] == 'low':
-                        status = 'low_confidence'
                 record['status'] = status
                 if status == 'scored':
                     record['score'] = parsed['score']

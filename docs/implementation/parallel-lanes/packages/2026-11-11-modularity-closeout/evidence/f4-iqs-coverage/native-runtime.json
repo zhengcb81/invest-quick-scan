@@ -1,0 +1,117 @@
+{
+  "schema_version": "iqs-f4-native-smoke/1",
+  "unattended_intake": {
+    "report_id": "8c875e9c3d8217688718df5d9fafe80c30c6389bb829a4a0604159cd1b92e385",
+    "closed": true,
+    "new_actions": 4,
+    "remaining": 0,
+    "business_exit": 1
+  },
+  "pre_f2_checker": "3dde7fa6a695644e646e48007916af4bda7f10af",
+  "host_base_head": "0d580d75ee5c6bce911b4e4cf04550847a3c47a9",
+  "iqs_base_head": "9a33d65985737435c0b9b9aee4d4c7a46916017d",
+  "runs": {
+    "thin-bank-catl-full-2026-10-22/final": {
+      "attempt_id": "scan-result-check",
+      "coverage": "partial",
+      "historical_cost_state": "unknown",
+      "manifest_question_count": 38,
+      "missing_question_count": 14,
+      "missing_question_ids": null,
+      "model_calls": 24,
+      "new_cost_micros": 0,
+      "new_model_calls": 0,
+      "new_searches": 0,
+      "ok": true,
+      "question_count": 24,
+      "recorded_search_cost_micros": 16800,
+      "run_id": "thin-bank-catl-full-2026-10-22/final",
+      "scored": 15,
+      "searches": 24,
+      "source_sha256": "86c0a97f4d32139e16acbb535712cdb5c45e7224ae9cc32e83b76c15e4c3cdba",
+      "usable": false,
+      "occurrence_id": "ec2558f878aa9830199bf734980ac9b3ce014ffdc9702cad0a8f51d633ef1377",
+      "repair_id": "9b11d527856babdb9c1f0f5f4725fc877dc26f33f9f6ffcf80aad9c85c824148",
+      "fixed_version": "iqs-scan-coverage/1/47b90aff7e84d64702ddddb4302ffab0a48e9bb9d9fd08cdedacc4d7a1f7f613",
+      "before_check_sha256": "b08250b5e7b48e8fee45066278cc68a0bf81c604505c7493f412d95bc950eb33",
+      "closure": "verified"
+    }
+  },
+  "negative_controls": {
+    "thin-bank-catl-full-2026-10-22/dryrun": {
+      "coverage": "partial",
+      "answered": 24,
+      "manifest": 38,
+      "before_usable": false,
+      "after_usable": false,
+      "disposition": "expected"
+    },
+    "thin-bank-catl-dry": {
+      "coverage": "partial",
+      "answered": 3,
+      "manifest": 37,
+      "before_usable": false,
+      "after_usable": false,
+      "disposition": "expected"
+    }
+  },
+  "lost_reply_recovered": {
+    "repair": "9b11d527856babdb9c1f0f5f4725fc877dc26f33f9f6ffcf80aad9c85c824148",
+    "report": "8c875e9c3d8217688718df5d9fafe80c30c6389bb829a4a0604159cd1b92e385"
+  },
+  "native_reconciliation": {
+    "original": {
+      "cost_state": "unknown",
+      "evidence_ref": "iqs:scan/runs/thin-bank-catl-full-2026-10-22/final@86c0a97f4d32139e16acbb535712cdb5c45e7224ae9cc32e83b76c15e4c3cdba",
+      "job_status": "succeeded",
+      "new_cost_micros": 0,
+      "new_model_calls": 0,
+      "new_searches": 0,
+      "recorded_search_cost_micros": 16800,
+      "status": "cost_unknown"
+    },
+    "missing": {
+      "cost_state": "unknown",
+      "evidence_ref": "iqs:scan/runs/missing-attempt@0000000000000000000000000000000000000000000000000000000000000000",
+      "job_status": "unconfirmed",
+      "new_cost_micros": 0,
+      "new_model_calls": 0,
+      "new_searches": 0,
+      "recorded_search_cost_micros": null,
+      "status": "cost_unknown"
+    }
+  },
+  "submissions": {
+    "triage": 1,
+    "repair": 1,
+    "replay": 1,
+    "report": 1
+  },
+  "original_files_unchanged": 9,
+  "owner_rows": 4,
+  "new_network_events": 0,
+  "regression": {
+    "passed": 283,
+    "elapsed_seconds": 40.2,
+    "python": "3.13.9",
+    "suites": [
+      "test_iqs_feedback_owner",
+      "test_scan_result_check",
+      "test_company_result_coverage",
+      "test_dashboard_company_result",
+      "test_dashboard_module_boundaries",
+      "test_dashboard_delivery_boundary",
+      "test_read_only_replay_boundaries",
+      "test_shared_public_boundaries"
+    ]
+  },
+  "isolated_state_bytes": {
+    "owner_sqlite": 20480,
+    "host_sqlite": 36864,
+    "input_jsonl": 1665
+  },
+  "cleanup": {
+    "removed_isolated_test_directories": 8,
+    "remaining_test_directories": 0
+  }
+}

@@ -21,9 +21,14 @@ import subprocess
 from typing import Any
 
 from .dashboard_json import decode_owner_json
+from . import company_result_coverage
+from . import dashboard_company_feedback
 
 PROJECTION_PROTOCOL = "iqs.dashboard.company_assessment/1"
-PROJECTION_VERSION = "company_assessment/1.0.0"
+# 1.1.0 adds the derived ``coverage`` block (per-question status and per-group
+# scale). The owner-facing read is unchanged; consumers that do not know the
+# block ignore it.
+PROJECTION_VERSION = "company_assessment/1.1.0"
 # The owner's own declaration this projection was written against.
 OWNER_PROTOCOL = "stockwiki.company_assessment/1"
 OWNER_SCHEMA_VERSION = "1.0.0"
@@ -71,6 +76,14 @@ class ProjectionError(Exception):
         self.status = status
 
 
+def _compatible_release(value: Any, baseline: str) -> bool:
+    """Match a published version family and major at this read boundary."""
+    if not isinstance(value, str):
+        return False
+    family = baseline.rsplit(".", 2)[0]
+    return re.fullmatch(re.escape(family) + r"\.[0-9]+\.[0-9]+", value) is not None
+
+
 def _identifier(value: Any, code: str) -> str:
     if not isinstance(value, str) or not value or len(value) > 256:
         raise ProjectionError(code, "identifier is missing or malformed")
@@ -108,9 +121,16 @@ def _validated_history_payload(payload: Any) -> dict[str, Any]:
 
 
 def read_company_assessment(
-    config: dict, operation: str, payload: Any, *, environment: dict[str, str] | None = None
+    config: dict, operation: str, payload: Any, *, environment: dict[str, str] | None = None,
+    question_receipts: Any = None,
 ) -> dict[str, Any]:
-    """Read one company projection over the owner's versioned public command."""
+    """Read one company projection over the owner's versioned public command.
+
+    ``question_receipts`` is the optional per-question receipt summary an
+    offline replay can supply; the live read has no access to the scan owner's
+    receipts and leaves the unobserved questions ``unknown`` rather than
+    guessing why they are missing.
+    """
     if operation == "company_result":
         normalized = _validated_result_payload(payload)
         action, read = "read", "result"
@@ -163,16 +183,21 @@ def read_company_assessment(
             raise ProjectionError("owner_projection_invalid", "owner result status is malformed", 502)
         if absent:
             raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
-        result = project_result(envelope)["company_result"]
+        projected = project_result(envelope, question_receipts=question_receipts)
+        result = projected["company_result"]
         if pin is not None and result is not None and result["result_id"] != pin:
             raise ProjectionError("company_result_pin_mismatch", "owner returned a different pinned result", 502)
     else:
-        history = project_history(envelope, limit=normalized["limit"], offset=normalized["offset"])
-        unknown = history["registry_state"] == "entity_not_registered"
-        if absent != unknown or (absent and (history["items"] or history["page"]["total"] != 0)):
+        projected = project_history(envelope, limit=normalized["limit"], offset=normalized["offset"])
+        unknown = projected["registry_state"] == "entity_not_registered"
+        if absent != unknown or (absent and (projected["items"] or projected["page"]["total"] != 0)):
             raise ProjectionError("owner_projection_invalid", "owner history identity status is malformed", 502)
         if unknown:
             raise ProjectionError("entity_not_found", "No registered entity has this ID", 404)
+    # The public read is the one place a per-question observation is produced:
+    # the write is optional, isolated, and never changes the answer above.
+    dashboard_company_feedback.observe(
+        projected, read=read, receipts=question_receipts, version=PROJECTION_VERSION)
     return envelope
 
 
@@ -199,7 +224,7 @@ def _raise_owner_refusal(raw: bytes) -> None:
     code = refusal.get("error_code") if isinstance(refusal, dict) else None
     if not isinstance(code, str) or not _ERROR_CODE.fullmatch(code):
         raise ProjectionError("owner_projection_invalid", "owner refusal is malformed", 502)
-    if refusal.get("schema_version") != OWNER_SCHEMA_VERSION:
+    if not _compatible_release(refusal.get("schema_version"), OWNER_SCHEMA_VERSION):
         raise ProjectionError("owner_protocol_unsupported", "owner company assessment protocol is unsupported", 502)
     if code == "invalid_invocation":
         # An older command does not support the strict identity option.
@@ -214,26 +239,29 @@ def _raise_owner_refusal(raw: bytes) -> None:
 def _checked_owner_read(owner: Any) -> dict[str, Any]:
     """Validate the owner's own read envelope before it is projected.
 
-    The owner's protocol/schema declaration is checked rather than assumed, so
-    a future owner shape is never relabelled under this projection version.
+    Check the declared protocol, compatible release and actual read fields.
     """
     if not isinstance(owner, dict):
         raise ProjectionError("owner_projection_invalid", "owner read is not an object", 502)
     for key in ("protocol", "schema_version", "network_calls", "llm_calls"):
         if key not in owner:
             raise ProjectionError("owner_projection_invalid", "owner read is missing envelope fields", 502)
-    if owner.get("protocol") != OWNER_PROTOCOL or owner.get("schema_version") != OWNER_SCHEMA_VERSION:
+    if (owner.get("protocol") != OWNER_PROTOCOL
+            or not _compatible_release(owner.get("schema_version"), OWNER_SCHEMA_VERSION)):
         raise ProjectionError("owner_protocol_unsupported", "owner company assessment protocol is unsupported", 502)
     if any(type(owner[key]) is not int or owner[key] != 0 for key in ("network_calls", "llm_calls")):
         raise ProjectionError("owner_projection_invalid", "owner read reported unexpected I/O", 502)
     return owner
 
 
-def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
+def project_result(owner_payload: dict[str, Any], *,
+                   question_receipts: Any = None) -> dict[str, Any]:
     """Service half: shape one GET ``company/result`` response.
 
     The owner's honest absent reasons pass through verbatim; ``company_result``
     stays ``null`` unless the owner itself published a registered snapshot.
+    ``question_receipts`` lets an offline replay classify the questions the
+    snapshot does not bind; the live route has none and leaves them ``unknown``.
     """
     _require_owner_envelope(owner_payload, "result")
     owner = owner_payload["owner_payload"]
@@ -265,6 +293,10 @@ def project_result(owner_payload: dict[str, Any]) -> dict[str, Any]:
         "entity_id": owner_payload["entity_id"],
         "company_result": result,
         "reason_code": reason_code,
+        # Derived from the snapshot's own references: a partial result stays
+        # partial here even when the owner's completeness claim says otherwise.
+        "coverage": company_result_coverage.derive_coverage(
+            result, receipts=question_receipts),
         "store_id": owner.get("store_id"),
         "registry_store_id": owner.get("registry_store_id"),
         "network_calls": 0,
@@ -309,6 +341,9 @@ def project_history(owner_payload: dict[str, Any], *, limit: int, offset: int) -
         "entity_id": owner_payload["entity_id"],
         "items": items,
         "page": {"limit": limit, "offset": offset, "total": total},
+        # The page carries counts only; the summary says which items are short
+        # instead of letting a bounded page look uniformly complete.
+        "coverage": company_result_coverage.derive_history_coverage(items),
         "registry_state": owner.get("registry_state"),
         "registry_store_id": owner.get("registry_store_id"),
         "network_calls": 0,
@@ -321,7 +356,7 @@ def _require_owner_envelope(owner_payload: Any, read: str) -> None:
         raise ProjectionError("owner_projection_invalid", "owner payload is missing", 502)
     if owner_payload.get("protocol") != PROJECTION_PROTOCOL:
         raise ProjectionError("owner_projection_invalid", "owner payload protocol mismatch", 502)
-    if owner_payload.get("projection_version") != PROJECTION_VERSION:
+    if not _compatible_release(owner_payload.get("projection_version"), PROJECTION_VERSION):
         raise ProjectionError("projection_version_unsupported", "company projection version is unsupported", 502)
     if owner_payload.get("read") != read:
         raise ProjectionError("owner_projection_invalid", "owner payload read kind mismatch", 502)

@@ -1,5 +1,19 @@
 # 当前进度与阶段证据
 
+## 2026-11-20 暂定评分已接通
+
+按用户要求将观点分与证据强弱分开：有部分依据可用scored+low confidence给暂定分并列缺项；普通/共享提示、汇总、比较、恢复关注、入库读面和UI均保留原分及不确定性。原renderer与已付请求字节不改。QA207、CA108、SW117、原UI92+9子测试、Dashboard64后端/22前端/类型、IQS公共链113项通过；提示/发布组106项+182子测试及修旧版本断言后9项通过。独立最终ACCEPT，见[报告](docs/implementation/reviews/PROVISIONAL-SCORING-2026-11-20/report.md)。
+
+代码已并线：QA d6dbb04、CA9fb4b94、SW79c51e7、原UI4c64fb0、Dashboard2b96c55；有远端的两个owner已核对。原中微result_id及8有分/28空分不变，其中1个原有低置信分现标暂定。0收费调用、0历史补分；五个自建隔离worktree/分支和本轮临时依赖/日志已清理，其他writer的WIP保留。新真实模型重评及浏览器用户走查未执行。
+
+## 2026-11-20 过度拒绝规则收口
+
+已从公开边界修复小版本精确白名单、完整率/可评分率阻止结果保存展示、前一范围必须成功才放行独立范围等耦合。StockWiki 发布来源、逐题保存和回答质量分开，原 release 和不可变观察引用保留；QA 兼容接口复用既有公共判断。独审发现的 registry 幂等成功回执与读不一致也已修复并复审 ACCEPT。受影响421项通过，源仓静态/提交检查通过，见[报告](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-20/report.md)。
+
+真实中微已在原 workspace 登记 `cas_6cab1b94d8f45d42c750`：保存36/36，8有分、28证据不足、总分null；原资料日2026-11-08不改，重传幂等。公开 CLI→临时 IQS HTTP→Dashboard 真 adapter 读回同一当前/历史结果、36题/28缺证据，0模型/外部网络，临时服务与隔离数据库清除。原长期UI服务未运行，本轮没有冒充新浏览器验收。StockWiki e4d7e85、Dashboard faec291 已并入各自主线；QA 2ec9682 保留79b0800新反馈工作后接入原运行分支。下一步回原事实与内容主线，不把28个研究缺口变成整份结果不可见的条件。
+
+交付核对：IQS修复b6e1eae及保留远端反馈的并线6d48f59已推既有分支；QA远端2ec9682；Dashboard保留同期远端改动后origin/main=4e1eb4d；StockWiki本地master=e8da004（无远端）。并线组合另验IQS217passed/7deselected、Dashboard149项通过。三个自建隔离工作树和分支已清理；本地仅留标记薄摘要，其他进程WIP未改。此后的总控归档提交仅更新文档。
+
 ## 2026-11-14 工作目录清理（主线暂停）
 
 - 清掉已结束的隔离测试副本、SQLite/缓存目录、空 pytest 目录及根目录调试插件/日志；第一轮共移除 44 个目录、15,954 个文件，约 843,573,130 字节（约 805 MiB）。所有递归目标均先核对位于本仓根内、无 reparse/junction。
@@ -718,3 +732,34 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - **SW-2最终独立结论：** 第三轮reviewer **ACCEPT**。schema6/7自动准入、schema5/8拒绝、schema7手工request receipt、`BEGIN IMMEDIATE`内版本检查和迁移竞态保护均有直接测试/复审；6项新反例复跑6 passed，核心Store/Universe/Candidates/Maintenance/Backup组合75 passed，static通过。
 - **E2E环境纠正：** 普通沙箱尝试时，2000实体seed正常、Playwright同步driver的 `.start()` 卡在Chromium之前，因此该次只能记“未执行”，不能判业务失败。随后以正常权限在唯一隔离basetemp运行同一个2000实体UI用例，**1 passed/27.73s**、17条loopback请求；截图/数据库随basetemp清理。SW-2 UI浏览路径现有最终正向证据。
 - **StockWiki提交：** 已将SW-1 V2 owner、SW-2 membership根修、两份子PWF、golden和精确测试文件提交为 `0450506fc94adbfecd33001c244221a42ba0a00d`（master）。只暂存本轮23个文件；untracked公司研究SQLite、Dashboard onboarding/research-binding、logs及runs/c16b均未触碰。StockWiki当前没有配置remote，所以仅本地提交，不创建新remote。
+# 2026-11-15 PWF 对账与架构复核
+
+- IQS 当前模块代码基线为 codex/iqs-manifest-delivery-01@ecb4a5d；后续仅追加本地 PWF-only 提交，master/origin/master 仍以 3d9243c 为基线。239838b、ecb4a5d 是 MANIFEST-DELIVERY-01 计划、状态及证据文件修订，不触及模块实现代码。当前 IQS 跟踪改动仅为本轮 PWF/路线图文件；大量既有未跟踪取证、工具及保留目录未触碰。
+- 当前 owner 树与固定测试 pin 分别记录：StockQA 代码基线 master@f6897ac（4 个源码/测试 WIP）；StockWiki 代码基线 master@0450506（10 个源码/配置/测试 tracked WIP）；Dashboard 代码基线 main@3f83bb5（tracked WIP：handoffs/owner-requests/filing-fetch/IMPROVEMENTS.md，另有 untracked company-wiki CANDIDATES-FIX-01 交接副本）；Theme master@00e4fbd；Industry main@bb0c3b9；Company Agent master@ba54694；Runtime codex/agent-run-02@369a44b；UI master@3ed6391（2 个 generated JSON WIP）。各仓后续 PWF-only 提交不代表源代码重验，提交清单见本记录末尾。本次未改写并行源码 WIP。
+- 固定组合的实际测试 pin 仍以报告为准，尤其 StockWiki `9a62022`、Dashboard `b03e14b` 与 IQS 多提交固定来源不能由当前 checkout HEAD 替代。路线图现同时显示当前 HEAD、tested pin、WIP 和范围差别。
+- 独立架构复核结论：此前拟议的双资源根/资源注入不是必要需求，撤回该整改。随 checkout 版本发布的 schema/题库/指标资源用代码根定位合理；运行数据根由启动入口和配置传递。当前显式配置把数据放在 checkout 内是部署决定，不构成代码层隐式泄漏。现有 `test_view_launcher.py` 覆盖明确 workspace 与临时 state 根下的真实公开 StockWiki 读取和快照写入；`test_dashboard_iqs_public_integration.py` 覆盖显式 state 根下公开 HTTP/CLI 任务与接续。未确认产品架构缺陷，无生产代码改动。
+- 结论：I1–I7 固定组合及最终独立边界审查完成；没有新的模块化阻断。未在本轮重跑模型/API、生产数据库或名单操作。owner PWF 同步作为本轮文档收口完成；不改历史施工记录。
+- 最终独立 PWF 复核 PASS：核对 IQS 当前 HEAD/固定测试 pin/MANIFEST 文档提交描述、Dashboard tracked WIP、六个已关闭模块的 Next Step 及 Dashboard B-04 的开放状态；未发现活动指令矛盾。复核确认本轮仅改计划/进度/合同文档，无产品源码改动；因此未重跑产品测试。
+
+## 2026-11-15 PWF 提交与最新 WIP 补记
+
+固定组合 pin 不变；owner PWF 的同步提交只改 Markdown，不构成源码重测。首轮精确提交：IQS 5b475f9（本地）；StockQA 69406e8（已推 origin/master）；StockWiki b12d577（本地，无 remote）；Theme 057ca43（本地，无 remote）；Industry 58749da（已推 origin/main）；Company Agent ce5b4cc（本地，无 remote）；Runtime e2fbc3a（本地，无 remote）；原工作台 UI 36f0902（本地，无 remote）；Dashboard D00 0257ac1（本地分支，无配置上游）。PWF 后续状态更正仍只提交精确 Markdown 路径。
+
+最新只读快照发现 StockWiki 有 10 个 tracked 源码/配置/测试 WIP：config/companies.yaml、config/extraction_policy.yaml、stockwiki/cli_parsers/company.py、stockwiki/document_signals.py、stockwiki/documents.py、stockwiki/enrichment.py、stockwiki/llm_provider.py、stockwiki/services/company.py、stockwiki/sources.py、tests/test_documents.py；均未纳入 I4/I5 固定组合，也未触碰。Dashboard 有 tracked filing-fetch IMPROVEMENTS 与 untracked company-wiki HANDOFF-CANDIDATES-FIX-01 副本；后者报告 owner master@09fe9ca 包含 569615ec fix commit，复核只确认 ancestry，不替代 D00 对其消费，也不改变 B-04 状态。
+
+最终 owner-PWF 同步提交：IQS 308d307（本地）；StockQA 9ffd566（已推 origin/master）；StockWiki 5f79e7b（本地、无 remote）；Theme fce79b7（本地、无 remote）；Industry c7a04ed（已推 origin/main）；Company Agent fe368ea（本地、无 remote）；Runtime 7fc9757（本地、无 remote）；UI 5453b33（本地、无 remote）；Dashboard D00 93b6357（本地分支无配置上游）。其后 IQS 的本地文档提交只记录和澄清根 PWF 回执，未改模块代码；StockQA 与 Industry 的远端推送均为 fast-forward；其他已有源码 WIP、未跟踪数据及交接材料均保持原样。
+
+## 2026-11-16 各模块 PWF 与公开边界演进
+
+- 九仓逐一核对真实提交、公开入口、边界测试和各自下一步。StockWiki 的研究 WIP 已经提交至其本地主线。另两份活动子计划的 V2 发布与名单根修状态已按 `0450506` 及独立验收修正。
+- StockQA 中性无答案用例旧实现对未知标签与缺标签有两个真实 RED。最终 `tests/unit/test_quick_scan_known_outcome.py` **57 passed**，覆盖回执与费用约束、旧状态、重复恢复、逐题继续以及 checkpoint 写入后撤权回滚。复跑使用实际 recovery-only 会话、合成回执与自有短临时路径。独立审查确认恢复与供应商标签解耦。代码 `322887f`、文档 `b702ed2` 已在 StockQA origin/master，远端精确核对。原 content-filter 分支只合入 PWF `9be7176`，其四个进行中源码和测试改动仍单独保留。
+- Dashboard `0.1.3-d` 兼容旧单尺度结果，V2 多尺度的正式及历史读面保留尺度列表、空公司分与原引用。M7 改以既有表达式应用接口判断。前端 **38 passed**、类型及 Vite 构建通过。OpenAPI 版本、Python 和 TypeScript 生成及 synthetic fixtures 对齐。独立审查通过。Dashboard `fd8b3db` 已快进推至 origin/main 并核对远端。
+- IQS 测试复用实际 StockWiki owner 的隔离 fixture。新组合从正式 V2 注册数据，经真实只读 CLI、IQS HTTP 和 Dashboard 路由，核对多尺度最近/历史、固定结果深链与读取前后 workspace 字节。受影响组合 **63 passed**。另从新 Dashboard 源构建实际 Chromium 的 I7，**1 passed / 39.35s**，HTTP/CLI 原命令查回且只提交一次。
+- 其余各仓定向验证：StockWiki V1/V2 与 IQS producer 3 项；Company Agent 16 项；Runtime 39 项；原工作台 17 项及 22 子测试；Theme 13 项；Industry 40 项及 92 子测试。Theme/Industry 最终使用相同 StockWiki 公开向量，清除了初次缺 fixture 位置的跳过。
+- PWF 文档提交：StockWiki `b4ca912`，Company Agent `2054ecf`，Runtime `cae47ec`，原工作台 `b8976c6`，Theme `9d6cbbf`，Industry `0a13e1a`。Industry 已推并核对 origin/main。上述文档同步与历史固定测试版本分别记录。
+- 独立核对 IQS_22 原回执和同一 manifest 的 owner 预览、确认。以 11-16 21:15 UTC 的确认作为交付进度证据，真实覆盖仍为 **35/36**。该动作由原交付方完成。本轮工程复验只用隔离数据和回环传输，未产生新增模型费用。
+
+## 2026-11-20 F4 IQS 宿主复验
+
+- 本仓源码 9a33d65985737435c0b9b9aee4d4c7a46916017d 交 ROOT 验收。真实 intake 自行写出回告，保留原检查退出 1。两次在各自落盘后强退，真实宿主按同一修复及回告 ID 找回结果。重复投递零新增，9 个原生文件 SHA 和修改时间一致，新增模型、搜索、外部网络及费用为零。
+- 定向回归 283 项通过（40.20 秒），包括已有模块边界约束和本仓已登记结果的实际 owner 读路径。观察和动作均从公开入口取得。完整命令、可部署 argv、版本与脱敏证据见 [F4 IQS 运行交接](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)。

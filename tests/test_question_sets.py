@@ -786,7 +786,7 @@ class QuestionSetTests(unittest.TestCase):
             self.assertIsNone(result['summary']['quality_score'])
             self.assertEqual(result['summary']['critical_issues'][0]['kind'], 'unresolved')
 
-    def test_unaudited_na_cannot_raise_coverage_and_low_confidence_is_not_counted(self):
+    def test_unaudited_na_stays_unknown_but_provisional_scores_are_retained(self):
         manifest = self.make_manifest()
         answers = {q['prompt']: self.good_answer(q, status='not_applicable') for q in manifest['questions']}
         result = qs.normalize(manifest, answers)
@@ -797,7 +797,12 @@ class QuestionSetTests(unittest.TestCase):
         self.assertIsNone(result['summary']['quality_score'])
         answers = {q['prompt']: self.good_answer(q, confidence='low') for q in manifest['questions']}
         result = qs.normalize(manifest, answers, self.review(manifest))
-        self.assertEqual(result['summary']['quality_coverage'], 0)
+        self.assertEqual(result['summary']['quality_coverage'], 1)
+        self.assertTrue(all(row['score'] == row['reported_score']
+                            and row['confidence'] == 'low' for row in result['questions']))
+        self.assertEqual(set(result['summary']['provisional_question_ids']),
+                         {q['id'] for q in manifest['questions']})
+        self.assertTrue(result['summary']['quality_score_provisional'])
 
     def test_future_evidence_wrong_id_missing_sources_and_boolean_score_fail(self):
         q = self.make_manifest()['questions'][0]
@@ -1071,15 +1076,17 @@ class QuestionSetTests(unittest.TestCase):
         self.assertTrue(all(row['status'] == 'review_pending' for row in old['questions']))
         self.assertFalse(any('accepted_ids' in row for row in old['questions']))
 
-    def test_screening_low_confidence_and_na_remain_out_of_valid_coverage(self):
+    def test_screening_keeps_provisional_scores_without_turning_na_into_a_score(self):
         manifest, _ = self.make_screening_manifest()
         q0, q1 = manifest['questions'][:2]
         bundle = self.make_screening_bundle(
             manifest, confidences={q0['id']: 'low'}, statuses={q1['id']: 'not_applicable'})
         imported = qs.normalize_screening(manifest, bundle)
         rows = {row['id']: row for row in imported['questions']}
-        self.assertEqual(rows[q0['id']]['status'], 'low_confidence')
-        self.assertIsNone(rows[q0['id']]['score'])
+        self.assertEqual(rows[q0['id']]['status'], 'scored')
+        self.assertEqual(rows[q0['id']]['score'], rows[q0['id']]['reported_score'])
+        self.assertEqual(rows[q0['id']]['confidence'], 'low')
+        self.assertIn(q0['id'], imported['summary']['provisional_question_ids'])
         self.assertEqual(rows[q1['id']]['reported_status'], 'not_applicable')
         self.assertEqual(rows[q1['id']]['status'], 'unknown')
         self.assertFalse(rows[q1['id']]['is_audited_na'])
@@ -1405,12 +1412,12 @@ class QuestionSetTests(unittest.TestCase):
         self.assertIn(survival, result['recovery_watch']['criteria'])
         self.assertNotIn('IQS_16', result['recovery_watch']['criteria'])
 
-    def test_unreviewed_missing_and_low_confidence_cannot_become_recovery_candidates(self):
+    def test_unreviewed_or_missing_evidence_is_visible_without_inventing_recovery_scores(self):
         manifest = self.recovery_manifest()
         result = self.recovery_result(manifest=manifest, reviewed=False)
         self.assertEqual(result['recovery_watch']['status'], 'needs_verification')
         self.assertEqual(result['recovery_watch']['strengths'], [])
-        for state in ('missing', 'not_applicable', 'insufficient_evidence', 'low_confidence'):
+        for state in ('missing', 'not_applicable', 'insufficient_evidence'):
             answers = {q['prompt']: self.good_answer(q, 8) for q in manifest['questions']}
             q = next(q for q in manifest['questions'] if q['id'] == 'RECOVERY_01')
             if state == 'missing':
@@ -1422,6 +1429,15 @@ class QuestionSetTests(unittest.TestCase):
             result = qs.normalize(manifest, answers, self.review(manifest))
             self.assertEqual(result['recovery_watch']['status'], 'needs_verification')
             self.assertIn('RECOVERY_01', result['recovery_watch']['missing_or_unusable_ids'])
+
+        answers = {q['prompt']: self.good_answer(q, 8, confidence='low')
+                   for q in manifest['questions']}
+        result = qs.normalize(manifest, answers, self.review(manifest))
+        self.assertNotIn('RECOVERY_01', result['recovery_watch']['missing_or_unusable_ids'])
+        self.assertIn('RECOVERY_01', result['summary']['provisional_question_ids'])
+        self.assertIn('provisional_scores', result['recovery_watch']['flags'])
+        self.assertIn('RECOVERY_01', result['recovery_watch']['provisional_question_ids'])
+        self.assertEqual(result['recovery_watch']['criteria']['RECOVERY_01']['confidence'], 'low')
 
     def test_mixed_profile_suggests_review_without_claiming_a_turnaround(self):
         manifest = self.make_manifest()

@@ -20,6 +20,7 @@ from .dashboard_locks import control_lock, ControlBusyError
 from .dashboard_owner import valid_timeout_seconds, TIMEOUT_SECONDS_MAX
 from .dashboard_membership_request import (
     apply_keyed_membership,
+    preview_keyed_membership,
     membership_history as read_membership_history,
     membership_request_read as read_membership_request,
 )
@@ -1028,6 +1029,8 @@ class DashboardService:
                 if path == 'import/apply':
                     bundle = self.config['import_bundles'].get(body.get('bundle_id'), {})
                     return self._apply_import(self._gateway('owner'),bundle,body)
+                if path == 'universe/preview' and body.get('idempotency_key') is not None:
+                    return preview_keyed_membership(self._gateway('owner'), body)
                 if path == 'universe/apply' and body.get('idempotency_key') is not None:
                     return apply_keyed_membership(self._gateway('owner'), body)
                 return getattr(self._gateway('owner'), action)(body)

@@ -1080,18 +1080,72 @@ def test_unknown_security_scope_blocks_preparation_until_original_state_resolved
     assert execution.started == ["b"]
 
 
-def test_entity_failure_does_not_run_following_security_scope_or_spin_forever(setup):
+@pytest.mark.parametrize("process_state", ["process_exited", "launch_failed"])
+def test_known_scope_failure_allows_independent_scope_without_resending_failed_work(setup, process_state):
     gateway, execution = setup
     prepare_scope_pair(execution)
     batch_id = start(gateway)
     gateway._step(batch_id)
     execution.finish("a", ready=False, exit_code=1)
+    next(value for value in execution.runs.values() if value["bundle_id"] == "a")["process_state"] = process_state
     gateway._step(batch_id)
-    assert execution.started == ["a"] and row(gateway, batch_id)["state"] == "blocked"
-    assert row(gateway, batch_id)["company_counts"]["failed"] == 1
+    assert execution.started == ["a", "b"]
+    assert [entry["state"] for entry in row(gateway, batch_id)["entries"]] == ["failed", "running"]
+    execution.finish("b")
+    gateway._step(batch_id)
+    partial = row(gateway, batch_id)
+    assert partial["state"] == "blocked" and partial["company_counts"]["failed"] == 1
+    assert partial["scope_counts"]["owner_ready"] == 1
     gateway.control(batch_id, "resume")
     gateway._step(batch_id)
-    assert execution.started == ["a"]
+    assert execution.started == ["a", "b"]
+
+
+def test_known_unstarted_scope_refusal_does_not_block_independent_scope(setup):
+    gateway, execution = setup
+    prepare_scope_pair(execution)
+    execution.bundles["a"]["budget"] = False
+    batch_id = start(gateway)
+    gateway._step(batch_id)
+    assert execution.started == ["b"]
+    current = row(gateway, batch_id)
+    assert [entry["state"] for entry in current["entries"]] == ["blocked", "running"]
+    assert current["entries"][0]["run_id"] is None
+
+
+def test_exited_process_with_unknown_native_work_does_not_release_following_scope(setup):
+    gateway, execution = setup
+    prepare_scope_pair(execution)
+    batch_id = start(gateway)
+    gateway._step(batch_id)
+    execution.finish("a", ready=False, exit_code=1)
+    execution.bundles["a"]["unknown"] = True
+    gateway._step(batch_id)
+    current = row(gateway, batch_id)
+    assert execution.started == ["a"] and current["state"] == "blocked"
+    assert current["entries"][0]["blocked_reasons"] == ["owner_work_unknown"]
+    assert current["entries"][1]["state"] == "selected"
+    execution.bundles["a"]["unknown"] = False
+    gateway.control(batch_id, "resume")
+    gateway._step(batch_id)
+    assert execution.started == ["a", "b"]
+
+
+def test_lost_launch_response_resolves_to_known_failed_scope_before_next_scope(setup):
+    gateway, execution = setup
+    prepare_scope_pair(execution)
+    execution.crash = "after"
+    batch_id = start(gateway)
+    gateway._step(batch_id)
+    assert row(gateway, batch_id)["entries"][0]["launch_uncertain"] is True
+    execution.finish("a", ready=False, exit_code=1)
+    execution.crash = None
+    gateway.control(batch_id, "resume")
+    gateway._step(batch_id)
+    current = row(gateway, batch_id)
+    assert execution.started == ["a", "b"]
+    assert current["entries"][0]["launch_uncertain"] is False
+    assert [entry["state"] for entry in current["entries"]] == ["failed", "running"]
 
 
 def test_scope_binding_change_is_rejected_even_if_executor_fingerprint_were_incorrectly_unchanged(setup):

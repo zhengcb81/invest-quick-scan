@@ -1,5 +1,19 @@
 # 当前接手说明
 
+## 2026-11-20 暂定评分的最新口径
+
+用户要求证据不足时仍可给暂定观点，由用户判断。六域已改为保留scored+confidence=low原分，披露假设、缺项；不清空低置信度分、结构可比差值或恢复线索。不要再恢复“low必空分/不能汇总”的旧规则，也不把暂定分伪称证据充分。事实数字/引用/期间仍准确，未知原数不补造。
+
+详见[本轮交付](reviews/PROVISIONAL-SCORING-2026-11-20/report.md)与根PWF顶部。原renderer1.0/旧请求和历史28空分不改；新renderer1.1/新请求使用新指导，原8个有分答案中1个低置信分现显式标记。五个隔离worktree已删，不从旧临时路径接续。独审与公开链通过，未跑新的真实重评或浏览器走查；回原F05/W11主线，不扩支线。
+
+## 2026-11-20 最新接手点
+
+先读根 PWF 顶部及[过度拒绝整改报告](reviews/GATE-SIMPLIFY-2026-11-20/report.md)。中微已正式登记原36题 `cas_6cab1b94d8f45d42c750`，read/history与原配置公开链读回正常；8有分、28证据不足、公司总分null。旧文“35/36”“company_result_not_registered”“必须每题可评分才登记”为阶段历史，不能据此重跑或裁剪原题库。formal表示owner出处，不表示金融全对。
+
+公开端口和owner schema/metric按兼容小版本解释；质量与保存覆盖独立；已知失败的scope不挡独立后续scope，未知发送仍防重复。421项受影响测试与独审通过。原长期UI服务当前未运行，新的浏览器用户走查未做。继续已有F05/W11、G4及规模计划，不再刷新旧任务回执、重复架构验收或新建门禁。
+
+交付代码：IQS b6e1eae（同期远端反馈已并线6d48f59）、StockQA 2ec9682（既有运行分支）、StockWiki e4d7e85（本地master最新PWF为e8da004，无远端）、Dashboard faec291（保留同期远端工作后main=4e1eb4d）。有远端的三仓已推送核对；后续总控归档仅改文档。三个自建隔离工作树/分支已删除，不要从旧临时路径继续。其他进程的未提交文件保持不动。
+
 ## 2026-11-14 模块化组合交接
 
 先读根[实施计划](../../task_plan.md)的当前状态与 Next Step，以及[固定来源与验证结果](parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。IQS 十个能力域已进入 `scripts/iqs_scan`，旧 CLI 路径可用。新域间依赖使用 `api.py`、HTTP 或公开 JSON 命令。StockQA 拥有发送和保存，StockWiki 拥有公司身份、名单和入库，工作台与 Dashboard 消费各自公开接口。

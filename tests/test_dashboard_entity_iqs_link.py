@@ -62,13 +62,13 @@ class Owner:
     def company_result(self, entity_id, result_id=None):
         self.company_calls.append(('result', entity_id, result_id))
         return {'protocol': 'iqs.dashboard.company_assessment/1',
-                'projection_version': 'company_assessment/1.0.0',
+                'projection_version': 'company_assessment/1.1.0',
                 'entity_id': entity_id, 'read': 'result', 'owner_payload': {}}
 
     def company_history(self, entity_id, limit=20, offset=0):
         self.company_calls.append(('history', entity_id, limit, offset))
         return {'protocol': 'iqs.dashboard.company_assessment/1',
-                'projection_version': 'company_assessment/1.0.0',
+                'projection_version': 'company_assessment/1.1.0',
                 'entity_id': entity_id, 'read': 'history', 'owner_payload': {}}
 
 

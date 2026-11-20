@@ -407,7 +407,7 @@ class ModuleRegistryTests(unittest.TestCase):
         import question_prompts
         published = self.publish()
         original = self.manifest("old-renderer", {**self.profile, "entity_id": "EXAMPLE_ENTITY_A"}, answer_format="standard-1")
-        old = question_prompts.renderer_for_release("1.0.0", qs.renderer_rules_sha256())
+        old = question_prompts.renderer_for_release(original["renderer_version"], qs.renderer_rules_sha256())
         changed = old._replace(rules_sha256="f" * 64,
             standard_prompt=lambda *a, **kw: old.standard_prompt(*a, **kw) + "\nVersion two instruction.",
             render_question=lambda *a, **kw: old.render_question(*a, **kw) + "\nVersion two instruction.",

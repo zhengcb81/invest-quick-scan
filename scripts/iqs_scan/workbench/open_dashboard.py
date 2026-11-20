@@ -202,6 +202,7 @@ def main(argv=None):
         return 2
     server.daemon_threads = True
     url = f"http://127.0.0.1:{server.server_address[1]}/"
+    service.bind_runtime_origin(url)
     print(json.dumps({"status": "ready", "url": url, "port": server.server_address[1],
                       "snapshot": str(snapshot_path), "model_calls": 0, "network_calls": 0,
                       "refreshed": not args.no_refresh}, ensure_ascii=False), flush=True)

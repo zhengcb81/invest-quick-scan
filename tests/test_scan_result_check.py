@@ -9,16 +9,25 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import scan_result_check as check  # noqa: E402
 
+PARTIAL_RUN = (Path(__file__).resolve().parent / "fixtures" / "company_coverage"
+               / "answers-partial-24of38.json")
 
-def _write(run: Path, answers, *, calls=1, searches=1, importable=True, bank=True) -> Path:
+
+def _write(run: Path, answers, *, calls=1, searches=1, importable=True, bank=True,
+           question_count=None, missing=None) -> Path:
     run.mkdir(parents=True, exist_ok=True)
+    bank_document = {"package_id": "pkg_x"} if bank else None
+    if bank_document is not None and question_count is not None:
+        bank_document["question_count"] = question_count
     document = {
         "company": "c", "draft": True, "verified": False, "importable": importable,
         "provenance": "versioned_bank" if importable else "unversioned_flat_list",
-        "bank": {"package_id": "pkg_x"} if bank else None,
+        "bank": bank_document,
         "meta": {"calls": calls, "searches": searches},
         "answers": answers,
     }
+    if missing is not None:
+        document["missing_question_ids"] = missing
     (run / "answers.json").write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
     (run / "run-log.json").write_text("[]", encoding="utf-8")
     (run / "index.html").write_text("<html></html>", encoding="utf-8")
@@ -85,6 +94,76 @@ def test_missing_artifacts_are_unusable(tmp_path):
     report = check.check(run)
     assert not report["ok"] and not report["usable"]
     assert any("missing artifacts" in p for p in report["problems"])
+
+
+def test_a_run_that_answers_part_of_its_bank_is_partial_not_usable(tmp_path):
+    """24 of 38 answered is honest partial data, never a complete result."""
+    answers = [_answer(qid=f"Q{i}") for i in range(3)]
+    report = check.check(_write(tmp_path / "run", answers, question_count=38))
+
+    assert report["ok"], report["problems"]
+    assert report["coverage"] == "partial"
+    assert report["manifest_question_count"] == 38
+    assert report["question_count"] == 3
+    assert report["missing_question_count"] == 35
+    assert not report["usable"]
+    assert any("covers 3 of 38" in warning for warning in report["warnings"])
+
+
+def test_a_run_that_answers_its_whole_bank_stays_usable(tmp_path):
+    answers = [_answer(qid=f"Q{i}") for i in range(3)]
+    report = check.check(_write(tmp_path / "run", answers, question_count=3))
+
+    assert report["coverage"] == "complete"
+    assert report["missing_question_count"] == 0
+    assert report["usable"]
+
+
+def test_declared_missing_questions_are_kept_verbatim(tmp_path):
+    answers = [_answer(qid="Q1"), _answer(qid="Q2", status="insufficient_evidence", score=None)]
+    report = check.check(_write(tmp_path / "run", answers, question_count=4,
+                                missing=["Q3", "Q4"]))
+
+    assert report["coverage"] == "partial"
+    assert report["missing_question_ids"] == ["Q3", "Q4"]
+    assert report["missing_question_count"] == 2
+    assert not report["usable"]
+
+
+def test_a_run_without_a_bank_question_count_reports_unknown_coverage(tmp_path):
+    report = check.check(_write(tmp_path / "run", [_answer()]))
+
+    assert report["coverage"] == "unknown"
+    assert report["manifest_question_count"] is None
+    assert report["usable"]
+
+
+def test_declared_gaps_without_a_bank_total_are_partial(tmp_path):
+    """A gap list proves the run is short even when the total is unknown."""
+    answers = [_answer(qid="Q1"), _answer(qid="Q2")]
+    report = check.check(_write(tmp_path / "run", answers, missing=["Q3"]))
+
+    assert report["coverage"] == "partial"
+    assert report["manifest_question_count"] is None
+    assert report["missing_question_ids"] == ["Q3"]
+    assert report["missing_question_count"] == 1
+    assert not report["usable"]
+
+
+def test_the_saved_partial_run_is_reported_as_partial(tmp_path):
+    run = tmp_path / "partial"
+    run.mkdir()
+    (run / "answers.json").write_bytes(PARTIAL_RUN.read_bytes())
+    (run / "run-log.json").write_text("[]", encoding="utf-8")
+    (run / "index.html").write_text("<html></html>", encoding="utf-8")
+
+    report = check.check(run)
+
+    assert report["coverage"] == "partial"
+    assert report["manifest_question_count"] == 38
+    assert report["question_count"] == 24
+    assert report["missing_question_count"] == 14
+    assert not report["usable"]
 
 
 def test_cli_exit_codes(tmp_path):
