@@ -756,7 +756,8 @@ def test_command_reports_a_named_unavailable_for_an_old_owner(tmp_path, old_comm
     assert error.value.status == 502
 
 
-def _seed_workspace(root: Path, *, mixed_scales: bool = False) -> str:
+def _seed_workspace(root: Path, *, mixed_scales: bool = False,
+                    answer_status: str | None = None) -> str:
     """Use StockWiki's own synthetic seeder in a separate test process."""
     script = '''
 import sys
@@ -780,6 +781,8 @@ if sys.argv[2] == "mixed":
         _published_observation(E01, qid, "obs_" + qid.lower(), manifest=source)
         for qid in source["questions"]
     ]
+    if sys.argv[3]:
+        observations[1]["answer"].update(status=sys.argv[3], score=None)
     _import_v2_observations(paths, manifest, observations)
     register_company_assessment(paths, _v2_register_request(E01, manifest, observations))
 else:
@@ -787,7 +790,7 @@ else:
 print(read_company_result(paths, entity_id=E01)["result"]["result_id"])
 '''
     done = subprocess.run([sys.executable, '-B', '-c', script, str(root),
-                           'mixed' if mixed_scales else 'single'],
+                           'mixed' if mixed_scales else 'single', answer_status or ''],
                           cwd=B03_STOCKWIKI_ROOT, capture_output=True, timeout=300)
     assert done.returncode == 0, done.stderr.decode('utf-8', 'replace')
     return done.stdout.decode('utf-8').strip()

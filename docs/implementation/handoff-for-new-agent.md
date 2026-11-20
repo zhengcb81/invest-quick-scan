@@ -1,5 +1,11 @@
 # 当前接手说明
 
+## 2026-11-20 最新接手点
+
+先读根 PWF 顶部及[过度拒绝整改报告](reviews/GATE-SIMPLIFY-2026-11-20/report.md)。中微已正式登记原36题 `cas_6cab1b94d8f45d42c750`，read/history与原配置公开链读回正常；8有分、28证据不足、公司总分null。旧文“35/36”“company_result_not_registered”“必须每题可评分才登记”为阶段历史，不能据此重跑或裁剪原题库。formal表示owner出处，不表示金融全对。
+
+公开端口和owner schema/metric按兼容小版本解释；质量与保存覆盖独立；已知失败的scope不挡独立后续scope，未知发送仍防重复。421项受影响测试与独审通过。原长期UI服务当前未运行，新的浏览器用户走查未做。继续已有F05/W11、G4及规模计划，不再刷新旧任务回执、重复架构验收或新建门禁。
+
 ## 2026-11-14 模块化组合交接
 
 先读根[实施计划](../../task_plan.md)的当前状态与 Next Step，以及[固定来源与验证结果](parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。IQS 十个能力域已进入 `scripts/iqs_scan`，旧 CLI 路径可用。新域间依赖使用 `api.py`、HTTP 或公开 JSON 命令。StockQA 拥有发送和保存，StockWiki 拥有公司身份、名单和入库，工作台与 Dashboard 消费各自公开接口。

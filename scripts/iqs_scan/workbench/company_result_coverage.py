@@ -115,6 +115,7 @@ def _read_refs(result: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str]]
             "observation_id": _text(entry.get("observation_id")),
             "lineage_group_id": _text(entry.get("lineage_group_id")),
             "aggregation_role": _text(entry.get("aggregation_role")),
+            "answer_state": _text(entry.get("answer_status")),
         })
     return references, malformed
 
@@ -385,7 +386,9 @@ def _questions(manifest_ids: list[str] | None, by_question: dict[str, dict[str, 
         questions.append({
             "question_id": question_id,
             "status": status,
-            "answer_state": receipt["answer_state"] if receipt is not None else None,
+            "answer_state": (reference.get("answer_state")
+                             if reference is not None and reference.get("answer_state") is not None
+                             else receipt["answer_state"] if receipt is not None else None),
             "rubric_version": group["rubric_version"] if group is not None else None,
             "aggregation_role": group["aggregation_role"] if group is not None else None,
             "lineage_group_id": group["lineage_group_id"] if group is not None else None,

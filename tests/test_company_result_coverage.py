@@ -323,6 +323,19 @@ def test_a_settled_receipt_without_an_observation_is_never_called_completed():
     assert coverage['verdict'] == 'partial'
 
 
+@pytest.mark.parametrize('answer_status', ['scored', 'insufficient_evidence',
+                                         'not_applicable', 'search_unavailable'])
+def test_answer_state_comes_from_saved_observation_without_optional_receipts(answer_status):
+    result = snapshot('result-complete-mixed.json')
+    result['observation_refs'][0]['answer_status'] = answer_status
+    derived = coverage_api.derive_coverage(result)
+    saved = next(question for question in derived['questions']
+                 if question['question_id'] == result['observation_refs'][0]['question_id'])
+    assert saved['status'] == 'completed'
+    assert saved['answer_state'] == answer_status
+    assert derived['verdict'] == 'complete'  # persistence coverage, not answer quality
+
+
 def test_receipts_for_an_unknown_question_or_word_are_refused():
     result = snapshot('result-single-scale.json')
     with pytest.raises(ValueError):

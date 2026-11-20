@@ -103,14 +103,17 @@ def _dashboard_modules():
 
 @pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / "dashboard_company_assessment_cli.py").is_file(),
                     reason="StockWiki public assessment CLI is unavailable")
-def test_m6_mixed_scale_read_uses_public_stockwiki_iqs_and_dashboard_interfaces(tmp_path, monkeypatch):
+@pytest.mark.parametrize("answer_status", [None, "insufficient_evidence", "not_applicable"])
+def test_m6_mixed_scale_read_uses_public_stockwiki_iqs_and_dashboard_interfaces(
+    tmp_path, monkeypatch, answer_status,
+):
     _clear_test_credentials(monkeypatch)
     from fastapi.testclient import TestClient
 
     IqsQuickScanAdapter, _, _, JsonHttpTransport, create_app = _dashboard_modules()
     workspace = tmp_path / "assessments"
     workspace.mkdir()
-    result_id = _seed_workspace(workspace, mixed_scales=True)
+    result_id = _seed_workspace(workspace, mixed_scales=True, answer_status=answer_status)
     entity_id = "ENT_11111111-1111-4111-8111-111111111111"
     owner_config = {
         "workspace_root": str(workspace),
@@ -150,6 +153,7 @@ def test_m6_mixed_scale_read_uses_public_stockwiki_iqs_and_dashboard_interfaces(
             assert result["scale_versions"] == ["1.0.0", "2.0.0"]
             assert result["score"] is None
             assert len(result["provenance"]) == 3
+            assert result["missing_count"] == (1 if answer_status == "insufficient_evidence" else 0)
         assert f"result_id={result_id}" in view["link"]["routes"]["results"]
         assert owner_bytes() == before
     finally:
