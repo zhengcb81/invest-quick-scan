@@ -285,3 +285,12 @@ def test_out_of_scope_observation_never_writes_a_coverage_result(tmp_path, saved
     assert (
         _native_call(root, db, "get-coverage", _key("repair", "F2-IQS-0001", key)) == {}
     )
+
+
+def test_observation_write_failure_keeps_native_partial_output(saved_run):
+    _, run, out = saved_run
+    out.mkdir()
+    completed = _program("scan_result_check.py", "--run", run)
+    assert completed.returncode == 1
+    assert json.loads(completed.stdout)["usable"] is False
+    assert "feedback observation write failed" in completed.stderr

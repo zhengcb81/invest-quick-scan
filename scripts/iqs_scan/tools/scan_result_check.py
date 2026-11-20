@@ -20,19 +20,20 @@ part of its bank, 2 = unusable.
 from __future__ import annotations
 
 import argparse
+from contextlib import suppress
 from dataclasses import dataclass
 from hashlib import sha256
 import json
 import os
 from pathlib import Path
-
-from ..workbench import dashboard_company_feedback as feedback
+import sys
 
 REQUIRED_FILES = ("answers.json", "run-log.json", "index.html")
 RUNS_ROOT_ENV = "IQS_FEEDBACK_RUNS_ROOT"
 REFERENCE_PREFIX = "iqs:scan/runs/"
 COVERAGE_ISSUE = "iqs-scan-result-partial-reported-complete"
 VERSION = "iqs-scan-check/1"
+OWNER = "invest-quick-scan"
 
 
 @dataclass(frozen=True)
@@ -172,10 +173,25 @@ def inspect_run(run_dir: Path) -> CheckRead:
 
 
 def _observe(run_dir: Path, checked: CheckRead, previous: Path | None) -> None:
-    context = feedback.context_from_env(version=VERSION)
-    if context is None or not checked.source_sha256:
+    if not checked.source_sha256 or not os.environ.get("RESEARCH_FEEDBACK_OUT", "").strip():
         return
     try:
+        from ..foundation.api import (
+            FEEDBACK_ATTEMPT_ENV,
+            append_feedback,
+            diagnose_feedback,
+            feedback_path,
+        )
+    except ImportError:
+        # The native read also supports a Python installation with no IQS extras.
+        with suppress(OSError, ValueError):
+            print("feedback observation skipped (ImportError)", file=sys.stderr)
+        return
+
+    try:
+        out_path = feedback_path()
+        if out_path is None:
+            return
         root = Path(os.environ.get(RUNS_ROOT_ENV) or "runs").resolve()
         run_id = run_dir.resolve().relative_to(root).as_posix()
         native = checked.report
@@ -183,8 +199,8 @@ def _observe(run_dir: Path, checked: CheckRead, previous: Path | None) -> None:
             native["coverage"]
         ]
         row = {
-            "schema_version": feedback.SCHEMA_VERSION, "owner": feedback.OWNER, "origin_owner": feedback.OWNER,
-            "run_id": run_id, "attempt_id": os.environ.get(feedback.ENV_ATTEMPT_ID) or "scan-result-check",
+            "owner": OWNER, "origin_owner": OWNER,
+            "run_id": run_id, "attempt_id": os.environ.get(FEEDBACK_ATTEMPT_ENV) or "scan-result-check",
             "step_id": f"scan-result/{run_id}", "check_id": "coverage-claim", "expected": expected,
             "actual": expected if native["coverage"] != "unknown" else "unknown",
             "disposition": "unknown" if native["coverage"] == "unknown" else "expected",
@@ -200,9 +216,9 @@ def _observe(run_dir: Path, checked: CheckRead, previous: Path | None) -> None:
             ):
                 row.update(actual="complete-claimed", disposition="deviation", issue_key=COVERAGE_ISSUE,
                            details_ref=f"iqs:scan-check-before/{sha256(archived_bytes).hexdigest()}")
-        feedback.emit(context, [row])
+        append_feedback(out_path, [row])
     except (OSError, ValueError, AttributeError, RuntimeError, RecursionError) as error:
-        feedback.diagnose(error)
+        diagnose_feedback(error)
 
 
 def main() -> int:

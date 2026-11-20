@@ -12,7 +12,7 @@ import sys
 
 from . import scan_result_check as check
 
-OWNER = "invest-quick-scan"
+OWNER = check.OWNER
 ISSUE = "F2-IQS-0001"
 NEW_USAGE = {"new_model_calls": 0, "new_searches": 0, "new_cost_micros": 0}
 ACTIONS = ("triage", "repair", "replay", "report", "reconcile")
