@@ -1,6 +1,7 @@
 """Fixed offline preview validator. Never authenticates a supplied owner JSON."""
 import argparse
 import json
+import sys
 from pathlib import Path
 from iqs_scan.foundation import api as module_contract
 from . import refresh_contract as contract
@@ -11,10 +12,14 @@ PROTOCOL='iqs.refresh_validation/1.0.0'
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input',type=Path,required=True)
-    parser.add_argument('--operation',choices=('request','policy','preview','validate-preview','targets'),required=True)
+    parser.add_argument('--operation',choices=('request','policy','preview','validate-preview','targets','frozen-record'),required=True)
     args=parser.parse_args(argv)
     try:
-        with args.input.open('rb') as handle:raw=handle.read(contract.MAX_BYTES+1)
+        if args.input == Path('-'):
+            raw = sys.stdin.buffer.read(contract.MAX_BYTES + 1)
+        else:
+            with args.input.open('rb') as handle:
+                raw = handle.read(contract.MAX_BYTES + 1)
         if len(raw)>contract.MAX_BYTES:raise ValueError('refresh_input_too_large')
         value=json.loads(raw.decode('utf-8-sig'),object_pairs_hook=module_contract.unique_json_object)
         if not isinstance(value,dict):raise ValueError('refresh_object_required')
@@ -32,6 +37,10 @@ def main(argv=None):
         elif args.operation=='preview':
             if set(value)!={'request','owner_state','created_at','expires_at'}:raise ValueError('refresh_input_fields')
             result=contract.create_preview(**value)
+        elif args.operation == 'frozen-record':
+            if set(value) != {'request', 'preview', 'owner_state'}:
+                raise ValueError('refresh_input_fields')
+            result = contract.validate_frozen_record(**value)
         else:
             if set(value)!={'preview','request','owner_state','now'}:raise ValueError('refresh_input_fields')
             result=contract.validate_preview(**value)

@@ -293,3 +293,10 @@ ACCEPT_WITH_FIXES（受审 `11d2bd9`）**：三个 P1、五个 P2、五个 P3 �
 ### 2026-11-19 冻结清单入口
 
 StockQA 组合复验发现 IQS 真实生产器生成的 metric 1.1 正式清单在路由入口被精确 1.0 判断提前拒绝。路由入口现在由现有冻结包校验解释版本、哈希和题目，仍返回原缺正式清单原因。29 项和 2 子例通过。独审从两份真实 metric schema 分别发布合成冻结包，历史及执行入口均通过，错版和错 schema 哈希有负例。
+
+
+## 2026-11-20 已付历史确认的冻结协议
+
+本仓公开入口 `scripts/refresh_contract_cli.py --operation frozen-record --input -` 接受 StockWiki 原封存的 request、preview、owner_state。原 request 决定三份记录的结构，原 hash 和 preview ID 绑定同一份资料。此操作返回输入 SHA 和零写入、零请求的验证回执。当前策略和主体授权由 StockWiki 公开入口判断，恢复与账本归 StockQA。
+
+75 项离线定向通过，覆盖旧 1.0/1.1 与新版 1.6、重封存的混版、篡改 state，以及当前 planner 禁用时的冻结检验。另由总控执行带原已付账本和新策略的真实本机组合。
