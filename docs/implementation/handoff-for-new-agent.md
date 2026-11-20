@@ -6,6 +6,8 @@
 
 公开端口和owner schema/metric按兼容小版本解释；质量与保存覆盖独立；已知失败的scope不挡独立后续scope，未知发送仍防重复。421项受影响测试与独审通过。原长期UI服务当前未运行，新的浏览器用户走查未做。继续已有F05/W11、G4及规模计划，不再刷新旧任务回执、重复架构验收或新建门禁。
 
+交付代码：IQS b6e1eae（同期远端反馈已并线6d48f59）、StockQA 2ec9682（既有运行分支）、StockWiki e4d7e85（本地master最新PWF为e8da004，无远端）、Dashboard faec291（保留同期远端工作后main=4e1eb4d）。有远端的三仓已推送核对；后续总控归档仅改文档。三个自建隔离工作树/分支已删除，不要从旧临时路径继续。其他进程的未提交文件保持不动。
+
 ## 2026-11-14 模块化组合交接
 
 先读根[实施计划](../../task_plan.md)的当前状态与 Next Step，以及[固定来源与验证结果](parallel-lanes/packages/2026-11-11-modularity-closeout/fixed-combination-2026-11-14.md)。IQS 十个能力域已进入 `scripts/iqs_scan`，旧 CLI 路径可用。新域间依赖使用 `api.py`、HTTP 或公开 JSON 命令。StockQA 拥有发送和保存，StockWiki 拥有公司身份、名单和入库，工作台与 Dashboard 消费各自公开接口。

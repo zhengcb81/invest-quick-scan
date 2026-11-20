@@ -54,3 +54,7 @@ Company Agent、Runtime、原 UI、Theme、Industry 的本轮检查没有发现�
 ## 交付
 
 StockWiki `e4d7e85` 已快进 master（该仓没有远端）；Dashboard `faec291` 已快进 main；StockQA `2ec9682` 保留同期反馈提交后接入原运行分支。IQS 本轮提交包含批次和逐题投影修复及回归，不夹带其他仓 WIP。总控与对应 owner 的 PWF 已同步。下一主线仍是事实质量/产业关系 F05/W11、G4 和规模覆盖；28 个不足证据答案是研究内容待补，不再作为已有结果可见性的门禁。
+
+推送时发现同期远端更新，正常合并保留了 IQS 的三份原生反馈提交及 Dashboard 的预测轨迹/反馈部署提交，没有强推。并线后另跑 IQS 组合 **217 passed、7 deselected**（含本轮未改动浏览器名称用例，不替代先前完整106项批编排），Dashboard 适配/反馈/读边界组合 **149项通过**。StockQA远端原运行分支核对为 `2ec9682`；Dashboard origin/main 核对为 `4e1eb4d`；IQS功能并线 `6d48f59` 已在origin当前分支，包含本轮修复 `b6e1eae`。StockWiki最新本地master为 `e8da004`（后者只补真实读回PWF）。此后的总控归档提交只改文档。
+
+本轮三个隔离Git工作树及分支均已删除，临时测试库/HTTP已清理；`runs/gate-simplification-20261120/` 仅保留已标记的三份本地薄摘要。源仓其他进程的WIP保持原样（Dashboard的filing-fetch反馈文件未纳入本轮提交）。

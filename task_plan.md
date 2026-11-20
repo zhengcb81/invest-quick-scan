@@ -9,7 +9,7 @@
 |误拒盘点|追溯版本、标签、尺度、发布资格及恢复条件的实际拒绝证据|完成|
 |结果语义|保存/发布来源与回答质量分开，原始缺题与不足证据如实显示|完成|
 |兼容接线|公开接口及 V2 schema/metric 小版本兼容；独立 scope 不受已知失败串行阻挡|完成|
-|验收与 PWF|受影响正常与冲突场景、独立复审、原36题登记及公开链读回|完成；提交见最新进度|
+|验收与 PWF|受影响正常与冲突场景、独立复审、原36题登记及公开链读回|完成；实现已推送，自建临时工作树已清理|
 
 中微原36题已登记为 `cas_6cab1b94d8f45d42c750`，公开 read/history 返回同一 formal 快照：8 scored、28 insufficient_evidence、总分为空。原部署配置的 StockWiki CLI→IQS HTTP→Dashboard adapter 已读回36题与28缺证据，未重问或修改原答案。formal 仅指原 owner 发布来源可核。回归421项，独立复审 ACCEPT，详见[本轮报告](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-20/report.md)。下文日期段是阶段历史，不覆盖本节；下一产品主线仍按既有 F05/W11、G4 与规模计划，不扩支线。
 
