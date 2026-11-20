@@ -15,20 +15,24 @@ body, a credential, a physical path or a paid attempt.
 
 from __future__ import annotations
 
-import json
 import os
 import re
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = "feedback-observation/1"
+from ..foundation.api import (
+    FEEDBACK_ATTEMPT_ENV as ENV_ATTEMPT_ID,
+    FEEDBACK_OUT_ENV as ENV_OUT,
+    FEEDBACK_RUN_ENV as ENV_RUN_ID,
+    FEEDBACK_SCHEMA as SCHEMA_VERSION,
+    append_feedback,
+    diagnose_feedback as diagnose,
+    feedback_path,
+)
+
 OWNER = "invest-quick-scan"
 OWNER_STOCKWIKI = "stockwiki"
-ENV_OUT = "RESEARCH_FEEDBACK_OUT"
-ENV_RUN_ID = "RESEARCH_FEEDBACK_RUN_ID"
-ENV_ATTEMPT_ID = "RESEARCH_FEEDBACK_ATTEMPT_ID"
 DEFAULT_RUN_ID = "iqs-local"
 DEFAULT_ATTEMPT_ID = "attempt-1"
 
@@ -61,11 +65,11 @@ def context_from_env(environ: dict[str, str] | None = None,
                      version: str | None = None) -> Context | None:
     """Read the observation context; ``None`` means observation is switched off."""
     environ = os.environ if environ is None else environ
-    raw = environ.get(ENV_OUT)
-    if not isinstance(raw, str) or not raw.strip():
+    path = feedback_path(environ)
+    if path is None:
         return None
     return Context(
-        out_path=Path(raw).expanduser(),
+        out_path=path,
         run_id=_sanitize(environ.get(ENV_RUN_ID), DEFAULT_RUN_ID),
         attempt_id=_sanitize(environ.get(ENV_ATTEMPT_ID), DEFAULT_ATTEMPT_ID),
         version=_sanitize_reference(version),
@@ -76,20 +80,6 @@ def _sanitize_reference(value: Any) -> str | None:
     if isinstance(value, str) and _REFERENCE.match(value):
         return value
     return None
-
-
-def diagnose(error: BaseException) -> None:
-    """Report an observation-plane fault on stderr, never in the business output."""
-    if isinstance(error, OSError):
-        # The destination path stays out of the message: it can name a host
-        # location and this channel is not the owner's.
-        message = f"feedback observation write failed: {error.strerror or 'output unavailable'}"
-    else:
-        message = f"feedback observation skipped ({error.__class__.__name__})"
-    try:
-        print(message[:300], file=sys.stderr)
-    except (OSError, ValueError):
-        pass
 
 
 def observations(envelope: dict[str, Any], *, read: str, receipts: Any = None,
@@ -268,16 +258,7 @@ def emit(context: Context, rows: list[dict[str, Any]]) -> bool:
     """Append the rows to the process-specific file; failures never raise."""
     if not isinstance(context, Context):
         return False
-    try:
-        payload = "".join(json.dumps(row, ensure_ascii=False, allow_nan=False,
-                                     separators=(",", ":")) + "\n" for row in rows)
-        context.out_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(context.out_path, "a", encoding="utf-8", newline="\n") as handle:
-            handle.write(payload)
-    except (OSError, TypeError, ValueError) as error:
-        diagnose(error)
-        return False
-    return True
+    return append_feedback(context.out_path, rows)
 
 
 def observe(envelope: dict[str, Any], *, read: str, receipts: Any = None,

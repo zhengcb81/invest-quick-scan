@@ -348,3 +348,8 @@ http和https都可能是供应商真实返回的来源；原投影精确成员�
 - **schema-7手工与自动成员准入是两种不同权限。** 手工写在schema7需 durable membership request receipt；自动准入仍走受持久化策略、身份、挂牌、排除、配额核验的独立原子authority `apply_auto/admit_with_intent`，同时写member/history/scan_intent。自动authority支持schema6与7；schema5与future schema拒绝且零写。`save_member`版本检查在同一 `BEGIN IMMEDIATE` 中，从而挡住schema6迁移至7的竞态。
 - **测试结果要注明环境边界。** SW2核心75项和静态检查通过，独立终审ACCEPT。普通沙箱的Playwright sync driver启动受限；以正常权限运行隔离2000实体UI分页E2E后 **1 passed/27.73s**，共17条loopback请求，临时库和截图清理。不能把普通沙箱启动问题记成产品失败。
 - **同一轮核出的未收敛项：** IQS-2目标公司实际bundle映射未读证；IQS-4真实付费样本未跑；SW-3实际研究覆盖未重查；固定Dashboard M8在 `owner_job_id` 与 `command_id` 格式重叠时可返回空command的unknown视图，需在I7/消费者适配路径修复。它们都不能由合成fixture替代。
+
+## 2026-11-20 F4 IQS 根因与归属
+
+- F2 修复了本仓快扫检查的覆盖语义，旧检查既无覆盖回执也无按原 action ID 查询的结算。F4 用同一检查器及原答案 SHA 重新发布有证据的覆盖回执。原 24/38 标 partial，保留 15 个原评分与 14 个未覆盖名额。旧本地计量只确认搜索成本 16800 微美元，历史供应商总费用未知。
+- 旧 issue 列中的两份干跑均已标不可用，分别用作 24/38、3/37 阴性对照。公司登记和上游结果缺项属各自现成公开端口。两条旧公司回放工具跨 Workbench 私域引用已换为公开操作，基础观察写入供两个生产者共用。[原始复现与接口](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)

@@ -14,12 +14,13 @@
 | # | run_id | attempt_id | step_id | check_id | evidence_ref |
 |---|---|---|---|---|---|
 | 1 | `thin-bank-catl-full-2026-10-22/final` | `scan-result-check` | `scan-result/<run>` | `coverage-claim` | `iqs:scan/runs/thin-bank-catl-full-2026-10-22/final` |
-| 2 | `thin-bank-catl-full-2026-10-22/dryrun` | `scan-result-check` | `scan-result/<run>` | `coverage-claim` | 同上，24/38 |
-| 3 | `thin-bank-catl-dry` | `scan-result-check` | `scan-result/<run>` | `coverage-claim` | 3/37 |
 
-以上三份是本工作树 `runs/` 下真实留存的 `answers.json`（`runs/` 未纳入版本
-管理，复现用 `tests/fixtures/company_coverage/answers-partial-24of38.json`
-这份由第 1 份派生的固定输入）。
+本仓 runs/ 留存此处原生答案。可移植复现使用 tests/fixtures/company_coverage/answers-partial-24of38.json 的脱敏样本。
+
+F4 调取旧 checker 验证两份曾列作关联发生的真实样本。
+thin-bank-catl-full-2026-10-22/dryrun（24/38）和 thin-bank-catl-dry（3/37）
+原检查均为 usable=false、退出 1，两份作为新闭环的阴性对照，观察为 expected。
+[F4 再核验与恢复证据](../parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)
 
 ## 最小复现
 

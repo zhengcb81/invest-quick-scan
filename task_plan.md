@@ -389,3 +389,8 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 - **测试**：四文件 **126 passed**；施工卡指定三份 **89 passed**；边界/链接/套件 45 passed；HTTP 33 passed。既有红（owner 名单 2 例、Dashboard 浏览器 1 例）与本卡无关。
 - **余项**：真实已登记结果下的复验、Dashboard 消费入口复验、回执四态的真实样本；「同 rubric 下单个组连同题目消失」在公开快照上不可判定，需消费方用 `source_release_sha256` 对冻结释放复核，已写入交接 §8。
 
+## 2026-11-20 F4 IQS 快扫检查回执闭环
+
+- [x] 本仓原生快扫入口发布可选观察；按同一运行原件生成覆盖回执，复验后回告。工作树基于发布分支 c1dd6a4，候选源码 9a33d65985737435c0b9b9aee4d4c7a46916017d。
+- [x] 在真实本机宿主接通原作业查询、修复与回告恢复。用原 24/38 和两份历史阴性对照验证。记录中断、去重、老费用未知与零新调用。
+- [ ] ROOT 沿现有 IQS 发布分支接收候选、接入公开宿主配置并执行组合独审。[运行与交接](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)

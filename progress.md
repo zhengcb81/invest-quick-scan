@@ -750,3 +750,8 @@ TH-SOURCE-INTEGRATION-01 与 IN-SOURCE-INTEGRATION-01 均已由总控验收并�
 - 其余各仓定向验证：StockWiki V1/V2 与 IQS producer 3 项；Company Agent 16 项；Runtime 39 项；原工作台 17 项及 22 子测试；Theme 13 项；Industry 40 项及 92 子测试。Theme/Industry 最终使用相同 StockWiki 公开向量，清除了初次缺 fixture 位置的跳过。
 - PWF 文档提交：StockWiki `b4ca912`，Company Agent `2054ecf`，Runtime `cae47ec`，原工作台 `b8976c6`，Theme `9d6cbbf`，Industry `0a13e1a`。Industry 已推并核对 origin/main。上述文档同步与历史固定测试版本分别记录。
 - 独立核对 IQS_22 原回执和同一 manifest 的 owner 预览、确认。以 11-16 21:15 UTC 的确认作为交付进度证据，真实覆盖仍为 **35/36**。该动作由原交付方完成。本轮工程复验只用隔离数据和回环传输，未产生新增模型费用。
+
+## 2026-11-20 F4 IQS 宿主复验
+
+- 本仓源码 9a33d65985737435c0b9b9aee4d4c7a46916017d 交 ROOT 验收。真实 intake 自行写出回告，保留原检查退出 1。两次在各自落盘后强退，真实宿主按同一修复及回告 ID 找回结果。重复投递零新增，9 个原生文件 SHA 和修改时间一致，新增模型、搜索、外部网络及费用为零。
+- 定向回归 283 项通过（40.20 秒），包括已有模块边界约束和本仓已登记结果的实际 owner 读路径。观察和动作均从公开入口取得。完整命令、可部署 argv、版本与脱敏证据见 [F4 IQS 运行交接](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)。
