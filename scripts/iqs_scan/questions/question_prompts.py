@@ -5,6 +5,7 @@ renderers retain their output semantics; comments and source layout are not an A
 """
 
 from iqs_scan import REPO_ROOT
+import hashlib
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -167,9 +168,24 @@ def _typed_semantic_rules_v1(question):
     raise ValueError('unknown original question response kind')
 
 
+_PROVISIONAL_SCORING_RULE = (
+    '\n评分与证据强弱分开：证据不足不等于无法判断。'
+    '证据有限但现有事实能支持方向性判断时，仍以status=scored给1至10整数暂定分，'
+    'confidence=low，并在summary或rationale说明已知依据、推断假设、证据缺口和可能改变分数的情况。'
+    '标准答案将缺项列入missing_fields，coverage保持partial或unknown；'
+    '旧格式没有这些字段时在其既有理由字段说明，不额外制造不支持的字段。'
+    '不得因资料不齐把已有判断强制清空，也不自动填5分。'
+    '证据充分的评分按实际把握使用confidence=high或medium，不必降为暂定分。'
+    '暂定分是观点，不是已核实的财务事实；缺失的原始数字、公式输入及计算结果仍留未知，'
+    'metrics只保留有证据支持的数值，不能为支撑分数编造数值、来源或检索记录。'
+    '完全没有判断依据时如实insufficient_evidence+score=null，经济上不适用时not_applicable+score=null。'
+)
+
+
 def typed_semantic_rules(question):
     """Current new-request rules; changes get a separate retained implementation."""
-    return _typed_semantic_rules_v1(question)
+    original = _typed_semantic_rules_v1(question)
+    return original + _PROVISIONAL_SCORING_RULE if question.get('response_kind', 'score') == 'score' else original
 
 
 def legacy_typed_semantic_rules(question):
@@ -211,11 +227,29 @@ class ReleasedRenderer(NamedTuple):
 # The historical source digest remains the identity recorded in existing
 # releases. It is not recalculated from source text at runtime. An actual output
 # change gets a new version and implementation, retaining this v1 reader.
-RENDERER_VERSION = "1.0.0"
+def _provisional_render_question(question, profile=None, contexts=None):
+    return render_question(question, profile, contexts) + _PROVISIONAL_SCORING_RULE
+
+
+def _provisional_screening_question(question, profile, contexts=None):
+    return render_screening_question(question, profile, contexts) + _PROVISIONAL_SCORING_RULE
+
+
+def _provisional_standard_prompt(question, profile, contexts=None, resources=None):
+    original = standard_prompt(question, profile, contexts, resources)
+    return original + _PROVISIONAL_SCORING_RULE if question.get('response_kind', 'score') == 'score' else original
+
+
+RENDERER_VERSION = "1.1.0"
 _RENDERERS = {
     "1.0.0": ReleasedRenderer(
         "6b221598394f5c23a5f724c0b9bac895bcb44eee87c9189285eb605a6ebf21fe",
         applied_contexts, render_question, render_screening_question, standard_prompt,
+    ),
+    "1.1.0": ReleasedRenderer(
+        hashlib.sha256(('renderer/1.1.0/' + _PROVISIONAL_SCORING_RULE).encode('utf-8')).hexdigest(),
+        applied_contexts, _provisional_render_question, _provisional_screening_question,
+        _provisional_standard_prompt,
     ),
 }
 

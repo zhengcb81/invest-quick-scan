@@ -1,5 +1,11 @@
 # 当前进度与阶段证据
 
+## 2026-11-20 暂定评分已接通
+
+按用户要求将观点分与证据强弱分开：有部分依据可用scored+low confidence给暂定分并列缺项；普通/共享提示、汇总、比较、恢复关注、入库读面和UI均保留原分及不确定性。原renderer与已付请求字节不改。QA207、CA108、SW117、原UI92+9子测试、Dashboard64后端/22前端/类型、IQS公共链113项通过；提示/发布组106项+182子测试及修旧版本断言后9项通过。独立最终ACCEPT，见[报告](docs/implementation/reviews/PROVISIONAL-SCORING-2026-11-20/report.md)。
+
+代码已并线：QA d6dbb04、CA9fb4b94、SW79c51e7、原UI4c64fb0、Dashboard2b96c55；有远端的两个owner已核对。原中微result_id及8有分/28空分不变，其中1个原有低置信分现标暂定。0收费调用、0历史补分；五个自建隔离worktree/分支和本轮临时依赖/日志已清理，其他writer的WIP保留。新真实模型重评及浏览器用户走查未执行。
+
 ## 2026-11-20 过度拒绝规则收口
 
 已从公开边界修复小版本精确白名单、完整率/可评分率阻止结果保存展示、前一范围必须成功才放行独立范围等耦合。StockWiki 发布来源、逐题保存和回答质量分开，原 release 和不可变观察引用保留；QA 兼容接口复用既有公共判断。独审发现的 registry 幂等成功回执与读不一致也已修复并复审 ACCEPT。受影响421项通过，源仓静态/提交检查通过，见[报告](docs/implementation/reviews/GATE-SIMPLIFY-2026-11-20/report.md)。

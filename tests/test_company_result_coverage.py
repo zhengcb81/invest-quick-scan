@@ -328,11 +328,14 @@ def test_a_settled_receipt_without_an_observation_is_never_called_completed():
 def test_answer_state_comes_from_saved_observation_without_optional_receipts(answer_status):
     result = snapshot('result-complete-mixed.json')
     result['observation_refs'][0]['answer_status'] = answer_status
+    result['observation_refs'][0]['confidence'] = 'low'
     derived = coverage_api.derive_coverage(result)
     saved = next(question for question in derived['questions']
                  if question['question_id'] == result['observation_refs'][0]['question_id'])
     assert saved['status'] == 'completed'
     assert saved['answer_state'] == answer_status
+    assert saved['confidence'] == 'low'
+    assert saved['provisional_score'] == (answer_status == 'scored')
     assert derived['verdict'] == 'complete'  # persistence coverage, not answer quality
 
 

@@ -51,7 +51,7 @@
 
 导入器接收版本化screening bundle：`schema_version=invest-quick-scan.screening-import/1.0.0`、当前manifest的规范SHA-256、每个题目prompt的SHA-256，以及StockQA公共CLI原样输出。每题执行回执必须由StockQA公开结果带回其实际输入题目SHA-256，并与manifest prompt逐字节匹配；全量完成回执不能由本地bundle包装器伪造。导入会核对实体ID/名称、question ID、信息截止日、日期期间、可打开HTTP(S)来源、search receipt ID与唯一已完成搜索调用、最终attempt字段链和证据来源与该调用的绑定、执行模型与时间。任何回答自报`accepted_ids`、`search_verified`或高级check level都不会授权；内层出现自签字段会使该题不适用screening。来源、时间或执行回执不合格时仍保留`reported_score/reported_status`供排查，但正式screening `score`为空。
 
-通过这些结构与执行校验的结果标`screening_checked`，对应C03的`screening_audited`级别，并在本导入结果中留下绑定entity/question/observation的本地检查回执。该分数可用于快筛比较；`formal_research_status`仍固定为`not_accepted`，不会写入StockWiki或替代正式证据接受。低置信度的分数保留为reported值但不参与汇总；N/A先按unknown保留在覆盖率分母中，只有独立审核后才能从分母剔除。
+通过这些结构与执行校验的结果标`screening_checked`，对应C03的`screening_audited`级别，并在本导入结果中留下绑定entity/question/observation的本地检查回执。该分数可用于快筛比较；`formal_research_status`仍固定为`not_accepted`，不替代正式证据接受。低置信度分数保留在score和reported_score中，参与现有数值汇总并明确标注暂定；N/A不会被补成分数。
 
 ## 验证与覆盖率
 
@@ -69,7 +69,7 @@
 
 审核文件是旧strict协议运行者的记录，不是加密证明。不要把上述示例当已验证结果。旧strict无审核时保留 `reported_score`，正式 score 为 null、状态为 review_pending；未审核的 N/A 也不能用来减少覆盖率分母。新screening-1不接收该文件，使用自己的执行/检查回执。
 
-经审核的N/A从适用题分母剔除；未知、错误、缺题、待审核留在分母中。置信度low的评分可展示为初步观点，但正式score留空，不进入汇总。每维 `coverage = 已验证有效评分题数 / 适用评分题数`。另报全部已选问题（含可选诊断）的完整率，不能用少数高分掩盖重大空白。
+经审核的N/A从适用题分母剔除；未知、错误、缺题、待审核留在分母中。置信度low的评分仍为scored，原分保留并进入现有汇总；summary列provisional_question_ids，使用暂定核心分的质量汇总标quality_score_provisional。每维 `coverage = 已评分题数 / 适用评分题数`，它不表示证据充分率。证据质量、缺项、暂定题数另列；不把来源少等同公司差，也不靠填5提高覆盖。
 
 ## 汇总
 
@@ -77,7 +77,7 @@
 
 每个维度至少 70% 适用题已有有效评分才显示维度均分；全部六个质量维度达到门槛且总体适用质量题覆盖率至少 80%，才按固定权重显示质量分，否则为 null 并列缺口，不跨维度重分配权重。成长机会与估值独立按同一 70% 门槛展示，不参与质量分。不同模板、成长阶段或模式的结果仅供各自画像，不能无校准跨行业排名。
 
-质量综合分还要求三个关键核查全部通过：IQS_12财务真实性、IQS_13股东权益、IQS_16资金生存，及其类型替代题。已验证1—3分时记 `material_concern`；缺题、低置信度、证据不足、未审核甚至N/A均记 `unresolved`。任何一项存在这些状态，就将质量综合分置null，维度分和逐题证据仍展示；不跨问题平均掉重大损失风险。
+既有质量综合公式仍单列关键事项：IQS_12财务真实性、IQS_13股东权益、IQS_16资金生存及类型替代题。1—3分记material_concern；真正缺分、未知、待审或N/A记unresolved，按原公式处理综合分，维度和原题分始终展示。已有暂定分不会仅因confidence=low被改成unresolved或清空，恢复关注同样保留分数并披露置信度。
 
 1—3分的其他有效题也单列薄弱项。上述标记用于确定核查优先级，不自动等于卖出结论。没有买卖建议、仓位、目标价或精确预测的推导。
 

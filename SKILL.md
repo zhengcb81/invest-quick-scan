@@ -28,10 +28,10 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 ## 执行
 
 1. **确定对象与时间。** 固定公司法定实体、证券代码、交易所／股类、信息截止日；估值另固定报价日期与币种。证券简称或代码有歧义时先消歧，不默认上市地区就是经营地区。
-2. **检查外部工具。** 读 [StockQAbyLLM 接入](references/stockqa-integration.md)、[联网搜索与LLM统一规范](references/search-and-llm-playbook.md)及[搜索接入状态](references/search-policy.md)。区分原生搜索与外部证据context，验证实际执行证明；结果不明先对账，不盲重发。公开CLI的`--require-search`仍仅使用已接入供应商；直连探针不等于生产接通，缺证明或证据不足时留空分数。
+2. **检查外部工具。** 读 [StockQAbyLLM 接入](references/stockqa-integration.md)、[联网搜索与LLM统一规范](references/search-and-llm-playbook.md)及[搜索接入状态](references/search-policy.md)。区分原生搜索与外部证据context，验证实际执行证明；结果不明先对账，不盲重发。公开CLI的`--require-search`仍仅使用已接入供应商；直连探针不等于生产接通。搜索状态和证据强弱如实披露，证据有限但可判断时给暂定分，不因资料未齐自动留空。
 3. **复用分类，按需补充。** 优先使用已有且兼容的profile、路由和已核实属性；只有缺少实质分类信息时，才依[路由规则](references/routing.md)通过同一上游工具询问LLM。类型/行业尚未明确也能先做基础36题，不以分类审核阻塞通用扫描。检查实体、类型、行业、阶段及可确认的business_subtype；entity_id/security_id由身份拥有者确认，不让模型自由创造。评分和事实共用分类，不重复收费做相同路由。
 4. **离线编排。** 使用 `scripts/question_sets.py compose`。通用框架先出题，再由类型替换不适用的会计题，加行业、阶段与有实质影响的属性题。只读 [目录](questions/catalog.json) 和命中的模块，不一次性装入全部题库。
-5. **回答并还原逐题结果。** 导出的questions.json复用StockQA的加载/执行接口；标准模式先核实其原生score/fact解析能力，不把旧外层5分协议套到事实题。默认逐题，质量门通过的同期间/口径小包可按既有策略执行，不把事实实验推广成30评分题大包。按[准确性优先实操](references/accuracy-first-operations.md)先修证据、区分约数/精确数与披露版本，再决定复问/第二模型；核引用和文字，不以一致替代核实。保持ID、截止日、锚点/事实关系；只保存短依据和来源，不下载报告。StockQA另附真实执行时间、请求/实际模型及搜索回执；正常fallback成功即停，显式对照另设有预算组。
+5. **回答并还原逐题结果。** 导出的questions.json复用StockQA的加载/执行接口；标准模式先核实其原生score/fact解析能力，不把旧外层5分协议套到事实题。按现有配置逐题或小包执行，保留每题独立结果。有部分事实可形成判断时，用`scored`和1–10暂定分，`confidence=low`，说明依据/假设并保留`missing_fields`与`coverage.partial`；证据充分时使用实际high/medium。不为打分编造数值或默认填5；完全无判断依据或经济上不适用仍说明空分原因。按[准确性优先实操](references/accuracy-first-operations.md)区分约数/精确数与披露版本，再决定是否补问；不以模型一致替代核实。保持ID、截止日、锚点/事实关系；只保存短依据和来源，不下载报告。StockQA另附真实执行时间、请求/实际模型及搜索回执；正常fallback成功即停，显式对照另设有预算组。
 6. **验证与画像。** 依 [评分规则](references/scoring.md) 检查来源、日期、口径、反证和上游错误，再用 `normalize` 生成结果。先展示重大问题与未确认的关键事项，再列八个维度、逐题分数、证据和最值得追问的三件事。同时展示`recovery_watch`的状态、优势、原低分与待验证条件；即使质量分为空也不隐藏。企业质量、成长机会、当前估值和恢复观察分开，不能汇成一个买卖结论。
 
 标准模式用`standard_answers.py build`绑定manifest/题面/原执行记录，不能交给旧normalize。自动检查身份、期间、单位、来源归属和数值一致性；重要数值、风险和相互矛盾的回答做定向来源核对。不要求每家公司、每道题先取得独立审核文件或人工签收才能扫描、入库、查看和复用；没有实质核查时仍是未核实模型输出，不标金融已核实。模型/搜索原回执用于追溯与防重发，不另生成工程核查凭证。StockWiki保存不可变观察，每次scan引用新旧observation_id，保留原时间和模型。比较时核题义、期间、口径和模型，不能把模型换代或重新导入解释成公司变化。

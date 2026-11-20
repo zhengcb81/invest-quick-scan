@@ -14,7 +14,7 @@
 
 答案内容由[answer-content.schema.json](../schemas/answer-content.schema.json)定义，禁止额外自由字段。必含question_id、response_kind、status、score（事实恒null）、summary、information_as_of、期间、basis、trend、confidence、metrics、items、evidence、counterevidence、watch_triggers、missing_fields和coverage。
 
-scored只能使用1—10整数；answered用于事实。无证据或不适用不用假分数和虚构列表。metrics固定metric_id/value/unit/currency/期间/basis/definition/evidence_ids；percentage按百分点表示，例如12.5代表12.5%，ratio按倍数。常用指标ID/单位/定义由[metric-registry.json](../questions/metric-registry.json)统一；未登记指标只能用custom.*，保留原值但不自动数值比较。原始币种不得无汇率依据换算；不得将归母/集团、当前/正常化/压力口径混列。
+scored使用1—10整数；answered用于事实。证据有限但能形成判断时，以scored+confidence=low保留暂定观点，summary说明依据与假设，missing_fields/coverage标出缺口。完全没有判断依据或不适用不用假分数和虚构列表。metrics固定metric_id/value/unit/currency/期间/basis/definition/evidence_ids；percentage按百分点表示，例如12.5代表12.5%，ratio按倍数。常用指标ID/单位/定义由[metric-registry.json](../questions/metric-registry.json)统一；未登记指标只能用custom.*，保留原值但不自动数值比较。原始币种不得无汇率依据换算；不得将归母/集团、当前/正常化/压力口径混列。
 
 来源仅保存链接、标题、发布时间和短claim；日期不明为null。item与metric逐条关联来源；schema的字数/数组上限防止保存大段正文，但不证明来源真实性，仍需证据审核。
 
@@ -40,7 +40,7 @@ python -X utf8 scripts/standard_answers.py compare --left left-observation.json 
 
 ## 比较和快照
 
-compare仅输出可比性、原因、两个原观察及可比差值，不合成多个模型的平均“真值”。同公司比较历史时模型/题义改变会阻止直接差分；模型比较要求显式comparison模式、共同输入集和比较组，正常fallback不满足这个条件。实际模型未知、低置信度、缺信息日期都标不可直接比较。
+compare输出可比性、原因、两个原观察及可比差值，不合成多个模型的平均“真值”。同公司比较历史时模型/题义改变会阻止直接差分；模型比较要求显式comparison模式、共同输入集和比较组，正常fallback不满足这个条件。实际模型未知或缺信息日期时注明不可直接比较；低置信度本身只产生暂定警告，不清空原分或结构可比的差值。
 
 公司横向默认严格限定可比cohort与期间。不同口径仍能并排查看，但不自动排名。时间比较保留期间标签与方法，来源集变化另外标记；回溯扫描不是当时实际做过的研究。事实关系并排显示增删候选，不能将“这次没搜到”自动判为关系终止。StockWiki存储每次快照的观察引用以保证重放，不能每次查询只取当前最新值拼成旧快照。
 

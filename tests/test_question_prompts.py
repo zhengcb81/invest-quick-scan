@@ -90,8 +90,10 @@ class QuestionPromptBoundaryTests(unittest.TestCase):
         self.assertIs(qs.applied_contexts, qp.applied_contexts)
         self.assertEqual(qs.ANSWER_RULE, qp.ANSWER_RULE)
         package, _, release, _ = module_registry.load_current(root=ROOT)
-        self.assertEqual(qs.RENDERER_VERSION, release["renderer_version"])
-        self.assertEqual(qs.renderer_rules_sha256(), package["renderer_rules_sha256"])
+        self.assertEqual(qs.RENDERER_VERSION, qp.RENDERER_VERSION)
+        self.assertEqual(qs.renderer_rules_sha256(), qp.renderer_rules_sha256())
+        original = qp.renderer_for_release(release["renderer_version"], package["renderer_rules_sha256"])
+        self.assertEqual(original.rules_sha256, qp.renderer_rules_sha256(release["renderer_version"]))
 
     def test_new_request_rules_distinguish_conclusion_date_from_source_and_period(self):
         for kind in ("score", "fact"):
@@ -133,8 +135,9 @@ class QuestionPromptBoundaryTests(unittest.TestCase):
             self.assertIn(required, rules)
         # Strengthening new-request instructions does not rewrite released
         # question definitions, historical prompts or their renderer hash.
-        package, _, _, _ = module_registry.load_current(root=ROOT)
-        self.assertEqual(qp.renderer_rules_sha256(), package['renderer_rules_sha256'])
+        package, _, release, _ = module_registry.load_current(root=ROOT)
+        self.assertEqual(qp.renderer_rules_sha256(release['renderer_version']),
+                         package['renderer_rules_sha256'])
 
 
 if __name__ == "__main__":
