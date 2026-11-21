@@ -42,8 +42,15 @@ def append_feedback(path, rows):
             for row in rows
         )
         path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("a", encoding="utf-8", newline="\n") as handle:
-            handle.write(payload)
+        with path.open("a+b") as handle:
+            separator = b""
+            if handle.seek(0, os.SEEK_END):
+                handle.seek(-1, os.SEEK_END)
+                if handle.read(1) != b"\n":
+                    separator = b"\n"
+            handle.write(separator + payload.encode("utf8"))
+            handle.flush()
+            os.fsync(handle.fileno())
     except (OSError, TypeError, ValueError) as error:
         diagnose_feedback(error)
         return False

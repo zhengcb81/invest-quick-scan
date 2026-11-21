@@ -28,7 +28,7 @@ from pathlib import Path
 import sys
 
 from .. import REPO_ROOT
-from ..foundation.api import RuntimeArgumentParser, record_operation_failure
+from ..foundation.api import RuntimeArgumentParser, operation_state_root, record_operation_failure
 
 REQUIRED_FILES = ("answers.json", "run-log.json", "index.html")
 RUNS_ROOT_ENV = "IQS_FEEDBACK_RUNS_ROOT"
@@ -235,7 +235,7 @@ def main() -> int:
         run_id = args.run.resolve().relative_to(root).as_posix()
     except ValueError:
         run_id = args.run.name
-    state_root = root if os.environ.get(RUNS_ROOT_ENV) else root / "dashboard-runtime"
+    state_root = operation_state_root(root)
 
     def failure(code, error=None, digest=None):
         ref = f"{REFERENCE_PREFIX}{run_id}" + (f"@{digest}" if digest else "")

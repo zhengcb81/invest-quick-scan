@@ -15,7 +15,9 @@ from .runtime_feedback import (
     RuntimeArgumentParser,
     exception_diagnostic,
     operation_scope,
+    operation_state_root,
     read_operation_failure,
+    read_runs_failure,
     record_operation_failure,
 )
 
@@ -54,7 +56,9 @@ __all__ = (
     "read_process_log",
     "register_process_log",
     "operation_scope",
+    "operation_state_root",
     "read_operation_failure",
+    "read_runs_failure",
     "record_operation_failure",
     "build_search_receipt",
     "canonical_bytes",

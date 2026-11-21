@@ -31,3 +31,9 @@
 下一页使用上页 next_offset，游标保证 UTF-8 字符完整。三种编码的真实子进程保留同一独立尾因、退出 29 和脱敏。独审反例、旧八条日志故障、分页及活跃进程共 24 项通过。更早已被截断的原日志无法补回。
 
 同一独审另用未出现在本机环境变量的 password 和 Authorization 凭证验证了新尾读接口。日志现统一在写入前按常用凭证键、Basic/Bearer、URL userinfo、PEM 私钥及实际环境值脱敏；回归包括大记录后三种编码的明文反例。
+
+## 2026-11-21 专属发布目录的二次冷读
+
+生产根含两个不同角色的目录。IQS Dashboard 的原作业与观察使用 config/dashboard.local.json 中的 state_root，默认 runs/dashboard-runtime/observations；StockQA 的 runtime_dir 指向 runs/u25-live/runtime，保留原模型配置和账本。仅 IQS 的既有 .worktrees/f4-runtime 发布代码检出前进；业务主工区与这两个数据目录继续沿用原路径。
+
+发布验证发现指定 IQS_FEEDBACK_RUNS_ROOT 时，旧 scan 写在 runs 根，公开 --runs-root 查询只读 dashboard-runtime，结果误报 FileNotFoundError。新直接调用和查询共用同一运行根解析，既有直接落到 runs/diagnostics 的原记录仍可读取。直接运行没传原 attempt 时每次真实调用分配自己的编号，原宿主给出的稳定 attempt 保持可恢复。显式侧带已经中断时，下一条完整行仍可解析。此前三例依赖 --state-root 人工补路径的测试改为真实公共 --runs-root 操作，再从不同进程复读 triage 收据和原诊断。21 项回归通过，4 项旧设计 RED，零网络、零新费用。工具只能反映精确发布目录的版本；其他并发工区的进程加载版本要另行核对。

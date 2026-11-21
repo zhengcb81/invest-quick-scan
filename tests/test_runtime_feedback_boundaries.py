@@ -52,7 +52,7 @@ def test_scan_failure_uses_the_native_outbox_without_a_launcher(tmp_path, scenar
     assert failed[0]["details_ref"].startswith("iqs:diagnostic/")
     ref = failed[0]["details_ref"]
     look = call("iqs_feedback_owner.py", ["--db", tmp_path / "empty.sqlite", "--runs-root", run.parent,
-                "get-diagnostic", ref, "--state-root", run.parent], env)
+                "get-diagnostic", ref], env)
     assert look.returncode == 0, look.stderr
     entry = json.loads(look.stdout)["diagnostic"]
     assert entry["observation"]["details_ref"] == ref
@@ -225,3 +225,70 @@ def test_redact_named_credentials_even_when_no_environment_variable_contains_the
                   "header-value", "user:pass", "base64-unconfigured"):
         assert value not in result
     assert "format=json" in result and "keep me" in result and "stage=keep" in result
+
+
+def test_runs_root_cold_receipts_accept_current_and_older_owner_placement(tmp_path):
+    import hashlib
+
+    runs = tmp_path / "runs"
+    native_run = runs / "scoped-input"
+    native_run.mkdir(parents=True)
+    sidecar = tmp_path / "sidecar.jsonl"
+    sidecar.write_bytes(b'{"previous":')
+    env = {**os.environ, "IQS_FEEDBACK_RUNS_ROOT": str(runs), "RESEARCH_FEEDBACK_OUT": str(sidecar)}
+    rejected = call("scan_result_check.py", ["--run", native_run], env)
+    assert rejected.returncode == 2
+    damaged, kept = sidecar.read_bytes().splitlines()
+    assert damaged == b'{"previous":'
+    row = json.loads(kept)
+    ref = row["details_ref"]
+    prefix = ["--runs-root", runs, "--db", tmp_path / "owner.sqlite"]
+    def get():
+        inspected = call("iqs_feedback_owner.py", [*prefix, "get-diagnostic", ref], env)
+        assert inspected.returncode == 0, inspected.stderr
+        return json.loads(inspected.stdout)["diagnostic"]
+    assert get()["observation"] == row
+    receipt, = (runs / "dashboard-runtime" / "diagnostics").glob("*.jsonl")
+    legacy = runs / "diagnostics" / receipt.name
+    legacy.parent.mkdir()
+    receipt.rename(legacy)
+    assert get()["observation"] == row
+
+    def fingerprint(value):
+        encoded = json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode("ascii")
+        return hashlib.sha256(encoded).hexdigest()
+
+    owner = "invest-quick-scan"
+    fields = ("owner", "origin_owner", "run_id", "attempt_id", "step_id", "check_id")
+    occurrence = fingerprint([row[field] for field in fields])
+    key = fingerprint(["triage", owner, occurrence])
+    payload = {"occurrence_id": occurrence, "observation": row}
+    request = {"schema_version": "feedback-action/1", "owner": owner, "kind": "triage", "method": "submit",
+               "action_id": key, "payload": payload, "request_digest": fingerprint([owner, "triage", key, payload])}
+    args = [sys.executable, "-B", str(ROOT / "scripts/iqs_feedback_owner.py"), *map(str, prefix), "triage"]
+    result = subprocess.run(args, input=json.dumps(request).encode(), env=env, capture_output=True, timeout=20)
+    assert result.returncode == 0, result.stderr
+    triage = json.loads(result.stdout)["result"]
+    assert triage["decision"] == "needs_evidence" and triage["issue_ref"] == row["issue_key"]
+    assert triage["diagnostic_ref"] == ref
+    cold = call("iqs_feedback_owner.py", [*prefix, "get-action", key], env)
+    assert json.loads(cold.stdout)["receipt"]["result"] == triage
+
+
+def test_two_direct_failures_of_same_named_run_keep_distinct_native_attempts(tmp_path):
+    runs = tmp_path / "runs"
+    run = runs / "same-run"
+    run.mkdir(parents=True)
+    out = tmp_path / "outbox"
+    env = {**os.environ, "IQS_FEEDBACK_RUNS_ROOT": str(runs), "RESEARCH_FEEDBACK_DIR": str(out)}
+    for key in ("RESEARCH_FEEDBACK_OUT", "RESEARCH_FEEDBACK_ATTEMPT_ID"):
+        env.pop(key, None)
+    first = call("scan_result_check.py", ["--run", run], env)
+    for name, body in (("answers.json", "{"), ("run-log.json", "[]"), ("index.html", "<html></html>")):
+        (run / name).write_text(body, encoding="utf8")
+    second = call("scan_result_check.py", ["--run", run], env)
+    assert first.returncode == second.returncode == 2
+    events = read_owner_outbox(out)
+    assert len(events) == 2
+    assert len({row["attempt_id"] for row in events}) == 2
+    assert len({row["actual"] for row in events}) == 2

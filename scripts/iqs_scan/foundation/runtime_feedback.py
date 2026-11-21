@@ -51,12 +51,18 @@ def _record_from_exception(error):
     return None
 
 
+def operation_state_root(runs_root=None):
+    """Locate the same native diagnostics for direct commands and owner lookups."""
+    root = runs_root or os.environ.get("IQS_FEEDBACK_RUNS_ROOT")
+    return Path(root) / "dashboard-runtime" if root else DEFAULT_STATE_ROOT
+
+
 class RuntimeArgumentParser(argparse.ArgumentParser):
     """Keep argparse's on-screen diagnostics; capture the refusal without its raw arguments."""
 
     def error(self, message):
         record_operation_failure(None, "cli.arguments", code="invalid_arguments", refusal=True,
-                                 directory=os.environ.get("IQS_FEEDBACK_RUNS_ROOT"))
+                                 directory=operation_state_root())
         super().error(message)
 
 
@@ -141,6 +147,14 @@ def read_operation_failure(directory, reference, *, republish=False):
     return record
 
 
+def read_runs_failure(runs_root, reference, *, republish=False):
+    """Older explicit runs roots stored diagnostics beside the business runs."""
+    try:
+        return read_operation_failure(operation_state_root(runs_root), reference, republish=republish)
+    except FileNotFoundError:
+        return read_operation_failure(runs_root, reference, republish=republish)
+
+
 def record_operation_failure(error, stage, *, directory=None, code="execution_failed",
                              run_id=None, attempt_id=None, refusal=False,
                              disposition="deviation", evidence_ref=None, sidecar=None):
@@ -150,12 +164,12 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         prior = _record_from_exception(error)
         if prior is not None:
             return prior
-        root = Path(directory or DEFAULT_STATE_ROOT)
+        root = Path(directory) if directory is not None else operation_state_root()
         original_run, original_attempt = _SCOPE.get()
         run_id = run_id or original_run
         attempt_id = attempt_id or original_attempt
         run = _scope(os.environ.get("RESEARCH_FEEDBACK_RUN_ID") or run_id, "run-" + uuid.uuid4().hex)
-        attempt = _scope(os.environ.get("RESEARCH_FEEDBACK_ATTEMPT_ID") or attempt_id, "attempt-1")
+        attempt = _scope(os.environ.get("RESEARCH_FEEDBACK_ATTEMPT_ID") or attempt_id, "attempt-" + uuid.uuid4().hex)
         stage = _scope(stage, "operation")
         code = code if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code) else "execution_failed"
         identity = [OWNER, run, attempt, stage, "operation-outcome"]

@@ -10,7 +10,7 @@ import sqlite3
 import sys
 
 from . import scan_result_check as check
-from ..foundation.api import RuntimeArgumentParser, read_operation_failure, read_process_log
+from ..foundation.api import RuntimeArgumentParser, read_operation_failure, read_process_log, read_runs_failure
 
 OWNER = check.OWNER
 ISSUE = "F2-IQS-0001"
@@ -134,6 +134,19 @@ def _native(runs_root, row):
 
 def _triage(runs_root, payload):
     row = _observation(payload)
+    ref = row.get("details_ref")
+    if isinstance(ref, str) and row.get("check_id") == "operation-outcome":
+        try:
+            diagnostic = read_runs_failure(runs_root, ref)
+        except (OSError, ValueError, TypeError, KeyError):
+            diagnostic = None
+        if diagnostic is not None and row == diagnostic.get("observation"):
+            result = {"decision": "needs_evidence", "issue_ref": row["issue_key"],
+                      "diagnostic_ref": ref, "evidence_ref": row.get("evidence_ref", ref)}
+            if row.get("refusal_code"):
+                result["gate_review"] = {"decision": "needs_evidence", "evidence_ref": ref,
+                                         "reason": "Check why the original owner refused before changing its rule."}
+            return result
     native = _native(runs_root, row)
     if native is None:
         return {"decision": "needs_evidence"}
@@ -364,10 +377,12 @@ def main(argv=None):
         elif args.command in ("get-diagnostic", "republish-diagnostic"):
             if args.state_root is None and args.runs_root is None:
                 parser.error("supply --state-root or --runs-root to locate the saved diagnostic")
-            root = args.state_root or args.runs_root / "dashboard-runtime"
-            reply = {"diagnostic": read_operation_failure(
-                root, args.reference, republish=args.command == "republish-diagnostic"
-            )}
+            retry_delivery = args.command == "republish-diagnostic"
+            if args.state_root is not None:
+                diagnostic = read_operation_failure(args.state_root, args.reference, republish=retry_delivery)
+            else:
+                diagnostic = read_runs_failure(args.runs_root, args.reference, republish=retry_delivery)
+            reply = {"diagnostic": diagnostic}
         elif args.db is None or args.runs_root is None:
             parser.error("this action requires --db and --runs-root")
         elif args.command in ("get-action", "get-coverage"):
