@@ -39,16 +39,20 @@ RETURN_URL = (f'http://127.0.0.1:48766/company/{AMEC_BUSINESS}'
 
 
 def _reply(entity_id, name, listing_id, ticker='688012', mic='XSHG', currency='CNY',
-           market='CN', status='resolved', identity_state='verified', listing_status='active'):
+           market='CN', status='resolved', identity_state='verified', listing_status='active',
+           selected=True):
     listing = {'currency': currency, 'entity_id': entity_id, 'exchange_mic': mic,
                'listing_id': listing_id, 'listing_status': listing_status, 'market': market,
                'ticker': ticker}
+    entity = {'entity_id': entity_id, 'canonical_name': name,
+              'identity_state': identity_state, 'listings': [listing]}
+    if selected:
+        # the real bridge nests the selection scope inside the entity payload
+        entity['listing_scope'] = 'explicit_listing_selected'
+        entity['selected_listing_id'] = listing_id
     return {'schema_version': BRIDGE_SCHEMA, 'authority': 'stockwiki', 'command': 'resolve',
             'resolution_status': status, 'entity_id': entity_id,
-            'listing_scope': 'explicit_listing_selected', 'selected_listing_id': listing_id,
-            'lookup_receipt_sha256': 'a' * 64,
-            'entity': {'entity_id': entity_id, 'canonical_name': name,
-                       'identity_state': identity_state, 'listings': [listing]}}
+            'lookup_receipt_sha256': 'a' * 64, 'entity': entity}
 
 
 class FakeRunner:

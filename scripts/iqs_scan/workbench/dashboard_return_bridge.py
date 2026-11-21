@@ -29,7 +29,8 @@ import unicodedata
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
-from .dashboard_owner import TIMEOUT_SECONDS_MAX, _MAX_BYTES, _env, valid_timeout_seconds
+from .dashboard_owner import (OWNER_RESPONSE_LIMIT, TIMEOUT_SECONDS_MAX,
+                              owner_environment, valid_timeout_seconds)
 from .dashboard_json import decode_owner_json
 from .dashboard_iqs_link import safe_entity_id
 
@@ -160,12 +161,12 @@ class ReturnBridge:
         try:
             result = self._runner(command, cwd=str(code_root), capture_output=True,
                                   text=True, encoding="utf-8", errors="strict",
-                                  timeout=timeout, env=_env())
+                                  timeout=timeout, env=owner_environment())
         except subprocess.TimeoutExpired:
             return None, "bridge_timeout"
         except (OSError, ValueError, UnicodeError):
             return None, "bridge_process_unavailable"
-        if len(result.stdout.encode("utf-8", "replace")) > _MAX_BYTES:
+        if len(result.stdout.encode("utf-8", "replace")) > OWNER_RESPONSE_LIMIT:
             return None, "bridge_response_too_large"
         if result.returncode != 0:
             return None, "bridge_refused"
@@ -222,11 +223,11 @@ class ReturnBridge:
         if business_entity is None:
             return {"confirmed": False, "reason": reason, "detail": detail}
         if scope["listing_id"]:
-            if reply.get("listing_scope") != "explicit_listing_selected" or reply.get(
+            if business_entity.get("listing_scope") != "explicit_listing_selected" or business_entity.get(
                     "selected_listing_id") != scope["listing_id"]:
                 return {"confirmed": False, "reason": REASON_BUSINESS_LISTING_UNSELECTED, "detail": detail}
         business_coordinates = _active_coordinates(business_entity)
-        selected = (reply.get("selected_listing_id") if isinstance(reply, dict) else None)
+        selected = business_entity.get("selected_listing_id")
         selected_keys = [keys for keys, listing in business_coordinates.items()
                          if listing is not None and listing == selected] if selected else []
         if not selected_keys:
