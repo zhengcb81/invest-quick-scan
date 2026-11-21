@@ -1,5 +1,9 @@
 # 当前进度与阶段证据
 
+## 2026-11-21 THREE-MARKET-COVERAGE 执行留痕
+
+执行顺序与原始输出要点：开工前六库 SHA 备份（scan e4e4e031…、receipts 11302b1e…、其余四库逐位未变）→ bridge 12 次取证（三家业务端 single_match/resolved；r25 端药明/MongoDB resolved、阿里 no_match）→ onboarding 三次尝试：①`EVI_d88098a8` 带 profile → `owner_store_refused: research profile configuration unavailable`；②`EVI_dffd41ae` rev3 → 实体已存、回执拒 `receipt_reanchor_requires_atomic_record`（re-anchor 属 research-binding 流程，公开通道无 base 可录）；scan.sqlite 恢复备份（SHA 逐位核对）后 ③`EVI_9792abec` rev2 → `bind-proof` **completed**（receipt sha `00660cbe…60d3`，verdict resolved + `LST_591474dd`）。复核：r25 search 09988 single_match verified rev2；resolve explicit_listing_selected + owner_evidence 现行；Dashboard resolver 五步模拟（业务坐标→r25 搜索→唯一坐标匹配→resolve_subject→NFKC 名称一致）通过。公开读回：三家 200 + `company_result_not_registered`、history 0；中微 formal `cas_6cab1b94d8f45d42c750`、history 1 不变。浏览器：48766 公司页（formal 36/29、深链 available、return_to 确认）→ 8766 深链（定位 obs_a8b901ee… published + 36 条）→ 返回原公司页（SPA 点击两次超时，按快照 href 直接导航，返回链接 count=1）。写盘：r25 scan.sqlite（e4e4e031→4c5e1abb）、identity_receipts.sqlite（11302b1e→66eb7347）、onboarding journal（本轮新建）；观测/正式/主体/市场注册四库未变；universe 215 未动。证据目录 `docs/implementation/reviews/THREE-MARKET-COVERAGE-20261121/evidence/`（bridge receipts、三个 stage payload、公开读回、盘点、往返回执+截图）。0 模型/付费调用。
+
 ## 2026-11-20 暂定评分已接通
 
 按用户要求将观点分与证据强弱分开：有部分依据可用scored+low confidence给暂定分并列缺项；普通/共享提示、汇总、比较、恢复关注、入库读面和UI均保留原分及不确定性。原renderer与已付请求字节不改。QA207、CA108、SW117、原UI92+9子测试、Dashboard64后端/22前端/类型、IQS公共链113项通过；提示/发布组106项+182子测试及修旧版本断言后9项通过。独立最终ACCEPT，见[报告](docs/implementation/reviews/PROVISIONAL-SCORING-2026-11-20/report.md)。

@@ -1,0 +1,31 @@
+{
+  "verified_at": "2026-11-21T09:44:16.115818+00:00",
+  "ports": {
+    "dashboard": "http://127.0.0.1:48766",
+    "iqs": "http://127.0.0.1:8766"
+  },
+  "company": "中微半导体设备(上海)股份有限公司",
+  "entity": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+  "listing": "LST_4b1d9b36-f70b-4c7b-b107-4ceb5bfa1b59",
+  "fixed_result_id": "cas_6cab1b94d8f45d42c750",
+  "pinned_observation_id": "obs_a8b901ee9633832ab6c89b0861bdfdc836cab35fa362d9b60e98908856aa5f32",
+  "steps": [
+    {
+      "step": "dashboard_company_quickscan",
+      "url": "http://127.0.0.1:48766/company/ENT_99deceb6-f58a-48b1-bd6b-437621015d76/quickscan?listing_id=LST_4b1d9b36-f70b-4c7b-b107-4ceb5bfa1b59",
+      "shown": "正式公司结果 cas_6cab1b94d8f45d42c750 · 适用 36 · 缺证据 29 · 期间 2026-11-08 · 深链 available/deeplink · return_to 已确认"
+    },
+    {
+      "step": "iqs_results_deeplink",
+      "url": "http://127.0.0.1:8766/#/results?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&observation=obs_a8b901ee9633832ab6c89b0861bdfdc836cab35fa362d9b60e98908856aa5f32&result_id=cas_6cab1b94d8f45d42c750",
+      "shown": "已定位正式观测 obs_a8b901ee…（published）· 36 条记录 · 返回链接指向原公司页"
+    },
+    {
+      "step": "return_to_dashboard",
+      "url": "http://127.0.0.1:48766/company/ENT_99deceb6-f58a-48b1-bd6b-437621015d76/quickscan?listing_id=LST_4b1d9b36-f70b-4c7b-b107-4ceb5bfa1b59",
+      "shown": "原业务实体+挂牌+IQS 粗筛页复现（截图 amec-return-roundtrip-20261121.png）"
+    }
+  ],
+  "method_note": "Dashboard SPA 点击被轮询重渲染拦截（两次 locator 超时）；两跳均按快照证实 href 直接导航，返回链接 count=1 已验证，用户结果等价。",
+  "screenshot": "amec-return-roundtrip-20261121.png"
+}
