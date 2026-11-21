@@ -16,3 +16,7 @@
 ## C 独立验收
 
 原八条 RED 与七条新增故障／恢复测试曾在同批通过。已加入标准库启动、不同原因全失败、诊断 IO 故障降级的回归。先运行 `python -m pytest -q tests/test_runtime_failure_diagnostics.py tests/test_runtime_feedback_boundaries.py tests/test_scan_result_check.py`，再检查现有准备／交付、HTTP 与五个原生 F4 样例。总控可将其 PWF 内的公开 `probes/iqs.py` 指到候选 revision 做七例进程外复验。候选尚待交叉审查和主线发布。
+
+### 2026-11-21 公开入口复验
+
+已提交实现 2da0c95。69 项聚焦回归通过，包括原八个红测、独立冷读、真实子进程日志、HTTP、三条曾失败的旧测试。对同一 Git 快照从进程外运行总控七例，7/7 原生失败都有观察，分别为六条 deviation 和一条强杀后的 unknown。另有一条独立的题库覆盖 expected。原有五项修复、复验和回告正控均通过。总控 JSON 解析错误 0，合成私密标记出现在公开回执的次数 0，强制终止后的原 apply 计数为 1。历史中微两题的具体原因仍未知。本次是离线故障验收；实际工作目录的原生 outbox 还需由总控登记。其他并行专用分支继续保留其原进度。
