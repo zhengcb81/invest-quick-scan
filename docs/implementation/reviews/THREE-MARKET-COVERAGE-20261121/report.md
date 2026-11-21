@@ -9,7 +9,7 @@
 | 公司 | 业务工作区原实体/挂牌 | IQS r25 身份凭据 | 正式结果 | 草稿 | 历史 | 跨 ID 解析与回跳 |
 |---|---|---|---|---|---|---|
 | 药明 603259 | `ENT_2a41e04d` / `LST_f26e4cea` | r25 `ENT_3ac097b9` / `LST_80ed7414`（verified rev2 · XSHG/603259/CNY · active · bridge resolve `resolved`） | 无 —— `company_result_not_registered` | 仅旧版草稿（见具名状态） | 0 | 两端凭据齐备；r25 路由 `partial`（无结果可定位，G-IQS-01 具名保留） |
-| 阿里 09988 | `ENT_e4d964f0` / `LST_591474dd` | **本轮补齐**：r25 `ENT_e4d964f0` / `LST_591474dd`（verified rev2 · XHKG/09988/HKD · active · bridge resolve `resolved` · `owner_evidence` 现行） | 无 —— `company_result_not_registered` | 无 | 0 | 解析链闭合：坐标 (HK,XHKG,09988) 唯一匹配 + 名称 NFKC 一致；`workspace_listing_unresolved` 已消除 |
+| 阿里 09988 | `ENT_e4d964f0` / `LST_591474dd` | **本轮补齐**：r25 `ENT_e4d964f0` / `LST_591474dd`（verified rev2 · XHKG/09988/HKD · active · bridge resolve `resolved` · `owner_evidence` 现行） | 无 —— `company_result_not_registered` | 无 | 0 | **真实 007787a 组合栈验证通过**：`workspace_listing_unresolved` 消除，公司视图保留原实体/挂牌；坐标 (HK,XHKG,09988) 唯一匹配 + 名称 NFKC 一致 |
 | MongoDB MDB | `ENT_41250504` / `LST_2d86780f` | r25 `ENT_b47ecd1e` / `LST_50d01c61`（verified rev2 · XNAS/MDB/USD · active · bridge resolve `resolved`） | 无 —— `company_result_not_registered` | 无 | 0 | 两端凭据齐备；r25 路由 `partial`（同药明） |
 | 中微（对照） | `ENT_a74f8604` / `LST_c1e34bdb` | r25 `ENT_99deceb6` / `LST_4b1d9b36` | `cas_6cab1b94d8f45d42c750` formal（适用 36 · 缺证据 29 · 期间 2026-11-08） | — | 1 | 浏览器同 ID 往返复跑通过（见下） |
 
@@ -56,7 +56,7 @@ universe 未动：`UNI_IQS_APPROVED_214_20261025` 仍 215 名成员，阿里为 
 ## 跨 ID 回跳（施工卡第 3 项）
 
 - IQS 侧 r25 路由投影（`iqs_link`，`iqs.dashboard.owner/1.0.0`）在 result/history 读面按实体发布，`return_to` 仅接受白名单本地 Dashboard 路由；三家目标在无结果状态下路由为 `partial`（G-IQS-01 具名），中微 `available`——"回跳暂不可用时保留结果与历史、导航单独显示具名状态"的现状行为与卡一致，无需改码。
-- 对应关系表（业务挂牌 ↔ r25 挂牌 ↔ 深链）即覆盖总表；Dashboard 侧 `IqsListingResolver` 按 (market, exchange_mic, ticker) 坐标 + canonical name（NFKC casefold）匹配，本轮已按其实现逐步模拟（业务 resolve → r25 search → r25 resolve → 唯一匹配 + 名称一致），阿里全部通过。007787a 组合的整体复验属 D00 验收步骤。
+- 对应关系表（业务挂牌 ↔ r25 挂牌 ↔ 深链）即覆盖总表。**真实 007787a 组合栈验证**（Dashboard main 检出即 `007787a`，backend/contracts 无脏文件，`build_ports(mode="owner")` + TestClient，只读）：四家 `GET /api/v1/companies/{原实体}/quick-scan?listing_id=…` 全部 200 且 `company_preserved=true`——阿里 reasons 只剩 `G-IQS-02_company_result_not_registered` + `G-IQS-01_navigation_unavailable`（**`G-IQS-02_workspace_listing_unresolved` 消除**，即跨 ID 解析经真实 adapter/DTO 栈成功）；药明/MongoDB 与上午验收读数逐项一致（listing resolved + result not registered）；中微对照 formal `cas_6cab1b94d8f45d42c750`、history 1、link available、return available 不变。回执：[combo-probe-quickscan.json](evidence/combo-probe-quickscan.json)，探针：[combo-probe.py](evidence/combo-probe.py)（临时数据目录用后已删，Dashboard 仓无残留）。
 - **中微同 ID 对照（浏览器）**：现役 48766 公司粗筛页显示正式结果 `cas_6cab1b94d8f45d42c750`（适用 36/缺证据 29/期间 2026-11-08）与深链（`link_status=available`，return_to 确认）；进入 8766 深链后定位原观测 `obs_a8b901ee…`（published，DUPONT_01）并列 36 条记录；返回链接回到原公司页（原实体 `ENT_99deceb6`、原挂牌 `LST_4b1d9b36`、IQS 粗筛 tab）。回执：[amec-browser-roundtrip.json](evidence/amec-browser-roundtrip.json)，截图 [amec-return-roundtrip-20261121.png](evidence/amec-return-roundtrip-20261121.png)。方法说明：Dashboard SPA 点击被轮询重渲染拦截（locator 超时两次），两跳按快照证实 href 直接导航（用户结果等价，返回链接 count=1 已验证）。
 
 ## 证据索引
@@ -68,11 +68,13 @@ universe 未动：`UNI_IQS_APPROVED_214_20261025` 仍 215 名成员，阿里为 
 | [evidence/iqs-public-reads.json](evidence/iqs-public-reads.json) | 四实体公开 result/history 读回 |
 | [evidence/coverage-inventory.json](evidence/coverage-inventory.json) | 正式/草稿/历史盘点 + 写盘 SHA + universe 状态 |
 | [evidence/amec-browser-roundtrip.json](evidence/amec-browser-roundtrip.json) | 中微同 ID 浏览器往返回执 |
+| [evidence/combo-probe-quickscan.json](evidence/combo-probe-quickscan.json) | 真实 007787a 组合栈四家 quick-scan 读回（阿里 unresolved 消除） |
+| [evidence/combo-probe.py](evidence/combo-probe.py) | 组合栈探针脚本（只读，可复跑） |
 | [evidence/amec-return-roundtrip-20261121.png](evidence/amec-return-roundtrip-20261121.png) | 返回原公司页截图 |
 | `runs/r25-live/owner-workspace/backups/three-market-20261121/` | 开工前六库字节备份 |
 
 ## 剩余开口
 
-1. 三家的正式结果与历史读回需 r25 原生扫描（owner 预算与恢复流程；未发起）。
+1. 三家的正式结果与历史读回需 r25 原生扫描（owner 预算与恢复流程；未发起——按卡新增评估走现有预算与恢复流程，本轮零模型/付费调用）。
 2. 阿里如需进入筛选/名单，需另走 membership request 权威流程（本卡未含，未动 universe）。
-3. 007787a 隔离组合对三家（尤其阿里解析后）的端到端复验由 D00 验收执行；逐家身份与覆盖状态按卡可独立验收。
+3. D00 验收可按其关卡复跑正式组合；本报告已交付真实 007787a 组合栈只读验证（见跨 ID 回跳节）。逐家身份与覆盖状态按卡可独立验收。
