@@ -1,5 +1,25 @@
 # 当前进度与阶段证据
 
+## 2026-11-21 已发布并实跑零API冷恢复
+
+StockQA `ca7900d249b8a5f1d9b5fa891b92028c773a9a9d`（12文件）正常钩子提交并推送原origin同SHA。首次isort只调整测试导入顺序，正常重提全部原钩子通过；无跳过。发布在干净临时树完成，接回原分支只更新HEAD/index并逐文件核对工作树字节不变；其他harness的F4/业务hunk仍原地未纳入，临时发布树已删除。
+
+真实原run第4次launch显式seal恢复完成exit0：API/model/new_attempt/new_generation均0，dispatch_started=false，10个原paid已挂回且10个原work/package绑定与第2次冷恢复相同，recovery_errors=[]；实体状态10delivered+16pending，不伪称全扫完成。挂牌原预览200/can_start=true、blocked=[]，0API（实际14.292秒，含原CLI启动）。实物摘要留本机`runs/amec-rescore-20261121/gate-paid-recovery-summary.json`及`gate-after-fix-readiness-summary.json`。
+
+本次第一次seal409不能当源码门禁缺陷：操作器在默认受限shell调用外仓CLI，read_request的eager导入创建默认日志抛PermissionError，后被两层generic短码掩成权限失败；安全trace与同一public service直接通过形成对照。用既有全授权环境重跑即上述成功，不修改seal原paid/输入校验。此原因仅对本次有证据，不倒推原13:09或15:26历史失败；F4错误揭示由另一harness处理。
+
+余下本组相邻收口只限产品全paid普通preview/start/resume：当前它们还要求today current_permissions/新spend配置，正在用既有恢复能力TDD处理；真正pending仍原新派发边界。主线剩余18题、新完整快照和UI验收未完成，不扩支线。
+
+## 2026-11-21 发布后反例：两处职责根修已通过独审
+
+原paid混合恢复不再依赖今天plan/reuse/deferred，今天anchor/plan只约束新派发；普通current-schema打开/准入只做结构核验，显式deep audit与旧迁移保留，当前work/lease/预算/ACK仍由原事务核查。paid新4+经基线证实的旧3尾检7 passed/110.94秒；readiness相关87不重复用例通过（新14含其中，6个helper环境超时只临时放宽进程等待后重跑原断言）。非作者12 passed/113.42秒，ACCEPT，计数不相加；14新例已进既有daily，登记断言RED→1 passed/1.57秒。所有已结束测试临时根已清，测试0API/生产库0写。隔离发布只含本组路径/hunk，不含另线F4或业务WIP；原任务实际重开与完整28题未完成。
+
+源修复f69913c与本仓PWF提交4c5f73ce4954be9a5e2f46629af722ca6a4756b3均已推送核对。15:24:29原run第3次launch已启动，15:26:15退出1：第一题原已入库IQS_03落入`resume_original_work_delivery_or_reconciliation_required`，后续未派发。原10答案/ACK未丢，16 pending不变，本实体范围无新模型派发。不是已付保存损坏；是旧paid复用被今天新plan的reuse/deferred条件挡住。
+
+作者与独审各自定位到_refresh_states/restore共同职责耦合；非作者真正checkpoint→seal→consumer binding→delivery intent→ACK→reload隔离用例1项RED确认（两次早期setup错误未算缺陷）。修复按原paid字节/subject receipt/绑定读取，不让今天新计划/新anchor否决已付历史；pending新费用仍走原live校验。只根修本组，不重建grant、不跳题、不扩F4。
+
+独立挂牌2题启动预检另返回`refresh_admission_ledger_invalid`（409），报价可用、work pending、无模型进程；正在只读查owner原因，未推定坏库/锁/额度原因。原操作器已安全退出，没有在途本线程模型。详细实物与路径见[最近失败记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。
+
 ## 2026-11-21 门禁/未发送接续节点完成
 
 正常两题包外部检查实测26→3。固定绑定本地验证、收费intent前一次fresh；paid保存/水合不重新审批。single/pack及begin前provider失败由原binding同事务委托public release_unsent，删除约70行重复证明，不依赖prepare成功返回。原生send/response/unknown仍不释放。

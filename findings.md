@@ -1,5 +1,21 @@
 # 当前发现、风险与决策
 
+## 2026-11-21 实际恢复与错误归因分开
+
+两组QA根修已发布`ca7900d`并由原run第4次launch零API实证：10个原paid及原包绑定保留、0新attempt/generation，16 pending如实留下，security预览可启动。不存在用重问“恢复”已付答案或以测试代替该实际正例。
+
+本次受限shell的seal409真正cause是外仓CLI导入时默认日志FileHandler不可写，不是今日业务权限拒绝；同一原paid public service通过、原授权环境seal也通过。短错误码/文案只是失败表象，不能据此删除原paid binding检查或给旧故障补造原因。eager日志与错误链处理交F4另一harness，当前不插手。
+
+另有独立源码反例：全result_ready/delivered的普通preview/start/resume仍查new-send权限、预算及模型配置，应按原scope真实状态复用已存在的paid恢复操作。该修复只分清操作职责，不凭UI状态绕原owner证据，不新增恢复协议或一套调度器。
+
+## 2026-11-21 真实恢复暴露的两类职责混淆
+
+收敛结果：以上两种职责已经在原执行会话和状态owner内分离，没有新增类框架、协议、审批或逐题证明。作者定向测试与非作者12项实际组合通过（ACCEPT），新14条就绪行为回归进入原日常CI。显式审计、迁移和本操作的真实收费/绑定约束继续由原owner负责；测试结果不代签实际中微后续派发或完整快照。
+
+第一类是把新调度计划当原答案的读取许可：真正native checkpoint经合法合成ACK进入delivered后，原记录依然完整，却被今天native plan不是reuse标deferred；原生产第3次launch也被同一逻辑挡住。原paid读取只能按原entry/context/subject receipt/binding，今天新plan/anchor只负责未付派发。非作者ACK夹具不是StockWiki生产golden；生产10题原ACK仍以其真实回执为准。
+
+第二类是把维护深审计当普通运行就绪：真实只读快照结构校验0.005秒、全历史审计91.037秒且都通过；准入和current-schema constructor默认深扫，preview却不扫。尚未复现那次ledger_invalid的持久坏行或busy，不能补造因果。根修方向是普通打开/就绪只验证必要结构，具体操作原子验证当前work、lease、费用和ACK；全库历史审计保留显式维护入口。不能靠逐caller特判绕构造器，也不能因一处旧问题让所有范围都不能启动。
+
 ## 2026-11-21 以原状态owner收敛，不再复制判断
 
 用户将F4交其他harness后，本线程只推进复杂设计和门禁。F4探索结果及未发布代码已安全隔离，最近真实失败已集中入PWF关联的[故障记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)，不让新增日志变成恢复前置。

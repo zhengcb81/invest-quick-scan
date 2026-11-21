@@ -2,17 +2,19 @@
 
 ## 2026-11-21 当前收口：重复门禁与未发送接续
 
-用户最新指定本线程专心修复杂设计与门禁，F4由其他harness负责。此前已核实[实际F4上线范围](C:/Users/郑曾波/Projects/company-wiki/docs/plans/feedback-loop-2026-11-17/f4-rollout.md)和日志缺口，已做F4候选安全留档并撤出活跃源码；不再继续F4实施，也不把它作为本组交付前置。最近真实失败的原任务、阶段、时间、费用事实、接续动作与验证细节集中在[故障/收敛记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。
+用户最新指定本线程专心修复杂设计与门禁，F4由其他harness负责。此前已核实[实际F4上线范围](C:/Users/郑曾波/Projects/company-wiki/docs/plans/feedback-loop-2026-11-17/f4-rollout.md)和日志缺口，本线程F4候选已安全留档并退出该实施；其他harness随后产生的F4/业务WIP保留，不纳入本组发布。F4不是本组交付前置。最近真实失败的原任务、阶段、时间、费用事实、接续动作与验证细节集中在[故障/收敛记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。
 
 |工作|有限完成条件|当前状态|
 |---|---|---|
 |F4交接|保留已做候选、未修发现及最近真实失败细节，明确不是本线程前置|已交其他harness范围；[本机补丁/测试/开放P2](runs/amec-rescore-20261121/f4-handoff/README.md)，不继续实施|
 |重复检查|固定会话绑定不反复启动外部CLI；原子发送意图前仅一次实时权限检查；原生预算和防重复发送保留|完成：实测26→3（2 register+1 permission），非作者终审ACCEPT|
-|未发送接续|未发失败释放原任务，已收10题保留；已发未知不误释放/重发|完成本轮软件收口；单/pack及provider入口失败均由原owner安全归还，已付不重新审批|
+|未发送接续|未发失败释放原任务，已收10题保留；已发未知不误释放/重发|软件完成；后续原paid混合恢复根修已通过针对性测试和独审，待原任务实验|
 |统一状态判定|由原store按真实发送/响应决定能否release，不在transport复制一份证明或依赖prepare对象已返回|完成：删除约70行重复证明；causal共用、旧1.3兼容、日常短CI及独审通过|
+|普通运行就绪|普通开库和启动不深扫全部历史；当前work/lease/额度/ACK各按原事务检查|完成软件根修；显式审计、旧迁移保留，14新例进入原日常CI，非作者ACCEPT|
+|产品恢复入口|全部原paid时，普通preview/start/resume复用既有恢复能力，不能再要求新收费配置；pending仍按新派发处理|相邻源码已确认，TDD收口中；显式seal原校验有效，不删除|
 |真实收口|从原任务完成中微剩余题、原生入库、新结果/UI、零重问恢复；其他三家由并行harness交付|10题已入库且ACK成功，剩余16实体+2挂牌；新完整快照未登记|
 
-StockQA源码与模块PWF已提交 `f69913c5f05205abc4f12e05d173a1a704ffec31`，既有origin分支已推送并核对同SHA。下一步提交本仓PWF/故障记录，然后继续原中微任务。F4另线，不等待其完工。研究深度、原8题及并行harness边界仍按下节；F4/日志/审查收据不成为普通扫描、保存或入库前置。
+StockQA两组根修已正常钩子发布并推送`ca7900d249b8a5f1d9b5fa891b92028c773a9a9d`。干净组合3项和非作者12项通过；临时发布树已删除，同文件另线WIP字节保留。随后原任务第4次launch显式seal实跑exit0：10原paid/原包全部挂回，API/model/new_attempt/new_generation均0、原10个package绑定未变，实体16 pending；security原预览200/can_start=true，0API。此前错误环境下的seal409已实查为sandbox阻止CLI导入写默认日志，不能误判为业务权限拒绝，更不能倒推13:09原故障原因。当前只补产品全paid普通入口职责，完整剩余18题和新快照/UI仍未完成；F4另线不等待。
 
 ## 2026-11-21 三家公司完整扫描与中微空分重评
 

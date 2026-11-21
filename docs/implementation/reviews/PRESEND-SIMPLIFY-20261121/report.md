@@ -52,3 +52,38 @@
 F4指定coverage/settlement/lineage场景已上线，不等于任意真实扫描异常都自动入反馈。已查明原core压掉原因链、部分owner CLI无本地错误定位、IQS进程收尾把可选日志与drain/wait绑在一起。这些发现不会在本线程扩成日志框架或扫描门禁。
 
 已做但未签收的F4代码、测试和开放P2保存在[本机交接目录](C:/Users/郑曾波/Projects/invest-quick-scan/runs/amec-rescore-20261121/f4-handoff/README.md)。F4-only补丁经`git apply --check`通过，已从活跃QA源码剥离；当前core与恢复作者独立重构的SHA一致。IQS新增8个RED测试已移出活跃tests，StockWiki日志源码未修改。由其他harness接续，不把日志、追踪或审查收据齐全当本组交付或普通扫描前置。
+
+## 发布后真实接续的新反例（仍在收口）
+
+`f69913c`发布后，15:24:29 UTC从同一原run执行第3次launch（PID15564），15:26:15保存`result-3.json`并退出1。第一道原已付已入库题IQS_03被`resume_original_work_delivery_or_reconciliation_required`拒绝，其他25道显示前包待恢复。原10个checkpoint/已入库观察未丢，实体16个未发work保持pending，本范围未调用模型；不能把JSON的“26失败”说成26个原答案丢失。
+
+独立源码和真正ACK隔离反例确认根因：`ApprovedRefreshSession._refresh_states`将原delivered工作能否恢复依赖于今天native plan是否decision=reuse且同观察出现于reused_observations。原action冻结时这些题是dispatch，今天重载还会提出新work/ttl_expired，于是旧paid被标deferred；restore因deferred直接None，才落到只许pending的claim兜底。ACK和新计划不应改写原已付答案的读取资格。正在按原checkpoint/context/subject receipt/原binding恢复，今天的route/projection/anchor只约束未付新派发，不新增grant或把delivered强塞进claim。
+
+上述非作者隔离RED采用真实StockQA公开状态机及封存包，以原测试helper生成合法合成ACK，再调用原`apply_result_delivery_ack`产生delivered；不是mock状态，也不是StockWiki真实owner golden/跨仓验收。实物原10题入库ACK来自此前真实StockWiki，最终仍须原任务实际复验，不能用合成接收ACK代签。
+
+同一操作器随后尝试独立security范围，公开`tasks/start`返回409：`refresh_admission_ledger_invalid`。原报价仍可用、两题pending，尚未启动模型进程；对应work为`WORK_9a6170328cdb43bab76276740d4103a0`/gen3和`WORK_d53c76088a03426e9fef7227836bba4b`/gen2。当前仅有公共短码，正在只读查原owner验证原因，尚不能声称是预算、数据损坏或SQLITE锁。测试/诊断只允许独占临时快照，不对生产库调用迁移构造器或变更配置。
+
+随后只读backup实测（源库0写）：schema27，结构校验通过0.005秒，相同快照的全历史深审计也通过，却耗时91.037秒。未复现持久坏行或busy；历史底层原因仍未知。已证实的是准入`_ledger_ready`默认audit_records=True、current-schema constructor也深扫全部历史答案，而preview明确False，造成错位且高成本的前置。正在把普通就绪/当前库打开改为结构校验，具体work/lease/预算/ACK仍由各自原事务核验；显式全audit和旧schema迁移验证保留，不靠每个caller记得选择特殊快路，也不删除真实资金约束。
+
+## 两处职责根修的最终软件验证
+
+实现删除原paid读取对今天native plan/reuse/deferred的依赖；原entry/context/subject receipt/checkpoint/response绑定照旧检查，今天anchor/plan仅在原reactivated新派发边界核实。正常current-schema constructor及admission只检查必要结构，不扫描无关历史正文；当前work/lease/预算/ACK由原状态事务处理，显式完整审计和旧schema迁移仍深查。SQLite/IO不可用另报`ledger_unavailable`，不冒充结构坏库，也不在账本不可读时放行收费。没有新增协议、版本、授权或题号特例。
+
+- paid混合恢复：新4个真实native/SDK替身行为例，加3个经`f69913c`内存基线证实的旧断言，最终7 passed/110.94秒；此前29个相关合法状态断言已绿，不重复跑。原getter不再查权限，拒绝测试移到实际收费前并验证0HTTP/0attempt，不为测试加回门禁。
+- readiness：14新例先RED后GREEN，SQL authorizer实际禁止读取无关历史response/checkpoint；显式audit仍会读，坏结构/当前绑定/租约/额度/ACK及旧迁移回滚仍拒错。首轮81绿，6个原离线CLI helper固定25秒超时；仅临时测试harness等候60秒重跑这6项，全部原断言通过（385.40秒），未修改业务或永久测试超时。合计87个不重复用例，新14已含其中。
+- 非作者终审：一次12项组合12 passed/113.42秒，含独立合法合成ACK反例RED→GREEN及两类操作边界，结论ACCEPT。第一次临时harness未注册辅助模块的asyncio marker而收集失败，修正临时marker后才执行上述12项，0例收集失败没有冒算通过。
+- 新14例进入既有daily；原CI选题断言先真实RED缺目标，配置一行后1 passed/1.57秒。不新建job/门禁、不重跑已通过全套。全部验证使用独占短TEMP、合成数据库及传输替身，测试0收费/生产库0写，已结束临时根已清。
+
+发布剔除另一个harness的F4与业务hunk，特别是同一work_store后部reason/lease字段；其源码与结果不由本组代签。以上是软件修复验收，原10个真实paid的再重开、剩余题派发、新登记和UI仍需原任务实际验证。
+
+发布前在仅含本组12条指定路径的干净临时工作树补验3项（ACK后原paid+pending、constructor不读历史、delivery按原绑定/ACK），3 passed/81.83秒。该树的work_store只包含current-schema函数hunk，不包含另线后部改动；测试临时根已清，正常原提交钩子继续执行，不通过skip或在共享树临时stash其他writer来发布。
+
+## 发布与原任务实际冷恢复
+
+StockQA `ca7900d249b8a5f1d9b5fa891b92028c773a9a9d`正常原钩子提交并推送原origin，同SHA核对。isort首次只调整一处测试导入顺序，重提后全部原钩子通过；mypy和secrets均通过，无skip。干净发布树已删；接回原分支不回写源码，逐文件核对其他harness WIP字节保留。
+
+原`run-5305efa0a466482fa2a187ed2b37699e`第4次launch显式seal实际完成exit0，recovery_mode=received_original_response、status=partial、recovery_errors=[]。API_requests/model_calls/new_attempts/new_generations全部0，dispatch_started=false；10个原paid挂回，10个work/package绑定与第2次冷恢复完全相同；仍16个实体pending。挂牌2题原公开preview返回200/can_start=true、blocked=[]、API0，用时14.292秒（含原CLI）。不把这次冷恢复算作剩余18题已经扫描。
+
+本次第一次复验另有明确的**操作环境失败**：默认受限shell下外仓CLI的read_request→strict_json_loads→包eager imports→logger FileHandler._open抛PermissionError，fallback先变`owner_confirmation_permissions_rejected`、再变`seal_permissions_blocked`。同一公开service直接调用通过，正确原授权环境seal也通过；0收费，未删除seal任何校验。安全类型/代码位置trace留本机`gate-paid-permissions-cli-trace.json`，不记录异常全文/密钥。此cause只解释本次复验，不能倒推13:09历史原因；F4另harness处理错误揭示和日志副作用。
+
+另有源码确认的相邻职责耦合仍在本组TDD收口：普通preview/start/resume对全paid scope仍要求new-send权限/配置。应复用既有paid恢复命令、环境和原record输入，混合pending继续原新派发与收费intent校验；不靠清空错误、改标签或绕原paid证据解决。
