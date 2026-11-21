@@ -562,7 +562,22 @@ class ExecutionGateway:
                       else self._inspect_work(bundle, root, runtime, admission))
         quote = inspection.get("quote", {})
         work = self.inspection_work_items(inspection)
-        unknown = any(row.get("status") in {"uncertain", "leased"} for row in work)
+        # A LIVE lease is genuinely in-flight paid work and blocks a second
+        # launcher. An EXPIRED lease is a leftover: the original executor's
+        # own startup recovery (recover_expired) resolves it, and the ledger's
+        # atomic claim — not this projection — is the mutual exclusion of
+        # record. Blocking on expired leftovers deadlocks launches forever.
+        # A leased row WITHOUT an expiry is treated as live (conservative;
+        # real ledger rows always carry one from the claim).
+        now = time.time()
+        unknown = any(
+            row.get("status") == "uncertain"
+            or (row.get("status") == "leased"
+                and (row.get("lease_expires_at") or 0) <= 0)
+            or (row.get("status") == "leased"
+                and row.get("lease_expires_at") > now)
+            for row in work
+        )
         readonly = bool(work) and all(row.get("status") in {"result_ready", "delivered"} for row in work)
         if read_only:
             return {**grouping, "bundle_id": key, "entity_id": bundle['entity_id'], "status": "inspected",

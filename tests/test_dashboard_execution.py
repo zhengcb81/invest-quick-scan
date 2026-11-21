@@ -400,6 +400,41 @@ def test_optional_preview_cannot_bypass_current_native_refusal(deployment, monke
     assert not list(gateway.state_root.glob('run-*')) and not (runtime / 'calls.txt').exists()
 
 
+@pytest.mark.parametrize('lease_state', ['live', 'expired'])
+def test_expired_lease_is_not_owner_work_unknown_but_live_lease_blocks(
+    deployment, monkeypatch, lease_state):
+    """A LIVE paid lease blocks a second launcher; an expired leftover does not.
+
+    The ledger's atomic claim is the dispatch mutual exclusion; the executor's
+    own startup recovery resolves expired leftovers. A blanket leased-refusal
+    here deadlocks launches forever (2026-11-21 three-market incident). A
+    leased row WITHOUT an expiry stays conservative (blocks like live).
+    """
+    import time as _time
+    config, runtime, bundle = deployment
+    gateway = ExecutionGateway(config)
+    row = {'question_id': 'Q1', 'work_item_id': 'leftover-lease', 'status': 'leased'}
+    if lease_state == 'live':
+        row['lease_expires_at'] = _time.time() + 3600
+    elif lease_state == 'expired':
+        row['lease_expires_at'] = _time.time() - 3600
+    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'question_ids': ['Q1'],
+        'work_items': [row]})
+    forbid_model_launch(monkeypatch)
+    if lease_state == 'live':
+        with pytest.raises(DashboardExecutionError) as caught:
+            gateway.start({'bundle_id': 'test'})
+        details = caught.value.details or {}
+        assert details.get('blocked_reasons') == ['owner_work_unknown']
+        assert not list(gateway.state_root.glob('run-*'))
+    else:
+        # The expired leftover passes the work gate: the preview is not
+        # blocked on owner_work_unknown. Whatever refusal follows comes from
+        # the original paid path, never from this gate.
+        view = gateway.preview({'bundle_id': 'test'})
+        assert 'owner_work_unknown' not in (view.get('blocked_reasons') or [])
+
+
 def test_explicit_work_lease_reaches_only_new_native_process_without_rewriting_legacy(deployment):
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
