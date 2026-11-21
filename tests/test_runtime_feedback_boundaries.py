@@ -161,3 +161,46 @@ def test_independent_outbox_can_report_when_native_diagnostic_store_is_unwritabl
     row, = read_owner_outbox(out)
     assert "details_ref" not in row
     assert row["evidence_ref"] == "iqs:scan/runs/test"
+
+
+@pytest.mark.parametrize("encoding", ["utf-8", "utf-16", "utf-32"])
+def test_long_real_child_error_is_available_via_cold_log_pages(tmp_path, monkeypatch, encoding):
+    from iqs_scan.workbench.dashboard_execution import ExecutionGateway
+
+    monkeypatch.setenv("IQS_TEST_SECRET", "provider-secret-fixture-only")
+    state = tmp_path / "state"
+    run_id = "run-" + "2" * 32
+    folder = state / run_id
+    folder.mkdir(parents=True)
+    record = {"run_id": run_id, "launch_attempt": 1, "process_state": "running", "launcher_state": "running",
+              "log_path": str(folder / "process.log")}
+    job_path = state / (run_id + ".json")
+    job_path.write_text(json.dumps(record), encoding="utf8")
+    gateway = ExecutionGateway({"state_root": str(state)})
+    child_code = (
+        "import os,sys; msg='x'*1070000+'\\n原因：原写入失败 '+os.environ['IQS_TEST_SECRET']+'\\n';"
+        "sys.stdout.buffer.write(msg.encode(sys.argv[1])); sys.exit(29)"
+    )
+    with subprocess.Popen([sys.executable, "-B", "-c", child_code, encoding], stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT) as child:
+        gateway._processes[run_id] = child
+        gateway._finish(child, job_path, record)
+    final = json.loads(job_path.read_bytes())
+    assert final["exit_code"] == 29
+    row = final["failure_diagnostic"]["observation"]
+    assert row["evidence_ref"] == final["process_log_ref"]
+    owner_args = ["get-process-log", row["evidence_ref"], "--state-root", state, "--tail-bytes", 120]
+    page = call("iqs_feedback_owner.py", owner_args, os.environ.copy())
+    assert page.returncode == 0, page.stderr
+    view = json.loads(page.stdout)["log"]
+    assert view["total_bytes"] > 1048576 and view["eof"] is True
+    assert "原因：原写入失败 [REDACTED]" in view["text"]
+    assert b"provider-secret-fixture-only" not in (folder / "process.log").read_bytes()
+    start = view["offset"]
+    restored = ""
+    while len(restored.encode("utf8")) < view["total_bytes"] - start:
+        part = call("iqs_feedback_owner.py", ["get-process-log", row["evidence_ref"], "--state-root", state,
+                    "--offset", start + len(restored.encode("utf8")), "--limit", 57], os.environ.copy())
+        assert part.returncode == 0, part.stderr
+        restored += json.loads(part.stdout)["log"]["text"]
+    assert restored == view["text"]

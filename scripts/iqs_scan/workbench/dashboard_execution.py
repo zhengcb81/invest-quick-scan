@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from contextlib import contextmanager
 import uuid
 
-from ..foundation.api import replace_after_readers_close
+from ..foundation.api import decoded_output_lines, register_process_log, replace_after_readers_close
 from .dashboard_locks import control_lock, ControlBusyError
 
 
@@ -890,7 +890,6 @@ class ExecutionGateway:
                 try:
                     process = subprocess.Popen(self._command(bundle, root, folder / "result.json"), cwd=runtime,
                         env=self._environment(root, paid=True), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                        text=True, encoding="utf-8", errors="replace",
                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                 except OSError as exc:
                     from ..foundation.api import record_operation_failure
@@ -915,6 +914,7 @@ class ExecutionGateway:
 
         def note(error, stage, code):
             return record_operation_failure(error, stage, code=code, directory=self.state_root,
+                                            evidence_ref=record.get("process_log_ref"),
                                             run_id=record["run_id"], attempt_id=str(record.get("launch_attempt", 1)))
 
         def log_failed(error):
@@ -923,28 +923,24 @@ class ExecutionGateway:
                 record["log_diagnostic"] = note(error, "execution.process-log", "process_log_unavailable")
 
         log = None
-        preview_remaining = 1024 * 1024
         try:
             try:
-                log = Path(record["log_path"]).open("w", encoding="utf-8")
+                log = Path(record["log_path"]).open("w", encoding="utf-8", newline="")
+                reference = register_process_log(self.state_root, record["log_path"], record["run_id"])
+                if reference:
+                    record["process_log_ref"] = reference
             except (OSError, ValueError) as error:
                 log_failed(error)
             try:
-                for line in process.stdout:
+                for line in decoded_output_lines(process.stdout):
                     if log is None or record.get("log_tracking_incomplete"):
                         continue
                     for secret in secret_values:
                         line = line.replace(secret, "[REDACTED]")
                     line = re.sub(r"(?i)(?:sk-|Bearer\s+)[A-Za-z0-9_.-]{12,}", "[REDACTED]", line)
-                    if len(line) > preview_remaining:
-                        record["process_log_preview_truncated"] = True
-                    if not preview_remaining:
-                        continue
-                    safe = line[:preview_remaining]
                     try:
-                        log.write(safe)
+                        log.write(line)
                         log.flush()
-                        preview_remaining -= len(safe)
                     except (OSError, ValueError) as error:
                         log_failed(error)
             except (OSError, ValueError) as error:
@@ -1050,7 +1046,7 @@ class ExecutionGateway:
                 try:
                     process = subprocess.Popen(self._command(bundle, root, record['result_path'], recovery=True),
                         cwd=runtime, env=self._environment(root, paid=False), stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT, text=True, encoding='utf-8', errors='replace',
+                        stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
                 except OSError:
                     record.update(process_state='launch_failed', launcher_state='paused')
@@ -1116,7 +1112,7 @@ class ExecutionGateway:
                 try:
                     process = subprocess.Popen(self._command(bundle, root, record["result_path"]), cwd=runtime,
                         env=self._environment(root, paid=True), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                        text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                 except OSError:
                     record.update(process_state="launch_failed", launcher_state="paused")
                     _write(path, record)

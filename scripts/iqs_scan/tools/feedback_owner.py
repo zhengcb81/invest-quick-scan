@@ -10,7 +10,7 @@ import sqlite3
 import sys
 
 from . import scan_result_check as check
-from ..foundation.api import RuntimeArgumentParser, read_operation_failure
+from ..foundation.api import RuntimeArgumentParser, read_operation_failure, read_process_log
 
 OWNER = check.OWNER
 ISSUE = "F2-IQS-0001"
@@ -350,9 +350,18 @@ def main(argv=None):
         reader = subs.add_parser(command)
         reader.add_argument("reference")
         reader.add_argument("--state-root", type=Path)
+    log_reader = subs.add_parser("get-process-log", help="Read a page of the original UTF-8 diagnostic log")
+    log_reader.add_argument("reference")
+    log_reader.add_argument("--state-root", type=Path, required=True)
+    log_reader.add_argument("--offset", type=int, default=0)
+    log_reader.add_argument("--limit", type=int, default=65536)
+    log_reader.add_argument("--tail-bytes", type=int)
     args = parser.parse_args(argv)
     try:
-        if args.command in ("get-diagnostic", "republish-diagnostic"):
+        if args.command == "get-process-log":
+            reply = {"log": read_process_log(args.state_root, args.reference, offset=args.offset,
+                                             limit=args.limit, tail_bytes=args.tail_bytes)}
+        elif args.command in ("get-diagnostic", "republish-diagnostic"):
             if args.state_root is None and args.runs_root is None:
                 parser.error("supply --state-root or --runs-root to locate the saved diagnostic")
             root = args.state_root or args.runs_root / "dashboard-runtime"

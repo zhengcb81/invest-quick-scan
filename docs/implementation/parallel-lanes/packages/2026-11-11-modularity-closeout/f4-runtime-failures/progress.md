@@ -20,3 +20,12 @@
 ### 2026-11-21 公开入口复验
 
 已提交实现 2da0c95。69 项聚焦回归通过，包括原八个红测、独立冷读、真实子进程日志、HTTP、三条曾失败的旧测试。对同一 Git 快照从进程外运行总控七例，7/7 原生失败都有观察，分别为六条 deviation 和一条强杀后的 unknown。另有一条独立的题库覆盖 expected。原有五项修复、复验和回告正控均通过。总控 JSON 解析错误 0，合成私密标记出现在公开回执的次数 0，强制终止后的原 apply 计数为 1。历史中微两题的具体原因仍未知。本次是离线故障验收；实际工作目录的原生 outbox 还需由总控登记。其他并行专用分支继续保留其原进度。
+
+### 长子进程日志的独审修复
+
+外仓独审用正常子进程在第 1,070,000 字节后写错误原因，退出 29。旧 1 MiB 首段截断导致原作业、日志和 F4 全部缺失尾因。现在由原作业保存一份完整 UTF-8 脱敏文件，顺序读取、刷新、退出和付款判定相互独立。UTF-8、带 BOM 的 Windows UTF-16/32 及可识别的无 BOM 字节序先解码再脱敏。F4 的 evidence_ref 是 iqs:process-log/<id>。可用下列本仓命令查回，不需要源进程或调用模型。
+
+    python scripts/iqs_feedback_owner.py get-process-log iqs:process-log/<id> --state-root <原状态根> --tail-bytes 4096
+    python scripts/iqs_feedback_owner.py get-process-log iqs:process-log/<id> --state-root <原状态根> --offset 0 --limit 65536
+
+下一页使用上页 next_offset，游标保证 UTF-8 字符完整。三种编码的真实子进程保留同一独立尾因、退出 29 和脱敏。独审反例、旧八条日志故障、分页及活跃进程共 24 项通过。更早已被截断的原日志无法补回。

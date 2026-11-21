@@ -14,7 +14,7 @@ import sys
 import uuid
 
 from .feedback_io import FEEDBACK_SCHEMA, append_feedback
-from .json_io import replace_after_readers_close
+from .json_io import atomic_write_json
 
 OWNER = "invest-quick-scan"
 DEFAULT_STATE_ROOT = Path(__file__).resolve().parents[3] / "runs" / "dashboard-runtime"
@@ -104,20 +104,6 @@ def _scope(raw, default):
     return "ref-" + hashlib.sha256(raw.encode("utf8")).hexdigest()
 
 
-def _replace_json(path, value):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name("." + uuid.uuid4().hex + path.suffix)
-    try:
-        with temporary.open("x", encoding="utf8", newline="\n") as stream:
-            json.dump(value, stream, ensure_ascii=True, allow_nan=False, separators=(",", ":"))
-            stream.write("\n")
-            stream.flush()
-            os.fsync(stream.fileno())
-        replace_after_readers_close(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
-
-
 def _outbox(directory):
     override = os.environ.get("RESEARCH_FEEDBACK_DIR")
     return Path(override) if override else directory / "observations"
@@ -129,9 +115,9 @@ def _publish(record, directory, key, sidecar=None):
     if explicit:
         return append_feedback(Path(explicit), [row])
     stem = _outbox(directory) / ("feedback-" + key)
-    _replace_json(stem.with_suffix(".jsonl"), row)
+    atomic_write_json(stem.with_suffix(".jsonl"), row)
     marker = {field: row[field] for field in ("owner", "run_id", "attempt_id", "step_id")}
-    _replace_json(stem.with_suffix(".ready"), marker)
+    atomic_write_json(stem.with_suffix(".ready"), marker)
     return True
 
 
@@ -151,7 +137,7 @@ def read_operation_failure(directory, reference, *, republish=False):
     if republish and not record.get("feedback_recorded"):
         record["feedback_recorded"] = _publish(record, path.parent.parent, path.stem)
         if record["feedback_recorded"]:
-            _replace_json(path, record)
+            atomic_write_json(path, record)
     return record
 
 
@@ -193,7 +179,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         if attempt_id:
             record["native_attempt_id"] = _scope(attempt_id, attempt)
         try:
-            _replace_json(path, record)
+            atomic_write_json(path, record)
         except OSError:
             # Storage and outbox are independent destinations. If the native
             # write fails, publish only references which actually exist.
@@ -207,7 +193,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         result = record
         result["feedback_recorded"] = _publish(record, root, key, sidecar)
         if result["feedback_recorded"]:
-            _replace_json(path, result)
+            atomic_write_json(path, result)
         else:
             _tracking_incomplete()
     except Exception:

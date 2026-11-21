@@ -1520,7 +1520,7 @@ def test_pending_native_delivery_ignores_future_scan_controls_but_keeps_original
 
 
 def test_process_log_is_redacted_and_visible_while_child_is_still_running(tmp_path, monkeypatch):
-    """A short progress line must be readable before EOF, with redaction and cap intact."""
+    """Short lines must be visible before EOF; long output must retain the original tail."""
     import threading
 
     secret = 'midstream-secret-material'
@@ -1546,7 +1546,7 @@ def test_process_log_is_redacted_and_visible_while_child_is_still_running(tmp_pa
             if not allow_finish.wait(10):
                 raise RuntimeError('isolated_test_release_timeout')
             yield 'x' * (2 * 1024 * 1024) + '\n'
-            yield 'after-cap-must-not-be-written\n'
+            yield 'last-owner-failure-context\n'
 
         def wait(self):
             wait_entered.set()
@@ -1570,8 +1570,8 @@ def test_process_log_is_redacted_and_visible_while_child_is_still_running(tmp_pa
         worker.join(10)
     assert not worker.is_alive()
     final = log_path.read_text(encoding='utf8')
-    assert len(final) == 1024 * 1024
-    assert secret not in final and 'after-cap-must-not-be-written' not in final
+    assert len(final) > 2 * 1024 * 1024
+    assert secret not in final and final.endswith('last-owner-failure-context\n')
     assert run_id not in gateway._processes
     assert json.loads(path.read_text(encoding='utf8'))['process_state'] == 'process_exited'
 

@@ -10,6 +10,7 @@ from .feedback_io import (
     feedback_path,
 )
 from .json_io import replace_after_readers_close
+from .process_logs import decoded_output_lines, read_process_log, register_process_log
 from .runtime_feedback import (
     RuntimeArgumentParser,
     exception_diagnostic,
@@ -48,7 +49,10 @@ __all__ = (
     "append_feedback",
     "diagnose_feedback",
     "feedback_path",
+    "decoded_output_lines",
     "exception_diagnostic",
+    "read_process_log",
+    "register_process_log",
     "operation_scope",
     "read_operation_failure",
     "record_operation_failure",
