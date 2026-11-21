@@ -1,0 +1,114 @@
+{
+ "R1-cross-id-confirmed-8769": {
+  "url": "http://127.0.0.1:8769/api/product/entity?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "status": 200,
+  "elapsed_ms": 849,
+  "return_to": "http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "link_status": "available",
+  "supported_context": [
+   "entity",
+   "listing",
+   "observation",
+   "return_to"
+  ],
+  "entity_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+  "company_result_reason": null,
+  "captured_at": "2026-11-21T13:38:44+0000"
+ },
+ "R2-same-id-echo-8769": {
+  "url": "http://127.0.0.1:8769/api/product/entity?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=http://127.0.0.1:48766/company/ENT_99deceb6-f58a-48b1-bd6b-437621015d76/quickscan?listing_id=LST_4b1d9b36-f70b-4c7b-b107-4ceb5bfa1b59",
+  "status": 200,
+  "elapsed_ms": 715,
+  "return_to": "http://127.0.0.1:48766/company/ENT_99deceb6-f58a-48b1-bd6b-437621015d76/quickscan?listing_id=LST_4b1d9b36-f70b-4c7b-b107-4ceb5bfa1b59",
+  "link_status": "available",
+  "supported_context": [
+   "entity",
+   "listing",
+   "observation",
+   "return_to"
+  ],
+  "entity_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+  "company_result_reason": null,
+  "captured_at": "2026-11-21T13:38:45+0000"
+ },
+ "R3-wrong-listing-8769": {
+  "url": "http://127.0.0.1:8769/api/product/entity?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_50d01c61-adea-4858-b5a2-0afd99176490",
+  "status": 200,
+  "elapsed_ms": 748,
+  "return_to": "#/results",
+  "link_status": "available",
+  "supported_context": [
+   "entity",
+   "listing",
+   "observation",
+   "return_to"
+  ],
+  "entity_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+  "company_result_reason": null,
+  "captured_at": "2026-11-21T13:38:45+0000"
+ },
+ "R4-unverified-nobridge-8768": {
+  "url": "http://127.0.0.1:8768/api/product/entity?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "status": 200,
+  "elapsed_ms": 667,
+  "return_to": "#/results",
+  "link_status": "available",
+  "supported_context": [
+   "entity",
+   "listing",
+   "observation",
+   "return_to"
+  ],
+  "entity_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+  "company_result_reason": null,
+  "captured_at": "2026-11-21T13:38:46+0000"
+ },
+ "R5-external-host-8769": {
+  "url": "http://127.0.0.1:8769/api/product/entity?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=https://evil.example/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "status": 200,
+  "elapsed_ms": 710,
+  "return_to": "#/results",
+  "link_status": "available",
+  "supported_context": [
+   "entity",
+   "listing",
+   "observation",
+   "return_to"
+  ],
+  "entity_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+  "company_result_reason": null,
+  "captured_at": "2026-11-21T13:38:47+0000"
+ },
+ "R6-company-result-cross-8769": {
+  "url": "http://127.0.0.1:8769/api/product/company/result?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "status": 200,
+  "elapsed_ms": 1615,
+  "return_to": "http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "link_status": "available",
+  "supported_context": [
+   "entity",
+   "listing",
+   "observation",
+   "return_to"
+  ],
+  "entity_id": null,
+  "company_result_reason": null,
+  "captured_at": "2026-11-21T13:38:48+0000"
+ },
+ "R7-entity-view-cross-8769": {
+  "url": "http://127.0.0.1:8769/api/product/entity-view?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "status": 200,
+  "elapsed_ms": 673,
+  "return_to": "http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+  "link_status": "available",
+  "supported_context": [
+   "entity",
+   "listing",
+   "observation",
+   "return_to"
+  ],
+  "entity_id": null,
+  "company_result_reason": null,
+  "captured_at": "2026-11-21T13:38:49+0000"
+ }
+}

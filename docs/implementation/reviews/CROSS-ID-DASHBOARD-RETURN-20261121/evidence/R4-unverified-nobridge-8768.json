@@ -1,0 +1,4127 @@
+{
+ "request": "http://127.0.0.1:8768/api/product/entity?id=ENT_99deceb6-f58a-48b1-bd6b-437621015d76&return=http://127.0.0.1:48766/company/ENT_a74f8604-6e43-482f-8e91-bdd4518d5eef/quickscan?listing_id=LST_c1e34bdb-fd78-48d6-b2c5-da6eba4b44b0",
+ "response": {
+  "ok": true,
+  "data": {
+   "projection_version": "quick_scan_profiles/1.1.0",
+   "generated_at_utc": "2026-11-21T13:38:46Z",
+   "entity": {
+    "entity_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+    "identity_schema_version": "2.0.0",
+    "identity_state": "verified",
+    "identity_revision": 2,
+    "canonical_name": "中微半导体设备(上海)股份有限公司",
+    "incorporation_country": null,
+    "scope_attestation_id": "ATT_0d6185d13500ff3c95cbd279d2d60897",
+    "verified_issuer_receipt_id": "IVR_6e233419c750269b83943f60526feec1",
+    "company_wiki_ref": null,
+    "formal_stockwiki_profile": null,
+    "aliases": []
+   },
+   "securities": [
+    {
+     "security_id": "SEC_9c08f2e9-dfb8-424a-be25-56d30591c268",
+     "entity_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+     "market": "CN",
+     "exchange_raw": "SSE",
+     "exchange": "XSHG",
+     "ticker": "688012",
+     "currency": "CNY",
+     "security_type": "ordinary",
+     "listing_status": "active",
+     "source_binding_ref": "BIND_b1cbe78d07ad64b249f894b202221996",
+     "adr_ratio": null,
+     "ordinary_security_ref": null
+    }
+   ],
+   "segments": [],
+   "cohort": {
+    "company_type": "unclassified",
+    "industries": [],
+    "stage": "unclassified",
+    "subtype": null
+   },
+   "roster": [
+    {
+     "universe_id": "UNI_IQS_APPROVED_214_20261025",
+     "status": "active",
+     "pinned": false,
+     "version": 1
+    }
+   ],
+   "subjects": [
+    {
+     "analysis_subject_id": "ASJ_18f64bfa-c35f-4df5-ba7a-0215e21e369b",
+     "analysis_subject_revision": 1,
+     "display_name": "中微半导体设备(上海)股份有限公司 (legal issuer only)",
+     "primary_issuer_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+     "anchor_listing_id": null,
+     "scope_kind": "standalone_issuer",
+     "perimeter_coverage": "not_applicable",
+     "subject_sha256": "71579a18a29eccfbbc3062c29c368188fac73733cdb9e2388a477752e0e20249"
+    },
+    {
+     "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+     "analysis_subject_revision": 1,
+     "display_name": "中微半导体设备(上海)股份有限公司 (legal issuer only)",
+     "primary_issuer_id": "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+     "anchor_listing_id": null,
+     "scope_kind": "standalone_issuer",
+     "perimeter_coverage": "not_applicable",
+     "subject_sha256": "ddba35e5a49d8bb76aa028527aeaae2f57fb4a71cb93c76315cebfa723a64ab4"
+    }
+   ],
+   "groups": [
+    {
+     "key": "common",
+     "label": "通用核心",
+     "fields": [
+      {
+       "field_id": "score.iqs_01",
+       "question_id": "IQS_01",
+       "construct_id": "IQS_01",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2021-01-01",
+       "period_end": "2025-09-30",
+       "basis": "current",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 7,
+       "summary": "客户价值成立且有多期行为证据：刻蚀是集成电路制造核心环节（SEMI口径7nm约需140次刻蚀、28nm约40次），公司刻蚀设备覆盖95%以上刻蚀应用需求，CCP刻蚀已批量应用于国内外一线客户65nm至5nm产线及3D NAND产线并取得5nm及以下逻辑电路产线重复订单（2021年证据）；2025年前三季度刻蚀设备收入61.01亿元、同比增长约38.26%，薄膜沉积设备收入4.03亿元并获大批量重复订单（2025年证据）。但客户总使用成本、独立客户复购率、停止使用的量化后果未披露，2024年年报正文未获取，故未给8分以上。",
+       "confidence": "medium",
+       "coverage": {
+        "reason": "已获2021与2025年两期研报中的产品价值与重复订单行为证据，但缺TCO、复购率、停止使用后果的量化披露；2024年年报正文未获取，财务数字未经原始披露核对。",
+        "status": "partial"
+       },
+       "counterevidence": "[EV5] 2024年MOCVD设备收入3.79亿元、同比下降18.03%，显示部分产品线价值兑现受LED终端需求波动影响；[EV4] 2024年归母净利润同比下降9.53%，增收未增利；现有来源未披露客户总使用成本、独立复购率与停止使用的量化后果，价值强度存在未验证部分。",
+       "missing_fields": [
+        "客户总使用成本（TCO）与付费意愿量化数据",
+        "独立客户复购率或客户级留存数据",
+        "停止使用后果的直接证据",
+        "原始定期报告正文中的分产品收入、毛利率与客户集中度"
+       ],
+       "watch_triggers": [
+        "先进节点及3D NAND新增重复订单与客户验证进展",
+        "薄膜沉积设备（LPCVD/ALD/钨、金属栅）客户复购与量产节奏",
+        "毛利率、客户集中度与细分产品单价变化",
+        "MOCVD向Mini/Micro LED、功率器件拓展的订单落地"
+       ],
+       "information_as_of": "2025-11-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:13:50.649987Z",
+       "imported_at": "2026-11-16T21:50:53Z",
+       "import_sequence": 128,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "a36eb71a-2027-4048-9fc3-8985c11ab7fa",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/069a97a668580620",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV1",
+         "title": "中微公司（688012.SH）首次覆盖报告：刻蚀+MOCVD龙头，内生外延协同打造设备平台",
+         "url": "https://file.iyanbao.com/pdf/0b168-1bd9ae0b-05f4-4de3-a870-94af8766ab82.pdf",
+         "published_at": "2021-07-02",
+         "claim": "国盛证券研报称：公司CCP刻蚀设备已批量应用于国内外一线客户65nm至5nm集成电路产线及64层、128层3D NAND产线，并已取得5nm及以下逻辑电路产线的重复订单；ICP刻蚀设备已进入海内外十余家客户晶圆产线；MOCVD设备在行业领先客户生产线大规模投入量产。"
+        },
+        {
+         "id": "EV2",
+         "title": "中微公司（688012）：国产刻蚀设备领军者，薄膜业务蓄势待发——公司深度报告",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "东海证券研报称：2025年前三季度刻蚀设备营收61.01亿元、同比增长约38.26%、占总营收约76%；公司已研制三代共18种等离子体刻蚀设备；12英寸高端刻蚀设备实现65nm至5nm及更先进制程量产应用；超高深宽比刻蚀设备已在先进存储制造产线大规模应用。"
+        },
+        {
+         "id": "EV3",
+         "title": "中微公司（688012）公司深度报告（薄膜与MOCVD部分）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "同一东海证券研报称：2025年前三季度LPCVD和ALD等薄膜设备收入4.03亿元、同比增长1332.69%；已发布六款薄膜沉积产品，覆盖存储器件及先进逻辑器件钨、金属工艺需求，多款产品进入市场并获大批量重复订单。"
+        },
+        {
+         "id": "EV4",
+         "title": "中微公司（688012）公司深度报告（财务与研发部分）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "该研报列示：公司2022-2024年营业收入分别为47.40亿、62.64亿、90.65亿元（合并报表口径）；2024年归母净利润16.16亿元、同比下降9.53%；2025年前三季度研发费用17.94亿元、同比增长96.30%、研发费用率22.25%。"
+        },
+        {
+         "id": "EV5",
+         "title": "中微公司（688012）公司深度报告（刻蚀需求与MOCVD部分）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "该研报援引SEMI称一片7nm芯片生产需约140次刻蚀工艺、28nm约40次；公司以CCP刻蚀为核心并发展ICP刻蚀，覆盖95%以上刻蚀应用需求；2024年MOCVD设备收入3.79亿元、同比下降18.03%，受LED市场波动影响。"
+        },
+        {
+         "id": "EV6",
+         "title": "中微半导体设备(上海)股份有限公司2024年年度报告",
+         "url": "https://stockn.xueqiu.com/SH688012/20250417774068.pdf",
+         "published_at": "2025-04-17",
+         "claim": "公司于2025-04-17披露2024年年度报告；本次检索仅获得文件标题与链接，未获取正文中客户、订单、总使用成本及财务明细，未能与研报数据逐项核对。"
+        }
+       ],
+       "observation_id": "obs_038e2b2d01f1f368d2b8b5d357ccfc7aa78454df64b2f474dee9a880fe1ed438",
+       "payload_sha256": "bdbc1783eeb74311fe87344a350bb997953a56088b2450dbd3eef19c397454e7",
+       "package_id": "pkg_e5f17ae680095f652d6315ebdb7841e0909b9c82872bc0ae12e6f7e3fd12e3b7",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "3089712d6b7853c5defe16db102062d94d31abc381fc28b7e7b10e2e75125637",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_02",
+       "question_id": "IQS_02",
+       "construct_id": "IQS_02",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2022-01-01",
+       "period_end": "2025-09-30",
+       "basis": "trailing",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 5,
+       "summary": "收入延续性中等：设备销售依赖晶圆厂资本开支与逐单采购，现有来源显示2022-2024年营业收入由47.40亿增至90.65亿元、2025年前三季度刻蚀收入同比增长约38.26%，且有5nm及以下产线重复订单和薄膜设备大批量重复订单等复购行为证据，存量需求并非完全靠高成本重新获取。但维持与增长仍需高强度投入（2025年前三季度研发费用17.94亿元、同比增长96.30%），且无在手订单、订单取消率、客户留存率与获客维护成本披露，无法量化现有收入的延续比例；2024年MOCVD收入同比下降18.03%亦显示周期波动，故评为5分而非更高。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "有多期收入与重复订单定性证据支持中等延续性，但缺在手订单、取消率、留存与获客维护成本数据，延续比例无法量化；财务数字来自券商研报、未与原始定期报告正文核对。",
+        "status": "partial"
+       },
+       "counterevidence": "[EV4] 2025年前三季度研发费用同比增长96.30%、研发费用率22.25%，维持竞争力与需求需持续高强度投入；[EV5] 2024年MOCVD设备收入同比下降18.03%，显示下游LED需求波动可直接侵蚀收入；设备收入以项目制逐单实现，现有来源未披露在手订单、订单取消率与客户留存率，收入延续比例不可量化。",
+       "missing_fields": [
+        "在手订单/合同负债/订单取消率等履约数据",
+        "客户留存率或重复采购客户占比",
+        "获客与客户维护成本拆分",
+        "原始定期报告正文中的收入、订单与费用明细核对"
+       ],
+       "watch_triggers": [
+        "在手订单、合同负债及订单取消/延期披露",
+        "下游晶圆厂资本开支与新建产线节奏",
+        "重复订单占比与大客户集中度变化",
+        "研发及销售费用率变化对维持性投入的指示",
+        "MOCVD在Mini/Micro LED、功率器件领域的订单恢复"
+       ],
+       "information_as_of": "2025-11-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:13:50.649987Z",
+       "imported_at": "2026-11-16T21:51:47Z",
+       "import_sequence": 129,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "a36eb71a-2027-4048-9fc3-8985c11ab7fa",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/943d97ed5c8664e6",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV1",
+         "title": "中微公司（688012.SH）首次覆盖报告：刻蚀+MOCVD龙头，内生外延协同打造设备平台",
+         "url": "https://file.iyanbao.com/pdf/0b168-1bd9ae0b-05f4-4de3-a870-94af8766ab82.pdf",
+         "published_at": "2021-07-02",
+         "claim": "国盛证券研报称：公司CCP刻蚀设备已批量应用于国内外一线客户65nm至5nm产线及3D NAND产线，并已取得5nm及以下逻辑电路产线的重复订单；ICP刻蚀设备已进入海内外十余家客户晶圆产线，显示存量客户复购行为。"
+        },
+        {
+         "id": "EV2",
+         "title": "中微公司（688012）：国产刻蚀设备领军者，薄膜业务蓄势待发——公司深度报告",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "东海证券研报称：2025年前三季度刻蚀设备营收61.01亿元、同比增长约38.26%、占总营收约76%；12英寸高端刻蚀设备已实现65nm至5nm及更先进制程量产应用，超高深宽比刻蚀设备在先进存储制造产线大规模应用。"
+        },
+        {
+         "id": "EV3",
+         "title": "中微公司（688012）公司深度报告（薄膜设备部分）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "同一东海证券研报称：2025年前三季度LPCVD和ALD等薄膜设备收入4.03亿元、同比增长1332.69%；多款产品进入市场并获大批量重复订单，反映重复需求但设备收入仍以逐单方式实现。"
+        },
+        {
+         "id": "EV4",
+         "title": "中微公司（688012）公司深度报告（财务与研发投入部分）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "该研报列示：公司2022-2024年营业收入47.40亿、62.64亿、90.65亿元（合并报表口径）；2024年归母净利润16.16亿元、同比下降9.53%；2025年前三季度研发费用17.94亿元、同比增长96.30%、研发费用率22.25%。"
+        },
+        {
+         "id": "EV5",
+         "title": "中微公司（688012）公司深度报告（MOCVD与周期部分）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202511211785175486_1.pdf",
+         "published_at": "2025-11-20",
+         "claim": "该研报称：2024年MOCVD设备收入3.79亿元、同比下降18.03%，受LED市场波动影响；公司正向Mini/Micro LED、功率器件等领域拓展以对冲周期波动。"
+        },
+        {
+         "id": "EV6",
+         "title": "中微半导体设备(上海)股份有限公司2024年年度报告",
+         "url": "https://stockn.xueqiu.com/SH688012/20250417774068.pdf",
+         "published_at": "2025-04-17",
+         "claim": "公司于2025-04-17披露2024年年度报告；本次检索仅获得文件标题与链接，未获取正文中在手订单、合同负债、订单取消与客户留存等信息。"
+        }
+       ],
+       "observation_id": "obs_fb1ea68f7de4f2b3eeacd95a5f9f22f7fc7e959f686400719471974b6feefb32",
+       "payload_sha256": "38dabed84f824a04959840ace3ebdd6880c8b40908b21059ec8bc10bc3e6e53c",
+       "package_id": "pkg_8ff257834862337b5b99abae1f22d6149b42eb34a9339437b094a97f157c2aa3",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "33396932533398397fcce772daf957da8e61188b663d5811289d0028065b703d",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_03",
+       "question_id": "IQS_03",
+       "construct_id": "IQS_03",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "现有公开资料仅为部分线索：2017年刻蚀设备收入规模较低，且以免费耗材补偿客户并计入当期营业成本，导致该年刻蚀设备毛利率同比下滑；2024年年报显示公司销售刻蚀、薄膜和MOCVD设备并提供配件及服务。未见按成熟产品/客户/项目核算的全成本单位经济性，即缺少获客、交付、维护、售后、退货与损失、资本占用、补贴及总部成本分摊的完整数据；公开财务多为合并/申报口径，无法归属该法律主体独立口径，故评分留空。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅获2017年刻蚀设备毛利率历史线索与产品线范围，缺产品/客户/项目全成本单位经济性；公开数据多为合并口径，与法律主体独立口径不匹配。",
+        "status": "partial"
+       },
+       "counterevidence": "未见相反证据证明成熟产品、客户或项目在全成本后持续毁损价值；但同样没有可核验的全成本回报数据。历史毛利率下滑仅反映2017年免费耗材计入营业成本叠加低收入规模的特定情形，既不能证明全成本单位经济成立，也不能证明其不成立。",
+       "missing_fields": [
+        "成熟产品/客户/项目层面全成本单位经济性（含服务与资金占用后回报）",
+        "获客、交付、维护、售后成本明细",
+        "退货、损失与质量补偿数据",
+        "资本占用、营运资金与折旧口径",
+        "政府补贴与总部成本分摊口径",
+        "可归属该法律主体独立口径的分产品成本与利润数据"
+       ],
+       "watch_triggers": [
+        "后续定期报告按产品或客户披露含服务、售后与资金占用的全成本回报数据",
+        "免费耗材、质量补偿、退货或损失政策变化引发毛利率异常波动",
+        "新品或新客户放量后单位经济性未改善，规模扩大伴随隐性亏损",
+        "补贴或总部费用分摊口径变化影响可比的单位盈利能力"
+       ],
+       "information_as_of": "2025-04-17",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:18:11.989301Z",
+       "imported_at": "2026-11-16T21:52:51Z",
+       "import_sequence": 130,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "7886b2b6-a1d2-4422-91f3-a73d6f70fde0",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/e16b6d5b71fab5a0",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV03_01",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书（新浪财经）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书披露：2017年刻蚀设备营业收入规模较低，且在未达客户期望时以免费耗材补偿并计入当期营业成本，导致当年刻蚀设备毛利率同比下滑。该信息为申报口径的历史产品毛利率线索，未披露全成本单位经济性。"
+        },
+        {
+         "id": "EV03_02",
+         "title": "中微半导体设备(上海)股份有限公司2024年年度报告",
+         "url": "https://stockn.xueqiu.com/SH688012/20250417774068.pdf",
+         "published_at": "2025-04-17",
+         "claim": "2024年年度报告说明公司向集成电路、MEMS等半导体制造公司销售刻蚀设备、薄膜设备和MOCVD设备，并提供配件及服务，确认存在成熟商业化产品与服务组合，但片段未披露分产品/客户的全成本回报。"
+        }
+       ],
+       "observation_id": "obs_78179a4b095edb6008d74973a57527ce1b73847e2d3fd503fa0b62cd97c4e2c6",
+       "payload_sha256": "cfcdf9e28c516e71b9482988fde71b61f46f813a15b22e340d5609b781a51a25",
+       "package_id": "pkg_ef2d6bfbb27d6c784b33d3e6fd1a7be63120e62ec0c3e419a5428d84e27c8ccc",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "c093608d13612e67e5497f9396d8c6d7427ac298699194858f031d44c51a632f",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_04",
+       "question_id": "IQS_04",
+       "construct_id": "IQS_04",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "产业层面线索：Gartner统计显示泛林半导体、东京电子、应用材料合计占全球干法刻蚀设备约80%、全球CVD设备约70%份额，价值链利润池高度集中于国外龙头，公司面对强势竞争对手；'十五五'规划将集成电路列为'超常规攻关'首位、国产替代提速提供需求与政策支撑；江苏鲁汶仪器招股材料将中微公司ICP刻蚀设备、CVD设备列为比较对象，显示国内刻蚀/CVD供给参与者增多。但未获该法律主体独立口径的利润留存、价格纪律、上下游议价与利润池归属的可核验多期证据，故无法确认行业是否允许其长期留下合理利润，评分留空。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "覆盖全球份额集中度、政策支持与国内竞争格局等产业线索，但缺公司利润留存、价格纪律、上下游议价及利润池归属的可核验多期证据，且利润数据口径不明。",
+        "status": "partial"
+       },
+       "counterevidence": "未见可核验证据证明公司能持续保留合理利润：三大外商合计占全球干法刻蚀约80%份额，显示强势竞争对手与交易方可能挤压国内厂商利润空间；国内刻蚀/CVD新进入者增多亦可能削弱价格纪律，两者构成对长期利润留存的反向证据。",
+       "missing_fields": [
+        "公司层面多期利润率、ROIC及利润留存证据（独立法律主体口径）",
+        "行业供给扩张/退出与价格纪律的量化证据",
+        "客户集中度与议价条款数据",
+        "关键供应商依赖与议价能力数据",
+        "利润池归属（设备商与晶圆厂、零部件商之间）的量化证据"
+       ],
+       "watch_triggers": [
+        "国内刻蚀/CVD新增产能或新竞争者上市引发价格战",
+        "三大外商份额、定价或出口管制政策变化影响国产替代空间",
+        "公司披露的毛利率、净利率或ROIC多期趋势恶化",
+        "'十五五'国产替代政策落地与客户验证节奏低于预期",
+        "关键零部件供应商集中度或采购价格上升挤压利润池"
+       ],
+       "information_as_of": "2026-09-29",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:18:11.989301Z",
+       "imported_at": "2026-11-16T21:53:31Z",
+       "import_sequence": 131,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "7886b2b6-a1d2-4422-91f3-a73d6f70fde0",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/2061036c266ae308",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV04_01",
+         "title": "江苏鲁汶仪器股份有限公司公告（巨潮资讯，援引Gartner市场份额）",
+         "url": "http://dataclouds.cninfo.com.cn/sjother2/documents/2026/2026-09-29/7f106b3485bd0e622ccb6466d5b29a6b.pdf",
+         "published_at": "2026-09-29",
+         "claim": "材料援引Gartner统计数据：泛林半导体、东京电子及应用材料合计占全球干法刻蚀设备约80%市场份额、全球CVD设备约70%份额，显示全球刻蚀/CVD价值链利润池高度集中于国外龙头，强势交易方与竞争对手长期存在。"
+        },
+        {
+         "id": "EV04_02",
+         "title": "江苏鲁汶仪器股份有限公司首次公开发行股票并在科创板上市招股材料",
+         "url": "https://static.sse.com.cn/stock/disclosure/announcement/c/202606/002206_20260630_DZGO.pdf",
+         "published_at": "2026-06-30",
+         "claim": "招股材料在行业主要企业比较中列出泛林半导体、应用材料、东京电子等国外企业，并将中微公司ICP刻蚀设备、CVD设备列为比较对象，显示国内刻蚀/CVD设备供给参与者增多、存在潜在供给扩张。"
+        },
+        {
+         "id": "EV04_03",
+         "title": "科技硬件行业2026年中期展望：Agentic AI叙事未完",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202607301827491773_1.pdf?1785433281000.pdf=",
+         "published_at": "2026-07-30",
+         "claim": "行业展望报告称'十五五'规划将集成电路列为'超常规攻关'首位，国产替代从设备到材料全面提速，为国产半导体设备提供需求与政策支撑；该来源为券商研究二手材料，非发行人披露。"
+        }
+       ],
+       "observation_id": "obs_d46094322fa28653474188fbc5028c6f34532798757218ff89ecafbeb8b098a3",
+       "payload_sha256": "3243165a9ca3ff02c008738b3714d66cf90c7ba0459edecf2c840e2dd578ea19",
+       "package_id": "pkg_ce67e1c69ddf9494481ceb5153b2ba80a64fdb364693cbf8aa2dc6108330f2f1",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "489a18fb0ad18f71ca8ffe871e9759e5f5cf630e8a5f4dc5891366031ccc4b35",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_05",
+       "question_id": "IQS_05",
+       "construct_id": "IQS_05",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索可确认的定性事实：公司在刻蚀设备领域具国内领先地位，2026年半年报提及PrimoTSV2G刻蚀设备拓展了新的市场，券商报告称其薄膜设备业务进入收获期。但未获得按产品/客户/项目口径的全成本单位经济、剔除政府补助后的利润来源、客户转换成本与验证周期、对手复刻刻蚀/MOCVD设备的投入与周期等可验证证据，无法判定优势机制是否难以用合理成本复制，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "检索到公司定位与产品拓展的定性线索，但缺少优势机制、复制代价与经济回报的可验证量化证据，无法完成评分。",
+        "status": "partial"
+       },
+       "counterevidence": "招股意向书确认全球刻蚀设备市场长期由泛林、应用材料、东京电子三家主导，国际龙头具备规模与客户基础；券商报告同时推荐北方华创、拓荆科技、盛美上海等多家国内设备商，同受国产替代红利，公司优势的独特性与对手复制代价均未获证实，不能排除被合理成本复制或低价替代的可能。",
+       "missing_fields": [
+        "分产品/客户/项目口径收入与毛利，含政府补助拆分",
+        "客户转换成本、设备验证周期与重复采购率的可验证披露",
+        "对手复刻刻蚀/MOCVD设备的投入、周期与良率证据",
+        "同口径性能-成本与售后成本对比数据"
+       ],
+       "watch_triggers": [
+        "公司披露的刻蚀设备份额或主要客户重复采购率连续下降",
+        "国内对手在同等制程刻蚀验证中批量导入并分流订单",
+        "国际龙头放松供应或降价使国产替代溢价收窄",
+        "分产品毛利率扣除政府补助后持续下滑",
+        "PrimoTSV2G等新品未能形成可验证的规模收入"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:22:03.100691Z",
+       "imported_at": "2026-11-16T21:54:16Z",
+       "import_sequence": 132,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "c87990c8-4120-419e-9662-90284d32861a",
+       "versions": {
+        "question_version": "2.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/ffc36aa3551455ed",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV05-1",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书（新浪财经）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书披露：全球刻蚀设备市场一直由泛林半导体、应用材料、东京电子三家公司主导，公司刻蚀设备全球市场份额随业务规模增长有望提升；属发行时展望，未提供已实现份额、利润来源或对手复制成本的量化证据。"
+        },
+        {
+         "id": "EV05-2",
+         "title": "中微公司：2026年半年度报告（新浪财经）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "2026年半年度报告片段显示公司PrimoTSV2G刻蚀设备拓展了新的市场，并针对更高金属…（片段截断）；可确认产品拓展动作，但未见客户留存、单位经济或转换成本数据。"
+        },
+        {
+         "id": "EV05-3",
+         "title": "国产替代持续推进,下游扩产拉动需求增长（东莞证券半导体设备专题报告）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202504281663893328_1.pdf",
+         "published_at": "2025-04-28",
+         "claim": "报告将中微公司描述为刻蚀设备领军企业、薄膜设备业务进入收获期，并指出刻蚀、薄膜沉积、清洗环节国产化率约20%及以上、美系三大设备商中国内地收入占比超35%；属行业与公司定性描述，未给出公司份额、回报或复制成本量化证据。"
+        },
+        {
+         "id": "EV05-4",
+         "title": "中微公司(688012)的国产芯片龙头地位如何？-投资逻辑解析（股百科）",
+         "url": "https://www.aigbk.com/article/zhongwei_company_688012_domestic_chip_leader_analysis/",
+         "published_at": "2026-04-27",
+         "claim": "第三方行业分析文章估算公司在刻蚀、沉积、清洗等环节份额约40%并提及MOCVD领域地位，但注明为行业调研估算值、部分数据未公开，属二手估算线索，不作关键证据。"
+        },
+        {
+         "id": "EV05-5",
+         "title": "中微公司：2025年年度报告（新浪财经）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年度报告片段提及公司在第三代半导体设备市场的竞争优势及人力资源方面表述，片段未提供可验证的经济份额、回报或复制难度证据。"
+        }
+       ],
+       "observation_id": "obs_94a6f430a346bf7cc195b643096611e27d04692d1d1feb24a8829ed9bf855bb3",
+       "payload_sha256": "f2bd06d4e4bd23e2eb50517fa29d4a70d7edecacb48662605255e870483af50d",
+       "package_id": "pkg_909ee11a8c191e51776dbd910537309be5bc9dddc610f61dc0fe4a0ff83a2207",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "548212cdd6a8dd7dcf09797546539e9acebd3e3b22c4ea8ab3ebb412c141a6bc",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_06",
+       "question_id": "IQS_06",
+       "construct_id": "IQS_06",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索仅有定性线索：公司为国内刻蚀设备领军企业、PrimoTSV2G拓展新市场、国产替代在刻蚀/薄膜/清洗环节推进，但未获得剔除政府补助后的经济份额序列、相对价格与回报、客户迁移或留存、替代方案进展等竞争地位强度所需证据；二手估算份额不可作关键证据，故不评分，趋势亦无法确认为改善或恶化。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅有公司定位、产品拓展与行业国产替代的定性线索，缺少经济份额、相对回报与客户迁移证据，竞争地位强度与趋势均无法评分。",
+        "status": "partial"
+       },
+       "counterevidence": "行业报告口径显示刻蚀、薄膜沉积、清洗环节国产化率仅约20%及以上，外资仍占多数份额，公司增长更多来自国产替代窗口而非已证实的长期定价权；北方华创、拓荆科技、盛美上海等多家国内厂商同受替代红利，竞争强度上升可能侵蚀份额与相对回报；缺少客户迁移与剔除补贴后盈利序列，无法排除地位被侵蚀。",
+       "missing_fields": [
+        "剔除补贴后的经济份额与净利率/ROIC多期序列",
+        "主要客户留存、迁移与重复采购率数据",
+        "相对价格、单位性能成本与售后成本的同口径对比",
+        "同口径同业市场份额与相对回报的可比序列"
+       ],
+       "watch_triggers": [
+        "剔除政府补助后的毛利率或经营利润率连续恶化",
+        "关键客户份额或重复采购率下降、订单迁移至其他国产设备商",
+        "国产替代政策红利退坡后公司份额与价格表现走弱",
+        "外资龙头在华降价或放松供应导致替代放缓",
+        "新品验证通过但未能形成持续批量订单"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:22:03.100691Z",
+       "imported_at": "2026-11-16T21:54:56Z",
+       "import_sequence": 133,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "c87990c8-4120-419e-9662-90284d32861a",
+       "versions": {
+        "question_version": "2.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/01b24dddcc6fff26",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV06-1",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书（新浪财经）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书披露全球刻蚀设备市场一直由泛林半导体、应用材料、东京电子三家主导，公司份额随业务规模增长有望提升；说明发行时公司相对国际巨头份额有限，未提供后续份额趋势序列。"
+        },
+        {
+         "id": "EV06-2",
+         "title": "中微公司：2026年半年度报告（新浪财经）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "2026年半年度报告片段显示PrimoTSV2G刻蚀设备拓展了新的市场、并针对更高金属…（截断）；可确认产品线延伸动作，未披露客户迁移、留存率或相对价格变化。"
+        },
+        {
+         "id": "EV06-3",
+         "title": "国产替代持续推进,下游扩产拉动需求增长（东莞证券半导体设备专题报告）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202504281663893328_1.pdf",
+         "published_at": "2025-04-28",
+         "claim": "报告指出刻蚀、薄膜沉积、清洗环节国产化率已达20%及以上、美系三大设备商中国内地收入占比超35%，国产替代持续推进；但报告同时推荐北方华创、拓荆科技、盛美上海等多家国内设备商，替代红利并非公司独享，且未提供公司经济份额或相对回报序列。"
+        },
+        {
+         "id": "EV06-4",
+         "title": "中微公司(688012)的国产芯片龙头地位如何？-投资逻辑解析（股百科）",
+         "url": "https://www.aigbk.com/article/zhongwei_company_688012_domestic_chip_leader_analysis/",
+         "published_at": "2026-04-27",
+         "claim": "第三方文章估算公司相关环节份额约40%（标注为行业调研估算、部分数据未公开），未给出按客户/产品口径的经济份额、利润或补贴拆分，仅为线索不作关键证据。"
+        },
+        {
+         "id": "EV06-5",
+         "title": "中微公司：2025年年度报告（新浪财经）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年报片段提及第三代半导体设备市场竞争优势与人力资源表述，但未提供剔除补助后的经济份额、客户留存或相对回报数据。"
+        }
+       ],
+       "observation_id": "obs_616a3b15cc6545dfe1eb272962b3c3cc5cd1422fd78591161444fff06a85051b",
+       "payload_sha256": "30843b52d1be3aa1135ebc321302bc8b771a38c78b1a830e0ced7db2516185ec",
+       "package_id": "pkg_bf7a75677963253948632511823f746a9e2d1d0a1cb02e0e14708e5ed3909904",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "828a1e2995e8b5142744789f0b26a774590bb3809e6438f6916464c914a130dd",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_07",
+       "question_id": "IQS_07",
+       "construct_id": "IQS_07",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "本次检索仅获得第三方行业报告对中微公司(688012)的推荐性提及及同业对比表述，未获得公司过去三至五年经营目标与重大项目的承诺原文、实际完成数据、偏差说明、延期或纠偏披露等可核实证据，无法评价管理层承诺兑现记录。公司定期报告及投资者关系中的相应披露未在本次检索中核实，缺口予以保留，不做打分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "检索仅获得第三方行业报告对公司的提及，未获得公司层面承诺与兑现的原始披露，问题维度证据缺口保留。",
+        "status": "unknown"
+       },
+       "counterevidence": "未核实到相反证据；检索中未见公司层面承诺兑现数据，证据缺失不等同于承诺被违反或不存在。",
+       "missing_fields": [
+        "三至五年经营目标与重大项目承诺的原始披露",
+        "承诺目标对应的实际完成数据与偏差解释",
+        "延期、纠偏与口径变动的可核实记录"
+       ],
+       "watch_triggers": [
+        "公司定期报告中年度经营目标及完成情况的披露",
+        "重大项目进度、延期公告与投资者问答中承诺口径的变化",
+        "监管问询函关于业绩预测或募投项目进度完成情况的回复"
+       ],
+       "information_as_of": "2026-09-29",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:24:46.633635Z",
+       "imported_at": "2026-11-16T21:55:39Z",
+       "import_sequence": 134,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "48f191b9-b74a-4d50-8ada-b967a162eff4",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/6c4c2a9dbc26d9dd",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_IQS07_1",
+         "title": "硅光：产业趋势渐明，设备环节先行——智能制造行业周报（2026/03/30-2026/04/03）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202604081821067600_1.pdf",
+         "published_at": "2026-04-08",
+         "claim": "该券商行业周报在硅光设备投资建议中将中微公司(688012)列为半导体设备推荐标的之一；该来源不含公司经营目标、重大项目承诺及兑现情况的任何数据，不能支持承诺兑现评分。"
+        },
+        {
+         "id": "EV_IQS07_2",
+         "title": "江苏鲁汶仪器股份有限公司披露文件（巨潮资讯）",
+         "url": "http://dataclouds.cninfo.com.cn/sjother2/documents/2026/2026-09-29/7f106b3485bd0e622ccb6466d5b29a6b.pdf",
+         "published_at": "2026-09-29",
+         "claim": "第三方IPO披露文件在对比国内半导体设备厂商时提及中微公司等厂商起步较早、国内市场份额持续（原文表述截断），仅反映行业地位的第三方说法，不含中微公司管理层承诺与兑现的证据。"
+        }
+       ],
+       "observation_id": "obs_043a9b35fbb7676ffdf61a8e32ae57128ef6ce7519dcf0086124cc09bc1205e6",
+       "payload_sha256": "ce006ad4c733fd787f824947c5d69d6076798eaf6e4001e6295f739d6f18b96d",
+       "package_id": "pkg_51b5e6790685f0f30e2776eddae6f8c99f3d6cbde55e95420c7c694dab953519",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "ea5527f4347c708fa123e942c75656e31ca21777142cb92554467492d3c6d61d",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_08",
+       "question_id": "IQS_08",
+       "construct_id": "IQS_08",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "本次检索未获得中微公司关于扩张批次、质量事故、交付周期、固定成本弹性或爬坡损失的公司层面可核实披露；第三方资料仅确认其为国内半导体设备厂商并被券商列为推荐标的，不足以评价公司扩大规模或需求波动时的交付质量与成本纪律。无法验证的运营数据不做推断，缺口保留，不进行打分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "检索仅获得第三方行业报告中的公司提及，未获得交付质量、交付周期与成本纪律的公司层面证据，问题维度证据缺口保留。",
+        "status": "unknown"
+       },
+       "counterevidence": "未核实到相反证据；检索中未见质量事故或成本失控的证据，证据缺失不等同于不存在风险或问题。",
+       "missing_fields": [
+        "扩张批次与交付质量记录",
+        "质量事故与交付周期的公司披露",
+        "固定成本弹性与爬坡损失的量化数据"
+       ],
+       "watch_triggers": [
+        "年报中毛利率、交付周期与产能爬坡相关的经营讨论",
+        "质量事故、客户验收争议相关的公告与问询回复",
+        "扩张期费用率、存货周转与合同负债变化"
+       ],
+       "information_as_of": "2026-09-29",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-08T10:24:46.633635Z",
+       "imported_at": "2026-11-16T21:56:18Z",
+       "import_sequence": 135,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "48f191b9-b74a-4d50-8ada-b967a162eff4",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/9ee41c508e31fe59",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_IQS08_1",
+         "title": "硅光：产业趋势渐明，设备环节先行——智能制造行业周报（2026/03/30-2026/04/03）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202604081821067600_1.pdf",
+         "published_at": "2026-04-08",
+         "claim": "该券商行业周报将中微公司(688012)列入半导体设备推荐名单，但全文未披露公司交付质量、交付周期、质量事故、成本纪律或产能爬坡数据，不能支持本题评分。"
+        },
+        {
+         "id": "EV_IQS08_2",
+         "title": "江苏鲁汶仪器股份有限公司披露文件（巨潮资讯）",
+         "url": "http://dataclouds.cninfo.com.cn/sjother2/documents/2026/2026-09-29/7f106b3485bd0e622ccb6466d5b29a6b.pdf",
+         "published_at": "2026-09-29",
+         "claim": "第三方IPO文件在行业对比中提及中微公司起步较早、国内市场份额持续（表述截断），不含公司扩张期交付质量、成本控制或爬坡损失的任何量化或质性证据。"
+        }
+       ],
+       "observation_id": "obs_b39b40439736995ddd7b197a6c9b65a8ae78051f767f2153e2fefe69f656ed72",
+       "payload_sha256": "a9bdba7eee2a3276eecb1646782bab1498b3a1ce0e9628c976347fc0c8e0fea5",
+       "package_id": "pkg_10b9fe453c15b583374573dad4f2a2e583d814c9cfc1af9acfacb36b7f34ad6f",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "36a9f8179282d4e3b9439e61c34b3ad71622fcf53a823d44f33610096d00912a",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_09",
+       "question_id": "IQS_09",
+       "construct_id": "IQS_09",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2026-06-30",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索到的中微公司定期报告仅确认法定代理人尹志尧、主管会计工作负责人陈伟文、董事会秘书刘方等岗位设置及董事会出席情况；未取得核心岗位梯队、关键人员流失、接班安排、研发与销售制度化及授权记录等证据，无法判断组织能力是否不过度依赖少数关键个人。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅取得岗位设置与治理声明类信息，组织能力延续性的专项证据缺失，无法评分。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现组织能力受损的反面证据；但检索结果未覆盖核心人员流失、接班安排与授权记录，证据缺失不等于相关安排不存在。",
+       "missing_fields": [
+        "核心岗位梯队与接班计划",
+        "关键人员流失记录",
+        "研发与销售制度化及授权记录",
+        "组织能力在关键人员更替后的可验证延续记录"
+       ],
+       "watch_triggers": [
+        "核心技术人员或高级管理人员离职、变更公告",
+        "继任安排、关键岗位梯队或授权体系的专项披露",
+        "研发与销售流程制度化及知识管理说明",
+        "员工流失率、核心岗位人员覆盖度披露"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:28:16.346900Z",
+       "imported_at": "2026-11-16T21:57:35Z",
+       "import_sequence": 136,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "299a2983-4678-43b7-9022-af7f84f63532",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/b83b4b57ae29c9e7",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_09_1",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "该半年度报告披露公司负责人为尹志尧、主管会计工作负责人为陈伟文，信息披露代表为刘方、胡潇，并载有股东大会、董事会、监事会治理架构及公司治理章节，仅能确认岗位与治理框架设置。"
+        },
+        {
+         "id": "EV_09_2",
+         "title": "中微公司：2026年半年度报告（新浪财经公告）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "2026年半年度报告显示公司董事会及董事、高级管理人员就报告内容真实性作出声明，说明公司治理与信息披露机制持续运行，但未提供接班、梯队或人员流失信息。"
+        }
+       ],
+       "observation_id": "obs_3f1f11533df3b40587a07de65414f57f184265285efad1216212a0910a2d2ddf",
+       "payload_sha256": "a6186ec3f52f07e4bba347cb2e3424413e68fe2c91f3453f59d26fb5307ee3c4",
+       "package_id": "pkg_4fbcbbfbf62a54ed705be7907e57e223b016f947de6a4df4ad23f63a06d392b2",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "01e2c423eca7d7d3df00e3ab444e41bbe82ad23b6775d2523ab1c2f2450642f7",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_10",
+       "question_id": "IQS_10",
+       "construct_id": "IQS_10",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2026-06-30",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索到的中微公司2025年年报与2026年半年报提取内容仅有业务与治理描述，未包含营业利润、投入资本、研发资本化、商誉与租赁调整及资本成本区间等可核验数值；且报告财务数据的合并报表口径与standalone_issuer研究边界是否匹配未经验证，无法判断正常景气下存量资本对必需资本的回报是否持续超过资金成本。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅确认业务构成与报告存在，回报率计算所需的数值与口径证据均缺失。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现关于资本回报的反面证据；但本次检索未取得ROIC原始分子分母、研发资本化调整及资本成本依据，合并口径与法定主体边界亦未核实，缺失不等于回报低于资金成本。",
+       "missing_fields": [
+        "税后经营利润与平均投入资本原始数值",
+        "研发资本化、商誉与租赁调整明细",
+        "资本成本区间依据",
+        "法定主体口径的回报指标"
+       ],
+       "watch_triggers": [
+        "年报中营业利润、净利润及投入资本明细的可核验披露",
+        "研发费用资本化政策与金额、商誉与租赁调整披露",
+        "资本成本或折现率假设的合理区间依据",
+        "法定母公司报表口径与合并口径的对照披露"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:28:16.346900Z",
+       "imported_at": "2026-11-16T21:58:37Z",
+       "import_sequence": 137,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "299a2983-4678-43b7-9022-af7f84f63532",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/4a4792697b9156a5",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_10_1",
+         "title": "中微公司：2025年年度报告（新浪财经公告）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "该年报披露公司主要从事半导体设备的研发、生产和销售，向集成电路、LED外延片、先进封装、MEMS等制造公司销售刻蚀设备、薄膜设备和MOCVD设备；可得文本未提供经营回报与投入资本数值。"
+        },
+        {
+         "id": "EV_10_2",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "半年度报告提示段与公司简介部分确认公司代码688012、报告期为2025年1月1日至6月30日且报告未经审计；可得文本未包含营业利润、投入资本或资本成本数据。"
+        }
+       ],
+       "observation_id": "obs_140d50103205ff2f77b3a985cc59715baa6c0f6966af12827a73e233a4555e5e",
+       "payload_sha256": "593f941bec7cd0525f74fcd0dcac70c899463ed58403c2778a4621f34ca37f1f",
+       "package_id": "pkg_4f1246b829734c52479f8a7a403867ccbb053ff877e1cd285289e5ee6630185a",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "a03e14f3be11c23fd2a9cefbd192be9f7c3c7f5ca634fdf8d97c92f395db3033",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_11",
+       "question_id": "IQS_11",
+       "construct_id": "IQS_11",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2026-06-30",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索到的中微公司定期报告文本未包含经营活动现金流、净利润、维护性资本支出、正常营运资本变动及一次性占款释放等可核验数据；且可得报告为定期报告整体文本、合并报表口径与法定主体边界未获验证，无法核对账面经营成果在必要再投入后向股东可获得现金或可分配资本的转化。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "现金转化所需的现金流、利润与再投入数据均未取得，仅确认报告存在与披露框架。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现利润无法兑现现金的反面证据；但经营现金流与利润核对、维护性投入及营运资本数据均未获取，缺失不等于现金转化能力差或良好。",
+       "missing_fields": [
+        "经营现金流与净利润原始数值",
+        "维护性资本支出金额",
+        "营运资本正常化变动",
+        "一次性占款或释放明细"
+       ],
+       "watch_triggers": [
+        "经营活动现金流量净额与净利润的多期对照",
+        "购建长期资产现金支出中维护性与增长性拆分",
+        "合同负债、存货及应收变动对营运资本的影响",
+        "分红、回购等实际可分配记录"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:28:16.346900Z",
+       "imported_at": "2026-11-16T22:00:00Z",
+       "import_sequence": 138,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "299a2983-4678-43b7-9022-af7f84f63532",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/d042619c3c46ddad",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_11_1",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "该报告载有资产负债表、利润表及现金流量表的目录章节并声明半年度报告未经审计，但可得提取内容未包含经营现金流、利润或资本支出数值。"
+        },
+        {
+         "id": "EV_11_2",
+         "title": "中微公司：2026年半年度报告（新浪财经公告）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "2026年半年度报告已披露存在，但可得文本仅为报告提示信息，未提供现金转化、维护性投入或可分配资源数据。"
+        }
+       ],
+       "observation_id": "obs_a6769750a3fe968871c7acab014cbb11e0cbe81ec66eba242449801f6c99e8c6",
+       "payload_sha256": "d75f9d86e65fe483da7058df0960ebb46e07c51718647c6cc61f3b744ef4915d",
+       "package_id": "pkg_67323376977e36a9c334246cc78597aa67e192a79e379a001c6986bae7185fdf",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "003fd65a4155ced6d1230a029b38a55e8c8689b8f5253cd9f0427cd0089db6da",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_12",
+       "question_id": "IQS_12",
+       "construct_id": "IQS_12",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2026-06-30",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "现有证据仅确认2025年半年报由负责人尹志尧、会计负责人陈伟文声明财务报告真实准确完整、全体董事出席董事会、报告期内无控股股东非经营性占用资金及无违规对外担保，且半年报未经审计；2026年半年报继续有董事会及董事、高管真实性声明。但未取得审计意见与关键审计事项、应收与存货质量、费用资本化、表外义务及非经常调整明细，不足以验证资产、负债和利润披露是否可信反映真实经济状况。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅取得治理与真实性声明及未经审计提示，会计质量核心证据缺失，无法评分。",
+        "status": "partial"
+       },
+       "counterevidence": "2025年半年度报告明确未经审计，构成对该期数据可信度的限制；检索内容未覆盖应收存货质量、研发资本化与表外义务，无法确认资产、利润、现金是否相互印证，亦不能据此断言存在失真。",
+       "missing_fields": [
+        "审计意见与关键审计事项",
+        "应收与存货质量及减值明细",
+        "费用资本化政策与金额",
+        "表外义务与或有事项",
+        "非经常性调整明细"
+       ],
+       "watch_triggers": [
+        "年报审计意见类型及关键审计事项",
+        "应收账款、存货账龄与减值计提政策变化",
+        "研发支出资本化比例与政策调整",
+        "诉讼、担保、质保及收入确认等表外与估计事项披露"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:28:16.346900Z",
+       "imported_at": "2026-11-16T22:01:19Z",
+       "import_sequence": 139,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "299a2983-4678-43b7-9022-af7f84f63532",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_12_1",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "重要提示披露：董事会、监事会及董事、监事、高管保证报告真实准确完整；公司负责人尹志尧与主管会计工作负责人陈伟文声明财务报告真实准确完整；半年度报告未经审计；不存在控股股东及关联方非经营性占用资金、不存在违规对外担保。"
+        },
+        {
+         "id": "EV_12_2",
+         "title": "中微公司：2026年半年度报告（新浪财经公告）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "2026年半年度报告显示公司董事会及董事、高级管理人员保证半年度报告内容真实、准确、完整，不存在虚假记载、误导性陈述或重大遗漏，延续真实性声明机制。"
+        },
+        {
+         "id": "EV_12_3",
+         "title": "中微公司：2025年年度报告（新浪财经公告）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "公司已披露2025年年度报告并载明主营业务为半导体设备研发、生产和销售；可得文本未包含审计意见、资产质量或会计估计信息。"
+        }
+       ],
+       "observation_id": "obs_8e7a89f1a828d13c21ea5f8079b0445786bc99394f7f80b676ddfc3be07fa148",
+       "payload_sha256": "86ee370ceda535eb914d1bb6fc0334d50fae02268c1eca20041d7a28398ee9ab",
+       "package_id": "pkg_c1fc412d182276430504d1073718853d0725e45cece14bdb6a4b29ed7e327d9d",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "2bf4ecfee724bba852edb2949ff158aeaf75891957babf52101bb12efca6ffbb",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       },
+       "ambiguous": true,
+       "ambiguous_reason": "multiple_comparable_variants",
+       "variant_count": 2,
+       "variants": [
+        {
+         "variant_key": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9|1|entity|∅|∅|∅|IQS_12|1.0.0|3.2.1|module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66|pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a|modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df|IQS_12|mimo|mimo-v2.6-pro|∅|2025-01-01|2026-06-30|not_applicable",
+         "observation_id": "obs_8e7a89f1a828d13c21ea5f8079b0445786bc99394f7f80b676ddfc3be07fa148",
+         "subject": {
+          "recorded": true,
+          "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+          "analysis_subject_revision": 1,
+          "source": "retained_original_dispatch_binding",
+          "binding_sha256": "2bf4ecfee724bba852edb2949ff158aeaf75891957babf52101bb12efca6ffbb",
+          "c06_envelope_validated": false
+         },
+         "scope": "entity",
+         "security_id": null,
+         "listing_id": null,
+         "segment_id": null,
+         "period_start": "2025-01-01",
+         "period_end": "2026-06-30",
+         "basis": "not_applicable",
+         "question_id": "IQS_12",
+         "versions": {
+          "question_version": "1.0.0",
+          "template_version": "3.2.1",
+          "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66",
+          "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+          "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+         },
+         "provider": "mimo",
+         "model_resolved": "mimo-v2.6-pro",
+         "model_revision": null,
+         "status": "insufficient_evidence",
+         "score": null,
+         "observed_at": "2026-11-15T17:28:16.346900Z",
+         "information_cutoff": "2026-11-08",
+         "import_sequence": 139
+        },
+        {
+         "variant_key": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9|1|entity|∅|∅|∅|IQS_12|1.0.0|3.2.1|module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66|pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a|modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df|IQS_12|mimo|mimo-v2.6-pro|∅|∅|∅|not_applicable",
+         "observation_id": "obs_ab86814f6995bcca1a8c352a2a0c4a149a3d746b025872ae30da341236d707ae",
+         "subject": {
+          "recorded": true,
+          "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+          "analysis_subject_revision": 1,
+          "source": "retained_original_dispatch_binding",
+          "binding_sha256": "1f9bccd9e619f51b581b5a2557b977c8b25875758c40202c5f03232819743a25",
+          "c06_envelope_validated": false
+         },
+         "scope": "entity",
+         "security_id": null,
+         "listing_id": null,
+         "segment_id": null,
+         "period_start": null,
+         "period_end": null,
+         "basis": "not_applicable",
+         "question_id": "IQS_12",
+         "versions": {
+          "question_version": "1.0.0",
+          "template_version": "3.2.1",
+          "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66",
+          "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+          "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+         },
+         "provider": "mimo",
+         "model_resolved": "mimo-v2.6-pro",
+         "model_revision": null,
+         "status": "insufficient_evidence",
+         "score": null,
+         "observed_at": "2026-11-01T00:02:44.477428Z",
+         "information_cutoff": "2026-10-31",
+         "import_sequence": 114
+        }
+       ]
+      },
+      {
+       "field_id": "score.iqs_12",
+       "question_id": "IQS_12",
+       "construct_id": "IQS_12",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索仅获得年报公告片段：2024年报中董事会对非标准意见审计报告的说明勾选为不适用，2022年报提及开发支出资本化及应收票据、应收账款、合同资产的减值审计程序。但片段无法核实应收/存货减值明细、资本化金额与政策、表外义务及非经常性损益调整，且可得财务数字多为合并报表口径，与本次仅法律发行人主体的研究边界存在范围错配，无法确认单体口径下资产、负债与利润披露是否可信，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅有年报公告片段，未核实单体口径资产质量、资本化、表外义务与非经常调整明细，且可得财务口径多为合并报表，存在研究边界范围错配。",
+        "status": "partial"
+       },
+       "counterevidence": "未检索到审计非标准意见、监管处罚或重大隐性义务的直接证据，但公告片段不足以证明不存在此类问题，不构成反面证据。",
+       "missing_fields": [
+        "法律发行人单体（非合并）口径的资产、负债与利润披露",
+        "应收账款及合同资产账龄、减值计提与转回明细",
+        "存货库龄结构与跌价准备",
+        "开发支出资本化金额、比例及减值测试依据",
+        "表外担保、承诺及或有负债披露",
+        "非经常性损益明细与政府补助依赖度",
+        "审计报告全文与关键审计事项"
+       ],
+       "watch_triggers": [
+        "审计意见变为非标或关键审计事项增加",
+        "应收账款、合同资产减值计提或转回规模显著上升",
+        "开发支出资本化比例明显提高或资本化资产减值",
+        "新增表外担保、承诺或重大诉讼披露",
+        "非经常性损益占净利润比重持续偏高"
+       ],
+       "information_as_of": "2026-03-31",
+       "information_cutoff": "2026-10-31",
+       "observed_at": "2026-11-01T00:02:44.477428Z",
+       "imported_at": "2026-11-01T00:03:42Z",
+       "import_sequence": 114,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "a53e051b-a273-4a86-b748-39160779fdcf",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV1",
+         "title": "中微半导体设备(上海)股份有限公司2024年年度报告",
+         "url": "https://stockn.xueqiu.com/SH688012/20250417774068.pdf",
+         "published_at": "2025-04-17",
+         "claim": "2024年年度报告片段显示设有'公司董事会对会计师事务所非标准意见审计报告的说明'栏目且勾选为不适用，提示审计意见为标准意见；但片段未提供审计报告全文、关键审计事项、资产减值与表外义务明细。"
+        },
+        {
+         "id": "EV2",
+         "title": "中微公司(688012)_公司公告_中微公司：2025年年度报告新浪财经",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年度报告转载页面片段同样出现'非标准意见审计报告说明'的适用/不适用勾选项及扣除非经常性损益后归属于普通股股东的净利润表格行，但片段未给出可核实的具体数值、口径与调整明细。"
+        },
+        {
+         "id": "EV3",
+         "title": "中微半导体设备-2022年年度报告新浪财经",
+         "url": "http://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=8936916",
+         "published_at": "2023-03-31",
+         "claim": "2022年年度报告片段显示审计师对开发支出资本化实施审计程序，并于资产负债表日对应收票据、应收账款和合同资产评估减值，说明存在资本化与应收款质量相关会计估计，但片段未提供金额、账龄与减值比例。"
+        }
+       ],
+       "observation_id": "obs_ab86814f6995bcca1a8c352a2a0c4a149a3d746b025872ae30da341236d707ae",
+       "payload_sha256": "346acf589d27b6114633adb5e02738468e58c588f428ac1e1f982a502ca4c109",
+       "package_id": "pkg_9a4d58b8c489a79c568d70ed348e8033d28e784bd0ae7c9520574eb5f871edb8",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "1f9bccd9e619f51b581b5a2557b977c8b25875758c40202c5f03232819743a25",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       },
+       "ambiguous": true,
+       "ambiguous_reason": "multiple_comparable_variants",
+       "variant_count": 2,
+       "variants": [
+        {
+         "variant_key": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9|1|entity|∅|∅|∅|IQS_12|1.0.0|3.2.1|module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66|pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a|modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df|IQS_12|mimo|mimo-v2.6-pro|∅|2025-01-01|2026-06-30|not_applicable",
+         "observation_id": "obs_8e7a89f1a828d13c21ea5f8079b0445786bc99394f7f80b676ddfc3be07fa148",
+         "subject": {
+          "recorded": true,
+          "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+          "analysis_subject_revision": 1,
+          "source": "retained_original_dispatch_binding",
+          "binding_sha256": "2bf4ecfee724bba852edb2949ff158aeaf75891957babf52101bb12efca6ffbb",
+          "c06_envelope_validated": false
+         },
+         "scope": "entity",
+         "security_id": null,
+         "listing_id": null,
+         "segment_id": null,
+         "period_start": "2025-01-01",
+         "period_end": "2026-06-30",
+         "basis": "not_applicable",
+         "question_id": "IQS_12",
+         "versions": {
+          "question_version": "1.0.0",
+          "template_version": "3.2.1",
+          "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66",
+          "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+          "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+         },
+         "provider": "mimo",
+         "model_resolved": "mimo-v2.6-pro",
+         "model_revision": null,
+         "status": "insufficient_evidence",
+         "score": null,
+         "observed_at": "2026-11-15T17:28:16.346900Z",
+         "information_cutoff": "2026-11-08",
+         "import_sequence": 139
+        },
+        {
+         "variant_key": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9|1|entity|∅|∅|∅|IQS_12|1.0.0|3.2.1|module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66|pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a|modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df|IQS_12|mimo|mimo-v2.6-pro|∅|∅|∅|not_applicable",
+         "observation_id": "obs_ab86814f6995bcca1a8c352a2a0c4a149a3d746b025872ae30da341236d707ae",
+         "subject": {
+          "recorded": true,
+          "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+          "analysis_subject_revision": 1,
+          "source": "retained_original_dispatch_binding",
+          "binding_sha256": "1f9bccd9e619f51b581b5a2557b977c8b25875758c40202c5f03232819743a25",
+          "c06_envelope_validated": false
+         },
+         "scope": "entity",
+         "security_id": null,
+         "listing_id": null,
+         "segment_id": null,
+         "period_start": null,
+         "period_end": null,
+         "basis": "not_applicable",
+         "question_id": "IQS_12",
+         "versions": {
+          "question_version": "1.0.0",
+          "template_version": "3.2.1",
+          "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/3c392ad41e6bcf66",
+          "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+          "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+         },
+         "provider": "mimo",
+         "model_resolved": "mimo-v2.6-pro",
+         "model_revision": null,
+         "status": "insufficient_evidence",
+         "score": null,
+         "observed_at": "2026-11-01T00:02:44.477428Z",
+         "information_cutoff": "2026-10-31",
+         "import_sequence": 114
+        }
+       ]
+      },
+      {
+       "field_id": "score.iqs_13",
+       "question_id": "IQS_13",
+       "construct_id": "IQS_13",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2026-01-01",
+       "period_end": "2026-06-30",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "现有检索结果仅能确认中微公司2026年半年度报告声明报告期内不存在被控股股东及其他关联方非经营性占用资金、不存在违规对外担保，属于单一期间的否定式声明。关联交易定价与决策程序、控制权与现金权分离程度、资产转移记录、少数股东保护机制等评分关键证据在本次检索中未获得可核验内容，无法依据1/5/10锚点给出整数评分，故score留空。已知部分事实列示于evidence，缺口列示于missing_fields。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅核实到2026年半年度报告关于资金占用与担保的否定式声明，关联交易公平性、控制权结构与资产转移等核心证据缺失，无法完成评分。",
+        "status": "partial"
+       },
+       "counterevidence": "未检索到足以证明存在重大侵占、利益输送或权利缺陷的反面证据；但浅层摘要不足以证明不存在此类问题，证据缺失不等于不存在。",
+       "missing_fields": [
+        "关联交易金额、定价公允性与决策回避程序的多期记录",
+        "控制权与现金权（一致行动、表决权差异）结构",
+        "资产转让或对外投资中是否存在向关联方倾斜的证据",
+        "少数股东保护机制（累积投票、类别表决、独立意见）实际运行记录"
+       ],
+       "watch_triggers": [
+        "后续定期报告中关联交易明细、定价依据与独立董事/股东大会审议记录",
+        "控股股东及实际控制人持股变动、质押与控制权稳定性披露",
+        "资金占用、担保、资产转让等专项核查或监管问询记录"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:32:40.882546Z",
+       "imported_at": "2026-11-16T22:02:24Z",
+       "import_sequence": 140,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "4b1c592a-538d-498e-8b0a-bc250c46fd81",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/d854a94e7ab16ff6",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "ev13_a",
+         "title": "中微公司：2026年半年度报告（新浪财经公告页）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "该半年度报告重要提示中声明：报告期内不存在被控股股东及其他关联方非经营性占用资金情况，不存在违反规定决策程序对外提供担保的情况。"
+        },
+        {
+         "id": "ev13_b",
+         "title": "中微公司：2022年年度报告（新浪财经公告页）",
+         "url": "http://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=8936916",
+         "published_at": "2023-03-31",
+         "claim": "2022年度利润分配预案为不分配利润、资本公积不转增，理由为研发投入等资金需求较大，已履行董事会审议程序，体现对股东回报与再投入的权衡但未涉及关联交易公平性。"
+        }
+       ],
+       "observation_id": "obs_8ccae37f00919eb4438ba8748f5af1183143e0ec672cede502bfc2addb8b120d",
+       "payload_sha256": "bcf53e72c9593b0ddd765f3838c7442fef0e494dbed58d65f744241bae7bdefe",
+       "package_id": "pkg_d939963a481648aa2a109f56abb5aac741e4ec5e8ddbadcdb650a869040221bf",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "9f34a34e306be60c34ce13e9d84d386c5dd21dee172fbbfca7cc5c5155a43322",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_14",
+       "question_id": "IQS_14",
+       "construct_id": "IQS_14",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "本次检索仅得到分红政策的零星事实：2022年度因研发投入等资金需求不分配利润、不转增股本；2025年年度报告披露栏目中含现金回购计入现金分红金额等分红信息及股权激励股份支付费用，但快照未提供具体金额。历次再投资、并购的实际回报、并购减值、回购价格与全部摊薄股数、失败项目退出等决定每股价值增减的核心证据均未获得，无法按1/5/10锚点评分，score留空。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅有2022年不分红决策与2025年报分红披露栏目的片段信息，缺少投入回报、并购减值、回购价格与摊薄股数等评分必需证据。",
+        "status": "partial"
+       },
+       "counterevidence": "未检索到显示每股价值被并购减值、高价回购或长期低回报投入反复毁损的直接反面证据；但缺乏投入后回报数据，不能据此认定配置纪律良好。",
+       "missing_fields": [
+        "历次再投资/募投项目的实际回报（ROIC、产能利用率、收入贡献）",
+        "并购标的对价、商誉及减值测试结论",
+        "回购价格与市值对比及对每股价值的净影响",
+        "完全摊薄股数变动序列",
+        "失败或低效项目的退出与止损记录"
+       ],
+       "watch_triggers": [
+        "再融资、重大资本开支或并购公告及其投后回报承诺",
+        "商誉与长期资产减值测试结果",
+        "回购实施进展、价格区间与注销/库存股处理对每股数据的影响",
+        "完整摊薄股数与股权激励行权对每股收益的侵蚀幅度"
+       ],
+       "information_as_of": "2026-03-31",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:32:40.882546Z",
+       "imported_at": "2026-11-16T22:03:33Z",
+       "import_sequence": 141,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "4b1c592a-538d-498e-8b0a-bc250c46fd81",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/a71826a541eddc81",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "ev14_a",
+         "title": "中微公司：2022年年度报告（新浪财经公告页）",
+         "url": "http://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=8936916",
+         "published_at": "2023-03-31",
+         "claim": "公司称考虑研发投入等资金需求较大，为维护全体股东长远利益，2022年度不分配利润、资本公积不转增，该预案已经董事会审议（快照内容）。"
+        },
+        {
+         "id": "ev14_b",
+         "title": "中微公司：2025年年度报告（新浪财经公告页）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年度报告披露结构中包含以现金方式回购股份计入现金分红的金额等分红栏目，以及股权激励考核指标完成情况与股份支付费用栏目；检索快照未显示具体分红、回购金额。"
+        }
+       ],
+       "observation_id": "obs_b9f1399352905f9682a292a696c9fd2250e79cd8a182719f9f15b9e40f2b50b7",
+       "payload_sha256": "092e83b7284d24ae14ccfe5ba8afdc12f057584f187dcbad2aac63c261436dae",
+       "package_id": "pkg_6794d143683cc42e43aa2f515e2c4a969336d1e5e9bccfbb17e426bba89554a2",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "b52975f9c75a3cd2d47f9fd14bee8ce41b24c28ed826caea4a055839e1b484c3",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_15",
+       "question_id": "IQS_15",
+       "construct_id": "IQS_15",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2025-12-31",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索仅确认中微公司2025年年度报告包含股权激励考核指标完成情况及确认的股份支付费用的披露项，说明公司实施了股权激励并披露考核结果。但考核指标的具体构成（是否挂钩收入规模、利润、每股回报或市值）、稀释幅度、管理层风险承担与追索约束、董事会监督与纠正记录等评分关键内容均未在检索快照中获得，无法判断激励是否鼓励长期每股回报，故score留空。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅核实到2025年报含股权激励考核与股份支付费用披露项，指标构成、稀释与监督机制等核心证据未获取，评分依据不足。",
+        "status": "partial"
+       },
+       "counterevidence": "未检索到显示激励指标单纯鼓励做量、冒险或持续稀释且监督失效的直接反面证据；缺少指标细节亦无法证明激励与每股回报一致。",
+       "missing_fields": [
+        "股权激励考核指标的具体构成与权重",
+        "激励授予导致的股份稀释数据与股份支付费用金额",
+        "管理层现金薪酬与持股比例（风险承担证据）",
+        "追索约束条款与董事会监督纠正的实际记录"
+       ],
+       "watch_triggers": [
+        "股权激励草案/修订稿中考核指标是否包含每股收益、ROE或市值类长期指标",
+        "新增激励授予导致的摊薄比例与费用规模",
+        "董事、监事、高管薪酬结构与持股变动",
+        "追索扣回（clawback）条款及董事会考核执行记录"
+       ],
+       "information_as_of": "2026-03-31",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:32:40.882546Z",
+       "imported_at": "2026-11-16T22:04:59Z",
+       "import_sequence": 142,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "4b1c592a-538d-498e-8b0a-bc250c46fd81",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/1911e8a81af32015",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "ev15_a",
+         "title": "中微公司：2025年年度报告（新浪财经公告页）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年度报告披露结构中包含股权激励考核指标完成情况及确认的股份支付费用的专项披露项，表明报告期内存在股权激励考核与费用确认事项；快照未显示具体考核指标与金额。"
+        }
+       ],
+       "observation_id": "obs_74379e70c6872a8fbe9293d5831264f1147810a1aed78fdf994fbd4117025b5d",
+       "payload_sha256": "9d78702edf6320c321bbf14cd1cf159ea0237fc4df844bbc6d4ecb597bc851c1",
+       "package_id": "pkg_ef66d6bb8eb445926e13721d84919c092e99741a500c76f1f8f0e0c1dbb922c4",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "5b34d99438f858e0179220d3726d894a1aa733a82e59f7edfbceece3e83e7082",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_16",
+       "question_id": "IQS_16",
+       "construct_id": "IQS_16",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "本次检索未获得中微公司法定主体口径下可用于压力测试的可用现金、经营现金流、有息债务、租赁负债、资本承诺、担保余额及契约条款等任何可核验证据（检索快照仅含报告目录与公司基本信息）。缺乏刚性义务的期限与金额结构，无法判断未来两年在不依赖乐观再融资情况下能否履约，故score留空、metrics为空。2026年半年度报告快照中关于无违规担保的声明仅覆盖担保一项且属否定式表述，不足以支撑整体流动性评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "检索结果未包含任何流动性、债务或承诺金额数据，压力情景测算的原始输入完全缺失，无法评估两年刚性义务覆盖能力。",
+        "status": "unknown"
+       },
+       "counterevidence": "未发现显示存在未落实资金覆盖刚性缺口或已触发契约违约的反面证据；但未核查到资产负债表明细与承诺事项，不能据此认定流动性充足。",
+       "missing_fields": [
+        "可用现金及受限资金余额（法定主体口径）",
+        "保守经营流入假设所需的经营现金流历史数据",
+        "有息债务、租赁负债与资本承诺的到期结构",
+        "担保与或有负债余额",
+        "债务契约或财务约束条款"
+       ],
+       "watch_triggers": [
+        "定期报告中货币资金、交易性金融资产与有息债务、租赁负债明细",
+        "资本承诺、经营租赁与购买商品接受劳务现金支出规模",
+        "担保余额、质押及或有负债披露",
+        "经营现金流对研发与资本开支的覆盖情况及授信额度可用性"
+       ],
+       "information_as_of": null,
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T17:32:40.882546Z",
+       "imported_at": "2026-11-16T22:06:36Z",
+       "import_sequence": 143,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "4b1c592a-538d-498e-8b0a-bc250c46fd81",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/51dd378b0c906458",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "ev16_a",
+         "title": "中微公司：2026年半年度报告（新浪财经公告页）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "半年度报告重要提示声明报告期内不存在违反规定决策程序对外提供担保的情况；快照未提供现金、债务、租赁或资本承诺等财务数据。"
+        }
+       ],
+       "observation_id": "obs_4ac0bd4db333a98d21356e1ad4da221e35081461b3b1d138de1e52bd0a41aa0c",
+       "payload_sha256": "71052dc8eba456f1f9dd8cf00717cf6dce6a30a728f41f38eefde99e015f60bb",
+       "package_id": "pkg_3048a0e62ae39b7c968b9267ad5bacff4a63f5d9d2c60b7c8bb3e0c341640fdc",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "02cc74e85347b2b96a55c2716a6f4c91294ebb39d55cb331fea79a4c2f4bbd11",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_17",
+       "question_id": "IQS_17",
+       "construct_id": "IQS_17",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索到的公开材料仅能确认两点定性事实：公司称客户结构虽不断优化但客户集中度仍然较高，且对零部件供应商实行慎重遴选并纳入合格供应商名录管理。材料未披露关键客户收入占比、单一来源零部件、替代认证周期与成本、客户流失情景、库存或合同保护条款，也没有中断后恢复的验证记录，无法判断失去关键客户、供应来源、产地或系统后能否在可承受代价内恢复，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅核实到客户集中度较高与合格供应商管理流程等定性事实，缺少恢复能力评估所需的量化依赖、替代周期、切换成本及保护条款证据。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现经验证的反证可证明替代来源或客户替补可在短期内以可承受代价完成切换；证据缺失也不等于相关替代机制不存在。",
+       "missing_fields": [
+        "关键客户收入占比与客户流失情景的量化影响",
+        "关键零部件单一来源及替代认证周期、切换成本",
+        "库存备货与合同保护条款",
+        "生产基地或系统中断后的恢复验证记录"
+       ],
+       "watch_triggers": [
+        "关键客户或前五大客户收入占比的最新披露",
+        "单一来源零部件清单及替代认证周期、切换成本披露",
+        "重大客户流失、供应中断或出口管制相关公告",
+        "库存备货与长期合同保护条款的披露更新"
+       ],
+       "information_as_of": "2022-03-31",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:16:15.965170Z",
+       "imported_at": "2026-11-16T22:08:31Z",
+       "import_sequence": 144,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "877b058c-c9c3-4424-a11c-c0d2e2770037",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/f3968cf78ea10e89",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_IQS17_1",
+         "title": "中微公司：2021年年度报告（新浪财经）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=7938487",
+         "published_at": "2022-03-31",
+         "claim": "年报称公司对零部件供应商的选择十分慎重，考核供应商工艺经验、技术能力等；客户结构得到不断优化，但客户集中度仍然较高。"
+        },
+        {
+         "id": "EV_IQS17_2",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书（新浪财经）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股书披露客户集中度较高可能给公司经营带来一定风险；供应商经综合评定后纳入合格供应商名录，公司称已与全球供应商建立合作。"
+        }
+       ],
+       "observation_id": "obs_bd3788bbd159c56d7d7499e6b336c7a8788b73f3612e680d5c6bd3c5df018142",
+       "payload_sha256": "e39bd548760986061a772457611bdf9831b5fa46c031d0c2821077da0637cc19",
+       "package_id": "pkg_453a0d6a5f273216df64292f97f2939a7326681f3d87798d68bd4f8a0affd067",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "369a22c1f282ea98cc4ec084f6775cfe775464df7be89f832be3bd35dda5d82f",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_18",
+       "question_id": "IQS_18",
+       "construct_id": "IQS_18",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索到的材料仅提供背景性事实：刻蚀与MOCVD设备行业呈高度垄断竞争格局，公司通过研发投入开发出具竞争力的刻蚀、薄膜及MOCVD设备，且客户集中度仍然较高。材料未识别并证实一至两项会绕过现有优势的永久性核心价值损害路径（具体技术替代、渠道迁移、监管/环境约束或商业模式失效），也缺少受影响分部的当前利润/资产敞口、替代路径速度、防御所需投入与经验证的防御效果，无法按锚点评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅核实到行业垄断格局、公司研发与品类拓展及客户集中度等背景事实，缺少结构性威胁识别、敞口量化与防御有效性的直接证据。",
+        "status": "partial"
+       },
+       "counterevidence": "公司持续研发投入并拓展薄膜设备等品类、以及在高度垄断行业中保持竞争力，可作为潜在防御线索，但检索片段未验证其对特定失效路径的有效性；也没有可确认或推翻结构性损害判断的可比反证。",
+       "missing_fields": [
+        "经证据确认的一至两项永久性价值损害路径及其排序",
+        "受影响分部、客户场景的当前利润与资产敞口",
+        "替代路径的可能速度、公司防御或转移能力及所需投入",
+        "可推翻结构性损害判断的反证与观察期限"
+       ],
+       "watch_triggers": [
+        "新一代器件结构或工艺路线对刻蚀/MOCVD需求结构的实质性改变",
+        "主要客户自建、更换供应商或渠道迁移的公告",
+        "出口管制、供应链与环境监管新规对交付与产能的影响",
+        "刻蚀、薄膜、MOCVD各产品线收入与毛利敞口的分部披露更新"
+       ],
+       "information_as_of": "2025-04-17",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:16:15.965170Z",
+       "imported_at": "2026-11-16T22:10:27Z",
+       "import_sequence": 145,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "877b058c-c9c3-4424-a11c-c0d2e2770037",
+       "versions": {
+        "question_version": "2.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/1cd584b6cf4a0b2e",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_IQS18_1",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书（新浪财经）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股书披露刻蚀设备及MOCVD设备行业均呈现高度垄断的竞争格局，中微公司是我国极少数能与全球顶尖设备公司直接竞争并不断扩大市场占有率的企业。"
+        },
+        {
+         "id": "EV_IQS18_2",
+         "title": "中微半导体设备(上海)股份有限公司2024年年度报告",
+         "url": "https://stockn.xueqiu.com/SH688012/20250417774068.pdf",
+         "published_at": "2025-04-17",
+         "claim": "年报称技术革新可有效应对一体化大马士革刻蚀工艺中的独特挑战，公司通过研发投入成功开发出具有市场竞争力的半导体刻蚀设备、薄膜设备及MOCVD设备并积累相关能力。"
+        },
+        {
+         "id": "EV_IQS18_3",
+         "title": "中微公司：2021年年度报告（新浪财经）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=7938487",
+         "published_at": "2022-03-31",
+         "claim": "年报称公司客户结构得到不断优化，但客户集中度仍然较高，显示渠道与客户层面存在集中暴露。"
+        }
+       ],
+       "observation_id": "obs_ad5fafe589fed77ffd50dcda32bc3ab7425074fe5ca37a7079daa00651ce9122",
+       "payload_sha256": "477c86bea8c9a24cac3360eab3c0b2d630d8b60bc8705070eb435c16bf131bfd",
+       "package_id": "pkg_4eca2cf77d9cf5f46c8423e566e7b116a03502bd90678be0ecc475d06d084af5",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "b7f5034f38c1e9009f808993171f3231ead246e6bde07bdcc8419f857cd65c4e",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_19",
+       "question_id": "IQS_19",
+       "construct_id": "IQS_19",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2025-12-31",
+       "basis": "forward",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "现有公开来源仅能确认部分定性事实：公司CCP/ICP刻蚀设备实现多批次销售与重复订单，ICP Primo Nanova客户端安装腔体数近三年年均复合增长超100%，并新开发4款薄膜沉积产品；2025年合并口径营业收入123.85亿元、归母净利润21.11亿元（行业报告转引年报/业绩快报）。但未检索到公司级的具体客户预算/资本开支金额、可进入市场(SAM)口径、渗透与替代边界、以及新增需求的量价分解。行业总量（设备市场规模、国产化空间）不能替代公司可触达且客户付得起的三至五年新增需求，故不足以评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅获得公司合并口径财务结果与产品验证/重复订单的定性描述及行业总量数据，缺客户预算、SAM、渗透边界与量价拆分等公司级量化证据，无法支撑评分。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现已核实的反证；但券商增长预测属估计值而非已实现需求或付款证据，行业总量数据亦不能替代公司可触达需求的量化边界，产品订单定性描述不足以支撑评分。",
+       "missing_fields": [
+        "具体客户预算/资本开支金额",
+        "可进入市场(SAM)口径与渗透/替代边界",
+        "新增需求的量价分解",
+        "三至五年新增需求的公司级量化披露"
+       ],
+       "watch_triggers": [
+        "公司披露在手订单金额、客户资本开支或分产品销量与价格数据",
+        "薄膜沉积等新产品获重复订单并形成可核实收入",
+        "下游晶圆厂扩产预算或国产替代采购落地的公司级披露"
+       ],
+       "information_as_of": "2026-10-26",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:20:19.138478Z",
+       "imported_at": "2026-11-16T22:12:16Z",
+       "import_sequence": 146,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "bb04c864-c425-4724-96db-3298629cd428",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/4d80d03b1ffb7d9c",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_IQS_19_1",
+         "title": "中微公司（688012.SH）刻蚀设备龙头，迈向平台化发展（华福证券首次覆盖）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202410201640374212_1.pdf?1729434364000.pdf=",
+         "published_at": "2024-10-20",
+         "claim": "券商研报称公司CCP刻蚀设备实现多批次销售、大马士革刻蚀工艺进展顺利，ICP Primo Nanova系列近三年客户端安装腔体数年均复合增长超100%，TSV深硅刻蚀设备获重复订单，并新开发4款薄膜沉积产品；报告中的2024-2026年营收82/109/139亿元为预测值，未披露具体客户预算、SAM与量价拆分。"
+        },
+        {
+         "id": "EV_IQS_19_2",
+         "title": "集成电路与半导体产业链收并购研究报告（2026）-21经济网",
+         "url": "https://www.21jingji.com/article/20261026/herald/1403c193c9985c43dd8127a755a0c9dd.html",
+         "published_at": "2026-10-26",
+         "claim": "该行业报告转引中微公司2025年年报/业绩快报：营业收入123.85亿元、归母净利润21.11亿元，为公司合并口径财务结果，未包含三至五年新增需求规模、客户预算或量价分解信息。"
+        },
+        {
+         "id": "EV_IQS_19_3",
+         "title": "全球半导体产业研究框架与市场现状（德邦证券产业经济深度）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202303101584174369_1.pdf?1678472858000.pdf=",
+         "published_at": "2023-03-10",
+         "claim": "行业研究指出中国大陆半导体自给率仍低（2021年本土厂商供给比例约6.6%）、国产替代空间大，但属行业总量口径，不能直接证明本公司可触达且客户付得起的三至五年新增需求。"
+        }
+       ],
+       "observation_id": "obs_bcebcf4c05d876bd4983ece73f5ba92c64e30578680dece57bdbaf816ee900d6",
+       "payload_sha256": "67d352f5f446f92ed7b6f7801562df877ad5f8c3a4d79aa7b915ee068d9a98c8",
+       "package_id": "pkg_3070ee5c537973e5d3a81202ae7c71202a925d4ddea643f9074fb0b28e8ead3d",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "67a2b4fc33cac515eb2119c64d808723db474f54f17d747b88c473b0afcd54c6",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_20",
+       "question_id": "IQS_20",
+       "construct_id": "IQS_20",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2025-12-31",
+       "basis": "forward",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "可确认的公司级事实包括：2025年合并口径营业收入123.85亿元、归母净利润21.11亿元（行业报告转引年报/业绩快报），刻蚀设备多批次销售与重复订单、ICP腔体数高增长、4款薄膜沉积新产品开发等产品验证进展。但未检索到自然量价与并购、汇率的收入利润拆分，未见新业务从付费采用到收入和利润转化的分阶段量化证据、利润池归属与单位经济，也未见对存量业务替代/蚕食、必要转型投入、股权融资及摊薄后每股净经济效果的披露。券商2024-2026年盈利预测为估计值而非已验证转化，故不足以评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅有合并口径业绩结果与产品订单的定性/部分量化描述，缺增长驱动到利润的分阶段验证、新旧业务利润拆分及摊薄后每股净效果证据，无法支撑评分。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现已核实的反证；但券商盈利预测为估计值，2025年业绩数据未包含新旧业务利润拆分、蚕食效应与摊薄影响，无法证明增长已持续转化为每股净增厚。",
+       "missing_fields": [
+        "自然量价与并购、汇率的收入利润拆分",
+        "新业务单位经济、利润池归属与客户议价信息",
+        "对存量业务替代/蚕食及损失利润贡献的量化",
+        "必要投入与股权融资摊薄后的每股净经济效果"
+       ],
+       "watch_triggers": [
+        "年报披露分产品收入、毛利及新业务利润贡献",
+        "自然增长与并购、汇率影响的收入利润拆分披露",
+        "再融资、股权激励或并购导致的每股摊薄后净经济效果测算"
+       ],
+       "information_as_of": "2026-10-26",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:20:19.138478Z",
+       "imported_at": "2026-11-16T22:13:49Z",
+       "import_sequence": 147,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "bb04c864-c425-4724-96db-3298629cd428",
+       "versions": {
+        "question_version": "2.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/36c87f138bc0f891",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_IQS_20_1",
+         "title": "集成电路与半导体产业链收并购研究报告（2026）-21经济网",
+         "url": "https://www.21jingji.com/article/20261026/herald/1403c193c9985c43dd8127a755a0c9dd.html",
+         "published_at": "2026-10-26",
+         "claim": "该行业报告转引中微公司2025年年报/业绩快报：营业收入123.85亿元、归母净利润21.11亿元；未披露新旧业务利润拆分、并购与汇率影响、必要投入及每股摊薄后净经济效果。"
+        },
+        {
+         "id": "EV_IQS_20_2",
+         "title": "中微公司（688012.SH）刻蚀设备龙头，迈向平台化发展（华福证券首次覆盖）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202410201640374212_1.pdf?1729434364000.pdf=",
+         "published_at": "2024-10-20",
+         "claim": "券商研报显示CCP刻蚀多批次销售、ICP Primo Nanova安装腔体数近三年年均复合增长超100%、TSV设备获重复订单、新开发4款薄膜沉积产品，说明产品验证与重复购买迹象；但2024-2026年营收82/109/139亿元、归母净利润17/23/29亿元均为预测，未提供分产品利润贡献、单位经济或摊薄后每股净效果的可核实数据。"
+        }
+       ],
+       "observation_id": "obs_747f0344cc2ce69a9f3bbe43b9b604949e59cc209c5d1c606df0247a374d26e0",
+       "payload_sha256": "588c432bef1b92464ef2b27fab4de79664a9ea952e892a7d42031b1ea37e38de",
+       "package_id": "pkg_e004c127d8b7b7342cac9fc1bb0ad359882d75468eb9cc7ffd23bd095b29ec73",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "c105d637304d7ab1c9ae691a5b361096ab844d53281f941a7e4c111d9df7ec85",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_21",
+       "question_id": "IQS_21",
+       "construct_id": "IQS_21",
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索仅能证实：公司在开发、设计和制造刻蚀设备、薄膜沉积设备和MOCVD等设备过程中强调创新和差异化并保持高强度研发投入，半导体设备行业投资周期长、研发投入大，属典型资本密集型行业。但未获得可归属本发行人法人层面的新批次增量经济性、存量业务被替代的利润损失与资产退出成本、转型资本开支与营运资金占用、融资条件及股权摊薄后每股效果等可核实证据，故无法判断扣除各项代价后的每股回报与再投资空间，评分留空而非以未知取中值。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅有行业资本属性与研发投入方向等定性事实，未见可归属本发行人的增量回报、替代损失与摊薄后每股效果数据。",
+        "status": "unknown"
+       },
+       "counterevidence": "未发现经验证的反证直接证明新增投入回报不足；但检索亦无证据排除存量业务替代损失、转型成本与融资摊薄抵消增量回报的可能，未知不等于不存在，故不得据此给出中值分。",
+       "missing_fields": [
+        "新增批次/增量投资的单位经济性与回报率",
+        "存量业务被替代的利润损失与资产退出成本",
+        "转型资本开支、营运资金占用与融资摊薄的量化影响",
+        "人才与融资约束的可验证披露",
+        "可归属法人单体（ISSUER_LEGAL_ONLY）边界的财务证据",
+        "饱和边界与再投资空间的可核实测算"
+       ],
+       "watch_triggers": [
+        "若公司披露新批次或新增产线的增量资本回报与单位经济性，可重评IQS_21",
+        "若披露存量业务被替代的利润损失、资产退出成本及转型资本开支、营运资金占用",
+        "若披露融资条件、股权摊薄对归属现有普通股每股回报的量化影响",
+        "若出现可归属法人单体（ISSUER_LEGAL_ONLY）口径的连续期增量投入产出数据"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:24:40.326136Z",
+       "imported_at": "2026-11-16T22:14:48Z",
+       "import_sequence": 148,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "623d3627-815f-4a78-95a1-964e7194d809",
+       "versions": {
+        "question_version": "2.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/56a542318c3d75a6",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "IQS_21_E1",
+         "title": "中微公司：2026年半年度报告（新浪财经公告页）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "公司在开发、设计和制造刻蚀设备、薄膜沉积设备和MOCVD等设备的过程中强调创新和差异化，并保持高强度研发投入；该事实属定性投入方向，未披露新增资本的增量回报、批次经济性或摊薄后每股效果。"
+        },
+        {
+         "id": "IQS_21_E2",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书披露半导体设备行业投资周期长、研发投入大，是典型的资本密集型行业，说明再投资与资金占用存在结构性约束；但未给出本发行人增量资本的回报验证。"
+        },
+        {
+         "id": "IQS_21_E3",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告（上交所科创板披露）",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "该报告为未经审计的2025年半年度报告，检索摘录仅覆盖释义与公司简介部分，未展示可用于评估新增资本回报、替代损失或股权摊薄的财务数值，且未验证法人单体口径。"
+        }
+       ],
+       "observation_id": "obs_15253296edf860c7aba37f26b10fac102334cebb365d5f5e0f25702505585bd4",
+       "payload_sha256": "a2be6c722b4bd01776c4ccc81a902bdb287398e4acb0cbbf6fe501ed44355869",
+       "package_id": "pkg_b4d151cf62eb40bcde7ad2ec0ea50d4f0aea055fc4fa5acc21d6b5c3b003bf0b",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "1a8f8677c4647e264cddc835f04b0c162af0024e7dbcb7dec7808ce8032b6dc9",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_22",
+       "question_id": "IQS_22",
+       "construct_id": "IQS_22",
+       "scope": "security",
+       "security_id": "SEC_9c08f2e9-dfb8-424a-be25-56d30591c268",
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2026-06-30",
+       "basis": "trailing",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "无法完成价格隐含要求的反推：缺少截至2026-11-08经核验的收盘价、总股本与市值。第三方一致预期页仅可反推约252.55元，报价日与股本口径不明；最近确定报价为东吴点评载明的2026-04-01收盘价306.38元（总股本626.15百万股），与as_of不一致。可核实的合并口径事实：2025年营收123.85亿元(+36.6%)、归母净利21.11亿元(+30.7%)、扣非15.5亿元(+11.6%)、毛利率39.2%、ROIC 5.7%；2026H1营收66.91亿元(+34.9%)、归母净利28.25亿元，含出售拓荆科技股票投资收益约9.53亿元，正常化利润率与扣非利润未核验。净现金/有息负债与同口径可比估值亦缺，故score留空而非以5代替。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "已核实发行人披露的2025年报与2026年半年报相关事实及券商预测，但报价日价格/市值/股本、正常化利润、资本结构与同口径可比估值缺失，估值反推无法完成；检索到的财务数据为合并报表口径，与standalone issuer边界匹配性未核验。",
+        "status": "partial"
+       },
+       "counterevidence": "可核验资料本身显示价格支持性存在双向不确定性：2026H1归母净利28.25亿元中约9.53亿元来自出售拓荆科技股票投资收益，正常化盈利未验证；券商预测2026-2028年ROIC仅6.6%/7.5%/8.9%，低于常见资本成本，意味着较高估值需持续高增长与平台化兑现；按第三方页面隐含价格约252.55元与券商2026E EPS 4.35元计算约58倍PE（252.55/4.35），对基本面要求不低，但报价日、股本与合并/母公司口径均未核验，不足以支撑任何分值。",
+       "missing_fields": [
+        "2026-11-08收盘价及当日总市值（交易所或权威行情源）",
+        "截至2026-11-08的总股本/流通股本",
+        "2026H1扣非净利润与正常化毛利率/净利率",
+        "最近一期净现金或有息负债等资本结构数据",
+        "可比公司同商业模式/同期间/同会计边界估值",
+        "第三方一致预期所依据的报价基准日与股本口径",
+        "母公司单独（standalone issuer）报表与合并报表口径匹配性核验"
+       ],
+       "watch_triggers": [
+        "在上交所或权威行情源核验2026-11-08（或as_of对应交易日）收盘价、总股本与总市值后，再反推隐含收入增速、净利率与ROIC要求",
+        "2026年三季报及年报披露扣非净利润、经营现金流与出售拓荆科技股票等一次性损益，确认正常化盈利水平",
+        "披露最近一期现金（含交易性金融资产）与有息负债，核验净现金与股权价值/企业价值口径",
+        "临港二期35亿元投资、拟收购杭州众硅并表及薄膜沉积/量检测新品的收入、毛利与资本开支兑现",
+        "合同负债、存货与新签订单趋势，验证在手订单向收入与利润率的转化",
+        "同商业模式刻蚀/薄膜设备可比公司在同期间、同会计边界下的估值对照"
+       ],
+       "information_as_of": "2026-11-01",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-16T21:42:06.341131Z",
+       "imported_at": "2026-11-16T22:18:47Z",
+       "import_sequence": 154,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "da344c83-2881-4374-985d-a2f37120aac1",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/1cb52a2a0d5e281f",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "ev_2026h1_results",
+         "title": "中微公司：上半年净利润同比增长300%（财联社今日聚焦）",
+         "url": "https://www.cls.cn/detail/2458634",
+         "published_at": "2026-08-19",
+         "claim": "公司披露2026年半年度报告（合并口径）：营业收入66.91亿元、同比+34.89%；归母净利润28.25亿元、同比+300.22%，其中出售拓荆科技股票产生投资收益约9.53亿元，该来源未提供扣非/正常化利润，无法据此判定价格隐含要求的可承受性。"
+        },
+        {
+         "id": "ev_lingang_capex",
+         "title": "中微公司：拟投资35亿元建设临港产业化基地二期项目（财联社今日聚焦）",
+         "url": "https://www.cls.cn/detail/2458634",
+         "published_at": "2026-08-19",
+         "claim": "公司公告全资子公司中微临港拟投资35亿元（固定资产17亿元）建设临港产业化基地二期，聚焦刻蚀、量检测、薄膜沉积设备，达产后预计年销售收入30亿元；该为子公司层面项目投资计划，非发行人母公司单独报表口径，增长资本开支与回报率尚未验证。"
+        },
+        {
+         "id": "ev_2025_annual_dw",
+         "title": "中微公司（688012）2025年报点评：业绩持续增长，平台化布局加速落地",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202604011820942026_1.pdf",
+         "published_at": "2026-04-01",
+         "claim": "该点评载明2025年（合并口径）营收123.85亿元(+36.62%)、归母净利21.11亿元(+30.69%)、扣非15.5亿元(+11.6%)、毛利率39.2%、研发投入37.4亿元、合同负债30.4亿元；并预测2026E-2028E归母净利27.26/34.61/42.57亿元、ROIC 6.58%/7.52%/8.92%、归母净利率17.2%-17.9%。"
+        },
+        {
+         "id": "ev_dw_price_pe_20260401",
+         "title": "中微公司（688012）2025年报点评：市场数据与估值表",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202604011820942026_1.pdf",
+         "published_at": "2026-04-01",
+         "claim": "该点评载明2026-04-01收盘价306.38元、总股本626.15百万股，对应摊薄PE 72.76/57.31/46.59倍（2026E/2027E/2028E）；此为2026-04-01时点价格与股本，不能替代2026-11-08报价日价格、市值与股本口径。"
+        },
+        {
+         "id": "ev_consensus_implied_price",
+         "title": "中微半导体设备(688012)股票分析师一致预期 - 英为财情",
+         "url": "https://cn.investing.com/equities/advanced-micro-fabrication-inc-consensus-estimates",
+         "published_at": null,
+         "claim": "第三方一致预期页面显示目标价500.00元（隐含+97.98%）、582.00元、CLSA 361.00元（隐含+42.94%），标注日期2026年11月01日；两行隐含涨幅反推价格均为约252.55元（500/1.9798=252.55；361/1.4294=252.55），但页面未载明该价格的交易日收盘价、总股本与市值口径，无法核验为2026-11-08价格，不能作为反推隐含增长/利润率/资本回报要求的唯一价格依据。"
+        },
+        {
+         "id": "ev_huafu_platform_2024",
+         "title": "中微公司（688012.SH）刻蚀设备龙头，迈向平台化发展（华福证券首次覆盖）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202410201640374212_1.pdf?1729434364000.pdf=",
+         "published_at": "2024-10-20",
+         "claim": "报告描述刻蚀设备、MOCVD与薄膜沉积等平台化布局及行业国产替代逻辑，给出2024E-2026E盈利预测（基于2024-10-18收盘价185.65元，PE 69/50/39倍）；该时点远早于as_of，仅为能力背景，不能证明2026-11-08价格隐含要求在能力范围内。"
+        }
+       ],
+       "observation_id": "obs_157fa86e6573aa5fea97d80c64409baf9f466abfa458cdcb14d9c050bad35785",
+       "payload_sha256": "f4fdf74ba8fc9e3b76c209160f262067459274ae7d9edee4db0d1d0030707dac",
+       "package_id": "pkg_8da638c9cdc8a5d9c9882dbaba8c0cb2f2b160c59aa329ee74031c5189e2901c",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "587ae12d70ef199c924476292be24ecc63902c292f674aef416885275995181f",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_23",
+       "question_id": "IQS_23",
+       "construct_id": "IQS_23",
+       "scope": "security",
+       "security_id": "SEC_9c08f2e9-dfb8-424a-be25-56d30591c268",
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索仅获得中微公司2025年半年度报告正文框架（释义、公司简介、风险提示指引）及2025年年度报告、2026年半年度报告的公告页面，未取得本问题所需的量化证据：单体口径权益与资产结构、资产可回收性、有息债务规模与清偿顺序、股本摊薄安排、业务失效概率及有依据的悲观情景假设均未验证；检索片段亦未显示母公司单体报表与合并报表的区分，无法确认与ISSUER_LEGAL_ONLY单体口径一致。故无法判断悲观情景下普通股永久损失的可能性与幅度是否可承受，按口径留空而非给中间分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅验证了公司身份与三份定期报告/公告的存在及业务定义，缺单体口径财务、债务优先级、资产回收与摊薄证据，无法完成悲观情景永久损失评估。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现可支持或反驳悲观情景下普通股永久损失可承受性的已核实量化证据；检索到的报告框架仅提示存在重大风险因素，证据缺失不等于风险不存在。",
+       "missing_fields": [
+        "母公司单体口径资产负债表与普通股权益",
+        "有息债务规模、期限与合同清偿顺序",
+        "资产可回收性（存货、应收、固定资产）证据",
+        "股本摊薄与潜在稀释安排",
+        "有依据的悲观情景假设与业务失效概率",
+        "周期正常化的多期量化证据"
+       ],
+       "watch_triggers": [
+        "公司披露母公司单体口径资产负债表、权益结构与有息债务明细",
+        "披露资产减值测试、存货与应收款可回收性结论",
+        "披露股权激励、再融资或其他潜在摊薄安排",
+        "半导体设备行业资本开支周期与公司订单能见度变化"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T22:29:43.089857Z",
+       "imported_at": "2026-11-16T22:19:23Z",
+       "import_sequence": 155,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "226ab2eb-2bd2-4bc2-b153-d186b33a9954",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/892d5dca22ad2468",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_688012_2025H1_report",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "该报告披露公司主营半导体设备（释义涵盖刻蚀ETCH、MOCVD、CVD、ALD、LPCVD等工艺设备），报告期为2025年1月1日至6月30日且未经审计，提示存在重大风险因素并声明前瞻性陈述不构成承诺；检索片段仅含释义、公司简介与目录，未提供债务清偿顺序、资产可回收性、摊薄或悲观情景数据，也未显示单体与合并报表口径之分。"
+        },
+        {
+         "id": "EV_688012_2025_annual_notice",
+         "title": "中微公司：2025年年度报告（公告页面）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "公告页面显示中微半导体设备（上海）股份有限公司（股票代码688012，简称中微公司）于2026年3月31日披露2025年年度报告；检索摘要未包含任何财务数字、债务结构、资产减值或可回收性信息。"
+        },
+        {
+         "id": "EV_688012_2026H1_notice",
+         "title": "中微公司：2026年半年度报告（公告页面）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "公告页面显示中微公司（688012）于2026年8月20日披露2026年半年度报告，内容为报告标题与重要提示框架；检索摘要未提供可用于永久损失评估的资产、债务、权益或摊薄数据。"
+        }
+       ],
+       "observation_id": "obs_69fdf8a8c200d4f51489f0a33646df2c3c18d6aa43213e39362e89a4e5285c31",
+       "payload_sha256": "93930236b78f1628b670639b597531c6573eec12c8bc8c52f6c71319909009d1",
+       "package_id": "pkg_90c53de78f448672b9b1f5cce79162e2935cea61bafced1f80c0f8ade8e8a069",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "456c65466b8a69a489ce81558acb15c9e82cb81cc858a698a88b878f71cffc24",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.iqs_24",
+       "question_id": "IQS_24",
+       "construct_id": "IQS_24",
+       "scope": "security",
+       "security_id": "SEC_9c08f2e9-dfb8-424a-be25-56d30591c268",
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2024-01-01",
+       "period_end": "2025-12-31",
+       "basis": "trailing",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 5,
+       "summary": "以归属普通股东口径，价值转回报依赖盈利增长、现金分红与股份回购三条路径，可靠性仅部分可核验。已验证：2024年度拟每10股派现3.00元(含税)、合计约1.86亿元，按推算2024年扣非归母净利约13.88亿元计派息率约13.4%；截至2024年末回购专户余额约209.6万股，显示已实施过回购但金额与持续性未核实；2025年扣非归母净利约15.50亿元(同比约+11.64%)、营业收入+36.62%，利润增速慢于收入；2026年公司持续披露提质增效重回报专项行动半年度评估报告，但其中分红/回购具体目标与完成率未在本次检索中核实。尚未兑现假设包括可持续每股盈利与每股现金流增长、回购规模、资产释放；A股境内普通股东的资金汇出限制未构成已验证约束但也无专项验证。回报主要靠年度分红与内生盈利积累，持有周期较长、机会成本取决于资本开支与再投入节奏。综合评分5分：存在合理回报路径，但时间、资金分配与约束仍不明确。",
+       "confidence": "medium",
+       "coverage": {
+        "reason": "已核实2024年度现金分红预案与回购专户股份余额、2025年扣非归母净利与收入增速、2026年半年度评估报告存在；缺多年每股现金流、回购金额、派息率序列与汇出约束等验证，覆盖不完整。",
+        "status": "partial"
+       },
+       "counterevidence": "2024年度拟派现约1.86亿元，按推算2024年扣非归母净利约13.88亿元计派息率仅约13.4%，现金回报占比有限；2025年扣非净利增速11.64%明显低于收入增速36.62%，盈利转化效率待观察；回购专户余额仅反映存量209.6万股，回购金额与持续性未核实；每股经营现金流、资产释放与资金汇出约束均无验证，价值兑现路径的时间与资金分配仍不明确。",
+       "missing_fields": [
+        "多年(≥3期)每股现金分红与派息率序列",
+        "股份回购总金额、均价与回购政策期限",
+        "每股经营现金流或自由现金流(维护/增长资本开支口径)",
+        "资产释放或非核心资产变现计划",
+        "跨境资金汇出限制专项说明(如有)",
+        "2025年度利润分配预案"
+       ],
+       "watch_triggers": [
+        "2025年度利润分配预案及实际派息金额、派息率",
+        "股份回购总金额、价格区间与是否持续实施",
+        "经营现金流与资本开支，验证自由现金流对分红/回购的覆盖",
+        "股本变动(股权激励、增发等)对每股价值的摊薄",
+        "2026年报中“提质增效重回报”分红/回购目标的实际完成率"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T22:34:52.992570Z",
+       "imported_at": "2026-11-16T22:20:02Z",
+       "import_sequence": 156,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "192a911b-d8d6-4841-89db-45e0aa8d61b2",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/55879104cbc644d9",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV1",
+         "title": "中微半导体设备(上海)股份有限公司2024年年度报告",
+         "url": "https://stockn.xueqiu.com/SH688012/20250417774068.pdf",
+         "published_at": "2025-04-17",
+         "claim": "年报披露：拟向全体股东每10股派发现金红利3.00元(含税)，以620,267,462股(总股本622,363,735股扣除回购专户2,096,273股)为基数合计约186,080,238.60元(含税)；回购专户股份余额显示公司此前已实施过股份回购；普华永道出具标准无保留意见，利润分配尚需股东大会审议。"
+        },
+        {
+         "id": "EV2",
+         "title": "中微公司：2025年年度报告(公司公告)",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "公告2025年度业绩：2025年归属于上市公司股东的扣除非经常性损益的净利润约15.50亿元，较上年增加约1.62亿元，同比增长约11.64%；2025年营业收入增长36.62%。"
+        },
+        {
+         "id": "EV3",
+         "title": "中微公司：2026年度“提质增效重回报”专项行动方案的半年度评估报告",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505779",
+         "published_at": "2026-08-20",
+         "claim": "公司披露2026年度“提质增效重回报”专项行动方案的半年度评估报告，称践行以投资者为本、维护全体股东利益；本次检索仅见该公告线索，未核实其中分红、回购的具体金额、目标与完成率。"
+        }
+       ],
+       "observation_id": "obs_3957f97a67f68901aec23dac1a95310fe5a80dcbecd0971502f543d3c028b678",
+       "payload_sha256": "89c5ade3604ed08fc98abda404a4239ae4e9a2b29dabfee388d1f5b60b4b5da0",
+       "package_id": "pkg_57d892bace452b17a5b8790f4cdf116474cdec1f9be888c892d19f456b60d764",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "b2bbc89a632018777392a84648b4a65a7206d66489c1118bdb1187d308dbd05a",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      }
+     ]
+    },
+    {
+     "key": "diagnostics",
+     "label": "诊断（杜邦/五力/恢复）",
+     "fields": [
+      {
+       "field_id": "score.dupont_01",
+       "question_id": "DUPONT_01",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索到的2025年半年度报告摘录仅含释义、报告声明与公司简介，未展示归属普通股净利润、平均权益、资产周转、经营利润率、权益乘数或有效税率等杜邦分解输入。其他检索片段所列净利润与资产数字出自周刊列表页，归属主体未经证实，疑非本发行人，不予采用。缺少同口径多期ROE序列、分解因子及法人单体/合并边界说明，无法评价ROE来源与可持续性，score留空。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "检索摘录未包含净利润、平均权益或杜邦因子数值，且财务口径（法人单体或合并）未验证，无法形成ROE来源与可持续性诊断。",
+        "status": "unknown"
+       },
+       "counterevidence": "检索到的周刊列表页片段含归母净利润与总资产、归母净资产数字，但其归属主体与会计边界未经证实，疑似非本发行人，不能用作ROE或杜邦因子证据，也不构成对本发行人ROE的反证；未发现经验证的反证。",
+       "missing_fields": [
+        "归属普通股净利润与平均普通股权益的多期同口径序列（三至五年）",
+        "杜邦分解因子：经营利润率、资产周转率、权益乘数、有效税率",
+        "法人单体与合并报表口径的明确区分",
+        "同业与周期位置的可核实对照数据",
+        "ROE持续性所需的经营性驱动验证（非杠杆或会计因素）"
+       ],
+       "watch_triggers": [
+        "若披露归属普通股净利润与平均普通股权益的多期同口径序列，可重算ROE",
+        "若披露经营利润率、资产周转率、权益乘数、有效税率等杜邦因子，可诊断ROE来源",
+        "若明确法人单体（ISSUER_LEGAL_ONLY）与合并报表的财务边界差异",
+        "若出现可比同业同期间同口径ROE与周期位置对照材料"
+       ],
+       "information_as_of": "2025-08-29",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:24:40.326136Z",
+       "imported_at": "2026-11-16T21:44:56Z",
+       "import_sequence": 121,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "623d3627-815f-4a78-95a1-964e7194d809",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/2b774f8f607d5aa7",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "DUPONT_01_E1",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告（上交所科创板披露）",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "该报告为未经审计的2025年半年度报告（报告期2025年1月1日至6月30日）；本次检索摘录仅覆盖释义与公司简介部分，未展示净利润、平均权益或杜邦因子数值，亦未验证法人单体与合并口径之别。"
+        },
+        {
+         "id": "DUPONT_01_E2",
+         "title": "中微公司：2026年半年度报告（新浪财经公告页）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "该公告页片段仅证实公司持续强调刻蚀、薄膜沉积与MOCVD设备的创新及高强度研发投入，未提供可用于杜邦分解的盈利、权益或周转数据。"
+        }
+       ],
+       "observation_id": "obs_a8b901ee9633832ab6c89b0861bdfdc836cab35fa362d9b60e98908856aa5f32",
+       "payload_sha256": "238cf21133428fbbfbd93b75168fbeea804d5427cb9287e2b9adc8d68a559583",
+       "package_id": "pkg_2bcc790b8c7d2e2bb713e24496f975dce4177bc074394658a04910803ae817e3",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "a971a59bb4d3104397e7aea56202777c7ecd4626d8053661b212f64924c95bf4",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.dupont_02",
+       "question_id": "DUPONT_02",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2026-06-30",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "本次检索仅取得合并报表口径数据：2025年归母净利润21.11亿元（同比+30.69%）、2026H1归母净利润28.25亿元（同比+300.22%），2026H1扣非归母净利润11.23亿元，与归母净利润差额约17.0亿元，显示当期利润含大额非经常性损益；但未获得任何期间营业收入，也未获得母公司（单体）口径收入与净利润。净利率=净利润/营业收入的分母缺失，且合并口径与ISSUER_LEGAL_ONLY要求的法律主体边界不匹配，无法验证每单位收入转为真实净利润的能力，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "已获合并口径净利润片段，但缺营业收入与母公司单体损益，净利率无法计算且口径与法律主体边界不符。",
+        "status": "partial"
+       },
+       "counterevidence": "合并口径归母净利润同比上升（2025年+30.69%、2026H1+300.22%）提示盈利规模扩张；但2026H1扣非净利润仅11.23亿元、与归母净利润差约17.0亿元，且无同口径营业收入，不能证实净利率水平或其持续性。",
+       "missing_fields": [
+        "母公司（单体）口径营业收入",
+        "母公司（单体）口径净利润",
+        "合并口径营业收入（对照用）",
+        "非经常性损益明细及可持续性",
+        "同业同口径正常化净利率"
+       ],
+       "watch_triggers": [
+        "母公司（单体）口径营业收入与净利润的披露",
+        "归母净利润与扣非净利润差额变化及非经常性损益明细",
+        "分产品/分设备毛利率与净利率的持续性",
+        "同业同期间同口径正常化净利率可比数据"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:29:22.078901Z",
+       "imported_at": "2026-11-16T21:45:49Z",
+       "import_sequence": 122,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "c5c5dde5-b5ff-4d6a-b715-49931bdd6f2d",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/eb5229be48a56aa3",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "ev02_2026h1_announcement",
+         "title": "中微公司：2026年半年度报告（新浪财经公告页）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "2026年半年度报告披露合并口径归属于上市公司股东的净利润2,825,194,624.91元，上年同期705,916,536.34元，同比+300.22%；扣非归母净利润1,122,590,335.26元；本次检索片段未包含营业收入。"
+        },
+        {
+         "id": "ev02_2025ar_sina",
+         "title": "中微公司：2025年年度报告（新浪财经公告页）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年度报告披露归属于上市公司股东的净利润2,111,472,990.43元，上年1,615,675,746.81元，同比+30.69%；该数据为合并报表口径，检索片段未给出对应营业收入，无法计算净利率。"
+        },
+        {
+         "id": "ev02_scope_subsidiaries",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告（上交所科创板）",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "报告释义列示中微亚洲、中微南昌、中微临港、中微国际、超微公司等多个主体，表明存在多家纳入合并范围的经营主体；母公司（单体）口径损益未在本次检索中获得，合并数据与法律主体口径不一致。"
+        }
+       ],
+       "observation_id": "obs_42b23de4c3c3a6ddb9f8adea6a0b2a0ff043f8f739682ba6f145a3b8e6cf982b",
+       "payload_sha256": "f582259a47daf2a89ec893cf8286611db8df790eae4533fe3cad033de4e7c2b6",
+       "package_id": "pkg_e7477069c0813a7a35c9bd8da1a08b79880d0cb72687398424b47725bbc4bebc",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "031e187b280f0c46b46081b39a640c232a2e731ac94d97ed929a4c366c1ba31b",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.dupont_03",
+       "question_id": "DUPONT_03",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2026-06-30",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "本次检索片段仅含合并报表口径净利润及子公司范围说明（中微亚洲、中微南昌、中微临港、中微国际、超微公司等），未获得营业收入、期初及期末总资产（平均总资产），也未取得在建工程/闲置资产、并购与租赁（使用权资产）口径调整信息。总资产周转率=营业收入/平均总资产的分子与分母均缺失，且缺母公司（单体）资产数据，无法在ISSUER_LEGAL_ONLY边界下评价资产使用效率及其改善质量，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "已获合并口径净利润片段，缺收入与平均总资产及口径调整信息，资产周转率无法计算。",
+        "status": "partial"
+       },
+       "counterevidence": "检索结果未提供任何收入或资产余额序列，也未发现资产周转持续恶化或持续领先的可核验证据；资料缺失不构成资产沉淀或效率改善的证明，故不据此评分或给出趋势结论。",
+       "missing_fields": [
+        "母公司（单体）口径营业收入",
+        "母公司（单体）口径期初/期末总资产",
+        "在建工程与闲置资产明细",
+        "并购与租赁口径调整说明",
+        "同业同商业模式总资产周转率"
+       ],
+       "watch_triggers": [
+        "母公司（单体）口径营业收入与期初期末总资产的披露",
+        "在建工程转固、产能利用与闲置资产情况",
+        "并购及租赁（使用权资产）对总资产口径的影响",
+        "存货、应收与收入匹配度对资产质量的验证"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T18:29:22.078901Z",
+       "imported_at": "2026-11-16T21:46:39Z",
+       "import_sequence": 123,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "c5c5dde5-b5ff-4d6a-b715-49931bdd6f2d",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/0d1c52603c24f5e0",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "ev03_scope_subsidiaries",
+         "title": "中微半导体设备（上海）股份有限公司2025年半年度报告（上交所科创板）",
+         "url": "https://star.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-08-29/688012_20250829_BW75.pdf",
+         "published_at": "2025-08-29",
+         "claim": "报告释义列示中微亚洲、中微南昌、中微临港、中微国际、超微公司等多个主体，表明存在多家纳入合并范围的经营主体；母公司（单体）口径总资产与收入未在本次检索中获得，合并数据与法律主体口径不一致。"
+        },
+        {
+         "id": "ev03_2026h1_announcement",
+         "title": "中微公司：2026年半年度报告（新浪财经公告页）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "本次检索取得的片段披露合并口径归母净利润2,825,194,624.91元与扣非归母净利润1,122,590,335.26元，未提供营业收入、期初及期末总资产等总资产周转率计算输入。"
+        },
+        {
+         "id": "ev03_2025ar_sina",
+         "title": "中微公司：2025年年度报告（新浪财经公告页）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年度报告片段披露归属于上市公司股东的净利润2,111,472,990.43元（同比+30.69%），未提供匹配期间营业收入与平均总资产，无法计算总资产周转率。"
+        }
+       ],
+       "observation_id": "obs_650bf20af4e83f1f1a0da3d9a9e43df898db0f90e11e5f761f668cd0c76c1ba3",
+       "payload_sha256": "eaa8b3bd2e2b184e85d5bc7d34fc5d08be0ba13f95b0f2baec705d3a71f82282",
+       "package_id": "pkg_fb7f4b096870b95270c6994f1c6e405e1ff62a7e0cc3cc6896dd624a5b268bd1",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "4cab9ed596a2d5300ddf74bf51aef1c046a2305097e7ea7ac794d000ebff4e73",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.dupont_04",
+       "question_id": "DUPONT_04",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2025-12-31",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "仅检索到东吴证券2025年报点评的财务预测表：2025年末资产总计298.46亿元、归属母公司股东权益226.95亿元、少数股东权益0.34亿元，期末资产负债率23.85%、摊薄ROE 9.30%。本题要求发行人法定主体（单体）口径的平均总资产/平均总权益，但缺2024年末同口径总资产与总权益，且点评为二手来源、口径疑为合并报表，未与交易所披露原文核验，无法计算平均权益乘数并判断资本缓冲与压力稳健性，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "检索到2025年末总资产、股东权益与资产负债率等合并口径二手数据，但缺发行人法定主体（单体）口径报表及2024年末平均计算所需输入，问题所需平均权益乘数无法按同边界核算。",
+        "status": "partial"
+       },
+       "counterevidence": "无经核验的反向证据。券商点评为二手来源且疑为合并口径，与ISSUER_LEGAL_ONLY（发行人法定主体单体）边界不一致；缺2024年末同口径总资产与总权益，平均权益乘数无法按同期间同经济边界计算，不能以2025年末时点倍数替代。",
+       "missing_fields": [
+        "发行人法定主体（单体）资产负债表",
+        "2024年末与2025年末平均总资产及平均总权益（同口径）",
+        "经交易所披露原文核验的原始财务输入"
+       ],
+       "watch_triggers": [
+        "取得发行人法定主体（单体）资产负债表及2024、2025年末总资产与总权益后重算平均权益乘数",
+        "跟踪有息债务、合同负债与经营性负债结构变化对资本缓冲的影响",
+        "关注拟收购杭州众硅完成后资本结构、商誉与杠杆变化"
+       ],
+       "information_as_of": "2026-04-01",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T19:03:07.545410Z",
+       "imported_at": "2026-11-16T21:47:30Z",
+       "import_sequence": 124,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "ac59b201-0145-45f3-a507-10d180b55927",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/7c7c38a6d0b7cade",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_DUPONT04_1",
+         "title": "中微公司（688012）2025年报点评：业绩持续增长，平台化布局加速落地",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202604011820942026_1.pdf",
+         "published_at": "2026-04-01",
+         "claim": "点评所附财务预测表显示：2025年营业总收入123.85亿元（同比+36.6%）、归母净利润21.11亿元（同比+30.7%）；2025年末资产总计298.46亿元、归属母公司股东权益226.95亿元、少数股东权益0.34亿元、资产负债率23.85%、每股净资产36.24元、摊薄ROE 9.30%；2024年营业总收入90.65亿元、归母净利润16.16亿元。表内未标注单体或合并口径，疑为合并报表。"
+        },
+        {
+         "id": "EV_DUPONT04_2",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书（新浪财经转载）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书披露2016年末公司资产负债率高于100%，主要由于前期研发投入较高；属IPO前历史数据，与2025年资本结构不属同一期间，且为招股书转载页而非交易所原文核验。"
+        }
+       ],
+       "observation_id": "obs_b6faf889c3ed463cb4bce18611b806a3e2c40040616438fe1e419f24d0b7cc3c",
+       "payload_sha256": "d599c7765db7b456668c1931c2323381d49d4f9dcc2d6acea6c57bfd34ed92c4",
+       "package_id": "pkg_3f2d90662542d554b8892fc98b4176272c87b9db4bd81b24019cc8c8c073af61",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "c0845de47d1be29d905bf6c2660c1a7e952ad455fcd448f68aa4bbb02bc64c1f",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.dupont_05",
+       "question_id": "DUPONT_05",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2025-12-31",
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "仅检索到东吴证券2025年报点评的合并口径数据：2025年营业总收入123.85亿元（同比+36.6%）、归母净利润21.11亿元、综合毛利率39.2%（同比-1.9pct）、期间费用率27.5%（研发费用率20.0%、研发投入37.4亿元）、营业利润21.91亿元；2024年营业总收入90.65亿元、归母净利润16.16亿元。但EBIT/收入所需营业利润与利息、非经营调整的原始输入未核验（点评内EBIT 13.30亿元与营业利润口径不一致），且数据为合并口径二手来源，缺发行人法定主体（单体）经营利润率，无法判断核心经营盈利质量与正常化能力，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "检索到2025年收入、毛利率、费用率与营业利润等合并口径二手数据，但缺发行人法定主体（单体）EBIT/收入所需原始输入且EBIT与营业利润口径不一致，无法按同边界计算并评分。",
+        "status": "partial"
+       },
+       "counterevidence": "无经核验的反向证据。二手点评中EBIT（2025A为13.30亿元）与营业利润（21.91亿元）口径不一致，投资净收益、公允价值变动等非经营项目未拆分到可核验原始输入；且财务数据疑为合并口径，与发行人法定主体（单体）研究边界不符，不能直接计算EBIT/收入或据此评分。",
+       "missing_fields": [
+        "发行人法定主体（单体）EBIT与营业收入（同期间同边界）",
+        "利息费用、其他收益、投资净收益与公允价值变动等调整项明细",
+        "经交易所披露原文核验的毛利与费用原始输入"
+       ],
+       "watch_triggers": [
+        "取得发行人法定主体（单体）EBIT、营业收入及销售/管理/研发费用明细后计算经营利润率",
+        "跟踪2025年毛利率同比-1.9pct是否延续及定价或效率改善是否真实",
+        "关注研发费用率升至20%对核心经营利润率的压制与投入产出节奏",
+        "核验投资净收益、公允价值变动等非经营项目对利润总额的占比变化"
+       ],
+       "information_as_of": "2026-04-01",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T19:03:07.545410Z",
+       "imported_at": "2026-11-16T21:48:29Z",
+       "import_sequence": 125,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "ac59b201-0145-45f3-a507-10d180b55927",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/3e6818a2ed3aa276",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_DUPONT05_1",
+         "title": "中微公司（688012）2025年报点评：业绩持续增长，平台化布局加速落地",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202604011820942026_1.pdf",
+         "published_at": "2026-04-01",
+         "claim": "点评披露2025年营业总收入123.85亿元（同比+36.6%）、归母净利润21.11亿元（同比+30.7%）、综合毛利率39.2%（同比-1.9pct）、销售净利率16.7%、期间费用率27.5%、研发费用率20.0%（研发投入37.4亿元，同比+52.7%），并列示营业利润21.91亿元、净利润20.64亿元；2024年营业总收入90.65亿元、归母净利润16.16亿元（同比-9.53%）。数据表未标注单体/合并口径。"
+        },
+        {
+         "id": "EV_DUPONT05_2",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书（新浪财经转载）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书披露公司前期研发投入较高，2016年末资产负债率高于100%；为IPO前历史信息，未提供2025年EBIT、毛利或费用率的可核验原始输入。"
+        }
+       ],
+       "observation_id": "obs_e213a88d13cc8f99603f92bf5cceae1f0391096449fa1e9cab32df002dc31530",
+       "payload_sha256": "594fd97748e5d3d3c1d77abc3fa9921bbd68370a222643724079c2786ff78ab7",
+       "package_id": "pkg_00901400ffae768d21d9977f113e9015f8883b6731ba57f9d70d12edbbc5c332",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "375fb4e2adcf304ddf8b42d3b3f88d959e94a844294f23c2874eb34e8fc5ee70",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.dupont_06",
+       "question_id": "DUPONT_06",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "本次检索仅获取到2019年招股意向书中利息保障倍数的计算公式定义，未取得目标主体母公司（单体）口径的EBT、EBIT、利息支出、净利息、利息覆盖倍数或再融资成本数值。可得公司定期报告摘录为合并报表口径，与ISSUER_LEGAL_ONLY单体研究边界不匹配，无法计算EBT/EBIT或评估融资费用对利润的侵蚀程度与压力下可覆盖性，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "仅检索到利息保障倍数公式定义，缺少母公司单体口径EBT/EBIT、利息支出与覆盖倍数数据；公司报告为合并口径，与单体研究边界不匹配，无法验证问题所需证据。",
+        "status": "unknown"
+       },
+       "counterevidence": "未发现可核验证据表明融资费用吞噬经营成果或利息无法覆盖；检索摘录亦不足以证明相反方向，证据缺失不等于不存在。",
+       "missing_fields": [
+        "母公司（单体）口径EBT与EBIT",
+        "利息支出与净利息金额",
+        "利息保障倍数实测值",
+        "再融资成本与有息债务结构",
+        "同期间同经济边界多期数据"
+       ],
+       "watch_triggers": [
+        "公司披露母公司单体口径利润表及利息支出、净利息明细",
+        "有息债务规模、期限结构与再融资利率变化",
+        "利息保障倍数或EBT/EBIT多期数据的披露"
+       ],
+       "information_as_of": "2019-07-03",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T21:02:30.411651Z",
+       "imported_at": "2026-11-16T21:49:19Z",
+       "import_sequence": 126,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "654091e6-a4e2-4bb3-9b6b-c12d5a521b4a",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/5c1e776b52e2d463",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_DUPONT_06_1",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书新浪财经",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书列示利息保障倍数=（利润总额+利息支出）÷利息支出的计算公式，并提及报告期半导体专用设备收入逐年增长；检索摘录未提供利息支出、EBIT、EBT或利息保障倍数的具体数值，亦未见母公司单体口径利润表。"
+        }
+       ],
+       "observation_id": "obs_aa11688ab43adc830fcd80f525c1dbe24c9fee746c68d2a94e24221b2e512b1c",
+       "payload_sha256": "d941236399b5a480bf3561921fc310d6c296e4232559c6208c26b46147d5c041",
+       "package_id": "pkg_70ec3e510c5099566cb384a56d2a3817311d6917912a67a25fa30df2378cf683",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "81a2398e939f532c8a2b419149675d03705a5f83b2cc03a3572085483ebd1d4c",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.dupont_07",
+       "question_id": "DUPONT_07",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": null,
+       "period_end": null,
+       "basis": "not_applicable",
+       "response_kind": "score",
+       "status": "insufficient_evidence",
+       "score": null,
+       "summary": "检索确认公司经高新技术企业认定享受15%优惠税率，2025年12月19日更新相关资质，并按优惠税率计量递延所得税、提示资质到期影响。但未取得母公司（单体）口径的净利润/EBT、实际税率与法定税率对比及递延税金额；可得报告摘录为合并报表口径，与ISSUER_LEGAL_ONLY单体边界不匹配，无法判断税后利润保留比例是否合理且可持续，故不评分。",
+       "confidence": "low",
+       "coverage": {
+        "reason": "已核实高新技术企业15%优惠税率、资质更新及递延税会计政策等定性事实，但缺少母公司单体口径净利润/EBT、实际税率与递延税金额，且合并口径与单体边界不匹配。",
+        "status": "partial"
+       },
+       "counterevidence": "未发现重大税务追缴、税务争议或不可持续税收利益的可核验证据；但15%优惠税率的存在本身不能替代净利润/EBT与实际税率验证，缺失不等于不存在。",
+       "missing_fields": [
+        "母公司（单体）口径净利润与EBT",
+        "净利润/EBT税负系数多期实测值",
+        "实际税率与法定税率对比",
+        "递延所得税资产/负债金额及变动",
+        "优惠到期对税负的量化影响"
+       ],
+       "watch_triggers": [
+        "高新技术企业资质到期或未能续期",
+        "母公司单体口径实际税率与递延所得税明细披露",
+        "税收优惠、递延所得税政策或合伙企业利润分配涉税事项的重大变化"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T21:02:30.411651Z",
+       "imported_at": "2026-11-16T21:50:06Z",
+       "import_sequence": 127,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "654091e6-a4e2-4bb3-9b6b-c12d5a521b4a",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/7e6acd05d3f7941d",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_DUPONT_07_1",
+         "title": "中微公司(688012)_公司公告_中微公司：2026年半年度报告新浪财经",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "2026年半年度报告披露公司经高新技术企业认定享受15%优惠税率，2025年12月19日更新了高新技术企业相关资质，并说明递延所得税资产、递延所得税负债及所得税费用的会计处理；检索摘录未提供净利润/EBT、实际税率或递延税金额。"
+        },
+        {
+         "id": "EV_DUPONT_07_2",
+         "title": "中微公司(688012)_公司公告_中微公司：2025年年度报告新浪财经",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "2025年年度报告说明按高新技术企业优惠税率计算相应递延所得税，若未来高新技术企业资质到期可能产生影响，并披露与所投资合伙企业利润分配相关的递延所得税负债变动；检索摘录未提供税负系数所需数值。"
+        }
+       ],
+       "observation_id": "obs_16713e41aea47d389e881509dae64964ab75b754600ae82058958b397a148464",
+       "payload_sha256": "cc5df504b4195046c27a9b574c0f1c9cae1fdef659b6220439ea47843a692796",
+       "package_id": "pkg_af36eac0a5b6e6828d84d7d6ecadd27a0688812da9d14d3d160a0bc070bc1760",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "3888f95945fb15ecb80376552fb5b8debe9734b619d6094f9f23b0dc8e26ce61",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.porter_01",
+       "question_id": "PORTER_01",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2022-03-13",
+       "period_end": "2026-08-20",
+       "basis": "current",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 6,
+       "summary": "全球刻蚀设备市场长期呈寡头格局：2020年泛林约占44.7%、前三家合计超过九成，2021年三大厂商仍占约九成份额；公司2025年年报亦描述该市场为海外少数公司主导的垄断格局。在该结构下，未见恶性价格战或过剩产能吞噬回报的证据。公司以CCP/ICP刻蚀与MOCVD双线差异化，已进入台积电等一线客户65-5nm产线，Mini LED专用MOCVD带来收入与毛利率双升，支持有效率厂商获得合理回报。但国内国产替代推进使北方华创等同业同场竞逐，且截至2026-11-08的价格纪律、产能利用率与回报率数据未在本次检索中核实，故取6分并保留缺口。",
+       "confidence": "medium",
+       "coverage": {
+        "reason": "行业结构有2021-2022年券商测算及2025年年报定性表述支持，差异化与技术竞争有公司披露支持；但缺截止2026-11-08的定价、产能与回报率核实数据，评分系结构与差异化证据下的推断。",
+        "status": "partial"
+       },
+       "counterevidence": "2021年行业报告测算刻蚀设备国产化率低于20%，国产替代空间吸引北方华创、芯源微等多家国内厂商布局，国内份额竞争可能加剧；且2022年后未见更新的全球份额、定价与产能投放数据，寡头格局的持续性主要依赖2025年年报的定性表述。",
+       "missing_fields": [
+        "截至2026-11-08的价格纪律、ASP与产能利用率证据",
+        "同会计边界、同期间的可比同业回报率数据",
+        "2023-2026年全球刻蚀设备市场份额的更新测算"
+       ],
+       "watch_triggers": [
+        "全球前三大刻蚀厂商份额或定价策略变化",
+        "国内同业在先进制程客户验证与订单获取进展",
+        "公司刻蚀与MOCVD产品毛利率、ASP的年报口径变化",
+        "晶圆厂资本开支与新增产能投放节奏"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T22:07:55.876623Z",
+       "imported_at": "2026-11-16T22:15:31Z",
+       "import_sequence": 149,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "aa677ceb-2c29-4576-a939-c9e5f5a0c965",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/c334cb865b07298e",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_P1_AMEC_2025AR",
+         "title": "中微公司：2025年年度报告（新浪财经转载）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "公司披露全球刻蚀设备市场呈现垄断格局、由海外少数几家公司占据主要份额，并正开发新一代氮化镓功率器件MOCVD设备与薄膜沉积设备，以技术节点升级和产品差异化参与竞争。"
+        },
+        {
+         "id": "EV_P1_PINGAN_2022",
+         "title": "中微公司：刻蚀设备执牛耳者，MOCVD再创佳绩（平安证券首次覆盖）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202203141552539186_1.pdf",
+         "published_at": "2022-03-13",
+         "claim": "2021年全球刻蚀设备市场约189亿美元，泛林、东京电子、应用材料合计占据约九成份额；公司刻蚀设备约占全球市场1.7%，已进入台积电等客户65-5nm产线，CCP积累深厚、ICP成为增长驱动；Mini LED带动MOCVD收入与毛利率双升。"
+        },
+        {
+         "id": "EV_P1_BOHAI_2022",
+         "title": "刻蚀设备国产替代空间广阔，看好长期发展前景（渤海证券行业专题）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202207071575915941_1.pdf",
+         "published_at": "2022-07-07",
+         "claim": "2020年泛林半导体占全球刻蚀设备市场约44.7%份额，泛林、东京电子、应用材料三家合计超过90%，行业集中度高，未见分散化供给或恶性竞争的结构证据。"
+        },
+        {
+         "id": "EV_P1_AMEC_2026H1",
+         "title": "中微公司：2026年半年度报告（新浪财经转载）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "公司提示半导体设备属技术密集型行业，研发涉及等离子体物理、射频及微波学等，存在研发投入不足导致技术被赶超或替代的风险，说明现有竞争者间竞争以技术竞赛为主要形式。"
+        }
+       ],
+       "observation_id": "obs_5bd4f252b7c9627a8dc433f87744b65b5beaa50ab14e9037bc334b1d4491fa84",
+       "payload_sha256": "f02927bc5d0a3384e847621430bf038112d4776681ef476cca8c89954d7ce4e8",
+       "package_id": "pkg_b06dcc428113973a450c952c592b86b03205dc381c7a1473074afd225ab46523",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "70830d86c3f2a483baf242236cb7e717bc5a3e88a14f6eef005029352b57f10e",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.porter_02",
+       "question_id": "PORTER_02",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2021-07-19",
+       "period_end": "2026-08-20",
+       "basis": "current",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 7,
+       "summary": "新进入者壁垒以技术、认证和资本为主：2026年半年报指出半导体设备属技术密集型行业，研发涉及等离子体物理、射频及微波学，投入不足即面临技术被赶超或替代；刻蚀设备进入客户产线需经历漫长验证，公司多年积累方进入台积电等65-5nm产线。全球刻蚀设备前三家2020-2021年合计份额持续超过九成，国内厂商多依托大基金等资本支持才实现先进制程突破，进入成本高。但公司自身及北方华创等已成功进入，且未见新进入失败或被挤出的直接证据，故不评至8分以上，取7分。",
+       "confidence": "medium",
+       "coverage": {
+        "reason": "技术与认证壁垒有公司2026年半年报表述和2022年券商验证周期描述支持，资本与规模门槛有大基金支持背景下的行业数据；但缺新进入失败记录与进入成本量化，评分上限受限。",
+        "status": "partial"
+       },
+       "counterevidence": "中微公司自身（2004年成立后成功切入刻蚀与MOCVD并进入一线客户产线）及北方华创、芯源微等在产业基金与国产替代需求支持下已实现进入并放量，说明资本与政策可部分克服壁垒；本次检索未获得进入失败、被挤出或进入成本的量化证据，潜在进入者清单亦不完整。",
+       "missing_fields": [
+        "新进入失败或被挤出的直接证据",
+        "研发强度、资本门槛的同口径可比量化数据",
+        "潜在进入者清单及其在研产品验证进展"
+       ],
+       "watch_triggers": [
+        "新的刻蚀或薄膜设备厂商获得大客户验证或首台订单",
+        "大基金二期/三期对刻蚀、薄膜设备新玩家的投资落地",
+        "专利或许可纠纷、技术替代事件",
+        "客户认证周期与设备国产化率的变化"
+       ],
+       "information_as_of": "2026-08-20",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T22:07:55.876623Z",
+       "imported_at": "2026-11-16T22:16:06Z",
+       "import_sequence": 150,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "aa677ceb-2c29-4576-a939-c9e5f5a0c965",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/1a17a7679f3ea0f7",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV_P2_AMEC_2026H1",
+         "title": "中微公司：2026年半年度报告（新浪财经转载）",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12505778",
+         "published_at": "2026-08-20",
+         "claim": "公司披露半导体关键设备研发涉及等离子体物理、射频及微波学等领域，属技术密集型行业，研发投入不足将导致技术被赶超或替代，构成对新进入者持久的技术门槛。"
+        },
+        {
+         "id": "EV_P2_PINGAN_2022",
+         "title": "中微公司：刻蚀设备执牛耳者，MOCVD再创佳绩（平安证券首次覆盖）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202203141552539186_1.pdf",
+         "published_at": "2022-03-13",
+         "claim": "刻蚀设备进入客户产线需经历漫长验证过程，公司深耕多年、技术扎实方进入台积电等海内外一线客户65-5nm产线，说明客户认证构成显著进入壁垒。"
+        },
+        {
+         "id": "EV_P2_BOHAI_2022",
+         "title": "刻蚀设备国产替代空间广阔，看好长期发展前景（渤海证券行业专题）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202207071575915941_1.pdf",
+         "published_at": "2022-07-07",
+         "claim": "2020年泛林约占全球刻蚀设备44.7%份额、前三家合计超过90%，行业集中度高；国内刻蚀企业是在大基金等资本助力下才实现部分先进制程突破，显示进入需大规模资本与政策支持。"
+        },
+        {
+         "id": "EV_P2_MSZQ_2021",
+         "title": "半导体系列报告：长江存储持续进阶，国产3D NAND加速崛起（民生证券）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202107191504775902_1.pdf",
+         "published_at": "2021-07-19",
+         "claim": "该报告测算刻蚀设备国产化率低于20%、PVD/CVD设备国产化率低于10%，反映国内主流产线设备供给仍以海外为主，本土设备商需长期投入方能进入主流产线。"
+        }
+       ],
+       "observation_id": "obs_87cf0e7bd11268a442dd83e10b1a142a0e18a0bac3583cc09d47e9825e27cfc4",
+       "payload_sha256": "948203541ce1a6efbf5acf8b71ebab5af15d42e12a3a656e6e640e6fa4263d14",
+       "package_id": "pkg_e232608513ae42880ce7479b3464d49fbf44e4803845be125a187b67e126a4cf",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "c265b5a93be6c77a12105c0f88b6fdefb57fc4234f527e6601d9f4e627ab3f28",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.porter_03",
+       "question_id": "PORTER_03",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2025-12-31",
+       "basis": "current",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 7,
+       "summary": "替代威胁可控，评7分。年报称存储器由二维转向三维、堆叠层数增加使刻蚀与薄膜沉积成为更关键核心设备；头豹称MOCVD是化合物半导体外延片产线的核心专用装备；平安证券称刻蚀为集成电路制造关键设备、进入一线客户产线需漫长验证。公司CCP/ICP刻蚀与MOCVD具备全球竞争力，主要需求难被替代，替代方案尚未对客户价值或经济利润形成实质威胁。但公开来源未给出替代技术路线的总成本、性能对比、客户迁移速度及公司对竞争性替代路线的布局数据，故不给8分以上。",
+       "confidence": "medium",
+       "coverage": {
+        "reason": "已获取刻蚀、薄膜沉积与MOCVD的工艺必要性、专用性及验证周期证据，但缺少替代路线成本性能对比、迁移量化数据与公司替代路线布局，评分覆盖不完整。",
+        "status": "partial"
+       },
+       "counterevidence": "本次检索未发现经验证的替代工艺路线在总成本或性能上已占优的证据，但该结论主要反映证据缺口而非反证；平安证券2022年报告同时提示新产品研发不及预期与下游扩产不及预期风险，若出现新图形化/沉积工艺路线或客户资本开支转向，现有刻蚀与MOCVD需求可能被压缩。",
+       "missing_fields": [
+        "替代技术路线的总成本与性能对比数据未获取",
+        "客户工艺路线迁移速度的量化证据未获取",
+        "分产品价格与毛利率序列未核实（公开来源仅见2021年研报口径）",
+        "头豹行业分析页面发布日期未核实"
+       ],
+       "watch_triggers": [
+        "存储器堆叠层数与工艺步骤价值量变化对刻蚀/薄膜沉积需求的影响",
+        "出现可替代刻蚀或MOCVD外延的新工艺路线并进入客户量产验证",
+        "公司薄膜沉积、检测等新品布局与潜在替代路线的竞争结果",
+        "化合物半导体（Mini LED/Micro LED等）技术路线切换对公司MOCVD需求的影响"
+       ],
+       "information_as_of": "2026-03-31",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T22:13:09.167559Z",
+       "imported_at": "2026-11-16T22:16:39Z",
+       "import_sequence": 151,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "82ca58f7-52d0-45fa-91c7-120d851ff76e",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/01496ab27fdf9349",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV-PORTER03-01",
+         "title": "中微公司：2025年年度报告（新浪财经转载）",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=12046107",
+         "published_at": "2026-03-31",
+         "claim": "年报称存储器技术由二维转向三维架构，随堆叠层数增加，刻蚀设备和薄膜沉积设备越来越成为关键核心设备，主要制造步骤对刻蚀/沉积的需求随技术演进增强而非被替代。"
+        },
+        {
+         "id": "EV-PORTER03-02",
+         "title": "MOCVD设备行业分析 - 头豹",
+         "url": "https://www.leadleo.com/wiki/brief/65d767fedc455b697b7a2301",
+         "published_at": null,
+         "claim": "头豹行业分析指出MOCVD设备用于化合物半导体材料的外延生长，是外延片产线的核心专用装备，环节专用性强、可替代性低；该页面发布日期在本次检索中未核实。"
+        },
+        {
+         "id": "EV-PORTER03-03",
+         "title": "刻蚀设备执牛耳者，MOCVD再创佳绩（平安证券首次覆盖，2022-03-13）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202203141552539186_1.pdf",
+         "published_at": "2022-03-13",
+         "claim": "该研报称刻蚀设备是集成电路制造的关键设备，2021年全球市场约189亿美元、前三大厂商占约九成份额；公司刻蚀设备已进入台积电等海内外一线客户65-5nm产线，进入产线需经历漫长验证过程。"
+        }
+       ],
+       "observation_id": "obs_d4506bf03e4969dd3826b733ee3a6acc9856b920c057b48b3537c80d92a21a09",
+       "payload_sha256": "6734a033cb69215da9f8c562bc767213671a71dce6d87d82d2e5c5b44627be1a",
+       "package_id": "pkg_1e2e472debc1d9ce93410ea993cb6ea9764ebb5a3dab0857de2150cf5636ca52",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "5c43820d2085aa3eb3efebfaf8bec51a3c3d1866eaa31462b599aec5cb3a42a9",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.porter_04",
+       "question_id": "PORTER_04",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2025-01-01",
+       "period_end": "2025-12-31",
+       "basis": "current",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 6,
+       "summary": "购买者议价压力中等，评6分。平安证券称刻蚀设备进入客户产线需漫长验证，公司已进入台积电等海内外一线客户65-5nm产线，技术与服务形成较高转换成本；头豹CVD设备行业分析称中微公司2025年前五大客户占比75.00%，订单随客户扩产周期集中下达。客户集中与资本开支周期给买方一定压价与延期筹码，但公司刻蚀与MOCVD双龙头地位及验证壁垒限制客户轻易替换或自制，交易关系可持续。公开来源未披露定价/招标条款、客户后向自制与价格序列，集中度口径亦未核实，故不给8分以上。",
+       "confidence": "medium",
+       "coverage": {
+        "reason": "已获取客户集中度（口径待核）与设备验证周期长、转换成本高的证据，但缺少定价与招标条款、客户自制情况及价格序列，买方议价能力仅部分可验证。",
+        "status": "partial"
+       },
+       "counterevidence": "头豹CVD设备行业分析显示中微公司2025年前五大客户占比75.00%且订单随客户扩产周期集中下达，高客户集中度与资本开支周期性使买方在延期、验收与价格条款上有一定筹码；公开来源未披露具体定价与招标条款、客户后向自制（自制设备）情况及分产品价格序列，买方议价强度的量化判断受限。",
+       "missing_fields": [
+        "客户集中度的发行人合并口径与收入分母未核实",
+        "具体定价、招标与合同条款未获取",
+        "客户后向整合/自制设备情况未披露",
+        "分产品毛利率与价格变动序列未获取",
+        "头豹行业分析页面发布日期未核实"
+       ],
+       "watch_triggers": [
+        "前五大客户占比或单一客户依赖度进一步上升",
+        "下游晶圆厂/LED厂商资本开支下行导致订单延期或价格条款趋紧",
+        "客户后向整合或自制关键设备的进展",
+        "新客户、新领域（Mini LED、化合物半导体等）放量是否降低客户集中度"
+       ],
+       "information_as_of": "2026-03-31",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T22:13:09.167559Z",
+       "imported_at": "2026-11-16T22:17:14Z",
+       "import_sequence": 152,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "82ca58f7-52d0-45fa-91c7-120d851ff76e",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/e0e5bbb6e99c10d6",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV-PORTER04-01",
+         "title": "刻蚀设备执牛耳者，MOCVD再创佳绩（平安证券首次覆盖，2022-03-13）",
+         "url": "https://pdf.dfcfw.com/pdf/H3_AP202203141552539186_1.pdf",
+         "published_at": "2022-03-13",
+         "claim": "该研报称刻蚀设备进入客户产线需经历漫长验证过程，公司凭借技术与服务已进入台积电等海内外一线客户65-5nm产线，构成较高客户转换成本；同时提示下游晶圆厂与LED芯片厂商投资不及预期将影响订单量的风险。"
+        },
+        {
+         "id": "EV-PORTER04-02",
+         "title": "CVD设备行业分析 - 头豹",
+         "url": "https://www.leadleo.com/wiki/brief/6abbc89503659ed096b17d8d",
+         "published_at": null,
+         "claim": "头豹行业分析称中微公司2025年前五大客户占比75.00%，该类客户结构增强设备需求对客户扩产周期的敏感度，集成电路客户资本开支上行时订单下达较为集中；该数据的合并/分部分母与页面发布日期在本次检索中未核实。"
+        }
+       ],
+       "observation_id": "obs_664f5b688e9a06553e41dbd582552ae7095b278d362b152883925f0f3aa656e1",
+       "payload_sha256": "b79fc3b10c8c863125c09d1f846df2512cc06017fdf53f2f9dd7b0270d564180",
+       "package_id": "pkg_09fad92f615e9220e885d56721252645fc44889fbaa08d0a73fb3b0b4256c77f",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "f64ae0fa339aee2e194e4cbfa058c48aebe95bb37242d659198211b67fa9c4c9",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      },
+      {
+       "field_id": "score.porter_05",
+       "question_id": "PORTER_05",
+       "construct_id": null,
+       "scope": "entity",
+       "security_id": null,
+       "listing_id": null,
+       "segment_id": null,
+       "period_start": "2019-07-03",
+       "period_end": "2021-12-31",
+       "basis": "trailing",
+       "response_kind": "score",
+       "status": "scored",
+       "score": 6,
+       "summary": "中微公司在2019年招股说明书中披露核心零部件不存在依赖单一供应商的情形，2021年年报亦称对关键零部件供应商采取多厂商策略以保障及时供应，显示公司以多源采购降低单一供应商控制风险。但年报同时披露受部分上游零部件供应商交付延迟影响，说明关键投入方在交付环节仍具一定约束力。现有来源未披露前五大供应商采购占比、关键部件认证与切换成本、投入品涨价的转嫁能力及供应商前向整合迹象，也无2022年以来的更新，量化侵蚀回报程度无法验证。综合替代供应与投入集中度的定性证据，按trailing口径给6分，趋势不确定，覆盖部分。",
+       "confidence": "medium",
+       "coverage": {
+        "reason": "已取得2019年招股说明书与2021年年报的供应商结构定性证据，但缺采购集中度、认证切换成本、成本转嫁数据及2022年以来更新，覆盖不完整。",
+        "status": "partial"
+       },
+       "counterevidence": "反向证据：2021年年报显示部分上游零部件供应商交付延迟并影响设备交付，招股说明书亦将零部件质量控制与供应商不能及时供货列为风险，说明部分关键投入方仍具约束力；且缺乏采购集中度、认证切换成本与成本转嫁的量化披露，不足以支持更高分。",
+       "missing_fields": [
+        "前五大供应商采购金额及占比（投入集中度）",
+        "关键零部件认证周期与供应商切换成本披露",
+        "投入品成本上涨向客户转嫁的量化证据",
+        "供应商前向整合迹象的核实",
+        "2022-2026年供应商结构与采购策略的更新披露"
+       ],
+       "watch_triggers": [
+        "前五大供应商采购占比上升或出现单一关键部件依赖",
+        "上游零部件交付延迟导致设备交付或收入确认推迟",
+        "关键投入品价格明显上涨且毛利率同步受压（成本无法转嫁）",
+        "关键供应商前向整合或公司自研部件替代进程变化",
+        "出口管制或供应链本地化政策影响关键零部件获取"
+       ],
+       "information_as_of": "2022-03-31",
+       "information_cutoff": "2026-11-08",
+       "observed_at": "2026-11-15T22:16:49.763965Z",
+       "imported_at": "2026-11-16T22:17:52Z",
+       "import_sequence": 153,
+       "freshness": {
+        "status": "missing_date",
+        "valid_until": null,
+        "policy_available": false,
+        "policy_note": "字段时效策略（中央字段注册表）未接入，未判定过期"
+       },
+       "check_level": "unreviewed",
+       "provider": "mimo",
+       "model_resolved": "mimo-v2.6-pro",
+       "model_revision": null,
+       "request_id": null,
+       "attempt_id": "deddd82c-9760-43fe-8442-79d5433ea6e1",
+       "versions": {
+        "question_version": "1.0.0",
+        "template_version": "3.2.1",
+        "method_id": "module-locked-v1/core-constructs-v1/6fc872b1165fef41/a700cba51edb1b39",
+        "module_package_id": "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a",
+        "module_release_id": "modrel_997312ab027300898b17a8943efaf95f3531c764f2ed5d3877c4954507b010df"
+       },
+       "evidence": [
+        {
+         "id": "EV1",
+         "title": "中微公司首次公开发行股票并在科创板上市招股意向书",
+         "url": "http://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=5473221",
+         "published_at": "2019-07-03",
+         "claim": "招股说明书披露核心零部件不存在依赖单一供应商的情形，同时提示零部件质量控制风险及供应商不能及时供货的风险，表明公司采取多源采购但供应及时性仍属风险点。"
+        },
+        {
+         "id": "EV2",
+         "title": "中微公司：2021年年度报告",
+         "url": "https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?stockid=688012&id=7938487",
+         "published_at": "2022-03-31",
+         "claim": "2021年年度报告披露公司对关键零部件供应商采取多厂商策略以保障零部件及时供应；报告期内受部分上游零部件供应商交付延迟影响，公司设备相关经营受到影响。"
+        },
+        {
+         "id": "EV3",
+         "title": "中微半导体设备（上海）股份有限公司首次公开发行股票并在科创板上市招股意向书",
+         "url": "http://pdf.dfcfw.com/pdf/H2_AN201907031337110576_1.pdf",
+         "published_at": "2019-07-03",
+         "claim": "招股意向书披露报告期内主营业务毛利率变动主要由产品结构变化（MOCVD设备收入占比上升）及策略性降价驱动，未披露供应商投入成本持续转嫁侵蚀回报的量化证据。"
+        }
+       ],
+       "observation_id": "obs_fd145baf91540c2c1ea45f9243bc736b8a893e012b564b398cc531e2f39e3e42",
+       "payload_sha256": "ba8d647947d5ab666a99bebba332b387bf9b47a01a131d3a81843c0795145fb8",
+       "package_id": "pkg_9802f018520ea6bfe9ff9e40a5dd94775df6b5b25ee30c4103a8fc66a227e62d",
+       "publication_status": "published",
+       "qualification_status": "review_pending",
+       "identity_revision": null,
+       "subject": {
+        "recorded": true,
+        "analysis_subject_id": "ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9",
+        "analysis_subject_revision": 1,
+        "source": "retained_original_dispatch_binding",
+        "binding_sha256": "0fbda209729d0b75a892e6a84a50017de87b37e8063a96f62adf9f15c08ed6ac",
+        "c06_envelope_validated": false
+       },
+       "cohort": {
+        "company_type": "unclassified",
+        "industries": [],
+        "stage": "unclassified",
+        "subtype": null
+       }
+      }
+     ]
+    }
+   ],
+   "score_summary": {
+    "fields": 36,
+    "detail_rows": 37,
+    "ambiguous_fields": [
+     "score.iqs_12"
+    ],
+    "by_status": {
+     "insufficient_evidence": 29,
+     "scored": 8
+    },
+    "scored": 8,
+    "last_observed_at": "2026-11-16T21:42:06.341131Z",
+    "information_cutoff_max": "2026-11-08"
+   },
+   "recovery": {
+    "watch": {
+     "policy_version": "recovery-watch-1",
+     "rules_version": "quick_scan_recovery/1.0.0",
+     "status": "not_assessed",
+     "flags": [],
+     "strengths": [],
+     "weak_current_ids": [],
+     "critical_issues": [],
+     "quality_gate_overridden": false,
+     "criteria": {},
+     "missing_or_unusable_ids": []
+    },
+    "card": {
+     "rules_version": "quick_scan_recovery/1.0.0",
+     "policy_version": "recovery-watch-1",
+     "recovery_status": "not_assessed",
+     "quality_score": null,
+     "quality_verified": false,
+     "quality_gate_overridden": false,
+     "advantages": [],
+     "low_scores": [],
+     "catalysts": {
+      "RECOVERY_03_score": null,
+      "catalyst_unproven": false
+     },
+     "funding_risks": [],
+     "structural_risks": [],
+     "critical_issues": [],
+     "gaps": [
+      "quality_score_missing"
+     ],
+     "cycle_restart_claimed": false,
+     "reported_score_promoted": false,
+     "whitelist_eligible": false,
+     "pool_removal_performed": false
+    }
+   },
+   "quality": {
+    "quality_score": null,
+    "quality_verified": false,
+    "whitelist_eligible": false,
+    "source": "unavailable",
+    "gap": "quality_summary_unavailable",
+    "averaged_score_emitted": false
+   },
+   "runtime": {
+    "rules_version": "quick_scan_delivery/1.0.0",
+    "import_items": {
+     "accepted": 156,
+     "already_present": 0,
+     "conflict": 0,
+     "rejected": 0
+    },
+    "observations": 156,
+    "conflicts": 0,
+    "import_attempts": 156,
+    "distinct_companies": 4,
+    "counting_note": "import_attempts counts items, not companies; use distinct_companies for company counts",
+    "answered_pending_import": 156,
+    "failed": 0,
+    "unknown": 0,
+    "coverage": {
+     "imported_entities": [
+      "ENT_0601ba07-7e9c-4fc6-8730-df538050e3e8",
+      "ENT_99deceb6-f58a-48b1-bd6b-437621015d76",
+      "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "ENT_ce0f5c34-d14e-4687-b6c3-19d58dce38d3"
+     ],
+     "facts_available": false
+    },
+    "llm_calls": 0,
+    "network_calls": 0
+   },
+   "capabilities": {
+    "rules_version": "quick_scan_query/1.0.0",
+    "protocol": "stockwiki_w09_read_primitives",
+    "protocol_note": "W09 read primitives (capabilities/search/get_profiles/coverage); NOT a schema-validated C06 exchange envelope — the C06 envelope must be frozen by the coordinator before anything is relabelled",
+    "c06_envelope_validated": false,
+    "facts_available": false,
+    "fact_relations_available": false,
+    "detail_on_demand": true,
+    "bulk_question_details": false,
+    "default_page_size": 50,
+    "max_page_size": 100,
+    "views": [
+     "all_relevant",
+     "quality",
+     "recovery",
+     "pending"
+    ],
+    "stable_sort_key": [
+     "entity_id"
+    ],
+    "score_rules_in_query_layer": false,
+    "freshness_rules_in_query_layer": false,
+    "score_conditions_supported": true,
+    "score_condition_engine": "quick_scan_rules/1.0.0",
+    "multi_leaf_conditions": true,
+    "snapshot_protocol": {
+     "version": "quick_scan_query_snapshot/1.0.0",
+     "rules_version": "quick_scan_query/1.0.0",
+     "no_conditions_hash_keys": [
+      "text",
+      "filters",
+      "view"
+     ],
+     "conditioned_hash_keys": [
+      "text",
+      "filters",
+      "view",
+      "conditions",
+      "combine"
+     ],
+     "legacy_producer_commit": "9f552a67",
+     "legacy_no_condition_snapshot_readable": true,
+     "cross_query_snapshot_reuse": "refused",
+     "leaf_or_combine_change_invalidates_snapshot": true
+    },
+    "freshness_policy_available": false,
+    "llm_calls": 0,
+    "network_calls": 0
+   },
+   "gaps": [
+    "quality_summary_unavailable",
+    "freshness_policy_unavailable",
+    "facts_relations_unavailable",
+    "cross_version_comparison_unavailable",
+    "history_view_unavailable",
+    "replacement_mapping_unavailable",
+    "recovery_summary_not_sourced",
+    "ambiguous_field_variants"
+   ],
+   "llm_calls": 0,
+   "network_calls": 0,
+   "protocol": "stockwiki_w09_read_primitives",
+   "c06_envelope_validated": false,
+   "iqs_link": {
+    "service_id": "invest-quick-scan",
+    "base_origin": "http://127.0.0.1:8768",
+    "route_template_version": "iqs.dashboard.owner/1.0.0",
+    "supported_context": [
+     "entity",
+     "listing",
+     "observation",
+     "return_to"
+    ],
+    "mode": "deeplink",
+    "status": "available",
+    "routes": {
+     "results": "http://127.0.0.1:8768/#/results",
+     "history": "http://127.0.0.1:8768/#/history",
+     "facts": "http://127.0.0.1:8768/#/facts",
+     "launch": "http://127.0.0.1:8768/"
+    },
+    "return_to": "#/results"
+   }
+  },
+  "elapsed_ms": 659
+ }
+}
