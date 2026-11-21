@@ -45,6 +45,7 @@ UI 仓为本地仓（无远端），验收以其工作树 `src/app`（8766/候�
 | R5 | 外部地址拦截 | `return=https://evil.example/company/…` | `#/results`，不触碰身份桥 [R5](evidence/R5-external-host-8769.json) |
 | R6 | company/result 路由跨 ID 确认 | `company/result?id=ENT_99deceb6…&return=…` | 原地址确认 [R6](evidence/R6-company-result-cross-8769.json) |
 | R7 | entity-view 路由（UI 主读面）跨 ID 确认 | `entity-view?id=ENT_99deceb6…&return=…` | 顶层 `iqs_link.return_to` 原地址确认 [R7](evidence/R7-entity-view-cross-8769.json) |
+| R8 | 跨 ID + 研究主体作用域 | 同 R1，`&analysis_subject_id=SUBJ_BUSINESS_1` | 原地址**连同主体作用域键逐字确认**（主体 ID 不参与发行人核验，按 Dashboard 自有作用域保留） [R8](evidence/R8-subject-scope-cross-8769.json) |
 
 ## 真实两跳点击（施工卡验收第 2 项）
 
@@ -56,6 +57,8 @@ UI 仓为本地仓（无远端），验收以其工作树 `src/app`（8766/候�
 | **同 ID 对照**（r25 `ENT_99deceb6…/LST_4b1d9b36…`） | 同链路实际点击 IQS 返回链接回到原挂牌粗筛页，通过 |
 
 回执：[e07-browser.xml](evidence/e07-browser.xml)（2 passed）、[e07-run.json](evidence/e07-run.json)（`iqs_release=073f82c…`、`pytest_exit=0`、`test_listener_closed=true`）；运行目录与副本在 Dashboard `.test-runs/crossid-e07-20261121/`。
+
+**降级场景浏览器回归（映射未核实）**：同一候选栈改接**未配桥** IQS（8768）+ `DASHBOARD_E07_CROSS_RETURN=fallback` 期望，Chromium 2 passed（[e07-browser-fallback.xml](evidence/e07-browser-fallback.xml)、[e07-run-fallback.json](evidence/e07-run-fallback.json)）：跨 ID 深链不带 `return`、`link.return_to` 为 None、快照具名 `G-IQS-01_return_context_unavailable`，Dashboard 显示"打开原 UI 后请返回本工作台标签页"且不出现"确认的返回地址"，**固定结果 `cas_6cab1b94d8f45d42c750` 与 owner history/result 读 200 仍可读**；同 ID 对照照常点击返回。施工卡"错挂牌或映射未核实时返回入口局部不可用、原结果与历史仍可读"由此获得浏览器级实证。
 
 ## 测试与回归
 
@@ -79,9 +82,16 @@ UI 仓为本地仓（无远端），验收以其工作树 `src/app`（8766/候�
 
 | 文件 | 内容 |
 |---|---|
-| [evidence/public-receipt-summary.json](evidence/public-receipt-summary.json) | 七份公开回执汇总 |
-| [evidence/R1–R7-*.json](evidence/) | 各场景请求与完整回包 |
+| [evidence/public-receipt-summary.json](evidence/public-receipt-summary.json) | 八份公开回执汇总 |
+| [evidence/R1–R8-*.json](evidence/) | 各场景请求与完整回包 |
 | [evidence/bridge-mapping-verdicts.json](evidence/bridge-mapping-verdicts.json) | 双工作区映射确认/拒绝判据（含 lookup receipt SHA、坐标、NFKC 名称） |
-| [evidence/e07-browser.xml](evidence/e07-browser.xml) | Chromium 两跳回归 2 passed（跨 ID + 同 ID 对照） |
+| [evidence/e07-browser.xml](evidence/e07-browser.xml) | Chromium 两跳回归 2 passed（跨 ID + 同 ID 对照，confirmed） |
 | [evidence/e07-run.json](evidence/e07-run.json) | 隔离运行回执（SHA、端口、清理） |
+| [evidence/e07-browser-fallback.xml](evidence/e07-browser-fallback.xml) | Chromium 降级回归 2 passed（未配桥 fallback：局部降级 + 结果可读 + 同 ID 对照） |
+| [evidence/e07-run-fallback.json](evidence/e07-run-fallback.json) | 降级运行回执 |
 | `runs/crossid-candidate-20261121/` | 候选监听配置与日志（隔离 state，可整体删除） |
+
+## 已知边界（如实）
+
+- `/api/product/link` 路由的跨 ID 确认仍走串行读路径（未接并行预取）；现无调用方会以跨 ID 返回触达该路由的慢路径（Dashboard `link()` 用业务实体 ID 首调即 404），entity/entity-view/company-result 三条实际读面均已并行化。
+- 独立 UI 仓无远端，`cb11311` 仅本地可读（服务静态根直接读取其工作树）。
