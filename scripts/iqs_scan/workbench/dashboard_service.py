@@ -535,7 +535,47 @@ class DashboardService:
             return False
         return verdict.get('confirmed') is True
 
-    def _iqs_link(self, entity_id, return_to):
+    def _read_owner_history(self, entity_id):
+        """The `_iqs_link` history read, isolated so a thread can run it.
+
+        Same semantics as the inline read: any failure and the owner's own
+        `available: false` both degrade to None, never to a claimed zero.
+        """
+        try:
+            history = self._gateway('owner').history(entity_id)
+        except Exception:
+            return None
+        if isinstance(history, dict) and history.get('available') is False:
+            return None
+        return history
+
+    def _prefetch_entity_link_context(self, entity_id, return_to):
+        """Start the independent reads the entity link declaration needs.
+
+        The Dashboard reads this owner over HTTP with a per-request deadline;
+        the owner entity read, the owner history read and the two identity
+        bridge resolves are all independent subprocess reads, and running
+        them serially can exceed that deadline. The prefetch moves the
+        history read (and, for a cross-workspace return, the mapping check)
+        onto threads so `_iqs_link` only joins finished work. It changes no
+        decision: every future computes exactly what the serial path reads.
+        """
+        from concurrent.futures import ThreadPoolExecutor
+
+        from .dashboard_iqs_link import company_return_entity, safe_absolute_company_return, safe_entity_id
+        entity_id = safe_entity_id(entity_id)
+        if not (entity_id and self._iqs_origin()):
+            return None
+        pool = ThreadPoolExecutor(max_workers=3)
+        prefetch = {'pool': pool, 'history': pool.submit(self._read_owner_history, entity_id)}
+        # Only the one absolute cross-workspace form may cost a mapping check;
+        # the same gate `_iqs_link` applies before it would call the bridge.
+        if (return_to and company_return_entity(return_to) not in (None, entity_id)
+                and safe_absolute_company_return(return_to)):
+            prefetch['mapping'] = pool.submit(self._confirm_return_mapping, entity_id, return_to)
+        return prefetch
+
+    def _iqs_link(self, entity_id, return_to, prefetch=None):
         """G-IQS-01: publish the frozen IQSLink for the current owner state.
 
         Only an explicitly configured loopback Dashboard origin is used, so no
@@ -565,6 +605,14 @@ class DashboardService:
         # than left as an unused helper. A malformed id must not be passed to the
         # owner as though it were addressable.
         entity_id = safe_entity_id(entity_id)
+        # A prefetched mapping verdict joins here; None means "not prefetched",
+        # so the serial path still runs the check itself.
+        confirmed = None
+        if prefetch is not None and 'mapping' in prefetch:
+            try:
+                confirmed = bool(prefetch['mapping'].result())
+            except Exception:
+                confirmed = False
         # B03: a company-scoped return that names a DIFFERENT company than the
         # link being composed is cross-scope injection; collapse it to the plain
         # fallback instead of echoing it back to the caller. CROSS-ID-DASHBOARD-
@@ -580,19 +628,30 @@ class DashboardService:
             # link can actually navigate: a trusted-loopback company URL.
             # Hash routes naming another company and foreign origins collapse
             # exactly as before, without touching the identity bridge.
-            if (entity_id and origin and safe_absolute_company_return(return_to)
-                    and self._confirm_return_mapping(entity_id, return_to)):
+            if (entity_id and origin
+                    and (confirmed is True or (confirmed is None and safe_absolute_company_return(return_to)
+                                               and self._confirm_return_mapping(entity_id, return_to)))):
                 pass  # keep the exact return_to; capability() re-validates it.
             else:
                 return_to = FALLBACK_RETURN
         if entity_id and origin:
             state = 'unreadable'
-            try:
-                history = self._gateway('owner').history(entity_id)
-            except Exception:
-                # An unreadable owner is NOT "no observations"; the state stays
-                # `unreadable` so the count is never mistaken for a real zero.
-                history = None
+            history = None
+            if prefetch is not None and 'history' in prefetch:
+                try:
+                    history = prefetch['history'].result()
+                except Exception:
+                    # An unreadable owner is NOT "no observations"; the state
+                    # stays `unreadable` so the count is never mistaken for a
+                    # real zero.
+                    history = None
+            else:
+                try:
+                    history = self._gateway('owner').history(entity_id)
+                except Exception:
+                    # An unreadable owner is NOT "no observations"; the state stays
+                    # `unreadable` so the count is never mistaken for a real zero.
+                    history = None
             if isinstance(history, dict) and history.get('available') is False:
                 # The owner explicitly reports that it cannot serve this
                 # entity's observations (`owner_observation_database_missing`).
@@ -936,7 +995,14 @@ class DashboardService:
                 entity_id = query.get('id', query.get('entity_id', ''))
                 if not entity_id:
                     raise ProductError('entity_required', '请选择已注册公司。')
-                result = self._gateway('owner').entity_view(entity_id)
+                # CROSS-ID-DASHBOARD-RETURN: the UI's primary read gets the same
+                # parallel prefetch as the entity route.
+                prefetch = self._prefetch_entity_link_context(entity_id, query.get('return'))
+                try:
+                    result = self._gateway('owner').entity_view(entity_id)
+                finally:
+                    if prefetch is not None:
+                        prefetch['pool'].shutdown(wait=False)
                 # CROSS-ID-DASHBOARD-RETURN: the UI composes its own back entry
                 # from the same entity-scoped declaration the Dashboard reads.
                 # The declaration rides at the TOP level so the projected
@@ -944,13 +1010,21 @@ class DashboardService:
                 # route; a cross-workspace return is confirmed here under the
                 # identical StockWiki mapping rule (or degrades identically).
                 if isinstance(result, dict):
-                    result['iqs_link'] = self._iqs_link(entity_id, query.get('return'))
+                    result['iqs_link'] = self._iqs_link(entity_id, query.get('return'), prefetch=prefetch)
                 return result
             if path in {'entity', 'history', 'facts'}:
                 entity_id = query.get('id', query.get('entity_id', ''))
                 if not entity_id:
                     raise ProductError('entity_required', '请选择已注册公司。')
-                result = getattr(self._gateway('owner'), path)(entity_id)
+                # CROSS-ID-DASHBOARD-RETURN: the link declaration's independent
+                # reads start before the slow owner entity read and are joined
+                # by `_iqs_link`; the route decision is unchanged.
+                prefetch = self._prefetch_entity_link_context(entity_id, query.get('return')) if path == 'entity' else None
+                try:
+                    result = getattr(self._gateway('owner'), path)(entity_id)
+                finally:
+                    if prefetch is not None:
+                        prefetch['pool'].shutdown(wait=False)
                 if path == 'entity':
                     # G-IQS-01: the frozen `IQSLink` travels with the entity so
                     # a consumer reads one declaration instead of guessing. An
@@ -968,7 +1042,7 @@ class DashboardService:
                     # entity-scoped by construction (see `_iqs_link`), so it is
                     # rebuilt for THIS entity on every read and never cached
                     # across entities.
-                    result['iqs_link'] = self._iqs_link(entity_id, query.get('return'))
+                    result['iqs_link'] = self._iqs_link(entity_id, query.get('return'), prefetch=prefetch)
                 return result
             if path == 'universe':
                 return self._gateway('owner').universe_list(query.get('universe_id', self.config['universe_id']))
