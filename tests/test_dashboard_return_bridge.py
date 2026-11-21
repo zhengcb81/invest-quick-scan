@@ -208,10 +208,20 @@ def test_verify_without_configuration_degrades_without_calls(tmp_path):
 
 def test_verify_degrades_on_bridge_transport_failures(tmp_path):
     _write_cli_roots(tmp_path)
+    # exit 2 is the bridge answering "no such identity" - a named identity
+    # refusal, not a transport failure
     bridge, runner = _bridge(tmp_path, [(2, json.dumps({'error_code': 'entity_not_found'},
                                                        ensure_ascii=False))])
-    assert bridge.verify(AMEC_R25, RETURN_URL)['reason'] == REASON_UNAVAILABLE
+    assert bridge.verify(AMEC_R25, RETURN_URL)['reason'] == REASON_R25_UNRESOLVED
     assert runner.calls[0][0][0].endswith('python.exe')
+    bridge, _ = _bridge(tmp_path, [(2, json.dumps({'error_code': 'listing_not_found'},
+                                                  ensure_ascii=False))])
+    assert bridge.verify(AMEC_R25, RETURN_URL)['reason'] == REASON_R25_UNRESOLVED
+    bridge, _ = _bridge(tmp_path, [
+        (0, json.dumps(_reply(AMEC_R25, '中微半导体设备(上海)股份有限公司', AMEC_R25_LISTING), ensure_ascii=False)),
+        (2, json.dumps({'error_code': 'listing_not_found'}, ensure_ascii=False)),
+    ])
+    assert bridge.verify(AMEC_R25, RETURN_URL)['reason'] == REASON_BUSINESS_UNRESOLVED
     bridge, _ = _bridge(tmp_path, [])
     bridge._runner = lambda *a, **k: (_ for _ in ()).throw(OSError('no exec'))
     assert bridge.verify(AMEC_R25, RETURN_URL)['reason'] == REASON_UNAVAILABLE

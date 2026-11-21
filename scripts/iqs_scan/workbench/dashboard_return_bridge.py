@@ -204,7 +204,10 @@ class ReturnBridge:
         # Side 1 - this owner's r25 workspace: the entity the link composes.
         reply, error = self._resolve(owner_root, r25_entity_id)
         if error is not None:
-            return {"confirmed": False, "reason": REASON_UNAVAILABLE, "detail": {**detail, "bridge_error": error}}
+            # A bridge REFUSAL (exit 2) is the owner answering "no such
+            # identity"; only transport-level failures are `unavailable`.
+            reason = REASON_R25_UNRESOLVED if error == "bridge_refused" else REASON_UNAVAILABLE
+            return {"confirmed": False, "reason": reason, "detail": {**detail, "bridge_error": error}}
         r25_entity, reason = _resolved_entity(reply, REASON_R25_UNRESOLVED)
         if r25_entity is None:
             return {"confirmed": False, "reason": reason, "detail": detail}
@@ -218,7 +221,8 @@ class ReturnBridge:
         # return address names. An explicit listing_id must be the selected one.
         reply, error = self._resolve(business_root, scope["entity_id"], scope["listing_id"])
         if error is not None:
-            return {"confirmed": False, "reason": REASON_UNAVAILABLE, "detail": {**detail, "bridge_error": error}}
+            reason = REASON_BUSINESS_UNRESOLVED if error == "bridge_refused" else REASON_UNAVAILABLE
+            return {"confirmed": False, "reason": reason, "detail": {**detail, "bridge_error": error}}
         business_entity, reason = _resolved_entity(reply, REASON_BUSINESS_UNRESOLVED)
         if business_entity is None:
             return {"confirmed": False, "reason": reason, "detail": detail}
