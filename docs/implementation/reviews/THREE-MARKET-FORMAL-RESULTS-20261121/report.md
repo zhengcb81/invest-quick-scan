@@ -2,7 +2,16 @@
 
 对应 [施工卡](C:/Users/郑曾波/Projects/investment-dashboard/handoffs/owner-requests/invest-quick-scan/THREE-MARKET-FORMAL-RESULTS-20261121.md)（E07/B-04）。IQS 主责结果登记及回跳协议。
 
-**发布 SHA：** IQS 正式服务 `master@296ab84`（8766 快照实例，只读验收面）；操作面为主树临时实例 8767（同一 `config/dashboard.local.json`，revision `10db0cf9…33f0e`；快照实例的 REPO_ROOT 是 `.runtime/iqs-e20-296ab84/`，不含主仓 `runs/`，prepare 在其上被具名拒绝——preparation_not_configured，属快照实例的既定限制而非缺陷）。工作树：IQS 主树、StockQAbyLLM、StockWiki `e8da004+`。本轮代码整改全部在工作树（未提交——StockQA 树内含并行会话 WIP，不混提），清单见根因章节。
+**发布 SHA：** IQS 正式服务 `master@296ab84`（8766 快照实例，只读验收面）；操作面为主树临时实例 8767（同一 `config/dashboard.local.json`，revision `10db0cf9…33f0e`；快照实例的 REPO_ROOT 是 `.runtime/iqs-e20-296ab84/`，不含主仓 `runs/`，prepare 在其上被具名拒绝——preparation_not_configured，属快照实例的既定限制而非缺陷）。工作树：IQS 主树、StockQAbyLLM、StockWiki `e8da004+`。
+
+**本卡交付分支（根修 + 报告已发布）：**
+
+| 仓库 | 分支 | SHA | 内容 |
+|---|---|---|---|
+| invest-quick-scan | `codex/three-market-formal-results-20261121` | **`c2ae877`** | 过期租约不再封锁启动（门禁 C）+ 新增语义用例 + 本报告与证据 |
+| StockQAbyLLM | `codex/quick-scan-unverified-lease-root-fix-20261121` | **`4199664`** | 具名传输级失败的终态化与级联解除（A/B）+ 租约到期时间投影 |
+
+两分支均自各仓 HEAD（含并行会话已推送提交）切出，在**独立 worktree** 内测试通过后提交推送，**未混入并行会话的未提交 WIP**（StockQA 树另 2 个 WIP 文件、IQS 树的 execution 重构均原样保留在工作区，共享树 HEAD 未被改动）。
 
 ## 覆盖总表
 
@@ -97,5 +106,5 @@
 1. **阿里**：需 owner 单独走 membership request 权威流程把 09988 纳入 `UNI_IQS_APPROVED_214_20261025`（或另立 universe），之后沿本报告同一链路补扫登记。关卡按卡对阿里保持开放，具名状态已可独立验收。
 2. **药明 10 缺题 / MongoDB 3 缺题**：全部具名 failed/导入拒绝，证据工件在 wd/evidence/；重扫与重问路径已验证可重开（本轮 gen-2 实证）。搜索气候（模型搜索回执质量）好转后重问即可补齐覆盖。
 3. **两侧校验不对称**（执行器封存 vs owner 导入契约）：`metrics[].unit_detail` 类 schema 越界应在封存前拦截——建议后续卡在执行器 checkpoint 校验中加入与 owner 导入契约同源的 schema 校验，避免"封存成功但导入拒绝"的浪费（本轮 2 题即此因）。
-4. **代码整改提交**：两仓工作树改动清单见根因章节；因 StockQA 树含并行会话 WIP 未混提，待并行会话协调后按仓提交。
+4. **代码整改提交**：已按仓发布——IQS `codex/three-market-formal-results-20261121`@`c2ae877`、StockQA `codex/quick-scan-unverified-lease-root-fix-20261121`@`4199664`（独立 worktree 提交，未混入并行会话 WIP；合并时机由总控决定）。
 5. **正式 8766 快照服务**运行旧代码（只读面不受影响）；下次 owner 重启时自然载入根修后的代码。
