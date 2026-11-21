@@ -55,6 +55,45 @@ def decoded_output_lines(stream):
         yield "".join(pieces)
 
 
+_NAMED_CREDENTIAL = re.compile(
+    r"""(?ix)
+    (?P<label>(?<!\w)["']?(?:[a-z0-9]+[-_])*
+        (?:api[-_]?key|access[-_]?key|private[-_]?key|password|passwd|pwd|key|secret|
+           token|authorization|credential)["']?[ \t]*[:=][ \t]*)
+    (?P<value>\[REDACTED\]|"(?:\\.|[^"\\\r\n])*"|'(?:\\.|[^'\\\r\n])*'|
+               (?:basic|bearer)[ \t]+[^\s&,;}\]]+|[^\s&,;}\]"']+)
+    """
+)
+_AUTH_VALUE = re.compile(r"(?i)(?:\bsk-[a-z0-9_.-]{6,}|\b(?:basic|bearer)[ \t]+[a-z0-9_./+=-]{6,})")
+_URL_USERINFO = re.compile(r"(?i)(https?://)[^/\s:@]+:[^/@\s]+@")
+_PRIVATE_START = re.compile(r"-----BEGIN [^-\n]*PRIVATE KEY-----")
+_PRIVATE_END = re.compile(r"-----END [^-\n]*PRIVATE KEY-----")
+
+
+def _hide_field(match):
+    value = match["value"]
+    quote = value[0] if value.startswith(("'", '"')) else ""
+    return match["label"] + quote + "[REDACTED]" + quote
+
+
+def redacted_output_lines(stream, secrets):
+    """Filter credentials before either live display or durable output sees them."""
+    inside_key = False
+    for line in decoded_output_lines(stream):
+        start = _PRIVATE_START.search(line)
+        if start or inside_key:
+            end = _PRIVATE_END.search(line)
+            inside_key = end is None
+            before = line[:start.start()] if start else ""
+            after = line[end.end():] if end else ("\n" if line.endswith("\n") else "")
+            line = before + "[REDACTED]" + after
+        for secret in secrets:
+            line = line.replace(secret, "[REDACTED]")
+        line = _NAMED_CREDENTIAL.sub(_hide_field, line)
+        line = _AUTH_VALUE.sub("[REDACTED]", line)
+        yield _URL_USERINFO.sub(r"\1[REDACTED]@", line)
+
+
 def register_process_log(state_root, log_path, run_id):
     """Bind an original owner-created log under its state root; never copy its contents."""
     root = Path(state_root).resolve()

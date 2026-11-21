@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from contextlib import contextmanager
 import uuid
 
-from ..foundation.api import decoded_output_lines, register_process_log, replace_after_readers_close
+from ..foundation.api import redacted_output_lines, register_process_log, replace_after_readers_close
 from .dashboard_locks import control_lock, ControlBusyError
 
 
@@ -932,12 +932,9 @@ class ExecutionGateway:
             except (OSError, ValueError) as error:
                 log_failed(error)
             try:
-                for line in decoded_output_lines(process.stdout):
+                for line in redacted_output_lines(process.stdout, secret_values):
                     if log is None or record.get("log_tracking_incomplete"):
                         continue
-                    for secret in secret_values:
-                        line = line.replace(secret, "[REDACTED]")
-                    line = re.sub(r"(?i)(?:sk-|Bearer\s+)[A-Za-z0-9_.-]{12,}", "[REDACTED]", line)
                     try:
                         log.write(line)
                         log.flush()

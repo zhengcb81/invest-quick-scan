@@ -29,3 +29,5 @@
     python scripts/iqs_feedback_owner.py get-process-log iqs:process-log/<id> --state-root <原状态根> --offset 0 --limit 65536
 
 下一页使用上页 next_offset，游标保证 UTF-8 字符完整。三种编码的真实子进程保留同一独立尾因、退出 29 和脱敏。独审反例、旧八条日志故障、分页及活跃进程共 24 项通过。更早已被截断的原日志无法补回。
+
+同一独审另用未出现在本机环境变量的 password 和 Authorization 凭证验证了新尾读接口。日志现统一在写入前按常用凭证键、Basic/Bearer、URL userinfo、PEM 私钥及实际环境值脱敏；回归包括大记录后三种编码的明文反例。

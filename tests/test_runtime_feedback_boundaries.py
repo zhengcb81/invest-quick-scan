@@ -178,7 +178,7 @@ def test_long_real_child_error_is_available_via_cold_log_pages(tmp_path, monkeyp
     job_path.write_text(json.dumps(record), encoding="utf8")
     gateway = ExecutionGateway({"state_root": str(state)})
     child_code = (
-        "import os,sys; msg='x'*1070000+'\\n原因：原写入失败 '+os.environ['IQS_TEST_SECRET']+'\\n';"
+        "import os,sys; msg='x'*1070000+'\\n原因：原写入失败 '+os.environ['IQS_TEST_SECRET']+' password=unknown-synthetic-value Authorization: Bearer unknown-synthetic-bearer\\n';"
         "sys.stdout.buffer.write(msg.encode(sys.argv[1])); sys.exit(29)"
     )
     with subprocess.Popen([sys.executable, "-B", "-c", child_code, encoding], stdout=subprocess.PIPE,
@@ -195,7 +195,9 @@ def test_long_real_child_error_is_available_via_cold_log_pages(tmp_path, monkeyp
     view = json.loads(page.stdout)["log"]
     assert view["total_bytes"] > 1048576 and view["eof"] is True
     assert "原因：原写入失败 [REDACTED]" in view["text"]
-    assert b"provider-secret-fixture-only" not in (folder / "process.log").read_bytes()
+    saved = (folder / "process.log").read_bytes()
+    assert b"provider-secret-fixture-only" not in saved
+    assert b"unknown-synthetic-value" not in saved and b"unknown-synthetic-bearer" not in saved
     start = view["offset"]
     restored = ""
     while len(restored.encode("utf8")) < view["total_bytes"] - start:
@@ -204,3 +206,22 @@ def test_long_real_child_error_is_available_via_cold_log_pages(tmp_path, monkeyp
         assert part.returncode == 0, part.stderr
         restored += json.loads(part.stdout)["log"]["text"]
     assert restored == view["text"]
+
+
+def test_redact_named_credentials_even_when_no_environment_variable_contains_them():
+    from iqs_scan.foundation.api import redacted_output_lines
+
+    lines = [
+        "password=unconfigured-value https://example.invalid/?api_key=query-value&format=json\n",
+        '{"access_token":"json-value","message":"keep me"}\n',
+        "Authorization: Basic basic-value\n",
+        "secret_key='phrase with blanks' stage=keep\n",
+        "X-Api-Key: header-value\n",
+        "https://user:pass@example.invalid/safe\n",
+        "-----BEGIN PRIVATE KEY-----\nbase64-unconfigured\n-----END PRIVATE KEY-----\n",
+    ]
+    result = "".join(redacted_output_lines(iter(lines), ()))
+    for value in ("unconfigured-value", "query-value", "json-value", "basic-value", "phrase with blanks",
+                  "header-value", "user:pass", "base64-unconfigured"):
+        assert value not in result
+    assert "format=json" in result and "keep me" in result and "stage=keep" in result
