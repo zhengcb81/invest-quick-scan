@@ -552,9 +552,9 @@ class DashboardService:
         """
         from .dashboard_iqs_link import (
             FALLBACK_RETURN,
-            _safe_absolute_company_return,
             capability,
             company_return_entity,
+            safe_absolute_company_return,
             safe_entity_id,
         )
         origin = self._iqs_origin()
@@ -580,7 +580,7 @@ class DashboardService:
             # link can actually navigate: a trusted-loopback company URL.
             # Hash routes naming another company and foreign origins collapse
             # exactly as before, without touching the identity bridge.
-            if (entity_id and origin and _safe_absolute_company_return(return_to)
+            if (entity_id and origin and safe_absolute_company_return(return_to)
                     and self._confirm_return_mapping(entity_id, return_to)):
                 pass  # keep the exact return_to; capability() re-validates it.
             else:
@@ -937,6 +937,14 @@ class DashboardService:
                 if not entity_id:
                     raise ProductError('entity_required', '请选择已注册公司。')
                 result = self._gateway('owner').entity_view(entity_id)
+                # CROSS-ID-DASHBOARD-RETURN: the UI composes its own back entry
+                # from the same entity-scoped declaration the Dashboard reads.
+                # The declaration rides at the TOP level so the projected
+                # `entity` payload stays byte-identical to the plain entity
+                # route; a cross-workspace return is confirmed here under the
+                # identical StockWiki mapping rule (or degrades identically).
+                if isinstance(result, dict):
+                    result['iqs_link'] = self._iqs_link(entity_id, query.get('return'))
                 return result
             if path in {'entity', 'history', 'facts'}:
                 entity_id = query.get('id', query.get('entity_id', ''))

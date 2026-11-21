@@ -159,6 +159,16 @@ def _safe_absolute_company_return(raw: str) -> str | None:
     return raw
 
 
+def safe_absolute_company_return(raw: str) -> str | None:
+    """Public boundary wrapper: the validated absolute trusted-loopback form.
+
+    The CROSS-ID return confirmation (dashboard_service) must only attempt a
+    StockWiki mapping check on a return this module would actually publish,
+    so the validator is shared instead of reimplemented.
+    """
+    return _safe_absolute_company_return(raw)
+
+
 def company_return_entity(value: object) -> str | None:
     """The entity named by a validated company return route, else None.
 

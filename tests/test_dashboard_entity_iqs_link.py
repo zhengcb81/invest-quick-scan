@@ -52,6 +52,10 @@ class Owner:
             raise ProductError('entity_not_found', 'No registered entity has this ID', 404)
         return dict(ENTITY_PAYLOAD)
 
+    def entity_view(self, entity_id):
+        return {'protocol': 'iqs.company_research_view/1.0.0', 'entity': dict(ENTITY_PAYLOAD),
+                'temporal_shadow': {'reuse_authorized': False}}
+
     def history(self, entity_id):
         return {'observations': [
             {'observation_id': 'OBS_1', 'publication_status': 'published',
@@ -297,5 +301,24 @@ def test_entity_route_collapses_a_cross_scope_return_without_a_bridge(tmp_path):
     code, reply = service.dispatch(
         'GET', '/api/product/entity?id=ENT_A&return='
         'http%3A%2F%2F127.0.0.1%3A43210%2Fcompany%2FENT_OTHER%2Fquickscan')
+    assert code == 200, reply
+    assert reply['data']['iqs_link']['return_to'] == link.FALLBACK_RETURN
+
+
+def test_entity_view_route_carries_the_same_declaration_top_level(tmp_path):
+    """The UI's primary read confirms a cross-workspace return identically.
+
+    The declaration rides at the TOP level of the entity-view payload so the
+    projected `entity` stays byte-identical to the plain entity route.
+    """
+    service = service_with_bridge(tmp_path, RecordingBridge,
+                                  dashboard_origin='http://127.0.0.1:43219')
+    code, reply = service.dispatch(
+        'GET', '/api/product/entity-view?id=ENT_A&return='
+        'http%3A%2F%2F127.0.0.1%3A43210%2Fcompany%2FENT_OTHER%2Fquickscan%3Flisting_id%3DLST_OTHER')
+    assert code == 200, reply
+    assert reply['data']['iqs_link']['return_to'] == CROSS_RETURN
+    assert 'iqs_link' not in reply['data']['entity'], 'the entity payload stays pure'
+    code, reply = service.dispatch('GET', '/api/product/entity-view?id=ENT_A')
     assert code == 200, reply
     assert reply['data']['iqs_link']['return_to'] == link.FALLBACK_RETURN
