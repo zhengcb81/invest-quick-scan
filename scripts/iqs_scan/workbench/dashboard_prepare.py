@@ -23,7 +23,7 @@ import sys
 import threading
 import uuid
 
-from .dashboard_json import decode_owner_json
+from .dashboard_json import decode_owner_json, owner_refusal
 
 ROOT = REPO_ROOT
 DEFAULT_PACKAGE = "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a"
@@ -888,15 +888,27 @@ def _native_cli(config, kind, module, arguments, *, input_value=None, owner_oper
         done = subprocess.run([interpreter, "-B", "-X", "utf8", "-m", module, *arguments], cwd=cwd, env=env,
                               input=_bytes(input_value) if input_value is not None else None,
                               capture_output=True, timeout=timeout, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    except subprocess.TimeoutExpired:
+    except subprocess.TimeoutExpired as error:
+        from ..foundation.api import record_operation_failure
+        diagnostic = record_operation_failure(error, "prepare.owner", code="native_preparation_timeout_unknown",
+                                              directory=config.get("state_root"))
         raise DashboardPrepareError("native_preparation_timeout_unknown",
             "Original native stage timed out; inspect the recorded phases before an explicit recovery", 504,
             {**details, "exception_type": "TimeoutExpired", "outcome_unknown": True,
-             "automatic_retry_allowed": False}) from None
+             "automatic_retry_allowed": False, "failure_diagnostic": diagnostic}) from error
     except OSError as error:
+        from ..foundation.api import record_operation_failure
+        diagnostic = record_operation_failure(error, "prepare.owner", code="native_transport_unavailable",
+                                              directory=config.get("state_root"))
         raise DashboardPrepareError("native_transport_unavailable", "Original native process could not be started", 503,
-            {**details, "exception_type": type(error).__name__}) from None
+            {**details, "exception_type": type(error).__name__, "failure_diagnostic": diagnostic}) from error
     details["native_returncode"] = done.returncode
+    refusal = owner_refusal(done.stderr) if done.returncode and not done.stdout.strip() else None
+    if refusal:
+        from ..foundation.api import record_operation_failure
+        details["failure_diagnostic"] = record_operation_failure(
+            None, "prepare.owner", code=refusal, directory=config.get("state_root"), refusal=True)
+        raise DashboardPrepareError(refusal, "Original native command refused preparation", 409, details)
     if len(done.stdout) > MAX_BYTES:
         raise DashboardPrepareError("native_response_invalid", "Original native response exceeds its limit", 502)
     try:

@@ -36,6 +36,8 @@ def product_handler(base_handler, service):
                 self.wfile.write(raw)
 
         def _deny(self, status, code, message):
+            if hasattr(service, "record_transport_refusal"):
+                service.record_transport_refusal(code)
             self._drain_rejected_body()
             self.close_connection = True
             self._reply(status, {'ok': False, 'error': {'code': code, 'message': message, 'details': {}}})

@@ -19,7 +19,6 @@ part of its bank, 2 = unusable.
 """
 from __future__ import annotations
 
-import argparse
 from contextlib import suppress
 from dataclasses import dataclass
 from hashlib import sha256
@@ -27,6 +26,9 @@ import json
 import os
 from pathlib import Path
 import sys
+
+from .. import REPO_ROOT
+from ..foundation.api import RuntimeArgumentParser, record_operation_failure
 
 REQUIRED_FILES = ("answers.json", "run-log.json", "index.html")
 RUNS_ROOT_ENV = "IQS_FEEDBACK_RUNS_ROOT"
@@ -144,6 +146,8 @@ def inspect_run(run_dir: Path) -> CheckRead:
             count == len(answers) for count in error_kinds.values()):
         report["problems"].append(
             "every question reported the same failure: " + ", ".join(sorted(error_kinds)))
+    elif answers and not report["scored"] and all(a.get("problems") or a.get("status") == "failed" for a in answers):
+        report["problems"].append("every question reported an execution failure")
 
     # Zero model calls with searches performed means the model stage never ran.
     if meta.get("calls") == 0 and (meta.get("searches") or 0) > 0:
@@ -222,16 +226,36 @@ def _observe(run_dir: Path, checked: CheckRead, previous: Path | None) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Check whether a thin-scan run carries usable answers.")
+    parser = RuntimeArgumentParser(description="Check whether a thin-scan run carries usable answers.")
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--previous-check", type=Path, help="Compare an archived check for opt-in local feedback.")
     args = parser.parse_args()
+    root = Path(os.environ.get(RUNS_ROOT_ENV) or REPO_ROOT / "runs").resolve()
+    try:
+        run_id = args.run.resolve().relative_to(root).as_posix()
+    except ValueError:
+        run_id = args.run.name
+    state_root = root if os.environ.get(RUNS_ROOT_ENV) else root / "dashboard-runtime"
+
+    def failure(code, error=None, digest=None):
+        ref = f"{REFERENCE_PREFIX}{run_id}" + (f"@{digest}" if digest else "")
+        record_operation_failure(error, "scan.check", code=code, directory=state_root, run_id=run_id,
+                                 evidence_ref=ref)
+
     if not args.run.is_dir():
+        failure("run_directory_missing")
         print(json.dumps({"ok": False, "problems": ["run directory not found"]}, ensure_ascii=False))
         return 2
-    checked = inspect_run(args.run)
+    try:
+        checked = inspect_run(args.run)
+    except (OSError, ValueError, TypeError, AttributeError, KeyError, RecursionError) as error:
+        failure("saved_scan_unreadable", error)
+        print(json.dumps({"ok": False, "problems": ["saved scan unreadable"]}))
+        return 2
     report = checked.report
     _observe(args.run, checked, args.previous_check)
+    if not report["ok"]:
+        failure("saved_scan_failed" if checked.source_sha256 else "scan_artifacts_missing", digest=checked.source_sha256)
     print(json.dumps(report, ensure_ascii=False, indent=2))
     if not report["ok"]:
         return 2

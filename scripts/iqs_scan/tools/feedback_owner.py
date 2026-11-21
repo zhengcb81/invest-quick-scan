@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 from contextlib import closing
 from hashlib import sha256
 import json
@@ -11,6 +10,7 @@ import sqlite3
 import sys
 
 from . import scan_result_check as check
+from ..foundation.api import RuntimeArgumentParser, read_operation_failure
 
 OWNER = check.OWNER
 ISSUE = "F2-IQS-0001"
@@ -338,17 +338,30 @@ def _lookup(db, key, command):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--db", type=Path, required=True)
-    parser.add_argument("--runs-root", type=Path, required=True)
+    parser = RuntimeArgumentParser(description=__doc__)
+    parser.add_argument("--db", type=Path)
+    parser.add_argument("--runs-root", type=Path)
     subs = parser.add_subparsers(dest="command", required=True)
     for command in ACTIONS:
         subs.add_parser(command)
     for command in ("get-action", "get-coverage"):
         subs.add_parser(command).add_argument("action_id")
+    for command in ("get-diagnostic", "republish-diagnostic"):
+        reader = subs.add_parser(command)
+        reader.add_argument("reference")
+        reader.add_argument("--state-root", type=Path)
     args = parser.parse_args(argv)
     try:
-        if args.command in ("get-action", "get-coverage"):
+        if args.command in ("get-diagnostic", "republish-diagnostic"):
+            if args.state_root is None and args.runs_root is None:
+                parser.error("supply --state-root or --runs-root to locate the saved diagnostic")
+            root = args.state_root or args.runs_root / "dashboard-runtime"
+            reply = {"diagnostic": read_operation_failure(
+                root, args.reference, republish=args.command == "republish-diagnostic"
+            )}
+        elif args.db is None or args.runs_root is None:
+            parser.error("this action requires --db and --runs-root")
+        elif args.command in ("get-action", "get-coverage"):
             reply = _lookup(args.db, args.action_id, args.command)
         else:
             request = json.load(sys.stdin)

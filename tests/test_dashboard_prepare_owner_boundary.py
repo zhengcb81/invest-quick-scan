@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts import contract_validation, dashboard_prepare
+from scripts import dashboard_prepare
 
 
 def test_snapshot_uses_the_public_owner_command(tmp_path, monkeypatch):
@@ -36,7 +36,7 @@ print(json.dumps({'protocol': 'stockwiki.quick_scan_prepare_reply/1.0.0',
         encoding="utf-8",
     )
     seen = []
-    monkeypatch.setattr(contract_validation, "validate_entity", lambda entity, **_: seen.append(entity))
+    monkeypatch.setattr(dashboard_prepare, "validate_entity", lambda entity, **_: seen.append(entity))
     config = {"stockwiki_root": str(code), "stockwiki_python": sys.executable,
               "workspace_root": str(workspace), "iqs_root": str(tmp_path)}
     result = dashboard_prepare._snapshot(config, {"entity_id": "ENT_EXACT",

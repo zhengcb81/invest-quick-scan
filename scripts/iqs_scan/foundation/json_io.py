@@ -1,11 +1,25 @@
 """Small shared UTF-8 JSON file helpers for local configuration and artifacts."""
 import json
+import os
 from pathlib import Path
+import time
 
 API_PROTOCOL = "iqs.json-file-api/1.0.0"
 PUBLIC_API_EXPORTS = frozenset({
-    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "read_json", "write_json",
+    "API_PROTOCOL", "PUBLIC_API_EXPORTS", "read_json", "write_json", "replace_after_readers_close",
 })
+
+
+def replace_after_readers_close(source, destination):
+    """Publish a completed local file despite transient Windows reader sharing."""
+    for delay in (0.005, 0.01, 0.02, 0.04, 0.04, 0.04, 0.04, None):
+        try:
+            os.replace(source, destination)
+            return
+        except PermissionError as error:
+            if delay is None or getattr(error, "winerror", None) not in (5, 32, 33):
+                raise
+            time.sleep(delay)
 
 
 def read_json(path):

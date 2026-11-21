@@ -16,12 +16,12 @@ output could not be written.
 """
 from __future__ import annotations
 
-import argparse
 import json
 import os
 import sys
 from pathlib import Path
 
+from ..foundation.api import RuntimeArgumentParser, record_operation_failure
 from . import dashboard_company_feedback as feedback
 from . import dashboard_company_projection as projection
 
@@ -34,7 +34,7 @@ def _line_count(path: Path) -> int:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(
+    parser = RuntimeArgumentParser(
         description="Read one company result through the public entry and record its observations.")
     parser.add_argument("--stockwiki-root", type=Path,
                         help="StockWiki checkout that publishes the owner command")
@@ -54,9 +54,22 @@ def main(argv=None) -> int:
     parser.add_argument("--timeout-seconds", type=int, default=120)
     args = parser.parse_args(argv)
 
+    def read_input(path):
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def input_failure(error):
+        record_operation_failure(error, "company.input", code="company_input_unreadable",
+                                 directory=args.out.resolve().parent, run_id=args.run_id,
+                                 attempt_id=args.attempt_id, sidecar=args.out)
+        print(json.dumps({"ok": False, "code": "company_input_unreadable"}))
+        return 2
+
     receipts = None
     if args.receipts is not None:
-        receipts = json.loads(args.receipts.read_text(encoding="utf-8"))
+        try:
+            receipts = read_input(args.receipts)
+        except (OSError, ValueError) as error:
+            return input_failure(error)
     config = {
         # Both roots are resolved here: the owner command runs with the
         # StockWiki checkout as its working directory, so a relative owner
@@ -72,7 +85,12 @@ def main(argv=None) -> int:
     injected = args.inject_result is not None
     if injected:        # A temporary public response: the saved snapshot is placed where the
         # owner's read would put it, and the same projection and checks run.
-        result = json.loads(args.inject_result.read_text(encoding="utf-8"))
+        try:
+            result = read_input(args.inject_result)
+            if not isinstance(result, dict):
+                raise ValueError("unsupported_company_input")
+        except (OSError, ValueError) as error:
+            return input_failure(error)
         payload["entity_id"] = args.entity or result.get("entity_id")
         envelope = {
             "protocol": projection.PROJECTION_PROTOCOL,
@@ -107,12 +125,18 @@ def main(argv=None) -> int:
             envelope = projection.read_company_assessment(
                 config, "company_result", payload, question_receipts=receipts)
         except projection.ProjectionError as error:
+            record_operation_failure(error, "company.result", code=error.code, refusal=error.status < 500,
+                                     directory=args.out.resolve().parent, run_id=args.run_id, attempt_id=args.attempt_id,
+                                     sidecar=args.out)
             print(json.dumps({"ok": False, "code": error.code, "status": error.status}))
             return 2
 
     try:
         projected = projection.project_result(envelope, question_receipts=receipts)
     except projection.ProjectionError as error:
+        record_operation_failure(error, "company.projection", code=error.code, refusal=error.status < 500,
+                                 directory=args.out.resolve().parent, run_id=args.run_id, attempt_id=args.attempt_id,
+                                 sidecar=args.out)
         print(json.dumps({"ok": False, "code": error.code, "status": error.status}))
         return 2
     rows = feedback.observations(projected, read="result", receipts=receipts,

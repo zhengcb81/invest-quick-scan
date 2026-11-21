@@ -12,6 +12,7 @@ import threading
 import time
 import uuid
 
+from ..foundation.api import operation_scope, record_operation_failure, replace_after_readers_close
 from .dashboard_locks import control_lock, ControlBusyError
 
 
@@ -48,8 +49,9 @@ def delivery_deployment_fingerprint(config, *, profile=STABLE_DEPLOYMENT_PROFILE
 
 class DeliveryJobs:
     def __init__(self, execution, state_root, deployment_sha256, deliver_scope, resolve_batch,
-                 *, fingerprint_profile=LEGACY_DEPLOYMENT_PROFILE, deployment_fingerprints=None, receiver_status=None):
+                 *, fingerprint_profile=LEGACY_DEPLOYMENT_PROFILE, deployment_fingerprints=None, receiver_status=None, diagnostic_root=None):
         self.execution,self.state_root=execution,Path(state_root)
+        self.diagnostic_root = Path(diagnostic_root or state_root)
         self.deployment_sha256,self.deliver_scope,self.resolve_batch=deployment_sha256,deliver_scope,resolve_batch
         profiles={LEGACY_DEPLOYMENT_PROFILE,PREVIOUS_DEPLOYMENT_PROFILE,STABLE_DEPLOYMENT_PROFILE}
         if fingerprint_profile not in profiles or set(deployment_fingerprints or {})-profiles:
@@ -209,11 +211,7 @@ class DeliveryJobs:
             with temporary.open('x',encoding='utf8',newline='\n') as stream:
                 stream.write(raw)
                 stream.flush();os.fsync(stream.fileno())
-            for attempt in range(8):
-                try: os.replace(temporary,path);break
-                except PermissionError:
-                    if attempt==7: raise
-                    time.sleep(.01)
+            replace_after_readers_close(temporary, path)
         finally: temporary.unlink(missing_ok=True)
 
     def submit(self,payload):
@@ -281,6 +279,9 @@ class DeliveryJobs:
                 try:
                     self._check_receiver(record)
                 except Exception as error:
+                    code = getattr(error, "code", "delivery_receiver_unavailable")
+                    record["failure_diagnostic"] = record_operation_failure(
+                        error, "delivery.receiver", code=code, run_id=job_id, directory=self.diagnostic_root)
                     for entry in record['entries']:
                         if entry['state'] != 'delivered':
                             entry.update(state='pending', error_code=getattr(error, 'code', 'delivery_receiver_unavailable'))
@@ -296,7 +297,8 @@ class DeliveryJobs:
                             raise DeliveryJobError('delivery_bundle_changed','交付输入发生变化。')
                         entry.update(state='importing')
                         self._write(path,record)
-                        outcome=self.deliver_scope(entry['bundle_id'])
+                        with operation_scope(job_id, entry["bundle_id"]):
+                            outcome = self.deliver_scope(entry["bundle_id"])
                         items=outcome.get('items',[])
                         summary={'status':outcome['status'],'package_count':len(items),
                             'delivered_packages':sum(row.get('ack_reconciliation',{}).get('status')=='delivered' for row in items),
@@ -305,18 +307,26 @@ class DeliveryJobs:
                         entry.update(state='delivered' if outcome['status']=='delivered' else 'pending',
                             outcome=summary,observed_at=_now())
                     except Exception as exc:
-                        entry.update(state='pending',error_code=getattr(exc,'code','delivery_interrupted'),observed_at=_now())
+                        code = getattr(exc, "code", "delivery_interrupted")
+                        diagnostic = record_operation_failure(
+                            exc, "delivery.scope", code=code, directory=self.diagnostic_root,
+                            run_id=job_id, attempt_id=entry["bundle_id"])
+                        entry.update(state='pending', error_code=code, observed_at=_now(), failure_diagnostic=diagnostic)
                     self._write(path,record)
                 record.update(state='completed' if all(row['state']=='delivered' for row in record['entries']) else 'partial',finished_at=_now())
                 self._write(path,record)
-        except (ControlBusyError,OSError,DeliveryJobError):
-            pass  # Durable running/importing becomes an explicit resume reference.
+        except (ControlBusyError, OSError, DeliveryJobError) as error:
+            record_operation_failure(error, "delivery.worker", directory=self.diagnostic_root,
+                                     code=getattr(error, "code", "delivery_worker_unconfirmed"), run_id=job_id)
         finally: self._threads.pop(job_id,None)
 
     def get(self,job_id):
         record=self._read(self._path(job_id),allow_completed_history=True);thread=self._threads.get(job_id)
         if record['state']=='running' and (record['session']!=self.session or thread is None or not thread.is_alive()):
-            record['state']='needs_original_inspection'
+            record["state"] = "needs_original_inspection"
+            record["failure_diagnostic"] = record_operation_failure(
+                None, "delivery.recovery", code="worker_state_unknown", directory=self.diagnostic_root,
+                run_id=job_id, attempt_id=record["session"], disposition="unknown")
         record['allowed_actions']=['resume','abandon'] if record['state'] in {'partial','needs_original_inspection'} else []
         record['counts']={'scopes':len(record['entries']),'delivered_scopes':sum(row['state']=='delivered' for row in record['entries'])}
         record['notice']='交付只复用原封存字节与ACK；completed表示所选范围已对账，不等于全池或金融审查通过。'

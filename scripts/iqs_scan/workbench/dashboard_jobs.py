@@ -11,6 +11,7 @@ import threading
 import time
 import uuid
 
+from ..foundation.api import operation_scope, record_operation_failure, replace_after_readers_close
 from .dashboard_locks import control_lock, ControlBusyError
 
 
@@ -25,8 +26,9 @@ def _now():
 
 
 class PreparationJobs:
-    def __init__(self, preparer, state_root, on_prepared):
+    def __init__(self, preparer, state_root, on_prepared, *, diagnostic_root=None):
         self.preparer, self.state_root, self.on_prepared = preparer, Path(state_root), on_prepared
+        self.diagnostic_root = Path(diagnostic_root or state_root)
         self.session = uuid.uuid4().hex
         self._threads = {}
         self._mutex = threading.RLock()
@@ -66,13 +68,7 @@ class PreparationJobs:
             with temporary.open('x', encoding='utf8', newline='\n') as stream:
                 json.dump(record, stream, ensure_ascii=False, allow_nan=False, indent=2)
                 stream.flush(); os.fsync(stream.fileno())
-            for attempt in range(8):
-                try:
-                    os.replace(temporary, path)
-                    break
-                except PermissionError:
-                    if attempt == 7: raise
-                    time.sleep(min(.005 * 2 ** attempt, .04))
+            replace_after_readers_close(temporary, path)
         finally:
             temporary.unlink(missing_ok=True)
 
@@ -87,20 +83,21 @@ class PreparationJobs:
         if new_job:
             self.preparer.validate_selection(payload)
         try:
-            with self._mutex, control_lock(self.state_root/'jobs.lock'):
-                if path.exists():
-                    record = self._read(path)
-                    if record['preview_token'] != payload['preview_token']:
-                        raise DashboardJobError('preview_mismatch', '同一预览的确认指纹不一致。', 409)
-                    return {'attached': True, 'job': self.get(job_id), 'API_requests': 0}
-                # Attaching an existing exact job is a read, not a new apply.
-                # Only a new job needs today's preparation prerequisites.
-                if not new_job:
-                    self.preparer.validate_selection(payload)
-                record = {'protocol':'iqs.preparation_job/1.0.0', 'job_id': job_id,
-                    **payload, 'state':'preparing', 'created_at':_now(), 'session':self.session,
-                    'model_dispatch_started': False}
-                self._write(path, record)
+            with self._mutex:
+                with control_lock(self.state_root/'jobs.lock'):
+                    if path.exists():
+                        record = self._read(path)
+                        if record['preview_token'] != payload['preview_token']:
+                            raise DashboardJobError('preview_mismatch', '同一预览的确认指纹不一致。', 409)
+                        return {'attached': True, 'job': self.get(job_id), 'API_requests': 0}
+                    # Attaching an existing exact job is a read, not a new apply.
+                    # Only a new job needs today's preparation prerequisites.
+                    if not new_job:
+                        self.preparer.validate_selection(payload)
+                    record = {'protocol':'iqs.preparation_job/1.0.0', 'job_id': job_id,
+                        **payload, 'state':'preparing', 'created_at':_now(), 'session':self.session,
+                        'model_dispatch_started': False}
+                    self._write(path, record)
                 thread = threading.Thread(target=self._run, args=(path, record, dict(payload)), daemon=True)
                 self._threads[job_id] = thread
                 thread.start()
@@ -126,21 +123,30 @@ class PreparationJobs:
                 record['registration'] = self.on_prepared(result)
                 record['state'] = 'registered'
             except Exception as exc:
-                record.update(state='registration_pending', registration_error=getattr(exc, 'code', 'registration_failed'))
+                code = getattr(exc, 'code', 'registration_failed')
+                record.update(state='registration_pending', registration_error=code,
+                              failure_diagnostic=self._diagnose(exc, record, "prepare.register", code))
             self._write(self._path(record['job_id']), record)
+
+    def _diagnose(self, error, record, stage, code):
+        return record_operation_failure(error, stage, directory=self.diagnostic_root,
+                                        code=code, run_id=record["job_id"], attempt_id=record["session"],
+                                        disposition="unknown" if code == "worker_state_unknown" else "deviation")
 
     def _run(self, path, record, payload):
         try:
-            result = self.preparer.apply(payload)
-            self._register(record, result)
+            with operation_scope(record["job_id"], record["session"]):
+                result = self.preparer.apply(payload)
+                self._register(record, result)
         except Exception as exc:
             for attempt in range(8):
                 try:
                     with control_lock(self.state_root/'jobs.lock'):
                         current = self._read(path)
                         if current.get('state') == 'abandoned': return
+                        code = getattr(exc, "code", "preparation_interrupted")
                         current.update(state='needs_original_inspection', finished_at=_now(),
-                            error_code=getattr(exc, 'code', 'preparation_interrupted'),
+                            error_code=code, failure_diagnostic=self._diagnose(exc, current, "prepare.apply", code),
                             message='未自动重试；先核对原准备记录，再明确处理。')
                         self._write(path,current)
                     break
@@ -152,18 +158,23 @@ class PreparationJobs:
                 self._threads.pop(record['job_id'], None)
 
     def get(self, job_id):
-        record = self._read(self._path(job_id))
-        thread=self._threads.get(job_id)
-        if record['state'] in {'preparing','registration_in_progress'} and (
-                record['session'] != self.session or thread is None or not thread.is_alive()):
-            record.update(state='needs_original_inspection', message='服务已重启，未自动重做准备。')
+        with self._mutex:
+            record = self._read(self._path(job_id))
+            thread = self._threads.get(job_id)
+            detached = record['session'] != self.session or thread is None or not thread.is_alive()
+        if record['state'] in {'preparing', 'registration_in_progress'} and detached:
+            diagnostic = self._diagnose(None, record, "prepare.recovery", "worker_state_unknown")
+            record.update(state='needs_original_inspection', message='服务已重启，未自动重做准备。',
+                          failure_diagnostic=diagnostic)
         record['allowed_actions'] = (['reconcile', 'abandon'] if record['state'] in {
             'needs_original_inspection', 'owner_prepared', 'registration_pending'} else [])
         if record['state'] in {'preparing','needs_original_inspection'} and hasattr(self.preparer,'preparation'):
             try:
                 record['original_preparation']=self.preparer.preparation(record['preview_id'])
             except Exception as exc:
-                record['phase_read_error']=getattr(exc,'code','preparation_phase_unavailable')
+                code = getattr(exc, 'code', 'preparation_phase_unavailable')
+                record.update(phase_read_error=code,
+                              phase_diagnostic=self._diagnose(exc, record, 'prepare.phase.read', code))
         return record
 
     def list(self):

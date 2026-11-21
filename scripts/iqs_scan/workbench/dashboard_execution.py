@@ -21,11 +21,12 @@ from datetime import datetime, timezone
 from contextlib import contextmanager
 import uuid
 
+from ..foundation.api import replace_after_readers_close
 from .dashboard_locks import control_lock, ControlBusyError
 
 
 from .dashboard_errors import DashboardExecutionError
-from .dashboard_json import decode_owner_json
+from .dashboard_json import decode_owner_json, owner_refusal
 
 
 def _now():
@@ -151,7 +152,7 @@ def _write(path, value):
             stream.write("\n")
             stream.flush()
             os.fsync(stream.fileno())
-        os.replace(temporary, path)
+        replace_after_readers_close(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
 
@@ -319,16 +320,25 @@ class ExecutionGateway:
         return env
 
     def _call(self, command, root, runtime, *, input_value=None):
+        from ..foundation.api import record_operation_failure
         try:
             result = subprocess.run(command, cwd=runtime, env=self._environment(root),
                 input=json.dumps(input_value) if input_value is not None else None,
                 capture_output=True, text=True, encoding="utf-8", timeout=130,
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-            output = decode_owner_json(result.stdout)
-        except (OSError, subprocess.TimeoutExpired, ValueError):
-            raise DashboardExecutionError("owner_transport_unavailable", "原执行器暂不可用；未重发模型请求", 503) from None
+            owner_code = owner_refusal(result.stderr) if result.returncode and not result.stdout.strip() else None
+            output = {"error_code": owner_code} if owner_code else decode_owner_json(result.stdout)
+        except (OSError, subprocess.TimeoutExpired, ValueError) as error:
+            diagnostic = record_operation_failure(error, "execution.owner", directory=self.state_root,
+                                                  code="owner_transport_unavailable")
+            raise DashboardExecutionError("owner_transport_unavailable", "原执行器暂不可用；未重发模型请求",
+                                          503, {"failure_diagnostic": diagnostic}) from error
         if result.returncode or not isinstance(output, dict) or output.get("API_requests") != 0:
-            raise DashboardExecutionError(output.get("error_code", "owner_inspection_rejected") if isinstance(output, dict) else "owner_inspection_rejected", "原执行器拒绝请求；未发出模型调用", 409)
+            code = output.get("error_code", "owner_inspection_rejected") if isinstance(output, dict) else "owner_inspection_rejected"
+            diagnostic = record_operation_failure(None, "execution.owner", directory=self.state_root,
+                                                  code=code, refusal=True)
+            raise DashboardExecutionError(code, "原执行器拒绝请求；未发出模型调用", 409,
+                                          {"failure_diagnostic": diagnostic})
         return output
 
     def status(self):
@@ -882,10 +892,15 @@ class ExecutionGateway:
                         env=self._environment(root, paid=True), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                         text=True, encoding="utf-8", errors="replace",
                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-                except OSError:
-                    record.update(process_state="launch_failed", finished_at=_now(), exit_code=None)
+                except OSError as exc:
+                    from ..foundation.api import record_operation_failure
+                    diagnostic = record_operation_failure(exc, "execution.launch", code="launch_failed",
+                                                          directory=self.state_root, run_id=run_id)
+                    record.update(process_state="launch_failed", finished_at=_now(), exit_code=None,
+                                  failure_diagnostic=diagnostic)
                     _write(path, record)
-                    raise DashboardExecutionError("launch_failed", "本机无法启动原执行器；请检查部署", 503, prelaunch_not_started=True) from None
+                    raise DashboardExecutionError("launch_failed", "本机无法启动原执行器；请检查部署", 503,
+                        {"failure_diagnostic": diagnostic}, prelaunch_not_started=True) from exc
                 record.update(process_state="running", pid=process.pid)
                 self._processes[run_id] = process
                 try:
@@ -896,19 +911,59 @@ class ExecutionGateway:
 
     def _finish(self, process, path, record):
         secret_values = [value for key, value in os.environ.items() if re.search(r"KEY|TOKEN|SECRET|PASSWORD", key, re.I) and len(value) >= 8]
-        written = 0
+        from ..foundation.api import record_operation_failure
+
+        def note(error, stage, code):
+            return record_operation_failure(error, stage, code=code, directory=self.state_root,
+                                            run_id=record["run_id"], attempt_id=str(record.get("launch_attempt", 1)))
+
+        def log_failed(error):
+            if not record.get("log_tracking_incomplete"):
+                record["log_tracking_incomplete"] = True
+                record["log_diagnostic"] = note(error, "execution.process-log", "process_log_unavailable")
+
+        log = None
+        preview_remaining = 1024 * 1024
         try:
-            with Path(record["log_path"]).open("w", encoding="utf-8") as log:
+            try:
+                log = Path(record["log_path"]).open("w", encoding="utf-8")
+            except (OSError, ValueError) as error:
+                log_failed(error)
+            try:
                 for line in process.stdout:
+                    if log is None or record.get("log_tracking_incomplete"):
+                        continue
                     for secret in secret_values:
                         line = line.replace(secret, "[REDACTED]")
                     line = re.sub(r"(?i)(?:sk-|Bearer\s+)[A-Za-z0-9_.-]{12,}", "[REDACTED]", line)
-                    if written < 1024 * 1024:
-                        safe = line[:1024 * 1024 - written]
+                    if len(line) > preview_remaining:
+                        record["process_log_preview_truncated"] = True
+                    if not preview_remaining:
+                        continue
+                    safe = line[:preview_remaining]
+                    try:
                         log.write(safe)
                         log.flush()
-                        written += len(safe)
+                        preview_remaining -= len(safe)
+                    except (OSError, ValueError) as error:
+                        log_failed(error)
+            except (OSError, ValueError) as error:
+                # A broken stdout reader must not skip child reaping. Closing
+                # the broken pipe also releases a child still writing to it.
+                log_failed(error)
+                try:
+                    process.stdout.close()
+                except (OSError, ValueError, AttributeError):
+                    pass
+            finally:
+                if log is not None:
+                    try:
+                        log.close()
+                    except (OSError, ValueError) as error:
+                        log_failed(error)
             exit_code = process.wait()
+            if exit_code:
+                record["failure_diagnostic"] = note(None, "execution.process", "child_exit_nonzero")
             record.update(process_state="process_exited", finished_at=_now(), exit_code=exit_code,
                           work_completion_authoritative=False,
                           completion_notice="进程退出不代表已评分、已导入或金融结论已通过；请读取原owner状态")
@@ -931,8 +986,9 @@ class ExecutionGateway:
                                 f'{scope["original_question_count"]}，待问{len(remaining)}；继续扫描时重新检查原owner，恢复操作未发新请求。')
                 except (OSError, ValueError, TypeError, AttributeError):
                     pass  # An absent display sidecar never hides original ledger progress.
-        except Exception:
-            record.update(process_state="needs_original_inspection", finished_at=_now())
+        except Exception as error:
+            record.update(process_state="needs_original_inspection", finished_at=_now(),
+                          failure_diagnostic=note(error, "execution.observe", "process_state_unknown"))
         finally:
             with self._lock:
                 try:

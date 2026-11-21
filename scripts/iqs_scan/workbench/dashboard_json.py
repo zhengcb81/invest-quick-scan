@@ -2,6 +2,22 @@
 
 import json
 import math
+import re
+
+
+def owner_refusal(stream):
+    """Only consume the validated error code from an owner's single JSON reply."""
+    try:
+        payload = decode_owner_json(stream)
+    except (TypeError, ValueError, UnicodeError, RecursionError):
+        return None
+    if not isinstance(payload, dict):
+        return None
+    body = payload.get("error")
+    if not isinstance(body, dict):
+        body = payload
+    code = body.get("error_code") or body.get("code")
+    return code if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code) else None
 
 
 def _unique_object(pairs):

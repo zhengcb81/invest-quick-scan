@@ -9,59 +9,30 @@ from .feedback_io import (
     diagnose_feedback,
     feedback_path,
 )
-from .json_io import (
-    read_json,
-    write_json,
+from .json_io import replace_after_readers_close
+from .runtime_feedback import (
+    RuntimeArgumentParser,
+    exception_diagnostic,
+    operation_scope,
+    read_operation_failure,
+    record_operation_failure,
 )
-from .module_contract import (
-    ROUTE_SCHEMA,
-    canonical_bytes,
-    digest as module_digest,
-    core_construct_ids,
-    parse_version,
-    question_definition_sha256,
-    seal_release,
-    seal_route_decision,
-    unique_json_object,
-    validate_module,
-    validate_registry,
-    validate_release,
-    validate_route_decision,
-    validate_schema,
-    validate_upgrade,
-)
-from .contract_validation import (
-    JsonSchemaValidationError,
-    identity_schema_for_wire_profile,
-    validate_analysis_subject,
-    validate_entity,
-    validate_parsed_answer,
-    validate_work_item,
-)
-from .observation_profiles import (
-    schema_for as observation_schema_for,
-    profile_descriptor,
-    validate_profile_descriptor,
-)
-from .exchange_contract import (
-    canonical_sha256 as exchange_sha256,
-    independent_support,
-    validate_package_integrity,
-)
-from .search_receipt import (
-    canonical_sha256 as search_receipt_sha256,
-    utc_now as search_receipt_utc_now,
-    from_response as build_search_receipt,
-    validate as validate_search_receipt,
-)
-from .work_contract import (
-    parse_utc,
-    freshness_status,
-)
-from .metric_coordinates import (
-    metric_coordinate,
-    validate_metric_coordinates,
-)
+
+
+def __getattr__(name):
+    # Diagnostics must still work when a registry, schema file or optional
+    # schema dependency is the part of the installation that failed.
+    if name not in __all__:
+        raise AttributeError(name)
+    from . import _domain_exports
+    value = getattr(_domain_exports, name)
+    globals()[name] = value
+    return value
+
+
+def __dir__():
+    return sorted(set(globals()) | set(__all__))
+
 
 API_PROTOCOL = "iqs.foundation-api/1.0.0"
 
@@ -71,11 +42,16 @@ __all__ = (
     "FEEDBACK_OUT_ENV",
     "FEEDBACK_RUN_ENV",
     "FEEDBACK_SCHEMA",
+    "RuntimeArgumentParser",
     "JsonSchemaValidationError",
     "ROUTE_SCHEMA",
     "append_feedback",
     "diagnose_feedback",
     "feedback_path",
+    "exception_diagnostic",
+    "operation_scope",
+    "read_operation_failure",
+    "record_operation_failure",
     "build_search_receipt",
     "canonical_bytes",
     "core_construct_ids",
@@ -91,6 +67,7 @@ __all__ = (
     "profile_descriptor",
     "question_definition_sha256",
     "read_json",
+    "replace_after_readers_close",
     "seal_release",
     "seal_route_decision",
     "search_receipt_sha256",

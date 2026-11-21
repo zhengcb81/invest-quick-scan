@@ -304,7 +304,7 @@ class DashboardService:
             from .dashboard_jobs import PreparationJobs
             frozen = {k:v for k,v in self.config.items() if k not in {'execution_bundles','import_bundles'}}
             self._jobs = PreparationJobs(self._preparer(), Path(self.config['state_root'])/'preparation-jobs',
-                lambda result: self._register_prepared(result, frozen))
+                lambda result: self._register_prepared(result, frozen), diagnostic_root=self.config["state_root"])
         return self._jobs
 
     def _delivery_jobs(self):
@@ -317,7 +317,7 @@ class DashboardService:
             self._delivery=DeliveryJobs(self._gateway('execution'),Path(self.config['state_root'])/'delivery-jobs',digest,
                 self._deliver_scope,self._delivery_batch,
                 fingerprint_profile=STABLE_DEPLOYMENT_PROFILE,deployment_fingerprints=previous,
-                receiver_status=self._gateway('owner').status)
+                receiver_status=self._gateway('owner').status, diagnostic_root=self.config["state_root"])
         return self._delivery
 
     def _delivery_batch(self, batch_id):
@@ -376,12 +376,13 @@ class DashboardService:
                         if set(mapping.values()) <= done:
                             outcomes.append({'package_id':package_id,'status':'already_present',
                                 'ack_reconciliation':result})
-                    except Exception:
+                    except Exception as exc:
+                        self._record_partial_failure(exc, 'delivery.ack.lookup')
                         # Missing/unusable ACKs retain the established import
                         # path; a successful sibling ACK is already durable.
                         continue
-            except Exception:
-                pass
+            except Exception as exc:
+                self._record_partial_failure(exc, 'delivery.receivers.lookup')
         if original and all(row['work_item_id'] in recovered for row in original):
             return {'status':'delivered','items':outcomes,'referenced_question_ids':referenced,
                 'API_requests':0,'financial_accuracy_proven':False}
@@ -389,7 +390,8 @@ class DashboardService:
             exported=execution.export_delivery({'bundle_id':bundle_id})
         except Exception as exc:
             if not recovered: raise
-            outcomes.append({'status':'pending','error_code':getattr(exc,'code','delivery_interrupted')})
+            outcomes.append({'status':'pending','error_code':getattr(exc,'code','delivery_interrupted'),
+                             'failure_diagnostic': self._record_partial_failure(exc, 'delivery.export')})
             return {'status':'partial','items':outcomes,'referenced_question_ids':referenced,
                 'API_requests':0,'financial_accuracy_proven':False}
         for name,bundle in exported['import_bundles'].items():
@@ -403,7 +405,8 @@ class DashboardService:
                     'package_id':result.get('receipt',{}).get('package_id'),
                     'ack_reconciliation':result.get('ack_reconciliation')})
             except Exception as exc:
-                outcomes.append({'bundle_id':name,'status':'pending','error_code':getattr(exc,'code','delivery_interrupted')})
+                outcomes.append({'bundle_id':name,'status':'pending','error_code':getattr(exc,'code','delivery_interrupted'),
+                                 'failure_diagnostic': self._record_partial_failure(exc, 'delivery.import')})
         referenced=exported.get('referenced_question_ids',[])
         reference_only=(bool(referenced) and not exported['import_bundles']
             and len(exported['items'])==len(referenced)
@@ -544,7 +547,8 @@ class DashboardService:
             state = 'unreadable'
             try:
                 history = self._gateway('owner').history(entity_id)
-            except Exception:
+            except Exception as exc:
+                self._record_partial_failure(exc, 'company.history')
                 # An unreadable owner is NOT "no observations"; the state stays
                 # `unreadable` so the count is never mistaken for a real zero.
                 history = None
@@ -656,17 +660,26 @@ class DashboardService:
                     result['ack_reconciliation']=execution.acknowledge_delivery(bundle,result['receipt'])
                 except Exception as exc:
                     result['ack_reconciliation']={'status':'pending','error_code':getattr(exc,'code','ack_reconciliation_failed'),
+                        'failure_diagnostic': self._record_partial_failure(exc, 'delivery.ack.apply'),
                         'notice':'StockWiki已产生回执；原StockQA未确认，重试会复用原回执。'}
             else:
                 result['ack_reconciliation']={'status':'not_configured','notice':'没有原StockQA账本映射，不能宣称执行器delivered。'}
         return result
+
+    def _record_partial_failure(self, error, stage):
+        from ..foundation.api import record_operation_failure
+
+        failure = record_operation_failure(error, stage, code=getattr(error, "code", "owner_unavailable"),
+                                           directory=self.config["state_root"])
+        return {"recorded": failure["recorded"], "details_ref": failure.get("details_ref")}
 
     def _safe_status(self, kind):
         try:
             return self._gateway(kind).status()
         except Exception as exc:
             return {'available': False, 'blocked_reasons': [getattr(exc, 'code', 'owner_unavailable')],
-                    'message': str(exc)[:500]}
+                    'failure_diagnostic': self._record_partial_failure(exc, 'status.' + kind),
+                    'message': '组件状态暂不可用。'}
 
     def _request_view(self, target):
         """Capture one deployment and its existing adapters before slow I/O.
@@ -727,6 +740,11 @@ class DashboardService:
         self._save_config(config, inactive_checked=True)
         return self._setup()
 
+    def record_transport_refusal(self, code):
+        from ..foundation.api import record_operation_failure
+        return record_operation_failure(None, "http.transport", code=code, refusal=True,
+                                        directory=self.config["state_root"])
+
     def dispatch(self, method, target, body=None):
         """Return an HTTP status and JSON envelope; authentication is transport-owned."""
         started = time.monotonic()
@@ -750,11 +768,19 @@ class DashboardService:
                 result = view._dispatch(method, target, body)
             return 200, {'ok': True, 'data': redact(result), 'elapsed_ms': round((time.monotonic()-started)*1000)}
         except Exception as exc:
-            known = isinstance(exc, ProductError) or hasattr(exc, 'code')
-            return getattr(exc, 'status', 500) if known else 500, {'ok': False, 'error': {
-                'code': getattr(exc, 'code', 'internal_error'),
-                'message': str(exc)[:500] if known else '本地组件处理失败，请检查doctor与组件状态。',
-                'details': redact(getattr(exc, 'details', {}))}}
+            from ..foundation.api import record_operation_failure
+            known = isinstance(exc, ProductError) or hasattr(exc, "code")
+            status = getattr(exc, "status", 500) if known else 500
+            code = getattr(exc, "code", "internal_error")
+            details = dict(getattr(exc, "details", {}) or {})
+            source = details.get("failure_diagnostic")
+            if not isinstance(source, dict) or not source.get("recorded"):
+                source = record_operation_failure(exc, "http.request", code=code, refusal=status < 500,
+                                                  directory=self.config["state_root"])
+            details["failure_diagnostic"] = {"recorded": source["recorded"], "details_ref": source.get("details_ref")}
+            return status, {"ok": False, "error": {
+                "code": code, "message": str(exc)[:500] if known else "本地组件处理失败，请检查doctor与组件状态。",
+                "details": redact(details)}}
         finally:
             if registered:
                 with self._lock:
