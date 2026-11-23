@@ -1,5 +1,21 @@
 # 当前进度与阶段证据
 
+## 2026-11-23 产品恢复入口已交付
+
+IQS源码 `b845b1fca198c71553433fb58a3d98bbdf89da66` 已正常提交、推送既有origin并核对同SHA。仅执行网关和既有测试文件两条路径；未纳入F4或其他writer的改动。11-23核对源码/测试与上次非作者最终评审内容一致，复用已有验证，不重跑未变全套。
+
+原整文件17失败的4组共因已一次修复：原引用与当前收费快照分开；pending参数先验证，paid/纯附着不处理无关参数；原引用存在时不生成缺失证明；同题pending→paid按最终快照选恢复。作者原17失败与必要边界 **34 passed/23.59秒**；非作者最小尾组 **9 passed/9.72秒，ACCEPT**，并独立确认核查期间真实收费参数变更仍阻止新进程、当前权限只检查一次。原158通过项未重复；计数不相加。测试TEMP清理，0API/生产库。
+
+11-23从原公开产品服务完成真实纯附着：本线程配置副本仅改变未来pack/tokens/thinking且未来spend文件不存在，仍attached同一`run-5305efa0a466482fa2a187ed2b37699e`；process_started=false，原launch次数及任务数不变，未新启模型。原部署配置/服务/名单未改，摘要在本机`runs/amec-rescore-20261121/gate-original-attachment-summary.json`。11-21已付10题零API冷恢复正例仍保留；本轮没有新18题回答或新快照/UI验收，不冒称主线全完成。
+
+StockQA三份模块PWF已对齐上述状态；同步时保留其远端已发布F4全部提交，最终并线/推送`e64c3e5f684c3cacce45b4a7c7ebe45af7b50c0b`，原钩子通过，临时树删除。没有重做或代签F4。过程中宿主Git空环境值与两个纯行尾标脏的问题只在提交执行环境/checkout表示上修复，没有新增项目门禁或丢弃源码改动。
+
+## 2026-11-21 IQS产品入口：同一次整域回归的历史失败
+
+两文件候选统一本地原任务引用、全paid恢复与pending收费职责；新短组20 passed/17.40秒。非作者去除他线lease hunk后，一次完整`tests/test_dashboard_execution.py`实跑158 passed/17 failed/104.00秒，测试TEMP已清、0API/生产库。未将短组绿冒称完整交付。
+
+17个失败集中为4组：只读分类旧fixture/spy缺字段；收费参数在操作分类前被全配置指纹序列化（含非法lease的inf/nan）；原引用缺失证明在查已有ref之前就验证完整registration；首次pending、最终同题paid的真实状态变化后仍沿用旧收费模式。这4组后续按共同职责一次修复并在34项及非作者9项通过，结项见11-23段；scope与真正新费用校验保留，不做NaN特判或弱化reader。原158通过项不重复，也未另开逐例审查或其他模块支线。详情和准确selectors见[报告](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。
+
 ## 2026-11-21 已发布并实跑零API冷恢复
 
 StockQA `ca7900d249b8a5f1d9b5fa891b92028c773a9a9d`（12文件）正常钩子提交并推送原origin同SHA。首次isort只调整测试导入顺序，正常重提全部原钩子通过；无跳过。发布在干净临时树完成，接回原分支只更新HEAD/index并逐文件核对工作树字节不变；其他harness的F4/业务hunk仍原地未纳入，临时发布树已删除。

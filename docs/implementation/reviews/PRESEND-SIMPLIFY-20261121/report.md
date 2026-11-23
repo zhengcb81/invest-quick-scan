@@ -87,3 +87,30 @@ StockQA `ca7900d249b8a5f1d9b5fa891b92028c773a9a9d`正常原钩子提交并推送
 本次第一次复验另有明确的**操作环境失败**：默认受限shell下外仓CLI的read_request→strict_json_loads→包eager imports→logger FileHandler._open抛PermissionError，fallback先变`owner_confirmation_permissions_rejected`、再变`seal_permissions_blocked`。同一公开service直接调用通过，正确原授权环境seal也通过；0收费，未删除seal任何校验。安全类型/代码位置trace留本机`gate-paid-permissions-cli-trace.json`，不记录异常全文/密钥。此cause只解释本次复验，不能倒推13:09历史原因；F4另harness处理错误揭示和日志副作用。
 
 另有源码确认的相邻职责耦合仍在本组TDD收口：普通preview/start/resume对全paid scope仍要求new-send权限/配置。应复用既有paid恢复命令、环境和原record输入，混合pending继续原新派发与收费intent校验；不靠清空错误、改标签或绕原paid证据解决。
+
+## 产品入口同一次整域回归（历史失败，后续已收口）
+
+本组仅修改现执行网关与既有测试文件。统一原引用后，新20个定向case通过17.40秒；独审又以同一原record+future账本复现普通preview漏用原context，已统一默认preview，显式原run仍优先。随后在内存中仅去除他线lease hunk、其余包与资源ROOT不变，完整`tests/test_dashboard_execution.py`一次实跑**158 passed / 17 failed / 104.00秒**。新case均绿，TEMP清理，无API或生产库读写；失败不归给他线hunk，也不掩成通过。
+
+|共因|原失败selectors/范围|本节点收敛方式|
+|---|---|---|
+|旧fixture未表达原scope或只读模式|`test_stalled_owner_preview_does_not_block_another_registered_start`；`test_start_uses_latest_allowed_work_instead_of_requiring_old_snapshot_equality`；`test_optional_preview_cannot_bypass_current_native_refusal[budget/unknown_work]`；`test_budget_block_is_not_zero_success`|对齐既有reader要求的question_ids/readonly标记；原拒绝含义及0付费worker断言保留|
+|操作分类与收费参数指纹时机|`test_invalid_work_lease_never_reaches_native_launch`10参数；其中inf/nan在分类前被全配置hash抛ValueError|原引用/paid材料不序列化无关未来controls；确认pending后验证实际收费参数再构本次快照。不是NaN特判或放宽JSON|
+|缺失证明与原引用职责顺序|`test_explicit_legacy_prelaunch_uses_original_namespace_scope_and_current_native_guard[prior_ref]`|有任何原ref就不能证明缺失，应先返回None；不必把极小旧ref当可附着记录审查后再报错|
+|最终原owner状态选择效果|`test_native_keyed_work_items_and_g2b_envelope_do_not_require_fixture_flat_shape`|先统一fixture同一题IQS_05，验证合法pending→paid后按最终原work快照选择恢复，不沿用旧False、不绕不同题scope|
+
+这4组由同一作者一次收口，只复查原17失败和必要新边界，同一非作者作有限尾验，未重跑已通过158项或扩其他领域。当时未签收，最终结论以下节为准。
+
+## 2026-11-23 最终交付与实物复验
+
+两文件源码提交 `b845b1fca198c71553433fb58a3d98bbdf89da66` 已推送既有origin并核对同SHA。11-23接续前核对当前源码/测试字节与先前已审的最终版本一致；他线lease hunk已不在当前树，本线程没有替对方回滚或签收其工作。
+
+最终设计使用现有字段：公开原引用与paid材料指纹只投影既有恢复字段；pending确认后才验证收费controls、生成本次执行快照。类内同一preflight先分类再快照，原权限检查一次，核查期间真正收费输入变化仍阻止新进程。最终原owner同题状态变化重新选择paid效果；原ref存在时不生成“缺失”证明。没有NaN特判、额外协议/存储或新门禁。
+
+验证结果：作者只复查原17失败及必要边界，**34 passed/23.59秒**；同一非作者有限尾组 **9 passed/9.72秒，ACCEPT，无本范围未修P1/P2**，并独立验证权限核查期间max_output_tokens变化不会被公开原引用掩盖，仍阻止新Popen，当前权限仅1次。原158通过项不重复；这些重叠计数不相加，也不声称最终源码重跑了整文件。全部测试独占TEMP已清，0API/生产库。
+
+11-23再用原公开产品服务验证真实纯附着：只在本线程独立配置副本改变future pack/tokens/thinking并指向不存在的future spend文件，start仍返回attached同一原run，process_started=false，launch次数及任务数不变。原部署、原账本和原答未修改，未启动模型。摘要留本机`runs/amec-rescore-20261121/gate-original-attachment-summary.json`；它是操作事实记录，不是后续扫描准入凭证。
+
+门禁/设计本组结项。原10题已付恢复和此次纯附着均通过；剩余18题、新完整快照和UI未在本次完成。13:09原故障深层cause仍未知，不以本次成功或后来的sandbox日志错误倒推。F4及另一个harness的三家公司仍按既定分工继续。
+
+StockQA模块三份PWF已同步。文档提交首次遇宿主Windows嵌套Git丢失空配置值，原样保留全部注入配置并改用本次命令内的参数传递后，原钩子全部通过；未修改全局设置或skip检查。推送时发现远端已有另一harness发布的F4提交e95befd，保留其全部内容并只合并本次三段计划更新，最终以`e64c3e5f684c3cacce45b4a7c7ebe45af7b50c0b`正常推送核对。主工作树只做快进；两个仅行尾标脏文件先验证内容等于HEAD，再恢复Git本身checkout表示，未丢弃语义WIP。临时文档工作树已删。这是已有发布内容与PWF的整合，不是本线程重做或代签F4质量。
