@@ -301,14 +301,16 @@ class ExecutionGateway:
             missing.append('shared_company_config')
         return root, runtime, admission, sorted(set(missing))
 
-    def _fingerprint(self, bundle):
+    def _fingerprint(self, bundle, *, execution=False):
+        if not execution:
+            bundle = {key: bundle[key] for key in _RECOVERY_FIELDS if key in bundle}
         inputs = {}
         for name in ("questions", "manifest", "identity_snapshot", "c06_authority", "owner_config", "admission_config", "spend_authorization", "inspection_request", "search_policy", "shared_company_config"):
             if name in bundle:
                 try:
                     raw = Path(bundle[name]).read_bytes()
                     inputs[name] = hashlib.sha256(raw).hexdigest()
-                except OSError:
+                except (OSError, TypeError):
                     inputs[name] = "unavailable"
         return _digest({"registration": bundle, "input_bytes": inputs})
 
@@ -365,17 +367,34 @@ class ExecutionGateway:
                              "pause": True, "resume": True, "pause_scope": "company_boundary", "automatic_pool_dispatch": False},
                 "task_state_owner": "StockQAbyLLM", "API_requests": 0}
 
+    def _registration_context(self, bundle_id):
+        """An existing task keeps its local reference and original input locations."""
+        key, bundle = self._select({'bundle_id': bundle_id}, recovery=True)
+        prior = [row for row in self._records() if row['bundle_id'] == key]
+        record = prior[-1] if prior else None
+        if record is not None:
+            if record.get('reference_error'):
+                raise DashboardExecutionError('process_reference_corrupt', '该公司的启动引用损坏；请核对原任务。', 409)
+            original = record.get('recovery_inputs')
+            if (record.get('entity_id') != bundle['entity_id']
+                or isinstance(original, dict) and original.get('security_scope_id') != bundle.get('security_scope_id')):
+                raise DashboardExecutionError('bundle_changed', '原任务与当前选择的身份或范围不一致。', 409)
+            bundle = self._recovery_bundle(record, bundle)
+        return key, bundle, record
+
     def bundle_registration(self, bundle_id):
         """Read immutable local inputs without spawning an owner inspection."""
-        key, bundle = self._select({"bundle_id": bundle_id})
+        key, bundle, record = self._registration_context(bundle_id)
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
         return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"),
-                "bundle_fingerprint": self._fingerprint(bundle), "API_requests": 0}
+                "bundle_fingerprint": record['bundle_fingerprint'] if record is not None else self._fingerprint(bundle), "API_requests": 0}
 
     def resolve_job_bundle(self, *, bundle_id, entity_id, listing_id, analysis_subject_id, as_of):
         """Resolve only registered launch inputs and prove any explicit scope."""
-        key, bundle = self._select({"bundle_id": bundle_id, "entity_id": entity_id}, launching=True)
-        fingerprint = self._fingerprint(bundle)
+        key, _ = self._select({"bundle_id": bundle_id, "entity_id": entity_id}, launching=True, recovery=True)
+        key, bundle, record = self._registration_context(key)
+        observed = self._fingerprint(bundle)
+        fingerprint = record['bundle_fingerprint'] if record is not None else observed
         try:
             if analysis_subject_id is not None:
                 subject_key = _read(bundle["owner_config"])["subject_key"]
@@ -406,7 +425,7 @@ class ExecutionGateway:
             raise
         except (OSError, ValueError, TypeError, AttributeError, KeyError):
             raise DashboardExecutionError("bundle_scope_unverifiable", "无法核实登记执行包的原始范围。", 409) from None
-        if fingerprint != self._fingerprint(bundle):
+        if observed != self._fingerprint(bundle):
             raise DashboardExecutionError("bundle_changed", "核实过程中登记执行包有变化。", 409)
         return {"bundle_id": key, "entity_id": entity_id, "bundle_fingerprint": fingerprint}
 
@@ -570,22 +589,35 @@ class ExecutionGateway:
 
     @operation_scope()
     def preview(self, payload, *, read_only=False, check_permissions=True, _record=None):
-        key, bundle = self._select(payload, recovery=read_only)
-        if read_only and _record is not None:
-            bundle = self._recovery_bundle(_record, bundle)
-        fingerprint = (_record.get('bundle_fingerprint') if isinstance(_record, dict) else None) if read_only else self._fingerprint(bundle)
+        key, registered = self._select(payload, recovery=True)
+        if _record is None:
+            key, bundle, _record = self._registration_context(key)
+        else:
+            bundle = self._recovery_bundle(_record, registered)
+        fingerprint = _record.get('bundle_fingerprint') if isinstance(_record, dict) else None
         grouping = {name: bundle[name] for name in ('company_preparation_id', 'scope', 'scope_id', 'security_id', 'expected_scope_bindings') if name in bundle}
-        root, runtime, admission, missing = self._deployment(bundle, recovery=read_only, inspect_only=read_only)
+        root, runtime, admission, missing = self._deployment(bundle, recovery=True, inspect_only=True)
+        readonly = False
+        if not missing:
+            inspection = self._read_work_scope(bundle, root, runtime)
+            work = self.inspection_work_items(inspection)
+            readonly = bool(work) and all(row.get('status') in {'result_ready', 'delivered'} for row in work)
+            if not read_only:
+                root, runtime, admission, missing = self._deployment(bundle, recovery=readonly)
+                if not missing and not readonly:
+                    inspection = self._inspect_work(bundle, root, runtime, admission)
+                    work = self.inspection_work_items(inspection)
+                    readonly = bool(work) and all(row.get('status') in {'result_ready', 'delivered'} for row in work)
         if missing:
             return {**grouping, "bundle_id": key, "entity_id": bundle.get("entity_id"), "status": "blocked", "missing": missing,
                     "bundle_fingerprint": fingerprint,
-                    "blocked_reasons": missing, "preview_id": None, "can_start": False, "API_requests": 0}
-        inspection = (self._read_work_scope(bundle, root, runtime) if read_only
-                      else self._inspect_work(bundle, root, runtime, admission))
+                    "blocked_reasons": missing, "preview_id": None, "can_start": False, "API_requests": 0,
+                    "readonly_recovery": readonly}
+        if fingerprint is None:
+            fingerprint = self._fingerprint(bundle)
         quote = inspection.get("quote", {})
         work = self.inspection_work_items(inspection)
         unknown = any(row.get("status") in {"uncertain", "leased"} for row in work)
-        readonly = bool(work) and all(row.get("status") in {"result_ready", "delivered"} for row in work)
         if read_only:
             return {**grouping, "bundle_id": key, "entity_id": bundle['entity_id'], "status": "inspected",
                     "bundle_fingerprint": fingerprint, "preview_id": None,
@@ -596,7 +628,7 @@ class ExecutionGateway:
                     "notice": "仅查看原工作状态；未检查派发权限，也未预留费用。真正启动或恢复时仍由原执行器检查。"}
         # Batch scheduling only classifies original work/budget here. The
         # locked start below performs the actual permission check once.
-        permissions = (self._registered_permissions(bundle, root, runtime)
+        permissions = (self._registered_permissions(bundle, root, runtime, recovery_only=readonly)
                        if check_permissions else {'status': 'not_checked'})
         ready = (not unknown and (quote.get("budget_available") is True or readonly)
                  and (not check_permissions or permissions['status'] == 'passed'))
@@ -608,7 +640,7 @@ class ExecutionGateway:
         if check_permissions and permissions['status'] != 'passed':
             blocked.append(permissions['reason'])
         return {**grouping, "bundle_id": key, "entity_id": bundle["entity_id"], "status": "ready" if ready else "blocked",
-                "bundle_fingerprint": self._fingerprint(bundle),
+                "bundle_fingerprint": fingerprint,
                 "preview_id": None, "inspection_sha256": _digest(inspection), "readonly_recovery": readonly,
                 "can_start": ready, "missing": blocked,
                 "blocked_reasons": blocked, "inspection": inspection, "API_requests": 0, "database_writes": 0,
@@ -616,8 +648,28 @@ class ExecutionGateway:
                 "required_action": ("fresh_same_scope_owner_preparation" if permissions.get('reason') in {
                     'delegation_expired_or_future', 'delegation_revoked'}
                     else "inspect_original_owner_permissions") if check_permissions and permissions['status'] != 'passed' else None,
-                "notice": ("预览不预留费用；原owner同时检查已登记确认的当前权限。权限失效须重新准备同一scope，不能扩预算或重发旧任务。执行前仍会再次核验。"
+                "notice": ("仅恢复原已付结果；保留原登记和响应校验，不派发模型请求。" if readonly else
+                           "预览不预留费用；原owner同时检查已登记确认的当前权限。权限失效须重新准备同一scope，不能扩预算或重发旧任务。执行前仍会再次核验。"
                            if check_permissions else "仅分类原工作和预算；不是派发许可，实际启动时检查当前权限。")}
+
+    def _execution_preflight(self, key, *, record=None):
+        """Classify the original scope before snapshotting this operation's inputs."""
+        preview = self.preview({'bundle_id': key}, check_permissions=False, _record=record)
+        _, registered = self._select({'bundle_id': key}, recovery=True)
+        bundle = self._recovery_bundle(record, registered) if record is not None else registered
+        if not preview['can_start']:
+            return preview, None, bundle
+        recovery = preview['readonly_recovery']
+        snapshot = self._fingerprint(bundle, execution=not recovery)
+        root, runtime, _, _ = self._deployment(bundle, recovery=recovery)
+        permissions = self._registered_permissions(bundle, root, runtime, recovery_only=recovery)
+        preview['permissions_check'] = permissions
+        if permissions['status'] != 'passed':
+            blocked = [*preview.get('blocked_reasons', []), permissions['reason']]
+            preview.update(status='blocked', can_start=False, missing=blocked, blocked_reasons=blocked,
+                required_action=('fresh_same_scope_owner_preparation' if permissions['reason'] in {
+                    'delegation_expired_or_future', 'delegation_revoked'} else 'inspect_original_owner_permissions'))
+        return preview, snapshot, bundle
 
     def _records(self):
         if not self.state_root.is_dir():
@@ -816,11 +868,11 @@ class ExecutionGateway:
         except ValueError:
             return None
         with self._lock,self._control_lock('start'):
+            if any(row['bundle_id']==entry['bundle_id'] for row in self._records()):return None
             current=self.bundle_registration(entry['bundle_id'])
             fields=('bundle_id','entity_id','bundle_fingerprint','company_preparation_id',
                 'scope','scope_id','security_id','expected_scope_bindings')
             if any(current.get(key)!=entry.get(key) for key in fields):return None
-            if any(row['bundle_id']==entry['bundle_id'] for row in self._records()):return None
             preview=self.preview({'bundle_id':entry['bundle_id']})
             if (preview.get('can_start') is not True
                 or type(preview.get('API_requests')) is not int or preview['API_requests']!=0
@@ -837,17 +889,12 @@ class ExecutionGateway:
                 'original_references_absent':True,'current_preflight_sha256':_digest(preview),
                 'past_HTTP_history_attested':False,'API_requests':0,'database_writes':0}
 
-    def _attached_start(self, key, fingerprint):
-        prior = [row for row in self._records() if row["bundle_id"] == key]
-        if not prior:
+    def _attached_start(self, key):
+        _, _, record = self._registration_context(key)
+        if record is None:
             return None
-        record = prior[-1]
-        if record.get('reference_error'):
-            raise DashboardExecutionError('process_reference_corrupt', '该公司的启动引用损坏；请核对原任务，不能按空历史重发。', 409)
         if record['launcher_state'] == 'retired':
             raise DashboardExecutionError('run_retired', '该启动引用已退役；保留历史，新执行须原同scope准备', 409, prelaunch_not_started=True)
-        if record["bundle_fingerprint"] != fingerprint:
-            raise DashboardExecutionError("bundle_changed", "执行包已改变；保留原任务，请登记新包后执行", 409, prelaunch_not_started=True)
         if record["process_state"] in {"running", "starting"} and record["run_id"] not in self._processes:
             record.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
         return {"status": "attached", "run": record, "process_started": False, "paid_dispatch_started": None}
@@ -857,37 +904,40 @@ class ExecutionGateway:
         selection = dict(payload) if isinstance(payload, dict) else payload
         expected = selection.pop('bundle_fingerprint', None) if isinstance(selection, dict) else None
         try:
-            key, bundle = self._select(selection, launching=True)
-            fingerprint = self._fingerprint(bundle)
-            if expected is not None and expected != fingerprint:
-                raise DashboardExecutionError('bundle_changed', '命令绑定的登记执行包已变化。', 409)
+            key, bundle = self._select(selection, launching=True, recovery=True)
         except DashboardExecutionError as exc:
             exc.prelaunch_not_started = True
             raise
         with self._lock:
-            attached = self._attached_start(key, fingerprint)
+            attached = self._attached_start(key)
         if attached is not None:
             return attached
+        fingerprint = self._fingerprint(bundle)
+        if expected is not None and expected != fingerprint:
+            raise DashboardExecutionError('bundle_changed', '命令绑定的登记执行包已变化。', 409, prelaunch_not_started=True)
         # Original owner I/O is read-only here. Serialize only the subsequent
         # reference check and launch publication, so another company can progress.
         try:
-            preview = self.preview({"bundle_id": key})
+            preview, snapshot, bundle = self._execution_preflight(key)
         except DashboardExecutionError as exc:
             exc.prelaunch_not_started = True
             raise
         with self._lock:
             self.state_root.mkdir(parents=True, exist_ok=True)
             with self._control_lock('start'):
-                if (preview.get('bundle_fingerprint') != fingerprint
-                        or self.bundles.get(key) != bundle or self._fingerprint(bundle) != fingerprint):
-                    raise DashboardExecutionError('bundle_changed', '执行输入在本次检查期间改变，请重新读取当前执行包',
-                        409, preview, prelaunch_not_started=True)
-                attached = self._attached_start(key, fingerprint)
+                attached = self._attached_start(key)
                 if attached is not None:
                     return attached
                 if not preview["can_start"]:
                     raise DashboardExecutionError("execution_not_ready", "执行前置未满足", 409, preview,prelaunch_not_started=True)
-                root, runtime, _, _ = self._deployment(bundle)
+                recovery = preview['readonly_recovery']
+                current = self.bundles.get(key)
+                if (not isinstance(current, dict) or preview.get('bundle_fingerprint') != fingerprint
+                        or self._fingerprint(current) != fingerprint
+                        or self._fingerprint(current, execution=not recovery) != snapshot):
+                    raise DashboardExecutionError('bundle_changed', '执行输入在本次检查期间改变，请重新读取当前执行包',
+                        409, preview, prelaunch_not_started=True)
+                root, runtime, _, _ = self._deployment(bundle, recovery=recovery)
                 run_id = "run-" + uuid.uuid4().hex
                 folder = self.state_root / run_id
                 folder.mkdir()
@@ -898,11 +948,13 @@ class ExecutionGateway:
                           "result_path": str(folder / "result.json"), "log_path": str(folder / "process.log")}
                 record['recovery_inputs'] = {field: (str(runtime) if field == 'runtime_dir' else bundle.get(field))
                                              for field in _RECOVERY_FIELDS}
+                if recovery:
+                    record['operation'] = 'seal'
                 path = self.state_root / (run_id + ".json")
-                child_env = self._environment(root, paid=True, record=record)
+                child_env = self._environment(root, paid=not recovery, record=record)
                 _write(path, record)  # A crash now requires inspection, never blind resend.
                 try:
-                    process = subprocess.Popen(self._command(bundle, root, folder / "result.json"), cwd=runtime,
+                    process = subprocess.Popen(self._command(bundle, root, folder / "result.json", recovery=recovery), cwd=runtime,
                         env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                 except OSError as exc:
@@ -918,7 +970,7 @@ class ExecutionGateway:
                     _write(path, record)
                 finally:
                     threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
-                return {"status": "started", "run": record, "process_started": True, "paid_dispatch_started": None}
+                return {"status": "started", "run": record, "process_started": True, "paid_dispatch_started": False if recovery else None}
 
     def _failed_launch(self, error, record):
         from ..foundation.api import record_operation_failure
@@ -1108,18 +1160,20 @@ class ExecutionGateway:
                     raise DashboardExecutionError("run_not_paused", "该启动没有处于暂停边界", 409)
                 if run_id in self._processes:
                     raise DashboardExecutionError("company_still_draining", "当前公司尚未安全退出；不会并发重发", 409)
-                key, bundle = self._select({"bundle_id": record["bundle_id"]})
-                if record["bundle_fingerprint"] != self._fingerprint(bundle):
-                    raise DashboardExecutionError("bundle_changed", "原执行包已变化，不能恢复旧启动", 409)
-                preview = self.preview({"bundle_id": key})
+                key = record['bundle_id']
+                preview, snapshot, bundle = self._execution_preflight(key, record=record)
+                recovery = preview.get('readonly_recovery') is True
                 if not preview["can_start"]:
                     raise DashboardExecutionError("resume_blocked", "原任务状态尚不支持安全恢复", 409, preview)
+                current = self._recovery_bundle(record, self.bundles[key])
+                if self._fingerprint(current, execution=not recovery) != snapshot:
+                    raise DashboardExecutionError('bundle_changed', '执行输入在本次检查期间改变。', 409, preview)
                 # The UI's earlier projection is never authority: re-probe
                 # under the original control lock after fresh owner checks.
                 evidence = _process_recovery_evidence(record, preview.get('readonly_recovery'))
                 if evidence not in {'known_local_exit', 'original_checkpoints_only', 'absent', 'original_pid_reused'}:
                     raise DashboardExecutionError("original_process_unknown", "未能确认原进程已不存在；仅允许原检查点的只读恢复", 409)
-                root, runtime, _, _ = self._deployment(bundle)
+                root, runtime, _, _ = self._deployment(bundle, recovery=recovery)
                 attempt = record.get("launch_attempt", 1) + 1
                 if evidence in {'absent', 'original_pid_reused'}:
                     record['recovered_process_observation'] = {'pid': record['pid'],
@@ -1127,11 +1181,14 @@ class ExecutionGateway:
                 record.update(launch_attempt=attempt, result_path=str(self.state_root / run_id / f"result-{attempt}.json"),
                               log_path=str(self.state_root / run_id / f"process-{attempt}.log"), process_state="starting",
                               launcher_state="running", resumed_at=_now())
-                record.pop('operation', None)  # A normal native resume may send; it is no longer a seal-only operation.
-                child_env = self._environment(root, paid=True, record=record)
+                if recovery:
+                    record['operation'] = 'seal'
+                else:
+                    record.pop('operation', None)  # A normal native resume may send.
+                child_env = self._environment(root, paid=not recovery, record=record)
                 _write(path, record)
                 try:
-                    process = subprocess.Popen(self._command(bundle, root, record["result_path"]), cwd=runtime,
+                    process = subprocess.Popen(self._command(bundle, root, record["result_path"], recovery=recovery), cwd=runtime,
                         env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                 except OSError as error:
@@ -1146,7 +1203,7 @@ class ExecutionGateway:
                     _write(path, record)
                 finally:
                     threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
-                return {"run": record, "state": "running", "process_started": True, "paid_dispatch_started": None,
+                return {"run": record, "state": "running", "process_started": True, "paid_dispatch_started": False if recovery else None,
                         "notice": "仅恢复同一原owner登记范围；原执行器复用已保存答案，未知HTTP不重发"}
             raise DashboardExecutionError("control_unsupported", "不支持该控制动作", 409, {"action": action, "supported": ["inspect", "pause", "resume", "retire", "seal"]})
 

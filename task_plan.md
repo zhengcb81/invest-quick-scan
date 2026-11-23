@@ -1,5 +1,56 @@
 # invest-quick-scan 当前实施计划
 
+## 2026-11-23 当前交付：已付恢复与新收费职责已收口
+
+IQS源码 `b845b1fca198c71553433fb58a3d98bbdf89da66` 已提交并推送既有origin，远端同SHA核对。StockQA此前的 `ca7900d` 源码与 `a91a164` 模块PWF继续有效；本轮未改F4。
+
+StockQA模块PWF同步已保留另一harness远端已发布的F4提交，并正常整合推送至`e64c3e5f684c3cacce45b4a7c7ebe45af7b50c0b`；没有覆盖、强推或重做其源码，亦不以此代签F4验收。
+
+三类操作已分开：纯查看/附着返回原任务引用，不查新收费权限；已付恢复按原记录和原材料校验，不受未来模型参数/预算文件影响；真正新发送才校验当前参数、权限与额度，并比较本次执行快照。普通preview、resolver、start和resume共用原引用关系，最终原owner状态变化会重新选择操作，不增加协议、审批或持久状态。
+
+此前整文件158通过/17失败的4组问题已同节点修复；原17失败与必要边界共34项通过，同一非作者9项尾验通过并ACCEPT。11-23核对待提交内容与已审内容一致，不机械重跑整套。原公开服务实跑附着正例通过：改变未来模型控制、缺少未来费用文件仍返回同一原run，0新进程，launch次数和任务数不变。
+
+本轮门禁/设计修复已完成，最近失败明细保留在[故障与收口记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。产品主线仍有中微16实体题+2挂牌题、新完整快照和UI验收；本次未发新模型请求，不把源码交付算作18题已完成。下一步只沿原任务公开预检与接续，已付10题不重问，冻结资料日不倒改；三家公司及F4继续避开其他harness。
+
+## 2026-11-21 收敛过程与真实失败（后续结项见11-23）
+
+用户最新指定本线程专心修复杂设计与门禁，F4由其他harness负责。此前已核实[实际F4上线范围](C:/Users/郑曾波/Projects/company-wiki/docs/plans/feedback-loop-2026-11-17/f4-rollout.md)和日志缺口，本线程F4候选已安全留档并退出该实施；其他harness随后产生的F4/业务WIP保留，不纳入本组发布。F4不是本组交付前置。最近真实失败的原任务、阶段、时间、费用事实、接续动作与验证细节集中在[故障/收敛记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。
+
+|工作|有限完成条件|当前状态|
+|---|---|---|
+|F4交接|保留已做候选、未修发现及最近真实失败细节，明确不是本线程前置|已交其他harness范围；[本机补丁/测试/开放P2](runs/amec-rescore-20261121/f4-handoff/README.md)，不继续实施|
+|重复检查|固定会话绑定不反复启动外部CLI；原子发送意图前仅一次实时权限检查；原生预算和防重复发送保留|完成：实测26→3（2 register+1 permission），非作者终审ACCEPT|
+|未发送接续|未发失败释放原任务，已收10题保留；已发未知不误释放/重发|软件完成；后续原paid混合恢复根修已通过针对性测试和独审，待原任务实验|
+|统一状态判定|由原store按真实发送/响应决定能否release，不在transport复制一份证明或依赖prepare对象已返回|完成：删除约70行重复证明；causal共用、旧1.3兼容、日常短CI及独审通过|
+|普通运行就绪|普通开库和启动不深扫全部历史；当前work/lease/额度/ACK各按原事务检查|完成软件根修；显式审计、旧迁移保留，14新例进入原日常CI，非作者ACCEPT|
+|产品恢复入口|纯附着返回原任务；全paid新启/恢复复用既有paid能力；pending实际续发才走新收费边界，公共引用一致|完成；原17失败及必要边界34通过，非作者9项ACCEPT；11-23真实纯附着通过，源码b845b1f已发布|
+|真实收口|从原任务完成中微剩余题、原生入库、新结果/UI、零重问恢复；其他三家由并行harness交付|10题已入库且ACK成功，剩余16实体+2挂牌；新完整快照未登记|
+
+StockQA两组根修已正常钩子发布并推送`ca7900d249b8a5f1d9b5fa891b92028c773a9a9d`。干净组合3项和非作者12项通过；临时发布树已删除，同文件另线WIP字节保留。11-21原任务第4次launch显式seal实跑exit0：10原paid/原包全部挂回，API/model/new_attempt/new_generation均0、原10个package绑定未变，实体16 pending；当时security原预览200/can_start=true，0API。此前错误环境下的seal409已实查为sandbox阻止CLI导入写默认日志，不能误判为业务权限拒绝，更不能倒推13:09原故障原因。产品入口后续已由11-23节点结项，完整剩余18题和新快照/UI仍未完成；F4另线不等待。
+
+## 2026-11-21 三家公司完整扫描与中微空分重评
+
+用户授权继续沿原部署、原工作区和预算完成药明、阿里、MongoDB的真实完整快扫，以及中微28个原空分的新判断。保留旧答案/旧快照，暂定分与证据缺口同时展示；不扩产业链等支线，不重复索要权限。
+
+**并行分工（用户随后指定，优先于下表的原调度）：** 另一个 harness 正推进 Dashboard 的 `THREE-MARKET-FORMAL-RESULTS-20261121.md` 与 `CROSS-ID-DASHBOARD-RETURN-20261121.md`，负责药明/阿里/MongoDB 的正式扫描、登记、历史和跨 ID 回跳。本线程避开其代码、服务重启、配置和重复扫描；仅推进中微28题重评、原8题保留及其恢复验证。AMEC 准备使用独立状态目录，模型顺位和共享额度沿用原 owner；准备动作涉及公共固定文件命名空间时必须使用原串行锁，不能复制工作库或绕过并发控制。三家覆盖及回跳在收到该 harness 的实际交付后合并验收，不把分工等同于已完成。
+
+**用户补充的研究深度：** 快扫不以公司文档、母公司单体报表、单位全成本或完整财务尽调为前提。分数与证据强弱分开，缺项只突出可能改变判断的实质未知，可为空。StockQA 已移除 standalone_issuer 的“只有集团数字就强制空分”旧提示，代码 `2f649c8` 已推送、受影响组合203项通过；数字口径真实性保留，旧请求/原回答不倒改。本轮不新增暂停/取消框架或争写另一harness的UI文件。
+
+**未发送故障与简化：** IQS_13/14 于13:09 UTC在真实HTTP之前失败，原错误只保留 `QuickScanWorkPersistenceError` 类型，尚不能认定底层原因。两题没有send intent、预算attempt或响应；已通过原公开store接口原子释放为pending，前10题付费checkpoint哈希不变，0 API。新修复将未发送失败自动归还原任务，并保留安全错误码；针对性65项通过、独立审查中。另核实正常发送前存在多次重复权限/anchor子进程，正在收敛：固定绑定在会话加载时核对，实时权限/额度在实际收费边界核对，已付保存与恢复不重新审批。不新增协议、门禁或调度层。
+
+|阶段|工作|状态|
+|---|---|---|
+|运行核实|中微原身份、主体、预算/模型、36题定义及28题范围；三家由并行harness负责|中微完成|
+|真实问答|三家公司由并行harness扫描；本线程重评中微28题，持续保存与原生交付|中微10题已保存（8有分、2原规则空分）；16实体题及2挂牌题待继续。两道发送前失败题已释放，无重复收费|
+|入库与UI|完整快照、分数/置信度与关键未知；旧详细缺项折叠展示、历史与回跳|待验收；页面改动避开并行harness，交接后收口|
+|恢复与交付|重开/重复接续零重问、独立审查、PWF提交推送|待验收|
+
+下一步：按顶部收口重复检查和统一未发接续，独立审查后从原任务继续剩余16实体题及2挂牌题；已保存10题已入库且ACK成功，不重问、不等待F4。随后使用实际新观察和原8题登记新快照，核对UI/冷恢复。原规则下两道已付空分只走真实新重评，不改写原答或伪造资料日；三家公司正式扫描和跨ID UI由另一harness推进。新28题的信息截止日为2026-11-21；组合结果保留原8题的资料日。
+
+## 2026-11-21 三市场身份补齐与覆盖盘点（THREE-MARKET-COVERAGE）
+
+回应 Dashboard [施工卡](C:/Users/郑曾波/Projects/investment-dashboard/handoffs/owner-requests/invest-quick-scan/THREE-MARKET-COVERAGE-20261121.md)。**阿里 09988 的 r25 身份已补齐**：经 StockWiki 公开 onboarding facade（submit→stage-import→bind-proof，ONB_f8bd7c06 `completed`）把业务端 verified 发行人与 HKEX FY2025 证据移植进 r25 owner workspace（实体/挂牌与业务端同 ID，universe 215 人未动）；前两次尝试（profile 配置缺、rev3 re-anchor 回执不可移植）按 facade 具名拒绝处理，scan.sqlite 用开工前字节备份恢复后以 rev2 直录回执完成。药明/MongoDB 两端凭据经公开 bridge 前后取证 resolved；三家正式/草稿/历史盘点为 0（唯一旧版 thin-scan 草稿具名不可原生发布），无登记触发；中微 `cas_6cab1b94d8f45d42c750` 同 ID 浏览器往返复跑通过；另以真实 007787a 组合栈（Dashboard main 检出即验收提交，只读）复验四家 quick-scan：阿里 `workspace_listing_unresolved` 消除、公司视图保留原实体/挂牌，药明/MongoDB/中微与验收读数一致。**零代码改动、零模型/付费调用**；数据写入仅 r25 scan.sqlite + identity_receipts.sqlite（六库开工前备份留 `backups/three-market-20261121/`）。交回报告与证据：[report](docs/implementation/reviews/THREE-MARKET-COVERAGE-20261121/report.md)。剩余：三家正式结果需预算内 r25 原生扫描；阿里入筛选需 membership request。
+
 ## 2026-11-20 暂定评分与证据强弱分开
 
 按用户最新要求，证据不足本身不应强制评分为空。有判断依据时给1–10暂定分，同时明确低置信度、已知依据、假设及缺失信息，让用户自行判断。事实数字仍须有真实出处，不为分数编造财务数据。复用既有 `scored`、`confidence`、`missing_fields` 和 `coverage`，不新造另一套分数/准入协议。
@@ -405,4 +456,4 @@ PERF再优化、更多参考公司、更多agent/打包实验是支撑研究；�
 
 - [x] 本仓原生快扫入口发布可选观察；按同一运行原件生成覆盖回执，复验后回告。工作树基于发布分支 c1dd6a4，候选源码 9a33d65985737435c0b9b9aee4d4c7a46916017d。
 - [x] 在真实本机宿主接通原作业查询、修复与回告恢复。用原 24/38 和两份历史阴性对照验证。记录中断、去重、老费用未知与零新调用。
-- [ ] ROOT 沿现有 IQS 发布分支接收候选、接入公开宿主配置并执行组合独审。[运行与交接](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)
+- [x] 原F4支持范围已由company-wiki ROOT组合接收；本机IQS host实际检出`.worktrees/f4-runtime@4a895d3`，当前IQS HEAD包含该提交。既有283项与强退回读证据只覆盖结果检查回执，不覆盖普通模型发送错误。11-21核实[上线表](C:/Users/郑曾波/Projects/company-wiki/docs/plans/feedback-loop-2026-11-17/f4-rollout.md)后纠正此过时待办；新增真实执行日志缺口见本页顶部，不重开已签收F4。[原运行与交接](docs/implementation/parallel-lanes/packages/2026-11-11-modularity-closeout/F4-IQS-native-runtime.md)

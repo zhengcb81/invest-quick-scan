@@ -1,5 +1,98 @@
 # 当前进度与阶段证据
 
+## 2026-11-23 产品恢复入口已交付
+
+IQS源码 `b845b1fca198c71553433fb58a3d98bbdf89da66` 已正常提交、推送既有origin并核对同SHA。仅执行网关和既有测试文件两条路径；未纳入F4或其他writer的改动。11-23核对源码/测试与上次非作者最终评审内容一致，复用已有验证，不重跑未变全套。
+
+原整文件17失败的4组共因已一次修复：原引用与当前收费快照分开；pending参数先验证，paid/纯附着不处理无关参数；原引用存在时不生成缺失证明；同题pending→paid按最终快照选恢复。作者原17失败与必要边界 **34 passed/23.59秒**；非作者最小尾组 **9 passed/9.72秒，ACCEPT**，并独立确认核查期间真实收费参数变更仍阻止新进程、当前权限只检查一次。原158通过项未重复；计数不相加。测试TEMP清理，0API/生产库。
+
+11-23从原公开产品服务完成真实纯附着：本线程配置副本仅改变未来pack/tokens/thinking且未来spend文件不存在，仍attached同一`run-5305efa0a466482fa2a187ed2b37699e`；process_started=false，原launch次数及任务数不变，未新启模型。原部署配置/服务/名单未改，摘要在本机`runs/amec-rescore-20261121/gate-original-attachment-summary.json`。11-21已付10题零API冷恢复正例仍保留；本轮没有新18题回答或新快照/UI验收，不冒称主线全完成。
+
+StockQA三份模块PWF已对齐上述状态；同步时保留其远端已发布F4全部提交，最终并线/推送`e64c3e5f684c3cacce45b4a7c7ebe45af7b50c0b`，原钩子通过，临时树删除。没有重做或代签F4。过程中宿主Git空环境值与两个纯行尾标脏的问题只在提交执行环境/checkout表示上修复，没有新增项目门禁或丢弃源码改动。
+
+## 2026-11-21 IQS产品入口：同一次整域回归的历史失败
+
+两文件候选统一本地原任务引用、全paid恢复与pending收费职责；新短组20 passed/17.40秒。非作者去除他线lease hunk后，一次完整`tests/test_dashboard_execution.py`实跑158 passed/17 failed/104.00秒，测试TEMP已清、0API/生产库。未将短组绿冒称完整交付。
+
+17个失败集中为4组：只读分类旧fixture/spy缺字段；收费参数在操作分类前被全配置指纹序列化（含非法lease的inf/nan）；原引用缺失证明在查已有ref之前就验证完整registration；首次pending、最终同题paid的真实状态变化后仍沿用旧收费模式。这4组后续按共同职责一次修复并在34项及非作者9项通过，结项见11-23段；scope与真正新费用校验保留，不做NaN特判或弱化reader。原158通过项不重复，也未另开逐例审查或其他模块支线。详情和准确selectors见[报告](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。
+
+## 2026-11-21 已发布并实跑零API冷恢复
+
+StockQA `ca7900d249b8a5f1d9b5fa891b92028c773a9a9d`（12文件）正常钩子提交并推送原origin同SHA。首次isort只调整测试导入顺序，正常重提全部原钩子通过；无跳过。发布在干净临时树完成，接回原分支只更新HEAD/index并逐文件核对工作树字节不变；其他harness的F4/业务hunk仍原地未纳入，临时发布树已删除。
+
+真实原run第4次launch显式seal恢复完成exit0：API/model/new_attempt/new_generation均0，dispatch_started=false，10个原paid已挂回且10个原work/package绑定与第2次冷恢复相同，recovery_errors=[]；实体状态10delivered+16pending，不伪称全扫完成。挂牌原预览200/can_start=true、blocked=[]，0API（实际14.292秒，含原CLI启动）。实物摘要留本机`runs/amec-rescore-20261121/gate-paid-recovery-summary.json`及`gate-after-fix-readiness-summary.json`。
+
+本次第一次seal409不能当源码门禁缺陷：操作器在默认受限shell调用外仓CLI，read_request的eager导入创建默认日志抛PermissionError，后被两层generic短码掩成权限失败；安全trace与同一public service直接通过形成对照。用既有全授权环境重跑即上述成功，不修改seal原paid/输入校验。此原因仅对本次有证据，不倒推原13:09或15:26历史失败；F4错误揭示由另一harness处理。
+
+余下本组相邻收口只限产品全paid普通preview/start/resume：当前它们还要求today current_permissions/新spend配置，正在用既有恢复能力TDD处理；真正pending仍原新派发边界。主线剩余18题、新完整快照和UI验收未完成，不扩支线。
+
+## 2026-11-21 发布后反例：两处职责根修已通过独审
+
+原paid混合恢复不再依赖今天plan/reuse/deferred，今天anchor/plan只约束新派发；普通current-schema打开/准入只做结构核验，显式deep audit与旧迁移保留，当前work/lease/预算/ACK仍由原事务核查。paid新4+经基线证实的旧3尾检7 passed/110.94秒；readiness相关87不重复用例通过（新14含其中，6个helper环境超时只临时放宽进程等待后重跑原断言）。非作者12 passed/113.42秒，ACCEPT，计数不相加；14新例已进既有daily，登记断言RED→1 passed/1.57秒。所有已结束测试临时根已清，测试0API/生产库0写。隔离发布只含本组路径/hunk，不含另线F4或业务WIP；原任务实际重开与完整28题未完成。
+
+源修复f69913c与本仓PWF提交4c5f73ce4954be9a5e2f46629af722ca6a4756b3均已推送核对。15:24:29原run第3次launch已启动，15:26:15退出1：第一题原已入库IQS_03落入`resume_original_work_delivery_or_reconciliation_required`，后续未派发。原10答案/ACK未丢，16 pending不变，本实体范围无新模型派发。不是已付保存损坏；是旧paid复用被今天新plan的reuse/deferred条件挡住。
+
+作者与独审各自定位到_refresh_states/restore共同职责耦合；非作者真正checkpoint→seal→consumer binding→delivery intent→ACK→reload隔离用例1项RED确认（两次早期setup错误未算缺陷）。修复按原paid字节/subject receipt/绑定读取，不让今天新计划/新anchor否决已付历史；pending新费用仍走原live校验。只根修本组，不重建grant、不跳题、不扩F4。
+
+独立挂牌2题启动预检另返回`refresh_admission_ledger_invalid`（409），报价可用、work pending、无模型进程；正在只读查owner原因，未推定坏库/锁/额度原因。原操作器已安全退出，没有在途本线程模型。详细实物与路径见[最近失败记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。
+
+## 2026-11-21 门禁/未发送接续节点完成
+
+正常两题包外部检查实测26→3。固定绑定本地验证、收费intent前一次fresh；paid保存/水合不重新审批。single/pack及begin前provider失败由原binding同事务委托public release_unsent，删除约70行重复证明，不依赖prepare成功返回。原生send/response/unknown仍不释放。
+
+终审发现的隐式context丢typed unknown由interfaces一处有界遍历根修，含from None和双link；1.3新增local能力按optional/fallback保留旧结构端口。作者直接相关181项、最终短组48项/30.54秒通过；两新daily测试43项已登记原CI，另compat2+CIplan3。非作者独验17项、尾改10项及public API3对照通过，最终ACCEPT，无本组P1/P2，不相加重叠计数。测试无API/生产库、自有TEMP已清理。
+
+StockQA源码与所选模块PWF已正常提交`f69913c5f05205abc4f12e05d173a1a704ffec31`并推到原`origin/codex/qa-content-filter-resolution-01`，远端同SHA核对。首次钩子规范行尾/Black/isort，并发现3.10 typeshed无SQLITE_BUSY/LOCKED属性；改用已校验原生名称分类，7例/12.05秒通过、非作者静态认可，随后所有原钩子通过，未跳过检查。
+
+F4另harness候选保持隔离；最近失败的原事实及全部新RED/处置见[记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)。原中微16实体+2挂牌的真实续扫/新登记/UI仍待完成，不把软件修复当完整扫描交付。
+
+## 2026-11-21 最新分工：专心门禁收口，F4另线
+
+用户指定F4交另一harness，本线程停止日志实施。StockWiki日志线尚未写任何源码；QA日志6文件的F4-only补丁、14个新测试及独审开放P2完整留在标记的`runs/amec-rescore-20261121/f4-handoff/`，补丁apply-check成功后剥离活跃树。core保留已审原生未发送恢复层，SHA与原作者独立重构一致：85aac73dd6c0aec199d38caf343bc1ab5c6e60b9842e3dd029b4f9a8588e06ad。IQS日志8个RED测试移入交接、不挂进主线tests，不留未开工F4门禁。
+
+最近失败细节已补[集中记录](docs/implementation/reviews/PRESEND-SIMPLIFY-20261121/report.md)：原run/prepare/pack、13:09时间、prepared而未HTTP/未计费、旧10题与8题保护、零API seal/release、10/10入库ACK，以及本线程405操作偏差。历史底层原因缺失仍记未知，不捏造为SQLite或权限原因。
+
+接下来只做收费检查26→3、已付本地复用、原store统一未发送释放。独审新增3个0HTTP仍leased反例（prepare前/提交后未返回/入口校验），与原生public release_unsent证据合并，正在删除transport重复证明而非再添条件。完成后一次独审并继续原中微任务；不以F4待办阻塞。
+
+门禁组后续实测：删除重复proof并覆盖begin前provider失败后，同组38项和相关181项通过；最小非作者17项通过。终审另捕捉typed unknown在隐式context包装下被丢失（隔离1项RED、0HTTP），现收敛到interfaces单一有界cause/context遍历；同时把1.3新增本地验证改为可选、旧check兼容。源树冻结后只复核这两项尾改，不重跑整套或扩F4；未把候选计数当最终签收。
+
+## 2026-11-21 F4日志覆盖实查
+
+- 亲读company-wiki F4接口、上线表、门禁设计审查，并由另一agent只读核对实际host配置、intake实现和IQS启动路径。12 owner及指定三类快扫反馈已上线；IQS host实际4a895d3、QA实现79b0800均为当前HEAD祖先，StockWiki由a3cd01c并主线（原候选dd7496a不是同一祖先，不能据此误报源码缺失）。
+- F4要求完整步骤日志留owner、跨仓仅投稳定结果词；实际StockQA观察只在inspect核对结算状态，IQS只补覆盖率回执，StockWiki只补正式结果run/scan。普通UI直接启动main_with_llm，不经过intake，因此这次pack失败没有全生命周期producer；core原catch也只保留异常type，cause没有落盘。不是“无F4计划”，而是把局部覆盖当成整体日志会造成误解。
+- 修正根计划末尾“F4候选待ROOT接收”过时状态，保留已上线场景。新增收口限定为通用脱敏异常诊断及原失败结果/可选旁路，不另造反馈DB/任务/审批。已付保存不因日志、review或版本标签而拒绝。
+- 未发送恢复经非作者独立组合 **63 passed / 167.14秒，ACCEPT**（与作者65项是不同组合，不相加）；自有临时目录清理成功。正常两题包的去重测试先RED实测26次外部CLI：10 permissions+14 anchors+2必要register。简化与通用日志仍在实施，尚不宣称组合完成。
+- 原交付作业于14:05:35 UTC确认 **10/10封存包已delivered，error_codes=[]，0模型调用**。作业整体partial正确对应剩余16题未完成；旧8题没有新attempt，完整28题和新快照仍待完成。
+
+## 2026-11-21 两道发送前失败的恢复与流程简化
+
+- 中微原实体进程已于13:09 UTC保存失败结果并退出，不再按12:55在途状态描述。10题真实回答/checkpoint保留，其中8个有分、2个按原提示为空；IQS_13/14同一pack仅到prepared，原始异常链未落盘，不能声称已证实SQLite锁、权限或模型拒绝。其余14道实体题及2挂牌题未发。
+- 原公开seal已冷启动完成，API_requests=0；恢复前10题，不伪造两道未发送答案。随后原公开 `QuickScanWorkStore.for_existing_ledger` + transaction/release_unsent 原子释放IQS_13/14：原pack、10个checkpoint哈希不变，无新attempt、API或policy修改。当前实体为10已保存+16 pending，挂牌2 pending。
+- 通用未发送恢复修复限StockQA transport/core及专用测试：先RED13例，最终65项通过（112.92秒），测试临时根已清，独立review正在进行。它只释放原pack当前未发送成员；已发未知、他人/失效lease及已收响应仍保留真实状态，不自动重发。
+- 用户要求进一步简化，已核实 `ApprovedRefreshSession.check` 每次启动current_permissions及anchor两个CLI，主体登记又嵌套同类检查。正在移除getter/组装/已付保存中的重复检查，保持实际收费前一次当前权限核查和原生预算/防重复；尚未签收这部分实现，不以65项替代其验收。
+- 已保存10题通过原 `tasks/deliver` 作业 `deliveryjob_0fdf528869cce3d0cfe70eb40c7a3868` 入库，最终10/10 ACK成功，0模型调用。操作脚本初次错误轮询不存在的GET单作业入口（405）后，改用公开作业列表并继续同一作业；未另起导入或重问。作业整体partial表示其余16题尚未就绪；36题新登记、UI及完整28题恢复验收仍待完成。
+
+## 2026-11-21 轻量研究提示收敛
+
+- 响应用户“快扫为何要求大量资料”的反馈，核实冻结题目没有公司文档下载要求，metric/schema也不要求年报或固定五项缺口。直接诱因为通用提示过度索取数据，以及standalone_issuer的集团数据→强制空分规则。
+- StockQA四个源码/测试文件已提交 `2f649c8ee06040383603934dec24bbf15d2c84bc` 并推送核对原 `origin/codex/qa-content-filter-resolution-01`。5条新反例先RED；15项、50项定向通过；独立agent复跑37项、确认普通非标准传输单/pack评分/事实提示对HEAD逐字节不变，并认可修复。原钩子首次统一行尾后正常重提，全部通过，未跳过钩子。
+- 最终受影响组合（标准单题/pack、sync/async provider及原已付回答/混合状态恢复）**203 passed，725.74秒**；临时CWD、日志、数据库与源码临时根位于本轮C:/Temp，结束确认删除。无付费测试调用、原库写入或新增准入；不再扩大/重跑未改动的全套。
+- README与评分规范同步：证据关注是思考线索而非材料清单；只突出判断关键未知，保留分数/置信度，数字事实不编造。原8题与旧请求不改写；12:55的8已保存、2在途、16待问是当时读数，现状以上方恢复节为准。完整28题、新登记、真实恢复和最终UI验收未完成，不把提示修复签收等同于本轮扫描交付。
+
+## 2026-11-21 三市场并行分工与中微28题准备
+
+- 已读 Dashboard 三市场正式结果与跨ID返回两卡。根据用户最新分工，三家全扫、登记和跨ID UI由另一个harness推进；本线程避开其源码、部署、服务重启和付费扫描，改做中微28题重评。
+- 核实原公开准备入口支持题目子集，仍保留全36题银行。待重评准确题号为 `IQS_03`–`IQS_23`、`DUPONT_01`–`DUPONT_07`；旧8个有分题为 `IQS_01`、`IQS_02`、`IQS_24` 和 `PORTER_01`–`PORTER_05`。旧快照与原分数均保留。
+- 当前8766准备状态返回 `preparation_not_configured`；已定位为配置数据目录与冻结发布目录的包含关系，交由正在推进三市场卡的harness范围处理，本线程未修改该实现或重启服务。
+- 使用独立AMEC准备目录可以避免预览文件冲突，但原owner固定文件、工作区与额度仍共享；下一步仅通过原公共入口核实并发/额度后准备新cutoff的28题，不复制工作库或绕开串行锁。
+- 已冻结旧公开结果，使用独立配置经原 `DashboardService.dispatch` 准备 `prepare_a862db6646ce4fd3b8b148f407231063`。选择原主体 `ASJ_9ef10f84-976f-4039-8d11-3a4c80a3c0c9@1`；题义/定义指纹36/36与旧银行相同。26道实体题原生准入已accepted，2道挂牌题准备中，尚未模型派发。实体预览时原owner报价可用，剩余max_cost_micros=22300266、max_http_requests=136；这是当时读数，非重置额度。
+- 12:13准备作业已 `registered`，两范围准确26+2题；经同一公开服务启动实体执行 `run-5305efa0a466482fa2a187ed2b37699e`，继续使用 `mimo-pro-primary` 和原共享账本。独立审查agent已只读接手本轮边界/原8题保留核查，最终审查待真实问答、登记和恢复证据齐备后完成。原UI/配置和另一个harness的源码WIP未动。
+- 首包IQS_03/04已原生保存，标准回答/checkpoint/ready封存包一致，分别6分low、6分medium，均有partial覆盖与5项缺口，未因证据不齐强制清空。独立审查确认旧8题新增attempt为0，完整银行日志的planned8不会扩大实际执行范围；本轮确实只创建28个work。财务证据主要核至2025Q1、另有2025年报业务描述，分析目标period_end不能冒充全年财务已核实。实体其余24题及挂牌2题仍待完成，尚无新快照登记/最终审查通过的结论。
+
+## 2026-11-21 THREE-MARKET-COVERAGE 执行留痕
+
+执行顺序与原始输出要点：开工前六库 SHA 备份（scan e4e4e031…、receipts 11302b1e…、其余四库逐位未变）→ bridge 12 次取证（三家业务端 single_match/resolved；r25 端药明/MongoDB resolved、阿里 no_match）→ onboarding 三次尝试：①`EVI_d88098a8` 带 profile → `owner_store_refused: research profile configuration unavailable`；②`EVI_dffd41ae` rev3 → 实体已存、回执拒 `receipt_reanchor_requires_atomic_record`（re-anchor 属 research-binding 流程，公开通道无 base 可录）；scan.sqlite 恢复备份（SHA 逐位核对）后 ③`EVI_9792abec` rev2 → `bind-proof` **completed**（receipt sha `00660cbe…60d3`，verdict resolved + `LST_591474dd`）。复核：r25 search 09988 single_match verified rev2；resolve explicit_listing_selected + owner_evidence 现行；Dashboard resolver 五步模拟（业务坐标→r25 搜索→唯一坐标匹配→resolve_subject→NFKC 名称一致）通过。公开读回：三家 200 + `company_result_not_registered`、history 0；中微 formal `cas_6cab1b94d8f45d42c750`、history 1 不变。浏览器：48766 公司页（formal 36/29、深链 available、return_to 确认）→ 8766 深链（定位 obs_a8b901ee… published + 36 条）→ 返回原公司页（SPA 点击两次超时，按快照 href 直接导航，返回链接 count=1）。组合栈复验：Dashboard main 检出=007787a（backend/contracts 无脏文件），`build_ports(mode="owner")`+TestClient 只读跑四家 quick-scan——阿里 reasons 仅剩 result_not_registered+navigation_unavailable（`workspace_listing_unresolved` 消除），药明/MongoDB/中微与验收读数逐项一致；探针脚本与回执入 evidence，临时数据目录已删、Dashboard 仓无残留。写盘：r25 scan.sqlite（e4e4e031→4c5e1abb）、identity_receipts.sqlite（11302b1e→66eb7347）、onboarding journal（本轮新建）；观测/正式/主体/市场注册四库未变；universe 215 未动。证据目录 `docs/implementation/reviews/THREE-MARKET-COVERAGE-20261121/evidence/`（bridge receipts、三个 stage payload、公开读回、盘点、往返回执+截图、组合栈探针+回执）。0 模型/付费调用。
+
 ## 2026-11-20 暂定评分已接通
 
 按用户要求将观点分与证据强弱分开：有部分依据可用scored+low confidence给暂定分并列缺项；普通/共享提示、汇总、比较、恢复关注、入库读面和UI均保留原分及不确定性。原renderer与已付请求字节不改。QA207、CA108、SW117、原UI92+9子测试、Dashboard64后端/22前端/类型、IQS公共链113项通过；提示/发布组106项+182子测试及修旧版本断言后9项通过。独立最终ACCEPT，见[报告](docs/implementation/reviews/PROVISIONAL-SCORING-2026-11-20/report.md)。

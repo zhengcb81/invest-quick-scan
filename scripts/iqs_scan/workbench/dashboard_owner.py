@@ -65,6 +65,13 @@ def _env():
     return result
 
 
+# Public surface for sibling dashboard modules (the module-boundary gate
+# enforces cross-module use of public names only): the same response size
+# limit and the same sanitized child-process environment.
+OWNER_RESPONSE_LIMIT = _MAX_BYTES
+owner_environment = _env
+
+
 class OwnerGateway:
     """Trust paths only from deployment config, never request JSON."""
     def __init__(self, config: dict):
