@@ -84,6 +84,10 @@ class RefreshAdmissionService:
    error=ValueError("synthetic native permission refusal")
    error.reason=data["permission_error"]
    raise error
+  if not recovery_only and data.get("current_permission_error"):
+   error=ValueError("synthetic current send permission refusal")
+   error.reason=data["current_permission_error"]
+   raise error
   assert confirmation_id == "rc2_" + "a"*64
   return {"confirmation":{"confirmation_id":confirmation_id}}, {}, {}
 ''', encoding="utf-8")
@@ -161,9 +165,9 @@ def test_batch_work_classification_does_not_repeat_dispatch_permissions(deployme
     gateway = ExecutionGateway(config)
     calls = []
     original = gateway._registered_permissions
-    def permissions(*args):
+    def permissions(*args, **kwargs):
         calls.append('permissions')
-        return original(*args)
+        return original(*args, **kwargs)
     monkeypatch.setattr(gateway, '_registered_permissions', permissions)
     classified = gateway.preview({'bundle_id': 'test'}, check_permissions=False)
     assert classified['can_start'] is True
@@ -226,12 +230,12 @@ def test_stalled_owner_preview_does_not_block_another_registered_start(deploymen
         "test": bundle, "second": {**bundle, "entity_id": "ENT_OTHER"}}})
     entered, release = threading.Event(), threading.Event()
 
-    def preview(selection):
+    def preview(selection, **kwargs):
         bundle_id = selection["bundle_id"]
         if bundle_id == "test":
             entered.set()
             assert release.wait(10)
-        return {**gateway.bundle_registration(bundle_id), "can_start": True}
+        return {**gateway.bundle_registration(bundle_id), "can_start": True, "readonly_recovery": False}
 
     monkeypatch.setattr(gateway, "preview", preview)
     with ThreadPoolExecutor(2) as pool:
@@ -290,9 +294,9 @@ def test_read_only_inspection_needs_no_new_dispatch_permission_or_model_config(d
     put(Path(bundle['admission_config']), admission)
     original = gateway._registered_permissions
     calls = []
-    def permission_read(*args):
+    def permission_read(*args, **kwargs):
         calls.append('permission')
-        return original(*args)
+        return original(*args, **kwargs)
     monkeypatch.setattr(gateway, '_registered_permissions', permission_read)
     forbid_model_launch(monkeypatch)
     view = gateway.preview({'bundle_id': 'test'}, read_only=True)
@@ -369,7 +373,7 @@ def test_start_uses_latest_allowed_work_instead_of_requiring_old_snapshot_equali
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
     old = gateway.preview({'bundle_id': 'test'})
-    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST',
+    put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'question_ids':['Q1'],
         'work_items': [{'status': 'delivered', 'work_item_id': 'already-completed'}]})
     latest = gateway.preview({'bundle_id': 'test'})
     assert latest['can_start'] is True and latest['readonly_recovery'] is True
@@ -384,9 +388,9 @@ def test_optional_preview_cannot_bypass_current_native_refusal(deployment, monke
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
     if current_block == 'budget':
-        put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'available': False})
+        put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'available': False, 'question_ids':['Q1']})
     elif current_block == 'unknown_work':
-        put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST',
+        put(Path(bundle['inspection_request']), {'entity_id': 'ENT_TEST', 'question_ids':['Q1'],
             'work_items': [{'status': 'uncertain', 'work_item_id': 'unknown-response'}]})
     else:
         admission = json.loads(Path(bundle['admission_config']).read_text())
@@ -406,9 +410,11 @@ def test_explicit_work_lease_reaches_only_new_native_process_without_rewriting_l
     legacy = gateway._command(bundle, Path(config['stockqa_root']), runtime/'legacy-output.json')
     assert '--work-lease-seconds' not in legacy
     old_fingerprint = gateway.bundle_registration('test')['bundle_fingerprint']
+    old_execution = gateway._fingerprint(bundle, execution=True)
     bundle['work_lease_seconds'] = 3600
     gateway = ExecutionGateway(config)
-    assert gateway.bundle_registration('test')['bundle_fingerprint'] != old_fingerprint
+    assert gateway.bundle_registration('test')['bundle_fingerprint'] == old_fingerprint
+    assert gateway._fingerprint(bundle, execution=True) != old_execution
     run = start(gateway)['run']
     wait_done(gateway, run['run_id'])
     argv = json.loads(Path(run['result_path']).read_text(encoding='utf-8'))['argv']
@@ -422,7 +428,7 @@ def test_invalid_work_lease_never_reaches_native_launch(deployment, monkeypatch,
     config, runtime, bundle = deployment
     bundle['work_lease_seconds'] = bad
     gateway = ExecutionGateway(config)
-    monkeypatch.setattr(gateway_module.subprocess, 'Popen', lambda *a, **kw: pytest.fail('invalid resource control launched'))
+    forbid_model_launch(monkeypatch)
     with pytest.raises(DashboardExecutionError):
         start(gateway)
     assert not (runtime/'calls.txt').exists()
@@ -435,7 +441,7 @@ def test_original_prewrite_refusal_has_positive_proof_and_never_creates_run(depl
     preview={**registration,'can_start':code!='execution_not_ready','inspection_sha256':'b'*64,
         'blocked_reasons':['owner_budget_or_original_work_blocked'] if code=='execution_not_ready' else [],
         'API_requests':0,'database_writes':0}
-    monkeypatch.setattr(gateway,'preview',lambda _:preview)
+    monkeypatch.setattr(gateway,'preview',lambda _, **kwargs:preview)
     monkeypatch.setattr(gateway_module.subprocess,'Popen',lambda *a,**k:pytest.fail('preflight cannot launch'))
     with pytest.raises(DashboardExecutionError) as caught:
         gateway.start({'bundle_id':'test','preview_id':'frozen'})
@@ -665,7 +671,7 @@ def test_recovery_actions_need_no_cached_inspection_but_recheck_when_clicked(dep
     gateway,run_id,path=native_progress_run(deployment,{'Q1':{'status':'pending'}})
     before=path.read_bytes()
     calls=[]
-    def blocked(_):
+    def blocked(_, **kwargs):
         calls.append('fresh')
         raise DashboardExecutionError('owner_transport_unavailable','Original owner unavailable',503)
     monkeypatch.setattr(gateway,'preview',blocked)
@@ -958,6 +964,9 @@ def test_orphaned_absent_pid_does_not_override_changed_bundle_or_original_owner(
     inspector = Path(config['stockqa_root']) / 'src/utils/quick_scan_refresh_inspect_cli.py'
     if change == 'bundle':
         Path(bundle['questions']).write_text('{"changed":true}')
+        admission = Path(bundle['admission_config'])
+        put(admission, {**json.loads(admission.read_text()),
+                        'permission_error':'refresh_admission_execution_input_changed'})
     elif change == 'budget':
         inspector.write_text(inspector.read_text().replace('request.get("available", True)', 'False'))
     else:
@@ -967,7 +976,7 @@ def test_orphaned_absent_pid_does_not_override_changed_bundle_or_original_owner(
     assert ('resume' in gateway.tasks()['tasks'][0]['allowed_actions']) is (change in {'bundle','budget'})
     with pytest.raises(DashboardExecutionError) as raised:
         gateway.control(run_id, 'resume')
-    assert raised.value.code == ('bundle_changed' if change == 'bundle' else 'resume_blocked')
+    assert raised.value.code == 'resume_blocked'
     assert path.read_bytes() == before and not (runtime / 'calls.txt').exists()
 
 
@@ -1161,16 +1170,28 @@ def test_permissions_transport_timeout_is_not_a_model_retry_or_new_preparation(d
 
 
 @pytest.mark.parametrize('work_status',['result_ready','delivered'])
-def test_readonly_recovery_cannot_bypass_current_native_permissions(deployment,work_status):
+@pytest.mark.parametrize('refusal', ['current_permission_error', 'permission_error'])
+def test_readonly_recovery_preserves_original_binding_without_new_send_permission(
+    deployment, work_status, refusal
+):
     config, runtime, bundle = deployment
-    put(Path(bundle['inspection_request']), {'entity_id':'ENT_TEST','available':False,
+    put(Path(bundle['inspection_request']), {'entity_id':'ENT_TEST','available':False,'question_ids':['IQS_05'],
         'work_items':[{'question_id':'IQS_05','status':work_status}]})
     data=json.loads(Path(bundle['admission_config']).read_text())
-    data['permission_error']='delegation_expired_or_future'
+    reason = ('delegation_expired_or_future' if refusal == 'current_permission_error'
+              else 'refresh_admission_execution_input_changed')
+    data[refusal] = reason
     put(Path(bundle['admission_config']),data)
-    preview=ExecutionGateway(config).preview({'bundle_id':'test'})
-    assert preview['readonly_recovery'] is True and preview['can_start'] is False
-    assert preview['blocked_reasons']==['delegation_expired_or_future']
+    gateway = ExecutionGateway(config)
+    preview=gateway.preview({'bundle_id':'test'})
+    assert preview['readonly_recovery'] is True
+    assert preview['can_start'] is (refusal == 'current_permission_error')
+    assert preview['blocked_reasons'] == ([] if refusal == 'current_permission_error' else [reason])
+    if refusal == 'current_permission_error':
+        assert preview['permissions_check']['inspection_mode'] == 'paid_response_recovery'
+    else:
+        with pytest.raises(DashboardExecutionError):
+            gateway.start({'bundle_id':'test'})
     assert not (runtime/'calls.txt').exists()
 
 
@@ -1195,7 +1216,7 @@ def test_missing_or_wrong_identity_and_config_block_before_launch(deployment):
 
 def test_budget_block_is_not_zero_success(deployment):
     config, runtime, bundle = deployment
-    put(Path(bundle["inspection_request"]), {"entity_id": "ENT_TEST", "available": False})
+    put(Path(bundle["inspection_request"]), {"entity_id": "ENT_TEST", "available": False, 'question_ids':['Q1']})
     result = ExecutionGateway(config).preview({"bundle_id": "test"})
     assert result["status"] == "blocked" and result["can_start"] is False
     assert not (runtime / "calls.txt").exists()
@@ -1356,8 +1377,8 @@ def test_start_refuses_input_change_during_current_owner_read_without_requiring_
     config, runtime, bundle = deployment
     gateway = ExecutionGateway(config)
     original = gateway._registered_permissions
-    def changed_inputs(*args):
-        result = original(*args)
+    def changed_inputs(*args, **kwargs):
+        result = original(*args, **kwargs)
         Path(bundle['questions']).write_text('changed during this current native check')
         return result
     monkeypatch.setattr(gateway,'_registered_permissions',changed_inputs)
@@ -1408,6 +1429,8 @@ def test_native_keyed_work_items_and_g2b_envelope_do_not_require_fixture_flat_sh
     identity=Path(bundle['identity_snapshot'])
     assert identity.is_relative_to(tmp_path)
     put(identity,{'schema_version':'2.0.0','payload':{'entity_id':'ENT_TEST'}})
+    put(Path(bundle['inspection_request']), {'entity_id':'ENT_TEST', 'question_ids':['IQS_05'],
+        'work_items':[{'question_id':'IQS_05', 'work_item_id':'WORK_original', 'status':'pending'}]})
     gateway=ExecutionGateway(config)
     native={'protocol':'stockqa.refresh_inspection/1.0.0','reservation_created':False,'API_requests':0,
         'quote':{'budget_available':False},'work_items':{'IQS_05':{'work_item_id':'WORK_original','status':'result_ready'}}}
@@ -1806,3 +1829,196 @@ def test_unverified_leased_scope_cannot_enter_paid_capture_recovery(deployment, 
         'status': 'passed', 'received_response_scope_verified': False})
     with pytest.raises(DashboardExecutionError, match='原登记范围'):
         gateway._seal_preflight(json.loads(path.read_text()), bundle)
+
+
+@pytest.mark.parametrize('action', ['preview', 'start', 'resume', 'existing_start'])
+def test_paid_only_normal_entry_uses_original_recovery_without_new_send_inputs(
+    deployment, monkeypatch, action
+):
+    config, runtime, bundle = deployment
+    put(Path(bundle['manifest']), {'profile': {'entity_id':'ENT_TEST', 'security_id':'SEC_A',
+        'as_of':'2026-10-31', 'ticker':'TEST', 'exchange':'NASDAQ'}})
+    put(Path(bundle['owner_config']), {'subject_key':'ASJ_A@3'})
+    put(Path(bundle['identity_snapshot']), {'entity_id':'ENT_TEST', 'listings':[
+        {'listing_id':'LST_A', 'security_id':'SEC_A', 'ticker':'TEST', 'exchange_raw':'NASDAQ'}]})
+    rows = {'Q1': {'status': 'result_ready'}, 'Q2': {'status': 'delivered'}}
+    gateway, run_id, record_path = native_progress_run(deployment, rows)
+    original = {field: (str(runtime) if field == 'runtime_dir' else bundle.get(field))
+                for field in gateway_module._RECOVERY_FIELDS}
+    if action in {'resume', 'existing_start'}:
+        record = json.loads(record_path.read_text())
+        record.update(process_state='process_exited', launcher_state='paused', exit_code=1,
+                      recovery_inputs=original)
+        put(record_path, record)
+    else:
+        record_path.unlink()  # No previous launch is needed to restore native paid work.
+    admission_path = Path(bundle['admission_config'])
+    admission = json.loads(admission_path.read_text())
+    admission['current_permission_error'] = 'delegation_revoked'
+    put(admission_path, admission)
+    ledger = Path(admission['work_store'])
+    before = ledger.read_bytes()
+    Path(admission['budget_policy_file']).unlink()
+    Path(bundle['spend_authorization']).unlink()
+    (runtime/'llm_apis.json').unlink()
+    bundle.update(pack_size=-1, max_output_tokens=-1, thinking='invalid', work_lease_seconds=-1)
+    if action in {'resume', 'existing_start'}:
+        bundle.update(confirmation_id='rc2_'+'b'*64,
+            admission_config=put(runtime/'future-admission.json', {'permission_error':'foreign_registration'}),
+            questions=put(runtime/'future-questions.json', {'future':True}),
+            manifest=put(runtime/'future-manifest.json', {'profile':{'entity_id':'ENT_OTHER'}}),
+            owner_config=put(runtime/'future-owner.json', {'subject_key':'ASJ_OTHER@1'}),
+            identity_snapshot=put(runtime/'future-identity.json', {'entity_id':'ENT_OTHER'}))
+    monkeypatch.setenv('MODEL_API_KEY', 'synthetic-secret-never-used')
+    monkeypatch.setattr(gateway, '_inspect_work', lambda *a, **kw: pytest.fail('paid work cannot request a new budget quote'))
+    if action == 'preview':
+        result = gateway.preview({'bundle_id':'test'})
+        assert result['can_start'] is True and result['readonly_recovery'] is True
+        assert result['permissions_check']['inspection_mode'] == 'paid_response_recovery'
+        assert not (runtime/'calls.txt').exists()
+    elif action == 'existing_start':
+        from iqs_scan.workbench.dashboard_job_facade import OwnerJobFacade
+
+        before_record = record_path.read_bytes()
+        monkeypatch.setattr(gateway, 'preview', lambda *a, **kw: pytest.fail('pure attachment cannot inspect owner permissions'))
+        registration = gateway.resolve_job_bundle(bundle_id='test', entity_id='ENT_TEST',
+            listing_id='LST_A', analysis_subject_id='ASJ_A', as_of='2026-10-31')
+        for changed in ({'listing_id':'LST_OTHER'}, {'analysis_subject_id':'ASJ_OTHER'}, {'as_of':'2026-11-01'}):
+            request = dict(bundle_id='test', entity_id='ENT_TEST', listing_id='LST_A',
+                           analysis_subject_id='ASJ_A', as_of='2026-10-31')
+            with pytest.raises(DashboardExecutionError):
+                gateway.resolve_job_bundle(**{**request, **changed})
+        assert gateway.bundle_registration('test')['bundle_fingerprint'] == registration['bundle_fingerprint']
+        result = gateway.start(registration)
+        assert result['status'] == 'attached' and result['process_started'] is False
+        assert result['run']['run_id'] == run_id
+        assert OwnerJobFacade._matches_start_reference({'registration':registration}, result['run'])
+        assert result['run']['recovery_inputs'] == original
+        assert record_path.read_bytes() == before_record and not (runtime/'calls.txt').exists()
+    else:
+        result = gateway.start({'bundle_id':'test'}) if action == 'start' else gateway.control(run_id, 'resume')
+        assert result['process_started'] is True and result['paid_dispatch_started'] is False
+        launched_id = result['run']['run_id']
+        wait_done(gateway, launched_id)
+        record = json.loads((gateway.state_root/(launched_id+'.json')).read_text())
+        argv = json.loads(Path(record['result_path']).read_text())['argv']
+        assert '--seal-deliveries' in argv and '--recover-checkpoints' in argv
+        assert '--spend-authorization' not in argv and '--question-pack-size' not in argv
+        assert argv[argv.index('--refresh-admission-config')+1] == original['admission_config']
+        assert argv[argv.index('--refresh-confirmation-id')+1] == original['confirmation_id']
+        assert argv[argv.index('--config')+1] == original['questions']
+        assert 'key=none' in Path(record['log_path']).read_text()
+        assert (runtime/'calls.txt').read_text().splitlines() == ['1']
+    assert ledger.read_bytes() == before
+
+
+def test_mixed_pending_normal_resume_keeps_current_send_admission(deployment):
+    config, runtime, bundle = deployment
+    gateway, run_id, record_path = native_progress_run(deployment, {
+        'Q1': {'status':'result_ready'}, 'Q2': {'status':'pending'}})
+    record = json.loads(record_path.read_text())
+    record.update(process_state='process_exited', launcher_state='paused')
+    admission_path = Path(bundle['admission_config'])
+    admission = json.loads(admission_path.read_text())
+    admission['current_permission_error'] = 'delegation_revoked'
+    put(admission_path, admission)
+    record['bundle_fingerprint'] = gateway._fingerprint(bundle)
+    put(record_path, record)
+    before = record_path.read_bytes()
+    with pytest.raises(DashboardExecutionError) as error:
+        gateway.control(run_id, 'resume')
+    assert error.value.code == 'resume_blocked'
+    assert error.value.details['readonly_recovery'] is False
+    assert 'delegation_revoked' in error.value.details['blocked_reasons']
+    assert record_path.read_bytes() == before and not (runtime/'calls.txt').exists()
+
+
+@pytest.mark.parametrize('fault', ['original_binding', 'entity', 'security_scope', 'original_pending'])
+def test_existing_start_keeps_original_local_reference_without_owner_approval(deployment, monkeypatch, fault):
+    config, runtime, bundle = deployment
+    status = 'pending' if fault == 'original_pending' else 'result_ready'
+    gateway, run_id, record_path = native_progress_run(deployment, {'Q1': {'status': status}})
+    record = json.loads(record_path.read_text())
+    record.update(process_state='process_exited', launcher_state='paused', recovery_inputs={
+        field: (str(runtime) if field == 'runtime_dir' else bundle.get(field))
+        for field in gateway_module._RECOVERY_FIELDS})
+    put(record_path, record)
+    if fault == 'original_binding':
+        admission = Path(bundle['admission_config'])
+        put(admission, {**json.loads(admission.read_text()),
+                        'permission_error': 'refresh_admission_execution_input_changed'})
+    elif fault == 'entity':
+        bundle['entity_id'] = 'ENT_OTHER'
+    elif fault == 'security_scope':
+        bundle['security_scope_id'] = 'SEC_OTHER'
+    else:
+        original = json.loads(Path(bundle['admission_config']).read_text())
+        future_ledger = put(runtime/'future-ledger.sqlite', {'work_items': [{'question_id':'Q1', 'status':'delivered'}]})
+        bundle['admission_config'] = put(runtime/'future-admission.json', {**original, 'work_store':future_ledger})
+    before = record_path.read_bytes()
+    monkeypatch.setattr(gateway, '_call', lambda *a, **kw: pytest.fail('attachment cannot call an owner'))
+    monkeypatch.setattr(gateway, 'preview', lambda *a, **kw: pytest.fail('attachment cannot preflight execution'))
+    if fault in {'entity', 'security_scope'}:
+        with pytest.raises(DashboardExecutionError):
+            gateway.start({'bundle_id':'test'})
+    else:
+        result = gateway.start({'bundle_id':'test'})
+        assert result['status'] == 'attached' and result['process_started'] is False
+        assert result['run']['run_id'] == run_id
+        assert result['run']['bundle_fingerprint'] == record['bundle_fingerprint']
+    assert record_path.read_bytes() == before and not (runtime/'calls.txt').exists()
+
+
+def test_normal_paid_preview_uses_existing_original_registration_context(deployment):
+    _, runtime, bundle = deployment
+    gateway, run_id, record_path = native_progress_run(deployment, {
+        'Q1': {'status':'result_ready'}, 'Q2': {'status':'delivered'}})
+    record = json.loads(record_path.read_text())
+    record.update(process_state='process_exited', launcher_state='paused', recovery_inputs={
+        field: (str(runtime) if field == 'runtime_dir' else bundle.get(field))
+        for field in gateway_module._RECOVERY_FIELDS})
+    put(record_path, record)
+    original = json.loads(Path(bundle['admission_config']).read_text())
+    original_ledger = Path(original['work_store'])
+    future_ledger = original_ledger.with_name('future-ledger.sqlite')
+    put(future_ledger, {'work_items': [
+        {'question_id':'Q1', 'status':'pending'}, {'question_id':'Q2', 'status':'pending'}]})
+    bundle['admission_config'] = put(Path(bundle['admission_config']).with_name('future-admission.json'),
+                                   {**original, 'work_store':str(future_ledger),
+                                    'current_permission_error':'delegation_revoked'})
+    before = (record_path.read_bytes(), original_ledger.read_bytes(), future_ledger.read_bytes())
+    explicit = gateway.preview({'bundle_id':'test'}, _record=record)
+    preview = gateway.preview({'bundle_id':'test'})
+    assert explicit['readonly_recovery'] is True
+    assert preview['readonly_recovery'] is True and preview['can_start'] is True
+    assert preview['bundle_fingerprint'] == record['bundle_fingerprint']
+    assert preview['bundle_fingerprint'] == gateway.bundle_registration('test')['bundle_fingerprint']
+    assert preview['permissions_check']['inspection_mode'] == 'paid_response_recovery'
+    assert [row['status'] for row in preview['inspection']['work_items']] == ['result_ready','delivered']
+    assert (record_path.read_bytes(), original_ledger.read_bytes(), future_ledger.read_bytes()) == before
+    assert not (runtime/'calls.txt').exists()
+
+
+@pytest.mark.parametrize('action', ['preview', 'start'])
+@pytest.mark.parametrize('unused_control', [float('inf'), float('nan')])
+def test_paid_operation_never_serializes_unrelated_send_controls(deployment, action, unused_control):
+    config, runtime, bundle = deployment
+    put(Path(bundle['inspection_request']), {'entity_id':'ENT_TEST', 'question_ids':['Q1'],
+        'work_items':[{'question_id':'Q1', 'status':'result_ready'}]})
+    bundle['work_lease_seconds'] = unused_control
+    gateway = ExecutionGateway(config)
+    registration = gateway.resolve_job_bundle(bundle_id='test', entity_id='ENT_TEST',
+        listing_id=None, analysis_subject_id=None, as_of=None)
+    assert registration['bundle_fingerprint'] == gateway.bundle_registration('test')['bundle_fingerprint']
+    if action == 'preview':
+        preview = gateway.preview({'bundle_id':'test'})
+        assert preview['can_start'] is True and preview['readonly_recovery'] is True
+        assert preview['bundle_fingerprint'] == registration['bundle_fingerprint']
+        assert not (runtime/'calls.txt').exists()
+    else:
+        result = gateway.start(registration)
+        wait_done(gateway, result['run']['run_id'])
+        assert result['paid_dispatch_started'] is False
+        assert result['run']['bundle_fingerprint'] == registration['bundle_fingerprint']
+        argv = json.loads(Path(result['run']['result_path']).read_text())['argv']
+        assert '--seal-deliveries' in argv and '--work-lease-seconds' not in argv
