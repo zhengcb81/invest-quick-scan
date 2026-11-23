@@ -9,10 +9,11 @@ from .feedback_io import (
     diagnose_feedback,
     feedback_path,
 )
-from .json_io import replace_after_readers_close
+from .json_io import physical_path, replace_after_readers_close
 from .process_logs import read_process_log, redacted_output_lines, register_process_log
 from .runtime_feedback import (
     RuntimeArgumentParser,
+    child_feedback_environment,
     exception_diagnostic,
     operation_scope,
     operation_state_root,
@@ -46,6 +47,7 @@ __all__ = (
     "FEEDBACK_RUN_ENV",
     "FEEDBACK_SCHEMA",
     "RuntimeArgumentParser",
+    "child_feedback_environment",
     "JsonSchemaValidationError",
     "ROUTE_SCHEMA",
     "append_feedback",
@@ -75,6 +77,7 @@ __all__ = (
     "profile_descriptor",
     "question_definition_sha256",
     "read_json",
+    "physical_path",
     "replace_after_readers_close",
     "seal_release",
     "seal_route_decision",

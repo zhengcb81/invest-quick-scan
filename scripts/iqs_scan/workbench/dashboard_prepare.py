@@ -23,6 +23,7 @@ import sys
 import threading
 import uuid
 
+from ..foundation.api import child_feedback_environment, operation_scope
 from .dashboard_json import decode_owner_json, owner_refusal
 
 ROOT = REPO_ROOT
@@ -99,6 +100,7 @@ def _env():
     value = {key: val for key, val in os.environ.items() if key.upper() in {
         "SYSTEMROOT", "WINDIR", "PATH", "PATHEXT", "COMSPEC", "USERPROFILE",
         "APPDATA", "LOCALAPPDATA", "SYSTEMDRIVE", "TEMP", "TMP", "TMPDIR"}}
+    value.update(child_feedback_environment())
     value.update(PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
     return value
 
@@ -468,6 +470,7 @@ class PrepareGateway:
             raise DashboardPrepareError("preparation_not_configured", "Preparation state must belong to IQS", 503)
         return state
 
+    @operation_scope()
     def _worker(self, operation, payload):
         self._deployment()
         timeout = 60 if operation == "snapshot" else _timeouts(self.config)[0]
@@ -875,7 +878,20 @@ def _route_command(config, action, subject_key, arguments, *, release_root):
     return result['payload']
 
 
+@operation_scope()
 def _native_cli(config, kind, module, arguments, *, input_value=None, owner_operation=None, timeout_override=None):
+    from ..foundation.api import record_operation_failure
+
+    try:
+        return _native_command(config, kind, module, arguments, input_value, owner_operation, timeout_override)
+    except DashboardPrepareError as error:
+        diagnostic = record_operation_failure(error, "prepare.owner", code=error.code,
+                                              directory=config.get("state_root"), refusal=400 <= error.status < 500)
+        error.details.setdefault("failure_diagnostic", diagnostic)
+        raise
+
+
+def _native_command(config, kind, module, arguments, input_value, owner_operation, timeout_override):
     code_root = config["stockwiki_root" if kind == "wiki" else "stockqa_root"]
     interpreter = config.get("stockwiki_python" if kind == "wiki" else "stockqa_python") or sys.executable
     env = _env()

@@ -1806,3 +1806,61 @@ def test_unverified_leased_scope_cannot_enter_paid_capture_recovery(deployment, 
         'status': 'passed', 'received_response_scope_verified': False})
     with pytest.raises(DashboardExecutionError, match='原登记范围'):
         gateway._seal_preflight(json.loads(path.read_text()), bundle)
+
+
+@pytest.mark.parametrize("route", ["settings", "prepare", "prepare-stdout", "registered-launch"])
+@pytest.mark.parametrize("scoped", [False, True])
+def test_real_child_and_iqs_failure_share_scope_without_global_mutation(deployment, tmp_path, monkeypatch, route, scoped):
+    import os
+
+    from iqs_scan.workbench import dashboard_prepare
+    from iqs_scan.workbench.dashboard_errors import DashboardExecutionError
+
+    config, runtime, _ = deployment
+    owner = Path(config["stockqa_root"])
+    inbox = tmp_path / "observations"
+    native = tmp_path / "actual-child.json"
+    run_key = "RESEARCH_FEEDBACK_RUN_ID"
+    attempt_key = "RESEARCH_FEEDBACK_ATTEMPT_ID"
+    monkeypatch.setenv("RESEARCH_FEEDBACK_DIR", str(inbox))
+    monkeypatch.delenv("RESEARCH_FEEDBACK_OUT", raising=False)
+    for key, value in ((run_key, "outer-operation"), (attempt_key, "original-attempt")):
+        if scoped:
+            monkeypatch.setenv(key, value)
+        else:
+            monkeypatch.delenv(key, raising=False)
+    child = (
+        "import json,os,sys\nfrom pathlib import Path\n"
+        f"Path({str(native)!r}).write_text(json.dumps([os.getenv({run_key!r}),os.getenv({attempt_key!r})]))\n"
+        "print('{\"error_code\":\"provider_unavailable\"}',file=sys.stderr)\nraise SystemExit(43)\n"
+    )
+    gateway = ExecutionGateway(config)
+    if route == "settings":
+        (owner / "src/utils/quick_scan_model_policy_cli.py").write_text(child, encoding="utf8")
+        with pytest.raises(DashboardExecutionError):
+            gateway.settings()
+    elif route.startswith("prepare"):
+        if route == "prepare-stdout":
+            child = child.replace(",file=sys.stderr", "")
+        (owner / "src/utils/test_preparation_owner.py").write_text(child, encoding="utf8")
+        with pytest.raises(dashboard_prepare.DashboardPrepareError):
+            dashboard_prepare._native_cli(config, "qa", "src.utils.test_preparation_owner", [])
+    else:
+        (owner / "main_with_llm.py").write_text(child, encoding="utf8")
+        response = gateway.start({"bundle_id": "test"})
+        assert response["status"] == "started"
+
+    import time
+    deadline = time.monotonic() + 12
+    while time.monotonic() < deadline and not list(inbox.glob("feedback-*.ready")):
+        time.sleep(.04)
+    marker, = inbox.glob("feedback-*.ready")
+    receipt = json.loads(marker.with_suffix(".jsonl").read_bytes())
+    assert native.is_file()
+    child_ids = json.loads(native.read_bytes())
+    assert all(child_ids)
+    assert child_ids == [receipt["run_id"], receipt["attempt_id"]]
+    if scoped:
+        assert child_ids == ["outer-operation", "original-attempt"]
+    else:
+        assert run_key not in os.environ and attempt_key not in os.environ

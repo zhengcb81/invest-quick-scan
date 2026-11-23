@@ -14,7 +14,7 @@ import sys
 import uuid
 
 from .feedback_io import FEEDBACK_SCHEMA, append_feedback
-from .json_io import atomic_write_json
+from .json_io import atomic_write_json, physical_path
 
 OWNER = "invest-quick-scan"
 DEFAULT_STATE_ROOT = Path(__file__).resolve().parents[3] / "runs" / "dashboard-runtime"
@@ -22,9 +22,27 @@ REFERENCE = "iqs:diagnostic/"
 _SCOPE = ContextVar("iqs_operation_scope", default=(None, None))
 
 
+def operation_identifiers(run_id=None, attempt_id=None):
+    inherited_run, inherited_attempt = _SCOPE.get()
+    run = _scope(os.environ.get("RESEARCH_FEEDBACK_RUN_ID") or run_id or inherited_run, "run-" + uuid.uuid4().hex)
+    attempt = _scope(os.environ.get("RESEARCH_FEEDBACK_ATTEMPT_ID") or attempt_id or inherited_attempt,
+                     "attempt-" + uuid.uuid4().hex)
+    return run, attempt
+
+
+def child_feedback_environment(run_id=None, attempt_id=None):
+    """Return this child's public tracing fields without changing the process environment."""
+    run, attempt = operation_identifiers(run_id, attempt_id)
+    fields = {"RESEARCH_FEEDBACK_RUN_ID": run, "RESEARCH_FEEDBACK_ATTEMPT_ID": attempt}
+    for key in ("RESEARCH_FEEDBACK_OUT", "RESEARCH_FEEDBACK_DIR"):
+        if os.environ.get(key):
+            fields[key] = os.environ[key]
+    return fields
+
+
 @contextmanager
-def operation_scope(run_id, attempt_id=None):
-    token = _SCOPE.set((run_id, attempt_id))
+def operation_scope(run_id=None, attempt_id=None):
+    token = _SCOPE.set(operation_identifiers(run_id, attempt_id))
     try:
         yield
     finally:
@@ -131,7 +149,7 @@ def _diagnostic_path(directory, reference):
     match = re.fullmatch(re.escape(REFERENCE) + "([0-9a-f]{32})", reference)
     if not match:
         raise ValueError("invalid_diagnostic_reference")
-    return directory / "diagnostics" / (match[1] + ".jsonl")
+    return physical_path(directory / "diagnostics" / (match[1] + ".jsonl"))
 
 
 def read_operation_failure(directory, reference, *, republish=False):
@@ -168,8 +186,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         original_run, original_attempt = _SCOPE.get()
         run_id = run_id or original_run
         attempt_id = attempt_id or original_attempt
-        run = _scope(os.environ.get("RESEARCH_FEEDBACK_RUN_ID") or run_id, "run-" + uuid.uuid4().hex)
-        attempt = _scope(os.environ.get("RESEARCH_FEEDBACK_ATTEMPT_ID") or attempt_id, "attempt-" + uuid.uuid4().hex)
+        run, attempt = operation_identifiers(run_id, attempt_id)
         stage = _scope(stage, "operation")
         code = code if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code) else "execution_failed"
         identity = [OWNER, run, attempt, stage, "operation-outcome"]

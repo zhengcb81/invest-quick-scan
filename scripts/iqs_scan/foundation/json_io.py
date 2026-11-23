@@ -11,6 +11,19 @@ PUBLIC_API_EXPORTS = frozenset({
 })
 
 
+def physical_path(path):
+    """Convert only at the local I/O boundary so Windows can open long owner roots."""
+    result = Path(path)
+    if os.name != "nt":
+        return result
+    absolute = os.path.abspath(result)
+    if absolute.startswith("\\\\?\\"):
+        return Path(absolute)
+    if absolute.startswith("\\\\"):
+        return Path("\\\\?\\UNC\\" + absolute[2:])
+    return Path("\\\\?\\" + absolute)
+
+
 def replace_after_readers_close(source, destination):
     """Publish a completed local file despite transient Windows reader sharing."""
     for delay in (0.005, 0.01, 0.02, 0.04, 0.04, 0.04, 0.04, None):
@@ -25,6 +38,7 @@ def replace_after_readers_close(source, destination):
 
 def atomic_write_json(path, value):
     """Publish a complete JSON record on the same volume."""
+    path = physical_path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name("." + uuid.uuid4().hex + path.suffix)
     try:

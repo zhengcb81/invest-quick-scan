@@ -292,3 +292,31 @@ def test_two_direct_failures_of_same_named_run_keep_distinct_native_attempts(tmp
     assert len(events) == 2
     assert len({row["attempt_id"] for row in events}) == 2
     assert len({row["actual"] for row in events}) == 2
+
+
+def test_long_owner_outbox_can_be_reopened_without_starting_the_original_business(tmp_path):
+    import shutil
+
+    def physical(path):
+        return Path("\\\\?\\" + str(path.absolute())) if os.name == "nt" else path
+
+    base = tmp_path / "deep"
+    nested = base.joinpath(*["data-root-segment-0123456789" for _ in range(14)])
+    inbox, runs = nested / "observations", nested / "runs"
+    actual = tmp_path / "original-run"
+    actual.mkdir()
+    try:
+        physical(inbox).mkdir(parents=True)
+        env = dict(os.environ, IQS_FEEDBACK_RUNS_ROOT=str(runs), RESEARCH_FEEDBACK_DIR=str(inbox))
+        env.pop("RESEARCH_FEEDBACK_OUT", None)
+        original = call("scan_result_check.py", ["--run", actual], env)
+        assert original.returncode == 2
+        row, = read_owner_outbox(physical(inbox))
+        for _ in range(2):
+            cold = call("iqs_feedback_owner.py", ["--runs-root", runs, "get-diagnostic", row["details_ref"]], env)
+            assert cold.returncode == 0
+            assert json.loads(cold.stdout)["diagnostic"]["observation"] == row
+        assert not list(actual.iterdir())
+    finally:
+        if physical(base).exists():
+            shutil.rmtree(physical(base))

@@ -21,7 +21,9 @@ from datetime import datetime, timezone
 from contextlib import contextmanager
 import uuid
 
-from ..foundation.api import redacted_output_lines, register_process_log, replace_after_readers_close
+from ..foundation.api import (
+    child_feedback_environment, operation_scope, physical_path, redacted_output_lines, register_process_log, replace_after_readers_close,
+)
 from .dashboard_locks import control_lock, ControlBusyError
 
 
@@ -310,15 +312,24 @@ class ExecutionGateway:
                     inputs[name] = "unavailable"
         return _digest({"registration": bundle, "input_bytes": inputs})
 
-    def _environment(self, root, *, paid=False):
+    def _environment(self, root, *, paid=False, record=None):
         env = dict(os.environ)
         if not paid:
             for key in list(env):
                 if re.search(r"(?:KEY|TOKEN|SECRET|PASSWORD|LIVE_E2E)", key, re.I):
                     env.pop(key, None)
+        if record is None:
+            env.update(child_feedback_environment())
+        else:
+            original_run = record.get("feedback_run_id") or record["run_id"]
+            keys = child_feedback_environment(original_run, str(record["launch_attempt"]))
+            record["feedback_run_id"] = keys["RESEARCH_FEEDBACK_RUN_ID"]
+            record["feedback_attempt_id"] = keys["RESEARCH_FEEDBACK_ATTEMPT_ID"]
+            env.update(keys)
         env.update(PYTHONPATH=str(root), PYTHONUTF8="1", PYTHONDONTWRITEBYTECODE="1")
         return env
 
+    @operation_scope()
     def _call(self, command, root, runtime, *, input_value=None):
         from ..foundation.api import record_operation_failure
         try:
@@ -557,6 +568,7 @@ class ExecutionGateway:
         original = record.get('recovery_inputs')
         return {**bundle, **{key: original[key] for key in _RECOVERY_FIELDS if key in original}} if isinstance(original, dict) else bundle
 
+    @operation_scope()
     def preview(self, payload, *, read_only=False, check_permissions=True, _record=None):
         key, bundle = self._select(payload, recovery=read_only)
         if read_only and _record is not None:
@@ -840,6 +852,7 @@ class ExecutionGateway:
             record.update(process_state="needs_original_inspection", recovery="inspect_original_owner_no_automatic_resend")
         return {"status": "attached", "run": record, "process_started": False, "paid_dispatch_started": None}
 
+    @operation_scope()
     def start(self, payload):
         selection = dict(payload) if isinstance(payload, dict) else payload
         expected = selection.pop('bundle_fingerprint', None) if isinstance(selection, dict) else None
@@ -886,15 +899,14 @@ class ExecutionGateway:
                 record['recovery_inputs'] = {field: (str(runtime) if field == 'runtime_dir' else bundle.get(field))
                                              for field in _RECOVERY_FIELDS}
                 path = self.state_root / (run_id + ".json")
+                child_env = self._environment(root, paid=True, record=record)
                 _write(path, record)  # A crash now requires inspection, never blind resend.
                 try:
                     process = subprocess.Popen(self._command(bundle, root, folder / "result.json"), cwd=runtime,
-                        env=self._environment(root, paid=True), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                        env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                 except OSError as exc:
-                    from ..foundation.api import record_operation_failure
-                    diagnostic = record_operation_failure(exc, "execution.launch", code="launch_failed",
-                                                          directory=self.state_root, run_id=run_id)
+                    diagnostic = self._failed_launch(exc, record)
                     record.update(process_state="launch_failed", finished_at=_now(), exit_code=None,
                                   failure_diagnostic=diagnostic)
                     _write(path, record)
@@ -908,6 +920,13 @@ class ExecutionGateway:
                     threading.Thread(target=self._finish, args=(process, path, record), daemon=True).start()
                 return {"status": "started", "run": record, "process_started": True, "paid_dispatch_started": None}
 
+    def _failed_launch(self, error, record):
+        from ..foundation.api import record_operation_failure
+
+        return record_operation_failure(error, "execution.launch", code="launch_failed", directory=self.state_root,
+                                        run_id=record.get("feedback_run_id") or record["run_id"],
+                                        attempt_id=record.get("feedback_attempt_id") or str(record.get("launch_attempt", 1)))
+
     def _finish(self, process, path, record):
         secret_values = [value for key, value in os.environ.items() if re.search(r"KEY|TOKEN|SECRET|PASSWORD", key, re.I) and len(value) >= 8]
         from ..foundation.api import record_operation_failure
@@ -915,7 +934,8 @@ class ExecutionGateway:
         def note(error, stage, code):
             return record_operation_failure(error, stage, code=code, directory=self.state_root,
                                             evidence_ref=record.get("process_log_ref"),
-                                            run_id=record["run_id"], attempt_id=str(record.get("launch_attempt", 1)))
+                                            run_id=record.get("feedback_run_id") or record["run_id"],
+                                            attempt_id=record.get("feedback_attempt_id") or str(record.get("launch_attempt", 1)))
 
         def log_failed(error):
             if not record.get("log_tracking_incomplete"):
@@ -925,7 +945,7 @@ class ExecutionGateway:
         log = None
         try:
             try:
-                log = Path(record["log_path"]).open("w", encoding="utf-8", newline="")
+                log = physical_path(record["log_path"]).open("w", encoding="utf-8", newline="")
                 reference = register_process_log(self.state_root, record["log_path"], record["run_id"])
                 if reference:
                     record["process_log_ref"] = reference
@@ -1039,16 +1059,19 @@ class ExecutionGateway:
                     result_path=str(self.state_root / run_id / f'result-seal-{attempt}.json'),
                     log_path=str(self.state_root / run_id / f'process-seal-{attempt}.log'),
                     process_state='starting', launcher_state='running')
+                child_env = self._environment(root, paid=False, record=record)
                 _write(path, record)
                 try:
                     process = subprocess.Popen(self._command(bundle, root, record['result_path'], recovery=True),
-                        cwd=runtime, env=self._environment(root, paid=False), stdout=subprocess.PIPE,
+                        cwd=runtime, env=child_env, stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
-                except OSError:
-                    record.update(process_state='launch_failed', launcher_state='paused')
+                except OSError as error:
+                    diagnostic = self._failed_launch(error, record)
+                    record.update(process_state='launch_failed', launcher_state='paused', failure_diagnostic=diagnostic)
                     _write(path, record)
-                    raise DashboardExecutionError('launch_failed', '无法启动原回答恢复进程。', 503) from None
+                    raise DashboardExecutionError('launch_failed', '无法启动原回答恢复进程。', 503,
+                                                  {'failure_diagnostic': diagnostic}) from error
                 record.update(process_state='running', pid=process.pid)
                 _write(path, record)
                 self._processes[run_id] = process
@@ -1105,15 +1128,18 @@ class ExecutionGateway:
                               log_path=str(self.state_root / run_id / f"process-{attempt}.log"), process_state="starting",
                               launcher_state="running", resumed_at=_now())
                 record.pop('operation', None)  # A normal native resume may send; it is no longer a seal-only operation.
+                child_env = self._environment(root, paid=True, record=record)
                 _write(path, record)
                 try:
                     process = subprocess.Popen(self._command(bundle, root, record["result_path"]), cwd=runtime,
-                        env=self._environment(root, paid=True), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                        env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-                except OSError:
-                    record.update(process_state="launch_failed", launcher_state="paused")
+                except OSError as error:
+                    diagnostic = self._failed_launch(error, record)
+                    record.update(process_state="launch_failed", launcher_state="paused", failure_diagnostic=diagnostic)
                     _write(path, record)
-                    raise DashboardExecutionError("launch_failed", "无法恢复原执行器", 503) from None
+                    raise DashboardExecutionError("launch_failed", "无法恢复原执行器", 503,
+                                                  {"failure_diagnostic": diagnostic}) from error
                 record.update(process_state="running", pid=process.pid)
                 self._processes[run_id] = process
                 try:
@@ -1195,6 +1221,7 @@ class ExecutionGateway:
         return {**{key: result[key] for key in ("policy", "revision_sha256", "provider_config_refs",
                     "provider_metadata_available", "effective", "API_requests")}, "provider_choices": choices}
 
+    @operation_scope()
     def settings(self):
         try:
             path, root = self._settings_path()

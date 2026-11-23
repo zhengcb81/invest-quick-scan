@@ -52,6 +52,8 @@ def original_process(tmp_path):
 @pytest.mark.parametrize("fault", ["open", "write", "flush"])
 def test_optional_log_failure_never_stops_stdout_drain_or_process_wait(tmp_path, monkeypatch, fault):
     gateway, process, record, path, waits = original_process(tmp_path)
+    from iqs_scan.foundation.api import physical_path
+
     original_open = Path.open
 
     class BrokenLog(io.StringIO):
@@ -65,7 +67,7 @@ def test_optional_log_failure_never_stops_stdout_drain_or_process_wait(tmp_path,
                 raise OSError(13, SECRET)
 
     def opening(target, *args, **kwargs):
-        if target == Path(record["log_path"]):
+        if target == physical_path(record["log_path"]):
             if fault == "open":
                 raise OSError(13, SECRET)
             return BrokenLog()

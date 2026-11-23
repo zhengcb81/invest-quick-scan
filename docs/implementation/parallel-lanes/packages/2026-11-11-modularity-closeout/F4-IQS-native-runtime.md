@@ -39,3 +39,7 @@ python -B -m tools.feedback_loop.intake --settings SETTINGS --hosts HOSTS drain 
 真实跨仓验收在独占短临时目录运行，IQS 源码 9a33d65985737435c0b9b9aee4d4c7a46916017d，CWP 宿主 0d580d75ee5c6bce911b4e4cf04550847a3c47a9。使用同一原生真实运行与两份真实阴性对照，旧版脚本从 3dde7fa6 本地 Git 读取。模拟在修复和回告落盘后、宿主收到 stdout 前退出进程，随后真实 local_host recover 分别从 get-action 取回原修复和回告。重复投递后四种动作各执行一次，后续完整 intake run 无人干预收到回告并清空等待队列。探针捕获外部网络事件为零，核对三份运行的 9 个原文件 SHA 和修改时间一致。
 
 [脱敏机器收据](evidence/f4-iqs-coverage/native-runtime.json)保存执行版本、真实发生、原修复与回告 ID、阴性对照与恢复计数。8 个独立测试目录已清理。发布与组合复验由 ROOT 接收候选后进行。
+
+## 日常调用的收件与部署
+
+普通拒绝、作业非零退出、按 runs 根冷读、已有人为绑定或自动分配的子进程运行编号以及 Windows 物理长路径，由 [本仓日常运行 F4 计划](f4-runtime-failures/task_plan.md) 统一维护。IQS 的收件根在已配置的 state_root/observations。StockQA 子进程使用所属代码根下的 logs/.feedback/observations；实际付款仍查 bundle 原有 admission_config.work_store。

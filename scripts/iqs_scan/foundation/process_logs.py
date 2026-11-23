@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 import uuid
 
-from .json_io import atomic_write_json
+from .json_io import atomic_write_json, physical_path
 
 
 PREFIX = "iqs:process-log/"
@@ -96,9 +96,9 @@ def redacted_output_lines(stream, secrets):
 
 def register_process_log(state_root, log_path, run_id):
     """Bind an original owner-created log under its state root; never copy its contents."""
-    root = Path(state_root).resolve()
+    root = physical_path(state_root).resolve()
     try:
-        relative = Path(log_path).resolve().relative_to(root)
+        relative = physical_path(log_path).resolve().relative_to(root)
         if relative.suffix != ".log":
             return None
         relative_name = relative.as_posix()
@@ -118,7 +118,7 @@ def read_process_log(state_root, reference, *, offset=0, limit=65536, tail_bytes
     key = re.fullmatch(re.escape(PREFIX) + "([0-9a-f]{32})", reference)
     if not key:
         raise ValueError("invalid_log_reference")
-    root = Path(state_root).resolve()
+    root = physical_path(state_root).resolve()
     binding = json.loads((root / "process-log-refs" / (key[1] + ".json")).read_bytes())
     relative_name = binding["relative_log"]
     target = (root / relative_name).resolve()

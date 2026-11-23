@@ -5,6 +5,8 @@ import os
 from pathlib import Path
 import sys
 
+from .json_io import physical_path
+
 FEEDBACK_SCHEMA = "feedback-observation/1"
 FEEDBACK_OUT_ENV = "RESEARCH_FEEDBACK_OUT"
 FEEDBACK_RUN_ENV = "RESEARCH_FEEDBACK_RUN_ID"
@@ -41,6 +43,7 @@ def append_feedback(path, rows):
             + "\n"
             for row in rows
         )
+        path = physical_path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("a+b") as handle:
             separator = b""
