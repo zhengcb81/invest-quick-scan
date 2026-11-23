@@ -43,3 +43,5 @@ python -B -m tools.feedback_loop.intake --settings SETTINGS --hosts HOSTS drain 
 ## 日常调用的收件与部署
 
 普通拒绝、作业非零退出、按 runs 根冷读、已有人为绑定或自动分配的子进程运行编号以及 Windows 物理长路径，由 [本仓日常运行 F4 计划](f4-runtime-failures/task_plan.md) 统一维护。IQS 的收件根在已配置的 state_root/observations。StockQA 子进程使用所属代码根下的 logs/.feedback/observations；实际付款仍查 bundle 原有 admission_config.work_store。
+
+当前 86385f3 在带显式或自动运行编号的真实 IQS→StockQA 检查均已由总控独立复验。证据见 [本仓进展](f4-runtime-failures/progress.md#2026-11-23-总控独立复验和发布)。
