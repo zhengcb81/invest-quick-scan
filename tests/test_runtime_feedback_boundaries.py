@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+from threading import Event, Thread
 
 import pytest
 
@@ -57,6 +58,149 @@ def test_scan_failure_uses_the_native_outbox_without_a_launcher(tmp_path, scenar
     entry = json.loads(look.stdout)["diagnostic"]
     assert entry["observation"]["details_ref"] == ref
     assert not (tmp_path / "empty.sqlite").exists()
+    log = run.parent / "dashboard-runtime" / "runtime-failures.jsonl"
+    local, = (json.loads(line) for line in log.read_bytes().splitlines())
+    assert local["run_id"] == failed[0]["run_id"]
+    assert local["step_id"] == failed[0]["step_id"]
+    assert local["chain"] == entry["chain"]
+    assert local["timestamp_utc"].endswith("Z")
+
+
+def test_local_log_records_failures_when_outbox_is_unavailable(tmp_path, monkeypatch, capsys):
+    from iqs_scan.foundation.api import record_operation_failure
+
+    sidecar = tmp_path / "blocked"
+    sidecar.mkdir()
+    monkeypatch.setenv("RESEARCH_FEEDBACK_OUT", str(sidecar))
+    failure = ValueError("Bearer synthetic-secret-value")
+    result = record_operation_failure(failure, "fixture.publish", directory=tmp_path,
+                                      run_id="same-run", attempt_id="same-attempt")
+    assert result["recorded"] and not result["feedback_recorded"]
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "tracking incomplete" in captured.err
+    raw = (tmp_path / "runtime-failures.jsonl").read_text(encoding="utf8")
+    assert "synthetic-secret-value" not in raw
+    record = json.loads(raw)
+    assert record["run_id"] == "same-run"
+    assert record["chain"][0]["type"] == "ValueError"
+
+
+def test_local_log_rotates_without_losing_concurrent_process_failures(tmp_path, monkeypatch):
+    from iqs_scan.foundation.api import record_operation_failure
+
+    monkeypatch.delenv("RESEARCH_FEEDBACK_OUT", raising=False)
+    monkeypatch.delenv("RESEARCH_FEEDBACK_DIR", raising=False)
+    monkeypatch.delenv("RESEARCH_FEEDBACK_RUN_ID", raising=False)
+    monkeypatch.delenv("RESEARCH_FEEDBACK_ATTEMPT_ID", raising=False)
+    root = tmp_path / "parallel"
+    root.mkdir()
+    logfile = root / "runtime-failures.jsonl"
+    logfile.write_bytes(b"x" * (2 * 1024 * 1024 - 1) + b"\n")
+    script = ("from iqs_scan.foundation.api import record_operation_failure; "
+              "from pathlib import Path; import sys; "
+              "record_operation_failure(ValueError('fixture'), 'fixture.worker', directory=Path(sys.argv[1]), "
+              "run_id=sys.argv[2], attempt_id='one')")
+    env = {**os.environ, "PYTHONPATH": str(ROOT / "scripts")}
+    processes = [subprocess.Popen([sys.executable, "-B", "-c", script, str(root), f"worker-{i}"],
+                                  env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE) for i in range(4)]
+    try:
+        for process in processes:
+            out, err = process.communicate(timeout=20)
+            assert (process.returncode, out, err) == (0, b"", b"")
+    finally:
+        for process in processes:
+            if process.poll() is None:
+                process.kill()
+                process.communicate(timeout=5)
+    result = record_operation_failure(RuntimeError("fixture"), "fixture.worker", directory=root,
+                                      run_id="parent", attempt_id="one")
+    assert result["recorded"]
+    assert logfile.with_suffix(".jsonl.1").stat().st_size == 2 * 1024 * 1024
+    rows = [json.loads(line) for line in logfile.read_bytes().splitlines()]
+    assert sorted(row["run_id"] for row in rows) == ["parent", "worker-0", "worker-1", "worker-2", "worker-3"]
+
+
+def test_local_log_keeps_new_record_after_an_interrupted_line(tmp_path, monkeypatch):
+    from iqs_scan.foundation.api import record_operation_failure
+
+    monkeypatch.delenv("RESEARCH_FEEDBACK_OUT", raising=False)
+    monkeypatch.delenv("RESEARCH_FEEDBACK_DIR", raising=False)
+    log = tmp_path / "runtime-failures.jsonl"
+    log.write_bytes(b'{"previous":"incomplete')
+    result = record_operation_failure(RuntimeError("next entry"), "fixture.recovered", directory=tmp_path)
+    assert result["recorded"] and result["feedback_recorded"]
+    interrupted, current = log.read_bytes().splitlines()
+    assert interrupted == b'{"previous":"incomplete'
+    assert json.loads(current)["chain"][0]["type"] == "RuntimeError"
+
+
+def test_original_preparation_failure_survives_a_busy_job_control_lock(tmp_path, monkeypatch):
+    from iqs_scan.workbench.dashboard_jobs import PreparationJobs
+    from iqs_scan.workbench.dashboard_locks import control_lock
+
+    diagnostics = tmp_path / "state"
+    outbox = tmp_path / "outbox"
+    monkeypatch.setenv("RESEARCH_FEEDBACK_DIR", str(outbox))
+    monkeypatch.delenv("RESEARCH_FEEDBACK_OUT", raising=False)
+
+    class Preparer:
+        calls = 0
+
+        def apply(self, payload):
+            self.calls += 1
+            raise PermissionError(13, "secret value")
+
+    preparer = Preparer()
+    jobs = PreparationJobs(preparer, tmp_path / "jobs", lambda result: pytest.fail("unexpected registration"),
+                           diagnostic_root=diagnostics)
+    record = {"job_id": "prepjob_" + "a" * 32, "session": "fixture-session", "state": "preparing"}
+    with control_lock(jobs.state_root / "jobs.lock"):
+        worker = Thread(target=jobs._run, args=(jobs.state_root / "original.json", record, {}))
+        worker.start()
+        worker.join(timeout=5)
+        assert not worker.is_alive()
+    item, = read_owner_outbox(outbox)
+    assert (item["step_id"], item["run_id"]) == ("prepare.apply", record["job_id"])
+    saved = call("iqs_feedback_owner.py", ["get-diagnostic", item["details_ref"], "--state-root", diagnostics], os.environ)
+    assert saved.returncode == 0
+    assert json.loads(saved.stdout)["diagnostic"]["chain"][0]["type"] == "PermissionError"
+    assert b"secret value" not in saved.stdout
+    assert preparer.calls == 1 and not (jobs.state_root / "original.json").exists()
+
+
+def test_stopped_batch_coordinator_failure_is_visible_after_worker_exits(tmp_path, monkeypatch):
+    from iqs_scan.workbench.dashboard_batches import BatchGateway
+
+    diagnostics = tmp_path / "state"
+    outbox = tmp_path / "outbox"
+    monkeypatch.setenv("RESEARCH_FEEDBACK_DIR", str(outbox))
+    monkeypatch.delenv("RESEARCH_FEEDBACK_OUT", raising=False)
+    gateway = BatchGateway(None, diagnostics)
+    entered, finish = Event(), Event()
+    steps = []
+
+    def fail_step(batch_id):
+        steps.append(batch_id)
+        entered.set()
+        assert finish.wait(timeout=5)
+        raise OSError(13, "private error detail")
+
+    monkeypatch.setattr(gateway, "_step", fail_step)
+    gateway._launch_worker("fixture-batch")
+    assert entered.wait(timeout=5)
+    worker = gateway._threads["fixture-batch"]
+    finish.set()
+    worker.join(timeout=5)
+    assert not worker.is_alive()
+    assert gateway._worker_errors["fixture-batch"]["code"] == "batch_coordinator_io_failed"
+    item, = read_owner_outbox(outbox)
+    assert (item["step_id"], item["run_id"]) == ("batch.coordinator", "fixture-batch")
+    saved = call("iqs_feedback_owner.py", ["get-diagnostic", item["details_ref"], "--state-root", diagnostics], os.environ)
+    assert saved.returncode == 0
+    assert json.loads(saved.stdout)["diagnostic"]["chain"][0]["type"] == "PermissionError"
+    assert b"private error detail" not in saved.stdout
+    assert steps == ["fixture-batch"]
 
 
 def test_configured_sidecar_and_default_job_restart_report_once(tmp_path, monkeypatch):

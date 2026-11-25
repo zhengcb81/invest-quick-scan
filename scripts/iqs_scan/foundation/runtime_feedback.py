@@ -15,6 +15,7 @@ import uuid
 
 from .feedback_io import FEEDBACK_SCHEMA, append_feedback
 from .json_io import atomic_write_json, physical_path
+from .runtime_log import append_operation_failure
 
 OWNER = "invest-quick-scan"
 DEFAULT_STATE_ROOT = Path(__file__).resolve().parents[3] / "runs" / "dashboard-runtime"
@@ -179,6 +180,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
                              substep=None):
     """Best-effort capture at the owner boundary; diagnostics never own payment or work state."""
     result = {"recorded": False, "feedback_recorded": False}
+    local_record = None
     try:
         prior = _record_from_exception(error)
         if prior is not None:
@@ -206,6 +208,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         if refusal:
             row["refusal_code"] = code
         result.update(exception_diagnostic(error) if error is not None else {"chain": []})
+        local_record = (root, row, result["chain"])
         record = {**result, "recorded": True, "observation": row}
         if run_id:
             record["native_run_id"] = _scope(run_id, run)
@@ -233,4 +236,10 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         # Optional reporting must also tolerate broken exception introspection,
         # clocks, JSON encoding, rich custom exception attributes and storage I/O.
         _tracking_incomplete()
+    finally:
+        if local_record is not None:
+            try:
+                append_operation_failure(*local_record)
+            except Exception:
+                _tracking_incomplete()
     return result

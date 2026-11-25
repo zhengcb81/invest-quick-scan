@@ -139,14 +139,15 @@ class PreparationJobs:
                 result = self.preparer.apply(payload)
                 self._register(record, result)
         except Exception as exc:
+            code = getattr(exc, "code", "preparation_interrupted")
+            diagnostic = self._diagnose(exc, record, "prepare.apply", code)
             for attempt in range(8):
                 try:
                     with control_lock(self.state_root/'jobs.lock'):
                         current = self._read(path)
                         if current.get('state') == 'abandoned': return
-                        code = getattr(exc, "code", "preparation_interrupted")
                         current.update(state='needs_original_inspection', finished_at=_now(),
-                            error_code=code, failure_diagnostic=self._diagnose(exc, current, "prepare.apply", code),
+                            error_code=code, failure_diagnostic=diagnostic,
                             message='未自动重试；先核对原准备记录，再明确处理。')
                         self._write(path,current)
                     break

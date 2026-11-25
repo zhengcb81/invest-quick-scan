@@ -18,6 +18,8 @@ import threading
 import time
 import uuid
 
+from ..foundation.api import record_operation_failure
+
 # One byte bound for both sides of the atomic record protocol. Synthetic
 # 5,000-scope engineering DTOs, including completed launch references, are
 # exercised below this limit; raw owner work/answer payloads never belong here.
@@ -100,12 +102,13 @@ class BatchGateway:
     _STATES = {"running", "draining", "paused", "blocked", "owner_ready", "needs_original_inspection", "abandoned"}
 
     def __init__(self, execution, state_root, *, max_concurrency=1,
-                 poll_interval=0.5, autostart=True):
+                 poll_interval=0.5, autostart=True, diagnostic_root=None):
         if type(max_concurrency) is not int or not 1 <= max_concurrency <= 4:
             raise DashboardBatchError("batch_concurrency_invalid", "公司并发必须为部署配置中的1至4整数")
         if isinstance(poll_interval, bool) or not isinstance(poll_interval, (int, float)) or not 0.01 <= poll_interval <= 30:
             raise DashboardBatchError("batch_poll_invalid", "轮询间隔无效")
         self.execution, self.state_root = execution, Path(state_root)
+        self.diagnostic_root = Path(diagnostic_root) if diagnostic_root is not None else self.state_root
         self.max_concurrency, self.poll_interval = max_concurrency, poll_interval
         self.autostart = bool(autostart)
         self._session = uuid.uuid4().hex
@@ -749,18 +752,25 @@ class BatchGateway:
                 self._pending_workers.add(batch_id)
                 return
             def work():
+                attempt_id = uuid.uuid4().hex
                 try:
                     while not self._stop.is_set():
                         try:
                             if not self._step(batch_id):
                                 break
-                        except DashboardBatchError as error:
-                            if error.code != "batch_control_busy":
-                                self._worker_errors[batch_id] = {"code": error.code, "message": "批协调已停止；先核原owner后明确恢复。"}
+                        except Exception as error:
+                            if isinstance(error, DashboardBatchError):
+                                code = error.code
+                                message = "批协调已停止；先核原owner后明确恢复。"
+                            else:
+                                code = "batch_coordinator_io_failed"
+                                message = "本机协调记录未能安全更新；不会自动重发，需核原owner。"
+                            if code != "batch_control_busy":
+                                record_operation_failure(error, "batch.coordinator", code=code,
+                                                         directory=self.diagnostic_root,
+                                                         run_id=batch_id, attempt_id=attempt_id)
+                                self._worker_errors[batch_id] = {"code": code, "message": message}
                                 break
-                        except Exception:
-                            self._worker_errors[batch_id] = {"code": "batch_coordinator_io_failed", "message": "本机协调记录未能安全更新；不会自动重发，需核原owner。"}
-                            break
                         if self._stop.wait(self.poll_interval):
                             break
                 finally:

@@ -304,7 +304,8 @@ class DashboardService:
         if self._batch is None:
             from .dashboard_batches import BatchGateway
             self._batch = BatchGateway(self._gateway('execution'), Path(self.config['state_root'])/'batches',
-                max_concurrency=self.config['batch'].get('max_concurrency',1))
+                max_concurrency=self.config['batch'].get('max_concurrency',1),
+                diagnostic_root=self.config['state_root'])
         return self._batch
 
     def _preparation_jobs(self):
