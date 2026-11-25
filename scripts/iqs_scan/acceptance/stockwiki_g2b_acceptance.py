@@ -37,6 +37,32 @@ def _read_frozen(path: Path, expected_sha256: str) -> bytes:
     return raw
 
 
+def _owner_failure_reason(stderr: bytes) -> str | None:
+    try:
+        diagnostic = json.loads(stderr)
+    except (ValueError, RecursionError):
+        diagnostic = None
+    code = diagnostic.get("error_code") if isinstance(diagnostic, dict) else None
+    if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code):
+        return code
+
+    # An unhandled owner exception may precede any JSON output. Keep only its
+    # type and require a real traceback frame before interpreting any line.
+    tracing = frame = False
+    exception = None
+    for line in stderr.splitlines():
+        if line == b"Traceback (most recent call last):":
+            tracing, frame = True, False
+        elif tracing and line.startswith(b'  File "'):
+            frame = True
+        elif tracing and frame:
+            symbol = re.match(rb"^([A-Za-z_][\w.]{0,95})(?::(?=\s|$)|$)", line)
+            if symbol:
+                exception = symbol[1].decode("ascii")
+                tracing = False
+    return exception
+
+
 def _export(query: OwnerQuery) -> bytes:
     if not (query.code_root / "stockwiki" / "cli.py").is_file():
         raise ValueError("StockWiki code root does not contain the public CLI")
@@ -46,15 +72,12 @@ def _export(query: OwnerQuery) -> bytes:
          "--entity-id", query.entity_id, "--as-of", query.as_of],
         cwd=query.code_root, capture_output=True, timeout=120, check=False,
     )
-    if result.returncode != 0:
-        message = f"StockWiki public identity export failed (exit {result.returncode})"
-        try:
-            diagnostic = json.loads(result.stderr)
-        except ValueError:
-            diagnostic = None
-        code = diagnostic.get("error_code") if isinstance(diagnostic, dict) else None
-        if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]*", code):
-            message += f": {code}"
+    if result.returncode != 0 or not result.stdout.strip():
+        message = (f"StockWiki public identity export failed (exit {result.returncode})"
+                   if result.returncode else "StockWiki public identity export returned no response")
+        reason = _owner_failure_reason(result.stderr)
+        if reason is not None:
+            message += f": {reason}"
         raise ValueError(message)
     return result.stdout.removesuffix(b"\r\n").removesuffix(b"\n")
 
@@ -200,8 +223,9 @@ def main() -> int:
     if args.capture_golden or args.capture_mapping_golden:
         parser.error("StockWiki owns golden export; IQS replays the supplied evidence")
     owner = None
-    if args.owner_root or args.entity_id or args.as_of:
-        if not all((args.stockwiki_root, args.owner_root, args.entity_id, args.as_of)):
+    live_inputs = (args.stockwiki_root, args.owner_root, args.entity_id, args.as_of)
+    if any(value is not None for value in live_inputs):
+        if not all(live_inputs):
             parser.error("live export requires --stockwiki-root, --owner-root, --entity-id and --as-of")
         owner = OwnerQuery(args.stockwiki_root.resolve(), args.owner_root.resolve(), args.entity_id, args.as_of)
     try:

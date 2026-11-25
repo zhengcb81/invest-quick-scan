@@ -1,6 +1,7 @@
 """Provider transport failures are safe to return and readable after exit."""
 
 from hashlib import sha256
+from http.client import IncompleteRead
 import io
 import json
 import os
@@ -135,6 +136,69 @@ def test_original_attempt_groups_matching_failures_and_keeps_different_classes(t
     assert {row["actual"] for row in observations} == {"provider_http_503", "provider_transport_timeout"}
     assert {row["step_id"] for row in observations} == {"provider.http/http_503", "provider.http/transport_timeout"}
     assert {row["attempt_id"] for row in observations} == {"provider-fixture-attempt"}
+
+
+@pytest.mark.parametrize(("fault", "exception_type"), [("url", "ValueError"), ("body", "IncompleteRead")])
+def test_provider_malformed_url_and_partial_read_return_failure(tmp_path, monkeypatch, fault, exception_type):
+    runs, out = scoped_outbox(tmp_path, monkeypatch)
+
+    class Truncated(io.BytesIO):
+        status = 200
+
+        def read(self):
+            raise IncompleteRead(CANARY.encode(), 3)
+
+    def open_local(*args, **kwargs):
+        assert fault == "body", "malformed URL must fail before the send"
+        return Truncated()
+
+    monkeypatch.setattr(urllib.request, "urlopen", open_local)
+    url = "malformed " + CANARY if fault == "url" else URL
+    assert post_json(url, CANARY, {"prompt": CANARY}, 4) == (0, {"error": "transport"})
+    row, = rows(out)
+    diagnostic = owner(["--runs-root", runs, "get-diagnostic", row["details_ref"]])
+    assert diagnostic["diagnostic"]["chain"][0]["type"] == exception_type
+    assert CANARY not in json.dumps(diagnostic)
+
+
+@pytest.mark.parametrize("inherited_ids", [False, True])
+def test_scan_keeps_two_questions_with_same_provider_error(tmp_path, monkeypatch, inherited_ids):
+    from iqs_scan.execution import thin_scan
+
+    _, outbox = scoped_outbox(tmp_path, monkeypatch)
+    if not inherited_ids:
+        monkeypatch.delenv("RESEARCH_FEEDBACK_RUN_ID")
+        monkeypatch.delenv("RESEARCH_FEEDBACK_ATTEMPT_ID")
+    provider = {"endpoint": URL, "key_env": "IQS_PROVIDER_FIXTURE_KEY", "cost_micros": 0}
+    monkeypatch.setenv(provider["key_env"], CANARY)
+    monkeypatch.setattr(thin_scan.model_config, "search_providers", lambda: [provider])
+    monkeypatch.setattr(thin_scan.model_config, "models", list)
+    calls = []
+
+    def offline(_request, timeout):
+        calls.append(timeout)
+        raise ConnectionResetError(CANARY)
+
+    monkeypatch.setattr(urllib.request, "urlopen", offline)
+    monkeypatch.setattr(thin_scan, "render", lambda *args: None)
+    questions = tmp_path / "questions.json"
+    questions.write_text(json.dumps({"questions": [
+        {"id": "q-1", "question": CANARY}, {"id": "q-2", "question": CANARY},
+    ]}), encoding="utf-8")
+    monkeypatch.setattr(sys, "argv", ["thin-scan", "--company", "Synthetic Issuer", "--out", str(tmp_path / "result"),
+                                     "--questions", str(questions), "--max-searches-per-question", "2"])
+
+    assert thin_scan.main() == 0
+    observations = rows(outbox)
+    assert len(calls) == 4 and len(observations) == 2  # Each question keeps its own stable occurrence.
+    assert len({row["step_id"] for row in observations}) == 2
+    assert len({row["details_ref"] for row in observations}) == 2
+    assert len({row["issue_key"] for row in observations}) == 1
+    identities = {(row["run_id"], row["attempt_id"]) for row in observations}
+    assert len(identities) == 1
+    if inherited_ids:
+        assert identities == {("provider-fixture-run", "provider-fixture-attempt")}
+    assert CANARY not in json.dumps(observations)
 
 
 def test_success_keeps_original_model_usage_and_does_not_log_failure(tmp_path, monkeypatch):

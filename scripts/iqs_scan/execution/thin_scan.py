@@ -19,6 +19,7 @@ import sys
 from datetime import date, datetime, time, timezone
 from pathlib import Path
 
+from iqs_scan.foundation.api import operation_scope  # noqa: E402
 from iqs_scan.questions import api as question_bank  # noqa: E402
 from iqs_scan.providers import api as model_config  # noqa: E402
 from iqs_scan.providers import api as provider_transport  # noqa: E402
@@ -356,6 +357,7 @@ table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;
     out.write_text(page, encoding="utf-8")
 
 
+@operation_scope()
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--company", required=True)
@@ -415,7 +417,8 @@ def main() -> int:
                 cutoff_year = str(as_of)[:4] if str(as_of)[:4].isdigit() else ""
                 year_hint = (cutoff_year + " " + str(int(cutoff_year) - 1)) if cutoff_year else ""
                 query = (args.company + " " + q["question"] + (" " + year_hint if year_hint else ""))[:220]
-                found, search_error = search_with_status(search_provider, query, SEARCH_POOL_SIZE)
+                with provider_transport.provider_question_scope(q["id"]):
+                    found, search_error = search_with_status(search_provider, query, SEARCH_POOL_SIZE)
                 _record_search_outcome(record, found, search_error)
                 searches += 1
                 spent += int(search_provider.get("cost_micros", 0))
@@ -453,7 +456,8 @@ def main() -> int:
                 budget = BANK_MAX_TOKENS if bank else FLAT_MAX_TOKENS
                 for provider in models:
                     for attempt in range(2):
-                        candidate = ask_model(provider, prompt, budget)
+                        with provider_transport.provider_question_scope(q["id"]):
+                            candidate = ask_model(provider, prompt, budget)
                         if bank is not None:
                             candidate = normalize_bank_answer(candidate)
                         error = candidate.get("error")

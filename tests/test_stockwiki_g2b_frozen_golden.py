@@ -83,6 +83,32 @@ def test_acceptance_does_not_use_an_implicit_stockwiki_data_root(tmp_path):
     assert "requires --stockwiki-root, --owner-root, --entity-id and --as-of" in result.stderr
 
 
+def test_acceptance_does_not_silently_downgrade_an_explicit_live_request(tmp_path):
+    result = _acceptance("--stockwiki-root", str(tmp_path))
+    assert result.returncode == 2 and not result.stdout
+    assert "requires --stockwiki-root, --owner-root, --entity-id and --as-of" in result.stderr
+
+
+@pytest.mark.parametrize(("program", "expected"), [
+    ("import sys\nsys.stderr.write('{\"error_code\":\"owner_unavailable\",\"message\":\"secret fixture\"}\\n')\n",
+     "owner_unavailable"),
+    ("class OwnerLookupError(Exception): pass\nraise OwnerLookupError('secret fixture\\nKeyError: misleading')\n",
+     "OwnerLookupError"),
+])
+def test_empty_stockwiki_stdout_keeps_public_cause_without_owner_body(tmp_path, program, expected):
+    from scripts import stockwiki_g2b_acceptance as acceptance
+
+    package = tmp_path / "stockwiki"
+    package.mkdir()
+    (package / "__init__.py").touch()
+    (package / "cli.py").write_text(program, encoding="utf-8")
+    query = acceptance.OwnerQuery(tmp_path, tmp_path, "ENT_fixture", "2026-09-29T00:00:00Z")
+    with pytest.raises(ValueError, match=expected) as trapped:
+        acceptance._export(query)
+    assert "secret fixture" not in str(trapped.value)
+    assert "KeyError" not in str(trapped.value)
+
+
 def test_acceptance_never_rewrites_the_owner_golden():
     before = hashlib.sha256(GOLDEN.read_bytes()).hexdigest()
     result = _acceptance("--capture-golden")

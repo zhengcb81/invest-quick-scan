@@ -10,6 +10,7 @@ from .model_invocation import (
 )
 from .provider_transport import (
     post_json,
+    provider_question_scope,
 )
 
 API_PROTOCOL = "iqs.providers-api/1.0.0"
@@ -19,6 +20,7 @@ __all__ = (
     "ask_model",
     "models",
     "post_json",
+    "provider_question_scope",
     "routes",
     "search_providers",
 )

@@ -5,8 +5,8 @@
 
 No I/O; the caller supplies the real clock explicitly. The policy version is
 chosen explicitly inside ``question_policy["policy_selection"]``; unknown
-versions are named refusals. The legacy path delegates freshness math to the
-byte-verified frozen stockwiki functions (oracle parity by construction); the
+versions are named refusals. The legacy path delegates freshness math through
+the configured, public StockWiki value interface; the
 candidate path never promotes old data to fresh and never treats
 observation/import time or model self-claims as verification.
 """
@@ -725,12 +725,12 @@ def assess_reuse(
         "actual_source_dates": actual_dates,
         "clock_assessments": clock_assessments if family == CANDIDATE_FAMILY else [],
         "legacy_equivalent": {
-            "policy_ref": f"{LEGACY_FAMILY}/{LEGACY_VERSION} (frozen stockwiki@8527bc7)",
+            "policy_ref": f"{LEGACY_FAMILY}/{LEGACY_VERSION}",
             "freshness_status": legacy_freshness,
             "valid_until": legacy_valid_until,
             "decision": legacy_decision,
             "reasons": legacy_reasons,
-            "oracle": "vendor_upstream/stockwiki/stockwiki/quick_scan_freshness.py",
+            "oracle": "stockwiki.quick_scan_freshness",
         },
     }
 

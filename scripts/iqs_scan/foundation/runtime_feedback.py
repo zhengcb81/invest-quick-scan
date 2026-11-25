@@ -175,7 +175,8 @@ def read_runs_failure(runs_root, reference, *, republish=False):
 
 def record_operation_failure(error, stage, *, directory=None, code="execution_failed",
                              run_id=None, attempt_id=None, refusal=False,
-                             disposition="deviation", evidence_ref=None, sidecar=None):
+                             disposition="deviation", evidence_ref=None, sidecar=None,
+                             substep=None):
     """Best-effort capture at the owner boundary; diagnostics never own payment or work state."""
     result = {"recorded": False, "feedback_recorded": False}
     try:
@@ -188,8 +189,9 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         attempt_id = attempt_id or original_attempt
         run, attempt = operation_identifiers(run_id, attempt_id)
         stage = _scope(stage, "operation")
+        step = stage + "/" + _scope(substep, "substep") if substep else stage
         code = code if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code) else "execution_failed"
-        identity = [OWNER, run, attempt, stage, "operation-outcome"]
+        identity = [OWNER, run, attempt, step, "operation-outcome"]
         key = uuid.uuid5(uuid.NAMESPACE_URL, json.dumps(identity, ensure_ascii=True)).hex
         reference = REFERENCE + key
         result.update({"details_ref": reference})
@@ -197,7 +199,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         if path.is_file():
             return read_operation_failure(root, reference, republish=True)
         row = {"schema_version": FEEDBACK_SCHEMA, "owner": OWNER, "origin_owner": OWNER,
-               "run_id": run, "attempt_id": attempt, "step_id": stage, "check_id": "operation-outcome",
+               "run_id": run, "attempt_id": attempt, "step_id": step, "check_id": "operation-outcome",
                "expected": "completed", "actual": code, "disposition": disposition,
                "issue_key": "iqs-runtime/" + stage + "/" + code, "version": "iqs-runtime/1",
                "evidence_ref": evidence_ref or reference, "details_ref": reference}
