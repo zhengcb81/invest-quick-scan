@@ -23,7 +23,7 @@ import sys
 import threading
 import uuid
 
-from ..foundation.api import child_feedback_environment, operation_scope
+from ..foundation.api import child_feedback_environment, operation_scope, own_child_operation_scope
 from .dashboard_json import decode_owner_json, owner_refusal
 
 ROOT = REPO_ROOT
@@ -96,11 +96,11 @@ def _new_raw(path, raw):
             raise DashboardPrepareError("immutable_input_conflict", "An immutable preparation input already exists", 409)
 
 
-def _env():
+def _env(*, same_owner=False):
     value = {key: val for key, val in os.environ.items() if key.upper() in {
         "SYSTEMROOT", "WINDIR", "PATH", "PATHEXT", "COMSPEC", "USERPROFILE",
         "APPDATA", "LOCALAPPDATA", "SYSTEMDRIVE", "TEMP", "TMP", "TMPDIR"}}
-    value.update(child_feedback_environment())
+    value.update(child_feedback_environment(same_owner=same_owner))
     value.update(PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
     return value
 
@@ -476,7 +476,7 @@ class PrepareGateway:
         timeout = 60 if operation == "snapshot" else _timeouts(self.config)[0]
         try:
             completed = subprocess.run([sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts/dashboard_prepare.py"), "--worker"],
-                cwd=self.config["iqs_root"], env=_env(), input=_bytes({"operation": operation,
+                cwd=self.config["iqs_root"], env=_env(same_owner=True), input=_bytes({"operation": operation,
                 "config": self.config, "payload": payload}), capture_output=True, timeout=timeout,
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired:
@@ -1196,6 +1196,12 @@ def worker_main():
         if event in {"socket.connect", "socket.getaddrinfo", "socket.sendto"}:
             raise RuntimeError("preparation_network_forbidden")
     sys.addaudithook(offline)
+    with own_child_operation_scope() as recoverable:
+        return _worker_reply(recoverable)
+
+
+def _worker_reply(recoverable):
+    config = None
     try:
         raw = sys.stdin.buffer.read(MAX_BYTES + 1)
         if len(raw) > MAX_BYTES:
@@ -1217,6 +1223,12 @@ def worker_main():
     except Exception as error:
         code = getattr(error, "code", getattr(error, "error_code", "native_preparation_rejected"))
         details = {"exception_type": type(error).__name__, **(error.details if isinstance(error, DashboardPrepareError) else {})}
+        if recoverable and isinstance(config, dict) and config.get("state_root") and "failure_diagnostic" not in details:
+            from ..foundation.api import record_operation_failure
+            details["failure_diagnostic"] = record_operation_failure(
+                error, "prepare.worker", directory=config["state_root"], code=code,
+                refusal=isinstance(error, DashboardPrepareError) and 400 <= error.status < 500,
+            )
         if re.fullmatch(r"[A-Za-z0-9_.-]{1,160}", str(error)):
             details["native_reason"] = str(error)
         request_value = locals().get("request")

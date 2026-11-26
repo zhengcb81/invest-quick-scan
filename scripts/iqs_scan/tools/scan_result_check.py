@@ -26,9 +26,11 @@ import json
 import os
 from pathlib import Path
 import sys
+from time import monotonic_ns
 
 from .. import REPO_ROOT
-from ..foundation.api import RuntimeArgumentParser, operation_state_root, record_operation_failure
+from ..foundation.api import (RuntimeArgumentParser, operation_scope, operation_state_root,
+                              record_operation_checkpoint, record_operation_failure)
 
 REQUIRED_FILES = ("answers.json", "run-log.json", "index.html")
 RUNS_ROOT_ENV = "IQS_FEEDBACK_RUNS_ROOT"
@@ -234,13 +236,23 @@ def main() -> int:
     try:
         run_id = args.run.resolve().relative_to(root).as_posix()
     except ValueError:
-        run_id = args.run.name
+        run_id = "external-" + sha256(os.fsencode(args.run.resolve())).hexdigest()
     state_root = operation_state_root(root)
+    reference = f"{REFERENCE_PREFIX}{run_id}"
+    with operation_scope(run_id):
+        started = monotonic_ns()
+        record_operation_checkpoint("scan.check", "started", directory=state_root, evidence_ref=reference)
+        code = _run_check(args, state_root, reference)
+        record_operation_checkpoint("scan.check", "failed" if code == 2 else "completed", directory=state_root,
+                                    elapsed_ms=(monotonic_ns() - started) // 1_000_000)
+    return code
+
+
+def _run_check(args, state_root, reference):
 
     def failure(code, error=None, digest=None):
-        ref = f"{REFERENCE_PREFIX}{run_id}" + (f"@{digest}" if digest else "")
-        record_operation_failure(error, "scan.check", code=code, directory=state_root, run_id=run_id,
-                                 evidence_ref=ref)
+        ref = reference + (f"@{digest}" if digest else "")
+        record_operation_failure(error, "scan.check", code=code, directory=state_root, evidence_ref=ref)
 
     if not args.run.is_dir():
         failure("run_directory_missing")
@@ -253,6 +265,9 @@ def main() -> int:
         print(json.dumps({"ok": False, "problems": ["saved scan unreadable"]}))
         return 2
     report = checked.report
+    if checked.source_sha256:
+        record_operation_checkpoint("scan.inspect", "completed", directory=state_root,
+                                    evidence_ref=f"{reference}@{checked.source_sha256}")
     _observe(args.run, checked, args.previous_check)
     if not report["ok"]:
         failure("saved_scan_failed" if checked.source_sha256 else "scan_artifacts_missing", digest=checked.source_sha256)

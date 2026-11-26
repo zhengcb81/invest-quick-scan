@@ -15,12 +15,16 @@ import uuid
 
 from .feedback_io import FEEDBACK_SCHEMA, append_feedback
 from .json_io import atomic_write_json, physical_path
-from .runtime_log import append_operation_failure
+from .runtime_log import append_operation_checkpoint, append_operation_failure, read_operation_trace
 
 OWNER = "invest-quick-scan"
 DEFAULT_STATE_ROOT = Path(__file__).resolve().parents[3] / "runs" / "dashboard-runtime"
 REFERENCE = "iqs:diagnostic/"
+TRACE_VERSION = "iqs-runtime-trace/1"
 _SCOPE = ContextVar("iqs_operation_scope", default=(None, None))
+_OWNED_SCOPE = ContextVar("iqs_owned_operation", default=None)
+_NATIVE_RUN_ENV = "IQS_NATIVE_RUN_ID"
+_NATIVE_ATTEMPT_ENV = "IQS_NATIVE_ATTEMPT_ID"
 
 
 def operation_identifiers(run_id=None, attempt_id=None):
@@ -31,23 +35,38 @@ def operation_identifiers(run_id=None, attempt_id=None):
     return run, attempt
 
 
-def child_feedback_environment(run_id=None, attempt_id=None):
+def child_feedback_environment(run_id=None, attempt_id=None, *, same_owner=False):
     """Return this child's public tracing fields without changing the process environment."""
     run, attempt = operation_identifiers(run_id, attempt_id)
     fields = {"RESEARCH_FEEDBACK_RUN_ID": run, "RESEARCH_FEEDBACK_ATTEMPT_ID": attempt}
     for key in ("RESEARCH_FEEDBACK_OUT", "RESEARCH_FEEDBACK_DIR"):
         if os.environ.get(key):
             fields[key] = os.environ[key]
+    owned = _OWNED_SCOPE.get()
+    if same_owner and owned:
+        fields.update({_NATIVE_RUN_ENV: owned[0], _NATIVE_ATTEMPT_ENV: owned[1]})
     return fields
 
 
 @contextmanager
-def operation_scope(run_id=None, attempt_id=None):
+def operation_scope(run_id=None, attempt_id=None, *, recoverable=False):
     token = _SCOPE.set(operation_identifiers(run_id, attempt_id))
+    owner_token = _OWNED_SCOPE.set((run_id, attempt_id)) if recoverable else None
     try:
         yield
     finally:
+        if owner_token is not None:
+            _OWNED_SCOPE.reset(owner_token)
         _SCOPE.reset(token)
+
+
+@contextmanager
+def own_child_operation_scope():
+    """Restore the native reference only in this module's own worker process."""
+    run, attempt = os.environ.get(_NATIVE_RUN_ENV), os.environ.get(_NATIVE_ATTEMPT_ENV)
+    has_owner = bool(run and attempt)
+    with operation_scope(run, attempt, recoverable=has_owner):
+        yield has_owner
 
 
 def _record_from_exception(error):
@@ -90,6 +109,34 @@ def _tracking_incomplete():
         print("IQS failure tracking incomplete", file=sys.stderr)
     except (ValueError, OSError):
         pass
+
+
+def record_operation_checkpoint(stage, state, *, directory=None, elapsed_ms=None, evidence_ref=None):
+    """Write a safe lifecycle marker without changing the owner's business result."""
+    try:
+        if state not in {"started", "completed", "refused", "failed"}:
+            raise ValueError("invalid_checkpoint_state")
+        root = Path(directory) if directory is not None else operation_state_root()
+        run_id, attempt_id = operation_identifiers()
+        payload = {"owner": OWNER, "run_id": run_id, "attempt_id": attempt_id,
+                   "step_id": _scope(stage, "operation"), "state": state, "version": TRACE_VERSION}
+        owned = _OWNED_SCOPE.get()
+        if owned:
+            payload.update(native_run_id=owned[0], native_attempt_id=owned[1])
+        if type(elapsed_ms) is int and elapsed_ms >= 0:
+            payload["elapsed_ms"] = elapsed_ms
+        if evidence_ref:
+            ref, _, digest = evidence_ref.partition("@")
+            payload["evidence_ref"] = _scope(ref, "reference-unavailable")
+            if re.fullmatch(r"[a-f0-9]{64}", digest):
+                payload["evidence_ref"] += "@" + digest
+        append_operation_checkpoint(root, payload)
+    except Exception:
+        _tracking_incomplete()
+
+
+def read_run_trace(directory, run_id, attempt_id):
+    return read_operation_trace(Path(directory), OWNER, run_id, attempt_id)
 
 
 def exception_diagnostic(error):
@@ -153,6 +200,11 @@ def _diagnostic_path(directory, reference):
     return physical_path(directory / "diagnostics" / (match[1] + ".jsonl"))
 
 
+def _diagnostic_reference(run, attempt, step):
+    identity = [OWNER, run, attempt, step, "operation-outcome"]
+    return REFERENCE + uuid.uuid5(uuid.NAMESPACE_URL, json.dumps(identity, ensure_ascii=True)).hex
+
+
 def read_operation_failure(directory, reference, *, republish=False):
     """Read or re-deliver the original diagnostic. Neither action re-runs the failed work."""
     path = _diagnostic_path(Path(directory), reference)
@@ -164,6 +216,22 @@ def read_operation_failure(directory, reference, *, republish=False):
         if record["feedback_recorded"]:
             atomic_write_json(path, record)
     return record
+
+
+def read_owned_operation_failure(directory, run_id, attempt_id, *steps):
+    """Look up a prior failure by the durable owning job and attempt, without delivery or execution."""
+    for step in steps:
+        reference = _diagnostic_reference(run_id, attempt_id, step)
+        try:
+            record = read_operation_failure(directory, reference)
+            observed = record["observation"]
+            if (observed["owner"] == OWNER and isinstance(observed["actual"], str) and record.get("recorded") is True
+                    and observed["step_id"] in {step, step + "/" + reference.removeprefix(REFERENCE)}
+                    and (record.get("native_run_id"), record.get("native_attempt_id")) == (run_id, attempt_id)):
+                return record
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            continue
+    return None
 
 
 def read_runs_failure(runs_root, reference, *, republish=False):
@@ -186,16 +254,19 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         if prior is not None:
             return prior
         root = Path(directory) if directory is not None else operation_state_root()
-        original_run, original_attempt = _SCOPE.get()
+        owned = _OWNED_SCOPE.get()
+        original_run, original_attempt = owned or _SCOPE.get()
         run_id = run_id or original_run
         attempt_id = attempt_id or original_attempt
         run, attempt = operation_identifiers(run_id, attempt_id)
         stage = _scope(stage, "operation")
         step = stage + "/" + _scope(substep, "substep") if substep else stage
         code = code if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code) else "execution_failed"
-        identity = [OWNER, run, attempt, step, "operation-outcome"]
-        key = uuid.uuid5(uuid.NAMESPACE_URL, json.dumps(identity, ensure_ascii=True)).hex
-        reference = REFERENCE + key
+        reference = _diagnostic_reference(*(owned or (run, attempt)), step)
+        key = reference.removeprefix(REFERENCE)
+        if owned and (run, attempt) != owned:
+            # More than one native occurrence can belong to a single supervisor attempt.
+            step += "/" + key
         result.update({"details_ref": reference})
         path = _diagnostic_path(root, reference)
         if path.is_file():
@@ -208,7 +279,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         if refusal:
             row["refusal_code"] = code
         result.update(exception_diagnostic(error) if error is not None else {"chain": []})
-        local_record = (root, row, result["chain"])
+        local_record = (root, row, result["chain"], owned)
         record = {**result, "recorded": True, "observation": row}
         if run_id:
             record["native_run_id"] = _scope(run_id, run)

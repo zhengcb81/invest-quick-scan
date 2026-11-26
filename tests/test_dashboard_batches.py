@@ -892,10 +892,25 @@ def test_unexpected_worker_failure_is_visible_and_resume_rechecks_before_dispatc
         batch = row(gateway, batch_id)
         assert batch["state"] == "needs_original_inspection"
         assert batch["coordinator_error"]["code"] == "batch_coordinator_io_failed"
+        cold = BatchGateway(execution, gateway.state_root, autostart=False)
+        try:
+            before = {path: path.read_bytes() for path in gateway.state_root.rglob("*") if path.is_file()}
+            recovered = row(cold, batch_id)
+            assert recovered["state"] == "needs_original_inspection"
+            assert recovered["coordinator_error"] == batch["coordinator_error"]
+            from iqs_scan.foundation.api import read_operation_failure
+            reference = recovered["coordinator_error"]["failure_diagnostic"]["details_ref"]
+            original = read_operation_failure(gateway.diagnostic_root, reference)
+            assert original["observation"]["step_id"] == "batch.coordinator"
+            assert original["chain"][0]["type"] == "PermissionError"
+            assert before == {path: path.read_bytes() for path in gateway.state_root.rglob("*") if path.is_file()}
+        finally:
+            cold.close()
         assert execution.started == []
         monkeypatch.setattr(gateway, "_step", original_step)
         gateway.autostart = False
         gateway.control(batch_id, "resume")
+        assert "coordinator_error" not in row(gateway, batch_id)
         gateway._step(batch_id)
         assert execution.started == ["a"]
     finally:

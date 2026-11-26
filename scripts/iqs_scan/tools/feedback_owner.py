@@ -10,7 +10,8 @@ import sqlite3
 import sys
 
 from . import scan_result_check as check
-from ..foundation.api import RuntimeArgumentParser, read_operation_failure, read_process_log, read_runs_failure
+from ..foundation.api import (RuntimeArgumentParser, read_operation_failure, read_process_log,
+                              read_run_trace, read_runs_failure)
 
 OWNER = check.OWNER
 ISSUE = "F2-IQS-0001"
@@ -369,11 +370,17 @@ def main(argv=None):
     log_reader.add_argument("--offset", type=int, default=0)
     log_reader.add_argument("--limit", type=int, default=65536)
     log_reader.add_argument("--tail-bytes", type=int)
+    trace = subs.add_parser("get-run-trace", help="Read the retained owner events for an original attempt")
+    trace.add_argument("run_id")
+    trace.add_argument("attempt_id")
+    trace.add_argument("--state-root", type=Path, required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == "get-process-log":
             reply = {"log": read_process_log(args.state_root, args.reference, offset=args.offset,
                                              limit=args.limit, tail_bytes=args.tail_bytes)}
+        elif args.command == "get-run-trace":
+            reply = {"events": read_run_trace(args.state_root, args.run_id, args.attempt_id)}
         elif args.command in ("get-diagnostic", "republish-diagnostic"):
             if args.state_root is None and args.runs_root is None:
                 parser.error("supply --state-root or --runs-root to locate the saved diagnostic")

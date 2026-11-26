@@ -7,13 +7,10 @@ it cannot turn arbitrary configuration, factories, or callbacks into authority.
 
 from __future__ import annotations
 
-from iqs_scan import REPO_ROOT
-
 import argparse
 import copy
 import json
 import os
-import sys
 import tempfile
 import time
 from pathlib import Path
@@ -204,10 +201,6 @@ def _production_answer_semantics(task, services, *, for_publication=False):
     runtime = _company_runtime(services, contract)
     inputs = runtime.original_scan_context()
     context = inputs.observation_context
-    # StockQA 1.7 resolves the compatibility module from the selected checkout.
-    script_root = str(REPO_ROOT / "scripts")
-    if script_root not in sys.path:
-        sys.path.insert(0, script_root)
     # The owner resolves its original frozen package. Only a detached, path-free
     # semantic resource DTO crosses the runtime boundary; production never falls
     # back to the current IQS code/release tree.

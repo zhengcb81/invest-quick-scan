@@ -3,11 +3,14 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
 import json
 from pathlib import Path
 import re
 import sys
+from time import monotonic_ns
+
+from ..foundation.api import (RuntimeArgumentParser, operation_scope, record_operation_checkpoint,
+                              record_operation_failure)
 
 
 ROOT = REPO_ROOT
@@ -408,7 +411,24 @@ def task_packet(plan: dict, catalog: dict, tid: str, plan_dir: Path) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    with operation_scope():
+        started = monotonic_ns()
+        state = "failed"
+        record_operation_checkpoint("plan.cli", "started")
+        try:
+            code = _run_command(argv)
+            state = "completed" if code == 0 else "refused"
+        except SystemExit as error:
+            state = "completed" if error.code == 0 else "refused"
+            raise
+        finally:
+            record_operation_checkpoint("plan.cli", state,
+                                        elapsed_ms=(monotonic_ns() - started) // 1_000_000)
+    return code
+
+
+def _run_command(argv):
+    parser = RuntimeArgumentParser(description=__doc__)
     parser.add_argument("--plan-dir", type=Path, default=DEFAULT_PLAN_DIR)
     sub = parser.add_subparsers(dest="action", required=True)
     sub.add_parser("validate")
@@ -420,10 +440,18 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         plan, catalog = load_package(args.plan_dir)
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        record_operation_failure(exc, "plan.load", code="plan_input_unavailable", refusal=True)
+        print(f"Cannot read/validate implementation plan: {exc}", file=sys.stderr)
+        return 2
+    record_operation_checkpoint("plan.load", "completed", evidence_ref="iqs:implementation-plan")
+    try:
         errors = validate_package(plan, catalog)
         if errors:
+            record_operation_failure(None, "plan.validate", code="plan_contract_invalid", refusal=True)
             print(json.dumps({"planning_valid": False, "errors": errors}, ensure_ascii=False, indent=2))
             return 1
+        record_operation_checkpoint("plan.validate", "completed")
         if args.action == "validate":
             print(json.dumps({"planning_valid": True, "tasks": len(plan["tasks"]),
                               "acceptance_cases": len(catalog["cases"]),
@@ -440,5 +468,6 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(task_packet(plan, catalog, args.task_id, args.plan_dir), ensure_ascii=False, indent=2))
         return 0
     except (OSError, ValueError, TypeError, KeyError) as exc:
+        record_operation_failure(exc, "plan.command", code="plan_command_refused", refusal=True)
         print(f"Cannot read/validate implementation plan: {exc}", file=sys.stderr)
         return 2

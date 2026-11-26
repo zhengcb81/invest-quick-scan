@@ -665,7 +665,7 @@ def _cross_domain_public_api_violations(tree, source_name, domains, facade_expor
             called = imported_object(value.func)
             # A public function's returned DTO is local data. Constructors
             # remain linked to their public classes for private-member checks.
-            if isinstance(called, tuple) and called[1].split('.', 1)[0][:1].isupper():
+            if isinstance(called, tuple) and '.' not in called[1] and called[1][:1].isupper():
                 return called
             return ambiguous_alias if called is ambiguous_alias else None
         if isinstance(value, ast.Attribute):
@@ -812,7 +812,7 @@ CAPABILITY_DEPENDENCIES = {
     'questions': {'foundation'},
     'answers': {'foundation', 'questions'},
     'query': {'foundation', 'answers'},
-    'providers': set(),
+    'providers': {'foundation'},  # Transport records failures through the shared diagnostic façade.
     'execution': {'foundation', 'questions', 'answers', 'query', 'providers'},
     'workbench': {'foundation', 'questions', 'answers', 'query', 'execution'},
     'tools': {'foundation', 'questions', 'answers', 'query', 'providers', 'execution', 'workbench'},
@@ -915,7 +915,17 @@ def test_capability_source_uses_versioned_public_interfaces():
         }
         names = declarations['__all__']
         assert len(names) == len(set(names)), path
-        assert set(names) <= _defined_module_symbols(path), path
+        exported = _defined_module_symbols(path)
+        if domain == 'foundation':
+            # The diagnostic façade loads the schema provider lazily so cold
+            # runtime recovery still works when the business schema stack fails.
+            from iqs_scan.foundation import api, _domain_exports
+
+            deferred = set(names) - exported
+            assert deferred <= _defined_module_symbols(path.with_name('_domain_exports.py')), path
+            assert all(getattr(api, name) is getattr(_domain_exports, name) for name in deferred)
+            exported |= deferred
+        assert set(names) <= exported, path
         if 'API_PROTOCOL' in declarations:
             assert re.fullmatch(r'[a-zA-Z0-9_.-]+/\d+\.\d+\.\d+', declarations['API_PROTOCOL']), path
         else:
@@ -998,6 +1008,15 @@ def test_capability_edges_allow_public_facade_and_same_domain_implementation():
         'import iqs_scan.questions.api\n'
         'questions.compose_questions()\niqs_scan.questions.api.compose_questions()', 'workbench',
         {'questions': {'compose_questions'}}, {'question_sets'})
+
+
+def test_capability_edges_treat_public_method_result_as_a_detached_value():
+    exports = {'foundation': {'RuntimeArgumentParser'}}
+    source = ('from ..foundation.api import RuntimeArgumentParser\n'
+              'parser = RuntimeArgumentParser()\nargs = parser.parse_args()\n'
+              'local = {"run": args.run, "kind": "fixture"}\nlocal.update(extra=True)')
+    assert not _capability_edge_violations(source, 'tools', exports, set())
+    assert _capability_edge_violations(source + '\nparser._private()', 'tools', exports, set())
 
 
 def test_cross_domain_scanner_rejects_unlisted_public_helpers_but_accepts_facade_exports():

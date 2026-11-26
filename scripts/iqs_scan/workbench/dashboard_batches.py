@@ -18,7 +18,7 @@ import threading
 import time
 import uuid
 
-from ..foundation.api import record_operation_failure
+from ..foundation.api import operation_scope, read_owned_operation_failure, record_operation_failure
 
 # One byte bound for both sides of the atomic record protocol. Synthetic
 # 5,000-scope engineering DTOs, including completed launch references, are
@@ -114,7 +114,7 @@ class BatchGateway:
         self._session = uuid.uuid4().hex
         self._lock, self._previews, self._threads = threading.RLock(), {}, {}
         self._memory_lock = threading.RLock()
-        self._pending_workers = set()
+        self._pending_workers = {}
         self._worker_errors = {}
         self._stop = threading.Event()
 
@@ -380,7 +380,13 @@ class BatchGateway:
         result = dict(record)
         result["entries"] = [dict(row) for row in record["entries"]]
         result.pop("owner_session", None)
-        worker_error = self._worker_errors.get(record["batch_id"])
+        attempt = result.pop("coordinator_attempt", None)
+        worker_error = self._live_worker_error(record)
+        if attempt and not worker_error:
+            diagnostic = read_owned_operation_failure(
+                self.diagnostic_root, record["batch_id"], attempt, "batch.coordinator")
+            if diagnostic:
+                worker_error = self._worker_error_projection(diagnostic["observation"]["actual"], diagnostic)
         if record["state"] in {"running", "draining"} and (record.get("owner_session") != self._session or self._stop.is_set() or worker_error):
             result["persisted_state"] = record["state"]
             result["state"] = "needs_original_inspection"
@@ -413,6 +419,20 @@ class BatchGateway:
         result["financial_accuracy_verified"] = False
         result["notice"] = "owner_ready只表示原owner已有答案；不代表已导入、金融审查通过或所有公司已扫描。"
         return result
+
+    def _live_worker_error(self, record):
+        error = self._worker_errors.get(record["batch_id"])
+        if error and error["attempt_id"] == record.get("coordinator_attempt"):
+            return error["projection"]
+        return None
+
+    @staticmethod
+    def _worker_error_projection(code, diagnostic):
+        message = ("本机协调记录未能安全更新；不会自动重发，需核原owner。"
+                   if code == "batch_coordinator_io_failed" else "批协调已停止；先核原owner后明确恢复。")
+        ref = {"recorded": diagnostic["recorded"],
+               "details_ref": diagnostic.get("details_ref") if diagnostic["recorded"] else None}
+        return {"code": code, "message": message, "failure_diagnostic": ref}
 
     def list(self, limit=50, offset=0):
         if type(limit) is not int or not 1 <= limit <= 100 or type(offset) is not int or offset < 0:
@@ -502,7 +522,8 @@ class BatchGateway:
             checked = [self._registration(row) if local else self._inspect(row["bundle_id"], row) for row in entries]
             record = {"protocol": self.PROTOCOL, "batch_id": "batch-" + uuid.uuid4().hex,
                 "selection_sha256": selection_hash, "created_at": _now(), "state": "running",
-                "owner_session": self._session, "max_concurrency": self.max_concurrency,
+                "owner_session": self._session, "coordinator_attempt": uuid.uuid4().hex,
+                "max_concurrency": self.max_concurrency,
                 "work_completion_authoritative": False, "entries": [],
                 "registration_preview_owner_inspected": not local, "owner_admission_confirmed": False,
                 "admission_strategy": "per_scope_original_owner_preflight"}
@@ -515,7 +536,7 @@ class BatchGateway:
                     "blocked_reasons": [] if state != "blocked" else value.get("blocked_reasons", ["owner_blocked"])})
             self._settle(record)
             self._save(record)
-        self._launch_worker(record["batch_id"])
+        self._launch_worker(record["batch_id"], record["coordinator_attempt"])
         return {"status": "created", "batch": self._public(record), "process_started": None,
             "company_dispatch_scheduled": record["state"] == "running", "paid_dispatch_started": None,
             "notice": "公司批已登记；每次真实启动仍由原执行器再次准入。"}
@@ -636,7 +657,7 @@ class BatchGateway:
         """One locked orchestration step; tests can advance it without a timer."""
         with self._mutation():
             record = self._record(batch_id)
-            if record.get("owner_session") != self._session or record["state"] not in {"running", "draining"} or self._stop.is_set() or batch_id in self._worker_errors:
+            if record.get("owner_session") != self._session or record["state"] not in {"running", "draining"} or self._stop.is_set() or self._live_worker_error(record):
                 return False
             try:
                 tasks = self._tasks(record["entries"])
@@ -743,33 +764,31 @@ class BatchGateway:
             self._save(record)
             return record["state"] == "running"
 
-    def _launch_worker(self, batch_id):
+    def _launch_worker(self, batch_id, coordinator_attempt=None):
         if not self.autostart or self._stop.is_set():
             return
         with self._memory_lock:
             prior = self._threads.get(batch_id)
             if prior and prior.is_alive():
-                self._pending_workers.add(batch_id)
+                self._pending_workers[batch_id] = coordinator_attempt
                 return
             def work():
-                attempt_id = uuid.uuid4().hex
+                attempt_id = coordinator_attempt or uuid.uuid4().hex
                 try:
                     while not self._stop.is_set():
                         try:
                             if not self._step(batch_id):
                                 break
                         except Exception as error:
-                            if isinstance(error, DashboardBatchError):
-                                code = error.code
-                                message = "批协调已停止；先核原owner后明确恢复。"
-                            else:
-                                code = "batch_coordinator_io_failed"
-                                message = "本机协调记录未能安全更新；不会自动重发，需核原owner。"
+                            code = error.code if isinstance(error, DashboardBatchError) else "batch_coordinator_io_failed"
                             if code != "batch_control_busy":
-                                record_operation_failure(error, "batch.coordinator", code=code,
-                                                         directory=self.diagnostic_root,
-                                                         run_id=batch_id, attempt_id=attempt_id)
-                                self._worker_errors[batch_id] = {"code": code, "message": message}
+                                with operation_scope(batch_id, attempt_id, recoverable=True):
+                                    diagnostic = record_operation_failure(
+                                        error, "batch.coordinator", code=code, directory=self.diagnostic_root)
+                                self._worker_errors[batch_id] = {
+                                    "attempt_id": coordinator_attempt, "code": code,
+                                    "projection": self._worker_error_projection(code, diagnostic),
+                                }
                                 break
                         if self._stop.wait(self.poll_interval):
                             break
@@ -778,9 +797,9 @@ class BatchGateway:
                         if self._threads.get(batch_id) is threading.current_thread():
                             self._threads.pop(batch_id, None)
                         again = batch_id in self._pending_workers and not self._stop.is_set()
-                        self._pending_workers.discard(batch_id)
+                        next_attempt = self._pending_workers.pop(batch_id, None)
                     if again:
-                        self._launch_worker(batch_id)
+                        self._launch_worker(batch_id, next_attempt)
             thread = threading.Thread(target=work, name=batch_id, daemon=True)
             self._threads[batch_id] = thread
             thread.start()
@@ -806,7 +825,7 @@ class BatchGateway:
             if record["state"] == "owner_ready":
                 return {"batch": self._public(record), "process_started": False}
             if (record["state"] == "running" and record.get("owner_session") == self._session
-                and batch_id not in self._worker_errors and self._threads.get(batch_id)
+                and not self._live_worker_error(record) and self._threads.get(batch_id)
                 and self._threads[batch_id].is_alive()):
                 return {"batch": self._public(record), "process_started": False}
             pending = [row for row in record["entries"] if row["state"] != "owner_ready"]
@@ -878,11 +897,11 @@ class BatchGateway:
                     entry.update(state="selected", blocked_reasons=[])
                 else:
                     entry.update(state="blocked", blocked_reasons=inspected.get("blocked_reasons") or ["owner_blocked"])
-            record.update(owner_session=self._session, resumed_at=_now())
+            record.update(owner_session=self._session, coordinator_attempt=uuid.uuid4().hex, resumed_at=_now())
             self._worker_errors.pop(batch_id, None)
             self._settle(record)
             self._save(record)
-        self._launch_worker(batch_id)
+        self._launch_worker(batch_id, record["coordinator_attempt"])
         return {"batch": self._public(record), "process_started": None,
             "company_dispatch_scheduled": record["state"] == "running", "paid_dispatch_started": None,
             "owner_inspection_deferred_scope_count": len(registration_only),

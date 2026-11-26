@@ -27,5 +27,9 @@ jobs:
           python -B -m pytest -q -p no:cacheprovider
           tests/test_iqs_provider_transport_diagnostics.py
           tests/test_runtime_feedback_boundaries.py
+          tests/test_runtime_recovery_contract.py
+          tests/test_dashboard_batches.py::test_unexpected_worker_failure_is_visible_and_resume_rechecks_before_dispatch
+          tests/test_dashboard_module_boundaries.py
+          tests/test_shared_public_boundaries.py
           tests/test_stockwiki_g2b_frozen_golden.py
           tests/test_legacy_freshness_owner_port.py

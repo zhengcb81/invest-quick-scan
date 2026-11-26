@@ -1,4 +1,4 @@
-"""Rotating owner-local log for IQS failure facts, independent of F4 delivery."""
+"""Rotating owner-local IQS trace, independent of F4 delivery."""
 
 from datetime import datetime, timezone
 import json
@@ -26,14 +26,10 @@ class _LocalHandler(RotatingFileHandler):
             pass
 
 
-def append_operation_failure(directory, observation, chain):
-    """Write only already-projected identifiers and structural error facts."""
-    log_path = physical_path(directory / "runtime-failures.jsonl")
-    now = datetime.now(timezone.utc).isoformat(timespec="milliseconds")
-    payload = {"schema_version": "iqs-runtime-log/1", "timestamp_utc": now.replace("+00:00", "Z"),
-               "owner": observation["owner"], "run_id": observation["run_id"],
-               "attempt_id": observation["attempt_id"], "step_id": observation["step_id"],
-               "code": observation["actual"], "chain": chain}
+def _append(directory, filename, payload):
+    log_path = physical_path(directory / filename)
+    now = datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")
+    payload = {"schema_version": "iqs-runtime-log/1", "timestamp_utc": now, **payload}
     line = json.dumps(payload, ensure_ascii=True, allow_nan=False, separators=(",", ":"))
     deadline = time.monotonic() + 0.4
     while True:
@@ -56,3 +52,50 @@ def append_operation_failure(directory, observation, chain):
             if time.monotonic() >= deadline:
                 raise
             time.sleep(0.01)
+
+
+def append_operation_failure(directory, observation, chain, owned):
+    """Write only already-projected identifiers and structural error facts."""
+    payload = {key: observation[key] for key in ("owner", "run_id", "attempt_id", "step_id")}
+    payload.update(state="failed", code=observation["actual"], chain=chain)
+    payload["version"] = observation["version"]
+    if owned:
+        payload.update(native_run_id=owned[0], native_attempt_id=owned[1])
+    if observation.get("details_ref"):
+        payload["details_ref"] = observation["details_ref"]
+    _append(directory, "runtime-failures.jsonl", payload)
+
+
+def append_operation_checkpoint(directory, payload):
+    _append(directory, "runtime-events.jsonl", payload)
+
+
+def read_operation_trace(directory, owner, run, attempt):
+    """Read the retained owner trace without locks, retries or feedback writes."""
+    events = []
+    for filename in ("runtime-events.jsonl", "runtime-failures.jsonl"):
+        for suffix in (".2", ".1", ""):
+            path = physical_path(directory / (filename + suffix))
+            try:
+                with path.open("rb") as stream:
+                    for line in stream:
+                        try:
+                            row = json.loads(line)
+                        except (ValueError, RecursionError):
+                            continue  # A killed writer may leave a torn final row.
+                        if (isinstance(row, dict) and isinstance(row.get("timestamp_utc"), str)
+                                and row.get("owner") == owner and (run, attempt) in (
+                                    (row.get("run_id"), row.get("attempt_id")),
+                                    (row.get("native_run_id"), row.get("native_attempt_id")),
+                                )):
+                            try:
+                                instant = datetime.fromisoformat(row["timestamp_utc"])
+                            except ValueError:
+                                continue
+                            if instant.tzinfo is None:
+                                continue
+                            row.setdefault("state", "failed")
+                            events.append((instant, row))
+            except FileNotFoundError:
+                continue
+    return [row for _, row in sorted(events, key=lambda entry: entry[0])]

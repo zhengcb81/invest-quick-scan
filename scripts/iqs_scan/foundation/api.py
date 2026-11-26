@@ -10,6 +10,7 @@ from .feedback_io import (
     feedback_path,
 )
 from .json_io import physical_path, replace_after_readers_close
+from .file_lock import ControlBusyError, control_lock
 from .process_logs import read_process_log, redacted_output_lines, register_process_log
 from .runtime_feedback import (
     RuntimeArgumentParser,
@@ -17,9 +18,13 @@ from .runtime_feedback import (
     exception_diagnostic,
     operation_scope,
     operation_state_root,
+    own_child_operation_scope,
     read_operation_failure,
+    read_owned_operation_failure,
+    read_run_trace,
     read_runs_failure,
     record_operation_failure,
+    record_operation_checkpoint,
 )
 
 
@@ -42,6 +47,8 @@ API_PROTOCOL = "iqs.foundation-api/1.0.0"
 
 __all__ = (
     "API_PROTOCOL",
+    "ControlBusyError",
+    "control_lock",
     "FEEDBACK_ATTEMPT_ENV",
     "FEEDBACK_OUT_ENV",
     "FEEDBACK_RUN_ENV",
@@ -59,9 +66,13 @@ __all__ = (
     "register_process_log",
     "operation_scope",
     "operation_state_root",
+    "own_child_operation_scope",
     "read_operation_failure",
+    "read_owned_operation_failure",
+    "read_run_trace",
     "read_runs_failure",
     "record_operation_failure",
+    "record_operation_checkpoint",
     "build_search_receipt",
     "canonical_bytes",
     "core_construct_ids",

@@ -221,7 +221,16 @@ class DashboardService:
         self._return_bridge = None
         self._prepare = self._batch = self._jobs = self._delivery = None
         self._snapshots = {}
-        self._load()
+        try:
+            self._load()
+        except (ProductError, OSError) as error:
+            from ..foundation.api import operation_state_root, record_operation_failure
+
+            code = error.code if isinstance(error, ProductError) else "dashboard_config_unreadable"
+            record_operation_failure(error, "dashboard.config", code=code,
+                                     refusal=isinstance(error, ProductError) and error.status < 500,
+                                     directory=operation_state_root(self.root / "runs"))
+            raise
 
     def _load(self, *, inactive_checked_config=None, keep_active_revision=False):
         raw = self.config_path.read_bytes() if self.config_path.is_file() else b''

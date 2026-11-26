@@ -11,7 +11,10 @@ import threading
 import time
 import uuid
 
-from ..foundation.api import operation_scope, record_operation_failure, replace_after_readers_close
+from ..foundation.api import (
+    operation_scope, read_owned_operation_failure, record_operation_checkpoint, record_operation_failure,
+    replace_after_readers_close,
+)
 from .dashboard_locks import control_lock, ControlBusyError
 
 
@@ -115,7 +118,7 @@ class PreparationJobs:
             if current.get('state') == 'abandoned':
                 current.update(result=result, prepared_at=_now(), registration_performed=False)
                 self._write(self._path(record['job_id']), current)
-                return
+                return 'abandoned'
             record = {**current, 'state':'registration_in_progress', 'result':result,
                       'prepared_at':_now(), 'session':self.session}
             self._write(self._path(record['job_id']), record)
@@ -127,17 +130,26 @@ class PreparationJobs:
                 record.update(state='registration_pending', registration_error=code,
                               failure_diagnostic=self._diagnose(exc, record, "prepare.register", code))
             self._write(self._path(record['job_id']), record)
+            return record['state']
 
     def _diagnose(self, error, record, stage, code):
-        return record_operation_failure(error, stage, directory=self.diagnostic_root,
-                                        code=code, run_id=record["job_id"], attempt_id=record["session"],
-                                        disposition="unknown" if code == "worker_state_unknown" else "deviation")
+        with operation_scope(record["job_id"], record["session"], recoverable=True):
+            return record_operation_failure(error, stage, directory=self.diagnostic_root, code=code)
 
     def _run(self, path, record, payload):
+        with operation_scope(record["job_id"], record["session"], recoverable=True):
+            self._run_original(path, record, payload)
+
+    def _run_original(self, path, record, payload):
+        started = time.monotonic_ns()
+        outcome = "failed"
+        evidence = "iqs:preparation/" + record["job_id"]
+        record_operation_checkpoint("prepare.job", "started", directory=self.diagnostic_root, evidence_ref=evidence)
         try:
-            with operation_scope(record["job_id"], record["session"]):
-                result = self.preparer.apply(payload)
-                self._register(record, result)
+            result = self.preparer.apply(payload)
+            record_operation_checkpoint("prepare.apply", "completed", directory=self.diagnostic_root)
+            registered = self._register(record, result)
+            outcome = {"registered": "completed", "abandoned": "refused"}.get(registered, "failed")
         except Exception as exc:
             code = getattr(exc, "code", "preparation_interrupted")
             diagnostic = self._diagnose(exc, record, "prepare.apply", code)
@@ -155,6 +167,8 @@ class PreparationJobs:
                     if attempt==7: break  # Keep durable state, never redo apply.
                     time.sleep(.01)
         finally:
+            record_operation_checkpoint("prepare.job", outcome, directory=self.diagnostic_root,
+                                        elapsed_ms=(time.monotonic_ns() - started) // 1_000_000)
             with self._mutex:
                 self._threads.pop(record['job_id'], None)
 
@@ -164,18 +178,21 @@ class PreparationJobs:
             thread = self._threads.get(job_id)
             detached = record['session'] != self.session or thread is None or not thread.is_alive()
         if record['state'] in {'preparing', 'registration_in_progress'} and detached:
-            diagnostic = self._diagnose(None, record, "prepare.recovery", "worker_state_unknown")
+            stages = ("prepare.register",) if record['state'] == 'registration_in_progress' else (
+                "prepare.apply", "prepare.worker", "prepare.owner",
+            )
+            diagnostic = read_owned_operation_failure(self.diagnostic_root, job_id, record['session'], *stages)
             record.update(state='needs_original_inspection', message='服务已重启，未自动重做准备。',
-                          failure_diagnostic=diagnostic)
+                          error_code=diagnostic["observation"]["actual"] if diagnostic else "worker_state_unknown")
+            if diagnostic:
+                record['failure_diagnostic'] = diagnostic
         record['allowed_actions'] = (['reconcile', 'abandon'] if record['state'] in {
             'needs_original_inspection', 'owner_prepared', 'registration_pending'} else [])
         if record['state'] in {'preparing','needs_original_inspection'} and hasattr(self.preparer,'preparation'):
             try:
                 record['original_preparation']=self.preparer.preparation(record['preview_id'])
             except Exception as exc:
-                code = getattr(exc, 'code', 'preparation_phase_unavailable')
-                record.update(phase_read_error=code,
-                              phase_diagnostic=self._diagnose(exc, record, 'prepare.phase.read', code))
+                record['phase_read_error'] = getattr(exc, 'code', 'preparation_phase_unavailable')
         return record
 
     def list(self):
