@@ -33,6 +33,7 @@ from .dashboard_owner import (OWNER_RESPONSE_LIMIT, TIMEOUT_SECONDS_MAX,
                               owner_environment, valid_timeout_seconds)
 from .dashboard_json import decode_owner_json
 from .dashboard_iqs_link import safe_entity_id
+from ._background_process import run_background
 
 BRIDGE_CLI = "dashboard_identity_bridge_cli.py"
 BRIDGE_SCHEMA = "stockwiki.dashboard_identity/1"
@@ -136,7 +137,7 @@ class ReturnBridge:
         if not isinstance(config, dict):
             raise ValueError("return bridge config must be an object")
         self.config = dict(config)
-        self._runner = runner or subprocess.run
+        self._runner = runner
 
     # -- one workspace resolve ------------------------------------------------
 
@@ -159,9 +160,9 @@ class ReturnBridge:
         if listing_id:
             command.extend(("--listing-id", listing_id))
         try:
-            result = self._runner(command, cwd=str(code_root), capture_output=True,
-                                  text=True, encoding="utf-8", errors="strict",
-                                  timeout=timeout, env=owner_environment())
+            result = run_background(command, runner=self._runner, cwd=str(code_root),
+                                    capture_output=True, text=True, encoding="utf-8",
+                                    errors="strict", timeout=timeout, env=owner_environment())
         except subprocess.TimeoutExpired:
             return None, "bridge_timeout"
         except (OSError, ValueError, UnicodeError):

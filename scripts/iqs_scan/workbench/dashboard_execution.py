@@ -29,6 +29,7 @@ from .dashboard_locks import control_lock, ControlBusyError
 
 from .dashboard_errors import DashboardExecutionError
 from .dashboard_json import decode_owner_json, owner_refusal
+from ._background_process import run_background, start_background
 
 
 def _now():
@@ -335,10 +336,9 @@ class ExecutionGateway:
     def _call(self, command, root, runtime, *, input_value=None):
         from ..foundation.api import record_operation_failure
         try:
-            result = subprocess.run(command, cwd=runtime, env=self._environment(root),
+            result = run_background(command, cwd=runtime, env=self._environment(root),
                 input=json.dumps(input_value) if input_value is not None else None,
-                capture_output=True, text=True, encoding="utf-8", timeout=130,
-                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                capture_output=True, text=True, encoding="utf-8", timeout=130)
             owner_code = owner_refusal(result.stderr) if result.returncode and not result.stdout.strip() else None
             output = {"error_code": owner_code} if owner_code else decode_owner_json(result.stdout)
         except (OSError, subprocess.TimeoutExpired, ValueError) as error:
@@ -954,9 +954,8 @@ class ExecutionGateway:
                 child_env = self._environment(root, paid=not recovery, record=record)
                 _write(path, record)  # A crash now requires inspection, never blind resend.
                 try:
-                    process = subprocess.Popen(self._command(bundle, root, folder / "result.json", recovery=recovery), cwd=runtime,
-                        env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                    process = start_background(self._command(bundle, root, folder / "result.json", recovery=recovery), cwd=runtime,
+                        env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 except OSError as exc:
                     diagnostic = self._failed_launch(exc, record)
                     record.update(process_state="launch_failed", finished_at=_now(), exit_code=None,
@@ -1114,10 +1113,9 @@ class ExecutionGateway:
                 child_env = self._environment(root, paid=False, record=record)
                 _write(path, record)
                 try:
-                    process = subprocess.Popen(self._command(bundle, root, record['result_path'], recovery=True),
+                    process = start_background(self._command(bundle, root, record['result_path'], recovery=True),
                         cwd=runtime, env=child_env, stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT,
-                        creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+                        stderr=subprocess.STDOUT)
                 except OSError as error:
                     diagnostic = self._failed_launch(error, record)
                     record.update(process_state='launch_failed', launcher_state='paused', failure_diagnostic=diagnostic)
@@ -1188,9 +1186,8 @@ class ExecutionGateway:
                 child_env = self._environment(root, paid=not recovery, record=record)
                 _write(path, record)
                 try:
-                    process = subprocess.Popen(self._command(bundle, root, record["result_path"], recovery=recovery), cwd=runtime,
-                        env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                    process = start_background(self._command(bundle, root, record["result_path"], recovery=recovery), cwd=runtime,
+                        env=child_env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 except OSError as error:
                     diagnostic = self._failed_launch(error, record)
                     record.update(process_state="launch_failed", launcher_state="paused", failure_diagnostic=diagnostic)

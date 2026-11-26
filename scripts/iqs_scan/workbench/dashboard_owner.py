@@ -10,6 +10,7 @@ import subprocess
 import sys
 
 from .dashboard_json import decode_owner_json
+from ._background_process import run_background
 
 PROTOCOL = "iqs.dashboard.owner/1.0.0"
 REQUEST_PROTOCOL = "stockwiki.quick_scan_dashboard_request/1.0.0"
@@ -139,7 +140,7 @@ class OwnerGateway:
         except (ValueError, TypeError, RecursionError) as error:
             raise DashboardOwnerError("invalid_payload", "Expected a serializable JSON object") from error
         try:
-            result = subprocess.run(command, cwd=code, input=wire,
+            result = run_background(command, cwd=code, input=wire,
                                     text=True, encoding="utf-8", errors="strict", capture_output=True,
                                     timeout=config.get("timeout_seconds", 30), env=_env())
         except subprocess.TimeoutExpired as error:
@@ -198,7 +199,7 @@ class OwnerGateway:
                    "--root", config["workspace_root"]]
         try:
             wire = json.dumps(payload, ensure_ascii=False, allow_nan=False)
-            result = subprocess.run(command, cwd=code, input=wire, text=True, encoding="utf-8",
+            result = run_background(command, cwd=code, input=wire, text=True, encoding="utf-8",
                                     errors="strict", capture_output=True,
                                     timeout=config.get("timeout_seconds", 30), env=_env())
         except (ValueError, TypeError, RecursionError) as error:

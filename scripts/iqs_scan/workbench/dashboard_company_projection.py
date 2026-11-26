@@ -23,6 +23,7 @@ from typing import Any
 from .dashboard_json import decode_owner_json
 from . import company_result_coverage
 from . import dashboard_company_feedback
+from ._background_process import run_background
 
 PROJECTION_PROTOCOL = "iqs.dashboard.company_assessment/1"
 # 1.1.0 adds the derived ``coverage`` block (per-question status and per-group
@@ -154,7 +155,7 @@ def read_company_assessment(
         environment = {key: value for key, value in os.environ.items()
                        if key.upper() in {"PATH", "SYSTEMROOT", "WINDIR", "LD_LIBRARY_PATH"}}
     try:
-        process = subprocess.run(command, cwd=root, stdin=subprocess.DEVNULL,
+        process = run_background(command, cwd=root, stdin=subprocess.DEVNULL,
                                  capture_output=True, timeout=config.get("timeout_seconds", 30),
                                  env=environment)
     except subprocess.TimeoutExpired:

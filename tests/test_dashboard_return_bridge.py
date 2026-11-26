@@ -5,12 +5,14 @@ StockWiki workspaces resolve the business and r25 entities to the SAME
 issuer coordinates and listing credentials (both verified, both actively
 listed, same NFKC canonical name). Every other outcome is a named
 non-confirmation that keeps the readable payload intact. The bridge call is
-substituted with a fake runner: no real workspace, no network, no writes.
+exercised with isolated owners. The Windows case uses real child processes.
 """
 from pathlib import Path
 import json
 import subprocess
 import sys
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 from dashboard_return_bridge import (
@@ -125,6 +127,62 @@ def test_verify_confirms_the_same_issuer_and_listing(tmp_path):
     assert AMEC_R25_LISTING not in r25_argv, 'the r25 side resolves the entity, not one listing'
     assert AMEC_BUSINESS in business_argv and AMEC_BUSINESS_LISTING in business_argv
     assert business_kwargs['cwd'] == str(tmp_path / 'stockwiki')
+
+
+@pytest.mark.skipif(sys.platform != 'win32', reason='Windows console integration')
+def test_real_cross_workspace_return_uses_windowless_owner_cli(tmp_path):
+    console = Path(sys.executable).with_name('python.exe')
+    windowless = console.with_name('pythonw.exe')
+    if not console.is_file() or not windowless.is_file():
+        pytest.skip('This Python installation has no paired Windows executables')
+
+    owner = tmp_path / 'owner'
+    owner.mkdir()
+    workspace = tmp_path / 'workspace'
+    business = tmp_path / 'business'
+    workspace.mkdir()
+    business.mkdir()
+    replies = {
+        AMEC_R25: _reply(AMEC_R25, '测试公司', AMEC_R25_LISTING),
+        AMEC_BUSINESS: _reply(AMEC_BUSINESS, '测试公司', AMEC_BUSINESS_LISTING),
+    }
+    (owner / 'replies.json').write_text(json.dumps(replies), encoding='utf-8')
+    (owner / 'dashboard_identity_bridge_cli.py').write_text('''\
+import ctypes
+import json
+from pathlib import Path
+import sys
+
+entity = sys.argv[sys.argv.index('--entity-id') + 1]
+workspace = sys.argv[sys.argv.index('--root') + 1]
+replies = json.loads(Path('replies.json').read_text(encoding='utf-8'))
+console = ctypes.WinDLL('kernel32').GetConsoleWindow
+console.restype = ctypes.c_void_p
+with Path('launches.jsonl').open('a', encoding='utf-8') as log:
+    log.write(json.dumps({'entity': entity, 'workspace': workspace,
+                          'executable': sys.executable, 'has_console': bool(console())}) + '\\n')
+print(json.dumps(replies[entity]), flush=True)
+''', encoding='utf-8')
+
+    def run_owner(command, **options):
+        try:
+            return subprocess.run(command, **options)
+        except (OSError, UnicodeError) as error:
+            pytest.fail(f'Native identity launch failed: {type(error).__name__}: {error}', pytrace=False)
+
+    bridge = ReturnBridge({
+        'stockwiki_root': str(owner), 'stockwiki_python': str(console),
+        'workspace_root': str(workspace), 'return_bridge_workspace_root': str(business),
+        'timeout_seconds': 10,
+    }, runner=run_owner)
+
+    verdict = bridge.verify(AMEC_R25, RETURN_URL)
+    assert verdict['confirmed'], verdict
+    launches = [json.loads(line) for line in (owner / 'launches.jsonl').read_text(encoding='utf-8').splitlines()]
+    assert [(item['entity'], Path(item['workspace'])) for item in launches] == [
+        (AMEC_R25, workspace), (AMEC_BUSINESS, business),
+    ]
+    assert all(Path(item['executable']).samefile(windowless) and not item['has_console'] for item in launches)
 
 
 def test_verify_refuses_mismatched_listing_coordinates(tmp_path):

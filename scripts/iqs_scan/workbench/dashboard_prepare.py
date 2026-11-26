@@ -25,6 +25,7 @@ import uuid
 
 from ..foundation.api import child_feedback_environment, operation_scope, own_child_operation_scope
 from .dashboard_json import decode_owner_json, owner_refusal
+from ._background_process import run_background
 
 ROOT = REPO_ROOT
 DEFAULT_PACKAGE = "pkg_0151a1e3b23fe462476b1d7329211d8887a79c161eb765a1e64c7dcda1b60d9a"
@@ -226,10 +227,10 @@ def _read_continuation_bank(config, binding, *, admission_config=None, ledger=No
     selector = ('--ledger', ledger) if admission_config is None else ('--admission-config', admission_config)
     command = [config.get('stockqa_python') or sys.executable, '-B', '-X', 'utf8', '-m',
                'src.utils.quick_scan_continuation_bank_cli', selector[0], str(selector[1])]
-    done = subprocess.run(command, input=_bytes({
+    done = run_background(command, input=_bytes({
         'protocol': 'stockqa.continuation_bank_request/1.0.0', 'binding': binding,
     }), capture_output=True, env=_env(), cwd=config['stockqa_root'],
-        timeout=_timeouts(config)[1], creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+        timeout=_timeouts(config)[1])
     if done.returncode or len(done.stdout) > MAX_BYTES:
         raise ValueError('invalid_original_binding_read')
     result = decode_owner_json(done.stdout)
@@ -475,10 +476,9 @@ class PrepareGateway:
         self._deployment()
         timeout = 60 if operation == "snapshot" else _timeouts(self.config)[0]
         try:
-            completed = subprocess.run([sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts/dashboard_prepare.py"), "--worker"],
+            completed = run_background([sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts/dashboard_prepare.py"), "--worker"],
                 cwd=self.config["iqs_root"], env=_env(same_owner=True), input=_bytes({"operation": operation,
-                "config": self.config, "payload": payload}), capture_output=True, timeout=timeout,
-                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                "config": self.config, "payload": payload}), capture_output=True, timeout=timeout)
         except subprocess.TimeoutExpired:
             raise DashboardPrepareError("preparation_timeout_unknown" if operation == "apply" else "owner_snapshot_timeout",
                 "Original operation timed out; inspect its immutable journal before retrying", 504,
@@ -901,9 +901,9 @@ def _native_command(config, kind, module, arguments, input_value, owner_operatio
     stage = [value for value in arguments if value in {"--request", "--install-delegation", "--install-delegation-stdin", "--confirm-delegated", "--confirmation-id", "--input-locations"}]
     details = {"native_module": module, "native_selectors": stage, "timeout_seconds": timeout}
     try:
-        done = subprocess.run([interpreter, "-B", "-X", "utf8", "-m", module, *arguments], cwd=cwd, env=env,
+        done = run_background([interpreter, "-B", "-X", "utf8", "-m", module, *arguments], cwd=cwd, env=env,
                               input=_bytes(input_value) if input_value is not None else None,
-                              capture_output=True, timeout=timeout, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                              capture_output=True, timeout=timeout)
     except subprocess.TimeoutExpired as error:
         from ..foundation.api import record_operation_failure
         diagnostic = record_operation_failure(error, "prepare.owner", code="native_preparation_timeout_unknown",

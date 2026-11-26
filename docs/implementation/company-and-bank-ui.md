@@ -14,6 +14,17 @@ python scripts/open_dashboard.py
 
 `--no-refresh`仅查看已构建快照；`--ui-root`指定UI源码目录，`--data-root`指定IQS数据根；`--plan`只查看启动命令。独立VIEW导出浏览器仍用 `view_quick_scan.py --bundle ...`，两种入口的数据范围不同。
 
+Windows 上，WorkBuddy、Codex 和其他后台调用方使用 `scripts/start_workbench_background.ps1`。它从指定的 Python 安装选用配对的 `pythonw.exe`，收集标准输出和错误日志，并沿原 `--no-refresh` 入口启动。前台调试仍可从终端运行上面的命令。
+
+后台验收传入独占的 `-DataRoot`、`-DashboardConfig` 和 `-LogDirectory`，并使用默认 `-Port 0`。正式发布由 IQS 启动同一入口并明确指定正式端口。已有监听的状态观察只读取端口和原结果，离线时记录状态即可。Windows harness 的 PowerShell 工具可以直接调用脚本。
+
+```powershell
+$run = & ./scripts/start_workbench_background.ps1 -Python $ConfiguredPython `
+    -UiRoot $TestUi -DashboardConfig $TestConfig -DataRoot $TestData `
+    -LogDirectory $TestLogs -Port 0
+$run.stdout
+```
+
 ## 工作区与操作方式
 
 顶栏按总览、扫描、公司研究、题库、设置分组；原子页面和旧URL保留。公司名单及选择器支持名称、代码或唯一ID搜索，同名不同实体分开展示；名单每页50家。正式结果以题义选择原评分字段，进入详情再返回会保留条件、页码和原有效快照，快照过期须重新查询。历史按唯一观测选择，一条记录不做双栏比较。
