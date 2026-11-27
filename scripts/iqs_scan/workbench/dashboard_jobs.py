@@ -18,6 +18,9 @@ from ..foundation.api import (
 from .dashboard_locks import control_lock, ControlBusyError
 
 
+DEFAULT_RECORD_LOCK_TIMEOUT_SECONDS = 1.0
+
+
 class DashboardJobError(ValueError):
     def __init__(self, code, message, status=400, details=None):
         super().__init__(message)
@@ -29,9 +32,13 @@ def _now():
 
 
 class PreparationJobs:
-    def __init__(self, preparer, state_root, on_prepared, *, diagnostic_root=None):
+    def __init__(
+        self, preparer, state_root, on_prepared, *, diagnostic_root=None,
+        record_lock_timeout_seconds=DEFAULT_RECORD_LOCK_TIMEOUT_SECONDS,
+    ):
         self.preparer, self.state_root, self.on_prepared = preparer, Path(state_root), on_prepared
         self.diagnostic_root = Path(diagnostic_root or state_root)
+        self.record_lock_timeout_seconds = record_lock_timeout_seconds
         self.session = uuid.uuid4().hex
         self._threads = {}
         self._mutex = threading.RLock()
@@ -109,13 +116,18 @@ class PreparationJobs:
             raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from None
 
     def _register(self, record, result, *, lock_held=False):
-        # Mutations take this kernel lock NONBLOCKING. Keeping the claim
-        # through the callback cannot deadlock a service request: another
-        # request gets control_busy and releases its service lock immediately.
-        # A process death releases the lock for explicit saved-result recovery.
-        with (nullcontext() if lock_held else control_lock(self.state_root/'jobs.lock')):
+        # Background work can wait briefly without holding the service mutex.
+        # Foreground mutations still fail fast while the registration callback owns the lock.
+        claim = nullcontext() if lock_held else control_lock(
+            self.state_root / "jobs.lock", timeout_seconds=self.record_lock_timeout_seconds,
+        )
+        with claim:
             current = self._read(self._path(record['job_id']))
-            if current.get('state') == 'abandoned':
+            if current['state'] == 'registered':
+                return 'registered'
+            if not lock_held and (current['session'] != record['session'] or current['state'] == 'registration_pending'):
+                return current['state']
+            if current['state'] == 'abandoned':
                 current.update(result=result, prepared_at=_now(), registration_performed=False)
                 self._write(self._path(record['job_id']), current)
                 return 'abandoned'
@@ -153,19 +165,22 @@ class PreparationJobs:
         except Exception as exc:
             code = getattr(exc, "code", "preparation_interrupted")
             diagnostic = self._diagnose(exc, record, "prepare.apply", code)
-            for attempt in range(8):
-                try:
-                    with control_lock(self.state_root/'jobs.lock'):
-                        current = self._read(path)
-                        if current.get('state') == 'abandoned': return
-                        current.update(state='needs_original_inspection', finished_at=_now(),
+            try:
+                with control_lock(self.state_root / "jobs.lock", timeout_seconds=self.record_lock_timeout_seconds):
+                    current = self._read(path)
+                    if current['session'] == record['session'] and current['state'] in {
+                        'preparing', 'registration_in_progress',
+                    }:
+                        current.update(
+                            state='needs_original_inspection', finished_at=_now(),
                             error_code=code, failure_diagnostic=diagnostic,
-                            message='未自动重试；先核对原准备记录，再明确处理。')
-                        self._write(path,current)
-                    break
-                except ControlBusyError:
-                    if attempt==7: break  # Keep durable state, never redo apply.
-                    time.sleep(.01)
+                            message='未自动重试；先核对原准备记录，再明确处理。',
+                        )
+                        self._write(path, current)
+            except ControlBusyError:
+                # The original diagnostic is durable and get() reads it by job and session.
+                # Keep the locked record untouched. A concurrent recovery may own it.
+                pass
         finally:
             record_operation_checkpoint("prepare.job", outcome, directory=self.diagnostic_root,
                                         elapsed_ms=(time.monotonic_ns() - started) // 1_000_000)
@@ -178,11 +193,11 @@ class PreparationJobs:
             thread = self._threads.get(job_id)
             detached = record['session'] != self.session or thread is None or not thread.is_alive()
         if record['state'] in {'preparing', 'registration_in_progress'} and detached:
-            stages = ("prepare.register",) if record['state'] == 'registration_in_progress' else (
+            stages = ("prepare.register", "prepare.apply") if record['state'] == 'registration_in_progress' else (
                 "prepare.apply", "prepare.worker", "prepare.owner",
             )
             diagnostic = read_owned_operation_failure(self.diagnostic_root, job_id, record['session'], *stages)
-            record.update(state='needs_original_inspection', message='服务已重启，未自动重做准备。',
+            record.update(state='needs_original_inspection', message='准备作业已停止或由另一进程持有，请先核对原记录。',
                           error_code=diagnostic["observation"]["actual"] if diagnostic else "worker_state_unknown")
             if diagnostic:
                 record['failure_diagnostic'] = diagnostic

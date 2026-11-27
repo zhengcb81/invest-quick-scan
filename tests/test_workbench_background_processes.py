@@ -67,3 +67,31 @@ def test_non_windows_command_and_options_pass_through(tmp_path, monkeypatch):
 
     command = [str(console), "-B", "owner_cli.py"]
     assert _background_process.run_background(command, runner=run, timeout=2) == (command, {"timeout": 2})
+
+
+def test_selected_checkout_launcher_passes_windowless_options(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from iqs_scan.workbench import open_dashboard
+
+    ui = tmp_path / "ui"
+    static = ui / "src" / "app"
+    static.mkdir(parents=True)
+    (static / "index.html").touch()
+    data = tmp_path / "checkout"
+    scripts = data / "scripts"
+    scripts.mkdir(parents=True)
+    (scripts / "open_dashboard.py").touch()
+    (scripts / "dashboard_service.py").touch()
+    seen = []
+    monkeypatch.setattr(_background_process, "_WINDOWS_NO_CONSOLE", 0x08000000)
+    monkeypatch.setattr(
+        _background_process.subprocess, "run",
+        lambda command, **options: seen.append((command, options)) or SimpleNamespace(returncode=7),
+    )
+
+    assert open_dashboard.main(["--data-root", str(data), "--ui-root", str(ui), "--port", "0", "--plan"]) == 7
+    command, options = seen[0]
+    assert command[-3:] == ["--port", "0", "--plan"]
+    assert options["creationflags"] == 0x08000000
+    assert options["stdin"] == _background_process.subprocess.DEVNULL

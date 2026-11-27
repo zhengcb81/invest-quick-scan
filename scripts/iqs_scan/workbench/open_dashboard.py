@@ -7,10 +7,11 @@ import argparse
 import json
 import mimetypes
 from pathlib import Path, PurePosixPath
-import subprocess
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import unquote, urlsplit
+
+from ._background_process import run_background
 
 ROOT = REPO_ROOT
 GENERATED = {"bank", "versions", "roster", "answers", "manifest"}
@@ -165,7 +166,7 @@ def main(argv=None):
             command.append("--no-refresh")
         if args.plan:
             command.append("--plan")
-        return subprocess.run(command, check=False).returncode
+        return run_background(command, check=False).returncode
 
     from .dashboard_http import product_handler
     from .dashboard_service import DashboardService, validate_config

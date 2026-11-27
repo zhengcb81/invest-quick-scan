@@ -130,9 +130,13 @@ def run_group(root, name, files, output, temp_root=None):
             "--rootdir", str(root), "--basetemp", str(owned / "pytest"),
             "--junitxml", str(output / (name + ".xml")),
             *[str(root / "tests" / file) for file in files]]
+        if os.name == "nt":
+            # FD capture can invalidate the inherited stdin handle for nested Windows children.
+            arguments.extend(["--capture=sys", "--tb=short"])
         with (output / (name + ".log")).open("xb") as stream:
             completed = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", CHILD, *arguments],
-                cwd=working_directory, env=environment, stdout=stream, stderr=subprocess.STDOUT)
+                cwd=working_directory, env=environment, stdin=subprocess.DEVNULL,
+                stdout=stream, stderr=subprocess.STDOUT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             exit_code = completed.returncode
     result = dict(name=name, files=files, exit_code=exit_code,
         elapsed_seconds=round(time.perf_counter() - started, 3), temporary_root_removed=not owned.exists(),

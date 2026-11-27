@@ -162,3 +162,98 @@ def test_same_session_orphan_is_reconcilable_without_reapplying(setup):
     assert 'reconcile' in jobs.get(job_id)['allowed_actions']
     assert jobs.reconcile(job_id)['state']=='registered'
     assert preparer.apply_count==0 and len(registered)==1
+
+
+def test_failed_preparation_waits_out_short_contention_and_persists_original_failure(setup):
+    from scripts.dashboard_locks import control_lock
+
+    jobs, preparer, registered = setup
+
+    def fail(payload):
+        preparer.apply_count += 1
+        preparer.entered.set()
+        assert preparer.release.wait(5)
+        raise DashboardJobError("fixture_original_failure", "synthetic")
+
+    preparer.apply = fail
+    job_id = jobs.submit(SELECTION)["job"]["job_id"]
+    assert preparer.entered.wait(2)
+    thread = jobs._threads[job_id]
+    with control_lock(jobs.state_root / "jobs.lock"):
+        preparer.release.set()
+        thread.join(timeout=0.25)
+        assert thread.is_alive(), "worker stopped before the transient lock released"
+
+    assert finish(jobs, job_id)["state"] == "needs_original_inspection"
+    persisted = json.loads(jobs._path(job_id).read_text(encoding="utf8"))
+    assert (persisted["state"], persisted["error_code"]) == (
+        "needs_original_inspection", "fixture_original_failure",
+    )
+    cold = PreparationJobs(preparer, jobs.state_root, jobs.on_prepared)
+    assert cold.get(job_id)["failure_diagnostic"]["observation"]["actual"] == "fixture_original_failure"
+    assert preparer.apply_count == 1 and registered == []
+
+
+def test_lock_deadline_preserves_original_failure_for_cold_read(tmp_path):
+    from scripts.dashboard_locks import control_lock
+
+    preparer = Preparer()
+    jobs = PreparationJobs(
+        preparer, tmp_path / "jobs", lambda result: pytest.fail("unexpected registration"),
+        record_lock_timeout_seconds=0.03,
+    )
+
+    def fail(payload):
+        preparer.apply_count += 1
+        preparer.entered.set()
+        assert preparer.release.wait(5)
+        raise DashboardJobError("fixture_original_failure", "synthetic")
+
+    preparer.apply = fail
+    job_id = jobs.submit(SELECTION)["job"]["job_id"]
+    assert preparer.entered.wait(2)
+    thread = jobs._threads[job_id]
+    with control_lock(jobs.state_root / "jobs.lock"):
+        original = jobs._path(job_id).read_bytes()
+        preparer.release.set()
+        thread.join(timeout=2)
+        assert not thread.is_alive()
+        assert jobs._path(job_id).read_bytes() == original
+
+    cold = PreparationJobs(preparer, jobs.state_root, jobs.on_prepared)
+    read = cold.get(job_id)
+    assert (read["state"], read["error_code"]) == (
+        "needs_original_inspection", "fixture_original_failure",
+    )
+    assert cold.submit(SELECTION)["attached"] is True
+    assert preparer.apply_count == 1
+
+
+def test_failed_worker_cannot_overwrite_registration_that_recovered_original(setup, monkeypatch):
+    jobs, preparer, registered = setup
+    diagnosed = threading.Event()
+    resume = threading.Event()
+    original_diagnose = jobs._diagnose
+
+    def pause_after_failure(*args):
+        result = original_diagnose(*args)
+        diagnosed.set()
+        assert resume.wait(5)
+        return result
+
+    def fail_after_owner_persisted(payload):
+        preparer.apply_count += 1
+        preparer.result = {"execution_bundles": []}
+        raise DashboardJobError("fixture_lost_result", "synthetic")
+
+    monkeypatch.setattr(jobs, "_diagnose", pause_after_failure)
+    preparer.apply = fail_after_owner_persisted
+    job_id = jobs.submit(SELECTION)["job"]["job_id"]
+    cold = PreparationJobs(preparer, jobs.state_root, jobs.on_prepared)
+    try:
+        assert diagnosed.wait(2)
+        assert cold.reconcile(job_id)["state"] == "registered"
+    finally:
+        resume.set()
+    assert finish(jobs, job_id)["state"] == "registered"
+    assert preparer.apply_count == 1 and registered == [preparer.result]

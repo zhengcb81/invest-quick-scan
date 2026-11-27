@@ -157,3 +157,37 @@ def test_empty_invalid_or_conflicting_junit_cannot_be_reported_green(tmp_path, m
     monkeypatch.setattr(runner.subprocess, "run", bad_report)
     result = runner.run_group(tmp_path, "fast", ["test_fixture.py"], output, temp_root=tmp_path)
     assert result["exit_code"] == 2 and result["temporary_root_removed"]
+
+
+def test_test_partitions_are_windowless_on_windows(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    calls = []
+    monkeypatch.setattr(runner.subprocess, "CREATE_NO_WINDOW", 0x08000000, raising=False)
+
+    def run(command, **options):
+        calls.append((command, options))
+        return SimpleNamespace(returncode=3)
+
+    monkeypatch.setattr(runner.subprocess, "run", run)
+    result = runner.run_group(tmp_path, "fast", ["test_fixture.py"], tmp_path, temp_root=tmp_path)
+    assert result["exit_code"] == 3
+    assert result["temporary_root_removed"]
+    _, options = calls[0]
+    assert options["creationflags"] == 0x08000000
+    assert options["stdin"] == runner.subprocess.DEVNULL
+
+
+def test_partition_preserves_std_handles_for_nested_python(tmp_path):
+    tests = tmp_path / "tests"
+    tests.mkdir()
+    (tests / "test_child.py").write_text(
+        "import subprocess, sys\n"
+        "def test_child():\n"
+        "    proc = subprocess.run([sys.executable, '-c', 'print(41)'], "
+        "capture_output=True, timeout=10, check=True)\n"
+        "    assert proc.stdout.strip() == b'41'\n",
+        encoding="utf-8",
+    )
+    result = runner.run_group(tmp_path, "fast", ["test_child.py"], tmp_path, temp_root=tmp_path)
+    assert result["exit_code"] == 0, (tmp_path / "fast.log").read_text(encoding="utf-8")

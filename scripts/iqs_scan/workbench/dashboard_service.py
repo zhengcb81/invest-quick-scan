@@ -46,7 +46,7 @@ CONFIG_KEYS = PATH_KEYS | {'schema_version', 'universe_id', 'execution_bundles',
 DASHBOARD_ORIGIN_KEY = 'dashboard_origin'
 PREPARE_KEYS = {'state_root', 'admission_config', 'module_package_id', 'producer',
     'authorization_reference', 'agent', 'runtime_dir', 'spend_authorization', 'search_policy',
-    'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs', 'shared_company_config'}
+    'pack_size', 'thinking', 'max_output_tokens', 'work_lease_seconds', 'routing_profiles', 'worker_timeout_seconds', 'native_timeout_seconds', 'delegation_ttl_seconds', 'recovery_work_decision_refs', 'shared_company_config', 'record_lock_timeout_seconds'}
 PREPARE_PATHS = {'state_root', 'admission_config', 'runtime_dir', 'spend_authorization', 'search_policy', 'shared_company_config'}
 
 
@@ -190,6 +190,10 @@ def validate_config(value, root):
     for key,lower,upper in [('worker_timeout_seconds',60,3600),('native_timeout_seconds',30,900)]:
         if key in options and (type(options[key]) is not int or not lower<=options[key]<=upper):
             raise ProductError('invalid_prepare_timeout',f'prepare.{key}超出允许范围。')
+    if 'record_lock_timeout_seconds' in options:
+        value = options['record_lock_timeout_seconds']
+        if type(value) not in (int, float) or not 0 <= value <= TIMEOUT_SECONDS_MAX:
+            raise ProductError('invalid_prepare_timeout', 'prepare.record_lock_timeout_seconds 超出允许范围。')
     if options.get('native_timeout_seconds',300)>options.get('worker_timeout_seconds',900):
         raise ProductError('invalid_prepare_timeout','native阶段超时不能大于完整准备超时。')
     for key in PREPARE_PATHS & options.keys():
@@ -319,10 +323,13 @@ class DashboardService:
 
     def _preparation_jobs(self):
         if self._jobs is None:
-            from .dashboard_jobs import PreparationJobs
+            from .dashboard_jobs import DEFAULT_RECORD_LOCK_TIMEOUT_SECONDS, PreparationJobs
             frozen = {k:v for k,v in self.config.items() if k not in {'execution_bundles','import_bundles'}}
             self._jobs = PreparationJobs(self._preparer(), Path(self.config['state_root'])/'preparation-jobs',
-                lambda result: self._register_prepared(result, frozen), diagnostic_root=self.config["state_root"])
+                lambda result: self._register_prepared(result, frozen), diagnostic_root=self.config["state_root"],
+                record_lock_timeout_seconds=self.config["prepare"].get(
+                    "record_lock_timeout_seconds", DEFAULT_RECORD_LOCK_TIMEOUT_SECONDS,
+                ))
         return self._jobs
 
     def _delivery_jobs(self):

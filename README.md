@@ -48,7 +48,7 @@ python scripts/workbench_snapshot_cli.py --output "C:/path/to/snapshot.json" --d
 
 设置页提供连接路径、模型顺位、共享额度、并发和预算字段表单，不必手写JSON；新扫描确认有效期可设0.25–24小时，默认1小时、较长扫描可选4小时，只影响之后明确准备的新确认，已有确认和预算不变。高级JSON仍可展开。保存由原服务校验，发生并发改动须重新读取，保存本身不调用模型。缺少合法原部署、模型或费用授权时，扫描仍会显示缺项。
 
-首次连接时，复制[连接配置模板](examples/dashboard.config.template.json)到本机忽略文件 `config/dashboard.local.json`，填写原工作区与原运行目录；也可在界面的“设置”保存。高级连接JSON的`prepare.pack_size`控制之后新准备的实际题包大小；模型设置里的“每包最大题数”是策略上限，两者须一致兼容，保存不改变旧包。扫描输入和导入包必须登记到模板对应列表；详细字段、原预算约束及回执步骤见[产品接口与部署](docs/implementation/dashboard-product-contract.md)。未配置时会显示具体缺项，不从公司名临时制造身份、准入或预算。
+首次连接时，复制[连接配置模板](examples/dashboard.config.template.json)到本机忽略文件 `config/dashboard.local.json`，填写原工作区与原运行目录；也可在界面的“设置”保存。高级连接JSON的`prepare.pack_size`控制之后新准备的实际题包大小；模型设置里的“每包最大题数”是策略上限，两者须一致兼容，保存不改变旧包。可通过 `prepare.record_lock_timeout_seconds` 设置后台等待作业记录锁的时间（默认 1 秒）。超过等待时间后可从原作业查询故障或继续核对，系统不会重新提交准备。扫描输入和导入包必须登记到模板对应列表；详细字段、原预算约束及回执步骤见[产品接口与部署](docs/implementation/dashboard-product-contract.md)。未配置时会显示具体缺项，不从公司名临时制造身份、准入或预算。
 
 新建交付任务等待入库时，可修改后续扫描的模型、思考或题包设置，原待入库包继续保留；接收工作区、原包和任务目录须保持。正在执行或状态未知的操作仍须先结束。旧版任务按原配置兼容读取，不自动改写或迁移。
 
