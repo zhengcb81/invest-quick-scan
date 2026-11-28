@@ -67,6 +67,11 @@ _NAMED_CREDENTIAL = re.compile(
 _AUTH_VALUE = re.compile(r"(?i)(?:\b(?:sk-|tvly-|gh[pousr]_|AIza)[a-z0-9_.-]{6,}|\b(?:basic|bearer)[ \t]+[a-z0-9_./+=-]{6,})")
 _URL_USERINFO = re.compile(r"(?i)(https?://)[^/\s@]+@")
 _AUTH_HEADER = re.compile(r"(?i)\bauthorization[ \t]*:[ \t]*(?:bearer|basic)[ \t]+\S")
+_RENDERED_AUTH_FOLD = re.compile(
+    r"(?i)(\b(?:proxy[-_])?authorization[ \t]*:[ \t]*)"
+    r"(?:bearer|basic)[ \t]+[^\s\\\"']+"
+    r"(?:(?:\\r\\n|\\[rn])(?:[ \t]|\\t)+[^\s\\\"'][^\\\r\n\"']*)+"
+)
 _PRIVATE_START = re.compile(r"-----BEGIN [^-\n]*PRIVATE KEY-----")
 _PRIVATE_END = re.compile(r"-----END [^-\n]*PRIVATE KEY-----")
 
@@ -96,6 +101,7 @@ def redacted_output_lines(stream, secrets):
             line = before + "[REDACTED]" + after
         for secret in secrets:
             line = line.replace(secret, "[REDACTED]")
+        line = _RENDERED_AUTH_FOLD.sub(r"\1[REDACTED]", line)
         line = _NAMED_CREDENTIAL.sub(_hide_field, line)
         line = _AUTH_VALUE.sub("[REDACTED]", line)
         yield _URL_USERINFO.sub(r"\1[REDACTED]@", line)

@@ -178,6 +178,21 @@ def test_folded_auth_and_uri_userinfo_keep_the_following_diagnostic(monkeypatch)
     assert all(value not in projected for value in ("fixture-auth", "fixture-continuation", "fixture-pass"))
 
 
+@pytest.mark.parametrize("scheme", ("Bearer", "Basic"))
+def test_native_invalid_choice_masks_rendered_authorization_folds(tmp_path, native_environment, scheme):
+    env, runtime = native_environment
+    tokens = ("synthetic-first-segment", "synthetic-second-segment", "synthetic-third-segment")
+    credential = f"Authorization: {scheme} {tokens[0]}\r\n\t{tokens[1]}\n  {tokens[2]}\nRetain this reason"
+    refused = run_entry(tmp_path, env, "owner_job_cli", "--operation", credential)
+    assert (refused.returncode, refused.stdout) == (2, b"")
+    assert b"invalid choice" in refused.stderr and b"Retain this reason" in refused.stderr
+    failure, = diagnostics(runtime)
+    assert failure["observation"]["actual"] == "invalid_arguments"
+    assert failure["chain"][0]["type"] == "SystemExit"
+    rendered = refused.stderr + json.dumps(failure).encode("ascii")
+    assert all(token.encode("ascii") not in rendered for token in tokens)
+
+
 @pytest.mark.parametrize("entry", (
     "view_quick_scan", "run_answers_page", "one_click", "thin_scan", "question_sets",
     "owner_job_cli", "identity_contract_cli", "query_contract_cli", "refresh_contract_cli",
