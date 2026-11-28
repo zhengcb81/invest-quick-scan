@@ -1,14 +1,14 @@
 """Fixed offline contract adapter. Validated content does not attest its source."""
 
 from iqs_scan import REPO_ROOT
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import json
 from pathlib import Path
 from iqs_scan.query import api as contract
 from iqs_scan.query import api as qc
 
 def main(argv=None):
-    parser=argparse.ArgumentParser(description=__doc__)
+    parser=RuntimeArgumentParser(description=__doc__)
     parser.add_argument('--operation',choices=('request','receipt','bind','release','questions','execution-profile','vendor-original'),required=True)
     parser.add_argument('--input',required=True)
     parser.add_argument('--release-root',default=str(REPO_ROOT))

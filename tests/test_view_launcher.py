@@ -30,7 +30,7 @@ def _dashboard_fixture(tmp_path, ui_root=None, *, config_overrides=None):
 
 
 def _start_dashboard(tmp_path, *, no_refresh=False, existing_snapshot=None, ui_root=None,
-                     config_overrides=None):
+                     config_overrides=None, environment=None):
     ui, state, config = _dashboard_fixture(tmp_path, ui_root, config_overrides=config_overrides)
     snapshot = state / 'workbench' / 'snapshot.json'
     if existing_snapshot is not None:
@@ -40,8 +40,9 @@ def _start_dashboard(tmp_path, *, no_refresh=False, existing_snapshot=None, ui_r
                '--dashboard-config', str(config), '--port', '0']
     if no_refresh:
         command.append('--no-refresh')
-    process = subprocess.Popen(command, cwd=tmp_path, env=_env(tmp_path), stdin=subprocess.DEVNULL,
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf8',
+    process = subprocess.Popen(command, cwd=tmp_path, env=_env(tmp_path) if environment is None else environment,
+                                stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                text=True, encoding='utf8',
                                 creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
     lines = queue.Queue()
     reader = threading.Thread(target=lambda: lines.put(process.stdout.readline()), daemon=True)

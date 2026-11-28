@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import hashlib
 import html
 import json
@@ -359,7 +359,7 @@ table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;
 
 @operation_scope()
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = RuntimeArgumentParser(description=__doc__)
     parser.add_argument("--company", required=True)
     parser.add_argument("--questions", type=Path,
                         help="显式兼容清单；不传则动态读取通用核心+杜邦+五力基础必做题")

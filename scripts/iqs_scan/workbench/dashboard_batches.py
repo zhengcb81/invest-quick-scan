@@ -133,14 +133,14 @@ class BatchGateway:
                 stream.seek(0)
                 try:
                     msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
-                except OSError:
-                    raise DashboardBatchError("batch_control_busy", "另一公司批控制正在进行；请先刷新状态", 409) from None
+                except OSError as source_error:
+                    raise DashboardBatchError("batch_control_busy", "另一公司批控制正在进行；请先刷新状态", 409) from source_error
             else:
                 import fcntl
                 try:
                     fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-                except BlockingIOError:
-                    raise DashboardBatchError("batch_control_busy", "另一公司批控制正在进行；请先刷新状态", 409) from None
+                except BlockingIOError as source_error:
+                    raise DashboardBatchError("batch_control_busy", "另一公司批控制正在进行；请先刷新状态", 409) from source_error
             locked = True
             if path.stat().st_size == 0:
                 # Windows permits locking beyond EOF. Initialize only AFTER
@@ -190,8 +190,8 @@ class BatchGateway:
                 if record.get("selection_sha256") != expected:
                     raise ValueError("batch_selection_changed")
                 records.append(record)
-            except (OSError, ValueError, TypeError, KeyError, AttributeError):
-                raise DashboardBatchError("batch_record_corrupt", "公司批记录损坏；先核原owner，不能按空批重新派发", 409) from None
+            except (OSError, ValueError, TypeError, KeyError, AttributeError) as source_error:
+                raise DashboardBatchError("batch_record_corrupt", "公司批记录损坏；先核原owner，不能按空批重新派发", 409) from source_error
         return records
 
     @staticmethod

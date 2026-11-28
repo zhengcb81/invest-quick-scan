@@ -64,8 +64,9 @@ _NAMED_CREDENTIAL = re.compile(
                (?:basic|bearer)[ \t]+[^\s&,;}\]]+|[^\s&,;}\]"']+)
     """
 )
-_AUTH_VALUE = re.compile(r"(?i)(?:\bsk-[a-z0-9_.-]{6,}|\b(?:basic|bearer)[ \t]+[a-z0-9_./+=-]{6,})")
-_URL_USERINFO = re.compile(r"(?i)(https?://)[^/\s:@]+:[^/@\s]+@")
+_AUTH_VALUE = re.compile(r"(?i)(?:\b(?:sk-|tvly-|gh[pousr]_|AIza)[a-z0-9_.-]{6,}|\b(?:basic|bearer)[ \t]+[a-z0-9_./+=-]{6,})")
+_URL_USERINFO = re.compile(r"(?i)(https?://)[^/\s@]+@")
+_AUTH_HEADER = re.compile(r"(?i)\bauthorization[ \t]*:[ \t]*(?:bearer|basic)[ \t]+\S")
 _PRIVATE_START = re.compile(r"-----BEGIN [^-\n]*PRIVATE KEY-----")
 _PRIVATE_END = re.compile(r"-----END [^-\n]*PRIVATE KEY-----")
 
@@ -79,7 +80,13 @@ def _hide_field(match):
 def redacted_output_lines(stream, secrets):
     """Filter credentials before either live display or durable output sees them."""
     inside_key = False
+    authorization = False
     for line in decoded_output_lines(stream):
+        if authorization and line.startswith((" ", "\t")) and line.strip():
+            tail = line[len(line.rstrip("\r\n")):]
+            line = "[REDACTED]" + tail
+        else:
+            authorization = bool(_AUTH_HEADER.search(line))
         start = _PRIVATE_START.search(line)
         if start or inside_key:
             end = _PRIVATE_END.search(line)
@@ -92,6 +99,11 @@ def redacted_output_lines(stream, secrets):
         line = _NAMED_CREDENTIAL.sub(_hide_field, line)
         line = _AUTH_VALUE.sub("[REDACTED]", line)
         yield _URL_USERINFO.sub(r"\1[REDACTED]@", line)
+
+
+def redact_diagnostic_text(text):
+    """Apply the same credential projection to a diagnostic string."""
+    return "".join(redacted_output_lines(io.StringIO(text, newline=""), ()))
 
 
 def register_process_log(state_root, log_path, run_id):

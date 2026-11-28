@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import json
 import sqlite3
 from datetime import date
@@ -15,8 +15,10 @@ WS = ROOT / "runs/c16b/native-owner-alphabet-01/owner-workspace"
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = RuntimeArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--delivery-handoff", type=Path, help="Published delivery owner handoff, if supplied")
+    parser.add_argument("--timeline-evidence", type=Path, help="Published timeline evidence pack, if supplied")
     args = parser.parse_args()
     roster = json.loads((DASH / "roster-status.json").read_text(encoding="utf-8-sig"))
     gaps = json.loads((DASH / "coverage-gaps/gaps.json").read_text(encoding="utf-8-sig"))
@@ -80,9 +82,9 @@ def main() -> int:
         "",
     ]
     blockers = []
-    if not Path(r"C:/Users/郑曾波/Projects/iqs-delivery-audit-lab/docs/handoff/DELIVERY-AUDIT-11/handoff.json").is_file():
+    if args.delivery_handoff is None or not args.delivery_handoff.is_file():
         blockers.append("DELIVERY-AUDIT-11：尚无正式 handoff.json，保持隔离")
-    if not Path(r"C:/Users/郑曾波/Projects/iqs-evidence-timeline-lab/docs/handoff/EVIDENCE-TIMELINE-11-evidence-pack.json").is_file():
+    if args.timeline_evidence is None or not args.timeline_evidence.is_file():
         blockers.append("EVIDENCE-TIMELINE-11：evidence-pack 占位未出现，出现后需复跑 baseline/evaluate")
     blockers.append("已交付题重跑：需要 owner retry decision（owd1）与原始派发凭证，历史 attempt 不可用")
     blockers.append("第二家公司（飞亚达 000026）：subject 就绪，但缺 route decision/manifest，route-refresh 报 route_current_unavailable")

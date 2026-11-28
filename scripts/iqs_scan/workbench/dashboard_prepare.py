@@ -11,6 +11,7 @@ from iqs_scan import REPO_ROOT
 from iqs_scan.foundation.api import JsonSchemaValidationError, validate_entity
 
 import copy
+from ..foundation.api import record_operation_failure
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 import hashlib
@@ -92,9 +93,9 @@ def _new_raw(path, raw):
             stream.write(raw)
             stream.flush()
             os.fsync(stream.fileno())
-    except FileExistsError:
+    except FileExistsError as source_error:
         if path.read_bytes() != raw:
-            raise DashboardPrepareError("immutable_input_conflict", "An immutable preparation input already exists", 409)
+            raise DashboardPrepareError("immutable_input_conflict", "An immutable preparation input already exists", 409) from source_error
 
 
 def _env(*, same_owner=False):
@@ -445,8 +446,8 @@ def _apply_guard(config, preview_id):
     try:
         with control_lock(_control_path(config)):
             yield
-    except ControlBusyError:
-        raise DashboardPrepareError("owner_preparation_busy", "Another preparation currently owns this product's original owner namespace", 409) from None
+    except ControlBusyError as source_error:
+        raise DashboardPrepareError("owner_preparation_busy", "Another preparation currently owns this product's original owner namespace", 409) from source_error
 
 
 def _control_path(config):
@@ -479,14 +480,14 @@ class PrepareGateway:
             completed = run_background([sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts/dashboard_prepare.py"), "--worker"],
                 cwd=self.config["iqs_root"], env=_env(same_owner=True), input=_bytes({"operation": operation,
                 "config": self.config, "payload": payload}), capture_output=True, timeout=timeout)
-        except subprocess.TimeoutExpired:
+        except subprocess.TimeoutExpired as source_error:
             raise DashboardPrepareError("preparation_timeout_unknown" if operation == "apply" else "owner_snapshot_timeout",
                 "Original operation timed out; inspect its immutable journal before retrying", 504,
                 {"operation": operation, "exception_type": "TimeoutExpired", "timeout_seconds": timeout,
-                 "outcome_unknown": operation == "apply", "automatic_retry_allowed": False}) from None
+                 "outcome_unknown": operation == "apply", "automatic_retry_allowed": False}) from source_error
         except OSError as error:
             raise DashboardPrepareError("owner_process_unavailable", "Original preparation process could not be started", 503,
-                {"operation": operation, "exception_type": type(error).__name__}) from None
+                {"operation": operation, "exception_type": type(error).__name__}) from error
         if len(completed.stdout) > MAX_BYTES:
             raise DashboardPrepareError("owner_response_invalid", "Original owner response exceeds its limit", 502)
         try:
@@ -590,8 +591,8 @@ class PrepareGateway:
             raise DashboardPrepareError("entity_id_required", "Select an exact registered entity ID")
         try:
             cutoff = date.fromisoformat(as_of)
-        except (ValueError, TypeError):
-            raise DashboardPrepareError("cutoff_invalid", "Select an ISO information cutoff date") from None
+        except (ValueError, TypeError) as source_error:
+            raise DashboardPrepareError("cutoff_invalid", "Select an ISO information cutoff date") from source_error
         if cutoff > datetime.now(timezone.utc).date():
             raise DashboardPrepareError("cutoff_invalid", "Information cutoff cannot be in the future")
         mode = payload.get("mode", "quick")
@@ -811,10 +812,10 @@ def _snapshot(config, payload):
         validate_entity(identity['payload'], trusted_identity_receipts=context['identity_receipts'],
             trusted_source_bindings=context['source_bindings'], trusted_market_registry=context['market_registry'],
             wire_profile='stockwiki-g2b/1.1.0')
-    except (ValueError, KeyError, TypeError, AttributeError, JsonSchemaValidationError):
+    except (ValueError, KeyError, TypeError, AttributeError, JsonSchemaValidationError) as source_error:
         raise DashboardPrepareError('owner_identity_contract_invalid',
             'Complete or correct the original identity attributes and evidence, then create a new bank preview', 409,
-            {'required_action': 'repair_original_identity_and_create_new_preview'}) from None
+            {'required_action': 'repair_original_identity_and_create_new_preview'}) from source_error
     issuer = identity['payload']
     if issuer.get('entity_id') != payload['entity_id']:
         raise DashboardPrepareError('native_response_invalid', 'Original owner returned a different entity', 502)
@@ -931,7 +932,7 @@ def _native_command(config, kind, module, arguments, input_value, owner_operatio
         result = decode_owner_json(done.stdout.decode("utf-8"))
     except (UnicodeError, ValueError, RecursionError) as error:
         raise DashboardPrepareError("native_response_invalid", "Original native command did not return JSON", 502,
-            {**details, "exception_type": type(error).__name__}) from None
+            {**details, "exception_type": type(error).__name__}) from error
     if not isinstance(result, dict):
         raise DashboardPrepareError("native_response_invalid", "Original native command did not return an object", 502, details)
     if owner_operation is not None:
@@ -1191,6 +1192,7 @@ def _prepare_scope(config, directory, record, manifest, selected_questions, targ
 
 def worker_main():
     if sys.argv[1:] != ["--worker"]:
+        record_operation_failure(None, "prepare.worker.arguments", code="invalid_arguments", refusal=True)
         return 2
     def offline(event, args):
         if event in {"socket.connect", "socket.getaddrinfo", "socket.sendto"}:
@@ -1224,11 +1226,12 @@ def _worker_reply(recoverable):
         code = getattr(error, "code", getattr(error, "error_code", "native_preparation_rejected"))
         details = {"exception_type": type(error).__name__, **(error.details if isinstance(error, DashboardPrepareError) else {})}
         if recoverable and isinstance(config, dict) and config.get("state_root") and "failure_diagnostic" not in details:
-            from ..foundation.api import record_operation_failure
             details["failure_diagnostic"] = record_operation_failure(
                 error, "prepare.worker", directory=config["state_root"], code=code,
                 refusal=isinstance(error, DashboardPrepareError) and 400 <= error.status < 500,
             )
+        elif config is None:
+            record_operation_failure(error, "prepare.worker.request", code=code, refusal=True)
         if re.fullmatch(r"[A-Za-z0-9_.-]{1,160}", str(error)):
             details["native_reason"] = str(error)
         request_value = locals().get("request")

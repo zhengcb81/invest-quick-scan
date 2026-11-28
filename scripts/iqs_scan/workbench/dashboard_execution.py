@@ -22,7 +22,8 @@ from contextlib import contextmanager
 import uuid
 
 from ..foundation.api import (
-    child_feedback_environment, operation_scope, physical_path, redacted_output_lines, register_process_log, replace_after_readers_close,
+    child_feedback_environment, operation_scope, physical_path, record_operation_failure,
+    redacted_output_lines, register_process_log, replace_after_readers_close,
 )
 from .dashboard_locks import control_lock, ControlBusyError
 
@@ -128,7 +129,8 @@ def _process_created_after(pid, observed_at):
             if not kernel.CloseHandle(handle):
                 result = None
         return result
-    except Exception:
+    except Exception as error:
+        record_operation_failure(error, "worker.native_process_probe", code="process_evidence_unavailable")
         return None
 
 
@@ -423,8 +425,8 @@ class ExecutionGateway:
                         raise DashboardExecutionError("bundle_listing_mismatch", "登记执行包的挂牌不匹配。", 409)
         except DashboardExecutionError:
             raise
-        except (OSError, ValueError, TypeError, AttributeError, KeyError):
-            raise DashboardExecutionError("bundle_scope_unverifiable", "无法核实登记执行包的原始范围。", 409) from None
+        except (OSError, ValueError, TypeError, AttributeError, KeyError) as source_error:
+            raise DashboardExecutionError("bundle_scope_unverifiable", "无法核实登记执行包的原始范围。", 409) from source_error
         if observed != self._fingerprint(bundle):
             raise DashboardExecutionError("bundle_changed", "核实过程中登记执行包有变化。", 409)
         return {"bundle_id": key, "entity_id": entity_id, "bundle_fingerprint": fingerprint}
@@ -1233,8 +1235,8 @@ class ExecutionGateway:
         try:
             with control_lock(self.state_root / 'start.lock'):
                 yield
-        except ControlBusyError:
-            raise DashboardExecutionError('launch_in_progress', '另一控制操作正在核对原任务', 409) from None
+        except ControlBusyError as source_error:
+            raise DashboardExecutionError('launch_in_progress', '另一控制操作正在核对原任务', 409) from source_error
 
     def _settings_path(self):
         path = Path(self.config.get("model_policy_path", ""))

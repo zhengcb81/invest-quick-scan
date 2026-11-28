@@ -375,6 +375,7 @@ def main(argv=None):
     trace.add_argument("attempt_id")
     trace.add_argument("--state-root", type=Path, required=True)
     args = parser.parse_args(argv)
+    exit_code = 0
     try:
         if args.command == "get-process-log":
             reply = {"log": read_process_log(args.state_root, args.reference, offset=args.offset,
@@ -402,8 +403,8 @@ def main(argv=None):
             else:
                 reply = _submit(args.db, args.runs_root, request, args.command, payload)
     except Unavailable as error:
-        print(_encode({"code": str(error), "state": "unknown"}))
-        return 2
+        reply = {"code": str(error), "state": "unknown"}
+        exit_code = 2
     except (
         OSError,
         ValueError,
@@ -413,7 +414,7 @@ def main(argv=None):
         sqlite3.Error,
     ) as error:
         code = str(error) if type(error) is ValueError else type(error).__name__
-        print(_encode({"code": code}))
-        return 2
+        reply = {"code": code}
+        exit_code = 2
     print(_encode(reply))
-    return 0
+    return exit_code

@@ -5,7 +5,7 @@ or observation import.
 """
 from __future__ import annotations
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import html
 import json
 from pathlib import Path
@@ -72,7 +72,7 @@ def render(export_dir, observation_path=None):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = RuntimeArgumentParser(description=__doc__)
     parser.add_argument("--export", required=True, type=Path)
     parser.add_argument("--observation", type=Path)
     parser.add_argument("--output", required=True, type=Path)

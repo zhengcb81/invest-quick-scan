@@ -289,11 +289,11 @@ class OwnerJobFacade:
         path = self._command_path(command_id)
         try:
             record = _read(path)
-        except FileNotFoundError:
-            raise OwnerJobError("command_unknown", "没有该命令记录。", 404) from None
-        except (OSError, ValueError, TypeError, AttributeError):
+        except FileNotFoundError as source_error:
+            raise OwnerJobError("command_unknown", "没有该命令记录。", 404) from source_error
+        except (OSError, ValueError, TypeError, AttributeError) as source_error:
             raise OwnerJobError("command_corrupt",
-                "命令记录损坏；原文件保留，不按空记录重发。", 409) from None
+                "命令记录损坏；原文件保留，不按空记录重发。", 409) from source_error
         if (record.get("protocol") != PROTOCOL or record.get("command_id") != command_id):
             raise OwnerJobError("command_corrupt", "命令记录协议不匹配。", 409)
         return record
@@ -312,9 +312,9 @@ class OwnerJobFacade:
                 raise ValueError("idempotency_index_invalid")
         except FileNotFoundError:
             return None
-        except (OSError, ValueError, TypeError, AttributeError):
+        except (OSError, ValueError, TypeError, AttributeError) as source_error:
             raise OwnerJobError("idempotency_index_corrupt",
-                "幂等索引损坏；提交被拒绝，不冒新命令。", 409) from None
+                "幂等索引损坏；提交被拒绝，不冒新命令。", 409) from source_error
         try:
             record = self._load_command(index["command_id"])
         except OwnerJobError as error:
@@ -324,7 +324,7 @@ class OwnerJobFacade:
             raise OwnerJobError("idempotency_index_dangling",
                 "幂等索引指向的命令记录缺失；提交被拒绝，请核对owner-jobs目录。", 409,
                 details={"command_id": index.get("command_id"),
-                         "index_error": error.code}) from None
+                         "index_error": error.code}) from error
         if record.get("idempotency_key") != idempotency_key:
             raise OwnerJobError("idempotency_index_corrupt", "幂等索引与原命令不匹配。", 409)
         return record
@@ -365,9 +365,9 @@ class OwnerJobFacade:
                 details={"reason": "no_deployed_questionnaire_version_key"})
         try:
             return self._submit_locked(command, entity_id, return_to, scope)
-        except ControlBusyError:
+        except ControlBusyError as source_error:
             raise OwnerJobError("facade_busy",
-                "另一命令或动作正在记录；请重试，不并发落账。", 409) from None
+                "另一命令或动作正在记录；请重试，不并发落账。", 409) from source_error
 
     def _submit_locked(self, command, entity_id, return_to, scope):
         with (control_lock(self._lock_path("key", command["idempotency_key"])),
@@ -451,7 +451,7 @@ class OwnerJobFacade:
                     started = execution.start(record["registration"])
                 except DashboardExecutionError as exc:
                     if exc.code == "launch_in_progress":
-                        raise OwnerJobError("facade_busy", "原启动引用正在处理，请使用同一命令重试。", 409) from None
+                        raise OwnerJobError("facade_busy", "原启动引用正在处理，请使用同一命令重试。", 409) from exc
                     if exc.prelaunch_not_started:
                         self._refuse_submission(record, exc)
                     return self._unknown_submission(record, attached=existing is not None)
@@ -479,7 +479,7 @@ class OwnerJobFacade:
         self._save_command(record)
         raise OwnerJobError("submission_refused", "原owner明确拒绝启动；本次未开始派发。",
             error.status, details={"command_id": record["command_id"],
-                                   "refusal_code": error.code}) from None
+                                   "refusal_code": error.code})
 
     def _unknown_submission(self, record, *, attached):
         record.update(state="needs_original_inspection", error={"code": "start_reference_unknown",
@@ -519,7 +519,7 @@ class OwnerJobFacade:
         except Exception as exc:
             raise OwnerJobError("run_reference_unavailable",
                 "原启动引用不可读；不猜测状态。", 409,
-                details={"error_code": str(getattr(exc, "code", "unavailable"))[:200]}) from None
+                details={"error_code": str(getattr(exc, "code", "unavailable"))[:200]}) from exc
         rows = [row for row in result.get("tasks", []) if isinstance(row, dict) and row.get("run_id") == run_id]
         return rows[0] if rows else None
 
@@ -541,7 +541,7 @@ class OwnerJobFacade:
             if code in {"preparation_job_unknown", "delivery_job_unknown", "batch_unknown"}:
                 return None
             raise OwnerJobError("owner_job_unavailable", "原任务引用暂不可读；不猜测状态。",
-                status, details={"error_code": str(code)[:200]}) from None
+                status, details={"error_code": str(code)[:200]}) from exc
         return None
 
     # ------------------------------------------------------------- projection
@@ -915,10 +915,10 @@ class OwnerJobFacade:
                     else:
                         self._record_action(owner_job_id, action, idempotency_key, result, replace=mutates_owner)
                 break
-            except ControlBusyError:
+            except ControlBusyError as source_error:
                 if time.monotonic() >= deadline:
                     raise OwnerJobError("facade_busy",
-                        "另一命令或动作正在记录；请重试，不并发落账。", 409) from None
+                        "另一命令或动作正在记录；请重试，不并发落账。", 409) from source_error
                 time.sleep(0.01)
         view, annotation = self.project_job(owner_job_id)
         return {"protocol": WIRE_PROTOCOL, "replayed": False, "action_result": result,
@@ -957,7 +957,7 @@ class OwnerJobFacade:
                             "notice": "原启动引用不存在；不重发。"}
                 raise OwnerJobError("reconcile_unavailable",
                     "原状态核查暂不可用；保持unknown。", getattr(exc, "status", 409),
-                    details={"error_code": str(code)[:200]}) from None
+                    details={"error_code": str(code)[:200]}) from exc
             preview = inspected.get("preview") if isinstance(inspected, dict) else None
             inspection = preview.get("inspection") if isinstance(preview, dict) else None
             counts = self._work_counts(inspection)
@@ -1030,8 +1030,8 @@ class OwnerJobFacade:
             record = _read(path)
         except FileNotFoundError:
             return None
-        except (OSError, ValueError, TypeError, AttributeError):
-            raise OwnerJobError("action_record_unavailable", "原动作记录不可读，需核对原任务。", 409) from None
+        except (OSError, ValueError, TypeError, AttributeError) as source_error:
+            raise OwnerJobError("action_record_unavailable", "原动作记录不可读，需核对原任务。", 409) from source_error
         if record.get("protocol") != PROTOCOL or record.get("action") != action \
                 or record.get("owner_job_id") != owner_job_id \
                 or record.get("idempotency_key") != idempotency_key \
@@ -1065,8 +1065,8 @@ class OwnerJobFacade:
         """
         try:
             limit = int(limit)
-        except (TypeError, ValueError):
-            raise OwnerJobError("page_invalid", "limit必须是整数。") from None
+        except (TypeError, ValueError) as source_error:
+            raise OwnerJobError("page_invalid", "limit必须是整数。") from source_error
         if not 1 <= limit <= MAX_PAGE_LIMIT:
             raise OwnerJobError("page_invalid", f"limit须为1至{MAX_PAGE_LIMIT}。")
         offset = 0
@@ -1075,8 +1075,8 @@ class OwnerJobFacade:
                 raise OwnerJobError("cursor_invalid", "cursor无效；请从第一页重新列出。")
             try:
                 offset = int(base64.urlsafe_b64decode(cursor[3:].encode("ascii")).decode("ascii"))
-            except (ValueError, UnicodeError, TypeError):
-                raise OwnerJobError("cursor_invalid", "cursor无效；请从第一页重新列出。") from None
+            except (ValueError, UnicodeError, TypeError) as source_error:
+                raise OwnerJobError("cursor_invalid", "cursor无效；请从第一页重新列出。") from source_error
             if offset < 0:
                 raise OwnerJobError("cursor_invalid", "cursor无效；请从第一页重新列出。")
         self._catalog_degraded = False

@@ -11,11 +11,13 @@ import os
 from pathlib import Path
 import re
 import sys
+import traceback
 import uuid
 
 from .feedback_io import FEEDBACK_SCHEMA, append_feedback
 from .json_io import atomic_write_json, physical_path
 from .runtime_log import append_operation_checkpoint, append_operation_failure, read_operation_trace
+from .process_logs import redact_diagnostic_text
 
 OWNER = "invest-quick-scan"
 DEFAULT_STATE_ROOT = Path(__file__).resolve().parents[3] / "runs" / "dashboard-runtime"
@@ -101,11 +103,28 @@ class RuntimeArgumentParser(argparse.ArgumentParser):
 
     def error(self, message, *, feedback_environment=None, sidecar=None):
         directory = sidecar.resolve().parent if sidecar is not None else operation_state_root()
-        record_operation_failure(
-            None, "cli.arguments", code="invalid_arguments", refusal=True,
-            directory=directory, sidecar=sidecar, feedback_environment=feedback_environment,
-        )
-        super().error(message)
+        try:
+            super().error(redact_diagnostic_text(message))
+        except SystemExit as error:
+            record_operation_failure(
+                error, "cli.arguments", code="invalid_arguments", refusal=True,
+                directory=directory, sidecar=sidecar, feedback_environment=feedback_environment,
+            )
+            raise
+
+
+def run_diagnostic_command(main):
+    """Keep the terminal exception shape while retaining the original cause locally."""
+    try:
+        return main()
+    except Exception as error:
+        record_operation_failure(error, "cli.execute")
+        if sys.stderr is not None:
+            try:
+                sys.stderr.write(redact_diagnostic_text(traceback.format_exc(chain=False)))
+            except (OSError, ValueError):
+                pass
+        return 1
 
 
 def _tracking_incomplete():
@@ -189,7 +208,7 @@ def _publish(record, directory, key, sidecar=None):
     row = record["observation"]
     explicit = sidecar or os.environ.get("RESEARCH_FEEDBACK_OUT")
     if explicit:
-        return append_feedback(Path(explicit), [row])
+        return append_feedback(Path(explicit), [row], warn=False)
     stem = _outbox(directory) / ("feedback-" + key)
     atomic_write_json(stem.with_suffix(".jsonl"), row)
     marker = {field: row[field] for field in ("owner", "run_id", "attempt_id", "step_id")}
@@ -253,6 +272,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
     """Best-effort capture at the owner boundary; diagnostics never own payment or work state."""
     result = {"recorded": False, "feedback_recorded": False}
     local_record = None
+    unavailable = False
     try:
         prior = _record_from_exception(error)
         if prior is not None:
@@ -299,22 +319,24 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
                 row.pop("evidence_ref")
             result.pop("details_ref")
             result["feedback_recorded"] = _publish({"observation": row}, root, key, sidecar)
-            _tracking_incomplete()
+            unavailable = True
             return result
         result = record
         result["feedback_recorded"] = _publish(record, root, key, sidecar)
         if result["feedback_recorded"]:
             atomic_write_json(path, result)
         else:
-            _tracking_incomplete()
+            unavailable = True
     except Exception:
         # Optional reporting must also tolerate broken exception introspection,
         # clocks, JSON encoding, rich custom exception attributes and storage I/O.
-        _tracking_incomplete()
+        unavailable = True
     finally:
         if local_record is not None:
             try:
                 append_operation_failure(*local_record)
             except Exception:
-                _tracking_incomplete()
+                unavailable = True
+        if unavailable:
+            _tracking_incomplete()
     return result

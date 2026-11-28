@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import json
 import html
 import subprocess
@@ -26,7 +26,7 @@ def run(args):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = RuntimeArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, required=True, help="Explicit workspace for this legacy offline report")
     parser.add_argument("--work", type=Path, help="Original retrieval work database; omit to report provenance as not checked")
     parser.add_argument("--out", type=Path, default=ROOT / "runs/offline-dashboard")

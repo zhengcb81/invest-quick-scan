@@ -158,10 +158,10 @@ def read_company_assessment(
         process = run_background(command, cwd=root, stdin=subprocess.DEVNULL,
                                  capture_output=True, timeout=config.get("timeout_seconds", 30),
                                  env=environment)
-    except subprocess.TimeoutExpired:
-        raise ProjectionError("owner_timeout", "StockWiki owner request timed out", 504) from None
-    except OSError:
-        raise ProjectionError("owner_process_unavailable", "Cannot start StockWiki interpreter", 503) from None
+    except subprocess.TimeoutExpired as source_error:
+        raise ProjectionError("owner_timeout", "StockWiki owner request timed out", 504) from source_error
+    except OSError as source_error:
+        raise ProjectionError("owner_process_unavailable", "Cannot start StockWiki interpreter", 503) from source_error
     if process.returncode == 2 and not process.stdout:
         _raise_owner_refusal(process.stderr)
     if process.returncode != 0:
@@ -217,8 +217,8 @@ def _decode_owner_output(raw: bytes) -> Any:
 
     try:
         return decode_owner_json(raw.decode("utf-8"))
-    except (ValueError, RecursionError):
-        raise ProjectionError("owner_projection_invalid", "owner returned invalid JSON", 502) from None
+    except (ValueError, RecursionError) as source_error:
+        raise ProjectionError("owner_projection_invalid", "owner returned invalid JSON", 502) from source_error
 
 
 def _raise_owner_refusal(raw: bytes) -> None:

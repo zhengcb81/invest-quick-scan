@@ -438,7 +438,7 @@ class TransportObserver:
         except Exception as exc:
             self.receipt = dict(attempt_id=aid,state='outcome_unknown',exception_type=type(exc).__name__,latency_s=round(time.monotonic()-start,3))
             self.ledger.finish(aid,self.receipt)
-            raise RuntimeError('transport_outcome_unknown') from None
+            raise RuntimeError('transport_outcome_unknown') from exc
         result = dict(attempt_id=aid,http_status=response.status_code,latency_s=round(time.monotonic()-start,3))
         try:
             body = response.json()

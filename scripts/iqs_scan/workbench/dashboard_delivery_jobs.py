@@ -174,15 +174,15 @@ class DeliveryJobs:
                         read_only_history=True,current_target_verified=False,allowed_actions=[])
                     value['history_bundle_references_verified']=verified
                 return value
-            except PermissionError:
+            except PermissionError as source_error:
                 if attempt<7: time.sleep(.01);continue
-                raise DeliveryJobError('delivery_reference_busy','交付记录暂不可读；不会按空任务重做。') from None
-            except FileNotFoundError:
-                raise DeliveryJobError('delivery_job_unknown','没有该交付任务。',404) from None
+                raise DeliveryJobError('delivery_reference_busy','交付记录暂不可读；不会按空任务重做。') from source_error
+            except FileNotFoundError as source_error:
+                raise DeliveryJobError('delivery_job_unknown','没有该交付任务。',404) from source_error
             except (OSError,ValueError,TypeError,AttributeError) as error:
                 if isinstance(error, DeliveryJobError):
                     raise
-                raise DeliveryJobError('delivery_reference_invalid','交付引用损坏或目标已变，先核原状态。') from None
+                raise DeliveryJobError('delivery_reference_invalid','交付引用损坏或目标已变，先核原状态。') from error
 
     @staticmethod
     def _completed_history(value):
@@ -249,8 +249,8 @@ class DeliveryJobs:
                 self._write(path,record)
                 self._launch(job_id)
                 return {'attached':False,'job':record,'status':'accepted','API_requests':0}
-        except ControlBusyError:
-            raise DeliveryJobError('delivery_control_busy','另一交付操作正在登记，请刷新。') from None
+        except ControlBusyError as source_error:
+            raise DeliveryJobError('delivery_control_busy','另一交付操作正在登记，请刷新。') from source_error
 
     def _launch(self,job_id):
         current=self._threads.get(job_id)
@@ -389,5 +389,5 @@ class DeliveryJobs:
                 self._write(path,record)
             if action=='resume': self._launch(job_id)
             return self.get(job_id)
-        except ControlBusyError:
-            raise DeliveryJobError('delivery_still_running','原交付仍在进行，请等其安全完成，不重复派发。') from None
+        except ControlBusyError as source_error:
+            raise DeliveryJobError('delivery_still_running','原交付仍在进行，请等其安全完成，不重复派发。') from source_error

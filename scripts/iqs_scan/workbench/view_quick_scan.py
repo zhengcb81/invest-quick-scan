@@ -1,14 +1,14 @@
 """Launch the existing read-only VIEW package; no API or database access here."""
 from __future__ import annotations
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 from pathlib import Path
 import runpy
 import sys
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="查看已有快扫导出；不扫描、不刷新、不调用模型。关闭终端或 Ctrl+C 停止服务。")
+    parser = RuntimeArgumentParser(description="查看已有快扫导出；不扫描、不刷新、不调用模型。关闭终端或 Ctrl+C 停止服务。")
     parser.add_argument("--bundle", required=True, help="已导出的 bundle.json；不默认载入合成示例")
     parser.add_argument("--viewer-root", type=Path,
                         default=Path(__file__).resolve().parents[4] / "iqs-viewer-lab",

@@ -43,9 +43,9 @@ def _immutable(path, raw, *, expected_digest=None):
         else:
             try:
                 os.link(temporary, path)
-            except FileExistsError:
+            except FileExistsError as source_error:
                 if path.read_bytes()!=raw:
-                    raise DashboardExecutionError('delivery_archive_changed','原封存包归档已变化，不能覆盖。',409)
+                    raise DashboardExecutionError('delivery_archive_changed','原封存包归档已变化，不能覆盖。',409) from source_error
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)

@@ -1,5 +1,5 @@
 """Fixed offline query validator; file paths are trusted process configuration."""
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import json
 from pathlib import Path
 
@@ -11,7 +11,7 @@ MAX_BYTES=80*1024*1024
 
 
 def main(argv=None):
-    parser=argparse.ArgumentParser(description=__doc__)
+    parser=RuntimeArgumentParser(description=__doc__)
     parser.add_argument('--input',required=True)
     parser.add_argument('--operation',required=True,
         choices=('request','originals','bindings','seal','response','query-hash',

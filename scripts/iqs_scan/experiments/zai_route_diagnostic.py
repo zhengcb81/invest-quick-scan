@@ -16,9 +16,9 @@ from . import batching_benchmark as b
 
 def decode(response):
     try:return response.json()
-    except ValueError:
+    except ValueError as source_error:
         data=[line[5:].strip() for line in response.text.splitlines() if line.startswith('data:')]
-        if len(data)!=1:raise ValueError('unexpected_mcp_sse_envelope')
+        if len(data)!=1:raise ValueError('unexpected_mcp_sse_envelope') from source_error
         return json.loads(data[0])
 
 
@@ -53,7 +53,7 @@ def main():
             try:r=session.post(endpoint,json=body,headers=headers,timeout=45,allow_redirects=False)
             except Exception as exc:
                 ledger.finish(aid,dict(state='outcome_unknown',exception_type=type(exc).__name__))
-                raise RuntimeError('unknown_diagnostic_stop') from None
+                raise RuntimeError('unknown_diagnostic_stop') from exc
             item=dict(method=method,interface=kind,http_status=r.status_code,latency_s=round(time.monotonic()-started,3))
             try:value=decode(r) if r.status_code!=202 else {}
             except (ValueError,TypeError):value={};item['body_unparseable']=True

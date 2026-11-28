@@ -5,11 +5,29 @@ import json
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+from pathlib import Path
 import sys
 import time
 
 from .file_lock import ControlBusyError, control_lock
 from .json_io import physical_path
+
+
+def _advance_rotation(path, *, begin=False):
+    staged = path.with_name(path.name + ".rotating")
+    try:
+        if not staged.exists():
+            if not begin:
+                return
+            path.replace(staged)
+        newest = path.with_name(path.name + ".1")
+        if newest.exists():
+            newest.replace(path.with_name(path.name + ".2"))
+        staged.replace(newest)
+    except PermissionError:
+        # An open Windows handle can postpone completion. A moved log stays
+        # readable at its staging name until the next writer can finish.
+        return
 
 
 class _LocalHandler(RotatingFileHandler):
@@ -19,11 +37,10 @@ class _LocalHandler(RotatingFileHandler):
             raise error
 
     def doRollover(self):
-        try:
-            super().doRollover()
-        except PermissionError:
-            # A Windows reader can temporarily block rename; keep the next row.
-            pass
+        if self.stream is not None:
+            self.stream.close()
+            self.stream = None
+        _advance_rotation(Path(self.baseFilename), begin=True)
 
 
 def _append(directory, filename, payload):
@@ -35,6 +52,7 @@ def _append(directory, filename, payload):
     while True:
         try:
             with control_lock(log_path.with_suffix(".lock")):
+                _advance_rotation(log_path)
                 # A terminated writer may have left a partial final line.
                 with log_path.open("a+b") as stream:
                     if stream.seek(0, os.SEEK_END):
@@ -74,7 +92,7 @@ def read_operation_trace(directory, owner, run, attempt):
     """Read the retained owner trace without locks, retries or feedback writes."""
     events = []
     for filename in ("runtime-events.jsonl", "runtime-failures.jsonl"):
-        for suffix in (".2", ".1", ""):
+        for suffix in (".2", ".1", ".rotating", ""):
             path = physical_path(directory / (filename + suffix))
             try:
                 with path.open("rb") as stream:

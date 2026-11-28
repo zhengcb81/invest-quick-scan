@@ -4,6 +4,8 @@ import sys
 from iqs_scan.experiments import company_agent_contrast_launcher as _implementation
 
 if __name__ == '__main__':
-    _implementation.cli()
+    from iqs_scan.foundation.api import run_diagnostic_command
+
+    raise SystemExit(run_diagnostic_command(_implementation.cli))
 else:
     sys.modules[__name__] = _implementation

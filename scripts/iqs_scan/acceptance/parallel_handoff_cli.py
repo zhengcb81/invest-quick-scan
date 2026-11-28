@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import json
 import sys
 from pathlib import Path, PurePosixPath
@@ -172,7 +172,7 @@ def validate_handoff(input_path: Path, package_id: str,
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = RuntimeArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--package-id", required=True)
     parser.add_argument("--catalog", type=Path,

@@ -35,9 +35,9 @@ def product_handler(base_handler, service):
             if self.command != 'HEAD':
                 self.wfile.write(raw)
 
-        def _deny(self, status, code, message):
+        def _deny(self, status, code, message, *, error=None):
             if hasattr(service, "record_transport_refusal"):
-                service.record_transport_refusal(code)
+                service.record_transport_refusal(code, error=error)
             self._drain_rejected_body()
             self.close_connection = True
             self._reply(status, {'ok': False, 'error': {'code': code, 'message': message, 'details': {}}})
@@ -118,8 +118,8 @@ def product_handler(base_handler, service):
                 if not 1 <= length <= MAX_BODY:
                     self._deny(413, 'body_too_large', '请求内容必须在1MiB以内。')
                     return
-            except ValueError:
-                self._deny(400, 'invalid_content_length', '请求长度无效。')
+            except ValueError as error:
+                self._deny(400, 'invalid_content_length', '请求长度无效。', error=error)
                 return
             content_types = self.headers.get_all('Content-Type', [])
             if len(content_types) != 1 or content_types[0].split(';', 1)[0].strip().lower() != 'application/json':
@@ -143,8 +143,8 @@ def product_handler(base_handler, service):
                         pending.extend((item, depth + 1) for item in value.values())
                     elif isinstance(value, list):
                         pending.extend((item, depth + 1) for item in value)
-            except (ValueError, UnicodeError, OSError, RecursionError):
-                self._deny(400, 'invalid_json', '请求须为有效且无重复字段的JSON对象。')
+            except (ValueError, UnicodeError, OSError, RecursionError) as error:
+                self._deny(400, 'invalid_json', '请求须为有效且无重复字段的JSON对象。', error=error)
                 return
             self._reply(*service.dispatch(self.command, self.path, body))
 

@@ -225,7 +225,7 @@ def retrieve(run,module,ledger):
                         latency_s=round(time.monotonic()-start,3),credits=2 if provider=='tavily' else None,actual_cash_usd=None))
                 except Exception as exc:
                     ledger.finish(aid,dict(state='outcome_unknown',exception_type=type(exc).__name__,latency_s=round(time.monotonic()-start,3)))
-                    raise RuntimeError('search_unknown_no_resend') from None
+                    raise RuntimeError('search_unknown_no_resend') from exc
             seen=set();pool=[]
             for item in items:
                 if item['source_id'] not in seen:pool.append(item);seen.add(item['source_id'])

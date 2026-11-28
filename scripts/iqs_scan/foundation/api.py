@@ -11,7 +11,7 @@ from .feedback_io import (
 )
 from .json_io import physical_path, replace_after_readers_close
 from .file_lock import ControlBusyError, control_lock
-from .process_logs import read_process_log, redacted_output_lines, register_process_log
+from .process_logs import read_process_log, redact_diagnostic_text, redacted_output_lines, register_process_log
 from .runtime_feedback import (
     RuntimeArgumentParser,
     child_feedback_environment,
@@ -25,6 +25,7 @@ from .runtime_feedback import (
     read_runs_failure,
     record_operation_failure,
     record_operation_checkpoint,
+    run_diagnostic_command,
 )
 
 
@@ -60,6 +61,7 @@ __all__ = (
     "append_feedback",
     "diagnose_feedback",
     "feedback_path",
+    "redact_diagnostic_text",
     "redacted_output_lines",
     "exception_diagnostic",
     "read_process_log",
@@ -73,6 +75,7 @@ __all__ = (
     "read_runs_failure",
     "record_operation_failure",
     "record_operation_checkpoint",
+    "run_diagnostic_command",
     "build_search_receipt",
     "canonical_bytes",
     "core_construct_ids",

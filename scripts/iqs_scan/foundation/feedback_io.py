@@ -30,7 +30,7 @@ def diagnose_feedback(error):
         pass
 
 
-def append_feedback(path, rows):
+def append_feedback(path, rows, *, warn=True):
     """Append self-contained rows without changing the business result on failure."""
     try:
         payload = "".join(
@@ -55,6 +55,7 @@ def append_feedback(path, rows):
             handle.flush()
             os.fsync(handle.fileno())
     except (OSError, TypeError, ValueError) as error:
-        diagnose_feedback(error)
+        if warn:
+            diagnose_feedback(error)
         return False
     return True

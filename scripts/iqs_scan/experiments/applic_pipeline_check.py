@@ -33,7 +33,7 @@ def _load(path: Path) -> dict:
     try:
         return json.loads(path.read_text(encoding="utf-8-sig"))
     except (OSError, ValueError) as error:
-        raise SystemExit(_fail(f"unreadable or invalid JSON: {path} ({error})")[0])
+        raise SystemExit(_fail(f"unreadable or invalid JSON: {path} ({error})")[0]) from error
 
 
 def compare(manifest_path: Path, snapshot_path: Path) -> tuple[int, dict]:

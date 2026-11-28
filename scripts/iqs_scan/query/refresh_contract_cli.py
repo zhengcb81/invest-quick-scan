@@ -1,5 +1,5 @@
 """Fixed offline preview validator. Never authenticates a supplied owner JSON."""
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import json
 import sys
 from pathlib import Path
@@ -10,7 +10,7 @@ PROTOCOL='iqs.refresh_validation/1.0.0'
 
 
 def main(argv=None):
-    parser=argparse.ArgumentParser(description=__doc__)
+    parser=RuntimeArgumentParser(description=__doc__)
     parser.add_argument('--input',type=Path,required=True)
     parser.add_argument('--operation',choices=('request','policy','preview','validate-preview','targets','frozen-record'),required=True)
     args=parser.parse_args(argv)

@@ -4,8 +4,9 @@ from __future__ import annotations
 from contextlib import contextmanager
 from contextvars import ContextVar
 from hashlib import sha256
-from http.client import HTTPException
+from http.client import HTTPException, IncompleteRead
 import json
+from time import monotonic
 import urllib.error
 import urllib.request
 
@@ -16,6 +17,7 @@ PUBLIC_API_EXPORTS = frozenset({
     "API_PROTOCOL", "PUBLIC_API_EXPORTS", "post_json", "provider_question_scope",
 })
 _QUESTION = ContextVar("iqs_provider_question", default=None)
+_READ_CHUNK_BYTES = 64 * 1024
 
 
 @contextmanager
@@ -36,16 +38,32 @@ def _failure(error: BaseException, code: str, marker: str, *, status: int = 0) -
     return status, {"error": marker}
 
 
+def _response_payload(response, deadline):
+    data = bytearray()
+    while True:
+        if deadline is not None and monotonic() >= deadline:
+            raise TimeoutError("provider response deadline reached")
+        part = response.read1(_READ_CHUNK_BYTES)
+        if not part:
+            break
+        data.extend(part)
+    remaining = getattr(response, "length", None)
+    if type(remaining) is int and remaining > 0:
+        raise IncompleteRead(bytes(data), remaining)
+    return json.loads(data.decode("utf-8"))
+
+
 def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict]:
     """POST JSON and return a status/payload pair for every transport outcome."""
     data = json.dumps(body, ensure_ascii=False).encode("utf-8")
+    deadline = monotonic() + timeout if timeout is not None else None
     try:
         request = urllib.request.Request(url, data=data, method="POST", headers={
             "Authorization": "Bearer " + key,
             "Content-Type": "application/json",
         })
         with urllib.request.urlopen(request, timeout=timeout) as response:
-            return response.status, json.loads(response.read().decode("utf-8"))
+            return response.status, _response_payload(response, deadline)
     except urllib.error.HTTPError as error:
         # The HTTP status is the public failure fact. Do not read or return the
         # provider's error body, which may repeat credentials or request text.

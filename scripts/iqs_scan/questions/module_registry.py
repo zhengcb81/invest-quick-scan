@@ -121,9 +121,9 @@ def _write_immutable(path: Path, raw: bytes) -> None:
         # closed; there is no destructive replace fallback for archives.
         try:
             os.link(temp_path, native)
-        except FileExistsError:
+        except FileExistsError as source_error:
             if native.read_bytes() != raw:
-                raise ValueError("immutable release artifact changed concurrently")
+                raise ValueError("immutable release artifact changed concurrently") from source_error
     finally:
         if temp_path.exists():
             temp_path.unlink()

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+from ..foundation.api import record_operation_failure
 import json
 import os
 from pathlib import Path
@@ -408,6 +409,7 @@ def _temporal_view(reply, entity_id):
 def worker_main():
     """Forward the old worker invocation used by a dashboard already running."""
     if sys.argv[1:] != ["--worker"]:
+        record_operation_failure(None, "owner.worker.arguments", code="invalid_arguments", refusal=True)
         return 2
     try:
         raw = sys.stdin.buffer.read(_MAX_BYTES + 1)
@@ -418,8 +420,10 @@ def worker_main():
         result = gateway._call(request["operation"], request["payload"])
         response, code = {"protocol": PROTOCOL, "result": result}, 0
     except DashboardOwnerError as error:
+        record_operation_failure(error, "owner.worker", code=error.code)
         response, code = {"protocol": PROTOCOL, "error": error.as_dict()}, 2
-    except (ValueError, KeyError, TypeError, RecursionError):
+    except (ValueError, KeyError, TypeError, RecursionError) as source_error:
+        record_operation_failure(source_error, "owner.worker.request", code="invalid_payload", refusal=True)
         error = DashboardOwnerError("invalid_payload", "Expected a legacy dashboard request")
         response, code = {"protocol": PROTOCOL, "error": error.as_dict()}, 2
     print(json.dumps(response, ensure_ascii=False, allow_nan=False))

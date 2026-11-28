@@ -3,10 +3,11 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
 import json
 from pathlib import Path
 import sys
+
+from ..foundation.api import RuntimeArgumentParser, record_operation_failure, redact_diagnostic_text
 
 ROOT = REPO_ROOT
 
@@ -34,7 +35,7 @@ def _config(path: Path | None, data_root: Path) -> dict:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = RuntimeArgumentParser(description=__doc__)
     parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS configuration and question resources")
     parser.add_argument("--dashboard-config", type=Path, help="Optional local owner configuration")
     parser.add_argument("--output", type=Path, required=True, help="Explicit snapshot output path")
@@ -48,12 +49,15 @@ def main(argv=None) -> int:
         print(json.dumps({"data_root": str(root), "output": str(output),
                           "reads_owner": False, "model_calls": False, "writes": False}, ensure_ascii=False))
         return 0
+    diagnostic_root = None
     try:
         config = _config(args.dashboard_config.resolve() if args.dashboard_config else None, root)
+        diagnostic_root = Path(config["state_root"])
         snapshot = build_workbench_snapshot(root, config)
         write_workbench_snapshot(output, snapshot)
     except (OSError, UnicodeError, ValueError, RecursionError) as error:
-        sys.stderr.write(f"Snapshot export failed: {error}\n")
+        record_operation_failure(error, "snapshot.export", directory=diagnostic_root, code="snapshot_export_failed")
+        sys.stderr.write(f"Snapshot export failed: {redact_diagnostic_text(str(error))}\n")
         return 2
     print(json.dumps({"status": "written", "output": str(output),
                       "availability": snapshot["availability"], "model_calls": 0,

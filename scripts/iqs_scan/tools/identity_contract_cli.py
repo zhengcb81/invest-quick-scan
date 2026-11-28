@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import json
 import sys
 from pathlib import Path
@@ -237,7 +237,7 @@ def validate_file(
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
+    parser = RuntimeArgumentParser(
         description="Read-only validation for IQS identity contract JSON requests."
     )
     parser.add_argument("--input", required=True, help="Path to one JSON validation request")

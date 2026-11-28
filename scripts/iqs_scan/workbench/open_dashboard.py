@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from iqs_scan import REPO_ROOT
 
-import argparse
 import json
 import mimetypes
 from pathlib import Path, PurePosixPath
@@ -11,6 +10,10 @@ import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import unquote, urlsplit
 
+from ..foundation.api import (
+    RuntimeArgumentParser, operation_scope, record_operation_checkpoint, record_operation_failure,
+    redact_diagnostic_text,
+)
 from ._background_process import run_background
 
 ROOT = REPO_ROOT
@@ -45,9 +48,21 @@ def _load_config(path: Path | None, data_root: Path, validate_config):
 def _handler(static_root: Path, snapshot_path: Path, load_snapshot):
     root = static_root.resolve()
     index = root / "index.html"
+    diagnostic_root = snapshot_path.parent.parent
 
     class StaticUIHandler(BaseHTTPRequestHandler):
         server_version = "IQSLocal/1.0"
+
+        def handle_one_request(self):
+            with operation_scope():
+                super().handle_one_request()
+
+        def log_request(self, code="-", size="-"):
+            status = str(code)
+            if status.isascii() and status.isdecimal():
+                state = "completed" if int(status) < 400 else "refused"
+                record_operation_checkpoint("dashboard.http.access", state, directory=diagnostic_root,
+                                            evidence_ref="iqs:http-status/" + status)
 
         def log_message(self, _format, *_args):
             return
@@ -135,7 +150,7 @@ def _handler(static_root: Path, snapshot_path: Path, load_snapshot):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="本机公司快扫工作台；浏览不调用模型，启动不运行测试。")
+    parser = RuntimeArgumentParser(description="本机公司快扫工作台；浏览不调用模型，启动不运行测试。")
     parser.add_argument("--ui-root", type=Path, default=ROOT.parent / "iqs-question-bank-ui-lab",
                         help="UI源码仓，只读取 src/app 静态文件")
     parser.add_argument("--data-root", type=Path, default=ROOT, help="IQS配置、题库与运行数据根目录，也可选择另一份IQS检出")
@@ -150,8 +165,10 @@ def main(argv=None):
     ui_root, data_root = args.ui_root.resolve(), args.data_root.resolve()
     static_root = ui_root / "src" / "app"
     if not (static_root / "index.html").is_file():
+        record_operation_failure(None, "dashboard.startup", code="ui_static_app_missing", refusal=True)
         parser.exit(2, "UI static app is missing; provide --ui-root with src/app/index.html.\n")
     if not data_root.is_dir():
+        record_operation_failure(None, "dashboard.startup", code="dashboard_data_root_missing", refusal=True)
         parser.exit(2, "Data root is missing; provide --data-root.\n")
     scripts = data_root / "scripts"
     entry = scripts / "open_dashboard.py"
@@ -176,7 +193,8 @@ def main(argv=None):
         config = _load_config(args.dashboard_config.resolve() if args.dashboard_config else None,
                               data_root, validate_config)
     except (OSError, UnicodeError, ValueError) as error:
-        parser.exit(2, f"Dashboard configuration is invalid: {error}\n")
+        record_operation_failure(error, "dashboard.config", code="dashboard_config_invalid", refusal=True)
+        parser.exit(2, f"Dashboard configuration is invalid: {redact_diagnostic_text(str(error))}\n")
     state_root = Path(config["state_root"]).resolve()
     snapshot_path = state_root / "workbench" / "snapshot.json"
     if args.plan:
@@ -193,17 +211,21 @@ def main(argv=None):
             snapshot = build_workbench_snapshot(data_root, service.config)
             write_workbench_snapshot(snapshot_path, snapshot)
     except Exception as error:
-        sys.stderr.write(f"Cannot build the read-only dashboard snapshot: {getattr(error, 'code', 'snapshot_export_failed')}\n")
+        code = getattr(error, "code", "snapshot_export_failed")
+        record_operation_failure(error, "dashboard.snapshot", directory=state_root, code=code)
+        sys.stderr.write(f"Cannot build the read-only dashboard snapshot: {redact_diagnostic_text(str(code))}\n")
         return 2
     handler = product_handler(_handler(static_root, snapshot_path, load_workbench_snapshot), service)
     try:
         server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
     except OSError as error:
-        sys.stderr.write(f"Cannot bind local dashboard: {error}\n")
+        record_operation_failure(error, "dashboard.bind", directory=state_root, code="dashboard_bind_failed")
+        sys.stderr.write(f"Cannot bind local dashboard: {redact_diagnostic_text(str(error))}\n")
         return 2
     server.daemon_threads = True
     url = f"http://127.0.0.1:{server.server_address[1]}/"
     service.bind_runtime_origin(url)
+    record_operation_checkpoint("dashboard.startup", "completed", directory=state_root)
     print(json.dumps({"status": "ready", "url": url, "port": server.server_address[1],
                       "snapshot": str(snapshot_path), "model_calls": 0, "network_calls": 0,
                       "refreshed": not args.no_refresh}, ensure_ascii=False), flush=True)

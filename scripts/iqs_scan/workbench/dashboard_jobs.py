@@ -67,10 +67,10 @@ class PreparationJobs:
             if record.get('protocol') != 'iqs.preparation_job/1.0.0' or record.get('job_id') != path.stem:
                 raise ValueError('invalid reference')
             return record
-        except FileNotFoundError:
-            raise DashboardJobError('preparation_job_unknown', '没有该准备任务。', 404) from None
-        except (OSError, ValueError, TypeError, AttributeError):
-            raise DashboardJobError('preparation_job_corrupt', '准备引用损坏；不能按空记录重新提交。', 409) from None
+        except FileNotFoundError as source_error:
+            raise DashboardJobError('preparation_job_unknown', '没有该准备任务。', 404) from source_error
+        except (OSError, ValueError, TypeError, AttributeError) as source_error:
+            raise DashboardJobError('preparation_job_corrupt', '准备引用损坏；不能按空记录重新提交。', 409) from source_error
 
     def _write(self, path, record):
         temporary = path.with_suffix('.'+uuid.uuid4().hex+'.tmp')
@@ -112,8 +112,8 @@ class PreparationJobs:
                 self._threads[job_id] = thread
                 thread.start()
                 return {'attached': False, 'job': dict(record), 'API_requests': 0}
-        except ControlBusyError:
-            raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from None
+        except ControlBusyError as source_error:
+            raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from source_error
 
     def _register(self, record, result, *, lock_held=False):
         # Background work can wait briefly without holding the service mutex.
@@ -251,10 +251,10 @@ class PreparationJobs:
                     return {**record, 'original_preparation':native, 'automatic_retry':False}
                 self._register(record, native['result'], lock_held=True)
                 return self.get(job_id)
-        except ControlBusyError:
+        except ControlBusyError as source_error:
             if (terminal := self._terminal_snapshot(path)) is not None:
                 return terminal
-            raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from None
+            raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from source_error
 
     def abandon(self, job_id):
         try:
@@ -270,5 +270,5 @@ class PreparationJobs:
                     notice='仅停止等待或自动登记，保留原owner已写记录，不回滚、不取消原任务。')
                 self._write(self._path(job_id), record)
                 return record
-        except ControlBusyError:
-            raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from None
+        except ControlBusyError as source_error:
+            raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from source_error

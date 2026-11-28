@@ -40,8 +40,8 @@ def _utc(value: str) -> datetime:
         raise MappingContractError("mapping_effective_time_invalid")
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError:
-        raise MappingContractError("mapping_effective_time_invalid") from None
+    except ValueError as source_error:
+        raise MappingContractError("mapping_effective_time_invalid") from source_error
     if parsed.tzinfo is None or parsed.utcoffset() != timedelta(0):
         raise MappingContractError("mapping_effective_time_invalid")
     return parsed
@@ -148,8 +148,8 @@ def validate_mapping_dto(dto: dict, snapshot: dict, query: dict | None) -> dict:
     payload = {key: value for key, value in snapshot.items() if key != "snapshot_sha256"}
     try:
         digest = hashlib.sha256(_canonical(payload)).hexdigest()
-    except (TypeError, ValueError):
-        raise MappingContractError("snapshot_invalid") from None
+    except (TypeError, ValueError) as source_error:
+        raise MappingContractError("snapshot_invalid") from source_error
     if digest != snapshot["snapshot_sha256"] or dto["snapshot_sha256"] != digest:
         raise MappingContractError("snapshot_hash_mismatch")
     if query is not None:
@@ -167,8 +167,8 @@ def validate_mapping_dto(dto: dict, snapshot: dict, query: dict | None) -> dict:
             candidates, mismatch = _expected_candidates(snapshot, query)
         except MappingContractError:
             raise
-        except (KeyError, TypeError, ValueError):
-            raise MappingContractError("snapshot_invalid") from None
+        except (KeyError, TypeError, ValueError) as source_error:
+            raise MappingContractError("snapshot_invalid") from source_error
         status = "mapped" if len(candidates) == 1 else "ambiguous" if candidates else "unknown"
         queried_identity = {key: query[key] for key in _QUERY_FIELDS}
     else:

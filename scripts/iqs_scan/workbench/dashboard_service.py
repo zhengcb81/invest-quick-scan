@@ -490,8 +490,8 @@ class DashboardService:
                     os.replace(temporary, self.config_path)
                 finally:
                     temporary.unlink(missing_ok=True)
-        except ControlBusyError:
-            raise ProductError('setup_busy','另一个服务正在保存连接，刷新后重试；原准备结果保留。',409) from None
+        except ControlBusyError as source_error:
+            raise ProductError('setup_busy','另一个服务正在保存连接，刷新后重试；原准备结果保留。',409) from source_error
         # The locked setup path already checked inactivity before writing.
         # A different externally loaded configuration must still be checked.
         self._load(inactive_checked_config=config if inactive_checked else None)
@@ -551,7 +551,8 @@ class DashboardService:
         """
         try:
             verdict = self._return_verifier().verify(entity_id, return_to)
-        except Exception:
+        except Exception as error:
+            self._record_partial_failure(error, "owner.return.verify")
             return False
         return verdict.get('confirmed') is True
 
@@ -690,7 +691,7 @@ class DashboardService:
         try:
             response = projection.project_result(owner_payload)
         except projection.ProjectionError as error:
-            raise ProductError(error.code, error.message, error.status) from None
+            raise ProductError(error.code, error.message, error.status) from error
         if result_id is not None:
             result = response['company_result']
             if result is None:
@@ -721,7 +722,7 @@ class DashboardService:
         try:
             return projection.project_history(owner_payload, limit=limit, offset=offset)
         except projection.ProjectionError as error:
-            raise ProductError(error.code, error.message, error.status) from None
+            raise ProductError(error.code, error.message, error.status) from error
 
     def _gateway(self, kind):
         attr = '_owner' if kind == 'owner' else '_execution'
@@ -797,8 +798,8 @@ class DashboardService:
             for kind in ('owner', 'execution'):
                 try:
                     self._gateway(kind)
-                except Exception:
-                    pass  # _safe_status reports this adapter's error in the view.
+                except Exception as error:
+                    self._record_partial_failure(error, "status." + kind)
         elif (path in {'results', 'coverage', 'entity-view', 'entity', 'history', 'facts', 'universe', 'delivery'}
                 or path.startswith(('universe/', 'import/'))):
             self._gateway('owner')
@@ -844,9 +845,9 @@ class DashboardService:
         self._save_config(config, inactive_checked=True)
         return self._setup()
 
-    def record_transport_refusal(self, code):
+    def record_transport_refusal(self, code, *, error=None):
         from ..foundation.api import record_operation_failure
-        return record_operation_failure(None, "http.transport", code=code, refusal=True,
+        return record_operation_failure(error, "http.transport", code=code, refusal=True,
                                         directory=self.config["state_root"])
 
     def dispatch(self, method, target, body=None):
@@ -927,7 +928,7 @@ class DashboardService:
                     return self._batches().list(limit=int(query.get('limit',50)), offset=int(query.get('offset',0)))
                 except ValueError as exc:
                     if hasattr(exc, 'code'): raise
-                    raise ProductError('invalid_query','批任务分页无效。') from None
+                    raise ProductError('invalid_query','批任务分页无效。') from exc
             if path == 'status':
                 owner, execution = self._safe_status('owner'), self._safe_status('execution')
                 owner['registered_import_bundles'] = [{'bundle_id': name, 'entity_id': item.get('entity_id')}
@@ -956,8 +957,8 @@ class DashboardService:
             if path == 'tasks':
                 try:
                     limit, offset = int(query.get('limit', 50)), int(query.get('offset', 0))
-                except ValueError:
-                    raise ProductError('invalid_query', '任务分页无效。')
+                except ValueError as source_error:
+                    raise ProductError('invalid_query', '任务分页无效。') from source_error
                 return self._gateway('execution').tasks(inspect_owner=False, limit=limit, offset=offset)
             if path == 'doctor':
                 owner, execution = self._safe_status('owner'), self._safe_status('execution')
@@ -982,8 +983,8 @@ class DashboardService:
                     combine = query.get('condition_combine', 'all')
                     if not isinstance(filters, dict) or not isinstance(conditions, list) or len(conditions) > 100 or combine not in {'all', 'any'} or not 1 <= limit <= 100 or offset < 0:
                         raise ValueError('bounds')
-                except (ValueError, TypeError):
-                    raise ProductError('invalid_query', '分页或筛选条件无效。')
+                except (ValueError, TypeError) as source_error:
+                    raise ProductError('invalid_query', '分页或筛选条件无效。') from source_error
                 selection = {'query': query.get('query', ''), 'filters': filters, 'conditions': conditions,
                     'condition_combine': combine, 'view': query.get('view', 'all_relevant'), 'limit': limit}
                 fingerprint = hashlib.sha256(json.dumps(selection, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
@@ -1096,8 +1097,8 @@ class DashboardService:
                         return int(value)
                     after_version = optional_version('after_version')
                     version_pin = optional_version('version_pin')
-                except ValueError:
-                    raise ProductError('invalid_query', '成员历史分页或版本参数无效。') from None
+                except ValueError as source_error:
+                    raise ProductError('invalid_query', '成员历史分页或版本参数无效。') from source_error
                 return read_membership_history(self._gateway('owner'), {
                     'universe_id': query.get('universe_id', self.config['universe_id']),
                     'entity_id': query.get('entity_id'), 'limit': limit,
@@ -1136,8 +1137,8 @@ class DashboardService:
                     raise ProductError('entity_required', '请选择已注册公司。')
                 try:
                     limit, offset = int(query.get('limit', 20)), int(query.get('offset', 0))
-                except ValueError:
-                    raise ProductError('invalid_query', '公司结果分页无效。')
+                except ValueError as source_error:
+                    raise ProductError('invalid_query', '公司结果分页无效。') from source_error
                 if not 1 <= limit <= 50 or offset < 0:
                     raise ProductError('invalid_query', '公司结果分页无效。')
                 return self._company_assessment_history(entity_id, limit, offset)

@@ -4,7 +4,7 @@ No network, LLM client, credentials, retries, financial downloads or forecasts.
 """
 
 from iqs_scan import REPO_ROOT
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 from collections import Counter
 from datetime import date, datetime
 import hashlib
@@ -1102,7 +1102,7 @@ def normalize(manifest, answers, review=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = RuntimeArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('validate')
     common = sub.add_parser('common')

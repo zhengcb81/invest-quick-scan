@@ -148,7 +148,8 @@ def test_provider_malformed_url_and_partial_read_return_failure(tmp_path, monkey
     class Truncated(io.BytesIO):
         status = 200
 
-        def read(self):
+        def read1(self, size):
+            assert size > 0
             raise IncompleteRead(CANARY.encode(), 3)
 
     def open_local(*args, **kwargs):
@@ -255,3 +256,22 @@ def test_success_keeps_original_model_usage_and_does_not_log_failure(tmp_path, m
     monkeypatch.setenv(provider["key_env"], CANARY)
     assert ask_model(provider, "placeholder") == {"score": 3, "_usage": {"prompt_tokens": 11, "completion_tokens": 7}}
     assert rows(out) == []
+
+
+def test_response_read_does_not_truncate_a_large_valid_result(monkeypatch):
+    response = {"content": "a" * (256 * 1024)}
+    amounts = []
+
+    class Response(io.BytesIO):
+        status = 200
+
+        def read(self, *_):
+            raise AssertionError("response should use bounded reads")
+
+        def read1(self, amount):
+            amounts.append(amount)
+            return super().read1(amount)
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda *_args, **_kwargs: Response(json.dumps(response).encode()))
+    assert post_json(URL, CANARY, {"prompt": CANARY}, 4) == (200, response)
+    assert len(amounts) > 4 and all(0 < amount <= 64 * 1024 for amount in amounts)

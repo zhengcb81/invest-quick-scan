@@ -160,7 +160,7 @@ def archive(run,dest,lock_owner_pid=None):
             raise ValueError('active_run_owner_mismatch')
     else:
         try:fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
-        except FileExistsError:raise ValueError('active_run') from None
+        except FileExistsError as source_error:raise ValueError('active_run') from source_error
         os.write(fd,str(os.getpid()).encode())
     try:return _archive_locked(run,dest)
     finally:

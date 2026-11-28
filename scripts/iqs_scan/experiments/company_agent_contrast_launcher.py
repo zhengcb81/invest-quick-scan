@@ -344,4 +344,4 @@ def cli():
     except Exception as error:
         # Raw exceptions can contain provider text or credentials. Never print.
         print(canonical({'status':'stopped','error_type':type(error).__name__}),file=sys.stderr)
-        raise SystemExit(2)
+        raise SystemExit(2) from error

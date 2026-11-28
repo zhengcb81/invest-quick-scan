@@ -16,7 +16,7 @@ Exit codes follow the repo's public-CLI convention:
 """
 from __future__ import annotations
 
-import argparse
+from ..foundation.api import RuntimeArgumentParser
 import http.client
 import json
 import sys
@@ -96,7 +96,7 @@ def _error_from(envelope, fallback_code):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(
+    parser = RuntimeArgumentParser(
         prog="owner_job_cli.py",
         description=("invest-quick-scan公共job面（iqs-job/1）：把Dashboard命令提交为owner job、"
                      "查询JobView/allowed_actions、执行动作并列出有界job目录。"

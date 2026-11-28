@@ -84,12 +84,12 @@ def collect(run,module,ledger):
         start=time.monotonic()
         try:r=session.post(endpoint,json=body,headers=headers,timeout=45,allow_redirects=False)
         except Exception as exc:
-            ledger.finish(aid,dict(state='outcome_unknown',exception_type=type(exc).__name__));raise RuntimeError('MCP_unknown_stop') from None
+            ledger.finish(aid,dict(state='outcome_unknown',exception_type=type(exc).__name__));raise RuntimeError('MCP_unknown_stop') from exc
         if r.status_code not in (200,202):
             body=z.decode(r);ledger.finish(aid,dict(state='http_rejected',http_status=r.status_code,**z.error_summary(body,key)));raise RuntimeError('MCP_rejected_stop')
         try:obj=z.decode(r) if r.status_code==200 else {}
-        except (ValueError,TypeError):
-            ledger.finish(aid,dict(state='invalid_envelope',http_status=r.status_code));raise ValueError('MCP_envelope_invalid_no_retry') from None
+        except (ValueError,TypeError) as source_error:
+            ledger.finish(aid,dict(state='invalid_envelope',http_status=r.status_code));raise ValueError('MCP_envelope_invalid_no_retry') from source_error
         if r.headers.get('Mcp-Session-Id'):headers['Mcp-Session-Id']=r.headers['Mcp-Session-Id']
         ledger.finish(aid,dict(state='completed',http_status=r.status_code,latency_s=round(time.monotonic()-start,3),is_search=method=='tools/call',actual_cash_usd=None))
         return obj
@@ -137,7 +137,7 @@ def collect(run,module,ledger):
                     if provider=='brave':r=session.get('https://api.search.brave.com/res/v1/web/search',params=dict(q=query,count=4,extra_snippets=True),headers={'X-Subscription-Token':key},timeout=45,allow_redirects=False)
                     else:r=session.post('https://api.tavily.com/search',json=dict(api_key=key,query=query,search_depth='advanced',max_results=4,include_domains=DOMAINS[slug],include_raw_content=False,include_answer=False),timeout=45,allow_redirects=False)
                 except Exception as exc:
-                    ledger.finish(aid,dict(state='outcome_unknown',exception_type=type(exc).__name__));raise RuntimeError('guided_unknown_stop') from None
+                    ledger.finish(aid,dict(state='outcome_unknown',exception_type=type(exc).__name__));raise RuntimeError('guided_unknown_stop') from exc
                 if r.status_code!=200:
                     ledger.finish(aid,dict(state='http_rejected',http_status=r.status_code));raise ValueError('guided_rejection_stop')
                 obj=r.json();rows=(obj.get('web') or {}).get('results',[]) if provider=='brave' else obj.get('results',[]);new=[]
