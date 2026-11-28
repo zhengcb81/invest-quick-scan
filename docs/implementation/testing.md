@@ -2,7 +2,7 @@
 
 2026-10-31接线收尾已登记后续遗漏的6文件（含本轮TIME/HTTP两文件），清单覆盖所有当前测试一次，不再由旧99文件数字推断。测试进程允许**字面IP的TCP loopback**用于自有HTTP夹具；公网连接、外部DNS解析入口（getaddrinfo/gethostbyname/gethostbyname_ex/gethostbyaddr/getnameinfo）与UDP connect/sendto仍在pytest进程审计钩子拒绝。证据字段区分`network_denied_in_pytest_process=false`与`external_network_denied_in_pytest_process=true`/`literal_tcp_loopback_allowed=true`，不再把允许本地测试写成所有网络均禁止。钩子仍不自动覆盖子孙CLI，不是整树网络沙箱。独立真实loopback握手及外部地址/DNS拒绝均有回归。
 
-日常从仓库根运行 `python scripts/run_tests.py`，默认仅运行 `fast`。不要每次小改都跑全套，也不要用快速层通过代替大节点验收。测试使用原来的断言与实现，没有把慢测试改成skip。
+日常从仓库根运行 `python scripts/run_tests.py`，默认仅运行 `fast`。该组只收集本仓可自主运行的测试。需要 StockWiki、StockQA 等固定资产的节点在显式 owner 组合中执行，详见 [S6 资产清单](../plans/s6-p1-08-iqs-2026-11-28/findings.md)。大节点使用托管双平台目录发现与执行覆盖回执。
 
 同日后续基础题/UI节点复核：fast为544 passed、372 subtests passed，pytest77.57秒、含清理总88.413秒，0失败/错误/跳过。下面540项/39.608秒是分层首次落地时的历史实测；耗时会随负载和用例变化，不承诺每次固定40秒。仍不应为日常小改运行完整小时级验收。
 

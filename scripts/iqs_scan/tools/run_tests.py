@@ -160,9 +160,15 @@ def run_group(root, name, files, output, temp_root=None, *, pytest_args=None, co
             # Native tests can therefore never create logs in this checkout.
             working_directory = owned / "qa"
             working_directory.mkdir()
+        if pytest_args is None:
+            marks = ["not live"]
+            if not (name == "native" or owner_assets):
+                marks.append("not owner_assets")
+            if os.name != "nt":
+                marks.append("not windows_only")
+            pytest_args = ["-m", " and ".join(marks), *(str(_test_path(root, file)) for file in files)]
         arguments = ["-q", "-p", "no:cacheprovider", "--durations=20",
-            "--rootdir", str(root), "--basetemp", str(owned / "pytest"),
-            *(pytest_args if pytest_args is not None else [str(_test_path(root, file)) for file in files])]
+            "--rootdir", str(root), "--basetemp", str(owned / "pytest"), *pytest_args]
         if not collect_only:
             arguments.extend(("--junitxml", str(output / (name + ".xml"))))
         if os.name == "nt":

@@ -27,8 +27,29 @@ def test_current_manifest_partitions_every_test_file_exactly_once():
     assert set(runner.selection("offline", suites)) == {"fast", "integration", "e2e"}
     assert runner.selection("all", suites) == suites
     assert list(runner.selection("fast", suites)) == ["fast"]
+    assert all((ROOT / "tests" / filename).is_file() for filename in suites["fast"])
     assert "test_producer_pipeline_e2e.py" in suites["e2e"]
     assert all("native_e2e" in name for name in suites["native"])
+
+
+def test_developer_fast_partitions_use_standalone_scope(tmp_path):
+    test_dir = tmp_path / "tests"
+    test_dir.mkdir()
+    (tmp_path / "pytest.ini").write_text(
+        "[pytest]\nmarkers =\n    live: provider I/O\n    owner_assets: external owner\n", encoding="utf-8"
+    )
+    (test_dir / "test_scope.py").write_text(
+        "import pytest\n"
+        "def test_home_repo(): assert True\n"
+        "@pytest.mark.owner_assets\n"
+        "def test_owner(): raise AssertionError('owner test in fast profile')\n"
+        "@pytest.mark.live\n"
+        "def test_live(): raise AssertionError('live test in fast profile')\n",
+        encoding="utf-8",
+    )
+    result = runner.run_group(tmp_path, "fast", ["test_scope.py"], tmp_path, temp_root=tmp_path)
+    assert result["exit_code"] == 0, (tmp_path / "fast.log").read_text(encoding="utf-8")
+    assert result["junit"] == {"tests": 1, "failures": 0, "errors": 0, "skipped": 0}
 
 
 def test_test_child_permits_owned_literal_loopback_but_rejects_external_network(tmp_path):
