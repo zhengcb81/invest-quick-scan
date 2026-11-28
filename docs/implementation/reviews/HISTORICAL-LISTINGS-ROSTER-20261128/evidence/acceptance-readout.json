@@ -1,0 +1,56 @@
+{
+  "acceptance_at_utc": "2026-11-28",
+  "backup": {
+    "path": "runs/r25-live/owner-workspace/backups/historical-roster-20261128/scan.sqlite.bak-20261128",
+    "sha256": "7ac7b32bce1d259f748912f6b202e40d34b6005502e5b8cb284c57e332a7d2b5"
+  },
+  "counts_before_after": {
+    "quick_scan_listing_history": "0 -> 1",
+    "quick_scan_member": "218 -> 218",
+    "quick_scan_member_history": "218 -> 220",
+    "quick_scan_membership_request": "1 -> 3",
+    "quick_scan_security": "219 -> 219",
+    "quick_scan_universe": "2 -> 2"
+  },
+  "maintenance_report_MAINT06": {
+    "active_members_in_universe": 214,
+    "member_count": 216,
+    "single_listing_delisted_findings": []
+  },
+  "row_level_diff_vs_backup": {
+    "quick_scan_listing_history": "0 -> 1",
+    "quick_scan_member": "only the 2 target entities changed (active v1 -> logically_removed v2)",
+    "quick_scan_member_history": "+2 (v2 snapshots)",
+    "quick_scan_membership_request": "journal +2 (REQ_9e5ad2e3..., REQ_c2b772e2...)",
+    "quick_scan_security": "only SEC_7fb46dc8 (002013) changed (active -> delisted)"
+  },
+  "scan_eligibility_gate": {
+    "ENT_5634bdde": {
+      "active_listings": 0,
+      "membership_status": "logically_removed",
+      "scan_eligible": false
+    },
+    "ENT_8c755024": {
+      "active_listings": 0,
+      "membership_status": "logically_removed",
+      "scan_eligible": false
+    },
+    "rule": "membership_status==active AND scan_enabled==true (refresh_member_not_scan_enabled)"
+  },
+  "universe_id": "UNI_IQS_APPROVED_214_20261025",
+  "untouched": [
+    "quick_scan_entity (216 rows byte-identical incl. both targets, identity_revision stays 1)",
+    "quick_scan_route_snapshot (27)",
+    "quick_scan_route_current (11)",
+    "quick_scan_route_current_history (30)",
+    "quick_scan_identity_event (0)",
+    "quick_scan_candidate (216)",
+    "quick_scan_source_binding (220)",
+    "quick_scan_issuer_bridge (121)",
+    "688555 security row (already delisted)",
+    "300114 security/member rows",
+    "probe file coverage-gaps.json",
+    "identity_receipts.sqlite"
+  ],
+  "workspace_root": "invest-quick-scan/runs/r25-live/owner-workspace"
+}
