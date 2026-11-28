@@ -24,7 +24,6 @@ jobs:
     timeout-minutes: 15
     env:
       TEST_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
-      TEST_EVIDENCE: ${{ runner.temp }}/iqs-s6
       PYTHONUTF8: "1"
       GIT_CONFIG_COUNT: "1"
       GIT_CONFIG_KEY_0: core.longpaths
@@ -39,14 +38,14 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -r requirements.txt pytest
       - name: Collect complete standalone offline inventory
-        run: python -B scripts/ci_tests.py collect --revision "${{ env.TEST_REVISION }}" --output "${{ env.TEST_EVIDENCE }}"
+        run: python -B scripts/ci_tests.py collect --revision "${{ env.TEST_REVISION }}" --output "${{ runner.temp }}/iqs-s6"
       - name: Execute complete standalone offline suite
-        run: python -B scripts/ci_tests.py run --revision "${{ env.TEST_REVISION }}" --output "${{ env.TEST_EVIDENCE }}"
+        run: python -B scripts/ci_tests.py run --revision "${{ env.TEST_REVISION }}" --output "${{ runner.temp }}/iqs-s6"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: iqs-standalone-${{ matrix.platform }}
-          path: ${{ env.TEST_EVIDENCE }}/
+          path: ${{ runner.temp }}/iqs-s6/
           retention-days: 7
           if-no-files-found: error
 
