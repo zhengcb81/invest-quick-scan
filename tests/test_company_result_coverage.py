@@ -831,3 +831,66 @@ def test_the_replay_tool_retains_refused_read_without_mutating_parent_context(tm
     assert observation['attempt_id'] == 'replay-attempt'
     assert observation['details_ref'].startswith('iqs:diagnostic/')
     assert not (tmp_path / 'outer.jsonl').exists()
+
+
+@pytest.mark.parametrize(
+    ("saved_response", "step", "code"),
+    [
+        ("{", "company.input", "company_input_unreadable"),
+        ('{"entity_id":"ENT_fixture"}', "company.projection", "owner_projection_invalid"),
+    ],
+)
+def test_replay_cli_owns_feedback_identity_for_saved_response_errors(
+    saved_response, step, code, tmp_path,
+):
+    import os
+    import subprocess
+
+    saved = tmp_path / "saved-response.json"
+    saved.write_text(saved_response, encoding="utf-8")
+    out = tmp_path / "replay.jsonl"
+    outer = tmp_path / "outer.jsonl"
+    result = subprocess.run(
+        [sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts" / "company_result_feedback.py"),
+         "--inject-result", str(saved), "--out", str(out),
+         "--run-id", "explicit-replay", "--attempt-id", "explicit-attempt"],
+        cwd=ROOT,
+        env={**os.environ, "RESEARCH_FEEDBACK_OUT": str(outer),
+             "RESEARCH_FEEDBACK_RUN_ID": "outer-run",
+             "RESEARCH_FEEDBACK_ATTEMPT_ID": "outer-attempt"},
+        stdin=subprocess.DEVNULL, capture_output=True, encoding="utf-8",
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0), timeout=30,
+    )
+
+    assert result.returncode == 2, result.stderr
+    assert json.loads(result.stdout)["code"] == code
+    row, = map(json.loads, out.read_text(encoding="utf-8").splitlines())
+    assert (row["run_id"], row["attempt_id"], row["step_id"], row["actual"]) == (
+        "explicit-replay", "explicit-attempt", step, code,
+    )
+    assert row["details_ref"].startswith("iqs:diagnostic/")
+    assert not outer.exists()
+
+
+def test_replay_cli_resolved_argument_refusal_uses_the_invocation_sidecar(tmp_path, monkeypatch, capsys):
+    import company_result_feedback as tool
+
+    outer = tmp_path / "outer.jsonl"
+    monkeypatch.setenv("RESEARCH_FEEDBACK_OUT", str(outer))
+    monkeypatch.setenv("RESEARCH_FEEDBACK_RUN_ID", "outer-run")
+    monkeypatch.setenv("RESEARCH_FEEDBACK_ATTEMPT_ID", "outer-attempt")
+    out = tmp_path / "replay.jsonl"
+
+    with pytest.raises(SystemExit) as error:
+        tool.main(["--out", str(out), "--run-id", "explicit-replay", "--attempt-id", "explicit-attempt"])
+
+    assert error.value.code == 2
+    capture = capsys.readouterr()
+    assert not capture.out
+    assert "--entity is required when reading the owner" in capture.err
+    row, = map(json.loads, out.read_text(encoding="utf-8").splitlines())
+    assert (row["run_id"], row["attempt_id"], row["step_id"], row["refusal_code"]) == (
+        "explicit-replay", "explicit-attempt", "cli.arguments", "invalid_arguments",
+    )
+    assert row["details_ref"].startswith("iqs:diagnostic/")
+    assert not outer.exists()

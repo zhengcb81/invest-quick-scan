@@ -220,7 +220,7 @@ class PreparationJobs:
         return any(self._read(path)['state'] in {'preparing','registration_in_progress','needs_original_inspection','owner_prepared','registration_pending'}
             for path in self.state_root.glob('prepjob_*.json')) if self.state_root.exists() else False
 
-    def _terminal_preparation(self, path):
+    def _terminal_snapshot(self, path):
         record = self._read(path)
         if record['state'] in {'abandoned', 'registered'}:
             return {**record, 'allowed_actions': []}
@@ -228,14 +228,14 @@ class PreparationJobs:
 
     def reconcile(self, job_id):
         path = self._path(job_id)
-        # A committed terminal record is already the answer. A worker may
-        # still be unwinding its lock or writing diagnostics after publishing.
-        if (terminal := self._terminal_preparation(path)) is not None:
+        # Terminal decisions can be read atomically without the writer lock.
+        # An abandoned job can gain its late owner result, but cannot reopen.
+        if (terminal := self._terminal_snapshot(path)) is not None:
             return terminal
         try:
             with self._mutex, control_lock(self.state_root/'jobs.lock'):
                 if job_id in self._threads:
-                    if (terminal := self._terminal_preparation(path)) is not None:
+                    if (terminal := self._terminal_snapshot(path)) is not None:
                         return terminal
                     raise DashboardJobError('preparation_still_running', '当前准备仍在进行，不重复提交。', 409)
                 record = self.get(job_id)
@@ -252,7 +252,7 @@ class PreparationJobs:
                 self._register(record, native['result'], lock_held=True)
                 return self.get(job_id)
         except ControlBusyError:
-            if (terminal := self._terminal_preparation(path)) is not None:
+            if (terminal := self._terminal_snapshot(path)) is not None:
                 return terminal
             raise DashboardJobError('preparation_control_busy', '另一准备操作正在记录，请刷新状态。', 409) from None
 

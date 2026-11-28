@@ -118,15 +118,26 @@ def test_corrupt_reference_is_not_empty_success_or_new_apply(setup):
 
 
 def test_explicit_abandon_preserves_partial_owner_records_and_does_not_register(setup):
-    jobs,preparer,registered=setup
-    job_id=jobs.submit(SELECTION)['job']['job_id'];assert preparer.entered.wait(2)
-    with pytest.raises(DashboardJobError):jobs.abandon(job_id)
-    # A different session can only stop waiting; it cannot roll back or cancel the old owner call.
-    restarted=PreparationJobs(preparer,jobs.state_root,lambda result: registered.append(result))
-    assert restarted.abandon(job_id)['state']=='abandoned'
-    preparer.release.set();finish(jobs,job_id)
-    assert restarted.get(job_id)['state']=='abandoned'
-    assert registered==[] and not restarted.active()
+    from scripts.dashboard_locks import control_lock
+
+    jobs, preparer, registered = setup
+    job_id = jobs.submit(SELECTION)["job"]["job_id"]
+    assert preparer.entered.wait(2)
+    with pytest.raises(DashboardJobError):
+        jobs.abandon(job_id)
+    # A different session stops waiting while preserving the original owner call.
+    restarted = PreparationJobs(preparer, jobs.state_root, registered.append)
+    abandoned = restarted.abandon(job_id)
+    with control_lock(jobs.state_root / "jobs.lock"):
+        assert restarted.reconcile(job_id) == abandoned
+    assert "result" not in abandoned and abandoned["allowed_actions"] == []
+
+    preparer.release.set()
+    finish(jobs, job_id)
+    late = restarted.reconcile(job_id)
+    assert late["state"] == "abandoned" and late["allowed_actions"] == []
+    assert late["result"] == preparer.result and late["registration_performed"] is False
+    assert preparer.apply_count == 1 and registered == [] and not restarted.active()
 
 
 def test_foreign_abandon_cannot_race_a_live_registration_callback(setup):

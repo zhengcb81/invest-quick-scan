@@ -99,9 +99,12 @@ def operation_state_root(runs_root=None):
 class RuntimeArgumentParser(argparse.ArgumentParser):
     """Keep argparse's on-screen diagnostics; capture the refusal without its raw arguments."""
 
-    def error(self, message):
-        record_operation_failure(None, "cli.arguments", code="invalid_arguments", refusal=True,
-                                 directory=operation_state_root())
+    def error(self, message, *, feedback_environment=None, sidecar=None):
+        directory = sidecar.resolve().parent if sidecar is not None else operation_state_root()
+        record_operation_failure(
+            None, "cli.arguments", code="invalid_arguments", refusal=True,
+            directory=directory, sidecar=sidecar, feedback_environment=feedback_environment,
+        )
         super().error(message)
 
 

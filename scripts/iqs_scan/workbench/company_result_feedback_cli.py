@@ -61,12 +61,16 @@ def main(argv=None) -> int:
     def read_input(path):
         return json.loads(path.read_text(encoding="utf-8"))
 
-    def input_failure(error):
-        record_operation_failure(error, "company.input", code="company_input_unreadable",
-                                 directory=args.out.resolve().parent, run_id=args.run_id,
-                                 attempt_id=args.attempt_id, sidecar=args.out,
-                                     feedback_environment=feedback_environment)
-        print(json.dumps({"ok": False, "code": "company_input_unreadable"}))
+    def report_failure(error, stage, code, *, status=None):
+        record_operation_failure(
+            error, stage, code=code, refusal=status is not None and status < 500,
+            directory=args.out.resolve().parent, run_id=args.run_id, attempt_id=args.attempt_id,
+            sidecar=args.out, feedback_environment=feedback_environment,
+        )
+        response = {"ok": False, "code": code}
+        if status is not None:
+            response["status"] = status
+        print(json.dumps(response))
         return 2
 
     receipts = None
@@ -74,7 +78,7 @@ def main(argv=None) -> int:
         try:
             receipts = read_input(args.receipts)
         except (OSError, ValueError) as error:
-            return input_failure(error)
+            return report_failure(error, "company.input", "company_input_unreadable")
     config = {
         # Both roots are resolved here: the owner command runs with the
         # StockWiki checkout as its working directory, so a relative owner
@@ -95,7 +99,7 @@ def main(argv=None) -> int:
             if not isinstance(result, dict):
                 raise ValueError("unsupported_company_input")
         except (OSError, ValueError) as error:
-            return input_failure(error)
+            return report_failure(error, "company.input", "company_input_unreadable")
         payload["entity_id"] = args.entity or result.get("entity_id")
         envelope = {
             "protocol": projection.PROJECTION_PROTOCOL,
@@ -117,9 +121,15 @@ def main(argv=None) -> int:
         }
     else:
         if not args.entity:
-            parser.error("--entity is required when reading the owner")
+            parser.error(
+                "--entity is required when reading the owner",
+                feedback_environment=feedback_environment, sidecar=args.out,
+            )
         if not args.stockwiki_root or not args.workspace_root:
-            parser.error("--stockwiki-root and --workspace-root are required when reading the owner")
+            parser.error(
+                "--stockwiki-root and --workspace-root are required when reading the owner",
+                feedback_environment=feedback_environment, sidecar=args.out,
+            )
         # The public read emits its own observations; point it at this output
         # once instead of writing the same read twice.
         before = _line_count(args.out)
@@ -128,20 +138,12 @@ def main(argv=None) -> int:
                 config, "company_result", payload, question_receipts=receipts,
                 feedback_environment=feedback_environment)
         except projection.ProjectionError as error:
-            record_operation_failure(error, "company.result", code=error.code, refusal=error.status < 500,
-                                     directory=args.out.resolve().parent, run_id=args.run_id, attempt_id=args.attempt_id,
-                                     sidecar=args.out, feedback_environment=feedback_environment)
-            print(json.dumps({"ok": False, "code": error.code, "status": error.status}))
-            return 2
+            return report_failure(error, "company.result", error.code, status=error.status)
 
     try:
         projected = projection.project_result(envelope, question_receipts=receipts)
     except projection.ProjectionError as error:
-        record_operation_failure(error, "company.projection", code=error.code, refusal=error.status < 500,
-                                 directory=args.out.resolve().parent, run_id=args.run_id, attempt_id=args.attempt_id,
-                                 sidecar=args.out)
-        print(json.dumps({"ok": False, "code": error.code, "status": error.status}))
-        return 2
+        return report_failure(error, "company.projection", error.code, status=error.status)
     rows = feedback.observations(projected, read="result", receipts=receipts,
                                  run_id=args.run_id, attempt_id=args.attempt_id,
                                  version=projection.PROJECTION_VERSION)
