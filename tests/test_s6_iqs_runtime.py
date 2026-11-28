@@ -136,8 +136,7 @@ def test_native_http_keeps_original_400_and_each_original_cause(tmp_path, native
         _stop_dashboard(process, reader)
 
 
-@pytest.mark.skipif(os.name != "nt", reason="Windows read handles can deny archive replacement")
-def test_native_rotation_preserves_oldest_while_another_handle_reads_newest(tmp_path, native_environment):
+def test_native_rotation_respects_open_archive_handles(tmp_path, native_environment):
     env, runtime = native_environment
     runtime.mkdir(parents=True)
     log = runtime / "runtime-failures.jsonl"
@@ -151,8 +150,14 @@ def test_native_rotation_preserves_oldest_while_another_handle_reads_newest(tmp_
         first = run_entry(tmp_path, env, "open_dashboard", "--port", "65536")
         assert (first.returncode, first.stdout) == (2, b"")
         assert held.read() == old_newest
-        assert oldest.read_bytes() == old_oldest
-        assert staging.read_bytes() == body
+        if os.name == "nt":
+            assert oldest.read_bytes() == old_oldest
+            assert newest.read_bytes() == old_newest
+            assert staging.read_bytes() == body
+        else:
+            assert oldest.read_bytes() == old_newest
+            assert newest.read_bytes() == body
+            assert not staging.exists()
     second = run_entry(tmp_path, env, "open_dashboard", "--port", "65536")
     assert (second.returncode, second.stdout, second.stderr) == (2, b"", first.stderr)
     assert newest.read_bytes() == body and oldest.read_bytes() == old_newest and not staging.exists()
