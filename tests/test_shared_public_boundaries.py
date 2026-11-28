@@ -501,7 +501,7 @@ else:
     result = run_tests.run_group(mini_root, 'native', ['test_nested_process.py'], reports)
     assert result['exit_code'] == 0, (reports / 'native.log').read_text(encoding='utf8')
     assert result['temporary_root_removed'] is True
-    assert result['external_network_denied_in_subprocesses'] is True
+    assert result['python_startup_network_guard'] is True
     assert result['stockqa_relative_logs_isolated'] is True
     assert not (mini_root / 'logs').exists()
 
@@ -1163,12 +1163,13 @@ def test_cross_domain_scanner_tracks_conditional_public_object_construction(sour
     }
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('filename', [
     'test_company_scan_native_e2e.py',
     'test_shared_company_engine_native_e2e.py',
 ])
 def test_native_e2e_allowlisted_environment_does_not_mutate_pytest_process(filename):
-    path = ROOT / 'tests' / filename
+    path = ROOT / 'owner_tests' / filename
     script = textwrap.dedent('''
         import os, pytest, runpy, sys
         from collections.abc import Mapping
@@ -1186,10 +1187,7 @@ def test_native_e2e_allowlisted_environment_does_not_mutate_pytest_process(filen
         os.putenv = os.unsetenv = lambda *args, **kwargs: (_ for _ in ()).throw(
             AssertionError("test module attempted an OS environment mutation"))
         for filename in sys.argv[1:]:
-            try:
-                runpy.run_path(filename, run_name="iqs_test_import_boundary")
-            except pytest.skip.Exception:
-                pass
+            runpy.run_path(filename, run_name="iqs_test_import_boundary")
     ''')
     result = subprocess.run(
         [sys.executable, '-B', '-c', script, str(path)], cwd=ROOT,

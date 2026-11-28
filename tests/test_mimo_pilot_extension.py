@@ -104,7 +104,15 @@ class ExtensionTests(unittest.TestCase):
     def test_prior_real_archive_still_recomputes_after_new_model_added(self):
         path=ROOT/'docs/implementation/experiments/artifacts/b01-improved-2026-10-07'
         before={p.name:b.hashlib.sha256(p.read_bytes()).hexdigest() for p in path.iterdir()}
-        with patch.object(b,'read_key',side_effect=AssertionError('key')):
+        original_glob = Path.glob
+
+        def unordered_blocks(directory, pattern):
+            entries = original_glob(directory, pattern)
+            if directory.name == 'blocks' and pattern == '*.json':
+                return iter(sorted(entries, reverse=True))
+            return entries
+
+        with patch.object(b,'read_key',side_effect=AssertionError('key')), patch.object(Path, 'glob', unordered_blocks):
             result=r.summarize_archive(path)
         self.assertTrue(result['archive_statistics_verified'])
         self.assertNotIn('mimo_pro',result['by_model'])

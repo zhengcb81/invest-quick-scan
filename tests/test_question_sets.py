@@ -14,6 +14,8 @@ import tempfile
 import unittest
 from unittest import mock
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 import question_sets as qs
@@ -1114,6 +1116,7 @@ class QuestionSetTests(unittest.TestCase):
         self.assertIsNone(result['summary']['quality_score'])
         self.assertIsNone(result['summary']['dimensions']['governance']['score'])
 
+    @pytest.mark.owner_assets
     def test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline(self):
         repo = Path(os.environ.get('STOCKQA_REPO', str(ROOT.parent / 'StockQAbyLLM')))
         self.assertTrue((repo / 'src/config/json_config_manager.py').exists(),
@@ -1303,6 +1306,7 @@ class QuestionSetTests(unittest.TestCase):
         self.assertEqual(_stockqa_bytecode_snapshot(repo), bytecode_before,
                          'the StockQA source tree must have no new or changed bytecode')
 
+    @pytest.mark.owner_assets
     def test_stockqa_import_cleanup_restores_state_after_failure(self):
         repo = Path(os.environ.get('STOCKQA_REPO', str(ROOT.parent / 'StockQAbyLLM')))
         self.assertTrue((repo / 'src/config/json_config_manager.py').exists(),

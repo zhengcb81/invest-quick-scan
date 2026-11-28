@@ -80,6 +80,15 @@ def _hashes(root):
             for path in root.rglob("*.sqlite")}
 
 
+@pytest.mark.windows_only
+def test_local_report_links_support_other_volumes():
+    from iqs_scan.tools.report_links import local_report_link
+
+    target = Path('D:/local review/report & summary.html')
+    assert local_report_link(target, Path('C:/work/out')) == (
+        'file:///D:/local%20review/report%20%26%20summary.html')
+
+
 def test_one_click_relative_paths_belong_to_caller_not_child_process(tmp_path):
     with tempfile.TemporaryDirectory(prefix='relative-', dir=tmp_path) as directory:
         caller = Path(directory)

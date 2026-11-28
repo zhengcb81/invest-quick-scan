@@ -9,3 +9,5 @@
 5. 由独立审查员检查路径迁移是否改变测试语义、owner 依赖是否真实、夹具是否走正常业务入口。通过实际 Ubuntu、Windows 以及适用的 owner 组合复验后方可签收。
 
 工作入口为 `python -B scripts/ci_tests.py collect --revision FULL_SHA --output .s6-evidence` 和同参数的 `run`。无窗运行工具复用 `scripts/run_tests.py` 的临时 profile 和句柄隔离。记录用输出目录只承载 pytest 日志、回执和 JUnit。开发者预览为 `python -B scripts/run_tests.py fast --plan`。
+
+当前参考工具发布为 `b0ad9080079f1594e03932405c1d9abe2ced9171`，目标子树 `c090b6e4601bd5343e25de5f108f97c0c54454b6`。使用现有 ratchet 数据；禁止以解释器差异重算参考结果。下一步查两平台同版原生 CI 和需要显式 owner 资产的独立验证。

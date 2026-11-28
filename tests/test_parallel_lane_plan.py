@@ -2,10 +2,12 @@
 
 import hashlib
 import json
+import os
 import re
 import unittest
 from pathlib import Path, PurePosixPath
 
+import pytest
 from jsonschema import Draft202012Validator, FormatChecker
 
 
@@ -189,17 +191,34 @@ class ParallelLanePlanTests(unittest.TestCase):
                     f"package write scopes overlap: {first_id}/{second_id}",
                 )
 
-    def test_package_links_and_readiness_gates(self):
+    def _local_package_links(self):
         package_dir = LANE_DIR / "packages"
-        catalog = json.loads((package_dir / "manifest.json").read_text(encoding="utf-8"))
+        link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+        documents = [LANE_DIR / "README.md", *package_dir.glob("*.md"), *(LANE_DIR / "prestudy").glob("*.md")]
+        for document in documents:
+            for target in link_pattern.findall(document.read_text(encoding="utf-8")):
+                if not target.startswith(("http://", "https://", "#")):
+                    yield document, (document.parent / target.split("#", 1)[0]).resolve()
+
+    def test_package_links_and_readiness_gates(self):
+        catalog = json.loads((LANE_DIR / "packages/manifest.json").read_text(encoding="utf-8"))
         self.assertEqual("1.0.0", catalog["format_version"])
         self.assertEqual(2, sum(p["readiness"].startswith("read_only") for p in catalog["packages"]))
-        link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
-        for document in [LANE_DIR / "README.md", *package_dir.glob("*.md"), *(LANE_DIR / "prestudy").glob("*.md")]:
-            for target in link_pattern.findall(document.read_text(encoding="utf-8")):
-                if target.startswith(("http://", "https://", "#")):
-                    continue
-                self.assertTrue((document.parent / target.split("#", 1)[0]).exists(), f"{document.name}: {target}")
+        expected_owner = ROOT.parent / "StockWiki"
+        for document, target in self._local_package_links():
+            if target.is_relative_to(expected_owner):
+                continue
+            self.assertTrue(target.is_relative_to(ROOT) and target.is_file(), f"{document.name}: {target.name}")
+
+    @pytest.mark.owner_assets
+    def test_cross_owner_historical_links_resolve_in_the_supplied_stockwiki_snapshot(self):
+        expected_owner = ROOT.parent / "StockWiki"
+        stockwiki = Path(os.environ.get("IQS_STOCKWIKI_ROOT", expected_owner))
+        references = [target.relative_to(expected_owner) for _, target in self._local_package_links()
+                      if target.is_relative_to(expected_owner)]
+        self.assertTrue(references, "the recorded StockWiki evidence link disappeared")
+        for reference in references:
+            self.assertTrue((stockwiki / reference).is_file(), reference.as_posix())
 
     def test_consumer_prestudy_archive_interface(self):
         prestudy_dir = LANE_DIR / "prestudy"

@@ -17,7 +17,6 @@ output could not be written.
 from __future__ import annotations
 
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -53,6 +52,11 @@ def main(argv=None) -> int:
     parser.add_argument("--attempt-id", default=feedback.DEFAULT_ATTEMPT_ID)
     parser.add_argument("--timeout-seconds", type=int, default=120)
     args = parser.parse_args(argv)
+    feedback_environment = {
+        feedback.ENV_OUT: str(args.out.resolve()),
+        feedback.ENV_RUN_ID: args.run_id,
+        feedback.ENV_ATTEMPT_ID: args.attempt_id,
+    }
 
     def read_input(path):
         return json.loads(path.read_text(encoding="utf-8"))
@@ -60,7 +64,8 @@ def main(argv=None) -> int:
     def input_failure(error):
         record_operation_failure(error, "company.input", code="company_input_unreadable",
                                  directory=args.out.resolve().parent, run_id=args.run_id,
-                                 attempt_id=args.attempt_id, sidecar=args.out)
+                                 attempt_id=args.attempt_id, sidecar=args.out,
+                                     feedback_environment=feedback_environment)
         print(json.dumps({"ok": False, "code": "company_input_unreadable"}))
         return 2
 
@@ -117,17 +122,15 @@ def main(argv=None) -> int:
             parser.error("--stockwiki-root and --workspace-root are required when reading the owner")
         # The public read emits its own observations; point it at this output
         # once instead of writing the same read twice.
-        os.environ[feedback.ENV_OUT] = str(args.out.resolve())
-        os.environ[feedback.ENV_RUN_ID] = args.run_id
-        os.environ[feedback.ENV_ATTEMPT_ID] = args.attempt_id
         before = _line_count(args.out)
         try:
             envelope = projection.read_company_assessment(
-                config, "company_result", payload, question_receipts=receipts)
+                config, "company_result", payload, question_receipts=receipts,
+                feedback_environment=feedback_environment)
         except projection.ProjectionError as error:
             record_operation_failure(error, "company.result", code=error.code, refusal=error.status < 500,
                                      directory=args.out.resolve().parent, run_id=args.run_id, attempt_id=args.attempt_id,
-                                     sidecar=args.out)
+                                     sidecar=args.out, feedback_environment=feedback_environment)
             print(json.dumps({"ok": False, "code": error.code, "status": error.status}))
             return 2
 

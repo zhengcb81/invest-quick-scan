@@ -27,10 +27,11 @@ _NATIVE_RUN_ENV = "IQS_NATIVE_RUN_ID"
 _NATIVE_ATTEMPT_ENV = "IQS_NATIVE_ATTEMPT_ID"
 
 
-def operation_identifiers(run_id=None, attempt_id=None):
+def operation_identifiers(run_id=None, attempt_id=None, *, feedback_environment=None):
     inherited_run, inherited_attempt = _SCOPE.get()
-    run = _scope(os.environ.get("RESEARCH_FEEDBACK_RUN_ID") or run_id or inherited_run, "run-" + uuid.uuid4().hex)
-    attempt = _scope(os.environ.get("RESEARCH_FEEDBACK_ATTEMPT_ID") or attempt_id or inherited_attempt,
+    environment = os.environ if feedback_environment is None else feedback_environment
+    run = _scope(environment.get("RESEARCH_FEEDBACK_RUN_ID") or run_id or inherited_run, "run-" + uuid.uuid4().hex)
+    attempt = _scope(environment.get("RESEARCH_FEEDBACK_ATTEMPT_ID") or attempt_id or inherited_attempt,
                      "attempt-" + uuid.uuid4().hex)
     return run, attempt
 
@@ -245,7 +246,7 @@ def read_runs_failure(runs_root, reference, *, republish=False):
 def record_operation_failure(error, stage, *, directory=None, code="execution_failed",
                              run_id=None, attempt_id=None, refusal=False,
                              disposition="deviation", evidence_ref=None, sidecar=None,
-                             substep=None):
+                             substep=None, feedback_environment=None):
     """Best-effort capture at the owner boundary; diagnostics never own payment or work state."""
     result = {"recorded": False, "feedback_recorded": False}
     local_record = None
@@ -258,7 +259,7 @@ def record_operation_failure(error, stage, *, directory=None, code="execution_fa
         original_run, original_attempt = owned or _SCOPE.get()
         run_id = run_id or original_run
         attempt_id = attempt_id or original_attempt
-        run, attempt = operation_identifiers(run_id, attempt_id)
+        run, attempt = operation_identifiers(run_id, attempt_id, feedback_environment=feedback_environment)
         stage = _scope(stage, "operation")
         step = stage + "/" + _scope(substep, "substep") if substep else stage
         code = code if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,79}", code) else "execution_failed"

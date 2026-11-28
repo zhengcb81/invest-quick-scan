@@ -123,7 +123,7 @@ def _validated_history_payload(payload: Any) -> dict[str, Any]:
 
 def read_company_assessment(
     config: dict, operation: str, payload: Any, *, environment: dict[str, str] | None = None,
-    question_receipts: Any = None,
+    question_receipts: Any = None, feedback_environment: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Read one company projection over the owner's versioned public command.
 
@@ -198,7 +198,8 @@ def read_company_assessment(
     # The public read is the one place a per-question observation is produced:
     # the write is optional, isolated, and never changes the answer above.
     dashboard_company_feedback.observe(
-        projected, read=read, receipts=question_receipts, version=PROJECTION_VERSION)
+        projected, read=read, receipts=question_receipts, version=PROJECTION_VERSION,
+        environ=feedback_environment)
     return envelope
 
 

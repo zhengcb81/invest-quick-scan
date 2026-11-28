@@ -15,3 +15,15 @@
 需要外部资料的混合模块使用 `owner_assets` 逐节点标记。自足节点留在 `tests/`；整个模块因真实 owner import 不能在自足环境收集时，才迁往 `owner_tests/`。旧分组完整性测试仍跟踪两棵树，防止文件消失。复验混合节点可在配置资产后用 `pytest -m owner_assets tests` 收集；从运行器调用时显式启用 `owner_assets` 隔离环境。旧的 `native` profile 按模块分别启动，以免测试清理全局模块后相互污染；需要 `IQS_C06_RUN_INTEGRATION=1` 及 `IQS_C06_OWN`、`IQS_C06_COMPOSITION_CODE_ROOT`、`IQS_C06_COMPANY_ROOT`、`IQS_C06_BRIDGE_ROOT`。
 
 自主 CI 仅为原生 OS 独立矩阵。依赖 Win32 console/sharing 的节点显式标记 Windows。任何自主套件 skip 都不能提供执行覆盖。在测试环境内启动的 Python 使用回环地址安全护栏。替换环境的子进程及非 Python 程序由相应用例隔离，不能从通用护栏推断所有子程序已阻断出网。
+
+## Hosted matrix 46100051279
+
+- 原采集执行是 Windows 135 项失败、Ubuntu 264 项失败和 19 项 setup error。重复失败集中在题库原始字节转换、历史文件路径、反馈状态互相污染和公开接口夹具。
+- Ubuntu 97 条堆栈都从相同旧题库信任根校验穿出。固定题库内容而保留 SHA 不变。现有的 45 个旧版题库全部匹配发布的原 SHA。其余三个已有正确的新版本。
+- 188 份历史证明均用原 SHA 和 Git 暂存区实际字节核对。56 份含混合换行的文件从原主工作区已存在的归档恢复。恢复值与版本库现有语义逐项对比，只有行尾变化。原历史 manifest、题库 trust root 和审查值未重算。
+- 公司只读反馈 CLI 原本具有将自身 run/attempt/output 写入父进程环境的副作用，并污染后续无关作业。修复为按调用传递观测上下文，保留拒绝的原 owner 诊断。
+- 共用静态工具的 AST fingerprint 会随解释器变动。IQS 生产文件在止血基线和候选具有完全相同的 blob SHA，Python 3.12 的 AST dump 保留空的 keywords，而 3.13 默认省略。两个 AT-10 组合信号均已在本机用 show_empty=True 精确复现。共享工具负责人处理，IQS 不重算这两个 baseline。
+
+### 移植与实际 owner 依赖分界
+
+本地旧测试使用产物的历史工作目录、固定本机盘符及未提供的其他仓库。普通事实生产/核对用例走真实可携组成 CLI，历史结果读取及 StockWiki/StockQA 的真实组合仍用明确 owner 入口单列。报告链接由同一个纯本地路径转换器提供，跨 Windows 卷使用 file URI，保留同卷相对地址。保留旧归档 hash 绑定及失败前后原字节证明。原 running instance 和业务支付均未触发。

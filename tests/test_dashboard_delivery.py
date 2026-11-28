@@ -137,10 +137,12 @@ def test_same_native_receiver_reuses_original_binding_when_locator_label_changes
                                                     for missing in [False, 'row', 'omitted']] + [(0, 'all')])
 def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers(tmp_path, monkeypatch, ready_count, missing_work):
     import hashlib
-    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
-    import frozen_release_projection
+    from iqs_scan.questions import api as questions
     from scripts.dashboard_delivery import export_deliveries
-    monkeypatch.setattr(frozen_release_projection, 'create_projection', lambda manifest, **kwargs: {'fixture': 'release'})
+
+    stockqa_root = tmp_path / 'stockqa-owner'
+    stockqa_root.mkdir()
+    monkeypatch.setattr(questions, 'create_projection', lambda manifest, **kwargs: {'fixture': 'release'})
     for name, value in {'admission': {'work_store': str(tmp_path/'ledger'), 'budget_policy_file': str(tmp_path/'policy')},
                         'request': {'entity_id': 'ENT_TEST', 'question_ids': ['Q1', 'Q2'] + (['Q3'] if missing_work in {'row','omitted'} else [])}, 'manifest': {}}.items():
         (tmp_path/name).write_text(json.dumps(value), encoding='utf8')
@@ -148,12 +150,12 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
     (tmp_path/'policy').write_text('{}', encoding='utf8')
     bundle = {'entity_id': 'ENT_TEST', 'admission_config': str(tmp_path/'admission'), 'confirmation_id': 'rc2_'+'1'*64,
               'inspection_request': str(tmp_path/'request'), 'manifest': str(tmp_path/'manifest')}
-    gateway = ExecutionGateway({'stockqa_root': str(SOURCE), 'iqs_release_root': str(ROOT),
+    gateway = ExecutionGateway({'stockqa_root': str(stockqa_root), 'iqs_release_root': str(ROOT),
                                 'state_root': str(tmp_path/'state'), 'bundles': {'B': bundle}})
     calls = []
     def native(command, root, runtime, *, input_value=None):
         calls.append(command)
-        assert command == delivery_command(tmp_path/'ledger') and root == runtime == SOURCE
+        assert command == delivery_command(tmp_path/'ledger') and root == runtime == stockqa_root
         assert input_value['protocol'] == REQUEST and input_value['operation'] == 'export'
         scope = input_value['scope']
         assert scope['question_ids'] == ['Q1', 'Q2'] + (['Q3'] if missing_work in {'row', 'omitted'} else [])

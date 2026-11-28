@@ -21,6 +21,7 @@ import io
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -226,23 +227,20 @@ class RequiredBasicCoverageTests(unittest.TestCase):
         self.assertIn("不进入质量汇总", prompt)
 
     def test_company_composer_has_no_implicit_question_count_cap(self):
-        import compose_company_bank as composer
         with tempfile.TemporaryDirectory(prefix='basic-cli-') as temporary:
             output = Path(temporary) / 'scan'
-            captured = {}
-
-            def compile_fixture(profile, mode, out_dir, **kwargs):
-                captured.update(kwargs)
-                qs.write_json(Path(out_dir) / 'manifest.json',
-                              {'questions': [], 'modules': []})
-
-            arguments = ['compose_company_bank.py', '--profile', str(ROOT / 'examples/profile.json'),
-                         '--mode', 'full', '--out-dir', str(output), '--now-utc', '2026-10-25T12:00:00Z']
-            with mock.patch.object(sys, 'argv', arguments), \
-                    mock.patch.object(qs, 'compose', side_effect=compile_fixture), \
-                    contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(composer.main(), 0)
-            self.assertIsNone(captured['max_questions'])
+            done = subprocess.run(
+                [sys.executable, '-B', str(ROOT / 'scripts/compose_company_bank.py'),
+                 '--profile', str(ROOT / 'examples/profile.json'),
+                 '--mode', 'full', '--out-dir', str(output), '--now-utc', '2026-10-25T12:00:00Z'],
+                stdin=subprocess.DEVNULL, capture_output=True, encoding='utf-8',
+                creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0),
+            )
+            self.assertEqual(done.returncode, 0, done.stderr)
+            manifest = json.loads((output / 'manifest.json').read_text(encoding='utf-8'))
+            self.assertIsNone(manifest['max_questions'])
+            self.assertEqual(manifest['deferred_questions'], [])
+            self.assertEqual(len(manifest['questions']), manifest['question_count'])
 
     def test_historical_default_selection_comes_from_frozen_module_versions(self):
         import question_selection as selection

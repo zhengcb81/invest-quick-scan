@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shlex
 import subprocess
 from pathlib import Path, PurePosixPath
 
@@ -26,7 +27,8 @@ def _git(repo: Path, *args: str) -> tuple[int, str]:
     try:
         proc = subprocess.run(
             ["git", *args], cwd=repo, capture_output=True, text=True,
-            encoding="utf-8", errors="replace", timeout=30,
+            encoding="utf-8", errors="replace", timeout=30, stdin=subprocess.DEVNULL,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
     except (OSError, subprocess.SubprocessError) as error:
         return 1, str(error)
@@ -101,9 +103,16 @@ def external_roots(handoff: dict) -> list[Path]:
         command = check.get("command")
         if not isinstance(command, str):
             continue
-        for match in re.finditer(r'[A-Za-z]:[\\/][^\s"\'|;]+', command):
-            candidate = Path(match.group(0).replace("\\", "/"))
-            if candidate.is_dir() and candidate not in roots:
+        # Tokenize without executing shell commands or removing Win32 slashes.
+        try:
+            tokens = shlex.split(command, posix=False)
+        except ValueError:
+            continue
+        for token in tokens:
+            if token.startswith("-") and "=" in token:
+                token = token.split("=", 1)[1]
+            candidate = Path(token.strip("\"'"))
+            if candidate.is_absolute() and candidate.is_dir() and candidate not in roots:
                 roots.append(candidate)
     return roots
 

@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from .report_links import local_report_link
+
 ROOT = REPO_ROOT
 SCRIPTS = ROOT/"scripts"
 DEFAULT_WS = ROOT / "workspace"
@@ -100,7 +102,6 @@ def main(argv=None):
                           + ' fail<br><span class="muted">' + html.escape(detail) + '</span></div>')
     scored_card = ""
     if scored_pages:
-        import os
         import shutil
         for page in scored_pages:
             dest = args.out/"scored"/page.parent.name
@@ -110,7 +111,7 @@ def main(argv=None):
             if answer.is_file():
                 shutil.copyfile(answer, dest/"answer.json")
         links = "".join(
-            '<li><a href="' + os.path.relpath(page, args.out).replace("\\", "/") + '">'
+            '<li><a href="' + local_report_link(page, args.out) + '">'
             + page.parent.name + "</a></li>"
             for page in scored_pages
         )
@@ -119,17 +120,15 @@ def main(argv=None):
     status_pages = sorted(ROOT.glob("docs/implementation/status-*.md"))
     status_card = ""
     if status_pages:
-        import os
         latest = status_pages[-1]
-        status_card = ('<div class="card"><a href="' + os.path.relpath(latest, args.out).replace("\\", "/")
+        status_card = ('<div class="card"><a href="' + local_report_link(latest, args.out)
                        + '">状态快照：' + latest.stem + '</a><br><span class="muted">'
                        + '由 status_report.py 从工件生成</span></div>')
     acceptance_pages = sorted(ROOT.glob("docs/implementation/parallel-lanes/acceptance-*/*.md"))
     acceptance_card = ""
     if acceptance_pages:
-        import os
         links = "".join(
-            '<li><a href="' + os.path.relpath(page, args.out).replace("\\", "/") + '">'
+            '<li><a href="' + local_report_link(page, args.out) + '">'
             + page.stem + "</a></li>"
             for page in acceptance_pages
         )
@@ -138,9 +137,8 @@ def main(argv=None):
                            + '离线工具交付合格，非生产资格</span></div>')
     answers_card = ""
     if answer_pages:
-        import os
         links = "".join(
-            '<li><a href="' + os.path.relpath(page, args.out).replace("\\", "/") + '">'
+            '<li><a href="' + local_report_link(page, args.out) + '">'
             + page.parent.name + '</a></li>'
             for page in answer_pages
         )
@@ -157,8 +155,7 @@ def main(argv=None):
     facts_index = ROOT/"docs/implementation/reviews/facts-packs-index.html"
     facts_card = ""
     if packs:
-        import os
-        href = os.path.relpath(facts_index, args.out).replace("\\", "/")
+        href = local_report_link(facts_index, args.out)
         valid = sum(1 for item in packs if facts_registry.facts_pack_check.check(item["pack"])["status"] == "valid")
         facts_card = ('<div class="card"><a href="' + href + '">Facts packs（' + str(len(packs)) + ' 个 draft，' + str(valid) + ' 个 valid）</a></div>')
     landing = f"""<!doctype html><html lang="zh"><head><meta charset="utf-8"><title>invest-quick-scan dashboard</title>

@@ -23,4 +23,6 @@ def test_each_new_typed_rule_requires_a_retrieved_url_and_small_supported_eviden
 
 
 def test_historical_renderer_fingerprint_remains_original():
-    assert question_prompts.renderer_rules_sha256() == "6b221598394f5c23a5f724c0b9bac895bcb44eee87c9189285eb605a6ebf21fe"
+    archived = question_prompts.renderer_rules_sha256("1.0.0")
+    assert archived == "6b221598394f5c23a5f724c0b9bac895bcb44eee87c9189285eb605a6ebf21fe"
+    assert question_prompts.renderer_rules_sha256() != archived

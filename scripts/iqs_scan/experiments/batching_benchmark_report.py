@@ -45,6 +45,9 @@ def summarize(run,routes=None):
         routes=json.loads(snapshot.read_text(encoding='utf-8')) if snapshot.exists() else b.ROUTES
     results={p.stem:json.loads(p.read_text(encoding='utf-8')) for p in (run/'results').glob('*.json')}
     blocks=[json.loads(p.read_text(encoding='utf-8')) for p in (run/'blocks').glob('*.json')]
+    # Directory enumeration differs across filesystems and archive extraction.
+    # Select comparison bases and order repair chains by the disclosed arm.
+    blocks.sort(key=lambda block: block['arm'])
     table=[]
     for block in blocks:
         if 'chunks' not in block:continue

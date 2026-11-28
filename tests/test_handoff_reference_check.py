@@ -21,7 +21,8 @@ import handoff_reference_check as refs  # noqa: E402
 
 def _git(repo: Path, *args: str) -> str:
     proc = subprocess.run(["git", *args], cwd=repo, capture_output=True,
-                          text=True, encoding="utf-8")
+                          stdin=subprocess.DEVNULL, text=True, encoding="utf-8",
+                          creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     assert proc.returncode == 0, proc.stderr
     return proc.stdout.strip()
 
@@ -203,7 +204,7 @@ def test_dotfile_paths_keep_their_leading_dot(repo, tmp_path):
 
 def test_interface_hash_resolves_in_a_repo_declared_by_a_check(repo, tmp_path):
     """A cross-repo contract (UI resolver) is found via the handoff's own command."""
-    ui = tmp_path / "ui-lab"
+    ui = tmp_path / "ui lab"
     ui.mkdir()
     (ui / "contracts.py").write_text("SHAPE = 1\n", encoding="utf-8")
     digest = hashlib.sha256((ui / "contracts.py").read_bytes()).hexdigest()
@@ -211,7 +212,7 @@ def test_interface_hash_resolves_in_a_repo_declared_by_a_check(repo, tmp_path):
     handoff["interfaces"] = [{"name": "ui_shape", "direction": "both",
                               "content_hash": digest}]
     handoff["verification"] = {"checks": [
-        {"name": "parity", "command": f"python scripts/parity.py --ui-repo {ui}"}]}
+        {"name": "parity", "command": f'python scripts/parity.py --ui-repo "{ui}"'}]}
     path = tmp_path / "handoff.json"
     path.write_text(json.dumps(handoff), encoding="utf-8")
 
@@ -292,14 +293,16 @@ def test_raw_blob_hash_is_accepted_for_a_crlf_checkout(repo, tmp_path):
     content was delivered, so either form must resolve.
     """
     _git(repo, "config", "core.autocrlf", "true")
-    (repo / "src" / "code.py").write_bytes(b"print('hi')\r\n")
+    (repo / ".gitattributes").write_bytes(b"src/code.py text eol=crlf\n")
+    (repo / "src" / "code.py").write_bytes(b"print('new')\r\n")
     _git(repo, "add", ".")
     _git(repo, "commit", "-q", "-m", "crlf")
     raw = subprocess.run(["git", "show", "HEAD:src/code.py"], cwd=repo,
                          capture_output=True).stdout
     filtered = subprocess.run(["git", "cat-file", "--filters", "HEAD:src/code.py"],
                               cwd=repo, capture_output=True).stdout
-    assert raw.replace(b"\n", b"\r\n") == filtered and raw != filtered
+    assert raw == b"print('new')\n"
+    assert filtered == b"print('new')\r\n"
 
     handoff = _handoff(repo)
     handoff["interfaces"] = [{"name": "code", "direction": "produced",

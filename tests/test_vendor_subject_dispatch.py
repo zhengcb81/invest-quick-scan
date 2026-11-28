@@ -218,13 +218,14 @@ def test_query26_unsupported_wire_profile_does_not_become_empty_coverage(values)
     with pytest.raises(ValueError):vendor.validate_response(response,expected_request=request,expected_owner=owner)
 
 
-def test_stockwiki_fixed_cli_preserves_long_explanation_and_extensions(values, tmp_path):
+@pytest.mark.owner_assets
+def test_stockwiki_fixed_cli_preserves_long_explanation_and_extensions(values, tmp_path, monkeypatch):
     import os
     from pathlib import Path
-    import sys
 
     root = Path(__file__).resolve().parents[1]
-    sys.path.insert(0, str(root.parent / "StockWiki"))
+    stockwiki = Path(os.environ.get("IQS_STOCKWIKI_ROOT", root.parent / "StockWiki"))
+    monkeypatch.syspath_prepend(str(stockwiki))
     from stockwiki.quick_scan_subject_authority import IqsSubjectContract
     from stockwiki.quick_scan_observations import ObservationImportError
 

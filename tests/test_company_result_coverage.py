@@ -804,13 +804,30 @@ def test_the_replay_tool_classifies_a_modelled_run_with_its_receipts(tmp_path):
     assert {row['disposition'] for row in rows} == {'expected'}
 
 
-def test_the_replay_tool_reports_a_refused_read_without_writing(tmp_path):
+def test_the_replay_tool_retains_refused_read_without_mutating_parent_context(tmp_path, monkeypatch):
+    import os
+
     import company_result_feedback as tool
+
+    outer_env = {
+        'RESEARCH_FEEDBACK_OUT': str(tmp_path / 'outer.jsonl'),
+        'RESEARCH_FEEDBACK_RUN_ID': 'outer-run',
+        'RESEARCH_FEEDBACK_ATTEMPT_ID': 'outer-attempt',
+    }
+    for key, value in outer_env.items():
+        monkeypatch.setenv(key, value)
 
     out = tmp_path / 'tool.jsonl'
     code = tool.main([
         '--stockwiki-root', str(tmp_path), '--workspace-root', str(tmp_path),
-        '--entity', ENTITY, '--out', str(out)])
+        '--entity', ENTITY, '--out', str(out),
+        '--run-id', 'replay-refusal', '--attempt-id', 'replay-attempt'])
 
     assert code == 2
-    assert not out.exists()
+    assert {key: os.environ[key] for key in outer_env} == outer_env
+    observation, = map(json.loads, out.read_text(encoding='utf-8').splitlines())
+    assert observation['actual'] == 'owner_company_projection_unavailable'
+    assert observation['run_id'] == 'replay-refusal'
+    assert observation['attempt_id'] == 'replay-attempt'
+    assert observation['details_ref'].startswith('iqs:diagnostic/')
+    assert not (tmp_path / 'outer.jsonl').exists()

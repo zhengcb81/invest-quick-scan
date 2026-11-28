@@ -22,7 +22,7 @@ from scripts.dashboard_prepare import DashboardPrepareError, PrepareGateway, _en
 
 def test_work_binding_transport_uses_only_public_projection(monkeypatch, tmp_path):
     from types import SimpleNamespace
-    from scripts.dashboard_prepare import _read_continuation_bank
+    from scripts import dashboard_prepare
     binding = dict(entity_id='ENT_EXAMPLE', subject_key='ASJ_EXAMPLE', perimeter_sha256='a'*64,
         identity_revision=1, information_cutoff='2026-11-01', scope='entity', scope_id='ENT_EXAMPLE',
         manifest_raw_sha256='b'*64)
@@ -34,13 +34,13 @@ def test_work_binding_transport_uses_only_public_projection(monkeypatch, tmp_pat
                           'manifest_raw_sha256': 'b'*64, 'binding_sha256': _sha(binding)}],
                 'database_writes': 0, 'API_requests': 0}
         return SimpleNamespace(returncode=0, stdout=json.dumps(response).encode())
-    monkeypatch.setattr(subprocess, 'run', project)
+    monkeypatch.setattr(dashboard_prepare, 'run_background', project)
     request = {key: binding[key] for key in ('entity_id', 'subject_key', 'perimeter_sha256',
         'identity_revision', 'information_cutoff')}
     request.update(scope_bindings={'Q1': {'scope': 'entity', 'scope_id': 'ENT_EXAMPLE'}})
     root = str(tmp_path/'owner')
     ledger = tmp_path/'not-opened.sqlite'
-    rows = _read_continuation_bank({'stockqa_root': root}, request, ledger=ledger)
+    rows = dashboard_prepare._read_continuation_bank({'stockqa_root': root}, request, ledger=ledger)
     assert calls == [([sys.executable, '-B', '-X', 'utf8', '-m',
                        'src.utils.quick_scan_continuation_bank_cli', '--ledger', str(ledger)],
                       root, {'protocol': 'stockqa.continuation_bank_request/1.0.0', 'binding': request})]
@@ -166,6 +166,7 @@ def test_question_subset_shape_rejected_before_owner_reads(tmp_path,monkeypatch,
     assert error.value.code=='question_subset_invalid'
 
 
+@pytest.mark.owner_assets
 def test_cache_completion_obeys_real_owner_freshness_cutoff_and_scope_decisions(monkeypatch):
     from scripts.dashboard_prepare import _cached_scope_result
     monkeypatch.syspath_prepend(str(WIKI))

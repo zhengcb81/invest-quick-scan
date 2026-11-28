@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 from . import facts_pack_check
+from .report_links import local_report_link
 
 PAGE = """<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><title>Facts packs</title>
@@ -55,15 +56,13 @@ def discover(root):
 
 
 def render(root, base_dir=None):
-    import os
-
     base = Path(base_dir or ".").resolve()
     rows = []
     for item in discover(root):
         checked = facts_pack_check.check(item["pack"])
         review = item["review"]
         if review.is_file() and review.parent == item["pack"].parent:
-            link = os.path.relpath(review, base).replace("\\", "/")
+            link = local_report_link(review, base)
             review_cell = '<a href="{}">review</a>'.format(html.escape(link))
         else:
             review_cell = "-"
