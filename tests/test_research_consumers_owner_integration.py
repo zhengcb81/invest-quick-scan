@@ -41,6 +41,7 @@ def _tree_hashes(root: Path) -> dict[str, str]:
     }
 
 
+@pytest.mark.owner_assets
 def test_theme_and_industry_consume_one_isolated_stockwiki_snapshot(tmp_path, monkeypatch):
     if os.environ.get("IQS_C06_RUN_INTEGRATION") != "1" or not os.environ.get("IQS_C06_OWN"):
         pytest.skip("I5 needs the explicit owned C06 fixture runtime")

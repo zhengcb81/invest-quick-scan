@@ -129,6 +129,7 @@ def test_verify_confirms_the_same_issuer_and_listing(tmp_path):
     assert business_kwargs['cwd'] == str(tmp_path / 'stockwiki')
 
 
+@pytest.mark.windows_only
 @pytest.mark.skipif(sys.platform != 'win32', reason='Windows console integration')
 def test_real_cross_workspace_return_uses_windowless_owner_cli(tmp_path):
     console = Path(sys.executable).with_name('python.exe')

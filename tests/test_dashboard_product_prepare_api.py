@@ -262,3 +262,77 @@ def test_empty_or_unbound_cache_result_is_not_a_successful_preparation(tmp_path,
     deployment={k:v for k,v in service.config.items() if k not in {'execution_bundles','import_bundles'}}
     with pytest.raises(ProductError):service._register_prepared(payload,deployment)
     assert not service.config_path.exists()
+
+
+@pytest.mark.e2e_offline
+@pytest.mark.regression
+def test_http_preparation_deduplicates_and_cold_reads_its_failure_after_a_held_lock(tmp_path):
+    """HTTP ingress plus the real job store, kernel lock, and original failure."""
+    from http.server import BaseHTTPRequestHandler
+
+    from iqs_scan.workbench.dashboard_http import product_handler
+    from iqs_scan.workbench.dashboard_jobs import DashboardJobError
+    from iqs_scan.workbench.dashboard_locks import control_lock
+    from test_dashboard_http import LoopbackServer, call, write_headers
+
+    class FailingOwner(Prepare):
+        def __init__(self, config):
+            super().__init__(config)
+            self.entered = threading.Event()
+
+        def apply(self, payload):
+            self.calls += 1
+            self.entered.set()
+            assert self.release.wait(5)
+            raise DashboardJobError("owner_fixture_failure", "synthetic owner refused")
+
+        def preparation(self, preview_id):
+            return {"status": "partial", "preview_id": preview_id}
+
+    selection = {"preview_id": "prepare_" + "4" * 32, "preview_token": "a" * 64}
+    job_id = None
+    for cold in (False, True):
+        service = DashboardService(tmp_path, execution_factory=Execution, prepare_factory=FailingOwner)
+        owner = service._preparer()
+        jobs = service._preparation_jobs()
+        handler = product_handler(BaseHTTPRequestHandler, service)
+        with LoopbackServer(("127.0.0.1", 0), handler) as server:
+            thread = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.02})
+            thread.start()
+            product = (service, server.server_port, tmp_path)
+            try:
+                if not cold:
+                    status, first = call(product, "POST", "/api/product/prepare/apply",
+                                         json.dumps(selection), write_headers(product))
+                    assert status == 200, first
+                    job_id = first["data"]["job"]["job_id"]
+                    assert owner.entered.wait(3)
+                    status, duplicate = call(product, "POST", "/api/product/prepare/apply",
+                                             json.dumps(selection), write_headers(product))
+                    assert status == 200 and duplicate["data"]["attached"]
+                    assert duplicate["data"]["job"]["job_id"] == job_id
+                    assert owner.calls == 1
+                    worker = jobs._threads[job_id]
+                    with control_lock(jobs.state_root / "jobs.lock"):
+                        owner.release.set()
+                        worker.join(timeout=0.2)
+                        assert worker.is_alive(), "the old 80 ms retry lost the failure"
+                    worker.join(timeout=5)
+                    assert not worker.is_alive()
+                else:
+                    status, reply = call(product, path=f"/api/product/prepare/jobs/{job_id}")
+                    assert status == 200, reply
+                    job = reply["data"]
+                    assert (job["job_id"], job["state"], job["error_code"]) == (
+                        job_id, "needs_original_inspection", "owner_fixture_failure",
+                    )
+                    assert job["failure_diagnostic"]["observation"]["actual"] == "owner_fixture_failure"
+                    status, attached = call(product, "POST", "/api/product/prepare/apply",
+                                            json.dumps(selection), write_headers(product))
+                    assert status == 200 and attached["data"]["job"]["job_id"] == job_id
+                    assert attached["data"]["attached"] and owner.calls == 0
+            finally:
+                owner.release.set()
+                server.shutdown()
+                thread.join(timeout=5)
+                assert not thread.is_alive()

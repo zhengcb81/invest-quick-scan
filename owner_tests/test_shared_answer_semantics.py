@@ -242,7 +242,7 @@ def test_semantic_rules_reach_actual_request_with_new_stable_hash(original):
 def test_finalizer_rechecks_original_semantics_before_native_output_match(original, monkeypatch):
     task, qid, body, context = original
     # A contract-only mapper: not an admission or a sender.
-    fixture = load("semantic_finalization_fixture", ROOT / "tests/test_shared_company_engine_finalization.py")
+    fixture = load("semantic_finalization_fixture", ROOT / "owner_tests/test_shared_company_engine_finalization.py")
     single = fixture.finalization_task([qid])
     services = fixture.MapperOnlyServices(single)
     run = {"slots": [{"question_id": qid, "execution_status": "completed", "answer": bad(body, "score_items"),

@@ -2,37 +2,71 @@ name: quality
 
 on:
   push:
+    branches: [master]
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: quality-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  owner-contracts:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+  offline:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+          - os: windows-latest
+            platform: windows
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     env:
-      PYTHONDONTWRITEBYTECODE: "1"
-      PYTHONUTF8: "1"
-      PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+      TEST_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+      GIT_CONFIG_COUNT: "1"
+      GIT_CONFIG_KEY_0: core.longpaths
+      GIT_CONFIG_VALUE_0: "true"
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TEST_REVISION }}
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: python -m pip install -r requirements.txt pytest
-      - name: Check transport, feedback and public owner contracts
+      - name: Collect complete standalone offline inventory
+        run: python -B scripts/ci_tests.py collect --revision "${{ env.TEST_REVISION }}" --output .s6-evidence
+      - name: Execute complete standalone offline suite
+        run: python -B scripts/ci_tests.py run --revision "${{ env.TEST_REVISION }}" --output .s6-evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: iqs-standalone-${{ matrix.platform }}
+          path: .s6-evidence/
+          retention-days: 7
+          if-no-files-found: error
+
+  coverage:
+    runs-on: ubuntu-latest
+    needs: offline
+    env:
+      TEST_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TEST_REVISION }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: iqs-standalone-*
+          path: evidence
+          merge-multiple: true
+      - name: Verify exact-revision execution for both standalone inventories
         run: >-
-          python -B -m pytest -q -p no:cacheprovider
-          tests/test_iqs_provider_transport_diagnostics.py
-          tests/test_runtime_feedback_boundaries.py
-          tests/test_runtime_recovery_contract.py
-          tests/test_dashboard_jobs.py
-          tests/test_workbench_background_processes.py
-          tests/test_test_suites.py::test_test_partitions_are_windowless_on_windows
-          tests/test_dashboard_batches.py::test_unexpected_worker_failure_is_visible_and_resume_rechecks_before_dispatch
-          tests/test_dashboard_module_boundaries.py
-          tests/test_shared_public_boundaries.py
-          tests/test_stockwiki_g2b_frozen_golden.py
-          tests/test_legacy_freshness_owner_port.py
+          python -B -m tools.anti_trick_gate_spec coverage --revision "${{ env.TEST_REVISION }}"
+          --policy tools/ci_test_policy.json --platform linux --platform windows evidence/s6-*.json

@@ -8,6 +8,8 @@ import subprocess
 import sys
 import tempfile
 import unittest
+
+import pytest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -216,6 +218,7 @@ class LiveE2ESandboxTests(unittest.TestCase):
         artifact.unlink()
         sandbox.cleanup()
 
+    @pytest.mark.windows_only
     @unittest.skipUnless(os.name == "nt", "Windows open-file sharing is the target case")
     def test_open_sqlite_handle_fails_cleanup_preflight_before_any_file_is_removed(self):
         sandbox = LiveE2ESandbox(base_dir=self.base)

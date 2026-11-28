@@ -230,6 +230,7 @@ def test_timeout_bounds_agree_between_configuration_and_owner(tmp_path, timeout)
         OwnerGateway(config)._deployment()
 
 
+@pytest.mark.owner_assets
 def test_real_owner_reads_keep_original_model_versions_missingness_and_no_writes(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)
@@ -262,6 +263,7 @@ def test_real_owner_reads_keep_original_model_versions_missingness_and_no_writes
     assert _tree(workspace) == before
 
 
+@pytest.mark.owner_assets
 def test_unknown_entity_or_universe_is_named_not_empty(owner):
     gateway, _, _ = owner
     with pytest.raises(DashboardOwnerError) as error:
@@ -272,6 +274,7 @@ def test_unknown_entity_or_universe_is_named_not_empty(owner):
     assert error.value.code == "universe_not_found"
 
 
+@pytest.mark.owner_assets
 def test_member_list_projects_original_identity_name_and_security_without_writes(owner):
     gateway, workspace, _ = owner
     command = {"action": "add", "entity_id": ENTITY, "reason": "explicit isolated member"}
@@ -288,6 +291,7 @@ def test_member_list_projects_original_identity_name_and_security_without_writes
     assert _tree(workspace) == before
 
 
+@pytest.mark.owner_assets
 def test_real_membership_request_survives_gateway_restart_and_keeps_owner_history(owner):
     gateway, workspace, _ = owner
     command = {"action": "add", "universe_id": "TEST", "entity_id": ENTITY,
@@ -362,6 +366,7 @@ def test_membership_read_rejects_unversioned_owner_success(tmp_path, monkeypatch
     assert unsupported.value.code == 'owner_response_invalid'
 
 
+@pytest.mark.owner_assets
 def test_candidate_lookup_projects_original_identity_and_keeps_search_dto_unchanged(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)
@@ -392,6 +397,7 @@ def test_candidate_lookup_projects_original_identity_and_keeps_search_dto_unchan
     assert _tree(workspace) == before
 
 
+@pytest.mark.owner_assets
 def test_same_name_candidate_lookup_preserves_each_original_id_revision_and_security(owner):
     gateway, workspace, _ = owner
     # Change one synthetic temporary identity through the original store API.
@@ -433,6 +439,7 @@ store.save_entity(second,source_bindings=bindings)
     assert _tree(workspace) == before
 
 
+@pytest.mark.owner_assets
 def test_library_coverage_counts_original_records_not_completed_scans_or_financial_quality(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)
@@ -451,6 +458,7 @@ def test_library_coverage_counts_original_records_not_completed_scans_or_financi
     assert _tree(workspace) == before
 
 
+@pytest.mark.owner_assets
 def test_uninitialized_observation_store_keeps_coverage_unknown_and_does_not_create_it(owner):
     gateway, workspace, _ = owner
     database = workspace / "data/quick_scan/scan_observations.sqlite"
@@ -465,6 +473,7 @@ def test_uninitialized_observation_store_keeps_coverage_unknown_and_does_not_cre
     assert _tree(workspace) == before and not database.exists()
 
 
+@pytest.mark.owner_assets
 def test_name_preview_never_activates_and_id_required_for_apply(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)
@@ -475,6 +484,7 @@ def test_name_preview_never_activates_and_id_required_for_apply(owner):
     assert _tree(workspace) == before
 
 
+@pytest.mark.owner_assets
 def test_universe_original_add_remove_restore_and_stale_preview(owner):
     gateway, _, _ = owner
     request = {"action": "add", "entity_id": ENTITY, "reason": "User selected this existing issuer"}
@@ -496,6 +506,7 @@ def test_universe_original_add_remove_restore_and_stale_preview(owner):
     assert gateway.universe_list()["member_count"] == 1
 
 
+@pytest.mark.owner_assets
 def test_bundle_import_uses_original_ack_and_idempotent_replay(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)
@@ -514,6 +525,7 @@ def test_bundle_import_uses_original_ack_and_idempotent_replay(owner):
     assert gateway.import_preview({"bundle_id": "TEST_BUNDLE"})["replay"] is True
 
 
+@pytest.mark.owner_assets
 def test_import_does_not_require_a_precreated_repository_scratch_directory(owner, tmp_path):
     gateway, _, _ = owner
     absent = tmp_path/'not-precreated-scratch'
@@ -525,6 +537,7 @@ def test_import_does_not_require_a_precreated_repository_scratch_directory(owner
     assert not absent.exists()
 
 
+@pytest.mark.owner_assets
 def test_mixed_item_import_preserves_native_partial_ack_and_replay(owner, tmp_path):
     gateway, workspace, bundle = owner
     script = r'''
@@ -552,6 +565,7 @@ Path(sys.argv[2]).write_text(json.dumps(package),encoding='utf8')
     assert replay['receipt'] == result['receipt'] and _tree(workspace) == before
 
 
+@pytest.mark.owner_assets
 def test_bundle_preview_token_binds_bytes_and_browser_paths_are_rejected(owner):
     gateway, workspace, bundle = owner
     initial = gateway.import_preview({"bundle_id": "TEST_BUNDLE"})
@@ -582,6 +596,7 @@ def test_input_validation_and_secret_free_child(monkeypatch):
         gateway.entity("../../somewhere")
 
 
+@pytest.mark.owner_assets
 def test_owner_corrupt_database_is_unavailable_not_zero(owner):
     gateway, workspace, _ = owner
     database = workspace / "data" / "quick_scan" / "scan_observations.sqlite"
@@ -604,6 +619,7 @@ def test_transport_timeout_remains_named(monkeypatch, tmp_path):
     assert gateway.status()["error"]["code"] == "owner_timeout"
 
 
+@pytest.mark.owner_assets
 def test_score_conditions_use_original_three_valued_owner_grammar(owner):
     gateway, workspace, _ = owner
     before = _tree(workspace)

@@ -188,6 +188,7 @@ def test_cache_completion_obeys_real_owner_freshness_cutoff_and_scope_decisions(
         assert (_cached_scope_result(state,[{'id':'IQS_01'}],ref) is not None)==(mutation=='fresh'),mutation
 
 
+@pytest.mark.owner_assets
 def test_explicit_subset_preserves_full_bank_and_registers_only_selected_native_question(original):
     gateway,base,_=original
     preview=gateway.bank_preview({'entity_id':ENTITY,'as_of':'2026-10-25','question_ids':['IQS_01']})
@@ -352,6 +353,7 @@ store.configure_quick_scan_budget(json.loads((base/'budget.json').read_text(enco
                 pass
 
 
+@pytest.mark.owner_assets
 def test_preview_all_36_uses_original_serializer_and_keeps_original_databases_unchanged(original):
     gateway, base, _ = original
     before = tree(base / "owner")
@@ -364,6 +366,7 @@ def test_preview_all_36_uses_original_serializer_and_keeps_original_databases_un
     assert gateway.preparation(result["preview_id"])["status"] == "not_applied"
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize("original", ["compact"], indirect=True)
 def test_snapshot_accepts_native_compact_g2b_without_rewriting_identity_or_historical_contracts(original):
     from scripts import contract_validation as cv
@@ -396,6 +399,7 @@ def test_snapshot_accepts_native_compact_g2b_without_rewriting_identity_or_histo
     assert tree(base / "owner") == before
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize("original", ["null_country"], indirect=True)
 def test_native_verified_missing_country_stays_unknown_and_preview_is_readonly(original):
     gateway, base, _ = original
@@ -409,6 +413,7 @@ def test_native_verified_missing_country_stays_unknown_and_preview_is_readonly(o
     assert tree(base / "owner") == before and (base / "work.sqlite").read_bytes() == ledger
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize("original", ["compact"], indirect=True)
 def test_snapshot_maps_native_contract_shape_and_semantic_failures_to_stable_repair_action(original, monkeypatch):
     from scripts import dashboard_prepare
@@ -438,6 +443,7 @@ def test_snapshot_maps_native_contract_shape_and_semantic_failures_to_stable_rep
         assert invalid == frozen and tree(base / "owner") == before
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize("original", ["revision_2"], indirect=True)
 def test_original_identity_revision_refresh_keeps_subject_and_history_and_uses_original_cas(original):
     gateway, base, config = original
@@ -523,6 +529,7 @@ print(json.dumps(result))
     assert conflict["snapshots"] == current["snapshots"]
 
 
+@pytest.mark.owner_assets
 def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_replays_exact_result(original):
     gateway, base, _ = original
     gateway.options['work_lease_seconds'] = 3600
@@ -588,6 +595,7 @@ def test_native_fresh_prepare_registers_36_original_work_items_without_http_and_
     (base / "native-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
+@pytest.mark.owner_assets
 def test_fresh_preparation_reuses_exact_original_work_bank_after_current_route_churn(original):
     gateway, base, config = original
     selection={'entity_id':ENTITY,'as_of':'2026-10-25','mode':'quick'}
@@ -669,6 +677,7 @@ print(json.dumps(results))
     assert (base/'work.sqlite').read_bytes()==before
 
 
+@pytest.mark.owner_assets
 def test_configuration_binding_is_composable_but_binds_target_scope_policy_and_selected_profile(original):
     gateway, _, config = original
     selection = {"entity_id": ENTITY, "as_of": "2026-10-25"}
@@ -693,6 +702,7 @@ def test_configuration_binding_is_composable_but_binds_target_scope_policy_and_s
     assert PrepareGateway(changed)._configuration_binding(selected) != selected_hash
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize("original", [True], indirect=True)
 def test_multiple_original_share_classes_require_an_exact_original_security_selection(original):
     gateway, base, _ = original
@@ -712,6 +722,7 @@ def test_multiple_original_share_classes_require_an_exact_original_security_sele
     assert tree(base / "owner") == before
 
 
+@pytest.mark.owner_assets
 def test_unknown_identity_unregistered_profile_browser_paths_and_future_cutoff_are_rejected(original):
     gateway, base, _ = original
     before = tree(base / "owner")
@@ -726,6 +737,7 @@ def test_unknown_identity_unregistered_profile_browser_paths_and_future_cutoff_a
     assert tree(base / "owner") == before
 
 
+@pytest.mark.owner_assets
 def test_inline_secrets_are_not_inherited_and_unapplied_or_partial_queries_never_write(original, monkeypatch):
     gateway, base, _ = original
     monkeypatch.setenv("MIMO_API_KEY", "synthetic-must-not-inherit")
@@ -741,6 +753,7 @@ def test_inline_secrets_are_not_inherited_and_unapplied_or_partial_queries_never
     assert tree(base) == before
 
 
+@pytest.mark.owner_assets
 def test_exact_token_is_checked_before_async_submit_and_other_bundles_do_not_stale_it(original):
     gateway, base, config = original
     preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
@@ -759,6 +772,7 @@ def test_exact_token_is_checked_before_async_submit_and_other_bundles_do_not_sta
     assert tree(base) == before
 
 
+@pytest.mark.owner_assets
 def test_verified_without_subject_and_provisional_still_get_36_without_promoting_authority(original):
     gateway, base, config = original
     # Only a disposable source fixture is removed; this is never a production
@@ -782,6 +796,7 @@ def test_verified_without_subject_and_provisional_still_get_36_without_promoting
     assert tree(provisional) == before
 
 
+@pytest.mark.owner_assets
 def test_explicit_original_issuer_bootstrap_is_readonly_until_apply_and_keeps_draft_immutable(original):
     gateway, base, _ = original
     if not (WIKI / "stockwiki/quick_scan_issuer_bootstrap.py").is_file():
@@ -820,6 +835,7 @@ def test_explicit_original_issuer_bootstrap_is_readonly_until_apply_and_keeps_dr
     (base / "bootstrap-stage-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
+@pytest.mark.owner_assets
 def test_existing_original_issuer_only_scope_retains_its_real_route_anchor(original, monkeypatch):
     gateway, base, config = original
     from datetime import datetime, timezone
@@ -872,6 +888,7 @@ routes.set_current(route['decision_id'],subject_key=sys.argv[5],expected_current
     assert tree(base / "owner") == before
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize("original", ["fresh_today"], indirect=True)
 def test_current_owner_time_is_frozen_for_fresh_receipt_and_historical_answer_cutoff(original, monkeypatch):
     gateway, base, config = original
@@ -935,6 +952,7 @@ else:raise RuntimeError('test_expected_route_boundary_stop')
     assert not (directory / "scope-1-entity").exists() and not (directory / "applied.json").exists()
 
 
+@pytest.mark.owner_assets
 def test_kernel_preparation_lock_releases_after_crash_and_stale_file_is_not_authority(original):
     _, _, config = original
     path = _control_path(config)
@@ -979,6 +997,7 @@ def test_native_failure_diagnostics_and_timeout_bounds_do_not_expose_transport_c
     assert "SECRET_SENTINEL" not in str(error.value.details)
 
 
+@pytest.mark.owner_assets
 def test_apply_timeout_persists_partial_journal_for_readonly_diagnosis_without_retry(original, monkeypatch):
     gateway, base, _ = original
     preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
@@ -1005,6 +1024,7 @@ def test_apply_timeout_persists_partial_journal_for_readonly_diagnosis_without_r
     assert tree(base) == before
 
 
+@pytest.mark.owner_assets
 def test_advanced_original_owner_dialect_is_a_preapply_gap_without_touching_original_work(original):
     gateway, base, _ = original
     policy_file = base / "owner/config/quick_scan_refresh.json"
@@ -1021,6 +1041,7 @@ def test_advanced_original_owner_dialect_is_a_preapply_gap_without_touching_orig
     assert hashlib.sha256((base / "work.sqlite").read_bytes()).hexdigest() == ledger
 
 
+@pytest.mark.owner_assets
 def test_unapplied_legacy_local_candidate_requires_new_preview_without_rebuilding_authority(original):
     gateway, base, _ = original
     preview = gateway.bank_preview({"entity_id": ENTITY, "as_of": "2026-10-25"})
@@ -1110,6 +1131,7 @@ def test_cached_scope_retains_owner_scan_clock_without_inventing_fact_dates(cloc
     assert 'information_as_of' not in result['items'][0]
 
 
+@pytest.mark.owner_assets
 def test_cache_preview_exposes_existing_results_without_an_apply_or_job(original,monkeypatch):
     gateway,base,_=original
     cached={'status':'cached','cached_question_count':1,'cached_scopes':[{
@@ -1131,6 +1153,7 @@ def test_cache_preview_exposes_existing_results_without_an_apply_or_job(original
     assert not (directory/'apply-started.json').exists()
 
 
+@pytest.mark.owner_assets
 def test_i4_fresh_reuse_expiry_refresh_and_readonly_history_do_not_extend_cache(original, monkeypatch):
     """Drive one isolated owner question through warm reuse and expiry.
 

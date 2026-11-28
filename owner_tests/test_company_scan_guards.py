@@ -25,6 +25,7 @@ BRIDGE = (
 )
 sys.path.insert(0, str(COMPANY / "src"))
 sys.path.insert(0, str(BRIDGE / "src"))
+sys.path.insert(0, os.environ["IQS_STOCKQA_ROOT"])
 from scripts import shared_company_engine as engine
 from iqs_company_agent_lab.canonical import canonical_json, sha256_hex
 from iqs_company_agent_lab.scan_profile import build_scan_profile

@@ -1,6 +1,7 @@
 """Meaningful research-controller boundaries; synthetic transport, real contracts."""
 import copy
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -8,13 +9,13 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
-LABS=Path('C:/Users/郑曾波/Projects')
+LABS=Path(os.environ['IQS_RESEARCH_TOOLS_LABS']).resolve()
 for directory in ('iqs-answer-codec-lab','iqs-session-packing-lab','iqs-claim-guard-lab'):
     sys.path.insert(0,str(LABS/directory))
 from company_agent_contrast import make_context, prefix_text, compile_tools, execute_case
 from iqs_session_packing.synthetic import SyntheticStep,default_usage,make_synthetic_factory
 
-FROZEN=ROOT/'runs/research-tools-wave-2026-10-16/inputs'
+FROZEN=Path(os.environ['IQS_RESEARCH_TOOLS_FIXTURE']).resolve()
 def load(name): return json.loads((FROZEN/'trial'/name).read_text(encoding='utf-8'))
 ALL=load('questions.json')
 BOARD=load('evidence-board.json')

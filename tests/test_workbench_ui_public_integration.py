@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+
+import pytest
 import queue
 import shutil
 import subprocess
@@ -50,6 +52,7 @@ def _env(tmp_path: Path) -> dict[str, str]:
     return env
 
 
+@pytest.mark.owner_assets
 def test_current_ui_partial_snapshot_and_formal_results_survive_reopen(tmp_path):
     node = shutil.which("node")
     if not node:
@@ -161,6 +164,7 @@ def test_current_ui_partial_snapshot_and_formal_results_survive_reopen(tmp_path)
         assert not thread.is_alive()
 
 
+@pytest.mark.owner_assets
 def test_i6_real_launcher_reopen_reads_partial_snapshot_without_starting_scan(tmp_path):
     """Use the public launcher and rendered UI; opening/reopening is read-only.
 
@@ -272,6 +276,7 @@ def test_i6_real_launcher_reopen_reads_partial_snapshot_without_starting_scan(tm
         assert not reader.is_alive(), "launcher output reader must stop during cleanup"
 
 
+@pytest.mark.owner_assets
 def test_i6_explicit_ui_start_is_read_once_after_reopen_with_local_runner(tmp_path):
     """A real UI click starts one isolated local stub; reload only reads that task."""
     import pytest

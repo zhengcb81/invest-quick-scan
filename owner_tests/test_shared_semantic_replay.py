@@ -13,7 +13,7 @@ def load(name, path):
     sys.modules[name] = module
     spec.loader.exec_module(module)
     return module
-composition = load("typed_replay_composition_helpers", ROOT / "tests/test_shared_company_engine.py")
+composition = load("typed_replay_composition_helpers", ROOT / "owner_tests/test_shared_company_engine.py")
 fixtures = load("typed_replay_scan_fixtures", ROOT.parent / "iqs-company-agent-lab/tests/test_scan_profile.py")
 engine = composition.engine
 from iqs_company_agent_lab.errors import ProtocolIllegalError

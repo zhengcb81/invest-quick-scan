@@ -813,6 +813,7 @@ print(read_company_result(paths, entity_id=E01)["result"]["result_id"])
     return done.stdout.decode('utf-8').strip()
 
 
+@pytest.mark.owner_assets
 @pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / 'dashboard_company_assessment_cli.py').is_file(),
                     reason='StockWiki public command is not available next to this service tree')
 def test_company_reads_through_the_real_public_owner_command(tmp_path):

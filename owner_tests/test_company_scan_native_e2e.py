@@ -17,7 +17,7 @@ from pathlib import Path
 import pytest
 
 if os.environ.get("IQS_C06_RUN_INTEGRATION") != "1":
-    pytest.skip("requires explicitly owned three-component runtime", allow_module_level=True)
+    raise RuntimeError("Configure the explicit owned C06 fixture runtime before collection")
 
 _ENV_NAMES = (
     "SystemRoot",

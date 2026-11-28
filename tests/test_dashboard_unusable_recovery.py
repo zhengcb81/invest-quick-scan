@@ -12,8 +12,8 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-QA = ROOT.parent / "StockQAbyLLM"
-WIKI = ROOT.parent / "StockWiki"
+QA = Path(os.environ.get("IQS_DASHBOARD_TEST_STOCKQA_ROOT", ROOT.parent / "StockQAbyLLM"))
+WIKI = Path(os.environ.get("IQS_DASHBOARD_TEST_STOCKWIKI_ROOT", ROOT.parent / "StockWiki"))
 sys.path[:0] = [str(ROOT / "scripts"), str(QA), str(WIKI)]
 from scripts import dashboard_prepare as p
 from dashboard_service import validate_config, ProductError
@@ -457,6 +457,7 @@ def _deliver(store, wid, authority, routes, paths, base):
     return delivery["package_sha256"]
 
 
+@pytest.mark.owner_assets
 @pytest.mark.skipif(
     os.environ.get("IQS_RUN_NATIVE_RECOVERY") != "1",
     reason="explicit original three-owner native recovery chain",

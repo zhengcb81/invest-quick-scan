@@ -999,6 +999,7 @@ def test_process_probe_rejects_invalid_or_missing_pid_without_os_calls(pid):
     assert gateway_module._probe_process(pid) == 'unknown'
 
 
+@pytest.mark.windows_only
 def test_process_probe_current_pid_is_readonly_and_present(monkeypatch):
     import os
     if sys.platform != 'win32':
@@ -1007,6 +1008,7 @@ def test_process_probe_current_pid_is_readonly_and_present(monkeypatch):
     assert gateway_module._probe_process(os.getpid()) == 'present'
 
 
+@pytest.mark.windows_only
 @pytest.mark.parametrize('error,expected', [(87, 'absent'), (5, 'unknown'), (0, 'unknown'), (6, 'unknown')])
 def test_process_probe_only_explicit_win32_pid_absence_is_permission(error, expected, monkeypatch):
     import ctypes
@@ -1022,6 +1024,7 @@ def test_process_probe_only_explicit_win32_pid_absence_is_permission(error, expe
     kernel.CloseHandle.assert_not_called()
 
 
+@pytest.mark.windows_only
 @pytest.mark.parametrize('exit_code,readable,close_ok,expected', [
     (259, True, True, 'present'),
     (0, True, True, 'present_exited'),
@@ -1612,6 +1615,7 @@ def test_pid_reuse_requires_creation_strictly_after_same_launch_observation(monk
         assert mod._process_recovery_evidence({**value, 'pause_requested_at': bad}, False) == 'present'
 
 
+@pytest.mark.windows_only
 @pytest.mark.skipif(__import__('sys').platform != 'win32', reason='actual Windows readonly API')
 def test_actual_windows_process_time_probe_does_not_signal_current_process():
     import os

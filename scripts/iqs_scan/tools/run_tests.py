@@ -70,16 +70,24 @@ def load_suites(root, manifest_path):
         if not isinstance(files, list) or not files:
             raise ValueError("test_suite_must_be_nonempty:" + group)
         for name in files:
-            if (not isinstance(name, str) or "/" in name or "\\" in name
-                or not name.startswith("test_") or not name.endswith(".py")):
+            if not isinstance(name, str) or "\\" in name:
+                raise ValueError("test_suite_file_must_be_a_test_basename")
+            path = Path(name)
+            if (path.is_absolute() or ".." in path.parts or not path.name.startswith("test_")
+                    or path.suffix != ".py" or path.as_posix() != name):
                 raise ValueError("test_suite_file_must_be_a_test_basename")
             if name in seen:
                 raise ValueError("test_file_assigned_more_than_once:" + name)
             seen.add(name)
-    actual = {path.relative_to(root / "tests").as_posix() for path in (root / "tests").rglob("test_*.py")}
-    if seen != actual:
+    actual = [
+        path.relative_to(root / folder).as_posix()
+        for folder in ("tests", "owner_tests") for path in (root / folder).rglob("test_*.py")
+    ]
+    if len(actual) != len(set(actual)):
+        raise ValueError("test_suite_requires_unique_paths_across_owner_and_standalone")
+    if seen != set(actual):
         raise ValueError("test_suite_coverage_mismatch:" + json.dumps({
-            "unassigned": sorted(actual - seen), "missing": sorted(seen - actual)}))
+            "unassigned": sorted(set(actual) - seen), "missing": sorted(seen - set(actual))}))
     return suites
 
 
@@ -94,17 +102,46 @@ def require_native_environment(environment):
         raise ValueError("native_requires_existing_explicit_owned_runtime:" + ",".join(NATIVE_ENV))
 
 
-def clean_environment(temporary, native=False):
-    environment = {key: value for key, value in os.environ.items()
-        if not any(part in key.casefold() for part in ("api_key", "api-key", "token", "secret", "password"))
-        and key not in {"STOCKQA_RUN_LIVE_E2E", "PYTEST_ADDOPTS", "PYTEST_PLUGINS"}}
-    environment.update(TEMP=str(temporary), TMP=str(temporary), PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1")
-    if not native:
-        environment.pop("IQS_C06_RUN_INTEGRATION", None)
+_OS_TEST_ENV = {
+    "PATH", "PATHEXT", "COMSPEC", "SYSTEMROOT", "SYSTEMDRIVE",
+    "WINDIR", "PROGRAMDATA", "PROGRAMFILES", "PROGRAMFILES(X86)",
+}
+_OWNER_FIXTURE_ENV = {
+    *NATIVE_ENV, "IQS_C06_RUN_INTEGRATION", "IQS_COMPANY_AGENT_ROOT", "IQS_AGENT_RUNTIME_ROOT",
+    "IQS_STOCKQA_ROOT", "IQS_STOCKWIKI_ROOT", "IQS_DASHBOARD_TEST_STOCKWIKI_ROOT",
+    "IQS_DASHBOARD_TEST_STOCKQA_ROOT", "IQS_STOCKQA_DELIVERY_TEST_ROOT", "IQS_DASHBOARD_ROOT",
+    "IQS_DASHBOARD_TEST_WEB_ROOT", "IQS_ROUTE_TEST_CODE_ROOT", "IQS_UI_ROOT", "IQS_TEST_VIEWER_ROOT",
+    "IQS_RUN_NATIVE_RECOVERY", "IQS_INDUSTRY_ROOT", "IQS_THEME_ROOT", "IQS_RESEARCH_TOOLS_FIXTURE",
+    "IQS_RESEARCH_TOOLS_LABS",
+}
+
+
+def clean_environment(temporary, native=False, owner_assets=False):
+    allowed = _OS_TEST_ENV | (_OWNER_FIXTURE_ENV if native or owner_assets else set())
+    environment = {key: value for key, value in os.environ.items() if key.upper() in allowed}
+    temporary = Path(temporary)
+    profile = temporary / "user"
+    roaming = profile / "AppData" / "Roaming"
+    local = profile / "AppData" / "Local"
+    roaming.mkdir(parents=True, exist_ok=True)
+    local.mkdir(parents=True, exist_ok=True)
+    environment.update(
+        TEMP=str(temporary), TMP=str(temporary), TMPDIR=str(temporary),
+        HOME=str(profile), USERPROFILE=str(profile), APPDATA=str(roaming), LOCALAPPDATA=str(local),
+        GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_COUNT="1",
+        GIT_CONFIG_KEY_0="core.longpaths", GIT_CONFIG_VALUE_0="true",
+        PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYTHONIOENCODING="utf-8",
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+    )
     return environment
 
 
-def run_group(root, name, files, output, temp_root=None):
+def _test_path(root, name):
+    standalone = root / "tests" / name
+    return standalone if standalone.is_file() else root / "owner_tests" / name
+
+
+def run_group(root, name, files, output, temp_root=None, *, pytest_args=None, collect_only=False, owner_assets=False):
     """One fresh process; external network denied, literal TCP loopback only."""
     root, output = Path(root), Path(output)
     started = time.perf_counter()
@@ -112,14 +149,11 @@ def run_group(root, name, files, output, temp_root=None):
         owned = Path(temporary)
         if owned.resolve().parent != Path(temp_root or tempfile.gettempdir()).resolve():
             raise ValueError("test_temporary_root_outside_selected_parent")
-        environment = clean_environment(owned, native=name == "native")
+        environment = clean_environment(owned, native=name == "native", owner_assets=owner_assets)
         guard_dir = owned / "python"
         guard_dir.mkdir()
         (guard_dir / "sitecustomize.py").write_text(NETWORK_GUARD, encoding="utf8")
-        inherited_pythonpath = environment.get("PYTHONPATH")
-        environment["PYTHONPATH"] = os.pathsep.join(
-            value for value in (str(guard_dir), inherited_pythonpath) if value
-        )
+        environment["PYTHONPATH"] = str(guard_dir)
         working_directory = root
         if name == "native":
             # StockQA's logger uses a relative ``logs/`` path at import time.
@@ -128,8 +162,9 @@ def run_group(root, name, files, output, temp_root=None):
             working_directory.mkdir()
         arguments = ["-q", "-p", "no:cacheprovider", "--durations=20",
             "--rootdir", str(root), "--basetemp", str(owned / "pytest"),
-            "--junitxml", str(output / (name + ".xml")),
-            *[str(root / "tests" / file) for file in files]]
+            *(pytest_args if pytest_args is not None else [str(_test_path(root, file)) for file in files])]
+        if not collect_only:
+            arguments.extend(("--junitxml", str(output / (name + ".xml"))))
         if os.name == "nt":
             # FD capture can invalidate the inherited stdin handle for nested Windows children.
             arguments.extend(["--capture=sys", "--tb=short"])
@@ -142,10 +177,12 @@ def run_group(root, name, files, output, temp_root=None):
         elapsed_seconds=round(time.perf_counter() - started, 3), temporary_root_removed=not owned.exists(),
         api_keys_removed=True, network_denied_in_pytest_process=True,
         external_network_denied_in_pytest_process=True,
-        external_network_denied_in_subprocesses=True, literal_tcp_loopback_allowed=True,
+        python_startup_network_guard=True, literal_tcp_loopback_allowed=True,
         stockqa_relative_logs_isolated=name == "native",
         log=str(output / (name + ".log")))
     xml = output / (name + ".xml")
+    if collect_only:
+        return result
     if xml.exists():
         suites = ET.parse(xml).getroot()
         rows = [suites] if suites.tag == "testsuite" else list(suites.findall("testsuite")) if suites.tag == "testsuites" else []
@@ -196,7 +233,8 @@ def main(argv=None):
                         child_output.mkdir()
                         result = run_group(ROOT, "native", partition, child_output, options.temp_root)
                     else:
-                        result = run_group(ROOT, name, partition, output, options.temp_root)
+                        result = run_group(ROOT, name, partition, output, options.temp_root,
+                                           owner_assets=group == "integration")
                 except (OSError, ET.ParseError) as error:
                     result = dict(name=name, files=partition, exit_code=2,
                         status="runner_error", reason=str(error), test_counts_unknown=True)

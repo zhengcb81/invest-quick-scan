@@ -66,6 +66,7 @@ def test_another_writer_winning_between_probe_and_publish_is_not_overwritten(tmp
     assert not list(tmp_path.glob('.publish-*'))
 
 
+@pytest.mark.owner_assets
 @pytest.mark.skipif(
     "IQS_ROUTE_TEST_CODE_ROOT" not in os.environ,
     reason="W15 module-readiness 专项测试：需 IQS_ROUTE_TEST_CODE_ROOT 指向被审代码根（含 questions/ 与 schemas/ 的 48/222 时代快照）",

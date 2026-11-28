@@ -27,6 +27,7 @@ print(json.dumps({w:view.get_result_delivery(w) for w in request['work_item_ids'
     return json.loads(result.stdout)
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('mutation', ['hash', 'store'])
 @pytest.mark.parametrize('bad_index', [0, 1])
 def test_invalid_ack_does_not_block_other_original_ack(delivery, mutation, bad_index):
@@ -55,6 +56,7 @@ def test_invalid_ack_does_not_block_other_original_ack(delivery, mutation, bad_i
     assert result['API_requests'] == result['network_calls'] == 0
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('received_index', [0, 1])
 def test_available_ack_subset_is_applied_and_missing_ack_remains_pending(delivery, received_index):
     gateway, bundle, receipt = delivery

@@ -291,15 +291,15 @@ def test_raw_blob_hash_is_accepted_for_a_crlf_checkout(repo, tmp_path):
     With core.autocrlf the two differ only by newlines. The check is about which
     content was delivered, so either form must resolve.
     """
-    (repo / "src" / "code.py").write_text("print('hi')\r\n", encoding="utf-8")
+    _git(repo, "config", "core.autocrlf", "true")
+    (repo / "src" / "code.py").write_bytes(b"print('hi')\r\n")
     _git(repo, "add", ".")
     _git(repo, "commit", "-q", "-m", "crlf")
     raw = subprocess.run(["git", "show", "HEAD:src/code.py"], cwd=repo,
                          capture_output=True).stdout
     filtered = subprocess.run(["git", "cat-file", "--filters", "HEAD:src/code.py"],
                               cwd=repo, capture_output=True).stdout
-    if raw == filtered:
-        pytest.skip("checkout does not rewrite newlines")
+    assert raw.replace(b"\n", b"\r\n") == filtered and raw != filtered
 
     handoff = _handoff(repo)
     handoff["interfaces"] = [{"name": "code", "direction": "produced",

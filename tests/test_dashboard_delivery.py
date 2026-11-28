@@ -112,6 +112,7 @@ print(json.dumps({'work_store':str(store.path),'work_item_ids':mapping,'receipt'
     return gateway,bundle,data['receipt']
 
 
+@pytest.mark.owner_assets
 def test_original_target_binding_and_exact_ack_replay(delivery):
     gateway,bundle,receipt=delivery
     assert gateway.bind_delivery_consumer(bundle,TARGET,'operator-config:isolated-dashboard-test')['status']=='bound'
@@ -121,6 +122,7 @@ def test_original_target_binding_and_exact_ack_replay(delivery):
     assert Path(bundle['work_store']).read_bytes()==before
 
 
+@pytest.mark.owner_assets
 def test_same_native_receiver_reuses_original_binding_when_locator_label_changes(delivery):
     gateway, bundle, receipt = delivery
     gateway.bind_delivery_consumer(bundle, TARGET, 'dashboard-owner-status:original-workspace-path')
@@ -186,6 +188,7 @@ def test_scope_export_keeps_unfinished_questions_without_blocking_sealed_answers
         assert hashlib.sha256(raw).hexdigest() == registration['package_sha256']
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('mutation', ['store','hash'])
 def test_original_owner_rejects_bad_ack_without_mutating_its_work_or_blocking_good_ack(delivery,mutation):
     gateway,bundle,receipt=delivery
@@ -204,6 +207,7 @@ def test_original_owner_rejects_bad_ack_without_mutating_its_work_or_blocking_go
     assert native_delivery_rows(gateway,bundle)==after
 
 
+@pytest.mark.owner_assets
 def test_observation_mapping_cannot_retarget_original_work(delivery):
     gateway,bundle,receipt=delivery
     mapping=list(bundle['work_item_ids'])
@@ -213,6 +217,7 @@ def test_observation_mapping_cannot_retarget_original_work(delivery):
     assert Path(bundle['work_store']).read_bytes()==before
 
 
+@pytest.mark.owner_assets
 def test_invalid_later_receiver_mapping_cannot_bind_an_earlier_work(delivery):
     gateway, bundle, _ = delivery
     mapping = list(bundle['work_item_ids'])
@@ -224,6 +229,7 @@ def test_invalid_later_receiver_mapping_cannot_bind_an_earlier_work(delivery):
     assert Path(bundle['work_store']).read_bytes() == before
 
 
+@pytest.mark.owner_assets
 def test_partial_ack_batch_is_retriable_without_reapplying_completed_work(delivery):
     gateway,bundle,receipt=delivery
     gateway.bind_delivery_consumer(bundle,TARGET,'operator-config:isolated-dashboard-test')
@@ -241,6 +247,7 @@ def test_missing_ledger_never_creates_empty_native_database(tmp_path):
     assert not (tmp_path/'missing.sqlite').exists()
 
 
+@pytest.mark.owner_assets
 def test_original_rejection_is_recorded_without_claiming_delivered(delivery):
     gateway,bundle,receipt=delivery
     gateway.bind_delivery_consumer(bundle,TARGET,'operator-config:isolated-dashboard-test')
@@ -252,6 +259,7 @@ def test_original_rejection_is_recorded_without_claiming_delivered(delivery):
     assert {row['state'] for row in result['items']}=={'rejected'}
 
 
+@pytest.mark.owner_assets
 def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(delivery, tmp_path):
     import hashlib
     gateway,bundle,receipt=delivery
@@ -271,6 +279,7 @@ def test_export_reads_exact_original_outbox_bytes_and_rejects_foreign_entity(del
     assert ledger.read_bytes()==before
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('cached_reference', [False, True, 'only'])
 def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(delivery, tmp_path, monkeypatch, cached_reference):
     import hashlib
@@ -335,6 +344,7 @@ def test_export_existing_outbox_needs_no_current_budget_or_new_send_controls(del
     assert ledger.read_bytes() == before
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('fault', ['missing', 'confirmation', 'entity', 'question', 'scope', 'generation', 'work_id'])
 def test_original_action_scope_cannot_select_foreign_or_later_work(delivery, tmp_path, fault):
     """Actual readonly SQLite/outbox, explicit mock of immutable journal port."""
@@ -350,6 +360,7 @@ def test_original_action_scope_cannot_select_foreign_or_later_work(delivery, tmp
     assert ledger.read_bytes() == before
 
 
+@pytest.mark.owner_assets
 def test_export_uses_layout_checked_read_only_view_without_history_audit(delivery, tmp_path):
     gateway,bundle,receipt=delivery
     ledger=Path(bundle['work_store'])
@@ -374,6 +385,7 @@ QuickScanWorkStore._validate_schema=classmethod(layout_only)
     assert ledger.read_bytes()==before
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('fault',['layout','current_package'])
 def test_read_only_export_keeps_layout_and_current_package_validation(delivery,tmp_path,fault):
     import sqlite3
@@ -398,6 +410,7 @@ def test_read_only_export_keeps_layout_and_current_package_validation(delivery,t
     assert ledger.read_bytes()==before
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('incomplete', [False, True])
 def test_native_stored_ack_recovers_without_release_and_preserves_partial_sibling(delivery, tmp_path, monkeypatch, incomplete):
     """Actual original outbox/ACK validator; only remote stored-ACK read is a port."""

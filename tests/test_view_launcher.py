@@ -40,8 +40,9 @@ def _start_dashboard(tmp_path, *, no_refresh=False, existing_snapshot=None, ui_r
                '--dashboard-config', str(config), '--port', '0']
     if no_refresh:
         command.append('--no-refresh')
-    process = subprocess.Popen(command, cwd=tmp_path, env=_env(tmp_path), stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, text=True, encoding='utf8')
+    process = subprocess.Popen(command, cwd=tmp_path, env=_env(tmp_path), stdin=subprocess.DEVNULL,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf8',
+                                creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
     lines = queue.Queue()
     reader = threading.Thread(target=lambda: lines.put(process.stdout.readline()), daemon=True)
     reader.start()
@@ -115,6 +116,7 @@ def test_dashboard_launcher_accepts_a_data_directory_without_code(tmp_path, unre
     assert not plan['writes'] and not state.exists()
 
 
+@pytest.mark.e2e_offline
 def test_company_dashboard_serves_static_ui_and_one_owner_snapshot_without_ui_runtime(tmp_path):
     process, reader, ready, ui, state, snapshot = _start_dashboard(tmp_path)
     try:
@@ -170,6 +172,7 @@ def test_no_refresh_launcher_publishes_the_bound_link_origin(tmp_path, configure
         _stop_dashboard(process, reader)
 
 
+@pytest.mark.owner_assets
 def test_company_dashboard_runs_the_current_ui_source_as_static_content(tmp_path):
     ui = Path(os.environ.get('IQS_UI_ROOT', ROOT.parent / 'iqs-question-bank-ui-lab')).resolve()
     if not (ui / 'src' / 'app' / 'index.html').is_file():
@@ -194,6 +197,7 @@ def test_company_dashboard_runs_the_current_ui_source_as_static_content(tmp_path
         _stop_dashboard(process, reader)
 
 
+@pytest.mark.owner_assets
 def test_company_dashboard_composes_current_ui_with_isolated_stockwiki_owner(tmp_path):
     """The product snapshot must cross the real public StockWiki CLI boundary."""
     stockwiki = Path(os.environ.get('IQS_STOCKWIKI_ROOT', ROOT.parent / 'StockWiki')).resolve()
@@ -310,6 +314,7 @@ def test_view_launcher_only_requires_the_public_module_entrypoint(tmp_path):
     }
 
 
+@pytest.mark.owner_assets
 @pytest.mark.parametrize('explicit_root',[False,True])
 def test_real_thin_launcher_reads_meta_and_releases_port(tmp_path,explicit_root):
     # Test inputs are explicitly provided; the launcher itself never defaults

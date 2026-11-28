@@ -1,6 +1,7 @@
 """Provider transport failures are safe to return and readable after exit."""
 
 from hashlib import sha256
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from http.client import IncompleteRead
 import io
 import json
@@ -8,6 +9,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import threading
 import urllib.error
 import urllib.request
 
@@ -26,7 +28,8 @@ URL = "https://provider.invalid/?private=" + CANARY
 def owner(args, request=None):
     result = subprocess.run([sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts" / "iqs_feedback_owner.py"),
                              *map(str, args)], env=dict(os.environ), input=request, capture_output=True,
-                            text=True, encoding="utf8", timeout=20, check=True)
+                            text=True, encoding="utf8", timeout=20, check=True,
+                            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return json.loads(result.stdout)
 
 
@@ -161,26 +164,53 @@ def test_provider_malformed_url_and_partial_read_return_failure(tmp_path, monkey
     assert CANARY not in json.dumps(diagnostic)
 
 
+@pytest.fixture
+def truncated_provider():
+    requests = []
+    payload = json.dumps({"results": [], "trace": CANARY}).encode()
+
+    class TruncatedProvider(BaseHTTPRequestHandler):
+        def do_POST(self):
+            requests.append(json.loads(self.rfile.read(int(self.headers["Content-Length"]))))
+            self.send_response(200)
+            self.send_header("Content-Length", str(len(payload) + 3))
+            self.send_header("Connection", "close")
+            self.end_headers()
+            # The TCP stream really ends before Content-Length; urllib detects
+            # that this otherwise valid-looking JSON is an incomplete response.
+            self.wfile.write(payload)
+            self.close_connection = True
+
+    with ThreadingHTTPServer(("127.0.0.1", 0), TruncatedProvider) as server:
+        thread = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.02})
+        thread.start()
+        try:
+            yield f"http://127.0.0.1:{server.server_port}/v1/search", requests
+        finally:
+            server.shutdown()
+            thread.join(timeout=5)
+            assert not thread.is_alive()
+
+
+@pytest.mark.e2e_offline
+@pytest.mark.regression
 @pytest.mark.parametrize("inherited_ids", [False, True])
-def test_scan_keeps_two_questions_with_same_provider_error(tmp_path, monkeypatch, inherited_ids):
+def test_scan_preserves_two_question_failures_from_a_real_truncated_response(
+    tmp_path, monkeypatch, inherited_ids, truncated_provider,
+):
     from iqs_scan.execution import thin_scan
 
-    _, outbox = scoped_outbox(tmp_path, monkeypatch)
+    runs, outbox = scoped_outbox(tmp_path, monkeypatch)
     if not inherited_ids:
         monkeypatch.delenv("RESEARCH_FEEDBACK_RUN_ID")
         monkeypatch.delenv("RESEARCH_FEEDBACK_ATTEMPT_ID")
-    provider = {"endpoint": URL, "key_env": "IQS_PROVIDER_FIXTURE_KEY", "cost_micros": 0}
+    endpoint, requests = truncated_provider
+    provider = {"endpoint": endpoint, "key_env": "IQS_PROVIDER_FIXTURE_KEY", "cost_micros": 0}
     monkeypatch.setenv(provider["key_env"], CANARY)
+    # Configure only the vendor address. The scan, socket, error mapping,
+    # observation store and separate cold CLI read are the real runtime.
     monkeypatch.setattr(thin_scan.model_config, "search_providers", lambda: [provider])
     monkeypatch.setattr(thin_scan.model_config, "models", list)
-    calls = []
-
-    def offline(_request, timeout):
-        calls.append(timeout)
-        raise ConnectionResetError(CANARY)
-
-    monkeypatch.setattr(urllib.request, "urlopen", offline)
-    monkeypatch.setattr(thin_scan, "render", lambda *args: None)
     questions = tmp_path / "questions.json"
     questions.write_text(json.dumps({"questions": [
         {"id": "q-1", "question": CANARY}, {"id": "q-2", "question": CANARY},
@@ -190,7 +220,18 @@ def test_scan_keeps_two_questions_with_same_provider_error(tmp_path, monkeypatch
 
     assert thin_scan.main() == 0
     observations = rows(outbox)
-    assert len(calls) == 4 and len(observations) == 2  # Each question keeps its own stable occurrence.
+    assert len(requests) == 4 and len(observations) == 2
+    result = json.loads((tmp_path / "result" / "answers.json").read_bytes())
+    assert result["meta"]["calls"] == result["meta"]["cost_micros"] == 0
+    assert [(a["question_id"], a["status"]) for a in result["answers"]] == [
+        ("q-1", "insufficient_evidence"), ("q-2", "insufficient_evidence"),
+    ]
+    for row in observations:
+        diagnostic = owner(["--runs-root", runs, "get-diagnostic", row["details_ref"]])
+        assert diagnostic["diagnostic"]["chain"][0]["type"] == "IncompleteRead"
+        assert CANARY not in json.dumps(diagnostic)
+        cold = reconcile(runs, row)["result"]
+        assert cold["new_model_calls"] == cold["new_searches"] == cold["new_cost_micros"] == 0
     assert len({row["step_id"] for row in observations}) == 2
     assert len({row["details_ref"] for row in observations}) == 2
     assert len({row["issue_key"] for row in observations}) == 1

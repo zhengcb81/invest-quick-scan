@@ -101,6 +101,7 @@ def _dashboard_modules():
     return IqsQuickScanAdapter, IqsJobAdapter, CliResult, JsonHttpTransport, create_app
 
 
+@pytest.mark.owner_assets
 @pytest.mark.skipif(not (B03_STOCKWIKI_ROOT / "dashboard_company_assessment_cli.py").is_file(),
                     reason="StockWiki public assessment CLI is unavailable")
 @pytest.mark.parametrize(("answer_status", "confidence"), [
@@ -165,6 +166,7 @@ def test_m6_mixed_scale_read_uses_public_stockwiki_iqs_and_dashboard_interfaces(
         server.server_close()
 
 
+@pytest.mark.owner_assets
 def test_dashboard_m6_m8_use_live_iqs_http_cli_and_read_after_lost_submit(tmp_path, monkeypatch, request):
     _clear_test_credentials(monkeypatch)
     IqsQuickScanAdapter, IqsJobAdapter, CliResult, JsonHttpTransport, create_app = _dashboard_modules()
@@ -266,6 +268,7 @@ def test_dashboard_m6_m8_use_live_iqs_http_cli_and_read_after_lost_submit(tmp_pa
         cleanup.close()
 
 
+@pytest.mark.owner_assets
 def test_dashboard_m6_m8_real_browser_recovers_generated_command_id_without_resubmit(tmp_path, monkeypatch, request):
     """The source-built Dashboard UI reads m6 and recovers m8 through public IQS faces."""
     _clear_test_credentials(monkeypatch)
