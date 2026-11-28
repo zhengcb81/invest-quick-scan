@@ -66,10 +66,12 @@ _NAMED_CREDENTIAL = re.compile(
 )
 _AUTH_VALUE = re.compile(r"(?i)(?:\b(?:sk-|tvly-|gh[pousr]_|AIza)[a-z0-9_.-]{6,}|\b(?:basic|bearer)[ \t]+[a-z0-9_./+=-]{6,})")
 _URL_USERINFO = re.compile(r"(?i)(https?://)[^/\s@]+@")
-_AUTH_HEADER = re.compile(r"(?i)\bauthorization[ \t]*:[ \t]*(?:bearer|basic)[ \t]+\S")
+_AUTH_FIELD = r"\b(?:proxy[-_])?authorization[ \t]*:[ \t]*"
+_AUTH_SCHEME = r"(?:bearer|basic)"
+_AUTH_HEADER = re.compile(rf"(?i){_AUTH_FIELD}{_AUTH_SCHEME}(?=[ \t\r\n]|$)")
 _RENDERED_AUTH_FOLD = re.compile(
-    r"(?i)(\b(?:proxy[-_])?authorization[ \t]*:[ \t]*)"
-    r"(?:bearer|basic)[ \t]+[^\s\\\"']+"
+    rf"(?i)({_AUTH_FIELD}){_AUTH_SCHEME}"
+    r"(?:[ \t]+[^\s\\\"']+)?[ \t]*"
     r"(?:(?:\\r\\n|\\[rn])(?:[ \t]|\\t)+[^\s\\\"'][^\\\r\n\"']*)+"
 )
 _PRIVATE_START = re.compile(r"-----BEGIN [^-\n]*PRIVATE KEY-----")

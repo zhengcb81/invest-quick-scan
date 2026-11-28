@@ -178,14 +178,34 @@ def test_folded_auth_and_uri_userinfo_keep_the_following_diagnostic(monkeypatch)
     assert all(value not in projected for value in ("fixture-auth", "fixture-continuation", "fixture-pass"))
 
 
+@pytest.mark.parametrize(("header", "scheme"), (("Authorization", "Bearer"), ("Proxy-Authorization", "Basic")))
+def test_authentication_value_on_first_fold_preserves_next_diagnostic(monkeypatch, header, scheme):
+    monkeypatch.syspath_prepend(str(ROOT / "scripts"))
+    from iqs_scan.foundation.api import redact_diagnostic_text
+
+    values = ("fixture-first-value", "fixture-second-value")
+    diagnostic = f"{header}: {scheme} \r\n\t{values[0]}\n  {values[1]}\nNext original diagnostic\n"
+    projected = redact_diagnostic_text(diagnostic)
+    assert all(value not in projected for value in values)
+    assert projected.endswith("Next original diagnostic\n")
+
+
 @pytest.mark.parametrize("scheme", ("Bearer", "Basic"))
-def test_native_invalid_choice_masks_rendered_authorization_folds(tmp_path, native_environment, scheme):
+@pytest.mark.parametrize("starts_on_header", (True, False), ids=("inline-start", "folded-start"))
+def test_native_invalid_choice_masks_rendered_authorization_folds(
+    tmp_path, native_environment, scheme, starts_on_header
+):
     env, runtime = native_environment
     tokens = ("synthetic-first-segment", "synthetic-second-segment", "synthetic-third-segment")
-    credential = f"Authorization: {scheme} {tokens[0]}\r\n\t{tokens[1]}\n  {tokens[2]}\nRetain this reason"
+    first_separator = " " if starts_on_header else " \r\n\t"
+    credential = (
+        f"Authorization: {scheme}{first_separator}{tokens[0]}"
+        f"\r\n\t{tokens[1]}\n  {tokens[2]}\nRetain this reason"
+    )
     refused = run_entry(tmp_path, env, "owner_job_cli", "--operation", credential)
     assert (refused.returncode, refused.stdout) == (2, b"")
     assert b"invalid choice" in refused.stderr and b"Retain this reason" in refused.stderr
+    assert b"(choose from" in refused.stderr
     failure, = diagnostics(runtime)
     assert failure["observation"]["actual"] == "invalid_arguments"
     assert failure["chain"][0]["type"] == "SystemExit"
