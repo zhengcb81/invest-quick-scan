@@ -8,9 +8,6 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
-# Explicit test-only dependency, matching the original owner's sibling fixture.
-# Production workers still use only the configured native StockWiki path.
-sys.path.insert(0,str(ROOT.parent/'StockWiki'))
 import dashboard_temporal as temporal
 from iqs_temporal_vendor import load_observation_clock_policies
 
@@ -199,6 +196,7 @@ def test_mixed_date_explanation_never_depends_on_retired_verification_receipts(q
     assert actual['reuse_authorized'] is False
 
 
+@pytest.mark.owner_assets
 def test_native_subprocess_view_is_readonly_and_old_entity_unchanged(owner):
     # Reuse the existing original-owner isolated fixture; no hand-made owner success.
     from test_dashboard_owner import _tree,ENTITY as native_entity

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import shlex
 import subprocess
@@ -103,15 +104,21 @@ def external_roots(handoff: dict) -> list[Path]:
         command = check.get("command")
         if not isinstance(command, str):
             continue
-        # Tokenize without executing shell commands or removing Win32 slashes.
+        # Tokenize without executing commands. Windows path separators are
+        # literal, while POSIX shell paths may explicitly escape spaces.
+        lexer = shlex.shlex(command, posix=True, punctuation_chars="|;&")
+        lexer.whitespace_split = True
+        lexer.commenters = ""
+        if os.name == "nt":
+            lexer.escape = ""
         try:
-            tokens = shlex.split(command, posix=False)
+            tokens = list(lexer)
         except ValueError:
             continue
         for token in tokens:
             if token.startswith("-") and "=" in token:
                 token = token.split("=", 1)[1]
-            candidate = Path(token.strip("\"'"))
+            candidate = Path(token)
             if candidate.is_absolute() and candidate.is_dir() and candidate not in roots:
                 roots.append(candidate)
     return roots

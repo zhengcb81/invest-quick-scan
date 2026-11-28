@@ -18,7 +18,11 @@
 - 发现共享静态指纹的 Python 3.12 差异。总控参考提交 `b0ad9080079f1594e03932405c1d9abe2ced9171` 已逐 blob 同步并验证目标树 `c090b6e4601bd5343e25de5f108f97c0c54454b6`。本机原生 CPython 3.12.12 直接执行 IQS 整仓 ratchet，380 条原存量发现全部通过现有基线，未重算。
 - 历史实验的目录枚举倒置真实复现 `archive_statistics_mismatch`，修复按既有 arm 身份确定顺序。与跨盘链接、Git CRLF、G0 和退休回执归档同组原生复验 236 项通过。
 - 事实与报告 23 项原生 Windows 通过。使用现行真实事实组成 CLI 和合成身份回归。十月旧 facts pack 仍保留原字节，当前 schema 不同会报告准确原因。原历史答案的重放单列 owner 资产；同套件另验证可移植 CLI 输出与原输入不变。
-- Dashboard 交付和程序边界测试跟随实际公开入口且不依赖本机邻仓配置。两条原生 C06 导入进程探针实际需要三方 root，归入 owner 验证。已保留 StockWiki、StockQA、冬季历史回放的真实组合测试。独立 hosted 验收仍开放。
+- Dashboard 交付和程序边界测试跟随实际公开入口且不依赖本机邻仓配置。两条原生 C06 导入进程探针实际需要三方 root，归入 owner 验证。已保留 StockWiki、StockQA 和历史回放的真实组合测试。独立 hosted 验收仍开放。
 
 - 真实分区红例发现旧开发入口的 fast 模式会执行 owner/live 节点。维护入口现在遵循本仓自主范围，两个完整跨仓源码测试模块移回集成层。复验旧入口和读取边界 171 项通过，正式 CI 的全量目录选择保持原结构。
 - exact `7e5c3b70` 的已配置外部资产复验 8 项通过，包括 StockWiki 4 项（含历史答案和交接）、StockQA 原公开 CLI 2 项、C06 子进程导入 2 项。各组使用已命名源码版本及独立输入目录。完整 C06 主链、其他原生 owner 与双平台 CI 仍分别按实际证据验收。
+
+- `7e5c3b70` 的 GitHub 运行 `46104084859` 两个执行作业通过：Ubuntu 2292、Windows 2305 项通过，各 848 subtests；覆盖作业正确拒绝两边同一个未执行节点。由真实制品证实该节点确实依赖原 StockWiki 进程和已发布源码，归入 owner 组后在本机 StockWiki `6cd6d7ef` 实跑通过（保留原工作区未改检查）。正式覆盖不因运行器 exit=0 而跳过比较。
+- 官方开发入口 fast 在本机运行实际 1068 passed、391 subtests、4 个明示非范围节点、零失败零跳过。路径解析同时实跑有空格的分离和等号参数，以及公开 Git LF/blob 和 CRLF 证据，3 项通过。
+- 原生 C06 两个环境导入测试通过。完整链五项未关闭。四项在真实 StockQA `86f633d8` 历史 `setup_delegated` 仍调用 StockWiki 私有旧 `save_member`，被已发布 schema 7 owner 明确要求使用公开 membership 请求。另一项已实际运行到 SDK/策略入口，发现固定 Company Agent 的 schema 尚未随测试源码包导入，补齐源码包后单独复验。

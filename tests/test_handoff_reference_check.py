@@ -202,7 +202,8 @@ def test_dotfile_paths_keep_their_leading_dot(repo, tmp_path):
     assert refs.verify_all(handoff, path) == []
 
 
-def test_interface_hash_resolves_in_a_repo_declared_by_a_check(repo, tmp_path):
+@pytest.mark.parametrize("separator", [" ", "="])
+def test_interface_hash_resolves_in_a_repo_declared_by_a_check(repo, tmp_path, separator):
     """A cross-repo contract (UI resolver) is found via the handoff's own command."""
     ui = tmp_path / "ui lab"
     ui.mkdir()
@@ -212,7 +213,7 @@ def test_interface_hash_resolves_in_a_repo_declared_by_a_check(repo, tmp_path):
     handoff["interfaces"] = [{"name": "ui_shape", "direction": "both",
                               "content_hash": digest}]
     handoff["verification"] = {"checks": [
-        {"name": "parity", "command": f'python scripts/parity.py --ui-repo "{ui}"'}]}
+        {"name": "parity", "command": f'python scripts/parity.py --ui-repo{separator}"{ui}"'}]}
     path = tmp_path / "handoff.json"
     path.write_text(json.dumps(handoff), encoding="utf-8")
 

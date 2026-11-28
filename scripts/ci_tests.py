@@ -59,6 +59,8 @@ def main() -> int:
     collect_only = args.action == "collect"
     if collect_only:
         options.append("--collect-only")
+    else:
+        options.append("-rs")
     result = run_group(
         REPO_ROOT, name, [], output, pytest_args=options, collect_only=collect_only,
     )
