@@ -63,7 +63,9 @@ def main() -> int:
         REPO_ROOT, name, [], output, pytest_args=options, collect_only=collect_only,
     )
     if not collect_only or result["exit_code"]:
-        sys.stdout.write((output / f"{name}.log").read_text(encoding="utf-8", errors="replace"))
+        # run_group emits UTF-8; stdout may use a legacy Windows code page.
+        sys.stdout.buffer.write((output / f"{name}.log").read_bytes())
+        sys.stdout.buffer.flush()
     if result["exit_code"] == 0 and not evidence.is_file():
         parser.error("pytest returned without recording evidence")
     return result["exit_code"]
