@@ -70,6 +70,41 @@ def test_async_preparation_registers_all_scopes_without_replacing_execution(tmp_
     assert preparer.calls==1
 
 
+def test_reconcile_reads_registered_job_before_its_writer_releases_the_lock(tmp_path, monkeypatch):
+    service = DashboardService(tmp_path, execution_factory=Execution, prepare_factory=Prepare)
+    jobs = service._preparation_jobs()
+    published, allow_exit = threading.Event(), threading.Event()
+    original_write = jobs._write
+
+    def published_while_locked(path, record):
+        original_write(path, record)
+        if record['state'] == 'registered':
+            published.set()
+            assert allow_exit.wait(5), 'test did not release the terminal writer'
+
+    monkeypatch.setattr(jobs, '_write', published_while_locked)
+    payload = {'preview_id': 'prepare_' + 'a' * 32, 'preview_token': 'a' * 64}
+    result = service.dispatch('POST', '/api/product/prepare/apply', payload)
+    assert result[0] == 200
+    job_id = result[1]['data']['job']['job_id']
+    worker = jobs._threads[job_id]
+    try:
+        service._preparer().release.set()
+        assert published.wait(5)
+        observed = service.dispatch('GET', f'/api/product/prepare/jobs/{job_id}')
+        assert observed[0] == 200 and observed[1]['data']['state'] == 'registered'
+        durable = jobs._path(job_id).read_bytes()
+        replay = service.dispatch('POST', f'/api/product/prepare/jobs/{job_id}/reconcile', {})
+        assert replay[0] == 200, replay[1]
+        assert replay[1]['data'] == observed[1]['data']
+        assert jobs._path(job_id).read_bytes() == durable
+        assert service._preparer().calls == 1
+    finally:
+        allow_exit.set()
+        worker.join(timeout=5)
+        assert not worker.is_alive()
+
+
 def test_pending_job_blocks_workspace_switch_and_reads_do_not_start_work(tmp_path):
     service=DashboardService(tmp_path,execution_factory=Execution,prepare_factory=Prepare)
     assert service.dispatch('GET','/api/product/prepare/status')[1]['data']['API_requests']==0

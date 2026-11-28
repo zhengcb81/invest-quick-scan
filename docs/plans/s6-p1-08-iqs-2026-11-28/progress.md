@@ -26,3 +26,7 @@
 - `7e5c3b70` 的 GitHub 运行 `46104084859` 两个执行作业通过：Ubuntu 2292、Windows 2305 项通过，各 848 subtests；覆盖作业正确拒绝两边同一个未执行节点。由真实制品证实该节点确实依赖原 StockWiki 进程和已发布源码，归入 owner 组后在本机 StockWiki `6cd6d7ef` 实跑通过（保留原工作区未改检查）。正式覆盖不因运行器 exit=0 而跳过比较。
 - 官方开发入口 fast 在本机运行实际 1068 passed、391 subtests、4 个明示非范围节点、零失败零跳过。路径解析同时实跑有空格的分离和等号参数，以及公开 Git LF/blob 和 CRLF 证据，3 项通过。
 - 原生 C06 两个环境导入测试通过。完整链五项未关闭。四项在真实 StockQA `86f633d8` 历史 `setup_delegated` 仍调用 StockWiki 私有旧 `save_member`，被已发布 schema 7 owner 明确要求使用公开 membership 请求。另一项已实际运行到 SDK/策略入口，发现固定 Company Agent 的 schema 尚未随测试源码包导入，补齐源码包后单独复验。
+
+- `340f4c0f` 托管 `46105293396` 的 Ubuntu 2294 项全部通过，无跳过。Windows 2306 项通过、1 项在公开 reconcile 返回 409。原子终态已经写出时，正常只读核对仍会经过写入互斥和线程生命周期判断。
+- 新回归在 Windows 确认原子文件已经是 registered 后保留真实写锁，旧代码稳定返回 `preparation_control_busy`。现在 terminal reconcile 直接读取原记录，活跃可变流程仍由同一锁保护。57 项真实本机定向通过。再次核对无重做、原原子文件字节一致、可选日志不中断。
+- 补齐原生 Company Agent 和 Runtime 的固定 schema 后，C06 十二题用例的真实 Runner 已返回，但崩溃触发点尚未被命中。后续从原合成运行的状态码和计数定位，不得将未实际走过的强停记为通过。
